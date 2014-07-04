@@ -13,17 +13,15 @@
 # General Public License along with Libmarpa.  If not, see
 # http://www.gnu.org/licenses/.
 
-.PHONY: dummy dist
-
-dummy: 
-
-dists: dist doc_dist
-
-dist:
-	sh etc/work_to_dist.sh
-
-doc_dist:
-	sh etc/work_to_doc_dist.sh
-
-distcheck:
-	perl etc/license_check.pl  --verbose=0 `find dist doc_dist -type f`
+(cd work; make install)
+version=`work/stage/configure --version | sed -ne '1s/^libmarpa configure *//p'`
+tar_file=work/doc/libmarpa-doc-$version.tar.gz
+if test -d doc_dist && test doc_dist/stamp-h1 -nt $tar_file;
+then exit 0;
+fi
+rm -rf doc_dist
+mkdir doc_dist.$$
+(cd doc_dist.$$; tar -xzf ../$tar_file)
+mv doc_dist.$$/libmarpa-doc-$version doc_dist
+date > doc_dist/stamp-h1
+rmdir doc_dist.$$

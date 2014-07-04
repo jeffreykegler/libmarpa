@@ -26,15 +26,3 @@ else
   date > dist/stamp-h1
   rmdir dist.$$
 fi
-
-# same thing for the doc directory
-tar_file=work/doc/libmarpa-doc-$version.tar.gz
-if test -d doc_dist && test doc_dist/stamp-h1 -nt $tar_file;
-then exit 0;
-fi
-rm -rf doc_dist
-mkdir doc_dist.$$
-(cd doc_dist.$$; tar -xzf ../$tar_file)
-mv doc_dist.$$/libmarpa-doc-$version doc_dist
-date > doc_dist/stamp-h1
-rmdir doc_dist.$$
