@@ -144,10 +144,10 @@ END_OF_STRING
 
 my %GNU_file = (
     map {
-    (   'libmarpa/stage/' . $_, 1,
-        'libmarpa/test/dev/' . $_,   1,
-        'libmarpa_dist/' . $_,   1,
-        'libmarpa_doc_dist/' . $_,   1
+    (   'work/stage/' . $_, 1,
+        'work/test/dev/' . $_,   1,
+        'dist/' . $_,   1,
+        'doc_dist/' . $_,   1
         )
     } qw(
         aclocal.m4
