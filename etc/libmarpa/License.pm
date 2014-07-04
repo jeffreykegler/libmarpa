@@ -262,24 +262,9 @@ my %files_by_type = (
         \&ignored,    # not source, and not clear how to add license at top
     'README'                            => \&trivial,
     'TODO'                              => \&trivial,
-    'author.t/accept_tidy'              => \&trivial,
-    'author.t/critic1'                  => \&trivial,
-    'author.t/perltidyrc'               => \&trivial,
-    'author.t/spelling_exceptions.list' => \&trivial,
-    'author.t/tidy1'                    => \&trivial,
     'etc/dovg.sh'                       => \&trivial,
     'etc/compile_for_debug.sh'          => \&trivial,
     'etc/reserved_check.sh'             => \&trivial,
-    'html/script/marpa_r2_html_fmt'     => \&license_problems_in_perl_file,
-    'html/script/marpa_r2_html_score'   => \&license_problems_in_perl_file,
-    'html/t/fmt_t_data/expected1.html'  => \&ignored,
-    'html/t/fmt_t_data/expected2.html'  => \&ignored,
-    'html/t/fmt_t_data/input1.html'     => \&trivial,
-    'html/t/fmt_t_data/input2.html'     => \&trivial,
-    'html/t/fmt_t_data/score_expected1.html'   => \&trivial,
-    'html/t/fmt_t_data/score_expected2.html'   => \&trivial,
-    'html/t/no_tang.html'                      => \&ignored,
-    'html/t/test.html'                         => \&ignored,
     'libmarpa/shared/do_not_edit.c'            => \&trivial,
     'libmarpa/public/marpa_codes.c.p10'        => \&trivial,
     'libmarpa/public/marpa_slif.h.p20'         => \&trivial,
@@ -287,31 +272,30 @@ my %files_by_type = (
     'libmarpa/public/marpa.h-version'          => \&trivial,
     'libmarpa/public/marpa.h.p90'              => \&trivial,
     'libmarpa/dev/README'                      => \&trivial,
-    'libmarpa_dist/LIB_VERSION'                => \&trivial,
-    'libmarpa_dist/LIB_VERSION.in'             => \&trivial,
+    'dist/LIB_VERSION'                => \&trivial,
+    'dist/LIB_VERSION.in'             => \&trivial,
     'libmarpa/public/LIB_VERSION.in'           => \&trivial,
     'libmarpa/bin/too_long.pl'                 => \&trivial,
     'libmarpa/shared/copyright_page_license.w' => \&copyright_page,
     'libmarpa/shared/cwebmac.tex' =>
         \&ignored,    # originally from Cweb, leave it alone
-    'libmarpa/ac_doc/fdl-1.3.texi'  => \&ignored,
-    'libmarpa/ac_doc/lgpl-3.0.texi' => \&ignored,
+    'work/ac_doc/fdl-1.3.texi'  => \&ignored,
+    'work/ac_doc/lgpl-3.0.texi' => \&ignored,
     'libmarpa/test/Makefile'        => \&trivial,
     'libmarpa/test/README'          => \&trivial,
     'libmarpa/test/dev/install-sh'  => \&check_X_copyright,
     'libmarpa/win32/make.bat'           => \&trivial,
-    'libmarpa_doc_dist/fdl-1.3.texi' =>
+    'doc_dist/fdl-1.3.texi' =>
         \&ignored,    ## GNU license text, leave it alone
-    'libmarpa_doc_dist/lgpl-3.0.texi'  => \&ignored,
-    'libmarpa_doc_dist/version.texi'   => \&trivial,
-    'libmarpa_doc_dist/version_i.texi' => \&trivial,
+    'doc_dist/lgpl-3.0.texi'  => \&ignored,
+    'doc_dist/version.texi'   => \&trivial,
+    'doc_dist/version_i.texi' => \&trivial,
     'etc/my_suppressions'              => \&trivial,
-    'xs/ppport.h' => \&ignored,    # copied from CPAN, just leave it alone
     'libmarpa/tavl/README' => \&trivial,
 
     # Leave Pfaff's licensing as is
-    'libmarpa_dist/marpa_tavl.c' => \&ignored,
-    'libmarpa_dist/marpa_tavl.h' => \&ignored,
+    'dist/marpa_tavl.c' => \&ignored,
+    'dist/marpa_tavl.h' => \&ignored,
     'libmarpa/tavl/marpa_tavl.c' => \&ignored,
     'libmarpa/tavl/marpa_tavl.h' => \&ignored,
     'libmarpa/tavl/README.Pfaff' => \&ignored,
@@ -320,12 +304,12 @@ my %files_by_type = (
     'libmarpa/tavl/test.h'       => \&ignored,
 
     # MS .def file -- contents trivial
-    'libmarpa_dist/win32/marpa.def' => \&ignored,
+    'dist/win32/marpa.def' => \&ignored,
 );
 
 # Common files in the GNU distributions
 for my $distlib (
-    qw(libmarpa/ac_doc libmarpa/ac libmarpa_dist libmarpa_doc_dist)
+    qw(work/ac_doc work/ac dist doc_dist)
     )
 {
     $files_by_type{"$distlib/AUTHORS"}   = \&trivial;
