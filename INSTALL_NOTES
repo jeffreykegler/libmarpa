@@ -1,2 +1,2 @@
-Most users will want to install Marpa as a CPAN module.  For the more
-adventurous, there is an install target in the Makefile.
+Libmarpa is an GNU autoconf library, and its Makefile supports the standard
+targets.
