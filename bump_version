@@ -9,90 +9,26 @@ use IPC::Cmd;
 
 my $latest;
 LINE: {
-    open my $changes_fh, q{<}, 'cpan/Changes';
-    while ( my $line = <$changes_fh> ) {
-        if ( $line =~ m/ \A \d /xms ) {
-            $latest = $line;
-            chomp $latest;
-            last LINE;
-        }
-    } ## end while ( my $line = <$changes_fh> )
+    open my $lib_version, q{<}, 'LIB_VERSION';
+    my $line = <$lib_version>;
+    $latest = $line;
+    chomp $latest;
 } ## end LINE:
 
 die "Could not find latest change" if not defined $latest;
 warn "Bumping -> $latest\n";
 
-my ( $major, $minor, $underscore, $micro, $libmarpa_major, $libmarpa_minor,
-    $libmarpa_micro )
-    = (
-    $latest =~ m/\A
-	  (\d+) [.] (\d\d\d) ([_]?) (\d\d\d)
-	  \s+ [(] libmarpa \s+ (\d+) [.] (\d+) [.] (\d+) [)]
-	/xms
-    );
+my ( $libmarpa_major, $libmarpa_minor, $libmarpa_micro )
+    = split m/[.]/, $latest, 3;
 
 if ( not defined $libmarpa_micro ) {
     die "bump_version Cannot handle new version number: $latest";
 }
 
-$major += 0;
-$minor += 0;
-$micro += 0;
-my $perlish_version = sprintf '%d%s%.3d%s%.3d', $major, q{.}, $minor,
-    $underscore, $micro;
-
-my @versioned_files = split /\n/xms, <<'END_OF_LIST';
-cpan/html/lib/Marpa/R2/HTML.pm
-cpan/html/lib/Marpa/R2/HTML.pm
-cpan/html/lib/Marpa/R2/HTML/Callback.pm
-cpan/html/lib/Marpa/R2/HTML/Config.pm
-cpan/html/lib/Marpa/R2/HTML/Config/Compile.pm
-cpan/html/meta/make_internal_pm.pl
-cpan/html/tool/lib/Marpa/R2/HTML/Test/Util.pm
-cpan/lib/Marpa/R2/ASF.pm
-cpan/lib/Marpa/R2/Grammar.pm
-cpan/lib/Marpa/R2/MetaAST.pm
-cpan/lib/Marpa/R2/MetaG.pm
-cpan/lib/Marpa/R2.pm
-cpan/lib/Marpa/R2/Recognizer.pm
-cpan/lib/Marpa/R2/SLG.pm
-cpan/lib/Marpa/R2/SLR.pm
-cpan/lib/Marpa/R2/Stuifzand.pm
-cpan/lib/Marpa/R2/Thin/Trace.pm
-cpan/lib/Marpa/R2/Value.pm
-cpan/meta/make_internal_pm.pl
-END_OF_LIST
-
-for my $versioned_file (@versioned_files) {
-    say STDERR $versioned_file;
-    my $file = do { local ( @ARGV, $/ ) = ($versioned_file); <> };
-    $file =~ s/(\$VERSION \s+ =  \s+ ['] ) \d+ [.] \d\d\d [_]? \d\d\d /$1${perlish_version}/xms;
-    open my $out, '>', $versioned_file;
-    print $out $file;
-} ## end for my $versioned_file (@versioned_files)
-
-{
-    # Update the version of Libmarpa that XS is expecting
-    my $expecting_file = 'cpan/xs/R2.xs';
-    say STDERR $expecting_file;
-    my $file = do { local ( @ARGV, $/ ) = ($expecting_file); <> };
-    $file =~ s{
-    ^ [#]define \s+ EXPECTED_LIBMARPA_MAJOR \s [^\n]* $}
-    {#define EXPECTED_LIBMARPA_MAJOR $libmarpa_major}xms;
-    $file =~ s{
-    ^ [#]define \s+ EXPECTED_LIBMARPA_MINOR \s [^\n]* $}
-    {#define EXPECTED_LIBMARPA_MINOR $libmarpa_minor}xms;
-    $file =~ s{
-    ^ [#]define \s+ EXPECTED_LIBMARPA_MICRO \s [^\n]* $}
-    {#define EXPECTED_LIBMARPA_MICRO $libmarpa_micro}xms;
-    open my $out, '>', $expecting_file;
-    print $out $file;
-}
-
 for my $configure_ac_file (
     qw(
-    cpan/libmarpa/ac/configure.ac
-    cpan/libmarpa/ac_doc/configure.ac
+    work/ac/configure.ac
+    work/ac_doc/configure.ac
     )
     )
 {
@@ -112,22 +48,10 @@ for my $configure_ac_file (
 } ## end for my $configure_ac_file ( qw( cpan/libmarpa/ac/configure.ac...))
 
 {
-    open my $out, '>', 'cpan/libmarpa/public/marpa.h-version';
+    open my $out, '>', 'work/public/marpa.h-version';
     say $out join " ", q{#define MARPA_MAJOR_VERSION}, $libmarpa_major;
     say $out join " ", q{#define MARPA_MINOR_VERSION}, $libmarpa_minor;
     say $out join " ", q{#define MARPA_MICRO_VERSION}, $libmarpa_micro;
     close $out;
 }
 
-chdir 'cpan';
-die qq{"perl Build.PL" failed: $!}
-    if not IPC::Cmd::run(
-    command => [ $EXECUTABLE_NAME, 'Build.PL' ],
-    verbose => 1
-    );
-die qq{"./Build distmeta" failed: $!}
-    if
-    not IPC::Cmd::run( command => [ './Build', 'distmeta' ], verbose => 1 );
-chdir 'meta';
-die qq{"make all" in cpan/meta/ directory failed: $!}
-    if not IPC::Cmd::run( command => [ 'make', 'all' ], verbose => 1 );
