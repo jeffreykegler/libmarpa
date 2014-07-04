@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#b!/usr/bin/perl
 # Copyright 2014 Jeffrey Kegler
 # This file is part of Marpa::R2.  Marpa::R2 is free software: you can
 # redistribute it and/or modify it under the terms of the GNU Lesser
@@ -25,12 +25,12 @@ my $verbose = 1;
 my $result = Getopt::Long::GetOptions( 'verbose=i' => \$verbose );
 die "usage $PROGRAM_NAME [--verbose=n] file ...\n" if not $result;
 
-use lib 'inc';
-use Marpa::R2::License;
+use lib 'etc';
+use libmarpa::License;
 
 my $file_count = @ARGV;
 my @license_problems =
-    map { Marpa::R2::License::file_license_problems( $_, $verbose ) } @ARGV;
+    map { libmarpa::License::file_license_problems( $_, $verbose ) } @ARGV;
 
 print join "\n", @license_problems;
 
