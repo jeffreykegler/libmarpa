@@ -24,20 +24,21 @@ then
 fi
 todir="$1"
 fromdir=dist
+needtobe="you need to be in a Libmarpa repository top-level directory to run this command"
 if [ ! -e "$fromdir" ]
 then
-    echo "cannot find directory $fromdir -- you need to be in a CPAN distribution directory to run this command" 1>&2
+    echo "cannot find directory $fromdir -- $needtobe" 1>&2
     exit 1
 fi
 if [ ! -d "$fromdir" ]
 then
-    echo "$fromdir is not a directory -- you need to be in a CPAN distribution directory to run this command" 1>&2
+    echo "$fromdir is not a directory -- $needtobe" 1>&2
     exit 1
 fi
 checkfile="$fromdir/configure.ac"
 if [ ! -e "$checkfile" ]
 then
-    echo "$fromdir does not contain a configure.ac file -- you need to be in a CPAN distribution directory to run this command" 1>&2
+    echo "$fromdir does not contain a configure.ac file -- $needtobe" 1>&2
     exit 1
 fi
 if [ ! -r "$checkfile" ]
