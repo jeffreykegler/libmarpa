@@ -1,2 +1,24 @@
-Libmarpa is a GNU autoconf library, and its Makefile supports the standard
-targets.
+Libmarpa uses the GNU autoconf library for installation.  It tries to
+avoid customization, sticking as close to the GNU "standard" as feasible.
+
+This repository contains two distributions: the main distibution, with the
+code; and another distribution containing the documentation.
+
+To create a tar file for the main distribution:
+
+    make tar
+
+To create a the distribution in the form of a directory, in the
+"dist/" directory at the top level of this repository:
+
+    make dist
+
+To create a tar file for the documentation distribution:
+
+    make doc_tar
+
+To create a the distribution in the form of a directory, in the
+"doc_dist/" directory at the top level of this repository:
+
+    make doc_dist
+
