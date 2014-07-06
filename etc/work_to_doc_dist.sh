@@ -13,7 +13,6 @@
 # General Public License along with Libmarpa.  If not, see
 # http://www.gnu.org/licenses/.
 
-(cd work; make install)
 version=`work/stage/configure --version | sed -ne '1s/^libmarpa configure *//p'`
 tar_file=work/doc/libmarpa-doc-$version.tar.gz
 if test -d doc_dist && test doc_dist/stamp-h1 -nt $tar_file;
