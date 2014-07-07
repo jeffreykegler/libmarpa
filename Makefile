@@ -42,3 +42,6 @@ distcheck:
 tar_clean:
 	rm work/doc/*.tar.gz
 	rm work/stage/*.tar.gz
+
+tag:
+	git tag -a v$(version) -m "Version $(version)"
