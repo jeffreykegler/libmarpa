@@ -4,16 +4,17 @@ avoid customization, sticking as close to the GNU "standard" as feasible.
 This repository contains two distributions: the main distibution, with the
 code; and another distribution containing the documentation.
 
-To install either distribution, follow the instructions in the INSTALL
-file at the top of the distribution directory.
+To install either distribution, follow the instructions in the
+README.INSTALL and/or INSTALL files at the top of the distribution
+directory.
 
 To create a tar file of the distribution directory for the main
 distribution:
 
     make tar
 
-To create a the distribution in the form of a directory, in the
-"dist/" directory at the top level of this repository:
+To create a the distribution in the form of a directory, in the "dist/"
+directory at the top level of this repository:
 
     make dist
 

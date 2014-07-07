@@ -85,3 +85,4 @@ doc/fdl-1.3.texi: ac_doc/fdl-1.3.texi
 doc/lgpl-3.0.texi: ac_doc/lgpl-3.0.texi
 doc/api.texi: dev/api.texi
 doc/internal.texi: dev/internal.texi
+stage/notes/README.INSTALL: notes/README.INSTALL
