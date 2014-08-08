@@ -30,6 +30,7 @@ m4_define([marpa_version],
           [marpa_major_version.marpa_minor_version.marpa_micro_version])
 
 AC_INIT([libmarpa],[marpa_version],[http://rt.cpan.org/NoAuth/Bugs.html?Dist=Marpa])
+AM_MAINTAINER_MODE([enable])
 
 # The safety check of the next line is as suggested by autoscan
 AC_CONFIG_SRCDIR([marpa_ami.h])
