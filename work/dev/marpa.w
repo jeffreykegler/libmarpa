@@ -7587,10 +7587,10 @@ int evaluate_zwas(RECCE r, YSID ysid, AHM ahm)
      const ZWA zwa = RZWA_by_ID(zwaid);
       @t}\comment{@>
       /* Use the memoized value, if it is for this YS */
-     MARPA_DEBUG3("At %s, evaluating assertion %ld", STRLOC, (long)zwaid);
+     MARPA_OFF_DEBUG3("At %s, evaluating assertion %ld", STRLOC, (long)zwaid);
      if (Memo_YSID_of_ZWA(zwa) == ysid) {
          if (Memo_Value_of_ZWA(zwa)) continue;
-         MARPA_DEBUG3("At %s: returning 0 for assertion %ld", STRLOC, (long)zwaid);
+         MARPA_OFF_DEBUG3("At %s: returning 0 for assertion %ld", STRLOC, (long)zwaid);
          return 0;
      }
 
@@ -7605,11 +7605,11 @@ int evaluate_zwas(RECCE r, YSID ysid, AHM ahm)
       Otherwise, continue to check assertions.
       */
      if (!value) {
-       MARPA_DEBUG3("At %s: returning 0 for assertion %ld", STRLOC, (long)zwaid);
+       MARPA_OFF_DEBUG3("At %s: returning 0 for assertion %ld", STRLOC, (long)zwaid);
        return 0;
      }
 
-     MARPA_DEBUG3("At %s: value is 1 for assertion %ld", STRLOC, (long)zwaid);
+     MARPA_OFF_DEBUG3("At %s: value is 1 for assertion %ld", STRLOC, (long)zwaid);
   }
   return 1;
 }
@@ -9504,6 +9504,9 @@ progress_report_item_insert(MARPA_AVL_TREE report_tree,
   const int xrl_position = XRL_Position_of_AHM (report_ahm);
   if (!source_xrl)
     return;
+
+   MARPA_DEBUG5("At %s, report item insert rule=%ld pos=%ld origin=%ld", STRLOC,
+     (long)ID_of_XRL (source_xrl), (long)xrl_position, (long)report_origin);
 
   @t}\comment{@>
   /* As a special case, for the starting rules of a sequence rewrite, we
