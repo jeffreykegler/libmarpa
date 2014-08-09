@@ -9435,6 +9435,9 @@ int marpa_r_progress_report_start(
       return failure_indicator;
     }
   earley_set = YS_of_R_by_Ord (r, set_id);
+
+  MARPA_DEBUG3("At %s, starting progress report Earley set %ld", STRLOC, (long)set_id);
+
   @<Clear progress report in |r|@>@;
   {
     const MARPA_AVL_TREE report_tree =
@@ -9471,13 +9474,20 @@ int marpa_r_progress_report_reset( Marpa_Recognizer r)
 @<Do the progress report for |earley_item|@> =
 {
   SRCL leo_source_link = NULL;
+
+   MARPA_DEBUG2("At %s, Do the progress report", STRLOC);
+
   progress_report_item_insert (report_tree, AHM_of_YIM (earley_item),
 			       Origin_Ord_of_YIM (earley_item));
   for (leo_source_link = First_Leo_SRCL_of_YIM (earley_item);
        leo_source_link; leo_source_link = Next_SRCL_of_SRCL (leo_source_link))
     {
       LIM leo_item;
+       MARPA_OFF_DEBUG3("At %s, Leo source link %p", STRLOC, leo_source_link);
+
       if (!SRCL_is_Active (leo_source_link)) continue;
+
+       MARPA_OFF_DEBUG3("At %s, active Leo source link %p", STRLOC, leo_source_link);
 
       @t}\comment{@>
       /* If the SRCL at the Leo summit is active, then the whole path
@@ -9485,11 +9495,14 @@ int marpa_r_progress_report_reset( Marpa_Recognizer r)
       for (leo_item = LIM_of_SRCL (leo_source_link);
 	   leo_item; leo_item = Predecessor_LIM_of_LIM (leo_item))
 	{
-	  const YSID report_origin = Ord_of_YS (YS_of_LIM (leo_item));
-	  const AHM report_ahm = Trailhead_AHM_of_LIM (leo_item);
-	  progress_report_item_insert (report_tree, report_ahm,
-				       report_origin);
+          const YIM trailhead_yim = Trailhead_YIM_of_LIM (leo_item);
+	  const YSID trailhead_origin = Ord_of_YS (Origin_of_YIM (trailhead_yim));
+	  const AHM trailhead_ahm = Trailhead_AHM_of_LIM (leo_item);
+	  progress_report_item_insert (report_tree, trailhead_ahm,
+				       trailhead_origin);
 	}
+
+       MARPA_OFF_DEBUG3("At %s, finished Leo source link %p", STRLOC, leo_source_link);
     }
 }
 
