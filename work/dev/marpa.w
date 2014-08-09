@@ -9436,7 +9436,8 @@ int marpa_r_progress_report_start(
     }
   earley_set = YS_of_R_by_Ord (r, set_id);
 
-  MARPA_DEBUG3("At %s, starting progress report Earley set %ld", STRLOC, (long)set_id);
+  MARPA_OFF_DEBUG3("At %s, starting progress report Earley set %ld",
+    STRLOC, (long)set_id);
 
   @<Clear progress report in |r|@>@;
   {
@@ -9475,7 +9476,7 @@ int marpa_r_progress_report_reset( Marpa_Recognizer r)
 {
   SRCL leo_source_link = NULL;
 
-   MARPA_DEBUG2("At %s, Do the progress report", STRLOC);
+   MARPA_OFF_DEBUG2("At %s, Do the progress report", STRLOC);
 
   progress_report_item_insert (report_tree, AHM_of_YIM (earley_item),
 			       Origin_Ord_of_YIM (earley_item));
@@ -9518,8 +9519,10 @@ progress_report_item_insert(MARPA_AVL_TREE report_tree,
   if (!source_xrl)
     return;
 
-   MARPA_DEBUG5("At %s, report item insert rule=%ld pos=%ld origin=%ld", STRLOC,
-     (long)ID_of_XRL (source_xrl), (long)xrl_position, (long)report_origin);
+  MARPA_OFF_DEBUG5(
+    "At %s, report item insert rule=%ld pos=%ld origin=%ld",
+    STRLOC, (long)ID_of_XRL (source_xrl),
+    (long)xrl_position, (long)report_origin);
 
   @t}\comment{@>
   /* As a special case, for the starting rules of a sequence rewrite, we
