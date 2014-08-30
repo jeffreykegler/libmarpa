@@ -18,7 +18,52 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <stdio.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <sys/mman.h>
 #include "marpa.h"
+
+/* Scan to the location  past a JSON number.
+ * */
+static unsigned char*
+scan_number (const unsigned char *s)
+{
+      unsigned char dig;
+      if (*s == '-' || *s == '+') s++;
+      if (*s == '0') {
+	  s++;
+      } else {
+	while ((*s - '0') < 10) s++;
+      }
+      if (*s == '.') {
+	      s++;
+	while ((*s - '0') < 10) s++;
+      }
+	if (*s != 'e' && *s != 'E') return s;
+      if (*s == '-' || *s == '+') s++;
+	while ((*s - '0') < 10) s++;
+    return s;
+}
+
+/* Scan to location past a JSON string.
+ * Assumes we are pointing an initial double quote.
+ * */
+static unsigned char*
+scan_string (unsigned char *s)
+{
+	s++;
+	while (*s != '"') {
+		 /* We are just looking for an unescaped double quote --
+		  * we don't try to deal with hex chars at this point.
+		  */
+		 if (*s == '\\') {
+		    s++;
+		 }
+		 s++;
+	}
+    return s;
+}
+
 
 static int
 fail (const char *s, Marpa_Grammar g)
@@ -32,10 +77,12 @@ fail (const char *s, Marpa_Grammar g)
 /* Names follow RFC 7159 as much as possible */
 
 int
-main (int argc, char **argv)
+main (int argc, char *argv[])
 {
   int i;
   const char *error_string;
+  struct stat sb;
+
   Marpa_Config marpa_configuration;
   /* From RFC 7159 */
   Marpa_Symbol_ID S_begin_array;
@@ -44,6 +91,7 @@ main (int argc, char **argv)
   Marpa_Symbol_ID S_end_object;
   Marpa_Symbol_ID S_name_separator;
   Marpa_Symbol_ID S_value_separator;
+  Marpa_Symbol_ID S_member;
   Marpa_Symbol_ID S_value;
   Marpa_Symbol_ID S_false;
   Marpa_Symbol_ID S_null;
@@ -62,6 +110,21 @@ main (int argc, char **argv)
   /* Longest rule is 4 symbols */
   Marpa_Symbol_ID rhs[4];
 
+  int fd = open (argv[1], O_RDONLY);
+  //initialize a stat for getting the filesize
+  if (fstat (fd, &sb) == -1) {
+    perror ("fstat");
+    return 1;
+  }
+  //do the actual mmap, and keep pointer to the first element
+  p =(char *) mmap (0, sb.st_size, PROT_READ, MAP_SHARED, fd, 0);
+  q=p;
+  //something went wrong
+  if (p == MAP_FAILED) {
+    perror ("mmap");
+    return 1;
+  }
+
   marpa_c_init (&marpa_configuration);
   g = marpa_g_new (&marpa_configuration);
   if (!g) {
@@ -76,6 +139,7 @@ main (int argc, char **argv)
   ((S_end_object = marpa_g_symbol_new(g)) >= 0) || fail("marpa_g_symbol_new", g);
   ((S_name_separator = marpa_g_symbol_new(g)) >= 0) || fail("marpa_g_symbol_new", g);
   ((S_value_separator = marpa_g_symbol_new(g)) >= 0) || fail("marpa_g_symbol_new", g);
+  ((S_member = marpa_g_symbol_new(g)) >= 0) || fail("marpa_g_symbol_new", g);
   ((S_value = marpa_g_symbol_new(g)) >= 0) || fail("marpa_g_symbol_new", g);
   ((S_false = marpa_g_symbol_new(g)) >= 0) || fail("marpa_g_symbol_new", g);
   ((S_null = marpa_g_symbol_new(g)) >= 0) || fail("marpa_g_symbol_new", g);
@@ -105,20 +169,28 @@ main (int argc, char **argv)
   rhs[0] = S_begin_array;
   rhs[1] = S_array_contents;
   rhs[2] = S_end_array;
-  (marpa_g_rule_new (g, A, rhs, 3) >= 0) || fail ("marpa_g_rule_new", g);
+  (marpa_g_rule_new (g, S_array, rhs, 3) >= 0) || fail ("marpa_g_rule_new", g);
 
   rhs[0] = S_begin_hash;
   rhs[1] = S_hash_contents;
   rhs[2] = S_end_hash;
-  (marpa_g_rule_new (g, A, rhs, 3) >= 0) || fail ("marpa_g_rule_new", g);
+  (marpa_g_rule_new (g, S_object, rhs, 3) >= 0) || fail ("marpa_g_rule_new", g);
 
-  rhs[0] = E;
-  (marpa_g_rule_new (g, A, rhs, 1) >= 0) || fail ("marpa_g_rule_new", g);
-  (marpa_g_rule_new (g, E, rhs, 0) >= 0) || fail ("marpa_g_rule_new", g);
-  (marpa_g_symbol_is_terminal_set (g, a, 1) >= 0) ||
+  (marpa_g_sequence_new (g, S_array_contents, S_value, S_comma, MARPA_PROPER_SEPARATION) >= 0)
+	  || fail ("marpa_g_sequence_new", g);
+  (marpa_g_sequence_new (g, S_hash_contents, S_member, S_comma, MARPA_PROPER_SEPARATION) >= 0)
+	  || fail ("marpa_g_sequence_new", g);
+
+  rhs[0] = S_string;
+  rhs[1] = S_name_separator;
+  rhs[2] = S_value;
+  (marpa_g_rule_new (g, S_member, rhs, 3) >= 0) || fail ("marpa_g_rule_new", g);
+
+  if (0) {(marpa_g_symbol_is_terminal_set (g, a, 1) >= 0) ||
     fail ("marpa_g_symbol_is_terminal", g);
+  }
 
-  (marpa_g_start_symbol_set (g, S_value) >= 0) || fail ("marpa_g_rule_new", g);
+  (marpa_g_start_symbol_set (g, S_value) >= 0) || fail ("marpa_g_start_symbol_set", g);
   if (marpa_g_precompute (g) < 0)
     {
       marpa_g_error (g, &error_string);
@@ -138,9 +210,38 @@ main (int argc, char **argv)
       puts (error_string);
       exit (1);
     }
-  for (i = 0; i < 4; i++)
+  i = 0;
+  while ( i < sb.st_size) 
     {
-      int status = marpa_r_alternative (r, a, 42, 1);
+      Marpa_Symbol token;
+      for (;;) {
+      switch (p[i]) {
+	      case '-': 
+	      case '+': 
+	      case '0': case '1': case '2': case '3': case '4':
+	      case '5': case '6': case '7': case '8': case '9':
+		      i = scan_number(p+i) - p;
+		      token = S_number;
+			 break;
+	      case '"'
+		      i = scan_string(p+i) - p;
+		      token = S_string;
+		      break;
+	      case '[': token = S_begin_array; i++; break;
+	      case ']': token = S_end_array; i++; break;
+	      case '{': token = S_begin_object; i++; break;
+	      case '}': token = S_end_object; i++; break;
+	      case ',': token = S_value_separator; i++; break;
+	      case ':': token = S_name_separator; i++; break;
+	      case ' ': case 0x09: case 0x0A: case 0x0D: i++ continue;
+	      default:
+	  marpa_g_error (g, &error_string);
+	  printf ("lexer failed at char %d: %c", i, p[i]);
+	  exit (1);
+      }
+      }
+      /* Token value of zero is not allowed, so we add one */
+      int status = marpa_r_alternative (r, token, i+1, 1);
       if (status != MARPA_ERR_NONE)
 	{
 	  marpa_g_error (g, &error_string);
@@ -155,14 +256,13 @@ main (int argc, char **argv)
 		  error_string);
 	  exit (1);
 	}
+      }
     }
-  await_input ();
-  for (i = 0; i <= 4; i++)
+
     {
       Marpa_Bocage bocage;
       Marpa_Order order;
       Marpa_Tree tree;
-      int tree_ordinal = 0;
       bocage = marpa_b_new (r, i);
       if (!bocage)
 	{
@@ -184,7 +284,6 @@ main (int argc, char **argv)
 	  printf ("marpa_t_new returned %d: %s", errcode, error_string);
 	  exit (1);
 	}
-      while (++tree_ordinal)
 	{
 	  Marpa_Value value = NULL;
 	  int tree_status;
@@ -192,7 +291,7 @@ main (int argc, char **argv)
 	  if (tree_status < -1)
 	    {
 	      Marpa_Error_Code errcode = marpa_g_error (g, &error_string);
-	      printf ("marpa_v_event returned %d: %s", errcode, error_string);
+	      printf ("marpa_t_next returned %d: %s", errcode, error_string);
 	      exit (1);
 	    }
 	  if (tree_status == -1)
@@ -226,19 +325,13 @@ main (int argc, char **argv)
 		       marpa_v_rule (value),
 		       marpa_v_arg_0 (value), marpa_v_arg_n (value));
 	    }
-	  if (value)
-	    marpa_v_unref (value);
+	  /* if (value) marpa_v_unref (value); */
 	}
-      marpa_t_unref (tree);
-      marpa_o_unref (order);
-      marpa_b_unref (bocage);
+      /* marpa_t_unref (tree); */
+      /* marpa_o_unref (order); */
+      /* marpa_b_unref (bocage); */
     }
-  marpa_r_unref (r);
-  marpa_g_unref (g);
-  g = NULL;
-  while (1)
-    {
-      putc ('.', stderr);
-      sleep (10);
-    }
+  /* marpa_r_unref (r); */
+  /* marpa_g_unref (g); */
+  return 0;
 }
