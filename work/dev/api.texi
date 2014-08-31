@@ -2993,6 +2993,18 @@ If there is no parse ending at Earley set @var{earley_set_ID},
 and the error code is set to
 @code{MARPA_ERR_NO_PARSE}.
 
+If @code{marpa_b_new} is called with
+@var{earley_set_ID} set to -1,
+the
+parse at the current earleme will be used,
+if there is one.
+More exactly,
+if @var{earley_set_ID} is set to -1, the
+Earley set at the current earleme will be used.
+If there is no Earley set at the current earleme,
+@code{marpa_b_new} will fail with
+@code{MARPA_ERR_NO_PARSE}.
+
 Return value: On success, the new bocage object.
 On failure, @code{NULL}.
 @end deftypefun
