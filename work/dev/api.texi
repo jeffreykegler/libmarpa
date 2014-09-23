@@ -2341,6 +2341,7 @@ instead of using Libmarpa's token values.
 
 A @var{value} of 0 is reserved for a now-deprecated feature.
 Do not use it.
+@var{value} may be negative.
 For more details on that feature, see the
 section @ref{Valued and unvalued symbols}.
 
