@@ -7985,7 +7985,8 @@ But I expect to use it for other purposes.
     {
         @<Set |r| exhausted@>@;
         MARPA_ERROR(MARPA_ERR_PARSE_EXHAUSTED);
-        return failure_indicator;
+        return_value = failure_indicator;
+        goto CLEANUP;
      }
 }
 
