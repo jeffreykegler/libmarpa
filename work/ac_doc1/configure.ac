@@ -29,7 +29,7 @@ m4_define([marpa_micro_version], [0])
 m4_define([marpa_version],
           [marpa_major_version.marpa_minor_version.marpa_micro_version])
 
-AC_INIT([libmarpa-doc],[marpa_version],[http://rt.cpan.org/NoAuth/Bugs.html?Dist=Marpa])
+AC_INIT([libmarpa-doc1],[marpa_version],[http://rt.cpan.org/NoAuth/Bugs.html?Dist=Marpa])
 AC_CONFIG_MACRO_DIR([m4])
 
 AM_INIT_AUTOMAKE([])
