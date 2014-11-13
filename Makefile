@@ -17,7 +17,8 @@ version=`cat LIB_VERSION`
 
 .PHONY: dummy dist
 
-dummy: 
+dummy:
+	@echo The target to make the distributions is '"dists"'
 
 dists: dist doc_dist doc1_dist
 
@@ -30,13 +31,16 @@ tar: work_install
 doc_tar: work_install
 	cp work/doc/libmarpa-doc-$(version).tar.gz .
 
+doc1_tar: work_install
+	cp work/doc1/libmarpa-doc1-$(version).tar.gz .
+
 dist: tar
 	sh etc/work_to_dist.sh
 
 doc_dist: doc_tar
 	sh etc/work_to_doc_dist.sh
 
-doc1_dist: docl_tar
+doc1_dist: doc1_tar
 	sh etc/work_to_doc1_dist.sh
 
 distcheck:
