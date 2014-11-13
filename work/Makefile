@@ -32,16 +32,22 @@ doc/api.pdf: stage_copy doc/Makefile doc/api.texi
 doc/api.html/index.html: stage_copy doc/Makefile doc/api.texi
 	cd doc && make html
 
+doc1/api.html/index.html: stage_copy doc1/Makefile doc1/api.texi
+	cd doc1 && make html
+
 doc/internal.pdf: stage_copy doc/Makefile doc/internal.texi
 	cd doc && make pdf
 
 doc/internal.html/index.html: stage_copy doc/Makefile doc/internal.texi
 	cd doc && make html
 
+doc1/internal.html/index.html: stage_copy doc1/Makefile doc1/internal.texi
+	cd doc1 && make html
+
 stage_copy:
 	perl bin/to_stage.pl
 
-install: sources stage/stamp-h1 doc/stamp-h1
+install: sources stage/stamp-h1 doc/stamp-h1 doc1/stamp-h1
 
 MAKEABLE_DIR = ami dev slif tavl public
 CLEANABLE_DIR = $(MAKEABLE_DIR)
@@ -68,7 +74,21 @@ doc/configure: $(DOC_SOURCE_FILES)
 doc/Makefile: doc/configure
 	cd doc && ./configure
 
-docs: doc/Makefile \
+doc1/stamp-h1: doc1/Makefile docs
+	(cd doc1; make dist)
+	date > $@
+
+doc1/configure: $(DOC1_SOURCE_FILES)
+	test -d doc1/m4 || mkdir doc1/m4
+	cd doc1 && autoreconf -ivf
+
+doc1/Makefile: doc1/configure
+	cd doc1 && ./configure
+
+docs: \
+  doc/Makefile \
   doc/api.pdf doc/api.html/index.html \
-  doc/internal.pdf doc/internal.html/index.html
+  doc/internal.pdf doc/internal.html/index.html \
+  doc1/Makefile doc1/api.html/index.html \
+  doc1/internal.html/index.html
 

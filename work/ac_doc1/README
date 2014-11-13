@@ -1,4 +1,5 @@
-libmarpa contains the documents for the libmarpa API.
+This directory is for generating the one-page version of the HTML
+documents for the libmarpa API.
 
 Copyright 2014 Jeffrey Kegler
 This file is part of Libmarpa.  Libmarpa is free software: you can
