@@ -51,8 +51,10 @@ FILE: while ( my $copy = <DATA> ) {
 
 __DATA__
 doc/configure.ac: ac_doc/configure.ac
+doc1/configure.ac: ac_doc1/configure.ac
 stage/configure.ac: ac/configure.ac
 doc/Makefile.am: ac_doc/Makefile.am
+doc1/Makefile.am: ac_doc1/Makefile.am
 stage/Makefile.am: ac/Makefile.am
 stage/Makefile.win32: win32/Makefile.win32
 stage/win32/do_config_h.pl: win32/do_config_h.pl
@@ -83,6 +85,13 @@ doc/COPYING.LESSER: ac_doc/COPYING.LESSER
 doc/ChangeLog: ac_doc/ChangeLog
 doc/fdl-1.3.texi: ac_doc/fdl-1.3.texi
 doc/lgpl-3.0.texi: ac_doc/lgpl-3.0.texi
+doc1/README: ac_doc1/README
+doc1/NEWS: ac_doc1/NEWS
+doc1/AUTHORS: ac_doc1/AUTHORS
+doc1/COPYING.LESSER: ac_doc1/COPYING.LESSER
+doc1/ChangeLog: ac_doc1/ChangeLog
+doc1/fdl-1.3.texi: ac_doc1/fdl-1.3.texi
+doc1/lgpl-3.0.texi: ac_doc1/lgpl-3.0.texi
 doc/api.texi: dev/api.texi
 doc/internal.texi: dev/internal.texi
 stage/README.INSTALL: notes/README.INSTALL

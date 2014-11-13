@@ -281,6 +281,8 @@ my %files_by_type = (
         \&ignored,    # originally from Cweb, leave it alone
     'work/ac_doc/fdl-1.3.texi'  => \&ignored,
     'work/ac_doc/lgpl-3.0.texi' => \&ignored,
+    'work/ac_doc1/fdl-1.3.texi'  => \&ignored,
+    'work/ac_doc1/lgpl-3.0.texi' => \&ignored,
     'libmarpa/test/Makefile'        => \&trivial,
     'libmarpa/test/README'          => \&trivial,
     'libmarpa/test/dev/install-sh'  => \&check_X_copyright,
@@ -309,7 +311,7 @@ my %files_by_type = (
 
 # Common files in the GNU distributions
 for my $distlib (
-    qw(work/ac_doc work/ac dist doc_dist)
+    qw(work/ac_doc work/ac_doc1 work/ac dist doc_dist doc1_dist)
     )
 {
     $files_by_type{"$distlib/AUTHORS"}   = \&trivial;
