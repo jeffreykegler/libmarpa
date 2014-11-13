@@ -13,39 +13,14 @@
 # General Public License along with Libmarpa.  If not, see
 # http://www.gnu.org/licenses/.
 
-version=`cat LIB_VERSION`
-
-.PHONY: dummy dist
-
-dummy: 
-
-dists: dist doc_dist doc1_dist
-
-work_install:
-	(cd work; make install)
-
-tar: work_install
-	cp work/stage/libmarpa-$(version).tar.gz .
-
-doc_tar: work_install
-	cp work/doc/libmarpa-doc-$(version).tar.gz .
-
-dist: tar
-	sh etc/work_to_dist.sh
-
-doc_dist: doc_tar
-	sh etc/work_to_doc_dist.sh
-
-doc1_dist: docl_tar
-	sh etc/work_to_doc1_dist.sh
-
-distcheck:
-	perl etc/license_check.pl  --verbose=0 `find dist doc_dist doc1_dist -type f`
-
-tar_clean:
-	rm work/doc/*.tar.gz
-	rm work/doc1/*.tar.gz
-	rm work/stage/*.tar.gz
-
-tag:
-	git tag -a v$(version) -m "Version $(version)"
+version=`work/stage/configure --version | sed -ne '1s/^libmarpa configure *//p'`
+tar_file=work/doc1/libmarpa-doc1-$version.tar.gz
+if test -d doc1_dist && test doc1_dist/stamp-h1 -nt $tar_file;
+then exit 0;
+fi
+rm -rf doc1_dist
+mkdir doc1_dist.$$
+(cd doc1_dist.$$; tar -xzf ../$tar_file)
+mv doc1_dist.$$/libmarpa-doc1-$version doc1_dist
+date > doc1_dist/stamp-h1
+rmdir doc1_dist.$$
