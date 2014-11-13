@@ -13,7 +13,7 @@
 # General Public License along with Libmarpa.  If not, see
 # http://www.gnu.org/licenses/.
 
-.PHONY: install docs sources stage_copy
+.PHONY: install docs docs1 sources stage_copy
 
 dummy:
 	@echo install is the main target
@@ -74,7 +74,7 @@ doc/configure: $(DOC_SOURCE_FILES)
 doc/Makefile: doc/configure
 	cd doc && ./configure
 
-doc1/stamp-h1: doc1/Makefile docs
+doc1/stamp-h1: doc1/Makefile docs1
 	(cd doc1; make dist)
 	date > $@
 
@@ -89,6 +89,8 @@ docs: \
   doc/Makefile \
   doc/api.pdf doc/api.html/index.html \
   doc/internal.pdf doc/internal.html/index.html \
+
+docs1: \
   doc1/Makefile doc1/api.html/index.html \
   doc1/internal.html/index.html
 

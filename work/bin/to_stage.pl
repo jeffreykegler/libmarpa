@@ -85,6 +85,8 @@ doc/COPYING.LESSER: ac_doc/COPYING.LESSER
 doc/ChangeLog: ac_doc/ChangeLog
 doc/fdl-1.3.texi: ac_doc/fdl-1.3.texi
 doc/lgpl-3.0.texi: ac_doc/lgpl-3.0.texi
+doc/api.texi: dev/api.texi
+doc/internal.texi: dev/internal.texi
 doc1/README: ac_doc1/README
 doc1/NEWS: ac_doc1/NEWS
 doc1/AUTHORS: ac_doc1/AUTHORS
@@ -92,6 +94,6 @@ doc1/COPYING.LESSER: ac_doc1/COPYING.LESSER
 doc1/ChangeLog: ac_doc1/ChangeLog
 doc1/fdl-1.3.texi: ac_doc1/fdl-1.3.texi
 doc1/lgpl-3.0.texi: ac_doc1/lgpl-3.0.texi
-doc/api.texi: dev/api.texi
-doc/internal.texi: dev/internal.texi
+doc1/api.texi: dev/api.texi
+doc1/internal.texi: dev/internal.texi
 stage/README.INSTALL: notes/README.INSTALL
