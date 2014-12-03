@@ -50,20 +50,20 @@ FILE: while ( my $copy = <DATA> ) {
 # MUST be FIRST
 
 __DATA__
-cmstage/marpa.c: work/dev/marpa.c
-cmstage/marpa.h: work/public/marpa.h
-cmstage/marpa_slif.h: work/public/marpa_slif.h
-cmstage/marpa_obs.c: work/obs/marpa_obs.c
-cmstage/marpa_obs.h: work/obs/marpa_obs.h
-cmstage/marpa_ami.c: work/ami/marpa_ami.c
-cmstage/marpa_codes.c: work/public/marpa_codes.c
-cmstage/marpa_slif.c: work/slif/marpa_slif.c
-cmstage/marpa_ami.h: work/ami/marpa_ami.h
-cmstage/marpa_avl.c: work/avl/marpa_avl.c
-cmstage/marpa_avl.h: work/avl/marpa_avl.h
-cmstage/marpa_tavl.h: work/tavl/marpa_tavl.h
-cmstage/marpa_tavl.c: work/tavl/marpa_tavl.c
-cmstage/COPYING.LESSER: work/ac/COPYING.LESSER
-cmstage/README: work/ac/README
-cmstage/LIB_VERSION.in: work/public/LIB_VERSION.in
-cmstage/CMakeLists.txt: work/cmake/CMakeLists.txt
+dist_cm/marpa.c: work/dev/marpa.c
+dist_cm/marpa.h: work/public/marpa.h
+dist_cm/marpa_slif.h: work/public/marpa_slif.h
+dist_cm/marpa_obs.c: work/obs/marpa_obs.c
+dist_cm/marpa_obs.h: work/obs/marpa_obs.h
+dist_cm/marpa_ami.c: work/ami/marpa_ami.c
+dist_cm/marpa_codes.c: work/public/marpa_codes.c
+dist_cm/marpa_slif.c: work/slif/marpa_slif.c
+dist_cm/marpa_ami.h: work/ami/marpa_ami.h
+dist_cm/marpa_avl.c: work/avl/marpa_avl.c
+dist_cm/marpa_avl.h: work/avl/marpa_avl.h
+dist_cm/marpa_tavl.h: work/tavl/marpa_tavl.h
+dist_cm/marpa_tavl.c: work/tavl/marpa_tavl.c
+dist_cm/COPYING.LESSER: work/ac/COPYING.LESSER
+dist_cm/README: work/ac/README
+dist_cm/LIB_VERSION.in: work/public/LIB_VERSION.in
+dist_cm/CMakeLists.txt: work/cmake/CMakeLists.txt
