@@ -67,3 +67,4 @@ cm_dist/COPYING.LESSER: work/ac/COPYING.LESSER
 cm_dist/README: work/ac/README
 cm_dist/LIB_VERSION.in: work/public/LIB_VERSION.in
 cm_dist/CMakeLists.txt: cmake/CMakeLists.txt
+cm_dist/config.h.cmake: cmake/config.h.cmake

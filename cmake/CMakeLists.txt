@@ -11,17 +11,26 @@ SET(MARPA_LIB_MINOR 3)
 SET(MARPA_LIB_PATCH 0)
 SET(MARPA_LIB_VERSION ${MARPA_LIB_MAJOR}.${MARPA_LIB_MINOR}.${MARPA_LIB_PATCH})
 
+# ----------------------------------------------------------------------------
+# Enable all warnings depending on compiler
+# C.f. http://stackoverflow.com/questions/14231292/cmake-and-compiler-warnings
+# ----------------------------------------------------------------------------
+IF (CMAKE_COMPILER_IS_GNUCC)
+    # MARPA_DEBUG_FLAG ?
+    # -Wextra ?
+    # -Wdeclaration-after-statement ?
+    ADD_DEFINITIONS(-g -O2 -Wall -Wpointer-arith -Wstrict-prototypes -Wwrite-strings -Wshadow -Wmissing-declarations -Wconversion -ansi -pedantic)
+    ADD_DEFINITIONS(-Wundef -Wendif-labels)
+ENDIF (CMAKE_COMPILER_IS_GNUCC)
+IF (MSVC)
+    ADD_DEFINITIONS(/W3)
+ENDIF (MSVC)
+
 CONFIGURE_FILE(config.h.cmake config.h)
 
-SET(libmarpa_src roof.c
+SET(libmarpa_src
     marpa_ami.h marpa_codes.c marpa.c marpa_tavl.c marpa.h marpa_slif.h marpa_tavl.h
     marpa_ami.c marpa_obs.c marpa_slif.c marpa_avl.c marpa_avl.h marpa_obs.h)
-
-# MARPA_DEBUG_FLAG ?
-# -Wextra ?
-# -Wdeclaration-after-statement ?
-ADD_DEFINITIONS(-g -O2 -Wall -Wpointer-arith -Wstrict-prototypes -Wwrite-strings -Wshadow -Wmissing-declarations -Wconversion -ansi -pedantic)
-ADD_DEFINITIONS(-Wundef -Wendif-labels)
 
 # LIB_VERSION ?
 
