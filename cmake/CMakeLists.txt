@@ -2,6 +2,12 @@ CMAKE_MINIMUM_REQUIRED(VERSION 3.0.2)
 
 PROJECT(LIBMARPA C)
 
+# ------------------
+# Module search path
+# ------------------
+SET (CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/modules")
+ENABLE_TESTING()
+
 if("${PROJECT_SOURCE_DIR}" STREQUAL "${PROJECT_BINARY_DIR}")
    message(SEND_ERROR "In-source builds are not allowed.")
    endif("${PROJECT_SOURCE_DIR}" STREQUAL "${PROJECT_BINARY_DIR}")
@@ -26,22 +32,17 @@ IF (MSVC)
     ADD_DEFINITIONS(/W3)
 ENDIF (MSVC)
 
-FOREACH(KEYWORD "inline" "__inline__" "__inline")
-   IF(NOT DEFINED C_INLINE)
-     TRY_COMPILE(C_HAS_${KEYWORD} "${LIBMARPA_BINARY_DIR}"
-       "${LIBMARPA_SOURCE_DIR}/test_inline.c"
-       COMPILE_DEFINITIONS "-Dinline=${KEYWORD}")
-     IF(C_HAS_${KEYWORD})
-       SET(C_INLINE TRUE)
-       ADD_DEFINITIONS("-Dinline=${KEYWORD}")
-     ENDIF(C_HAS_${KEYWORD})
-   ENDIF(NOT DEFINED C_INLINE)
-ENDFOREACH(KEYWORD)
-IF(NOT DEFINED C_INLINE)
-   ADD_DEFINITIONS("-Dinline=")
-ENDIF(NOT DEFINED C_INLINE)
-
+# --------
+# config.h
+# --------
+FIND_PACKAGE(Inline)
+FIND_PACKAGE(NullIsZeroes)
+INCLUDE(CheckIncludeFile)
+CHECK_INCLUDE_FILE("sys/types.h" HAVE_SYS_TYPES_H)
+CHECK_INCLUDE_FILE("unistd.h" HAVE_UNISTD_H)
+CONFIGURE_FILE("${CMAKE_CURRENT_SOURCE_DIR}/include/marpaWrapper_config.h.in" "${CMAKE_CURRENT_BINARY_DIR}/include/marpaWrapper_config.h")
 CONFIGURE_FILE(config.h.cmake config.h)
+
 CONFIGURE_FILE(LIB_VERSION.cmake LIB_VERSION)
 
 SET(libmarpa_src
