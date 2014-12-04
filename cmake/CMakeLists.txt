@@ -1,6 +1,6 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 3.0.2)
 
-PROJECT(libmarpa C)
+PROJECT(LIBMARPA C)
 
 if("${PROJECT_SOURCE_DIR}" STREQUAL "${PROJECT_BINARY_DIR}")
    message(SEND_ERROR "In-source builds are not allowed.")
@@ -28,8 +28,8 @@ ENDIF (MSVC)
 
 FOREACH(KEYWORD "inline" "__inline__" "__inline")
    IF(NOT DEFINED C_INLINE)
-     TRY_COMPILE(C_HAS_${KEYWORD} "${FOO_BINARY_DIR}"
-       "${FOO_SOURCE_DIR}/test_inline.c"
+     TRY_COMPILE(C_HAS_${KEYWORD} "${LIBMARPA_BINARY_DIR}"
+       "${LIBMARPA_SOURCE_DIR}/test_inline.c"
        COMPILE_DEFINITIONS "-Dinline=${KEYWORD}")
      IF(C_HAS_${KEYWORD})
        SET(C_INLINE TRUE)
