@@ -65,6 +65,7 @@ cm_dist/marpa_tavl.h: work/tavl/marpa_tavl.h
 cm_dist/marpa_tavl.c: work/tavl/marpa_tavl.c
 cm_dist/COPYING.LESSER: work/ac/COPYING.LESSER
 cm_dist/README: work/ac/README
-cm_dist/LIB_VERSION.in: work/public/LIB_VERSION.in
+cm_dist/LIB_VERSION.cmake: cmake/LIB_VERSION.cmake
 cm_dist/CMakeLists.txt: cmake/CMakeLists.txt
 cm_dist/config.h.cmake: cmake/config.h.cmake
+cm_dist/test_inline.c: cmake/test_inline.c

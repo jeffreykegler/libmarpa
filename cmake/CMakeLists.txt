@@ -26,16 +26,31 @@ IF (MSVC)
     ADD_DEFINITIONS(/W3)
 ENDIF (MSVC)
 
+FOREACH(KEYWORD "inline" "__inline__" "__inline")
+   IF(NOT DEFINED C_INLINE)
+     TRY_COMPILE(C_HAS_${KEYWORD} "${FOO_BINARY_DIR}"
+       "${FOO_SOURCE_DIR}/test_inline.c"
+       COMPILE_DEFINITIONS "-Dinline=${KEYWORD}")
+     IF(C_HAS_${KEYWORD})
+       SET(C_INLINE TRUE)
+       ADD_DEFINITIONS("-Dinline=${KEYWORD}")
+     ENDIF(C_HAS_${KEYWORD})
+   ENDIF(NOT DEFINED C_INLINE)
+ENDFOREACH(KEYWORD)
+IF(NOT DEFINED C_INLINE)
+   ADD_DEFINITIONS("-Dinline=")
+ENDIF(NOT DEFINED C_INLINE)
+
 CONFIGURE_FILE(config.h.cmake config.h)
+CONFIGURE_FILE(LIB_VERSION.cmake LIB_VERSION)
 
 SET(libmarpa_src
     marpa_ami.h marpa_codes.c marpa.c marpa_tavl.c marpa.h marpa_slif.h marpa_tavl.h
     marpa_ami.c marpa_obs.c marpa_slif.c marpa_avl.c marpa_avl.h marpa_obs.h)
 
-# LIB_VERSION ?
-
 # Add PIC later
 
+INCLUDE_DIRECTORIES("${CMAKE_BINARY_DIR}")
 ADD_LIBRARY(libmarpa STATIC ${libmarpa_src})
 
 # vim: expandtab shiftwidth=4:
