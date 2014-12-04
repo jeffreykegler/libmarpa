@@ -68,7 +68,6 @@ cm_dist/README: work/ac/README
 cm_dist/LIB_VERSION.cmake: cmake/LIB_VERSION.cmake
 cm_dist/CMakeLists.txt: cmake/CMakeLists.txt
 cm_dist/config.h.cmake: cmake/config.h.cmake
-cm_dist/test_inline.c: cmake/test_inline.c
 cm_dist/modules/FindInline.cmake: cmake/modules/FindInline.cmake
 cm_dist/modules/FindNullIsZeroes.cmake: cmake/modules/FindNullIsZeroes.cmake
 cm_dist/modules/inline.c: cmake/modules/inline.c

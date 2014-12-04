@@ -7,7 +7,7 @@ FOREACH(KEYWORD "inline" "__inline__" "inline__" "__inline")
    IF(NOT DEFINED C_INLINE)
      MESSAGE("-- Looking for ${KEYWORD}")
      TRY_COMPILE(C_HAS_${KEYWORD} ${CMAKE_CURRENT_BINARY_DIR}
-       ${CMAKE_CURRENT_SOURCE_DIR}/cmake/inline.c
+       ${CMAKE_CURRENT_SOURCE_DIR}/modules/inline.c
        COMPILE_DEFINITIONS "-DC_INLINE=${KEYWORD}")
      IF(C_HAS_${KEYWORD})
        MESSAGE("-- Looking for ${KEYWORD} - found")
