@@ -51,8 +51,16 @@ SET(libmarpa_src
     marpa_ami.c marpa_obs.c marpa_slif.c marpa_avl.c marpa_avl.h marpa_obs.h)
 
 # Add PIC later
+# Required on Unix OS family to be able to be linked into shared libraries.
+# set_target_properties(${PROJECT_NAME}
+#                      PROPERTIES POSITION_INDEPENDENT_CODE ON)
+
+# Expose B's public includes (including Boost transitively) to other
+# subprojects through cache variable.
+set(${PROJECT_NAME}_INCLUDE_DIRS ${PROJECT_SOURCE_DIR}/include
+    CACHE INTERNAL "${PROJECT_NAME}: Include Directories" FORCE)
 
 INCLUDE_DIRECTORIES("${CMAKE_BINARY_DIR}")
-ADD_LIBRARY(libmarpa STATIC ${libmarpa_src})
+ADD_LIBRARY(marpa STATIC ${libmarpa_src})
 
 # vim: expandtab shiftwidth=4:

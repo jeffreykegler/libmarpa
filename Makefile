@@ -15,12 +15,12 @@
 
 version=`cat LIB_VERSION`
 
-.PHONY: dummy dist
+.PHONY: dummy dist doc_dist doc1_dist cm_dist
 
 dummy:
 	@echo The target to make the distributions is '"dists"'
 
-dists: dist doc_dist doc1_dist
+dists: dist doc_dist doc1_dist cm_dist
 
 work_install:
 	(cd work; make install)
@@ -42,6 +42,10 @@ doc_dist: doc_tar
 
 doc1_dist: doc1_tar
 	sh etc/work_to_doc1_dist.sh
+
+cm_dist:
+	perl cmake/to_dist.pl
+	(cd build && cmake ../cm_dist )
 
 distcheck:
 	perl etc/license_check.pl  --verbose=0 `find dist doc_dist doc1_dist -type f`
