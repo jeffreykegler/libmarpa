@@ -1,6 +1,6 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 3.0.2)
 
-PROJECT(LIBMARPA C)
+PROJECT(libmarpa C)
 
 # ------------------
 # Module search path
@@ -60,7 +60,7 @@ SET(libmarpa_src
 set(${PROJECT_NAME}_INCLUDE_DIRS ${PROJECT_SOURCE_DIR}/include
     CACHE INTERNAL "${PROJECT_NAME}: Include Directories" FORCE)
 
-INCLUDE_DIRECTORIES("${CMAKE_BINARY_DIR}")
+include_directories("${PROJECT_BINARY_DIR}")
 ADD_LIBRARY(marpa STATIC ${libmarpa_src})
 
 # vim: expandtab shiftwidth=4:

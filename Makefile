@@ -45,7 +45,6 @@ doc1_dist: doc1_tar
 
 cm_dist:
 	perl cmake/to_dist.pl
-	(cd build && cmake ../cm_dist )
 
 distcheck:
 	perl etc/license_check.pl  --verbose=0 `find dist doc_dist doc1_dist -type f`

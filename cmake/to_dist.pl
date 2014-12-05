@@ -51,7 +51,7 @@ FILE: while ( my $copy = <DATA> ) {
 
 __DATA__
 cm_dist/marpa.c: work/dev/marpa.c
-cm_dist/marpa.h: work/public/marpa.h
+cm_dist/include/marpa.h: work/public/marpa.h
 cm_dist/marpa_slif.h: work/public/marpa_slif.h
 cm_dist/marpa_obs.c: work/obs/marpa_obs.c
 cm_dist/marpa_obs.h: work/obs/marpa_obs.h
