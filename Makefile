@@ -47,7 +47,7 @@ cm_dist:
 	perl cmake/to_dist.pl
 
 distcheck:
-	perl etc/license_check.pl  --verbose=0 `find dist doc_dist doc1_dist -type f`
+	perl etc/license_check.pl  --verbose=0 `find cm_dist dist doc_dist doc1_dist -type f`
 
 tar_clean:
 	rm work/doc/*.tar.gz

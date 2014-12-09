@@ -20,11 +20,12 @@ use warnings;
 use English qw( -no_match_vars );
 use Fatal qw(open close);
 
-if (scalar @ARGV != 1) {
-    die("usage: $PROGRAM_NAME error_codes.c > marpa.h-err");
+if (scalar @ARGV != 2) {
+    die("usage: $PROGRAM_NAME error_codes.c error_codes.table > marpa.h-err");
 }
 
 open my $codes_c, '>', $ARGV[0];
+open my $codes_table, '>', $ARGV[1];
 
 # In addition to be taken from the texinfo, document
 # error codes are checked against this list.
@@ -209,11 +210,23 @@ for ( my $error_number = 0; $error_number < $error_count; $error_number++ ) {
         . $error_number;
 }
 
+say {$codes_table} <<'=== TABLE PREAMBLE ===';
+# Format is: number mnemonic message
+# That is each newline-terminated line contains, in order:
+#    number, which must be an integer; followed by
+#    a single space;  followed by
+#    a mnemonic, which is anything not containing whitespace; followed by
+#    a single space;  followed by
+#    a message, which is anything not containing a newline
+#
+=== TABLE PREAMBLE ===
+
 say {$codes_c} 'const struct marpa_error_description_s marpa_error_description[] = {';
 for ( my $error_number = 0; $error_number < $error_count; $error_number++ ) {
     my $error_name = $errors[$error_number];
     my $suggested_description = $error_suggested_messages[$error_number]
         // $error_name;
+    say {$codes_table} join q{ }, $error_number, $error_name, $suggested_description;
     say {$codes_c}
         qq[  { $error_number, "$error_name", "$suggested_description" },];
 } ## end for ( my $error_number = 0; $error_number < $error_count...)

@@ -27,7 +27,8 @@ MARPA_H_PIECES = $(C_LANGUAGE_PREAMBLE) \
   marpa.h-event marpa.h-step \
   marpa.h.p50 marpa.h.p80 marpa.h.p90
 
-all: marpa_slif.h marpa.h marpa_codes.c
+all: marpa_slif.h marpa.h marpa_codes.c \
+    error_codes.table events.table steps.table
 
 marpa.h.p50: ../dev/marpa.h.p50
 	cp $? $@
@@ -66,20 +67,29 @@ marpa_codes.c: $(MARPA_CODES_C_PIECES)
 		done) > $@
 
 API_TEXI_FILES = ../dev/api.texi ../slif/api.texi
-marpa.c-err marpa.h-err: $(API_TEXI_FILES)
+error_codes.table marpa.c-err marpa.h-err: $(API_TEXI_FILES)
 	cat $(API_TEXI_FILES) | \
-	  perl texi2err.pl marpa.c-err | \
+	  perl texi2err.pl marpa.c-err error_codes.table.p50 | \
 	  $(CPPWRAP) marpa.h-err > marpa.h-err
+	cat ../shared/license.hash \
+	  ../shared/do_not_edit.hash \
+	  error_codes.table.p50 > error_codes.table
 
-marpa.c-event marpa.h-event: ../dev/api.texi
+events.table marpa.c-event marpa.h-event: ../dev/api.texi
 	cat $(API_TEXI_FILES) | \
-	  perl texi2event.pl marpa.c-event | \
+	  perl texi2event.pl marpa.c-event events.table.p50 | \
 	  $(CPPWRAP) marpa.h-event > marpa.h-event
+	cat ../shared/license.hash \
+	  ../shared/do_not_edit.hash \
+	  events.table.p50 > events.table
 
-marpa.c-step marpa.h-step: ../dev/api.texi
+steps.table marpa.c-step marpa.h-step: ../dev/api.texi
 	cat $(API_TEXI_FILES) | \
-	  perl texi2step.pl marpa.c-step | \
+	  perl texi2step.pl marpa.c-step steps.table.p50 |\
 	  $(CPPWRAP) marpa.h-step > marpa.h-step
+	cat ../shared/license.hash \
+	  ../shared/do_not_edit.hash \
+	  steps.table.p50 > steps.table
 
 CLEAN_FILES = marpa.c-err marpa.c-event marpa.c-step \
   marpa.h marpa.h-err marpa.h-event marpa.h-step marpa.h.p50 marpa.h.p80 \

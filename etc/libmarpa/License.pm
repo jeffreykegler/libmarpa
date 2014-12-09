@@ -147,7 +147,8 @@ my %GNU_file = (
     (   'work/stage/' . $_, 1,
         'work/test/dev/' . $_,   1,
         'dist/' . $_,   1,
-        'doc_dist/' . $_,   1
+        'doc_dist/' . $_,   1,
+        'doc1_dist/' . $_,   1
         )
     } qw(
         aclocal.m4
@@ -255,6 +256,7 @@ sub check_tag {
 
 my %files_by_type = (
     'COPYING.LESSER' => \&ignored,    # GNU license text, leave it alone
+    'cm_dist/COPYING.LESSER' => \&ignored,    # GNU license text, leave it alone
     'LICENSE' => \&license_problems_in_license_file,
     'META.json' =>
         \&ignored,    # not source, and not clear how to add license at top
@@ -274,6 +276,10 @@ my %files_by_type = (
     'libmarpa/dev/README'                      => \&trivial,
     'dist/LIB_VERSION'                => \&trivial,
     'dist/LIB_VERSION.in'             => \&trivial,
+    'cm_dist/LIB_VERSION.cmake'             => \&trivial,
+    'cm_dist/README'             => \&trivial,
+    'cm_dist/modules/inline.c'             => \&trivial,
+    'cm_dist/config.h.cmake'             => \&trivial,
     'libmarpa/public/LIB_VERSION.in'           => \&trivial,
     'libmarpa/bin/too_long.pl'                 => \&trivial,
     'libmarpa/shared/copyright_page_license.w' => \&copyright_page,
@@ -292,12 +298,19 @@ my %files_by_type = (
     'doc_dist/lgpl-3.0.texi'  => \&ignored,
     'doc_dist/version.texi'   => \&trivial,
     'doc_dist/version_i.texi' => \&trivial,
+    'doc1_dist/fdl-1.3.texi' =>
+        \&ignored,    ## GNU license text, leave it alone
+    'doc1_dist/lgpl-3.0.texi'  => \&ignored,
+    'doc1_dist/version.texi'   => \&trivial,
+    'doc1_dist/version_i.texi' => \&trivial,
     'etc/my_suppressions'              => \&trivial,
     'libmarpa/tavl/README' => \&trivial,
 
     # Leave Pfaff's licensing as is
     'dist/marpa_tavl.c' => \&ignored,
     'dist/marpa_tavl.h' => \&ignored,
+    'cm_dist/marpa_tavl.c' => \&ignored,
+    'cm_dist/marpa_tavl.h' => \&ignored,
     'libmarpa/tavl/marpa_tavl.c' => \&ignored,
     'libmarpa/tavl/marpa_tavl.h' => \&ignored,
     'libmarpa/tavl/README.Pfaff' => \&ignored,

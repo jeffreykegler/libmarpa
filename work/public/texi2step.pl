@@ -20,11 +20,12 @@ use warnings;
 use English qw( -no_match_vars );
 use Fatal qw(open close);
 
-if (scalar @ARGV != 1) {
-    die("usage: $PROGRAM_NAME step_codes.c > marpa.h-step");
+if (scalar @ARGV != 2) {
+    die("usage: $PROGRAM_NAME step_codes.c steps.table > marpa.h-step");
 }
 
 open my $codes_c, '>', $ARGV[0];
+open my $codes_table, '>', $ARGV[1];
 
 my @step_type_codes = qw(
 MARPA_STEP_INTERNAL1
@@ -65,6 +66,16 @@ for ( my $step_type_number = 0; $step_type_number < $step_type_count; $step_type
         . $step_type_number;
 }
 
+say {$codes_table} <<'=== TABLE PREAMBLE ===';
+# Format is: number name
+# That is each newline-terminated line contains, in order:
+#    number, which must be an integer; followed by
+#    a single space;  followed by
+#    a mnemonic, which is anything not containing whitespace; followed by
+#    a newline
+#
+=== TABLE PREAMBLE ===
+
 say {$codes_c}
     'const struct marpa_step_type_description_s marpa_step_type_description[] = {';
 for (
@@ -74,6 +85,7 @@ for (
     )
 {
     my $step_type_name = $step_types[$step_type_number];
+    say {$codes_table} join q{ }, $step_type_number, "$step_type_name";
     say {$codes_c} qq[  { $step_type_number, "$step_type_name" },];
 } ## end for ( my $step_type_number = 0; $step_type_number...)
 say {$codes_c} '};';

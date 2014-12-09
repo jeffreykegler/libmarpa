@@ -20,11 +20,12 @@ use warnings;
 use English qw( -no_match_vars );
 use Fatal qw(open close);
 
-if (scalar @ARGV != 1) {
-    die("usage: $PROGRAM_NAME marpa.c-event > marpa.h-event");
+if (scalar @ARGV != 2) {
+    die("usage: $PROGRAM_NAME marpa.c-event events.table > marpa.h-event");
 }
 
 open my $codes_c, '>', $ARGV[0];
+open my $codes_table, '>', $ARGV[1];
 
 my @event_codes = qw(
 MARPA_EVENT_NONE
@@ -83,6 +84,17 @@ for ( my $event_number = 0; $event_number < $event_count; $event_number++ ) {
         . $event_number;
 }
 
+say {$codes_table} <<'=== TABLE PREAMBLE ===';
+# Format is: number mnemonic message
+# That is each newline-terminated line contains, in order:
+#    number, which must be an integer; followed by
+#    a single space;  followed by
+#    a mnemonic, which is anything not containing whitespace; followed by
+#    a single space;  followed by
+#    a message, which is anything not containing a newline
+#
+=== TABLE PREAMBLE ===
+
 say {$codes_c}
     'const struct marpa_event_description_s marpa_event_description[] = {';
 for ( my $event_number = 0; $event_number < $event_count; $event_number++ ) {
@@ -91,6 +103,8 @@ for ( my $event_number = 0; $event_number < $event_count; $event_number++ ) {
     my $event_name = $events[$event_number];
     say {$codes_c}
         qq[  { $event_number, "$event_name", "$suggested_description" },];
+    say {$codes_table}
+        join q{ }, $event_number, "$event_name", "$suggested_description";
 } ## end for ( my $event_number = 0; $event_number < $event_count...)
 say {$codes_c} '};';
 
