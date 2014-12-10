@@ -49,6 +49,29 @@ for my $configure_ac_file (
 } ## end for my $configure_ac_file ( qw( cpan/libmarpa/ac/configure.ac...))
 
 {
+    my $filename = "cmake/CMakeLists.txt";
+    say STDERR $filename;
+    my $file = do { local ( @ARGV, $/ ) = ($filename); <> };
+    $file =~ s{
+      ( SET [(] MARPA_LIB_MAJOR_VERSION \s* )
+      \d+
+      ( [)] )
+  }{$1${libmarpa_major}$2}xms;
+    $file =~ s{
+      ( SET [(] MARPA_LIB_MINOR_VERSION \s* )
+      \d+
+      ( [)] )
+  }{$1${libmarpa_minor}$2}xms;
+    $file =~ s{
+      ( SET [(] MARPA_LIB_PATCH_VERSION \s* )
+      \d+
+      ( [)] )
+  }{$1${libmarpa_micro}$2}xms;
+    open my $out, '>', $filename;
+    print $out $file;
+}
+
+{
     open my $out, '>', 'work/public/marpa.h-version';
     say $out join " ", q{#define MARPA_MAJOR_VERSION}, $libmarpa_major;
     say $out join " ", q{#define MARPA_MINOR_VERSION}, $libmarpa_minor;

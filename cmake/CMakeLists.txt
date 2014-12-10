@@ -27,9 +27,12 @@ if("${PROJECT_SOURCE_DIR}" STREQUAL "${PROJECT_BINARY_DIR}")
    message(SEND_ERROR "In-source builds are not allowed.")
    endif("${PROJECT_SOURCE_DIR}" STREQUAL "${PROJECT_BINARY_DIR}")
 
+# Version bumping utility relies on the exact
+# format of those next 3 lines
 SET(MARPA_LIB_MAJOR_VERSION 7)
-SET(MARPA_LIB_MINOR_VERSION 3)
+SET(MARPA_LIB_MINOR_VERSION 4)
 SET(MARPA_LIB_PATCH_VERSION 0)
+
 SET(MARPA_LIB_VERSION
     ${MARPA_LIB_MAJOR_VERSION}.${MARPA_LIB_MINOR_VERSION}.${MARPA_LIB_PATCH_VERSION})
 
@@ -62,8 +65,8 @@ CONFIGURE_FILE(config.h.cmake config.h)
 CONFIGURE_FILE(LIB_VERSION.cmake LIB_VERSION)
 
 SET(libmarpa_src
-    marpa_ami.h marpa_codes.c marpa.c marpa_tavl.c marpa.h marpa_slif.h marpa_tavl.h
-    marpa_ami.c marpa_obs.c marpa_slif.c marpa_avl.c marpa_avl.h marpa_obs.h)
+    marpa.c marpa_tavl.c
+    marpa_ami.c marpa_obs.c marpa_avl.c )
 
 # Add PIC later
 # Required on Unix OS family to be able to be linked into shared libraries.
@@ -75,7 +78,9 @@ SET(libmarpa_src
 set(${PROJECT_NAME}_INCLUDE_DIRS ${PROJECT_SOURCE_DIR}/include
     CACHE INTERNAL "${PROJECT_NAME}: Include Directories" FORCE)
 
-include_directories("${PROJECT_BINARY_DIR}")
+include_directories(
+    "${PROJECT_BINARY_DIR}" \  # for config.h
+    "${PROJECT_SOURCE_DIR}" "${PROJECT_SOURCE_DIR}/include")
 ADD_LIBRARY(marpa STATIC ${libmarpa_src})
 
 # vim: expandtab shiftwidth=4:
