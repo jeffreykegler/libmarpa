@@ -204,61 +204,6 @@ consistent with their
 documentation.
 
 @** Design.
-@*0 Layers.
-|libmarpa|,
-the library described in this document,
-is intended as the bottom of potentially
-four layers.
-The layers are, from low to high
-\li |libmarpa|
-\li The ``friend'' layer
-\li The wrapper layer
-\li The application
-
-This ``friend'' layer will be in C and will provide supplemental libraries,
-or call the |libmarpa| routines
-in a way that makes them compatible with another language.
-I expect this will usually be a 4GL (4th generation language),
-such as Perl.
-
-The friend layer is totally independent of any higher level
-languages used in the application layer.
-In order for an application layer in another language to use
-the friend layer, a wrapper layer that knows about the requirements of the
-application layer's language may be needed to ``glue'' them
-together.
-An example of a wrapper layer
-(as of this writing the only one)
-is the Perl XS layer, which is C code that provides
-an interface between the ``friend'' layer and Perl.
-
-The top layer is the application.
-As of this writing,
-|libmarpa|'s only application layer is
-in Perl.
-
-|libmarpa| itself is not enormously user-
-or application-friendly.
-For example, in |libmarpa|, symbols do not have
-names, just symbol structures and symbol ID's.
-These are all that is needed for the data crunching,
-but an application writer will usually want a friendlier
-interface, including names for the symbols and
-many other conveniences.
-For this reason, applications will typically
-use |libmarpa| through a {\bf wrapper package}.
-Currently the only such package is in Perl.
-
-Not all these layers need be present.
-For example, it is conceivable that someone might
-write their application in C, in which case they could
-manage without minimal or no
-glue layers or package layers.
-
-Iterfaces between layers are named after the lower
-of the two layers.  For example the interface between
-|libmarpa| and the glue layer is the |libmarpa| interface.
-
 @*1 Object pointers.
 The major objects of the |libmarpa| layer are passed
 to upper layers as pointer,
@@ -489,8 +434,9 @@ can not be found in a general dictionary or
 in the standard reference works.
 Non-standard vocabulary may be ommitted if
 it is explained in detail where it occurs.
-@ While development is underway, this section will be
-incomplete and sometimes inaccurate.
+@ As of this writing,
+this section is
+very incomplete and possibly obsolete.
 @
 \li alloc: Allocate.
 \li assign: Find something, creating it when necessary.
@@ -13301,8 +13247,7 @@ vector;
 the transitive closure is for a relation and takes a transition {\bf matrix}
 to another transition matrix.
 @ There are two properties of the RHS closure to note.
-First, it is reflexive.
-Any symbol in a set is in the RHS closure of that set.
+First, any symbol in a set is in the RHS closure of that set.
 @ Second, the RHS closure is vacuously true.
 For any RHS closure property,
 every symbol which is on the LHS of an empty rule has that property.
@@ -13354,24 +13299,26 @@ rhs_closure (GRAMMAR g, Bit_Vector bv, XRLID ** xrl_list_x_rh_sym)
             goto NEXT_RULE;
           rule_length = Length_of_XRL (rule);
 
-          /* This works for the present allowed sequence rules --
-             These currently always allow rules of length 1,
-             which do not necessarily have a separator, so
-             that they may be treated like BNF rules of length 1.
-           */
           for (rh_ix = 0; rh_ix < rule_length; rh_ix++)
             {
+              @t}\comment{@>
+              /* This works for the present allowed sequence rules --
+                 These currently always allow rules of length 1,
+                 which do not necessarily have a separator, so
+                 that they may be treated like BNF rules of length 1.
+               */
               if (!bv_bit_test
                   (bv, RHS_ID_of_XRL (rule, rh_ix)))
                 goto NEXT_RULE;
             }
 
-          /* This code is untested, as of this writing.
-             When rules of minimum size greater than 1 are allowed,
-             the separator will need to be considered.
-           */
           if (is_sequence && Minimum_of_XRL (rule) >= 2)
             {
+              @t}\comment{@>
+              /* This code is untested, as of this writing.
+                 When rules of minimum size greater than 1 are allowed,
+                 the separator will need to be considered.
+               */
               XSYID separator_id = Separator_of_XRL (rule);
               if (separator_id >= 0)
                 {
@@ -13380,8 +13327,9 @@ rhs_closure (GRAMMAR g, Bit_Vector bv, XRLID ** xrl_list_x_rh_sym)
                 }
             }
 
+          @t}\comment{@>
           /* If I am here, the bits for the RHS symbols are all
-           * set, but the one for the LHS symbol is not.
+            set, but the one for the LHS symbol is not.
            */
           bv_bit_set (bv, lhs_id);
           *(FSTACK_PUSH (stack)) = lhs_id;
