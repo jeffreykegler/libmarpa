@@ -13262,15 +13262,28 @@ and the property of being nullable.
 @*0 Produce the RHS closure of a vector.
 This routine takes a symbol vector and a grammar,
 and turns the original vector into the RHS closure of that vector.
-The orignal vector is destroyed.
+The original vector is destroyed.
 @<Function definitions@> =
 PRIVATE void
 rhs_closure (GRAMMAR g, Bit_Vector bv, XRLID ** xrl_list_x_rh_sym)
 {
   int min, max, start = 0;
   Marpa_Symbol_ID *end_of_stack = NULL;
+
+  @t}\comment{@>
+  /* Create a work stack. */
   FSTACK_DECLARE (stack, XSYID) @;
   FSTACK_INIT (stack, XSYID, XSY_Count_of_G (g));
+
+  @t}\comment{@>
+  /* |bv| is initialized to a set of symbols known to have
+     the closure property.
+     For example, for nullables, it is initialized to
+     symbols on the LHS of an empty rule.
+
+     We initialize the work stack with the set of symbols
+     we know to have the closure property.
+     */
   while (bv_scan (bv, start, &min, &max))
     {
       XSYID xsy_id;
@@ -13280,13 +13293,21 @@ rhs_closure (GRAMMAR g, Bit_Vector bv, XRLID ** xrl_list_x_rh_sym)
         }
       start = max + 2;
     }
+
+  
+  @t}\comment{@>
   while ((end_of_stack = FSTACK_POP (stack)))
     {
+      /* For as long as there is a symbol on the work stack.
+       |xsy_id| is the symbol we're working on. */
       const XSYID xsy_id = *end_of_stack;
       XRLID *p_xrl = xrl_list_x_rh_sym[xsy_id];
       const XRLID *p_one_past_rules = xrl_list_x_rh_sym[xsy_id + 1];
+
       for (; p_xrl < p_one_past_rules; p_xrl++)
         {
+          /* For every rule with |xsy_id| on its RHS.
+           |rule| is the rule we are currently working on. */
           const XRLID rule_id = *p_xrl;
           const XRL rule = XRL_by_ID (rule_id);
           int rule_length;
@@ -13295,30 +13316,44 @@ rhs_closure (GRAMMAR g, Bit_Vector bv, XRLID ** xrl_list_x_rh_sym)
 
           const int is_sequence = XRL_is_Sequence (rule);
 
+          /* If the LHS is already marked as having the closure property,
+          skip ahead to the next rule.
+          */
           if (bv_bit_test (bv, lhs_id))
             goto NEXT_RULE;
+
           rule_length = Length_of_XRL (rule);
 
-          for (rh_ix = 0; rh_ix < rule_length; rh_ix++)
-            {
-              @t}\comment{@>
-              /* This works for the present allowed sequence rules --
+          @t}\comment{@>
+              /* If any symbol on the RHS of |rule|
+              does not have the closure property,
+              we will be be justified in saying that it's
+              LHS has the closure property --
+              skip to the next rule.
+
+              This works for the present allowed sequence rules --
                  These currently always allow rules of length 1,
                  which do not necessarily have a separator, so
                  that they may be treated like BNF rules of length 1.
                */
+          for (rh_ix = 0; rh_ix < rule_length; rh_ix++)
+            {
               if (!bv_bit_test
                   (bv, RHS_ID_of_XRL (rule, rh_ix)))
                 goto NEXT_RULE;
             }
 
+          @t}\comment{@>
+              /* If this is a sequence rule with a minimum greater
+              than two, we must also check if the separator has
+              the closure property.
+
+                 As of this writing,
+                 rules of minimum size greater than 1 are not allowed,
+              so that this code is untested.
+               */
           if (is_sequence && Minimum_of_XRL (rule) >= 2)
             {
-              @t}\comment{@>
-              /* This code is untested, as of this writing.
-                 When rules of minimum size greater than 1 are allowed,
-                 the separator will need to be considered.
-               */
               XSYID separator_id = Separator_of_XRL (rule);
               if (separator_id >= 0)
                 {
@@ -13328,8 +13363,10 @@ rhs_closure (GRAMMAR g, Bit_Vector bv, XRLID ** xrl_list_x_rh_sym)
             }
 
           @t}\comment{@>
-          /* If I am here, the bits for the RHS symbols are all
-            set, but the one for the LHS symbol is not.
+          /* If I am here, we know that the 
+            the LHS symbol has the closure property,
+            but is not marked as such.
+            Mark it, and push it on the work stack.
            */
           bv_bit_set (bv, lhs_id);
           *(FSTACK_PUSH (stack)) = lhs_id;
