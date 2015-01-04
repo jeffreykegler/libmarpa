@@ -3381,7 +3381,7 @@ Libmarpa does not know that the operation
 is an addition.
 It will tell the application that rule number @var{R}
 is to be applied to the arguments at stack locations
-@var{N} and @var{N}+1, and that the result is to placed in
+@var{N} and @var{N}+1, and that the result is to be placed in
 stack location @var{N}.
 
 In this system
