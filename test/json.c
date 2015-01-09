@@ -429,7 +429,7 @@ main (int argc, char *argv[])
 	  for (i = 0; i < count_of_expected; i++)
 	    {
 	      fprintf (stderr, "expecting symbol %ld, %s\n",
-		       (long) i, symbol_name (i));
+		       (long) i, symbol_name (expected[i]));
 	    }
 	  marpa_g_error (g, &error_string);
 	  fprintf (stderr,
