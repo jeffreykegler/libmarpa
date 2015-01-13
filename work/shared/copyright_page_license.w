@@ -1,4 +1,4 @@
-Copyright \copyright\ 2014 Jeffrey Kegler
+Copyright \copyright\ 2015 Jeffrey Kegler
 \bigskip\noindent
 This file is part of Libmarpa.  Libmarpa is free software: you can
 redistribute it and/or modify it under the terms of the GNU Lesser
