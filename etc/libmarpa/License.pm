@@ -269,7 +269,6 @@ my %files_by_type = (
     'etc/reserved_check.sh'             => \&trivial,
     'libmarpa/shared/do_not_edit.c'            => \&trivial,
     'libmarpa/public/marpa_codes.c.p10'        => \&trivial,
-    'libmarpa/public/marpa_slif.h.p20'         => \&trivial,
     'libmarpa/public/marpa.h.p10'              => \&trivial,
     'libmarpa/public/marpa.h-version'          => \&trivial,
     'libmarpa/public/marpa.h.p90'              => \&trivial,
