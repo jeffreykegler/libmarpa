@@ -533,6 +533,7 @@ and they will be meaningless.
 @(marpa_ami.c.p10@> =
 
 #include <stdarg.h>
+#include <stdlib.h>
 #include <stdio.h>
 
 @ @(marpa_ami.c.p10@> =
