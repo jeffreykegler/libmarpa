@@ -49,7 +49,7 @@ stage_copy:
 
 install: sources stage/stamp-h1 doc/stamp-h1 doc1/stamp-h1
 
-MAKEABLE_DIR = ami dev slif tavl public
+MAKEABLE_DIR = ami dev tavl public
 CLEANABLE_DIR = $(MAKEABLE_DIR)
 
 sources:

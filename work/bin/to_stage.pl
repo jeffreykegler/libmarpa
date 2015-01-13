@@ -61,12 +61,10 @@ stage/win32/do_config_h.pl: win32/do_config_h.pl
 stage/marpa.c: dev/marpa.c
 stage/win32/marpa.def: dev/marpa.def
 stage/marpa.h: public/marpa.h
-stage/marpa_slif.h: public/marpa_slif.h
 stage/marpa_obs.c: obs/marpa_obs.c
 stage/marpa_obs.h: obs/marpa_obs.h
 stage/marpa_ami.c: ami/marpa_ami.c
 stage/marpa_codes.c: public/marpa_codes.c
-stage/marpa_slif.c: slif/marpa_slif.c
 stage/marpa_ami.h: ami/marpa_ami.h
 stage/marpa_avl.c: avl/marpa_avl.c
 stage/marpa_avl.h: avl/marpa_avl.h

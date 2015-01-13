@@ -27,7 +27,7 @@ MARPA_H_PIECES = $(C_LANGUAGE_PREAMBLE) \
   marpa.h-event marpa.h-step \
   marpa.h.p50 marpa.h.p80 marpa.h.p90
 
-all: marpa_slif.h marpa.h marpa_codes.c \
+all: marpa.h marpa_codes.c \
     error_codes.table events.table steps.table
 
 marpa.h.p50: ../dev/marpa.h.p50
@@ -39,17 +39,7 @@ marpa.h.p80: ../dev/marpa.h.p80
 marpa.h: $(MARPA_H_PIECES)
 	cat $(MARPA_H_PIECES) > marpa.h
 
-MARPA_SLIF_H_PIECES = $(C_LANGUAGE_PREAMBLE) marpa_slif.h.p50 marpa_slif.h.p80
-
 CPPWRAP = perl ../bin/cppwrap.pl
-marpa_slif.h.p50: ../slif/marpa_slif.h.p50
-	cp $? $@
-
-marpa_slif.h.p80: ../slif/marpa_slif.h.p80
-	$(CPPWRAP) $@ < $? > $@
-
-marpa_slif.h: $(MARPA_SLIF_H_PIECES)
-	cat $(MARPA_SLIF_H_PIECES) > $@
 
 # The pieces with the code data,
 # not yet wrapped with the pre-processor line directive
@@ -63,7 +53,7 @@ marpa_codes.c: $(MARPA_CODES_C_PIECES)
 		do $(CPPWRAP) $$f < $$f; \
 		done) > $@
 
-API_TEXI_FILES = ../dev/api.texi ../slif/api.texi
+API_TEXI_FILES = ../dev/api.texi
 error_codes.table marpa.c-err marpa.h-err: $(API_TEXI_FILES)
 	cat $(API_TEXI_FILES) | \
 	  perl texi2err.pl marpa.c-err error_codes.table.p50 | \
@@ -90,7 +80,7 @@ steps.table marpa.c-step marpa.h-step: ../dev/api.texi
 
 CLEAN_FILES = marpa.c-err marpa.c-event marpa.c-step \
   marpa.h marpa.h-err marpa.h-event marpa.h-step marpa.h.p50 marpa.h.p80 \
-  marpa_codes.c marpa_slif.h marpa_slif.h.p50
+  marpa_codes.c
 
 clean:
 	rm -f $(CLEAN_FILES)
