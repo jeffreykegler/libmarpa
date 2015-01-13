@@ -1,4 +1,5 @@
 #include "config.h"
 
 #include "marpa.h"
+#include "marpa_codes.h"
 #include "marpa_ami.h"
