@@ -492,8 +492,6 @@ So I add such a comment.
 #ifndef _MARPA_AMI_H__
 #define _MARPA_AMI_H__ 1
 
-#include <stdlib.h>
-
 #if defined(__GNUC__) && (__GNUC__ >  2) && defined(__OPTIMIZE__)
 #define _MARPA_LIKELY(expr) (__builtin_expect ((expr), 1))
 #define _MARPA_UNLIKELY(expr) (__builtin_expect ((expr), 0))
