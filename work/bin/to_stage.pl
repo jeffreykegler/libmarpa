@@ -65,6 +65,7 @@ stage/marpa_obs.c: obs/marpa_obs.c
 stage/marpa_obs.h: obs/marpa_obs.h
 stage/marpa_ami.c: ami/marpa_ami.c
 stage/marpa_codes.c: public/marpa_codes.c
+stage/marpa_codes.h: public/marpa_codes.h
 stage/marpa_ami.h: ami/marpa_ami.h
 stage/marpa_avl.c: avl/marpa_avl.c
 stage/marpa_avl.h: avl/marpa_avl.h
