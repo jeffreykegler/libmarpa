@@ -1313,7 +1313,7 @@ Always succeeds.
 @node Grammar overview, Grammar constructor, Grammar methods, Grammar methods
 @section Overview
 
-An archtypal application has a grammar.
+An archetypal application has a grammar.
 To create a grammar, use the @code{marpa_g_new()} method.
 When a grammar is no longer in use, its memory can be freed
 using the 
@@ -2246,7 +2246,7 @@ On failure, @minus{}2.
 @node Recognizer overview, Recognizer constructor, Recognizer methods, Recognizer methods
 @section Overview
 
-An archtypal application uses a recognizer to read input.
+An archetypal application uses a recognizer to read input.
 To create a recognizer, use the @code{marpa_r_new()} method.
 When a recognizer is no longer in use, its memory can be freed
 using the 
@@ -4712,9 +4712,9 @@ a way that requires it to be
 set up for completion events,
 but the symbol was not set
 set up for completion events.
-The archtypal case is an attempt to activate completion
+The archetypal case is an attempt to activate completion
 events for the symbol in the recognizer.
-The archtypal case is an attempt to activate a completion
+The archetypal case is an attempt to activate a completion
 event in the recognizer for
 a symbol that is not set up as a completion event.
 Numeric value: 92.
@@ -4727,7 +4727,7 @@ a way that requires it to be
 set up for nulled events,
 but the symbol was not set
 set up for nulled events.
-The archtypal case is an attempt to activate a nulled
+The archetypal case is an attempt to activate a nulled
 events in the recognizer for
 a symbol that is not set up as a nulled event.
 Numeric value: 93.
@@ -4740,7 +4740,7 @@ a way that requires it to be
 set up for predictino events,
 but the symbol was not set
 set up for predictino events.
-The archtypal case is an attempt to activate a prediction
+The archetypal case is an attempt to activate a prediction
 event in the recognizer for
 a symbol that is not set up as a prediction event.
 Numeric value: 94.
