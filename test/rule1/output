@@ -1,0 +1,7 @@
+marpa_g_rule_new returned 1
+
+marpa_g_precompute returned 0
+marpa_g_is_precomputed returned 1
+
+marpa_g_rule_lhs returned -1
+marpa_g_rule_lhs: Error 89
