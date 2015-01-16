@@ -43,7 +43,7 @@ doc_dist: doc_tar
 doc1_dist: doc1_tar
 	sh etc/work_to_doc1_dist.sh
 
-cm_dist:
+cm_dist: tar
 	perl cmake/to_dist.pl
 
 distcheck:
