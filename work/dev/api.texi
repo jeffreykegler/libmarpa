@@ -2013,7 +2013,7 @@ On failure, @minus{}2.
 
 Return value:
 If rule @var{rule_id} is a sequence rule, its separator.
-If rule @var{rule_id} is a sequence rule,, but there is no
+If rule @var{rule_id} is a sequence rule, but there is no
 separator, @minus{}1.
 If @var{rule_id} is
 not a sequence rule,
