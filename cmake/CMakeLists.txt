@@ -20,7 +20,7 @@ PROJECT(libmarpa C)
 # ------------------
 # Module search path
 # ------------------
-SET (CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/modules")
+SET (CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${PROJECT_SOURCE_DIR}/modules")
 ENABLE_TESTING()
 
 if("${PROJECT_SOURCE_DIR}" STREQUAL "${PROJECT_BINARY_DIR}")
@@ -77,6 +77,9 @@ SET(libmarpa_src
 # subprojects through cache variable.
 set(${PROJECT_NAME}_INCLUDE_DIRS ${PROJECT_SOURCE_DIR}/include
     CACHE INTERNAL "${PROJECT_NAME}: Include Directories" FORCE)
+
+set(${PROJECT_NAME}_ERROR_CODES ${PROJECT_SOURCE_DIR}/error_codes.table
+    CACHE INTERNAL "${PROJECT_NAME}: Error codes table" FORCE)
 
 include_directories(
     "${PROJECT_BINARY_DIR}" \  # for config.h
