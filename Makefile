@@ -56,3 +56,8 @@ tar_clean:
 
 tag:
 	git tag -a v$(version) -m "Version $(version)"
+
+cm_build: cm_dist
+	rm -rf cm_build
+	mkdir cm_build
+	cd cm_build && cmake ../cm_dist && make VERBOSE=1

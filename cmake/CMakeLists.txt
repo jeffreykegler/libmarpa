@@ -68,10 +68,8 @@ SET(libmarpa_src
     marpa.c marpa_tavl.c
     marpa_ami.c marpa_obs.c marpa_avl.c )
 
-# Add PIC later
-# Required on Unix OS family to be able to be linked into shared libraries.
-# set_target_properties(${PROJECT_NAME}
-#                      PROPERTIES POSITION_INDEPENDENT_CODE ON)
+set_target_properties(${PROJECT_NAME}
+                      PROPERTIES POSITION_INDEPENDENT_CODE ON)
 
 # Expose B's public includes (including Boost transitively) to other
 # subprojects through cache variable.
@@ -84,6 +82,16 @@ set(${PROJECT_NAME}_ERROR_CODES ${PROJECT_SOURCE_DIR}/error_codes.table
 include_directories(
     "${PROJECT_BINARY_DIR}" \  # for config.h
     "${PROJECT_SOURCE_DIR}" "${PROJECT_SOURCE_DIR}/include")
+
+option(SHARED "Build shared library" OFF)
+option(STATIC "Build static library" On)
+
+if (SHARED)
+ADD_LIBRARY(marpa SHARED ${libmarpa_src})
+endif()
+
+if (STATIC)
 ADD_LIBRARY(marpa STATIC ${libmarpa_src})
+endif()
 
 # vim: expandtab shiftwidth=4:
