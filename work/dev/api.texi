@@ -4728,7 +4728,7 @@ set up for nulled events,
 but the symbol was not set
 set up for nulled events.
 The archetypal case is an attempt to activate a nulled
-events in the recognizer for
+event in the recognizer for
 a symbol that is not set up as a nulled event.
 Numeric value: 93.
 Suggested message: "Symbol is not set up for nulled events".
