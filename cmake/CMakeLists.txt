@@ -68,9 +68,6 @@ SET(libmarpa_src
     marpa.c marpa_tavl.c
     marpa_ami.c marpa_obs.c marpa_avl.c )
 
-set_target_properties(${PROJECT_NAME}
-                      PROPERTIES POSITION_INDEPENDENT_CODE ON)
-
 # Expose B's public includes (including Boost transitively) to other
 # subprojects through cache variable.
 set(${PROJECT_NAME}_INCLUDE_DIRS ${PROJECT_SOURCE_DIR}/include
@@ -83,15 +80,18 @@ include_directories(
     "${PROJECT_BINARY_DIR}" \  # for config.h
     "${PROJECT_SOURCE_DIR}" "${PROJECT_SOURCE_DIR}/include")
 
-option(SHARED "Build shared library" OFF)
-option(STATIC "Build static library" On)
-
-if (SHARED)
 ADD_LIBRARY(marpa SHARED ${libmarpa_src})
-endif()
+ADD_LIBRARY(marpa_s STATIC ${libmarpa_src})
 
-if (STATIC)
-ADD_LIBRARY(marpa STATIC ${libmarpa_src})
-endif()
+set_target_properties(marpa_s
+                      PROPERTIES POSITION_INDEPENDENT_CODE ON)
+
+install(TARGETS marpa marpa_s
+    RUNTIME DESTINATION bin
+    LIBRARY DESTINATION lib
+    ARCHIVE DESTINATION lib
+)
+
+install(FILES "${PROJECT_SOURCE_DIR}/include/marpa.h" DESTINATION inc)
 
 # vim: expandtab shiftwidth=4:

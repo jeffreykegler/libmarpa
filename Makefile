@@ -61,3 +61,5 @@ cm_build: cm_dist
 	rm -rf cm_build
 	mkdir cm_build
 	cd cm_build && cmake ../cm_dist && make VERBOSE=1
+	cd cm_build && make DESTDIR=../test install
+
