@@ -39,7 +39,7 @@ main (int argc, char *argv[])
   
   // rule
   rhs[0] = S_rhs;
-  ((R_new = marpa_g_rule_new (g, S_lhs, rhs, 1) >= 0)
+  (((R_new = marpa_g_rule_new (g, S_lhs, rhs, 1)) >= 0)
     || err ("marpa_g_rule_new", g));
   printf ("marpa_g_rule_new returned %d\n\n", R_new);
   
