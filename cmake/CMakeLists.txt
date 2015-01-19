@@ -51,6 +51,10 @@ IF (MSVC)
     ADD_DEFINITIONS(/W3)
 ENDIF (MSVC)
 
+if (CMAKE_BUILD_TYPE MATCHES Debug)
+    add_definitions( -DMARPA_DEBUG=1 )
+ENDIF()
+
 # --------
 # config.h
 # --------

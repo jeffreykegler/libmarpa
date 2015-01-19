@@ -1,4 +1,5 @@
 /dist/
+.gdb_history
 /cm_build/
 /cm_dist/
 /doc_dist/
