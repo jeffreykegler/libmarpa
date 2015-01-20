@@ -1,0 +1,13 @@
+This directory contains code from Russ Allbery's C TAP Harness.
+It carries its own BSD-style licensing, as described in the individual
+files.  From Russ's README:
+
+                            C TAP Harness 3.2
+               (C harness for running TAP-compliant tests)
+                Written by Russ Allbery <eagle@eyrie.org>
+
+  Copyright 2000, 2001, 2004, 2006, 2007, 2008, 2009, 2010, 2011, 2012,
+  2013, 2014 Russ Allbery <eagle@eyrie.org>.  This software is distributed
+  under a BSD-style license.  Please see the LICENSE section below for
+  more information.
+
