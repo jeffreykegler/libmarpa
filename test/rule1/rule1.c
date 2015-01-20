@@ -25,7 +25,7 @@ main (int argc, char *argv[])
 
   int rc;
 
-  plan(1);
+  plan(4);
 
   marpa_c_init (&marpa_configuration);
   g = marpa_g_new (&marpa_configuration);
@@ -52,16 +52,16 @@ main (int argc, char *argv[])
   ((rc >= 0) || err("marpa_g_start_symbol_set", g));
 
   rc = marpa_g_precompute(g);
-  printf ("marpa_g_precompute returned %d\n", rc);
+  ok ((rc == 0), "marpa_g_precompute returned 0");
   ((rc >= 0) || err("marpa_g_sequence_separator", g));
   
   rc = marpa_g_is_precomputed(g);
-  printf ("marpa_g_is_precomputed returned %d\n\n", rc);
+  ok ((rc == 1), "marpa_g_is_precomputed returned 1");
   ((rc >= 0) || err("marpa_g_is_precomputed", g));
 
   // rule accessors
   rc = marpa_g_rule_lhs (g, R_new); 
-  printf ("marpa_g_rule_lhs returned %d\n", rc);
+  ok ((rc == 0), "marpa_g_rule_lhs(%d) returned 0", R_new);
   ((rc >= 0) || err("marpa_g_rule_lhs", g));
   
   return 0;

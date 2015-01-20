@@ -65,3 +65,4 @@ cm_debug: cm_dist
 
 test: cm_debug
 	cd do_test && cmake ../test && make VERBOSE=1
+	cd do_test && ./tap/runtests -l ../test/TESTS
