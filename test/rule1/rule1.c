@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include "marpa.h"
 
+#include "tap/basic.h"
+
 static int
 err (const char *s, Marpa_Grammar g)
 {
@@ -23,6 +25,8 @@ main (int argc, char *argv[])
 
   int rc;
 
+  plan(1);
+
   marpa_c_init (&marpa_configuration);
   g = marpa_g_new (&marpa_configuration);
   if (!g)
@@ -41,7 +45,7 @@ main (int argc, char *argv[])
   rhs[0] = S_rhs;
   (((R_new = marpa_g_rule_new (g, S_lhs, rhs, 1)) >= 0)
     || err ("marpa_g_rule_new", g));
-  printf ("marpa_g_rule_new returned %d\n\n", R_new);
+  ok ((R_new == 0),"marpa_g_rule_new returns 0");
   
   // precompute
   rc = marpa_g_start_symbol_set(g, S_lhs);
