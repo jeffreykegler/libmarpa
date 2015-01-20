@@ -42,8 +42,8 @@
 #include <stdarg.h>
 #include <stdio.h>
 
-#include <tests/tap/basic.h>
-#include <tests/tap/float.h>
+#include <tap/basic.h>
+#include <tap/float.h>
 
 /*
  * Takes an expected double and a seen double and assumes the test passes if

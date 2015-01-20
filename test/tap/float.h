@@ -28,7 +28,7 @@
 #ifndef TAP_FLOAT_H
 #define TAP_FLOAT_H 1
 
-#include <tests/tap/macros.h>
+#include <tap/macros.h>
 
 BEGIN_DECLS
 

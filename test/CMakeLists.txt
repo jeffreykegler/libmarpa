@@ -19,12 +19,15 @@ endif ()
 # set(CMAKE_VERBOSE_MAKEFILE ON)
 # set(CMAKE_COLOR_MAKEFILE   ON)
 
+INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR})
+
 # Remove 'lib' prefix for shared libraries on Windows
 if (WIN32)
   set(CMAKE_SHARED_LIBRARY_PREFIX "")
 endif ()
 
 # NOTE: The order matters! The most independent ones should go first.
+add_subdirectory(tap)
 add_subdirectory(rule1)
 
 # vim: expandtab shiftwidth=4:
