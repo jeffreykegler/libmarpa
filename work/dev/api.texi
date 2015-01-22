@@ -10,7 +10,7 @@
 This manual (@value{UPDATED})
 is for Libmarpa @value{VERSION}.
 
-Copyright @copyright{} 2015 Jeffrey Kegler.
+Copyright @copyright{} 2014 Jeffrey Kegler.
 
 @quotation
 Permission is granted to copy, distribute and/or modify this document
@@ -134,7 +134,6 @@ Recognizer methods
 * Recognizer life cycle mutators::  
 * Location accessors::          
 * Other parse status methods::  
-* Untested recognizer methods::  
 
 Bocage methods
 
@@ -1313,7 +1312,7 @@ Always succeeds.
 @node Grammar overview, Grammar constructor, Grammar methods, Grammar methods
 @section Overview
 
-An archetypal application has a grammar.
+An archtypal application has a grammar.
 To create a grammar, use the @code{marpa_g_new()} method.
 When a grammar is no longer in use, its memory can be freed
 using the 
@@ -2013,7 +2012,7 @@ On failure, @minus{}2.
 
 Return value:
 If rule @var{rule_id} is a sequence rule, its separator.
-If rule @var{rule_id} is a sequence rule, but there is no
+If rule @var{rule_id} is a sequence rule,, but there is no
 separator, @minus{}1.
 If @var{rule_id} is
 not a sequence rule,
@@ -2240,13 +2239,12 @@ On failure, @minus{}2.
 * Recognizer life cycle mutators::  
 * Location accessors::          
 * Other parse status methods::  
-* Untested recognizer methods::  
 @end menu
 
 @node Recognizer overview, Recognizer constructor, Recognizer methods, Recognizer methods
 @section Overview
 
-An archetypal application uses a recognizer to read input.
+An archtypal application uses a recognizer to read input.
 To create a recognizer, use the @code{marpa_r_new()} method.
 When a recognizer is no longer in use, its memory can be freed
 using the 
@@ -2341,7 +2339,6 @@ instead of using Libmarpa's token values.
 
 A @var{value} of 0 is reserved for a now-deprecated feature.
 Do not use it.
-@var{value} may be negative.
 For more details on that feature, see the
 section @ref{Valued and unvalued symbols}.
 
@@ -2630,8 +2627,41 @@ Return value: On success, returns a non-negative integer.
 On failure, returns @minus{}2.
 @end deftypefun
 
-@node Other parse status methods, Untested recognizer methods, Location accessors, Recognizer methods
+@node Other parse status methods,  , Location accessors, Recognizer methods
 @section Other parse status methods
+
+@deftypefun int marpa_r_completion_symbol_activate ( @
+  Marpa_Recognizer @var{r}, @
+  Marpa_Symbol_ID @var{sym_id}, @
+  int @var{reactivate} )
+
+Allows the user to deactivate and reactivate symbol completion
+events in the recognizer.
+If @var{reactivate} is zero, the event is deactivated.
+If @var{reactivate} is one, the event is activated.
+
+Symbol completion events are active by default if
+the symbol was set up for completion events in the
+grammar.
+If a symbol was not set up for completion events in
+the grammar, symbol completion events are inactive
+by default and any attempt to change that is a fatal error.
+
+Success cases:
+On success,
+the method returns the value of @var{reactivate}.
+The method succeeds trivially
+if the symbol is already set as indicated by
+@var{reactivate}.
+
+Failure cases:
+If the active status
+of the
+completion event for @var{sym_id}
+cannot be set as indicated by @var{reactivate},
+the method fails.
+On failure, @minus{}2 is returned.
+@end deftypefun
 
 @deftypefun int marpa_r_earley_item_warning_threshold (Marpa_Recognizer @var{r})
 @deftypefunx int marpa_r_earley_item_warning_threshold_set (Marpa_Recognizer @var{r}, @
@@ -2702,84 +2732,6 @@ Return value:
 Always succeeds.
 @end deftypefun
 
-@deftypefun int marpa_r_terminals_expected ( @
-    Marpa_Recognizer @var{r}, @
-    Marpa_Symbol_ID* @var{buffer})
-Returns a list of the ID's of the symbols
-that are acceptable as tokens
-at the current earleme.
-@var{buffer} is expected to be large enough to hold
-the result.
-This is guaranteed to be the case if the buffer
-is large enough to hold a number of
-@code{Marpa_Symbol_ID}'s that
-is greater than or equal to the number of symbols
-in the grammar.
-
-Return value:  On success, the number of @code{Marpa_Symbol_ID}'s
-in @var{buffer}.
-On failure, @minus{}2.
-@end deftypefun
-
-@deftypefun int marpa_r_terminal_is_expected ( @
-    Marpa_Recognizer @var{r}, @
-    Marpa_Symbol_ID @var{symbol_id})
-
-Return values on success:
-If @var{symbol_id} is the
-ID of a valid terminal symbol that is expected at
-the current earleme,
-a number greater than zero.
-If @var{symbol_id} is the
-ID of a valid terminal symbol that is
-@strong{not} expected at
-the current earleme, or
-if @var{symbol_id} is the ID of a valid symbol
-that is not a terminal, zero.
-
-Failure cases:
-Returns @minus{}2 on failure.
-It is a failure
-if @var{symbol_id} is not the ID of a valid
-symbol.
-@end deftypefun
-
-@node Untested recognizer methods,  , Other parse status methods, Recognizer methods
-@section Untested recognizer methods
-
-@deftypefun int marpa_r_completion_symbol_activate ( @
-  Marpa_Recognizer @var{r}, @
-  Marpa_Symbol_ID @var{sym_id}, @
-  int @var{reactivate} )
-
-Allows the user to deactivate and reactivate symbol completion
-events in the recognizer.
-If @var{reactivate} is zero, the event is deactivated.
-If @var{reactivate} is one, the event is activated.
-
-Symbol completion events are active by default if
-the symbol was set up for completion events in the
-grammar.
-If a symbol was not set up for completion events in
-the grammar, symbol completion events are inactive
-by default and any attempt to change that is a fatal error.
-
-Success cases:
-On success,
-the method returns the value of @var{reactivate}.
-The method succeeds trivially
-if the symbol is already set as indicated by
-@var{reactivate}.
-
-Failure cases:
-If the active status
-of the
-completion event for @var{sym_id}
-cannot be set as indicated by @var{reactivate},
-the method fails.
-On failure, @minus{}2 is returned.
-@end deftypefun
-
 @deftypefun int marpa_r_nulled_symbol_activate ( @
   Marpa_Recognizer @var{r}, @
   Marpa_Symbol_ID @var{sym_id}, @
@@ -2844,6 +2796,48 @@ prediction event for @var{sym_id}
 cannot be set as indicated by @var{boolean},
 the method fails.
 On failure, @minus{}2 is returned.
+@end deftypefun
+
+@deftypefun int marpa_r_terminals_expected ( @
+    Marpa_Recognizer @var{r}, @
+    Marpa_Symbol_ID* @var{buffer})
+Returns a list of the ID's of the symbols
+that are acceptable as tokens
+at the current earleme.
+@var{buffer} is expected to be large enough to hold
+the result.
+This is guaranteed to be the case if the buffer
+is large enough to hold a number of
+@code{Marpa_Symbol_ID}'s that
+is greater than or equal to the number of symbols
+in the grammar.
+
+Return value:  On success, the number of @code{Marpa_Symbol_ID}'s
+in @var{buffer}.
+On failure, @minus{}2.
+@end deftypefun
+
+@deftypefun int marpa_r_terminal_is_expected ( @
+    Marpa_Recognizer @var{r}, @
+    Marpa_Symbol_ID @var{symbol_id})
+
+Return values on success:
+If @var{symbol_id} is the
+ID of a valid terminal symbol that is expected at
+the current earleme,
+a number greater than zero.
+If @var{symbol_id} is the
+ID of a valid terminal symbol that is
+@strong{not} expected at
+the current earleme, or
+if @var{symbol_id} is the ID of a valid symbol
+that is not a terminal, zero.
+
+Failure cases:
+Returns @minus{}2 on failure.
+It is a failure
+if @var{symbol_id} is not the ID of a valid
+symbol.
 @end deftypefun
 
 @node Progress reports, Bocage methods, Recognizer methods, Top
@@ -2992,18 +2986,6 @@ is increased by 1.
 If there is no parse ending at Earley set @var{earley_set_ID},
 @code{marpa_b_new} fails
 and the error code is set to
-@code{MARPA_ERR_NO_PARSE}.
-
-If @code{marpa_b_new} is called with
-@var{earley_set_ID} set to -1,
-the
-parse at the current earleme will be used,
-if there is one.
-More exactly,
-if @var{earley_set_ID} is set to -1, the
-Earley set at the current earleme will be used.
-If there is no Earley set at the current earleme,
-@code{marpa_b_new} will fail with
 @code{MARPA_ERR_NO_PARSE}.
 
 Return value: On success, the new bocage object.
@@ -3381,7 +3363,7 @@ Libmarpa does not know that the operation
 is an addition.
 It will tell the application that rule number @var{R}
 is to be applied to the arguments at stack locations
-@var{N} and @var{N}+1, and that the result is to be placed in
+@var{N} and @var{N}+1, and that the result is to placed in
 stack location @var{N}.
 
 In this system
@@ -4712,9 +4694,9 @@ a way that requires it to be
 set up for completion events,
 but the symbol was not set
 set up for completion events.
-The archetypal case is an attempt to activate completion
+The archtypal case is an attempt to activate completion
 events for the symbol in the recognizer.
-The archetypal case is an attempt to activate a completion
+The archtypal case is an attempt to activate a completion
 event in the recognizer for
 a symbol that is not set up as a completion event.
 Numeric value: 92.
@@ -4727,8 +4709,8 @@ a way that requires it to be
 set up for nulled events,
 but the symbol was not set
 set up for nulled events.
-The archetypal case is an attempt to activate a nulled
-event in the recognizer for
+The archtypal case is an attempt to activate a nulled
+events in the recognizer for
 a symbol that is not set up as a nulled event.
 Numeric value: 93.
 Suggested message: "Symbol is not set up for nulled events".
@@ -4740,7 +4722,7 @@ a way that requires it to be
 set up for predictino events,
 but the symbol was not set
 set up for predictino events.
-The archetypal case is an attempt to activate a prediction
+The archtypal case is an attempt to activate a prediction
 event in the recognizer for
 a symbol that is not set up as a prediction event.
 Numeric value: 94.
