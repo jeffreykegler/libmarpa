@@ -1544,11 +1544,6 @@ The @code{marpa_g_symbol_is_nulled_event()} method
 returns the current value of the nulled event marking
 for symbol @var{sym_id}.
 
-Note that Earleme 0 is a exception.
-It is possible for a symbol to be nulled at
-earleme 0, the start of parsing,
-but no nulled symbol event will be generated.
-
 When a symbol is recognized, it can generate
 a nulled event or a completion event,
 but recognition of a single instance of a symbol will
@@ -1629,10 +1624,6 @@ event when a symbol is predicted.
 A symbol is said to be @strong{predicted}
 when a it is acceptable at the current
 earleme according to the grammar.
-
-Note that Earleme 0 is a exception.
-Predicted symbol events are not generated
-for symbols predicted at the start of parsing.
 
 For predicted events to occur, the symbol must be marked
 as a predicted event symbol.
@@ -2304,6 +2295,18 @@ to zero, it too is destroyed.
 
 @deftypefun int marpa_r_start_input (Marpa_Recognizer @var{r})
 Makes @var{r} ready to accept input.
+The first Earley set,
+the one at earleme 0,
+will be completed during this call.
+
+Because the call to @code{marpa_r_start_input()}
+completes an Earley set,
+it may generate events.
+For details about
+the events that may be generated during
+Earley set completion,
+see the description of the
+@code{marpa_r_earleme_complete()} method.
 
 Return value:  On success, a non-negative value.
 On failure, @minus{}2.
