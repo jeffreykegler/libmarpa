@@ -5812,15 +5812,18 @@ Marpa_Recognizer marpa_r_new( Marpa_Grammar g )
     RECCE r;
     int nsy_count;
     int irl_count;
+    NSYID xsy_count;
     @<Return |NULL| on failure@>@;
     @<Fail if not precomputed@>@;
     nsy_count = NSY_Count_of_G(g);
     irl_count = IRL_Count_of_G(g);
+    xsy_count = XSY_Count_of_G (g);
     r = my_malloc(sizeof(struct marpa_r));
     @<Initialize recognizer obstack@>@;
     @<Initialize recognizer elements@>@;
     @<Initialize dot PSAR@>@;
-   return r;
+    @<Initialize recognizer event variables@>@;
+    return r;
 }
 
 @*0 Reference counting and destructors.
@@ -5983,11 +5986,17 @@ Bit_Vector t_lbv_xsyid_nulled_event_is_active;
 Bit_Vector t_lbv_xsyid_prediction_event_is_active;
 @ @<Int aligned recognizer elements@> =
 int t_active_event_count;
-@ @<Initialize recognizer elements@> =
-r->t_lbv_xsyid_completion_event_is_active = NULL;
-r->t_lbv_xsyid_nulled_event_is_active = NULL;
-r->t_lbv_xsyid_prediction_event_is_active = NULL;
-r->t_active_event_count = 0;
+@ @<Initialize recognizer event variables@> =
+    r->t_lbv_xsyid_completion_event_is_active =
+      lbv_clone (r->t_obs, g->t_lbv_xsyid_is_completion_event, xsy_count);
+    r->t_lbv_xsyid_nulled_event_is_active =
+      lbv_clone (r->t_obs, g->t_lbv_xsyid_is_nulled_event, xsy_count);
+    r->t_lbv_xsyid_prediction_event_is_active =
+      lbv_clone (r->t_obs, g->t_lbv_xsyid_is_prediction_event, xsy_count);
+    r->t_active_event_count =
+      bv_count ( g->t_lbv_xsyid_is_completion_event)
+      + bv_count ( g->t_lbv_xsyid_is_nulled_event) 
+      + bv_count ( g->t_lbv_xsyid_is_prediction_event) ;
 
 @*0 Expected symbol boolean vector.
 A boolean vector by symbol ID,
@@ -7446,16 +7455,6 @@ PRIVATE int alternative_insert(RECCE r, ALT new_alternative)
         @<Set |r| exhausted@>@;
         goto CLEANUP;
     }
-    r->t_lbv_xsyid_completion_event_is_active =
-      lbv_clone (r->t_obs, g->t_lbv_xsyid_is_completion_event, xsy_count);
-    r->t_lbv_xsyid_nulled_event_is_active =
-      lbv_clone (r->t_obs, g->t_lbv_xsyid_is_nulled_event, xsy_count);
-    r->t_lbv_xsyid_prediction_event_is_active =
-      lbv_clone (r->t_obs, g->t_lbv_xsyid_is_prediction_event, xsy_count);
-    r->t_active_event_count =
-      bv_count ( g->t_lbv_xsyid_is_completion_event)
-      + bv_count ( g->t_lbv_xsyid_is_nulled_event) 
-      + bv_count ( g->t_lbv_xsyid_is_prediction_event) ;
     Input_Phase_of_R(r) = R_DURING_INPUT;
     psar_reset(Dot_PSAR_of_R(r));
     @<Allocate recognizer containers@>@;
