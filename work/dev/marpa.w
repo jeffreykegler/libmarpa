@@ -3070,6 +3070,7 @@ int marpa_g_precompute(Marpa_Grammar g)
     @<Rewrite grammar |g| into CHAF form@>@;
     @<Augment grammar |g|@>@;
     post_census_xsy_count = XSY_Count_of_G(g);
+    @<Populate the event boolean vectors@>@;
 
     @t}\comment{@>
     /* Phase 3: memoize the internal grammar */
@@ -3082,7 +3083,6 @@ int marpa_g_precompute(Marpa_Grammar g)
         @<Construct right derivation matrix@>@;
         @<Populate the predicted IRL CIL's in the AHM's@>
         @<Populate the terminal boolean vector@>@;
-        @<Populate the event boolean vectors@>@;
         @<Populate the prediction
           and nulled symbol CILs@>@;
         @<Mark the event AHMs@>@;
@@ -5998,19 +5998,17 @@ Bit_Vector t_lbv_xsyid_prediction_event_is_active;
 @ @<Int aligned recognizer elements@> =
 int t_active_event_count;
 @ @<Initialize recognizer event variables@> =
-    if (!G_is_Trivial(g)) {
-      NSYID xsy_count = XSY_Count_of_G (g);
-      r->t_lbv_xsyid_completion_event_is_active =
-        lbv_clone (r->t_obs, g->t_lbv_xsyid_completion_event_starts_active, xsy_count);
-      r->t_lbv_xsyid_nulled_event_is_active =
-        lbv_clone (r->t_obs, g->t_lbv_xsyid_nulled_event_starts_active, xsy_count);
-      r->t_lbv_xsyid_prediction_event_is_active =
-        lbv_clone (r->t_obs, g->t_lbv_xsyid_prediction_event_starts_active, xsy_count);
-      r->t_active_event_count =
-        bv_count ( g->t_lbv_xsyid_is_completion_event)
-        + bv_count ( g->t_lbv_xsyid_is_nulled_event) 
-        + bv_count ( g->t_lbv_xsyid_is_prediction_event) ;
-    }
+    NSYID xsy_count = XSY_Count_of_G (g);
+    r->t_lbv_xsyid_completion_event_is_active =
+      lbv_clone (r->t_obs, g->t_lbv_xsyid_completion_event_starts_active, xsy_count);
+    r->t_lbv_xsyid_nulled_event_is_active =
+      lbv_clone (r->t_obs, g->t_lbv_xsyid_nulled_event_starts_active, xsy_count);
+    r->t_lbv_xsyid_prediction_event_is_active =
+      lbv_clone (r->t_obs, g->t_lbv_xsyid_prediction_event_starts_active, xsy_count);
+    r->t_active_event_count =
+      bv_count ( g->t_lbv_xsyid_is_completion_event)
+      + bv_count ( g->t_lbv_xsyid_is_nulled_event) 
+      + bv_count ( g->t_lbv_xsyid_is_prediction_event) ;
 
 @*0 Expected symbol boolean vector.
 A boolean vector by symbol ID,
