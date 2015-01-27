@@ -3069,6 +3069,7 @@ int marpa_g_precompute(Marpa_Grammar g)
     @<Initialize NSY stack@>@;
     @<Rewrite grammar |g| into CHAF form@>@;
     @<Augment grammar |g|@>@;
+    post_census_xsy_count = XSY_Count_of_G(g);
 
     @t}\comment{@>
     /* Phase 3: memoize the internal grammar */
@@ -3166,6 +3167,7 @@ a lot of useless diagnostics.
 @ @<Declare precompute variables@> =
   XRLID xrl_count = XRL_Count_of_G(g);
   XSYID pre_census_xsy_count = XSY_Count_of_G(g);
+  XSYID post_census_xsy_count = -1;
 
 @ @<Fail if no rules@> =
 if (_MARPA_UNLIKELY(xrl_count <= 0)) {
@@ -5207,7 +5209,6 @@ one non-nulling symbol in each IRL. */
         memoizations@> =
   const RULEID irl_count = IRL_Count_of_G(g);
   const NSYID nsy_count = NSY_Count_of_G(g);
-  const XSYID xsy_count = XSY_Count_of_G(g);
   Bit_Matrix nsy_by_right_nsy_matrix;
    Bit_Matrix prediction_nsy_by_irl_matrix;
 
@@ -5394,7 +5395,7 @@ with |S2| on its LHS.
 {
   int xsy_id;
   g->t_bv_nsyid_is_terminal = bv_obs_create (g->t_obs, nsy_count);
-  for (xsy_id = 0; xsy_id < xsy_count; xsy_id++)
+  for (xsy_id = 0; xsy_id < post_census_xsy_count; xsy_id++)
     {
       if (XSYID_is_Terminal (xsy_id))
         {
@@ -5414,13 +5415,13 @@ with |S2| on its LHS.
 @<Populate the event boolean vectors@> =
 {
   int xsyid;
-  g->t_lbv_xsyid_is_completion_event = bv_obs_create (g->t_obs, xsy_count);
-  g->t_lbv_xsyid_completion_event_starts_active = bv_obs_create (g->t_obs, xsy_count);
-  g->t_lbv_xsyid_is_nulled_event = bv_obs_create (g->t_obs, xsy_count);
-  g->t_lbv_xsyid_nulled_event_starts_active = bv_obs_create (g->t_obs, xsy_count);
-  g->t_lbv_xsyid_is_prediction_event = bv_obs_create (g->t_obs, xsy_count);
-  g->t_lbv_xsyid_prediction_event_starts_active = bv_obs_create (g->t_obs, xsy_count);
-  for (xsyid = 0; xsyid < xsy_count; xsyid++)
+  g->t_lbv_xsyid_is_completion_event = bv_obs_create (g->t_obs, post_census_xsy_count);
+  g->t_lbv_xsyid_completion_event_starts_active = bv_obs_create (g->t_obs, post_census_xsy_count);
+  g->t_lbv_xsyid_is_nulled_event = bv_obs_create (g->t_obs, post_census_xsy_count);
+  g->t_lbv_xsyid_nulled_event_starts_active = bv_obs_create (g->t_obs, post_census_xsy_count);
+  g->t_lbv_xsyid_is_prediction_event = bv_obs_create (g->t_obs, post_census_xsy_count);
+  g->t_lbv_xsyid_prediction_event_starts_active = bv_obs_create (g->t_obs, post_census_xsy_count);
+  for (xsyid = 0; xsyid < post_census_xsy_count; xsyid++)
     {
       if (XSYID_is_Completion_Event (xsyid))
         {
@@ -5444,9 +5445,9 @@ with |S2| on its LHS.
 {
   AHMID ahm_id;
   const int ahm_count_of_g = AHM_Count_of_G (g);
-  const LBV bv_completion_xsyid = bv_create (xsy_count);
-  const LBV bv_prediction_xsyid = bv_create (xsy_count);
-  const LBV bv_nulled_xsyid = bv_create (xsy_count);
+  const LBV bv_completion_xsyid = bv_create (post_census_xsy_count);
+  const LBV bv_prediction_xsyid = bv_create (post_census_xsy_count);
+  const LBV bv_nulled_xsyid = bv_create (post_census_xsy_count);
   const CILAR cilar = &g->t_cilar;
   for (ahm_id = 0; ahm_id < ahm_count_of_g; ahm_id++)
     {
