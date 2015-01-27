@@ -977,12 +977,18 @@ It is initialized to |NULL| so that the destructor
 can tell if there is a boolean vector to be freed.
 @<Widely aligned grammar elements@> =
   Bit_Vector t_lbv_xsyid_is_completion_event;
+  Bit_Vector t_lbv_xsyid_completion_event_starts_active;
   Bit_Vector t_lbv_xsyid_is_nulled_event;
+  Bit_Vector t_lbv_xsyid_nulled_event_starts_active;
   Bit_Vector t_lbv_xsyid_is_prediction_event;
+  Bit_Vector t_lbv_xsyid_prediction_event_starts_active;
 @ @<Initialize grammar elements@> =
   g->t_lbv_xsyid_is_completion_event = NULL;
+  g->t_lbv_xsyid_completion_event_starts_active = NULL;
   g->t_lbv_xsyid_is_nulled_event = NULL;
+  g->t_lbv_xsyid_nulled_event_starts_active = NULL;
   g->t_lbv_xsyid_is_prediction_event = NULL;
+  g->t_lbv_xsyid_prediction_event_starts_active = NULL;
 
 @*0 The event stack.
 Events are designed to be fast,
@@ -5409,21 +5415,27 @@ with |S2| on its LHS.
 {
   int xsyid;
   g->t_lbv_xsyid_is_completion_event = bv_obs_create (g->t_obs, xsy_count);
+  g->t_lbv_xsyid_completion_event_starts_active = bv_obs_create (g->t_obs, xsy_count);
   g->t_lbv_xsyid_is_nulled_event = bv_obs_create (g->t_obs, xsy_count);
+  g->t_lbv_xsyid_nulled_event_starts_active = bv_obs_create (g->t_obs, xsy_count);
   g->t_lbv_xsyid_is_prediction_event = bv_obs_create (g->t_obs, xsy_count);
+  g->t_lbv_xsyid_prediction_event_starts_active = bv_obs_create (g->t_obs, xsy_count);
   for (xsyid = 0; xsyid < xsy_count; xsyid++)
     {
       if (XSYID_is_Completion_Event (xsyid))
         {
           lbv_bit_set (g->t_lbv_xsyid_is_completion_event, xsyid);
+          lbv_bit_set (g->t_lbv_xsyid_completion_event_starts_active, xsyid);
         }
       if (XSYID_is_Nulled_Event (xsyid))
         {
           lbv_bit_set (g->t_lbv_xsyid_is_nulled_event, xsyid);
+          lbv_bit_set (g->t_lbv_xsyid_nulled_event_starts_active, xsyid);
         }
       if (XSYID_is_Prediction_Event (xsyid))
         {
           lbv_bit_set (g->t_lbv_xsyid_is_prediction_event, xsyid);
+          lbv_bit_set (g->t_lbv_xsyid_prediction_event_starts_active, xsyid);
         }
     }
 }
@@ -5988,11 +6000,11 @@ int t_active_event_count;
     if (!G_is_Trivial(g)) {
       NSYID xsy_count = XSY_Count_of_G (g);
       r->t_lbv_xsyid_completion_event_is_active =
-        lbv_clone (r->t_obs, g->t_lbv_xsyid_is_completion_event, xsy_count);
+        lbv_clone (r->t_obs, g->t_lbv_xsyid_completion_event_starts_active, xsy_count);
       r->t_lbv_xsyid_nulled_event_is_active =
-        lbv_clone (r->t_obs, g->t_lbv_xsyid_is_nulled_event, xsy_count);
+        lbv_clone (r->t_obs, g->t_lbv_xsyid_nulled_event_starts_active, xsy_count);
       r->t_lbv_xsyid_prediction_event_is_active =
-        lbv_clone (r->t_obs, g->t_lbv_xsyid_is_prediction_event, xsy_count);
+        lbv_clone (r->t_obs, g->t_lbv_xsyid_prediction_event_starts_active, xsy_count);
       r->t_active_event_count =
         bv_count ( g->t_lbv_xsyid_is_completion_event)
         + bv_count ( g->t_lbv_xsyid_is_nulled_event) 
