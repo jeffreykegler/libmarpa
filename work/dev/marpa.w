@@ -1584,6 +1584,32 @@ Marpa_Grammar g, Marpa_Symbol_ID xsy_id, int value)
     MARPA_ERROR (MARPA_ERR_INVALID_BOOLEAN);
     return failure_indicator;
 }
+@ @<Function definitions@> =
+int
+marpa_g_completion_symbol_activate (Marpa_Grammar g,
+                                    Marpa_Symbol_ID xsy_id, int reactivate)
+{
+    @<Return |-2| on failure@>@;
+    @<Fail if fatal error@>@;
+    @<Fail if precomputed@>@;
+    @<Fail if |xsy_id| is malformed@>@;
+    @<Soft fail if |xsy_id| does not exist@>@;
+    switch (reactivate) {
+    case 0:
+        lbv_bit_clear(g->t_lbv_xsyid_completion_event_starts_active, xsy_id) ;
+        return 0;
+    case 1:
+        if (!lbv_bit_test(g->t_lbv_xsyid_is_completion_event, xsy_id)) {
+          /* An attempt to activate a completion event on a symbol which
+          was not set up for them. */
+          MARPA_ERROR (MARPA_ERR_SYMBOL_IS_NOT_COMPLETION_EVENT);
+        }
+        lbv_bit_set(g->t_lbv_xsyid_completion_event_starts_active, xsy_id) ;
+        return 1;
+    }
+    MARPA_ERROR (MARPA_ERR_INVALID_BOOLEAN);
+    return failure_indicator;
+}
 
 @*0 XSY is nulled event?.
 @d XSY_is_Nulled_Event(xsy) ((xsy)->t_is_nulled_event)
@@ -1619,6 +1645,33 @@ Marpa_Grammar g, Marpa_Symbol_ID xsy_id, int value)
     MARPA_ERROR (MARPA_ERR_INVALID_BOOLEAN);
     return failure_indicator;
 }
+@ @<Function definitions@> =
+int
+marpa_g_nulled_symbol_activate (Marpa_Grammar g,
+                                    Marpa_Symbol_ID xsy_id, int reactivate)
+{
+    @<Return |-2| on failure@>@;
+    @<Fail if fatal error@>@;
+    @<Fail if precomputed@>@;
+    @<Fail if |xsy_id| is malformed@>@;
+    @<Soft fail if |xsy_id| does not exist@>@;
+    switch (reactivate) {
+    case 0:
+        lbv_bit_clear(g->t_lbv_xsyid_nulled_event_starts_active, xsy_id) ;
+        return 0;
+    case 1:
+        if (!lbv_bit_test(g->t_lbv_xsyid_is_nulled_event, xsy_id)) {
+          /* An attempt to activate a nulled event on a symbol which
+          was not set up for them. */
+          MARPA_ERROR (MARPA_ERR_SYMBOL_IS_NOT_COMPLETION_EVENT);
+        }
+        lbv_bit_set(g->t_lbv_xsyid_nulled_event_starts_active, xsy_id) ;
+        return 1;
+    }
+    MARPA_ERROR (MARPA_ERR_INVALID_BOOLEAN);
+    return failure_indicator;
+}
+
 
 @*0 XSY is prediction event?.
 @d XSY_is_Prediction_Event(xsy) ((xsy)->t_is_prediction_event)
@@ -1650,6 +1703,32 @@ Marpa_Grammar g, Marpa_Symbol_ID xsy_id, int value)
     switch (value) {
     case 0: case 1:
       return XSY_is_Prediction_Event (xsy) = Boolean(value);
+    }
+    MARPA_ERROR (MARPA_ERR_INVALID_BOOLEAN);
+    return failure_indicator;
+}
+@ @<Function definitions@> =
+int
+marpa_g_prediction_symbol_activate (Marpa_Grammar g,
+                                    Marpa_Symbol_ID xsy_id, int reactivate)
+{
+    @<Return |-2| on failure@>@;
+    @<Fail if fatal error@>@;
+    @<Fail if precomputed@>@;
+    @<Fail if |xsy_id| is malformed@>@;
+    @<Soft fail if |xsy_id| does not exist@>@;
+    switch (reactivate) {
+    case 0:
+        lbv_bit_clear(g->t_lbv_xsyid_prediction_event_starts_active, xsy_id) ;
+        return 0;
+    case 1:
+        if (!lbv_bit_test(g->t_lbv_xsyid_is_prediction_event, xsy_id)) {
+          /* An attempt to activate a prediction event on a symbol which
+          was not set up for them. */
+          MARPA_ERROR (MARPA_ERR_SYMBOL_IS_NOT_COMPLETION_EVENT);
+        }
+        lbv_bit_set(g->t_lbv_xsyid_prediction_event_starts_active, xsy_id) ;
+        return 1;
     }
     MARPA_ERROR (MARPA_ERR_INVALID_BOOLEAN);
     return failure_indicator;
@@ -5998,17 +6077,19 @@ Bit_Vector t_lbv_xsyid_prediction_event_is_active;
 @ @<Int aligned recognizer elements@> =
 int t_active_event_count;
 @ @<Initialize recognizer event variables@> =
-    NSYID xsy_count = XSY_Count_of_G (g);
-    r->t_lbv_xsyid_completion_event_is_active =
-      lbv_clone (r->t_obs, g->t_lbv_xsyid_completion_event_starts_active, xsy_count);
-    r->t_lbv_xsyid_nulled_event_is_active =
-      lbv_clone (r->t_obs, g->t_lbv_xsyid_nulled_event_starts_active, xsy_count);
-    r->t_lbv_xsyid_prediction_event_is_active =
-      lbv_clone (r->t_obs, g->t_lbv_xsyid_prediction_event_starts_active, xsy_count);
-    r->t_active_event_count =
-      bv_count ( g->t_lbv_xsyid_is_completion_event)
-      + bv_count ( g->t_lbv_xsyid_is_nulled_event) 
-      + bv_count ( g->t_lbv_xsyid_is_prediction_event) ;
+    {
+      NSYID xsy_count = XSY_Count_of_G (g);
+      r->t_lbv_xsyid_completion_event_is_active =
+        lbv_clone (r->t_obs, g->t_lbv_xsyid_completion_event_starts_active, xsy_count);
+      r->t_lbv_xsyid_nulled_event_is_active =
+        lbv_clone (r->t_obs, g->t_lbv_xsyid_nulled_event_starts_active, xsy_count);
+      r->t_lbv_xsyid_prediction_event_is_active =
+        lbv_clone (r->t_obs, g->t_lbv_xsyid_prediction_event_starts_active, xsy_count);
+      r->t_active_event_count =
+        bv_count ( g->t_lbv_xsyid_is_completion_event)
+        + bv_count ( g->t_lbv_xsyid_is_nulled_event) 
+        + bv_count ( g->t_lbv_xsyid_is_prediction_event) ;
+    }
 
 @*0 Expected symbol boolean vector.
 A boolean vector by symbol ID,
