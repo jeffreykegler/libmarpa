@@ -1544,15 +1544,62 @@ The @code{marpa_g_symbol_is_nulled_event()} method
 returns the current value of the nulled event marking
 for symbol @var{sym_id}.
 
-When a symbol is recognized, it can generate
-a nulled event or a completion event,
-but recognition of a single instance of a symbol will
-generate at most one or the other event -- never
-both.
-Symbols recognized 
-as zero length can only generate nulled events.
-Symbols recognized 
-as non-zero in length can only generate completed events.
+As a reminder, a symbol instance is a symbol
+at a specific location in the input,
+and with a specific length.
+Also, whenever a nulled symbol instance is
+recognized at a location, it is acceptable
+at that location,
+and vice versa.
+
+When a symbol instance is recognized at a location,
+it will generate a nulled event or a prediction event,
+but never both.
+A symbol instance of zero length,
+when recognized at a location,
+generates a nulled event at that location,
+and does not generate a completion event.
+A symbol instance of non-zero length,
+when acceptable at a location,
+generates a completion event at that location,
+and does not generate a nulled event.
+
+When a symbol instance is acceptable at a location,
+it will generate a nulled event or a prediction event,
+but never both.
+A symbol instance of zero length,
+when acceptable at a location,
+generates a nulled event at that location,
+and does not generate a prediction event.
+A symbol instance of non-zero length,
+when acceptable at a location,
+generates a prediction event at that location,
+and does not generate a nulled event.
+
+while it is not possible for
+a @strong{symbol instance}
+to generate both a nulled event and
+a completion event at a location,
+it is quite possible that
+a @strong{symbol} might generate
+both kinds of event at that location.
+This is because multiple instances
+of the same symbol may be recognized at
+a given location,
+and these instances will have
+different lengths.
+If one instance is recognized at a given location
+as zero length and
+a second, non-zero-length,
+instance is recognized at the same location,
+the first will generate only nulled events,
+while the second will generate only completion events.
+For similar reasons,
+while a @strong{symbol instance} will never
+generated both a null event and a prediction
+event at a location,
+multiple instances of the same symbol
+may do so.
 
 Zero length derivations can be ambiguous.
 When a zero length symbol is recognized,
@@ -1620,10 +1667,12 @@ is not precomputed, or on other failure, @minus{}2.
 Libmarpa can be set up
 to generate a
 @code{MARPA_EVENT_SYMBOL_PREDICTED}
-event when a symbol is predicted.
-A symbol is said to be @strong{predicted}
-when a it is acceptable at the current
+event when a non-nulled symbol is predicted.
+A non-nulled symbol is said to be @strong{predicted}
+when a instance of it
+is acceptable at the current
 earleme according to the grammar.
+Nulled symbols do not generate predictions.
 
 For predicted events to occur, the symbol must be marked
 as a predicted event symbol.

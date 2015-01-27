@@ -3700,7 +3700,7 @@ This may happen trivially -- a nullable symbol
 nullifies itself.
 And it may happen through a nullable derivation.
 The derivation may be ambiguous -- in other words,
-|A| nullfies |B| if a nulled |B| can be derived from a nulled |A|.
+|A| nullifies |B| if a nulled |B| can be derived from a nulled |A|.
 Change so that this runs only if there are prediction events.
 @<Populate nullification CILs@> = 
 {
@@ -6077,7 +6077,7 @@ with the bits set if, when
 that symbol is an expected symbol,
 an event should be created.
 Here ``expected'' means ``expected as a terminal''.
-All predicted symbols are expected symbols,
+All expected symbols are predicted symbols,
 but the reverse is not true --
 predicted non-terminals are not ``expected'' symbols.
 @<Widely aligned recognizer elements@> = LBV t_nsy_expected_is_event;
