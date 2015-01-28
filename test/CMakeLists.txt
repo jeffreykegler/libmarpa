@@ -28,6 +28,6 @@ endif ()
 
 # NOTE: The order matters! The most independent ones should go first.
 add_subdirectory(tap)
-add_subdirectory(rule1)
+add_subdirectory(simple)
 
 # vim: expandtab shiftwidth=4:
