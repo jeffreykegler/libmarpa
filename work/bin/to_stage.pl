@@ -18,14 +18,22 @@
 # It makes more sense to do this in Perl than in the Makefile
 
 use 5.010;
+use strict;
+use warnings;
+
 use File::Spec;
 use File::Copy;
 use Getopt::Long;
 use autodie;    # Portability not essential in this script
 
 my $verbose;
-GetOptions( "verbose|v" => \$verbose )
+my $stampfile;
+GetOptions( "verbose|v" => \$verbose,
+  "stamp=s" => \$stampfile
+)
     or die("Error in command line arguments\n");
+
+my $copy_count = 0;
 
 FILE: while ( my $copy = <DATA> ) {
     chomp $copy;
@@ -43,8 +51,19 @@ FILE: while ( my $copy = <DATA> ) {
 	mkdir $dir_so_far;
     }
     File::Copy::copy($from, $to) or die "Cannot copy $from -> $to";
+    $copy_count++;
     say "Copied $from -> $to" if $verbose;
 } ## end FILE: while ( my $copy = <DATA> )
+
+say "Files copied: $copy_count";
+
+# If we have defined a stamp file, and we copied files
+# or there is no stamp file, update it.
+if ($stampfile and ($copy_count or not -e $stampfile)) {
+   open my $stamp_fh, q{>}, $stampfile;
+   say {$stamp_fh} "" . localtime;
+   close $stamp_fh;
+}
 
 # Note that order DOES matter here -- the configure.ac files
 # MUST be FIRST

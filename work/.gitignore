@@ -3,3 +3,4 @@ doc/
 doc1/
 libmarpa.tar
 libmarpa-doc.tar
+stage_copy.stamp

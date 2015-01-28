@@ -15,18 +15,24 @@
 
 version=`cat LIB_VERSION`
 
-.PHONY: dummy dist doc_dist doc1_dist cm_dist
+.PHONY: dummy dist doc_dist doc1_dist cm_dist test tar
 
 dummy:
 	@echo The target to make the distributions is '"dists"'
 
 dists: dist doc_dist doc1_dist cm_dist
 
-work_install:
+timestamp/work_install.stamp:
 	(cd work; make install)
+	test -d timestamp || mkdir timestamp
+	date > timestamp/work_install.stamp
 
-tar: work_install
+tar: timestamp/tar.stamp
+
+timestamp/tar.stamp: timestamp/work_install.stamp
 	cp work/stage/libmarpa-$(version).tar.gz .
+	test -d timestamp || mkdir timestamp
+	date > timestamp/tar.stamp
 
 doc_tar: work_install
 	cp work/doc/libmarpa-doc-$(version).tar.gz .
@@ -43,8 +49,10 @@ doc_dist: doc_tar
 doc1_dist: doc1_tar
 	sh etc/work_to_doc1_dist.sh
 
-cm_dist: tar
+timestamp/cm_dist.stamp: tar
 	perl cmake/to_dist.pl
+	test -d timestamp || mkdir timestamp
+	date > timestamp/cm_dist.stamp
 
 distcheck:
 	perl etc/license_check.pl  --verbose=0 `find cm_dist dist doc_dist doc1_dist -type f`
@@ -57,12 +65,14 @@ tar_clean:
 tag:
 	git tag -a v$(version) -m "Version $(version)"
 
-cm_debug: cm_dist
+timestamp/cm_debug.stamp: timestamp/cm_dist.stamp
 	rm -rf cm_build
 	mkdir cm_build
 	cd cm_build && cmake -DCMAKE_BUILD_TYPE:STRING=Debug ../cm_dist && make VERBOSE=1
 	cd cm_build && make DESTDIR=../test install
+	test -d timestamp || mkdir timestamp
+	date > timestamp/cm_debug.stamp
 
-test: cm_debug
+test: timestamp/cm_debug.stamp
 	cd do_test && cmake ../test && make VERBOSE=1
 	cd do_test && ./tap/runtests -l ../test/TESTS

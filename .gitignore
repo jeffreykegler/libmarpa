@@ -15,6 +15,7 @@ single_test.out
 errs
 junk
 /nogit/
+/timestamp/
 nogit*
 *.exe
 libmarpa-*.tar.gz
