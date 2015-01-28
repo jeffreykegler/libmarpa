@@ -24,6 +24,8 @@
 #include <sys/mman.h>
 #include "marpa.h"
 
+#include "tap/basic.h"
+
 static int
 fail (const char *s, Marpa_Grammar g)
 {
@@ -63,6 +65,7 @@ main (int argc, char *argv[])
 {
   const unsigned char *p, *eof;
   int i;
+  int rc;
   const char *error_string;
   struct stat sb;
 
@@ -72,6 +75,8 @@ main (int argc, char *argv[])
   Marpa_Recognizer r;
   /* Longest rule is <= 4 symbols */
   Marpa_Symbol_ID rhs[4];
+
+  plan(1);
 
   marpa_c_init (&marpa_configuration);
   g = marpa_g_new (&marpa_configuration);
@@ -129,6 +134,7 @@ main (int argc, char *argv[])
       puts (error_string);
       exit (1);
     }
+  ok(1, "precomputation succeeded");
   r = marpa_r_new (g);
   if (!r)
     {
@@ -136,12 +142,14 @@ main (int argc, char *argv[])
       puts (error_string);
       exit (1);
     }
-  if (!marpa_r_start_input (r))
+  rc = marpa_r_start_input (r);
+  if (!rc)
     {
       marpa_g_error (g, &error_string);
       puts (error_string);
       exit (1);
     }
+
 
   return 0;
 }
