@@ -25,7 +25,7 @@ dists: dist doc_dist doc1_dist cm_dist
 work_install:
 	(cd work; make install)
 
-tar: timestamp/tar.stamp
+tar: work_install timestamp/tar.stamp
 
 timestamp/tar.stamp: work/doc/doc.stamp \
   work/doc1/doc1.stamp \
@@ -49,9 +49,7 @@ doc_dist: doc_tar
 doc1_dist: doc1_tar
 	sh etc/work_to_doc1_dist.sh
 
-timestamp/cm_dist.stamp:: work_install
-
-timestamp/cm_dist.stamp:: timestamp/tar.stamp
+timestamp/cm_dist.stamp: timestamp/tar.stamp
 	perl cmake/to_dist.pl
 	test -d timestamp || mkdir timestamp
 	date > timestamp/cm_dist.stamp
@@ -80,5 +78,5 @@ timestamp/do_test.stamp: timestamp/cm_debug.stamp
 	test -d timestamp || mkdir timestamp
 	date > timestamp/do_test.stamp
 
-test: timestamp/do_test.stamp
+test: work_install timestamp/do_test.stamp
 	cd do_test && ./tap/runtests -l ../test/TESTS
