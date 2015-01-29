@@ -1584,8 +1584,8 @@ Marpa_Grammar g, Marpa_Symbol_ID xsy_id, int value)
     xsy = XSY_by_ID (xsy_id);
     switch (value) {
     case 0: case 1:
+      XSY_Completion_Event_Starts_Active (xsy) = Boolean(value);
       return XSY_is_Completion_Event (xsy) = Boolean(value);
-      return XSY_Completion_Event_Starts_Active (xsy) = Boolean(value);
     }
     MARPA_ERROR (MARPA_ERR_INVALID_BOOLEAN);
     return failure_indicator;
@@ -1651,8 +1651,8 @@ Marpa_Grammar g, Marpa_Symbol_ID xsy_id, int value)
     xsy = XSY_by_ID (xsy_id);
     switch (value) {
     case 0: case 1:
+      XSY_Nulled_Event_Starts_Active (xsy) = Boolean(value);
       return XSY_is_Nulled_Event (xsy) = Boolean(value);
-      return XSY_Nulled_Event_Starts_Active (xsy) = Boolean(value);
     }
     MARPA_ERROR (MARPA_ERR_INVALID_BOOLEAN);
     return failure_indicator;
@@ -1718,8 +1718,8 @@ Marpa_Grammar g, Marpa_Symbol_ID xsy_id, int value)
     xsy = XSY_by_ID (xsy_id);
     switch (value) {
     case 0: case 1:
+      XSY_Prediction_Event_Starts_Active (xsy) = Boolean(value);
       return XSY_is_Prediction_Event (xsy) = Boolean(value);
-      return XSY_Prediction_Event_Starts_Active (xsy) = Boolean(value);
     }
     MARPA_ERROR (MARPA_ERR_INVALID_BOOLEAN);
     return failure_indicator;
