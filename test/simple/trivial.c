@@ -76,7 +76,7 @@ main (int argc, char *argv[])
   /* Longest rule is <= 4 symbols */
   Marpa_Symbol_ID rhs[4];
 
-  plan(1);
+  plan(4);
 
   marpa_c_init (&marpa_configuration);
   g = marpa_g_new (&marpa_configuration);
@@ -149,7 +149,23 @@ main (int argc, char *argv[])
       puts (error_string);
       exit (1);
     }
+  ok((marpa_r_is_exhausted(r)), "exhausted at earleme 0");
 
+  {
+    Marpa_Event event;
+    int exhausted_event_triggered = 0;
+    int event_ix;
+    int event_count = marpa_g_event_count (g);
+    ok ((event_count == 1), "event count at earleme 0 is %ld",
+	(long) event_count);
+    for (event_ix = 0; event_ix < event_count; event_ix++)
+      {
+	int event_type = marpa_g_event (g, &event, event_ix);
+	printf ("event type is %ld\n", (long) event_type);
+	if (event_type == MARPA_EVENT_EXHAUSTED) exhausted_event_triggered++;
+    }
+    ok (exhausted_event_triggered, "exhausted event triggered");
+  }
 
   return 0;
 }
