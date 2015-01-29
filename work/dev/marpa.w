@@ -1553,9 +1553,14 @@ int marpa_g_symbol_is_productive(
 @*0 XSY is completion event?.
 @d XSY_is_Completion_Event(xsy) ((xsy)->t_is_completion_event)
 @d XSYID_is_Completion_Event(xsyid) XSY_is_Completion_Event(XSY_by_ID(xsyid))
-@<Bit aligned XSY elements@> = BITFIELD t_is_completion_event:1;
+@d XSY_Completion_Event_Starts_Active(xsy) ((xsy)->t_completion_event_starts_active)
+@d XSYID_Completion_Event_Starts_Active(xsyid) XSY_Completion_Event_Starts_Active(XSY_by_ID(xsyid))
+@<Bit aligned XSY elements@> =
+BITFIELD t_is_completion_event:1;
+BITFIELD t_completion_event_starts_active:1;
 @ @<Initialize XSY elements@> =
 xsy->t_is_completion_event = 0;
+xsy->t_completion_event_starts_active = 0;
 @ @<Function definitions@> =
 int marpa_g_symbol_is_completion_event(Marpa_Grammar g,
 Marpa_Symbol_ID xsy_id)
@@ -1580,6 +1585,7 @@ Marpa_Grammar g, Marpa_Symbol_ID xsy_id, int value)
     switch (value) {
     case 0: case 1:
       return XSY_is_Completion_Event (xsy) = Boolean(value);
+      return XSY_Completion_Event_Starts_Active (xsy) = Boolean(value);
     }
     MARPA_ERROR (MARPA_ERR_INVALID_BOOLEAN);
     return failure_indicator;
@@ -1596,15 +1602,15 @@ marpa_g_completion_symbol_activate (Marpa_Grammar g,
     @<Soft fail if |xsy_id| does not exist@>@;
     switch (reactivate) {
     case 0:
-        lbv_bit_clear(g->t_lbv_xsyid_completion_event_starts_active, xsy_id) ;
+        XSYID_Completion_Event_Starts_Active (xsy_id) = reactivate;
         return 0;
     case 1:
-        if (!lbv_bit_test(g->t_lbv_xsyid_is_completion_event, xsy_id)) {
+        if (!XSYID_is_Completion_Event( xsy_id)) {
           /* An attempt to activate a completion event on a symbol which
           was not set up for them. */
           MARPA_ERROR (MARPA_ERR_SYMBOL_IS_NOT_COMPLETION_EVENT);
         }
-        lbv_bit_set(g->t_lbv_xsyid_completion_event_starts_active, xsy_id) ;
+        XSYID_Completion_Event_Starts_Active (xsy_id) = reactivate;
         return 1;
     }
     MARPA_ERROR (MARPA_ERR_INVALID_BOOLEAN);
@@ -1614,9 +1620,14 @@ marpa_g_completion_symbol_activate (Marpa_Grammar g,
 @*0 XSY is nulled event?.
 @d XSY_is_Nulled_Event(xsy) ((xsy)->t_is_nulled_event)
 @d XSYID_is_Nulled_Event(xsyid) XSY_is_Nulled_Event(XSY_by_ID(xsyid))
-@<Bit aligned XSY elements@> = BITFIELD t_is_nulled_event:1;
+@d XSY_Nulled_Event_Starts_Active(xsy) ((xsy)->t_nulled_event_starts_active)
+@d XSYID_Nulled_Event_Starts_Active(xsyid) XSY_Nulled_Event_Starts_Active(XSY_by_ID(xsyid))
+@<Bit aligned XSY elements@> =
+BITFIELD t_is_nulled_event:1;
+BITFIELD t_nulled_event_starts_active:1;
 @ @<Initialize XSY elements@> =
 xsy->t_is_nulled_event = 0;
+xsy->t_nulled_event_starts_active = 0;
 @ @<Function definitions@> =
 int marpa_g_symbol_is_nulled_event(Marpa_Grammar g,
 Marpa_Symbol_ID xsy_id)
@@ -1641,6 +1652,7 @@ Marpa_Grammar g, Marpa_Symbol_ID xsy_id, int value)
     switch (value) {
     case 0: case 1:
       return XSY_is_Nulled_Event (xsy) = Boolean(value);
+      return XSY_Nulled_Event_Starts_Active (xsy) = Boolean(value);
     }
     MARPA_ERROR (MARPA_ERR_INVALID_BOOLEAN);
     return failure_indicator;
@@ -1657,28 +1669,32 @@ marpa_g_nulled_symbol_activate (Marpa_Grammar g,
     @<Soft fail if |xsy_id| does not exist@>@;
     switch (reactivate) {
     case 0:
-        lbv_bit_clear(g->t_lbv_xsyid_nulled_event_starts_active, xsy_id) ;
+        XSYID_Nulled_Event_Starts_Active (xsy_id) = reactivate;
         return 0;
     case 1:
-        if (!lbv_bit_test(g->t_lbv_xsyid_is_nulled_event, xsy_id)) {
+        if (!XSYID_is_Nulled_Event( xsy_id)) {
           /* An attempt to activate a nulled event on a symbol which
           was not set up for them. */
           MARPA_ERROR (MARPA_ERR_SYMBOL_IS_NOT_COMPLETION_EVENT);
         }
-        lbv_bit_set(g->t_lbv_xsyid_nulled_event_starts_active, xsy_id) ;
+        XSYID_Nulled_Event_Starts_Active (xsy_id) = reactivate;
         return 1;
     }
     MARPA_ERROR (MARPA_ERR_INVALID_BOOLEAN);
     return failure_indicator;
 }
 
-
 @*0 XSY is prediction event?.
 @d XSY_is_Prediction_Event(xsy) ((xsy)->t_is_prediction_event)
 @d XSYID_is_Prediction_Event(xsyid) XSY_is_Prediction_Event(XSY_by_ID(xsyid))
-@<Bit aligned XSY elements@> = BITFIELD t_is_prediction_event:1;
+@d XSY_Prediction_Event_Starts_Active(xsy) ((xsy)->t_prediction_event_starts_active)
+@d XSYID_Prediction_Event_Starts_Active(xsyid) XSY_Prediction_Event_Starts_Active(XSY_by_ID(xsyid))
+@<Bit aligned XSY elements@> =
+BITFIELD t_is_prediction_event:1;
+BITFIELD t_prediction_event_starts_active:1;
 @ @<Initialize XSY elements@> =
 xsy->t_is_prediction_event = 0;
+xsy->t_prediction_event_starts_active = 0;
 @ @<Function definitions@> =
 int marpa_g_symbol_is_prediction_event(Marpa_Grammar g,
 Marpa_Symbol_ID xsy_id)
@@ -1703,6 +1719,7 @@ Marpa_Grammar g, Marpa_Symbol_ID xsy_id, int value)
     switch (value) {
     case 0: case 1:
       return XSY_is_Prediction_Event (xsy) = Boolean(value);
+      return XSY_Prediction_Event_Starts_Active (xsy) = Boolean(value);
     }
     MARPA_ERROR (MARPA_ERR_INVALID_BOOLEAN);
     return failure_indicator;
@@ -1719,15 +1736,15 @@ marpa_g_prediction_symbol_activate (Marpa_Grammar g,
     @<Soft fail if |xsy_id| does not exist@>@;
     switch (reactivate) {
     case 0:
-        lbv_bit_clear(g->t_lbv_xsyid_prediction_event_starts_active, xsy_id) ;
+        XSYID_Prediction_Event_Starts_Active (xsy_id) = reactivate;
         return 0;
     case 1:
-        if (!lbv_bit_test(g->t_lbv_xsyid_is_prediction_event, xsy_id)) {
+        if (!XSYID_is_Prediction_Event( xsy_id)) {
           /* An attempt to activate a prediction event on a symbol which
           was not set up for them. */
           MARPA_ERROR (MARPA_ERR_SYMBOL_IS_NOT_COMPLETION_EVENT);
         }
-        lbv_bit_set(g->t_lbv_xsyid_prediction_event_starts_active, xsy_id) ;
+        XSYID_Prediction_Event_Starts_Active (xsy_id) = reactivate;
         return 1;
     }
     MARPA_ERROR (MARPA_ERR_INVALID_BOOLEAN);
@@ -5494,29 +5511,44 @@ with |S2| on its LHS.
 @<Populate the event boolean vectors@> =
 {
   int xsyid;
-  g->t_lbv_xsyid_is_completion_event = bv_obs_create (g->t_obs, post_census_xsy_count);
-  g->t_lbv_xsyid_completion_event_starts_active = bv_obs_create (g->t_obs, post_census_xsy_count);
-  g->t_lbv_xsyid_is_nulled_event = bv_obs_create (g->t_obs, post_census_xsy_count);
-  g->t_lbv_xsyid_nulled_event_starts_active = bv_obs_create (g->t_obs, post_census_xsy_count);
-  g->t_lbv_xsyid_is_prediction_event = bv_obs_create (g->t_obs, post_census_xsy_count);
-  g->t_lbv_xsyid_prediction_event_starts_active = bv_obs_create (g->t_obs, post_census_xsy_count);
+  g->t_lbv_xsyid_is_completion_event =
+    bv_obs_create (g->t_obs, post_census_xsy_count);
+  g->t_lbv_xsyid_completion_event_starts_active =
+    bv_obs_create (g->t_obs, post_census_xsy_count);
+  g->t_lbv_xsyid_is_nulled_event =
+    bv_obs_create (g->t_obs, post_census_xsy_count);
+  g->t_lbv_xsyid_nulled_event_starts_active =
+    bv_obs_create (g->t_obs, post_census_xsy_count);
+  g->t_lbv_xsyid_is_prediction_event =
+    bv_obs_create (g->t_obs, post_census_xsy_count);
+  g->t_lbv_xsyid_prediction_event_starts_active =
+    bv_obs_create (g->t_obs, post_census_xsy_count);
   for (xsyid = 0; xsyid < post_census_xsy_count; xsyid++)
     {
       if (XSYID_is_Completion_Event (xsyid))
-        {
-          lbv_bit_set (g->t_lbv_xsyid_is_completion_event, xsyid);
-          lbv_bit_set (g->t_lbv_xsyid_completion_event_starts_active, xsyid);
-        }
+	{
+	  lbv_bit_set (g->t_lbv_xsyid_is_completion_event, xsyid);
+	}
+      if (XSYID_Completion_Event_Starts_Active (xsyid))
+	{
+	  lbv_bit_set (g->t_lbv_xsyid_completion_event_starts_active, xsyid);
+	}
       if (XSYID_is_Nulled_Event (xsyid))
-        {
-          lbv_bit_set (g->t_lbv_xsyid_is_nulled_event, xsyid);
-          lbv_bit_set (g->t_lbv_xsyid_nulled_event_starts_active, xsyid);
-        }
+	{
+	  lbv_bit_set (g->t_lbv_xsyid_is_nulled_event, xsyid);
+	}
+      if (XSYID_Nulled_Event_Starts_Active (xsyid))
+	{
+	  lbv_bit_set (g->t_lbv_xsyid_nulled_event_starts_active, xsyid);
+	}
       if (XSYID_is_Prediction_Event (xsyid))
-        {
-          lbv_bit_set (g->t_lbv_xsyid_is_prediction_event, xsyid);
-          lbv_bit_set (g->t_lbv_xsyid_prediction_event_starts_active, xsyid);
-        }
+	{
+	  lbv_bit_set (g->t_lbv_xsyid_is_prediction_event, xsyid);
+	}
+      if (XSYID_Prediction_Event_Starts_Active (xsyid))
+	{
+	  lbv_bit_set (g->t_lbv_xsyid_prediction_event_starts_active, xsyid);
+	}
     }
 }
 
