@@ -11283,7 +11283,7 @@ Marpa_Order marpa_o_new(Marpa_Bocage b)
     bocage_ref(b);
     @<Pre-initialize order elements@>@;
     O_is_Nulling(o) = B_is_Nulling(b);
-    Ambiguity_Metric_of_O(o) = Ambiguity_Metric_of_B(b);
+    Ambiguity_Metric_of_O(o) = -1;
     return o;
 }
 
@@ -11351,8 +11351,31 @@ int marpa_o_ambiguity_metric(Marpa_Order o)
 {
   @<Return |-2| on failure@>@;
   @<Unpack order objects@>@;
+  const int old_ambiguity_metric_of_o
+    = Ambiguity_Metric_of_O(o);
+  const int ambiguity_metric_of_b
+    = Ambiguity_Metric_of_B(b);
   @<Fail if fatal error@>@;
+  if (old_ambiguity_metric_of_o >= 0)
+    return old_ambiguity_metric_of_o;
+  if (ambiguity_metric_of_b < 2 // If bocage is unambiguous
+    || O_is_Default(o) // or we are using the default order
+    || High_Rank_Count_of_O(o) <= 0 // or we are not using high rank order
+  ) { // then ...
+    Ambiguity_Metric_of_O(o) = ambiguity_metric_of_b; // copy the bocage metric
+    return ambiguity_metric_of_b; // and return it.
+  }
+  @<Compute ambiguity metric of ordering by high rank@>@;
   return Ambiguity_Metric_of_O(o);
+}
+
+@ If we are here,
+the caller has made sure
+the bocage is ambiguous,
+and that we are using the high rank order.
+@<Compute ambiguity metric of ordering by high rank@> =
+{
+    Ambiguity_Metric_of_O(o) = ambiguity_metric_of_b; // for now copy the bocage metric
 }
 
 @*0 Order is nulling?.
@@ -11477,7 +11500,6 @@ int marpa_o_rank( Marpa_Order o)
   const AND and_nodes = ANDs_of_B (b);
   const int or_node_count_of_b = OR_Count_of_B (b);
   int or_node_id = 0;
-  int ambiguity_metric = 1;
 
   while (or_node_id < or_node_count_of_b)
     {
@@ -11486,7 +11508,6 @@ int marpa_o_rank( Marpa_Order o)
         @<Sort |work_or_node| for "high rank only"@>@;
       or_node_id++;
     }
-  Ambiguity_Metric_of_O(o) = ambiguity_metric;
 }
 
 @ @<Sort |work_or_node| for "high rank only"@> =
@@ -11521,7 +11542,6 @@ int marpa_o_rank( Marpa_Order o)
       {
         int final_count = (order - order_base) - 1;
         *order_base = final_count;
-        ambiguity_metric = MAX (ambiguity_metric, final_count);
         marpa_obs_confirm_fast (obs, (int)sizeof (ANDID) * (final_count + 1));
         and_node_orderings[or_node_id] = marpa_obs_finish (obs);
       }
