@@ -3241,12 +3241,18 @@ to zero, it too is destroyed.
 @section  Accessors
 @deftypefun int marpa_b_ambiguity_metric (Marpa_Bocage @var{b})
 Returns an ambiguity metric.
-For the time being, it is vaguely defined, but it does differentiate
-between an ambiguous and an unambiguous bocage.
+The metric is 1 is the parse is unambiguous.
+If the metric is 2 or greater,
+the parse is ambiguous.
+It was originally intended to have values greater
+than 2 be an cheaply computed
+estimate of the degree of ambiguity,
+but a satisfactory scheme for this
+has yet to be implemented.
 
 Return value on success:
 1 if the bocage is not for an ambiguous parse;
-a number greater than 1 if the bocage is for an ambiguous parse.
+2 or greater if the bocage is for an ambiguous parse.
 
 Failures: On failure, @minus{}2.
 
@@ -3341,12 +3347,27 @@ base grammar, if necessary.
 @section  Accessors
 @deftypefun int marpa_o_ambiguity_metric (Marpa_Order @var{o})
 Returns an ambiguity metric.
-For the time being, it is vaguely defined, but it does differentiate
-between an ambiguous and an unambiguous ordering.
+The metric is 1 is the parse is unambiguous.
+If the metric is 2 or greater,
+the parse is ambiguous.
+It was originally intended to have values greater
+than 2 be an cheaply computed
+estimate of the degree of ambiguity,
+but a satisfactory scheme for this
+has yet to be implemented.
+
+If the ordering is not already frozen,
+it will be frozen on return from
+@code{marpa_o_ambiguity_metric()}.
+@code{marpa_o_ambiguity_metric()}
+is considered an ``accessor'',
+because It is assumed that the ordering is frozen
+when @code{marpa_o_ambiguity_metric()}
+is called.
 
 Return value on success:
 1 if the ordering is not for an ambiguous parse;
-a number greater than 1 if the ordering is for an ambiguous parse.
+2 or greater if the ordering is for an ambiguous parse.
 
 Failures: On failure, @minus{}2.
 

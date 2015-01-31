@@ -1593,7 +1593,8 @@ Marpa_Grammar g, Marpa_Symbol_ID xsy_id, int value)
 @ @<Function definitions@> =
 int
 marpa_g_completion_symbol_activate (Marpa_Grammar g,
-                                    Marpa_Symbol_ID xsy_id, int reactivate)
+                                    Marpa_Symbol_ID xsy_id,
+                                    int reactivate)
 {
     @<Return |-2| on failure@>@;
     @<Fail if fatal error@>@;
@@ -1602,7 +1603,8 @@ marpa_g_completion_symbol_activate (Marpa_Grammar g,
     @<Soft fail if |xsy_id| does not exist@>@;
     switch (reactivate) {
     case 0:
-        XSYID_Completion_Event_Starts_Active (xsy_id) = reactivate;
+        XSYID_Completion_Event_Starts_Active (xsy_id)
+          = Boolean(reactivate);
         return 0;
     case 1:
         if (!XSYID_is_Completion_Event( xsy_id)) {
@@ -1610,7 +1612,8 @@ marpa_g_completion_symbol_activate (Marpa_Grammar g,
           was not set up for them. */
           MARPA_ERROR (MARPA_ERR_SYMBOL_IS_NOT_COMPLETION_EVENT);
         }
-        XSYID_Completion_Event_Starts_Active (xsy_id) = reactivate;
+        XSYID_Completion_Event_Starts_Active (xsy_id)
+          = Boolean(reactivate);
         return 1;
     }
     MARPA_ERROR (MARPA_ERR_INVALID_BOOLEAN);
@@ -1660,7 +1663,8 @@ Marpa_Grammar g, Marpa_Symbol_ID xsy_id, int value)
 @ @<Function definitions@> =
 int
 marpa_g_nulled_symbol_activate (Marpa_Grammar g,
-                                    Marpa_Symbol_ID xsy_id, int reactivate)
+                                    Marpa_Symbol_ID xsy_id,
+                                    int reactivate)
 {
     @<Return |-2| on failure@>@;
     @<Fail if fatal error@>@;
@@ -1669,7 +1673,8 @@ marpa_g_nulled_symbol_activate (Marpa_Grammar g,
     @<Soft fail if |xsy_id| does not exist@>@;
     switch (reactivate) {
     case 0:
-        XSYID_Nulled_Event_Starts_Active (xsy_id) = reactivate;
+        XSYID_Nulled_Event_Starts_Active (xsy_id)
+          = Boolean(reactivate);
         return 0;
     case 1:
         if (!XSYID_is_Nulled_Event( xsy_id)) {
@@ -1677,7 +1682,8 @@ marpa_g_nulled_symbol_activate (Marpa_Grammar g,
           was not set up for them. */
           MARPA_ERROR (MARPA_ERR_SYMBOL_IS_NOT_COMPLETION_EVENT);
         }
-        XSYID_Nulled_Event_Starts_Active (xsy_id) = reactivate;
+        XSYID_Nulled_Event_Starts_Active (xsy_id)
+          = Boolean(reactivate);
         return 1;
     }
     MARPA_ERROR (MARPA_ERR_INVALID_BOOLEAN);
@@ -1727,7 +1733,8 @@ Marpa_Grammar g, Marpa_Symbol_ID xsy_id, int value)
 @ @<Function definitions@> =
 int
 marpa_g_prediction_symbol_activate (Marpa_Grammar g,
-                                    Marpa_Symbol_ID xsy_id, int reactivate)
+                                    Marpa_Symbol_ID xsy_id,
+                                    int reactivate)
 {
     @<Return |-2| on failure@>@;
     @<Fail if fatal error@>@;
@@ -1736,7 +1743,8 @@ marpa_g_prediction_symbol_activate (Marpa_Grammar g,
     @<Soft fail if |xsy_id| does not exist@>@;
     switch (reactivate) {
     case 0:
-        XSYID_Prediction_Event_Starts_Active (xsy_id) = reactivate;
+        XSYID_Prediction_Event_Starts_Active (xsy_id)
+        = Boolean(reactivate);
         return 0;
     case 1:
         if (!XSYID_is_Prediction_Event( xsy_id)) {
@@ -1744,7 +1752,8 @@ marpa_g_prediction_symbol_activate (Marpa_Grammar g,
           was not set up for them. */
           MARPA_ERROR (MARPA_ERR_SYMBOL_IS_NOT_COMPLETION_EVENT);
         }
-        XSYID_Prediction_Event_Starts_Active (xsy_id) = reactivate;
+        XSYID_Prediction_Event_Starts_Active (xsy_id)
+        = Boolean(reactivate);
         return 1;
     }
     MARPA_ERROR (MARPA_ERR_INVALID_BOOLEAN);
@@ -8630,7 +8639,7 @@ Leo item have not been fully populated.
 		if (!IRL_is_Leo (leo_base_irl))
 		  goto NEXT_NSYID;
 		potential_leo_penult_ahm = leo_base_ahm;
-            MARPA_ASSERT(potential_leo_penult_ahm);
+            MARPA_ASSERT((int)potential_leo_penult_ahm);
 	    {
 	      const AHM trailhead_ahm =
 		Next_AHM_of_AHM (potential_leo_penult_ahm);
@@ -10910,8 +10919,7 @@ typedef struct s_and_node AND_Object;
 	  dand = Next_DAND_of_DAND (dand);
 	}
       AND_Count_of_OR (or_node) = and_count_of_parent_or;
-      Ambiguity_Metric_of_B (b) =
-	MAX (Ambiguity_Metric_of_B (b), and_count_of_parent_or);
+      if (and_count_of_parent_or > 1) Ambiguity_Metric_of_B (b) = 2;
     }
   AND_Count_of_B (b) = and_node_id;
   MARPA_ASSERT (and_node_id == unique_draft_and_node_count);
@@ -11354,8 +11362,9 @@ int marpa_o_ambiguity_metric(Marpa_Order o)
   const int old_ambiguity_metric_of_o
     = Ambiguity_Metric_of_O(o);
   const int ambiguity_metric_of_b
-    = Ambiguity_Metric_of_B(b);
+    = (Ambiguity_Metric_of_B(b) <= 1 ? 1 : 2);
   @<Fail if fatal error@>@;
+  O_is_Frozen(o) = 1;
   if (old_ambiguity_metric_of_o >= 0)
     return old_ambiguity_metric_of_o;
   if (ambiguity_metric_of_b < 2 // If bocage is unambiguous
@@ -11375,7 +11384,40 @@ the bocage is ambiguous,
 and that we are using the high rank order.
 @<Compute ambiguity metric of ordering by high rank@> =
 {
-    Ambiguity_Metric_of_O(o) = ambiguity_metric_of_b; // for now copy the bocage metric
+    ANDID ** const and_node_orderings = o->t_and_node_orderings;
+    ORID* top_of_stack;
+    const ORID root_or_id = Top_ORID_of_B (b);
+    FSTACK_DECLARE(or_node_stack, ORID)@;
+    const int or_count = OR_Count_of_B (b);
+    Bit_Vector bv_orid_was_stacked; // do not stack an ORID twice
+    Ambiguity_Metric_of_O(o) = 1;
+    /* initialize the ambiguity metric
+    to unambiguous */
+    bv_orid_was_stacked = bv_create(or_count);
+    FSTACK_INIT (or_node_stack, ORID, or_count);
+    *(FSTACK_PUSH(or_node_stack)) = root_or_id;
+    bv_bit_set(bv_orid_was_stacked, root_or_id);
+    while ((top_of_stack = FSTACK_POP (or_node_stack)))
+    {
+      const ORID or_id = *top_of_stack;
+      const OR or_node = OR_of_B_by_ID (b, or_id);
+      ANDID *ordering = and_node_orderings[or_id];
+      int and_count = ordering ? ordering[0] : AND_Count_of_OR (or_node);
+      if (and_count > 1)
+        {
+          /* If there the and-node count is
+             greater than 1, the and-node,
+             is ambiguous */
+          Ambiguity_Metric_of_O (o) = 2;
+          /* ... and so is the entire ordering */
+          goto END_OR_NODE_LOOP;
+          // ... and we are done
+        }
+    }
+    END_OR_NODE_LOOP: ;
+    FSTACK_DESTROY(or_node_stack);
+    bv_free(bv_orid_was_stacked);
+    // for now copy the bocage metric
 }
 
 @*0 Order is nulling?.
