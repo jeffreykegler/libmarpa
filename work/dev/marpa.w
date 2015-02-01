@@ -11385,6 +11385,7 @@ and that we are using the high rank order.
 @<Compute ambiguity metric of ordering by high rank@> =
 {
     ANDID ** const and_node_orderings = o->t_and_node_orderings;
+    const AND and_nodes = ANDs_of_B (b);
     ORID* top_of_stack;
     const ORID root_or_id = Top_ORID_of_B (b);
     FSTACK_DECLARE(or_node_stack, ORID)@;
@@ -11413,6 +11414,28 @@ and that we are using the high rank order.
           goto END_OR_NODE_LOOP;
           // ... and we are done
         }
+      {
+        const ANDID and_id = ordering ? ordering[1] : First_ANDID_of_OR (or_node);
+        const AND and_node = and_nodes + and_id;
+        const OR predecessor_or = Predecessor_OR_of_AND (and_node);
+        const OR cause_or = Cause_OR_of_AND (and_node);
+        if (predecessor_or)
+          {
+            const ORID predecessor_or_id = ID_of_OR (predecessor_or);
+            if (!bv_bit_test_then_set (bv_orid_was_stacked, predecessor_or_id))
+              {
+                *(FSTACK_PUSH (or_node_stack)) = predecessor_or_id;
+              }
+          }
+        if (cause_or)
+          {
+            const ORID cause_or_id = ID_of_OR (cause_or);
+            if (!bv_bit_test_then_set (bv_orid_was_stacked, cause_or_id))
+              {
+                *(FSTACK_PUSH (or_node_stack)) = cause_or_id;
+              }
+          }
+      }
     }
     END_OR_NODE_LOOP: ;
     FSTACK_DESTROY(or_node_stack);
