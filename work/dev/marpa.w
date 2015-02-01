@@ -11427,7 +11427,7 @@ and that we are using the high rank order.
                 *(FSTACK_PUSH (or_node_stack)) = predecessor_or_id;
               }
           }
-        if (cause_or)
+        if (cause_or && !OR_is_Token(cause_or))
           {
             const ORID cause_or_id = ID_of_OR (cause_or);
             if (!bv_bit_test_then_set (bv_orid_was_stacked, cause_or_id))
