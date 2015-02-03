@@ -7578,7 +7578,6 @@ PRIVATE int alternative_insert(RECCE r, ALT new_alternative)
   @<Unpack recognizer objects@>@;
   @<Return |-2| on failure@>@;
 
-
   @<Fail if recognizer started@>@;
   {
     @<Declare |marpa_r_start_input| locals@>@;
@@ -7586,6 +7585,7 @@ PRIVATE int alternative_insert(RECCE r, ALT new_alternative)
     @<Set up terminal-related boolean vectors@>@;
     G_EVENTS_CLEAR(g);
     if (G_is_Trivial(g)) {
+        trigger_trivial_events(g);
         @<Set |r| exhausted@>@;
         goto CLEANUP;
     }
@@ -8440,6 +8440,28 @@ PRIVATE void trigger_events(RECCE r)
         }
     }
   marpa_obs_free (trigger_events_obs);
+}
+
+@ Trigger events for trivial grammars.
+A trivial grammar is one which only accepts
+the null string.
+
+This code takes no special measure to ensure
+that the order of nulled events is the
+same as in the non-trivial case.
+No guarantee of the order should be documented.
+@<Function definitions@> =
+PRIVATE void trigger_trivial_events(GRAMMAR g)
+{
+  int cil_ix;
+  const XSY start_xsy = XSY_by_ID (g->t_start_xsy_id);
+  const CIL nulled_xsyids = Nulled_XSYIDs_of_XSY (start_xsy);
+  const int cil_count = Count_of_CIL (nulled_xsyids);
+  for (cil_ix = 0; cil_ix < cil_count; cil_ix++)
+    {
+      const XSYID nulled_xsyid = Item_of_CIL (nulled_xsyids, cil_ix);
+      int_event_new (g, MARPA_EVENT_SYMBOL_NULLED, nulled_xsyid);
+    }
 }
 
 @ @<Function definitions@> =

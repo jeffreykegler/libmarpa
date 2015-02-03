@@ -61,6 +61,20 @@ symbol_name (Marpa_Symbol_ID id)
 };
 
 int
+is_nullable (Marpa_Symbol_ID id)
+{
+  if (id == S_top) return 1;
+  if (id == S_A1) return 1;
+  if (id == S_A2) return 1;
+  if (id == S_B1) return 1;
+  if (id == S_B2) return 1;
+  if (id == S_C1) return 1;
+  if (id == S_C2) return 1;
+  return 0;
+};
+
+
+int
 main (int argc, char *argv[])
 {
   const unsigned char *p, *eof;
@@ -76,7 +90,7 @@ main (int argc, char *argv[])
   /* Longest rule is <= 4 symbols */
   Marpa_Symbol_ID rhs[4];
 
-  plan(4);
+  plan(13);
 
   marpa_c_init (&marpa_configuration);
   g = marpa_g_new (&marpa_configuration);
@@ -153,18 +167,48 @@ main (int argc, char *argv[])
 
   {
     Marpa_Event event;
+    const int highest_symbol_id = marpa_g_highest_symbol_id (g);
     int exhausted_event_triggered = 0;
+    int spurious_events = 0;
+    int spurious_nulled_events = 0;
     int event_ix;
-    int event_count = marpa_g_event_count (g);
-    ok ((event_count == 1), "event count at earleme 0 is %ld",
+    const int event_count = marpa_g_event_count (g);
+    int *nulled_symbols = calloc ((highest_symbol_id + 1), sizeof (int));
+    if (!nulled_symbols) abort();
+    ok ((event_count == 8), "event count at earleme 0 is %ld",
 	(long) event_count);
     for (event_ix = 0; event_ix < event_count; event_ix++)
       {
 	int event_type = marpa_g_event (g, &event, event_ix);
+	if (event_type == MARPA_EVENT_SYMBOL_NULLED)
+	  {
+	    const Marpa_Symbol_ID event_symbol_id = marpa_g_event_value(&event);
+	    nulled_symbols[event_symbol_id]++;
+	    continue;
+	  }
+	if (event_type == MARPA_EVENT_EXHAUSTED)
+	  {
+	    exhausted_event_triggered++;
+	    continue;
+	  }
 	printf ("event type is %ld\n", (long) event_type);
-	if (event_type == MARPA_EVENT_EXHAUSTED) exhausted_event_triggered++;
-    }
+	spurious_events++;
+      }
+    ok ((spurious_events == 0),
+	"spurious events triggered: %ld", (long) spurious_events);
     ok (exhausted_event_triggered, "exhausted event triggered");
+    for (i = 0; i <= highest_symbol_id; i++)
+      {
+	if (is_nullable (i))
+	  {
+	    ok (1, "nulled event triggered for %s", symbol_name (i));
+	    continue;
+	  }
+	spurious_nulled_events++;
+      }
+    ok ((spurious_nulled_events == 0), "spurious nulled events triggered = %ld",
+	(long) spurious_nulled_events);
+    free (nulled_symbols);
   }
 
   return 0;
