@@ -8375,6 +8375,27 @@ PRIVATE void trigger_events(RECCE r)
         }
     }
 
+  if (Ord_of_YS (current_earley_set) <= 0)
+    {
+      /* Because we special-case null parses, looking
+        at the Earley items of the first Earley
+        does not give us all the nulled symbols at
+        earleme 0.  If the parse can turn out to be zero length,
+        all nullables derived from the start symbol
+        (including itself) will be nulled,
+        and therefore all of them
+        should be null events at earleme 0. */
+      int cil_ix;
+      const XSY start_xsy = XSY_by_ID(g->t_start_xsy_id);
+      const CIL nulled_xsyids = Nulled_XSYIDs_of_XSY (start_xsy);
+      const int cil_count = Count_of_CIL (nulled_xsyids);
+      for (cil_ix = 0; cil_ix < cil_count; cil_ix++)
+        {
+          const XSYID nulled_xsyid = Item_of_CIL (nulled_xsyids, cil_ix);
+          bv_bit_set (bv_nulled_event_trigger, nulled_xsyid);
+        }
+    }
+
   for (start = 0; bv_scan (bv_completion_event_trigger, start, &min, &max);
        start = max + 2)
     {
