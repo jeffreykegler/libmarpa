@@ -7585,7 +7585,7 @@ PRIVATE int alternative_insert(RECCE r, ALT new_alternative)
     @<Set up terminal-related boolean vectors@>@;
     G_EVENTS_CLEAR(g);
     if (G_is_Trivial(g)) {
-        trigger_trivial_events(r);
+        return_value += trigger_trivial_events(r);
         @<Set |r| exhausted@>@;
         goto CLEANUP;
     }
@@ -8451,9 +8451,10 @@ that the order of nulled events is the
 same as in the non-trivial case.
 No guarantee of the order should be documented.
 @<Function definitions@> =
-PRIVATE void trigger_trivial_events(RECCE r)
+PRIVATE int trigger_trivial_events(RECCE r)
 {
   int cil_ix;
+  int event_count = 0;
   GRAMMAR g = G_of_R(r);
   const XSY start_xsy = XSY_by_ID (g->t_start_xsy_id);
   const CIL nulled_xsyids = Nulled_XSYIDs_of_XSY (start_xsy);
@@ -8463,8 +8464,10 @@ PRIVATE void trigger_trivial_events(RECCE r)
       const XSYID nulled_xsyid = Item_of_CIL (nulled_xsyids, cil_ix);
       if (lbv_bit_test(r->t_lbv_xsyid_nulled_event_is_active, nulled_xsyid)) {
         int_event_new (g, MARPA_EVENT_SYMBOL_NULLED, nulled_xsyid);
+        event_count++;
       }
     }
+    return event_count;
 }
 
 @ @<Function definitions@> =
