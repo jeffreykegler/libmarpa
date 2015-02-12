@@ -10,7 +10,11 @@ target_link_libraries(rule1 ${LIBMARPA_STATIC} ${LIBTAP})
 add_executable(trivial trivial.c)
 target_link_libraries(trivial ${LIBMARPA_STATIC} ${LIBTAP})
 
+add_executable(trivial1 trivial1.c)
+target_link_libraries(trivial1 ${LIBMARPA_STATIC} ${LIBTAP})
+
 add_test(rule1 rule1)
 add_test(trivial trivial)
+add_test(trivial1 trivial1)
 
 # vim: expandtab shiftwidth=4:

@@ -74,9 +74,24 @@ timestamp/cm_debug.stamp: timestamp/cm_dist.stamp
 	date > timestamp/cm_debug.stamp
 
 timestamp/do_test.stamp: timestamp/cm_debug.stamp
+	rm -rf do_test
+	mkdir do_test
 	cd do_test && cmake ../test && make VERBOSE=1
 	test -d timestamp || mkdir timestamp
 	date > timestamp/do_test.stamp
 
 test: work_install timestamp/do_test.stamp
-	cd do_test && ./tap/runtests -l ../test/TESTS
+	cd do_test && make && ./tap/runtests -l ../test/TESTS
+
+test_clean:
+	rm -f timestamp/do_test.stamp
+
+clean:
+	rm -rf work/doc
+	rm -rf work/doc1
+	rm -rf work/stage
+	rm -rf cm_build
+	rm -rf cm_dist
+	rm -rf do_test
+	rm -rf timestamp
+
