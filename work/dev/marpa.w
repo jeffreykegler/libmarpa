@@ -177,7 +177,7 @@ where "Finite Automaton" must still be abbreviated as "FA"
 to allow the line to fit into 80 characters,
 really any better?
 My experience say no.
-@ I have a lot of practice coming back to pages of both, cold, 
+@ I have a lot of practice coming back to pages of both, cold,
 and trying to figure them out.
 Both are daunting, but the abbreviations are more elegant, and look
 better on the page, while unabbreviated names routinely pose almost insoluble
@@ -256,7 +256,7 @@ claim a theoretical complexity better than
 the practical worst-case complexity.
 Often, however, for theoretical complexity I consider
 myself entitled to claim
-the time complexity for a 
+the time complexity for a
 better algorithm, even thought that is not the one
 used in the actual implementation.
 @
@@ -327,7 +327,7 @@ which designates one of libmarpa's objects.
 @*0 Objects.
 
 When I find it useful,
-libmarpa 
+libmarpa
 uses an object-oriented approach.
 One such case is the classification
 and naming of external functions.
@@ -460,7 +460,7 @@ of |YIM| and |YIM_Object|.
 where C89 reserved names are not an issue.
 where C89 reserved names are not an issue.
 \li es: Earley set.  Used for clarity
-in a few places were 
+in a few places were
 \li g: Grammar.
 \li |_ix|, |_IX|, ix, IX: Index.  Often used as a suffix.
 \li JEARLEME: Used instead of |EARLEME| because C89 reserves
@@ -527,7 +527,7 @@ the API document.
 keep the API documentation in sync with
 the source code.)
 To change error codes or public function
-prototypes, look at 
+prototypes, look at
 |api.texi| and the scripts which process it.
 
 @** The public header file.
@@ -701,7 +701,7 @@ grammar_ref (GRAMMAR g)
   g->t_ref_count++;
   return g;
 }
-Marpa_Grammar 
+Marpa_Grammar
 marpa_g_ref (Marpa_Grammar g)
 { return grammar_ref(g); }
 
@@ -892,7 +892,7 @@ g->t_max_rule_length = 0;
 
 @*0 The default rank.
 The default rank for rules and symbols.
-For minimum rank we want 
+For minimum rank we want
 negative numbers rounded toward 0, not down.
 @ @d MAXIMUM_RANK (INT_MAX/4)
 @d MINIMUM_RANK (INT_MIN/4 + (INT_MIN%4 > 0 ? 1 : 0))
@@ -1151,7 +1151,7 @@ cilar_destroy(&(g)->t_cilar);
 @ {\bf To Do}: @^To Do@>
 I probably should delete this.
 I don't use it in the SLIF.
-@ 
+@
 The grammar needs a flag for a fatal error.
 This is an |int| for defensive coding reasons.
 Since I am paying the code of an |int|,
@@ -1264,7 +1264,7 @@ marpa_g_symbol_new (Marpa_Grammar g)
 @<Bit aligned XSY elements@> = BITFIELD t_is_start:1;
 @ @<Initialize XSY elements@> = xsy->t_is_start = 0;
 @ @<Function definitions@> =
-int marpa_g_symbol_is_start( Marpa_Grammar g, Marpa_Symbol_ID xsy_id) 
+int marpa_g_symbol_is_start( Marpa_Grammar g, Marpa_Symbol_ID xsy_id)
 {
     @<Return |-2| on failure@>@;
     @<Fail if fatal error@>@;
@@ -1274,7 +1274,7 @@ int marpa_g_symbol_is_start( Marpa_Grammar g, Marpa_Symbol_ID xsy_id)
 }
 
 @*0 Symbol rank.
-@<Int aligned XSY elements@> = 
+@<Int aligned XSY elements@> =
   Marpa_Rank t_rank;
 @ @<Initialize XSY elements@> =
 xsy->t_rank = Default_Rank_of_G(g);
@@ -1337,7 +1337,7 @@ This value describes the semantics
 for a symbol when it is nulling.
 Marpa optimizes for the case
 where the application
-does not care about the value of 
+does not care about the value of
 a symbol -- that is, the semantics
 is arbitrary.
 @d XSY_is_Valued(symbol) ((symbol)->t_is_valued)
@@ -1975,7 +1975,7 @@ int _marpa_g_nsy_count(Marpa_Grammar g) {
 @<Bit aligned NSY elements@> = BITFIELD t_is_start:1;
 @ @<Initialize NSY elements@> = NSY_is_Start(nsy) = 0;
 @ @<Function definitions@> =
-int _marpa_g_nsy_is_start( Marpa_Grammar g, Marpa_NSY_ID nsy_id) 
+int _marpa_g_nsy_is_start( Marpa_Grammar g, Marpa_NSY_ID nsy_id)
 {
     @<Return |-2| on failure@>@;
     @<Fail if fatal error@>@;
@@ -1989,7 +1989,7 @@ int _marpa_g_nsy_is_start( Marpa_Grammar g, Marpa_NSY_ID nsy_id)
 @<Bit aligned NSY elements@> = BITFIELD t_is_lhs:1;
 @ @<Initialize NSY elements@> = NSY_is_LHS(nsy) = 0;
 @ @<Function definitions@> =
-int _marpa_g_nsy_is_lhs( Marpa_Grammar g, Marpa_NSY_ID nsy_id) 
+int _marpa_g_nsy_is_lhs( Marpa_Grammar g, Marpa_NSY_ID nsy_id)
 {
     @<Return |-2| on failure@>@;
     @<Fail if fatal error@>@;
@@ -2512,7 +2512,7 @@ added to the list of rules.
 @<Int aligned rule elements@> = Marpa_Rule_ID t_id;
 
 @*0 Rule rank.
-@<Int aligned rule elements@> = 
+@<Int aligned rule elements@> =
   Marpa_Rank t_rank;
 @ @<Initialize rule elements@> =
 rule->t_rank = Default_Rank_of_G(g);
@@ -2560,11 +2560,11 @@ The ``rule ranks high'' setting affects the
 ranking of the null variants, for rules
 with properly nullable symbols on their
 RHS.
-@<Bit aligned rule elements@> = 
+@<Bit aligned rule elements@> =
   BITFIELD t_null_ranks_high:1;
 @ @<Initialize rule elements@> =
 rule->t_null_ranks_high = 0;
-@ 
+@
 @d Null_Ranks_High_of_RULE(rule) ((rule)->t_null_ranks_high)
 @<Function definitions@> =
 int marpa_g_rule_null_high (Marpa_Grammar g,
@@ -3130,7 +3130,7 @@ Marpa's logic divides roughly into three pieces -- grammar precomputation,
 the actual parsing of input tokens,
 and semantic evaluation.
 Precomputing the grammar is complex enough to divide into several
-stages of its own, which are 
+stages of its own, which are
 covered in the next few
 sections.
 This section describes the top-level method for precomputation,
@@ -3169,7 +3169,7 @@ int marpa_g_precompute(Marpa_Grammar g)
     }
 
     @t}\comment{@>
-    //  Phase 2: rewrite the grammar into internal form 
+    //  Phase 2: rewrite the grammar into internal form
     @<Initialize IRL stack@>@;
     @<Initialize NSY stack@>@;
     @<Rewrite grammar |g| into CHAF form@>@;
@@ -3497,7 +3497,7 @@ Bit_Vector empty_lhs_v = NULL;
 RULEID** xrl_list_x_rh_sym = NULL;
 RULEID** xrl_list_x_lh_sym = NULL;
 
-@ @<Census nullable symbols@> = 
+@ @<Census nullable symbols@> =
 {
   int min, max, start;
   XSYID xsy_id;
@@ -3525,7 +3525,7 @@ RULEID** xrl_list_x_lh_sym = NULL;
     }
 }
 
-@ @<Census productive symbols@> = 
+@ @<Census productive symbols@> =
 {
   productive_v = bv_obs_shadow (obs_precompute, nullable_v);
   bv_or (productive_v, nullable_v, terminal_v);
@@ -3611,7 +3611,7 @@ Bit_Matrix reach_matrix = NULL;
 
 @ |accessible_v| is a pointer into the |reach_matrix|.
 Therefore there is no code to free it.
-@<Census accessible symbols@> = 
+@<Census accessible symbols@> =
 {
   Bit_Vector accessible_v =
     matrix_row (reach_matrix, start_xsy_id);
@@ -3631,7 +3631,7 @@ Therefore there is no code to free it.
 
 @ A symbol is nulling if and only if it is an LHS symbol which does not
 reach a terminal symbol.
-@<Census nulling symbols@> = 
+@<Census nulling symbols@> =
 {
   Bit_Vector reaches_terminal_v = bv_shadow (terminal_v);
   int nulling_terminal_found = 0;
@@ -3736,7 +3736,7 @@ But currently we don't both -- we just mark the rule unproductive.
     @t}\comment{@>
      /* A sequence rule is nulling if its RHS is nulling */
   XRL_is_Nulling (xrl) = XSY_is_Nulling (rh_xsy);
-    
+
     @t}\comment{@>
      /* A sequence rule is productive
      if it is nulling or if its RHS is productive */
@@ -3786,7 +3786,7 @@ prior to valuator trying to assign semantics to rules
 with them on the LHS.
 Better to mark them valued now,
 and cause an error in the recognizer.
-@<Mark valued symbols@> = 
+@<Mark valued symbols@> =
 if (0)
   {
     @t}\comment{@>
@@ -3815,13 +3815,13 @@ And it may happen through a nullable derivation.
 The derivation may be ambiguous -- in other words,
 |A| nullifies |B| if a nulled |B| can be derived from a nulled |A|.
 Change so that this runs only if there are prediction events.
-@<Populate nullification CILs@> = 
+@<Populate nullification CILs@> =
 {
   XSYID xsyid;
   XRLID xrlid;
     @t}\comment{@>
   /* Use this to make sure we have enough CILAR buffer space */
-  int nullable_xsy_count = 0; 
+  int nullable_xsy_count = 0;
 
     @t}\comment{@>
    /* This matrix is large and very temporary,
@@ -3861,7 +3861,7 @@ Change so that this runs only if there are prediction events.
     {
       Bit_Vector bv_nullifications_by_to_xsy =
         matrix_row (nullification_matrix, xsyid);
-      Nulled_XSYIDs_of_XSYID (xsyid) = 
+      Nulled_XSYIDs_of_XSYID (xsyid) =
         cil_bv_add(&g->t_cilar, bv_nullifications_by_to_xsy);
     }
     my_free(matrix_buffer);
@@ -4183,7 +4183,7 @@ end before the second proper nullable (or factor).
       @<Add PP CHAF rule for proper continuation@>;
     }
     @<Add PN CHAF rule for nullable continuation@>;
-    { 
+    {
       const int real_symbol_count = piece_end - piece_start + 1;
       @<Add NP CHAF rule for proper continuation@>;
     }
@@ -4230,7 +4230,7 @@ the Marpa parse engine.
         second_factor_position - piece_start;
       const int chaf_irl_length = rewrite_xrl_length - piece_start;
       const int real_symbol_count = chaf_irl_length;
- 
+
       IRL chaf_irl = irl_start (g, chaf_irl_length);
       LHSID_of_IRL (chaf_irl) = current_lhs_nsyid;
       for (piece_ix = 0; piece_ix < first_nulling_piece_ix; piece_ix++)
@@ -4274,7 +4274,7 @@ the Marpa parse engine.
 }
 
 @ The PP Rule.
-@<Add PP CHAF rule for proper continuation@> = 
+@<Add PP CHAF rule for proper continuation@> =
 {
   int piece_ix;
   const int chaf_irl_length = (piece_end - piece_start) + 2;
@@ -4292,7 +4292,7 @@ the Marpa parse engine.
 }
 
 @ The PN Rule.
-@<Add PN CHAF rule for proper continuation@> = 
+@<Add PN CHAF rule for proper continuation@> =
 {
   int piece_ix;
   const int second_nulling_piece_ix = second_factor_position - piece_start;
@@ -4320,7 +4320,7 @@ the Marpa parse engine.
 }
 
 @ The NP Rule.
-@<Add NP CHAF rule for proper continuation@> = 
+@<Add NP CHAF rule for proper continuation@> =
 {
   int piece_ix;
   const int first_nulling_piece_ix = first_factor_position - piece_start;
@@ -4348,7 +4348,7 @@ the Marpa parse engine.
 }
 
 @ The NN Rule.
-@<Add NN CHAF rule for proper continuation@> = 
+@<Add NN CHAF rule for proper continuation@> =
 {
   int piece_ix;
   const int first_nulling_piece_ix = first_factor_position - piece_start;
@@ -4400,7 +4400,7 @@ Open block, declarations and setup.
 }
 
 @ The PP Rule.
-@<Add final CHAF PP rule for two factors@> = 
+@<Add final CHAF PP rule for two factors@> =
 {
   int piece_ix;
   const int chaf_irl_length = (piece_end - piece_start) + 1;
@@ -4525,7 +4525,7 @@ a nulling rule.
 }
 
 @ The P Rule.
-@<Add final CHAF P rule for one factor@> = 
+@<Add final CHAF P rule for one factor@> =
 {
   int piece_ix;
   const int chaf_irl_length = (piece_end - piece_start) + 1;
@@ -4575,7 +4575,7 @@ a nulling rule.
 
 @ Some of the code for adding CHAF rules is common to
 them all.
-This include the setting of many of the elements of the 
+This include the setting of many of the elements of the
 rule structure, and performing the call back.
 @<Add CHAF IRL@> =
 {
@@ -4778,7 +4778,7 @@ rule with |nonnullable_id| on the LHS.
 @** Aycock-Horspool item (AHM) code.
 These were formerly called AHFA items,
 where AHFA stood for ``Aycock-Horspool finite automaton''.
-The finite automaton is not longer in use, but its special 
+The finite automaton is not longer in use, but its special
 items (dotted rules which ignore nullables) remain very
 much a part of Marpa's parsing strategy.
 @<Public typedefs@> =
@@ -5178,7 +5178,7 @@ the XRL is |NULL|, XRL position is not defined.
 @ @d XRL_Position_of_AHM(ahm) ((ahm)->t_xrl_position)
 @d Raw_XRL_Position_of_AHM(ahm) (
     XRL_Position_of_AHM(ahm) < 0
-    ? Length_of_XRL(XRL_of_AHM(ahm)) 
+    ? Length_of_XRL(XRL_of_AHM(ahm))
     : XRL_Position_of_AHM(ahm)
   )
 @<Int aligned AHM elements@> =
@@ -5683,7 +5683,7 @@ with |S2| on its LHS.
               /* |inner_ahm == outer_ahm|
               is not treated as special case
               */
-              Event_Group_Size_of_AHM (outer_ahm)++; 
+              Event_Group_Size_of_AHM (outer_ahm)++;
             }
         }
     }
@@ -6128,7 +6128,7 @@ int t_active_event_count;
         lbv_clone (r->t_obs, g->t_lbv_xsyid_prediction_event_starts_active, xsy_count);
       r->t_active_event_count =
         bv_count ( g->t_lbv_xsyid_is_completion_event)
-        + bv_count ( g->t_lbv_xsyid_is_nulled_event) 
+        + bv_count ( g->t_lbv_xsyid_is_nulled_event)
         + bv_count ( g->t_lbv_xsyid_is_prediction_event) ;
     }
 
@@ -6137,7 +6137,7 @@ A boolean vector by symbol ID,
 with the bits set if the symbol is expected
 at the current earleme.
 @<Widely aligned recognizer elements@> = Bit_Vector t_bv_nsyid_is_expected;
-@ @<Initialize recognizer elements@> = 
+@ @<Initialize recognizer elements@> =
     r->t_bv_nsyid_is_expected = bv_obs_create( r->t_obs, nsy_count );
 @ Returns |-2| if there was a failure.
 The buffer is expected to be large enough to hold
@@ -6214,7 +6214,7 @@ All expected symbols are predicted symbols,
 but the reverse is not true --
 predicted non-terminals are not ``expected'' symbols.
 @<Widely aligned recognizer elements@> = LBV t_nsy_expected_is_event;
-@ @<Initialize recognizer elements@> = 
+@ @<Initialize recognizer elements@> =
   r->t_nsy_expected_is_event = lbv_obs_new0(r->t_obs, nsy_count);
 @ Returns |-2| if there was a failure.
 @<Function definitions@> =
@@ -6488,7 +6488,7 @@ unset otherwise.
 @<Widely aligned recognizer elements@> =
   Bit_Vector t_bv_irl_seen;
   MARPA_DSTACK_DECLARE(t_irl_cil_stack);
-@ @<Initialize recognizer elements@> = 
+@ @<Initialize recognizer elements@> =
   r->t_bv_irl_seen = bv_obs_create( r->t_obs, irl_count );
   MARPA_DSTACK_INIT2(r->t_irl_cil_stack, CIL);
 @ @<Destroy recognizer elements@> =
@@ -6500,13 +6500,13 @@ Both successful and failed parses can be ``exhausted".
 In many grammars,
 the parse is always exhausted as soon as it succeeds.
 And even if the parse is exhausted at a point
-where there is no good parse, 
+where there is no good parse,
 there may be good parses at earlemes prior to the
 earleme at which the parse became exhausted.
 @d R_is_Exhausted(r) ((r)->t_is_exhausted)
 @<Bit aligned recognizer elements@> = BITFIELD t_is_exhausted:1;
 @ @<Initialize recognizer elements@> = r->t_is_exhausted = 0;
-@ @<Set |r| exhausted@> = 
+@ @<Set |r| exhausted@> =
 {
   R_is_Exhausted (r) = 1;
   Input_Phase_of_R (r) = R_AFTER_INPUT;
@@ -6937,7 +6937,7 @@ earley_item_assign (const RECCE r, const YS set, const YS origin,
 
 @ The fatal threshold always applies.
 The warning threshold does not count against items added by a Leo expansion.
-@<Check count against Earley item thresholds@> = 
+@<Check count against Earley item thresholds@> =
 if (count >= r->t_earley_item_warning_threshold)
   {
     if (_MARPA_UNLIKELY (count >= YIM_FATAL_THRESHOLD))
@@ -6973,7 +6973,7 @@ PRIVATE_NOT_INLINE Marpa_Error_Code invalid_source_type_code(unsigned int type)
      switch (type) {
     case NO_SOURCE:
         return MARPA_ERR_SOURCE_TYPE_IS_NONE;
-    case SOURCE_IS_TOKEN: 
+    case SOURCE_IS_TOKEN:
         return MARPA_ERR_SOURCE_TYPE_IS_TOKEN;
     case SOURCE_IS_COMPLETION:
         return MARPA_ERR_SOURCE_TYPE_IS_COMPLETION;
@@ -6990,7 +6990,7 @@ Postdot items are of two kinds: Earley indexes
 and Leo items.
 The payload of an Earley index is simple:
 a pointer to an Earley item.
-The other elements of the YIX are overhead to 
+The other elements of the YIX are overhead to
 support the chain of postdot items for
 a postdot symbol.
 @d Next_PIM_of_YIX(yix) ((yix)->t_next)
@@ -7158,7 +7158,7 @@ attention in the source links.
 struct s_source;
 typedef struct s_source* SRC;
 typedef const struct s_source* SRC_Const;
-@ @<Source object structure@>= 
+@ @<Source object structure@>=
 struct s_token_source {
     NSYID t_nsyid;
     int t_value;
@@ -7167,7 +7167,7 @@ struct s_token_source {
 @ {\bf To Do}: @^To Do@>
 There are a lot of these and some tricks to reduce the
 space used can be justified.
-@<Source object structure@>= 
+@<Source object structure@>=
 struct s_source {
      void * t_predecessor;
      union {
@@ -7182,21 +7182,21 @@ struct s_source {
 @ @<Private typedefs@> =
 struct s_source_link;
 typedef struct s_source_link* SRCL;
-@ @<Source object structure@>= 
+@ @<Source object structure@>=
 struct s_source_link {
     SRCL t_next;
     struct s_source t_source;
 };
 typedef struct s_source_link SRCL_Object;
 
-@ @<Source object structure@>= 
+@ @<Source object structure@>=
 struct s_ambiguous_source {
     SRCL t_leo;
     SRCL t_token;
     SRCL t_completion;
 };
 
-@ @<Source object structure@>= 
+@ @<Source object structure@>=
 union u_source_container {
     struct s_ambiguous_source t_ambiguous;
     struct s_source_link t_unique;
@@ -7243,19 +7243,19 @@ union u_source_container {
 @d LV_First_Completion_SRCL_of_YIM(item) ((item)->t_container.t_ambiguous.t_completion)
 @d First_Completion_SRCL_of_YIM(item)
   ( Source_Type_of_YIM(item) == SOURCE_IS_COMPLETION ? (SRCL)SRCL_of_YIM(item) :
-  Source_Type_of_YIM(item) == SOURCE_IS_AMBIGUOUS ? 
+  Source_Type_of_YIM(item) == SOURCE_IS_AMBIGUOUS ?
     LV_First_Completion_SRCL_of_YIM(item) : NULL)
 
 @d LV_First_Token_SRCL_of_YIM(item) ((item)->t_container.t_ambiguous.t_token)
 @d First_Token_SRCL_of_YIM(item)
   ( Source_Type_of_YIM(item) == SOURCE_IS_TOKEN ? (SRCL)SRCL_of_YIM(item) :
-  Source_Type_of_YIM(item) == SOURCE_IS_AMBIGUOUS ? 
+  Source_Type_of_YIM(item) == SOURCE_IS_AMBIGUOUS ?
     LV_First_Token_SRCL_of_YIM(item) : NULL)
 
 @d LV_First_Leo_SRCL_of_YIM(item) ((item)->t_container.t_ambiguous.t_leo)
 @d First_Leo_SRCL_of_YIM(item)
   ( Source_Type_of_YIM(item) == SOURCE_IS_LEO ? (SRCL)SRCL_of_YIM(item) :
-  Source_Type_of_YIM(item) == SOURCE_IS_AMBIGUOUS ? 
+  Source_Type_of_YIM(item) == SOURCE_IS_AMBIGUOUS ?
     LV_First_Leo_SRCL_of_YIM(item) : NULL)
 
 @ Creates unique (that is, not ambiguous) SRCL's.
@@ -7455,7 +7455,7 @@ MARPA_DSTACK_INIT2(r->t_alternatives, ALT_Object);
 alternative, or -1 if the new alternative is a duplicate.
 (Duplicate alternatives should not be inserted.)
 @ A variation of binary search.
-@<Function definitions@> = 
+@<Function definitions@> =
 PRIVATE int
 alternative_insertion_point (RECCE r, ALT new_alternative)
 {
@@ -7535,7 +7535,7 @@ PRIVATE ALT alternative_pop(RECCE r, JEARLEME earleme)
   return MARPA_DSTACK_POP (*alternatives, ALT_Object);
 }
 
-@ This function inserts an alternative into the stack, 
+@ This function inserts an alternative into the stack,
 in sorted order,
 if the alternative is not a duplicate.
 It returns -1 if the alternative is a duplicate,
@@ -7613,7 +7613,7 @@ PRIVATE int alternative_insert(RECCE r, ALT new_alternative)
     MARPA_DSTACK_CLEAR(r->t_irl_cil_stack);
     *MARPA_DSTACK_PUSH(r->t_irl_cil_stack, CIL) = LHS_CIL_of_AHM(start_ahm);
 
-    while (1) 
+    while (1)
       {
         const CIL* const p_cil = MARPA_DSTACK_POP (r->t_irl_cil_stack, CIL);
         if (!p_cil)
@@ -8596,7 +8596,7 @@ This may require running benchmarks.
   Bit_Vector t_bv_lim_symbols;
   Bit_Vector t_bv_pim_symbols;
   void** t_pim_workarea;
-@ @<Allocate recognizer containers@> = 
+@ @<Allocate recognizer containers@> =
   r->t_bv_lim_symbols = bv_obs_create(r->t_obs, nsy_count);
   r->t_bv_pim_symbols = bv_obs_create(r->t_obs, nsy_count);
   r->t_pim_workarea = marpa_obs_new(r->t_obs, void*, nsy_count);
@@ -8662,7 +8662,7 @@ predecessor-dependent information set at this point.
 when the predecessor is known.
 The origin is set to |NULL|,
 and that will be used as an indicator that the fields
-of this 
+of this
 Leo item have not been fully populated.
 @d LIM_is_Populated(leo) (Origin_of_LIM(leo) != NULL)
 @<Start LIMs in PIM workarea@> =
@@ -8878,7 +8878,7 @@ In a populated LIM, this will not necessarily be the case.
 
 @ @<Widely aligned recognizer elements@> =
   void** t_lim_chain;
-@ @<Allocate recognizer containers@> = 
+@ @<Allocate recognizer containers@> =
   r->t_lim_chain = marpa_obs_new(r->t_obs, void*, 2*nsy_count);
 @ @<Create and populate a LIM chain@> = {
   int lim_chain_ix;
@@ -8946,7 +8946,7 @@ problems.
         /* |predecesssor_lim = NULL|,
        so that we are forced to break the LIM chain before it */
       if (!predecessor_lim)
-        break;                 
+        break;
       if (LIM_is_Populated (predecessor_lim))
         break;
       /* |predecesssor_lim| is populated, so that if we
@@ -8979,7 +8979,7 @@ Secondary optimzations ensure this is fairly cheap as well.
     @t}\comment{@>
   /* Initialize to be just the predcessor's list of AHM IDs.
        Overwrite if we need to add another. */
-  CIL_of_LIM (lim_to_process) = predecessor_cil;        
+  CIL_of_LIM (lim_to_process) = predecessor_cil;
   Predecessor_LIM_of_LIM (lim_to_process) = predecessor_lim;
   Origin_of_LIM (lim_to_process) = Origin_of_LIM (predecessor_lim);
   if (Event_Group_Size_of_AHM (new_top_ahm) > Count_of_CIL (predecessor_cil))
@@ -9178,7 +9178,7 @@ will never be referred to.
         @t}\comment{@>
         /* The initial YIM is always active and can {\bf never}
         be rejected. */
-        MARPA_ASSERT (!YIM_is_Initial(yim_to_clean) || 
+        MARPA_ASSERT (!YIM_is_Initial(yim_to_clean) ||
             (YIM_is_Active(yim_to_clean) && !YIM_is_Rejected(yim_to_clean)));
 
         @t}\comment{@>
@@ -9395,7 +9395,7 @@ change the parse to exhausted state.
         /* |empty_alt_ix| is the empty slot, into which the next acceptable alternative
         should be copied. */
         int empty_alt_ix = old_alt_ix;
-        for (old_alt_ix++; old_alt_ix < no_of_alternatives; old_alt_ix++) 
+        for (old_alt_ix++; old_alt_ix < no_of_alternatives; old_alt_ix++)
           {
             const ALT alternative = MARPA_DSTACK_INDEX(
               r->t_alternatives, ALT_Object, old_alt_ix);
@@ -9409,7 +9409,7 @@ change the parse to exhausted state.
       /* |empty_alt_ix| points to the first available slot, so it is now the same
       as the new stack length */
       MARPA_DSTACK_COUNT_SET(r->t_alternatives, empty_alt_ix);
-      
+
       if (empty_alt_ix) {
         Furthest_Earleme_of_R(r) = Earleme_of_YS(current_ys);
       } else {
@@ -9437,7 +9437,7 @@ PRIVATE int alternative_is_acceptable(ALT alternative)
       @t}\comment{@>
       /* If the trailhead PIM is non-active, the LIM will not
       be active, so we don't bother looking at the LIM.
-      Instead we will wait for the source, which will be next 
+      Instead we will wait for the source, which will be next
       in the list of PIM's */
       if (!predecessor_yim) continue;
 
@@ -9639,7 +9639,7 @@ int marpa_r_progress_report_reset( Marpa_Recognizer r)
 @ @<Function definitions@> =
 PRIVATE void
 progress_report_item_insert(MARPA_AVL_TREE report_tree,
-  AHM report_ahm, 
+  AHM report_ahm,
     YSID report_origin)
 {
   PROGRESS new_report_item;
@@ -9976,7 +9976,7 @@ I need to decide where to look at this.
     }
 }
 
-@ @<Function definitions@> = 
+@ @<Function definitions@> =
 PRIVATE void push_ur_if_new(
     struct s_bocage_setup_per_ys* per_ys_data,
     URS ur_node_stack, YIM yim)
@@ -9992,7 +9992,7 @@ and within that, per Earley item.
 (In the past, it has also been called the PSIA.)
 This function ensures that the appropriate |PSI| boolean is set.
 It returns that boolean's value {\bf prior} to the call.
-@<Function definitions@> = 
+@<Function definitions@> =
 PRIVATE int psi_test_and_set(
     struct s_bocage_setup_per_ys* per_ys_data,
     YIM earley_item
@@ -12874,7 +12874,7 @@ for the rule.
             if (lbv_bit_test (XSY_is_Valued_BV_of_V (v), XSYID_of_V (v)))
               return Step_Type_of_V (v) = MARPA_STEP_NULLING_SYMBOL;
           }
-          
+
     @t}\comment{@>
           /* No tracing of nulling valuators, at least at this point */
     @t}\comment{@>
@@ -13029,7 +13029,7 @@ for the rule.
 }
 
 @** Lightweight boolean vectors (LBV).
-These macros and functions assume that the 
+These macros and functions assume that the
 caller remembers the boolean vector's length.
 They also take no precautions about trailing bits
 in the last word.
@@ -13552,7 +13552,7 @@ rhs_closure (GRAMMAR g, Bit_Vector bv, XRLID ** xrl_list_x_rh_sym)
       start = max + 2;
     }
 
-  
+
   @t}\comment{@>
   while ((end_of_stack = FSTACK_POP (stack)))
     {
@@ -13621,7 +13621,7 @@ rhs_closure (GRAMMAR g, Bit_Vector bv, XRLID ** xrl_list_x_rh_sym)
             }
 
           @t}\comment{@>
-          /* If I am here, we know that the 
+          /* If I am here, we know that the
             the LHS symbol has the closure property,
             but is not marked as such.
             Mark it, and push it on the work stack.
@@ -13732,7 +13732,7 @@ PRIVATE void matrix_clear(Bit_Matrix matrix)
 
 @*0 Find the number of columns in a boolean matrix.
 The column count returned is for the first row.
-It is assumed that 
+It is assumed that
 all rows have the same number of columns.
 Note that, in this implementation, the matrix has no
 idea internally of how many rows it has.
@@ -13884,7 +13884,7 @@ The first |int| is a count, and purists might insist
 on a struct instead of an array.
 A struct would reflect the logical structure more
 accurately.
-But would it make the actual code 
+But would it make the actual code
 less readable, not more,
 which I believe has to be the object.
 @d Count_of_CIL(cil) (cil[0])
@@ -13970,7 +13970,7 @@ PRIVATE void cilar_destroy(const CILAR cilar)
 @<Function definitions@> =
 PRIVATE CIL cil_empty(CILAR cilar)
 {
-  CIL cil = MARPA_DSTACK_BASE (cilar->t_buffer, int); 
+  CIL cil = MARPA_DSTACK_BASE (cilar->t_buffer, int);
   /* We assume there is enough room */
   Count_of_CIL(cil) = 0;
   return cil_buffer_add (cilar);
@@ -14044,7 +14044,7 @@ PRIVATE void cil_buffer_clear(CILAR cilar)
   const MARPA_DSTACK dstack = &cilar->t_buffer;
   MARPA_DSTACK_CLEAR(*dstack);
     @t}\comment{@>
-  /* Has same effect as 
+  /* Has same effect as
   |Count_of_CIL (cil_in_buffer) = 0|, except that it sets
   the |MARPA_DSTACK| up properly */
   *MARPA_DSTACK_PUSH(*dstack, int) = 0;
@@ -14456,7 +14456,7 @@ PRIVATE PSL psl_alloc(const PSAR psar)
 |libmarpa| uses the system malloc,
 either directly or indirectly.
 Indirect use comes via obstacks.
-Obstacks are more efficient, but 
+Obstacks are more efficient, but
 limit the ability to resize memory,
 and to control the lifetime of the memory.
 @ Marpa makes extensive use of its own implementation of obstacks.
@@ -14922,7 +14922,7 @@ _marpa_r_earley_item_trace (Marpa_Recognizer r, Marpa_Earley_Item_ID item_id)
 for the trace Earley item.
 The difference between this code and
 |trace_earley_item_clear| is
-that |trace_earley_item_clear| 
+that |trace_earley_item_clear|
 also clears the source link.
 @<Clear trace Earley item data@> =
       r->t_trace_earley_item = NULL;
@@ -15030,7 +15030,7 @@ takes a recognizer and a symbol ID
 as an argument.
 It sets the trace postdot item to the first
 postdot item for the symbol ID.
-If there is no postdot item 
+If there is no postdot item
 for that symbol ID,
 it returns |-1|.
 On failure for other reasons,
@@ -16129,7 +16129,7 @@ ahm_tag (AHM ahm)
   return ahm_tag_safe (DEBUG_ahm_tag_buffer, ahm);
 }
 
-@** File layout.  
+@** File layout.
 @ The output files are {\bf not} source files,
 but I add the license to them anyway,
 as close to the top as possible.
