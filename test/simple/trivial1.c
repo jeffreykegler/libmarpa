@@ -176,18 +176,16 @@ main (int argc, char *argv[])
 	 */
 
 	/* these do have @<Fail if not precomputed@>@ */
-	ok(marpa_g_symbol_is_accessible	(g, S_C2), "marpa_g_symbol_is_accessible()");
-	ok(marpa_g_symbol_is_nullable (g, S_A1), "marpa_g_symbol_is_nullable()");
-	ok(marpa_g_symbol_is_nulling (g, S_A1), "marpa_g_symbol_is_nulling()");
-	ok(marpa_g_symbol_is_productive (g, S_top), "marpa_g_symbol_is_productive()");
+	is_int(1, marpa_g_symbol_is_accessible	(g, S_C2), "marpa_g_symbol_is_accessible()");
+	is_int(1, marpa_g_symbol_is_nullable (g, S_A1), "marpa_g_symbol_is_nullable()");
+	is_int(1, marpa_g_symbol_is_nulling (g, S_A1), "marpa_g_symbol_is_nulling()");
+	is_int(1, marpa_g_symbol_is_productive (g, S_top), "marpa_g_symbol_is_productive()");
 	
 	rc = marpa_g_symbol_is_start (g, S_top);
 	ok(rc >= 0, "marpa_g_symbol_is_start() call successful");
-	ok(rc, "marpa_g_symbol_is_start()");
+	is_int(1, rc, "marpa_g_symbol_is_start() return value");
 	
-	rc = marpa_g_symbol_is_terminal(g, S_C2);
-	ok(rc >= 0, "marpa_g_symbol_is_terminal() call successful");
-	ok(rc, "marpa_g_symbol_is_terminal()");
+	is_int(0, marpa_g_symbol_is_terminal(g, S_top), "marpa_g_symbol_is_terminal()");
 
 	/* recognizer methods */
   r = marpa_r_new (g);
