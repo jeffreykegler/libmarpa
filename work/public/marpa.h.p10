@@ -3,6 +3,7 @@
 #ifndef _MARPA_H__
 #define _MARPA_H__ 1
 
+#include "stdio.h"
 #include "stdlib.h"
 #include "stddef.h"
 #include "string.h"
