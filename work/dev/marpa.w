@@ -14769,6 +14769,7 @@ Marpa_Earley_Set_ID marpa_r_latest_earley_set(Marpa_Recognizer r)
   @<Return |-2| on failure@>@;
   @<Unpack recognizer objects@>@;
   @<Fail if not trace-safe@>@;
+  if (G_is_Trivial(g)) return 0;
   return Ord_of_YS(Latest_YS_of_R(r));
 }
 
