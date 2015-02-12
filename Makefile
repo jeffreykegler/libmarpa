@@ -74,6 +74,8 @@ timestamp/cm_debug.stamp: timestamp/cm_dist.stamp
 	date > timestamp/cm_debug.stamp
 
 timestamp/do_test.stamp: timestamp/cm_debug.stamp
+	rm -rf do_test
+	mkdir do_test
 	cd do_test && cmake ../test && make VERBOSE=1
 	test -d timestamp || mkdir timestamp
 	date > timestamp/do_test.stamp
