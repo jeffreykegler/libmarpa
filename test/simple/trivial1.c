@@ -171,18 +171,16 @@ main (int argc, char *argv[])
     }
   ok(1, "precomputation succeeded");
 
-  /* 
-   * grammar methods 
-   */
+  /* grammar methods */
 
-  /* these do have @<Fail if not precomputed@>@ */
+  /* 11.4 Symbols -- these do have @<Fail if not precomputed@>@ */
   is_int(1, marpa_g_symbol_is_accessible  (g, S_C2), "marpa_g_symbol_is_accessible()");
   is_int(1, marpa_g_symbol_is_nullable (g, S_A1), "marpa_g_symbol_is_nullable()");
   is_int(1, marpa_g_symbol_is_nulling (g, S_A1), "marpa_g_symbol_is_nulling()");
   is_int(1, marpa_g_symbol_is_productive (g, S_top), "marpa_g_symbol_is_productive()");
   is_int(1, marpa_g_symbol_is_start (g, S_top), "marpa_g_symbol_is_start()");
   is_int(0, marpa_g_symbol_is_terminal(g, S_top), "marpa_g_symbol_is_terminal()");
-
+  
   /* recognizer methods */
   r = marpa_r_new (g);
   if (!r)
