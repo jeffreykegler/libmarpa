@@ -1551,7 +1551,7 @@ such symbol, @minus{}1.
 If @var{value} is not 0 or 1;
 if the terminal status is locked and @var{value}
 is different from its current value;
-if the grammar @var{g} is not precomputed;
+if the grammar @var{g} is precomputed;
 or on other failure, @minus{}2.
 @end deftypefun
 
