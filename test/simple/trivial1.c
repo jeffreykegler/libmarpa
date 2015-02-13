@@ -83,11 +83,11 @@ main (int argc, char *argv[])
   /* Longest rule is <= 4 symbols */
   Marpa_Symbol_ID rhs[4];
 
-  Marpa_Rule_ID R_A1_1;
-  Marpa_Rule_ID R_A1_2;
+  Marpa_Rule_ID R_top_1;
+  Marpa_Rule_ID R_top_2;
   Marpa_Rule_ID R_C2_3; // highest rule id
 
-  plan(12);
+  plan(30);
 
   marpa_c_init (&marpa_configuration);
   g = marpa_g_new (&marpa_configuration);
@@ -129,10 +129,10 @@ main (int argc, char *argv[])
     || fail ("marpa_g_symbol_is_nulled_event_set", g);
 
   rhs[0] = S_A1;
-  ((R_A1_1 = marpa_g_rule_new (g, S_top, rhs, 1)) >= 0)
+  ((R_top_1 = marpa_g_rule_new (g, S_top, rhs, 1)) >= 0)
     || fail ("marpa_g_rule_new", g);
   rhs[0] = S_A2;
-  ((R_A1_2 = marpa_g_rule_new (g, S_top, rhs, 1)) >= 0)
+  ((R_top_2 = marpa_g_rule_new (g, S_top, rhs, 1)) >= 0)
     || fail ("marpa_g_rule_new", g);
   rhs[0] = S_B1;
   (marpa_g_rule_new (g, S_A1, rhs, 1) >= 0)
@@ -167,9 +167,9 @@ main (int argc, char *argv[])
     }
   ok(1, "precomputation succeeded");
 
-  /* grammar methods */
+  /* grammar methods, per sections of api.texi's Grammar Methods */
 
-  /* 11.4 Symbols -- these do have @<Fail if not precomputed@>@ */
+  /* Symbols -- these do have @<Fail if not precomputed@>@ */
   is_int(1, marpa_g_symbol_is_accessible  (g, S_C2), "marpa_g_symbol_is_accessible()");
   is_int(1, marpa_g_symbol_is_nullable (g, S_A1), "marpa_g_symbol_is_nullable()");
   is_int(1, marpa_g_symbol_is_nulling (g, S_A1), "marpa_g_symbol_is_nulling()");
@@ -177,9 +177,18 @@ main (int argc, char *argv[])
   is_int(1, marpa_g_symbol_is_start (g, S_top), "marpa_g_symbol_is_start()");
   is_int(0, marpa_g_symbol_is_terminal(g, S_top), "marpa_g_symbol_is_terminal()");
   
-  /* 11.5 Rules */
-  is_int(R_C2_3, marpa_g_highest_rule_id (g), "marpa_g_highest_rule_id ()");
-  is_int(1, marpa_g_rule_is_accessible (g, R_A1_1), "marpa_g_rule_is_accessible()");
+  /* Rules */
+  is_int(R_C2_3, marpa_g_highest_rule_id (g), "marpa_g_highest_rule_id()");
+  is_int(1, marpa_g_rule_is_accessible (g, R_top_1), "marpa_g_rule_is_accessible()");
+  is_int(1, marpa_g_rule_is_nullable (g, R_top_2), "marpa_g_rule_is_nullable()");
+  is_int(1, marpa_g_rule_is_nulling (g, R_top_2), "marpa_g_rule_is_nulling()");
+  is_int(0, marpa_g_rule_is_loop (g, R_C2_3), "marpa_g_rule_is_loop()");
+  is_int(1, marpa_g_rule_is_productive (g, R_C2_3), "marpa_g_rule_is_productive()");
+  is_int(1, marpa_g_rule_length (g, R_top_1), "marpa_g_rule_length(), rule R_top_1");
+  is_int(0, marpa_g_rule_length (g, R_C2_3), "marpa_g_rule_length(), rule R_C2_3");
+  is_int(S_top, marpa_g_rule_lhs (g, R_top_1), "marpa_g_rule_lhs (), rule R_top_1");
+  is_int(S_A1, marpa_g_rule_rhs (g, R_top_1, 0), "marpa_g_rule_rhs (), rule R_top_1");
+  is_int(S_A2, marpa_g_rule_rhs (g, R_top_2, 0), "marpa_g_rule_rhs (), rule R_top_2");
 
   /* recognizer methods */
   r = marpa_r_new (g);
