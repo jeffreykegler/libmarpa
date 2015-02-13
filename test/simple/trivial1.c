@@ -17,13 +17,7 @@
 
 /* Tests of Libmarpa methods on trivial grammar */
 
-#include <stdlib.h>
-#include <unistd.h>
 #include <stdio.h>
-#include <sys/stat.h>
-#include <sys/types.h>
-#include <fcntl.h>
-#include <sys/mman.h>
 #include "marpa.h"
 
 #include "tap/basic.h"
@@ -79,11 +73,8 @@ is_nullable (Marpa_Symbol_ID id)
 int
 main (int argc, char *argv[])
 {
-  const unsigned char *p, *eof;
-  int i;
   int rc;
   const char *error_string;
-  struct stat sb;
 
   Marpa_Config marpa_configuration;
 
@@ -92,14 +83,18 @@ main (int argc, char *argv[])
   /* Longest rule is <= 4 symbols */
   Marpa_Symbol_ID rhs[4];
 
-  plan(3);
+  Marpa_Rule_ID R_top_1;
+  Marpa_Rule_ID R_top_2;
+  Marpa_Rule_ID R_C2_3; // highest rule id
+
+  plan(31);
 
   marpa_c_init (&marpa_configuration);
   g = marpa_g_new (&marpa_configuration);
   if (!g)
     {
       Marpa_Error_Code errcode =
-	marpa_c_error (&marpa_configuration, &error_string);
+      marpa_c_error (&marpa_configuration, &error_string);
       printf ("marpa_g_new returned %d: %s", errcode, error_string);
       exit (1);
     }
@@ -134,10 +129,10 @@ main (int argc, char *argv[])
     || fail ("marpa_g_symbol_is_nulled_event_set", g);
 
   rhs[0] = S_A1;
-  (marpa_g_rule_new (g, S_top, rhs, 1) >= 0)
+  ((R_top_1 = marpa_g_rule_new (g, S_top, rhs, 1)) >= 0)
     || fail ("marpa_g_rule_new", g);
   rhs[0] = S_A2;
-  (marpa_g_rule_new (g, S_top, rhs, 1) >= 0)
+  ((R_top_2 = marpa_g_rule_new (g, S_top, rhs, 1)) >= 0)
     || fail ("marpa_g_rule_new", g);
   rhs[0] = S_B1;
   (marpa_g_rule_new (g, S_A1, rhs, 1) >= 0)
@@ -153,16 +148,33 @@ main (int argc, char *argv[])
     || fail ("marpa_g_rule_new", g);
   (marpa_g_rule_new (g, S_C1, rhs, 0) >= 0)
     || fail ("marpa_g_rule_new", g);
-  (marpa_g_rule_new (g, S_C2, rhs, 0) >= 0)
+
+  ((R_C2_3 = marpa_g_rule_new (g, S_C2, rhs, 0)) >= 0)
     || fail ("marpa_g_rule_new", g);
+  
+  /* this must soft fail if there is not start symbol */
+  is_int(-1, marpa_g_symbol_is_start (g, S_top), "marpa_g_symbol_is_start() before marpa_g_start_symbol_set()");
+  is_int(-1, marpa_g_start_symbol (g), "marpa_g_start_symbol() before marpa_g_start_symbol_set()");
 
   (marpa_g_start_symbol_set (g, S_top) >= 0)
     || fail ("marpa_g_start_symbol_set", g);
 
-	/* these don't have @<Fail if not precomputed@>@, but just in case */
-	is_int(S_top, marpa_g_start_symbol (g), "marpa_g_start_symbol()");
-	is_int(S_C2, marpa_g_highest_symbol_id (g), "marpa_g_highest_symbol_id()");	
-
+  /* these don't have @<Fail if not precomputed@>@ and must succeed */
+  is_int(S_top, marpa_g_start_symbol (g), "marpa_g_start_symbol()");
+  is_int(S_C2, marpa_g_highest_symbol_id (g), "marpa_g_highest_symbol_id()"); 
+  
+  /* these must return -2 as the grammar is not precomputed */
+  /* Symbols */
+  is_int(-2, marpa_g_symbol_is_accessible  (g, S_C2), "marpa_g_symbol_is_accessible() before marpa_g_precompute()");
+  is_int(-2, marpa_g_symbol_is_nullable (g, S_A1), "marpa_g_symbol_is_nullable() before marpa_g_precompute()");
+  is_int(-2, marpa_g_symbol_is_nulling (g, S_A1), "marpa_g_symbol_is_nulling()  before marpa_g_precompute()");
+  is_int(-2, marpa_g_symbol_is_productive (g, S_top), "marpa_g_symbol_is_productive() before marpa_g_precompute()");
+  is_int(-2, marpa_g_symbol_is_terminal(g, S_top), "marpa_g_symbol_is_terminal() before marpa_g_precompute()");
+  /* Rules */
+  is_int(-2, marpa_g_rule_is_nullable (g, R_top_2), "marpa_g_rule_is_nullable() before marpa_g_precompute()");
+  is_int(-2, marpa_g_rule_is_nulling (g, R_top_2), "marpa_g_rule_is_nulling() before marpa_g_precompute()");
+  is_int(-2, marpa_g_rule_is_loop (g, R_C2_3), "marpa_g_rule_is_loop() before marpa_g_precompute()");
+  
   if (marpa_g_precompute (g) < 0)
     {
       marpa_g_error (g, &error_string);
@@ -171,23 +183,30 @@ main (int argc, char *argv[])
     }
   ok(1, "precomputation succeeded");
 
-	/* 
-	 * grammar methods 
-	 */
+  /* grammar methods, per sections of api.texi's Grammar Methods */
 
-	/* these do have @<Fail if not precomputed@>@ */
-	is_int(1, marpa_g_symbol_is_accessible	(g, S_C2), "marpa_g_symbol_is_accessible()");
-	is_int(1, marpa_g_symbol_is_nullable (g, S_A1), "marpa_g_symbol_is_nullable()");
-	is_int(1, marpa_g_symbol_is_nulling (g, S_A1), "marpa_g_symbol_is_nulling()");
-	is_int(1, marpa_g_symbol_is_productive (g, S_top), "marpa_g_symbol_is_productive()");
-	
-	rc = marpa_g_symbol_is_start (g, S_top);
-	ok(rc >= 0, "marpa_g_symbol_is_start() call successful");
-	is_int(1, rc, "marpa_g_symbol_is_start() return value");
-	
-	is_int(0, marpa_g_symbol_is_terminal(g, S_top), "marpa_g_symbol_is_terminal()");
+  /* Symbols -- these do have @<Fail if not precomputed@>@ */
+  is_int(1, marpa_g_symbol_is_accessible  (g, S_C2), "marpa_g_symbol_is_accessible()");
+  is_int(1, marpa_g_symbol_is_nullable (g, S_A1), "marpa_g_symbol_is_nullable()");
+  is_int(1, marpa_g_symbol_is_nulling (g, S_A1), "marpa_g_symbol_is_nulling()");
+  is_int(1, marpa_g_symbol_is_productive (g, S_top), "marpa_g_symbol_is_productive()");
+  is_int(1, marpa_g_symbol_is_start (g, S_top), "marpa_g_symbol_is_start()");
+  is_int(0, marpa_g_symbol_is_terminal(g, S_top), "marpa_g_symbol_is_terminal()");
+  
+  /* Rules */
+  is_int(R_C2_3, marpa_g_highest_rule_id (g), "marpa_g_highest_rule_id()");
+  is_int(1, marpa_g_rule_is_accessible (g, R_top_1), "marpa_g_rule_is_accessible()");
+  is_int(1, marpa_g_rule_is_nullable (g, R_top_2), "marpa_g_rule_is_nullable()");
+  is_int(1, marpa_g_rule_is_nulling (g, R_top_2), "marpa_g_rule_is_nulling()");
+  is_int(0, marpa_g_rule_is_loop (g, R_C2_3), "marpa_g_rule_is_loop()");
+  is_int(1, marpa_g_rule_is_productive (g, R_C2_3), "marpa_g_rule_is_productive()");
+  is_int(1, marpa_g_rule_length (g, R_top_1), "marpa_g_rule_length(), rule R_top_1");
+  is_int(0, marpa_g_rule_length (g, R_C2_3), "marpa_g_rule_length(), rule R_C2_3");
+  is_int(S_top, marpa_g_rule_lhs (g, R_top_1), "marpa_g_rule_lhs(), rule R_top_1");
+  is_int(S_A1, marpa_g_rule_rhs (g, R_top_1, 0), "marpa_g_rule_rhs(), rule R_top_1");
+  is_int(S_A2, marpa_g_rule_rhs (g, R_top_2, 0), "marpa_g_rule_rhs(), rule R_top_2");
 
-	/* recognizer methods */
+  /* recognizer methods */
   r = marpa_r_new (g);
   if (!r)
     {
@@ -203,6 +222,6 @@ main (int argc, char *argv[])
       exit (1);
     }
   ok((marpa_r_is_exhausted(r)), "exhausted at earleme 0");
-	
+  
   return 0;
 }
