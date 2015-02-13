@@ -458,7 +458,6 @@ of |YIM| and |YIM_Object|.
 (These begin with a `Y' because C89 reserves names starting with `E'.)
 \li eim: Earley item.  Used for clarity in a few places
 where C89 reserved names are not an issue.
-where C89 reserved names are not an issue.
 \li es: Earley set.  Used for clarity
 in a few places were
 \li g: Grammar.
