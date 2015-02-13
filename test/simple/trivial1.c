@@ -92,7 +92,7 @@ main (int argc, char *argv[])
   /* Longest rule is <= 4 symbols */
   Marpa_Symbol_ID rhs[4];
 
-  plan(3);
+  plan(11);
 
   marpa_c_init (&marpa_configuration);
   g = marpa_g_new (&marpa_configuration);
