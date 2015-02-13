@@ -85,6 +85,8 @@ main (int argc, char *argv[])
   const char *error_string;
   struct stat sb;
 
+  int highest_rule_id;
+
   Marpa_Config marpa_configuration;
 
   Marpa_Grammar g;
@@ -153,7 +155,9 @@ main (int argc, char *argv[])
     || fail ("marpa_g_rule_new", g);
   (marpa_g_rule_new (g, S_C1, rhs, 0) >= 0)
     || fail ("marpa_g_rule_new", g);
-  (marpa_g_rule_new (g, S_C2, rhs, 0) >= 0)
+
+  highest_rule_id = marpa_g_rule_new (g, S_C2, rhs, 0);
+  (highest_rule_id >= 0)
     || fail ("marpa_g_rule_new", g);
 
   (marpa_g_start_symbol_set (g, S_top) >= 0)
@@ -181,6 +185,9 @@ main (int argc, char *argv[])
   is_int(1, marpa_g_symbol_is_start (g, S_top), "marpa_g_symbol_is_start()");
   is_int(0, marpa_g_symbol_is_terminal(g, S_top), "marpa_g_symbol_is_terminal()");
   
+  /* 11.5 Rules */
+  is_int(highest_rule_id, marpa_g_highest_rule_id (g), "marpa_g_highest_rule_id ()");
+
   /* recognizer methods */
   r = marpa_r_new (g);
   if (!r)
