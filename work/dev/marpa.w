@@ -1267,6 +1267,7 @@ int marpa_g_symbol_is_start( Marpa_Grammar g, Marpa_Symbol_ID xsy_id)
     @<Fail if fatal error@>@;
     @<Fail if |xsy_id| is malformed@>@;
     @<Soft fail if |xsy_id| does not exist@>@;
+    if (g->t_start_xsy_id < 0) return -1;
    return xsy_id == g->t_start_xsy_id ? 1 : 0;
 }
 
@@ -1499,6 +1500,7 @@ Marpa_Symbol_ID xsy_id)
 {
     @<Return |-2| on failure@>@;
     @<Fail if fatal error@>@;
+    @<Fail if not precomputed@>@;
     @<Fail if |xsy_id| is malformed@>@;
     @<Soft fail if |xsy_id| does not exist@>@;
     return XSYID_is_Terminal(xsy_id);
@@ -2763,8 +2765,9 @@ int marpa_g_rule_is_nulling(Marpa_Grammar g, Marpa_Rule_ID xrl_id)
   @<Return |-2| on failure@>@;
   XRL xrl;
   @<Fail if fatal error@>@;
-    @<Fail if |xrl_id| is malformed@>@;
-    @<Soft fail if |xrl_id| does not exist@>@;
+  @<Fail if not precomputed@>@;
+  @<Fail if |xrl_id| is malformed@>@;
+  @<Soft fail if |xrl_id| does not exist@>@;
   xrl = XRL_by_ID(xrl_id);
   return XRL_is_Nulling(xrl);
 }
@@ -2781,8 +2784,9 @@ int marpa_g_rule_is_nullable(Marpa_Grammar g, Marpa_Rule_ID xrl_id)
   @<Return |-2| on failure@>@;
   XRL xrl;
   @<Fail if fatal error@>@;
-    @<Fail if |xrl_id| is malformed@>@;
-    @<Soft fail if |xrl_id| does not exist@>@;
+  @<Fail if not precomputed@>@;
+  @<Fail if |xrl_id| is malformed@>@;
+  @<Soft fail if |xrl_id| does not exist@>@;
   xrl = XRL_by_ID(xrl_id);
   return XRL_is_Nullable(xrl);
 }
