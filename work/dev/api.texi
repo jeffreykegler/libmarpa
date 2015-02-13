@@ -1547,11 +1547,11 @@ Return value: On success, 1 if symbol @var{sym_id}
 is a terminal symbol after the
 call, 0 otherwise.
 If @var{sym_id} is well-formed, but there is no
-such symbol, -1.
+such symbol, @minus{}1.
 If @var{value} is not 0 or 1;
 if the terminal status is locked and @var{value}
 is different from its current value;
-if the grammar @var{g} is precomputed;
+if the grammar @var{g} is not precomputed;
 or on other failure, @minus{}2.
 @end deftypefun
 
