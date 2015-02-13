@@ -87,7 +87,7 @@ main (int argc, char *argv[])
   Marpa_Rule_ID R_top_2;
   Marpa_Rule_ID R_C2_3; // highest rule id
 
-  plan(30);
+  plan(31);
 
   marpa_c_init (&marpa_configuration);
   g = marpa_g_new (&marpa_configuration);
@@ -151,6 +151,10 @@ main (int argc, char *argv[])
 
   ((R_C2_3 = marpa_g_rule_new (g, S_C2, rhs, 0)) >= 0)
     || fail ("marpa_g_rule_new", g);
+  
+  /* this must hard fail as the start symbol is not set */
+  is_int(-2, marpa_g_symbol_is_start (g, S_top), "marpa_g_symbol_is_start() before marpa_g_start_symbol_set()");
+  is_int(-2, marpa_g_start_symbol (g), "marpa_g_start_symbol() before marpa_g_start_symbol_set()");
 
   (marpa_g_start_symbol_set (g, S_top) >= 0)
     || fail ("marpa_g_start_symbol_set", g);
@@ -165,13 +169,12 @@ main (int argc, char *argv[])
   is_int(-2, marpa_g_symbol_is_nullable (g, S_A1), "marpa_g_symbol_is_nullable() before marpa_g_precompute()");
   is_int(-2, marpa_g_symbol_is_nulling (g, S_A1), "marpa_g_symbol_is_nulling()  before marpa_g_precompute()");
   is_int(-2, marpa_g_symbol_is_productive (g, S_top), "marpa_g_symbol_is_productive() before marpa_g_precompute()");
-  is_int(-2, marpa_g_symbol_is_start (g, S_top), "marpa_g_symbol_is_start() before marpa_g_precompute()");
   is_int(-2, marpa_g_symbol_is_terminal(g, S_top), "marpa_g_symbol_is_terminal() before marpa_g_precompute()");
   /* Rules */
   is_int(-2, marpa_g_rule_is_nullable (g, R_top_2), "marpa_g_rule_is_nullable() before marpa_g_precompute()");
   is_int(-2, marpa_g_rule_is_nulling (g, R_top_2), "marpa_g_rule_is_nulling() before marpa_g_precompute()");
   is_int(-2, marpa_g_rule_is_loop (g, R_C2_3), "marpa_g_rule_is_loop() before marpa_g_precompute()");
-
+  
   if (marpa_g_precompute (g) < 0)
     {
       marpa_g_error (g, &error_string);
@@ -199,9 +202,9 @@ main (int argc, char *argv[])
   is_int(1, marpa_g_rule_is_productive (g, R_C2_3), "marpa_g_rule_is_productive()");
   is_int(1, marpa_g_rule_length (g, R_top_1), "marpa_g_rule_length(), rule R_top_1");
   is_int(0, marpa_g_rule_length (g, R_C2_3), "marpa_g_rule_length(), rule R_C2_3");
-  is_int(S_top, marpa_g_rule_lhs (g, R_top_1), "marpa_g_rule_lhs (), rule R_top_1");
-  is_int(S_A1, marpa_g_rule_rhs (g, R_top_1, 0), "marpa_g_rule_rhs (), rule R_top_1");
-  is_int(S_A2, marpa_g_rule_rhs (g, R_top_2, 0), "marpa_g_rule_rhs (), rule R_top_2");
+  is_int(S_top, marpa_g_rule_lhs (g, R_top_1), "marpa_g_rule_lhs(), rule R_top_1");
+  is_int(S_A1, marpa_g_rule_rhs (g, R_top_1, 0), "marpa_g_rule_rhs(), rule R_top_1");
+  is_int(S_A2, marpa_g_rule_rhs (g, R_top_2, 0), "marpa_g_rule_rhs(), rule R_top_2");
 
   /* recognizer methods */
   r = marpa_r_new (g);
