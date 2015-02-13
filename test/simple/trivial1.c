@@ -99,7 +99,7 @@ main (int argc, char *argv[])
   if (!g)
     {
       Marpa_Error_Code errcode =
-	marpa_c_error (&marpa_configuration, &error_string);
+      marpa_c_error (&marpa_configuration, &error_string);
       printf ("marpa_g_new returned %d: %s", errcode, error_string);
       exit (1);
     }
@@ -159,9 +159,9 @@ main (int argc, char *argv[])
   (marpa_g_start_symbol_set (g, S_top) >= 0)
     || fail ("marpa_g_start_symbol_set", g);
 
-	/* these don't have @<Fail if not precomputed@>@, but just in case */
-	is_int(S_top, marpa_g_start_symbol (g), "marpa_g_start_symbol()");
-	is_int(S_C2, marpa_g_highest_symbol_id (g), "marpa_g_highest_symbol_id()");	
+  /* these don't have @<Fail if not precomputed@>@, but just in case */
+  is_int(S_top, marpa_g_start_symbol (g), "marpa_g_start_symbol()");
+  is_int(S_C2, marpa_g_highest_symbol_id (g), "marpa_g_highest_symbol_id()"); 
 
   if (marpa_g_precompute (g) < 0)
     {
@@ -171,23 +171,23 @@ main (int argc, char *argv[])
     }
   ok(1, "precomputation succeeded");
 
-	/* 
-	 * grammar methods 
-	 */
+  /* 
+   * grammar methods 
+   */
 
-	/* these do have @<Fail if not precomputed@>@ */
-	is_int(1, marpa_g_symbol_is_accessible	(g, S_C2), "marpa_g_symbol_is_accessible()");
-	is_int(1, marpa_g_symbol_is_nullable (g, S_A1), "marpa_g_symbol_is_nullable()");
-	is_int(1, marpa_g_symbol_is_nulling (g, S_A1), "marpa_g_symbol_is_nulling()");
-	is_int(1, marpa_g_symbol_is_productive (g, S_top), "marpa_g_symbol_is_productive()");
-	
-	rc = marpa_g_symbol_is_start (g, S_top);
-	ok(rc >= 0, "marpa_g_symbol_is_start() call successful");
-	is_int(1, rc, "marpa_g_symbol_is_start() return value");
-	
-	is_int(0, marpa_g_symbol_is_terminal(g, S_top), "marpa_g_symbol_is_terminal()");
+  /* these do have @<Fail if not precomputed@>@ */
+  is_int(1, marpa_g_symbol_is_accessible  (g, S_C2), "marpa_g_symbol_is_accessible()");
+  is_int(1, marpa_g_symbol_is_nullable (g, S_A1), "marpa_g_symbol_is_nullable()");
+  is_int(1, marpa_g_symbol_is_nulling (g, S_A1), "marpa_g_symbol_is_nulling()");
+  is_int(1, marpa_g_symbol_is_productive (g, S_top), "marpa_g_symbol_is_productive()");
+  
+  rc = marpa_g_symbol_is_start (g, S_top);
+  ok(rc >= 0, "marpa_g_symbol_is_start() call successful");
+  is_int(1, rc, "marpa_g_symbol_is_start(g, S_top) return value");
+  
+  is_int(0, marpa_g_symbol_is_terminal(g, S_top), "marpa_g_symbol_is_terminal()");
 
-	/* recognizer methods */
+  /* recognizer methods */
   r = marpa_r_new (g);
   if (!r)
     {
@@ -203,6 +203,6 @@ main (int argc, char *argv[])
       exit (1);
     }
   ok((marpa_r_is_exhausted(r)), "exhausted at earleme 0");
-	
+  
   return 0;
 }
