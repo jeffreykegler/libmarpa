@@ -1458,7 +1458,7 @@ A symbol is @dfn{accessible} if it can be reached from the start symbol.
 
 Return value: On success, 1 if symbol @var{sym_id} is accessible, 0 if not.
 If @var{sym_id} is well-formed, but there is no
-such symbol, -1.
+such symbol, @minus{}1.
 If the grammar is not precomputed, or on other failure, @minus{}2.
 @end deftypefun
 
@@ -1470,7 +1470,7 @@ but not all @strong{nullable} symbols are @strong{nulling} symbols.
 
 Return value: On success, 1 if symbol @var{sym_id} is nullable, 0 if not.
 If @var{sym_id} is well-formed, but there is no
-such symbol, -1.
+such symbol, @minus{}1.
 If the grammar is not precomputed, or on other failure, @minus{}2.
 @end deftypefun
 
@@ -1480,7 +1480,7 @@ A symbol is @dfn{nulling} if it always produces the empty string.
 
 Return value: On success, 1 if symbol @var{sym_id} is nulling, 0 if not.
 If @var{sym_id} is well-formed, but there is no
-such symbol, -1.
+such symbol, @minus{}1.
 If the grammar is not precomputed, or on other failure, @minus{}2.
 @end deftypefun
 
@@ -1489,10 +1489,10 @@ If the grammar is not precomputed, or on other failure, @minus{}2.
 A symbol is @dfn{productive} if it can produce a string of terminals.
 All nullable symbols are considered productive.
 
-Return value: On success, 1 if symbol @var{sym_id} is productive, 0 if not.  If the grammar
+Return value: On success, 1 if symbol @var{sym_id} is productive, 0 if not.
 If @var{sym_id} is well-formed, but there is no
-such symbol, -1.
-is not precomputed, or on other failure, @minus{}2.
+such symbol, @minus{}1.
+If the grammar is not precomputed, or on other failure, @minus{}2.
 @end deftypefun
 
 @deftypefun int marpa_g_symbol_is_start ( Marpa_Grammar @var{g}, @
@@ -1505,7 +1505,7 @@ Return value:
 On success, 1 if @var{sym_id} is the start symbol;
 0 otherwise.
 If @var{sym_id} is well-formed, but there is no
-such symbol, -1.
+such symbol, @minus{}1.
 On other failure, @minus{}2.
 
 @end deftypefun
@@ -1583,7 +1583,7 @@ The start rule is always an accessible rule.
 Return value: On success, 1 if rule @var{rule_id}
 is accessible, 0 if not.
 If @var{rule_id} is well-formed, but there is no
-such rule, -1.
+such rule, @minus{}1.
 If the grammar
 is not precomputed, or on other failure, @minus{}2.
 @end deftypefun
@@ -1597,7 +1597,7 @@ but not all @strong{nullable} rules are @strong{nulling} rules.
 Return value: On success,
 1 if rule @var{ruleid} is nullable, 0 if not.
 If @var{rule_id} is well-formed, but there is no
-such rule, -1.
+such rule, @minus{}1.
 If the grammar is not precomputed, or on other failure, @minus{}2.
 @end deftypefun
 
@@ -1631,7 +1631,7 @@ loop rules.
 Return value: On success,
 1 if rule @var{rule_id} is a loop rule, 0 if not.
 If @var{rule_id} is well-formed, but there is no
-such rule, -1.
+such rule, @minus{}1.
 If the grammar
 is not precomputed, or on other failure, @minus{}2.
 @end deftypefun
