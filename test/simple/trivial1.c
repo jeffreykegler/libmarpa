@@ -17,13 +17,7 @@
 
 /* Tests of Libmarpa methods on trivial grammar */
 
-#include <stdlib.h>
-#include <unistd.h>
 #include <stdio.h>
-#include <sys/stat.h>
-#include <sys/types.h>
-#include <fcntl.h>
-#include <sys/mman.h>
 #include "marpa.h"
 
 #include "tap/basic.h"
@@ -79,13 +73,8 @@ is_nullable (Marpa_Symbol_ID id)
 int
 main (int argc, char *argv[])
 {
-  const unsigned char *p, *eof;
-  int i;
   int rc;
   const char *error_string;
-  struct stat sb;
-
-  int highest_rule_id;
 
   Marpa_Config marpa_configuration;
 
