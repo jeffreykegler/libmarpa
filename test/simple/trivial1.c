@@ -83,7 +83,11 @@ main (int argc, char *argv[])
   /* Longest rule is <= 4 symbols */
   Marpa_Symbol_ID rhs[4];
 
-  plan(11);
+  Marpa_Rule_ID R_A1_1;
+  Marpa_Rule_ID R_A1_2;
+  Marpa_Rule_ID R_C2_3; // highest rule id
+
+  plan(12);
 
   marpa_c_init (&marpa_configuration);
   g = marpa_g_new (&marpa_configuration);
@@ -125,10 +129,10 @@ main (int argc, char *argv[])
     || fail ("marpa_g_symbol_is_nulled_event_set", g);
 
   rhs[0] = S_A1;
-  (marpa_g_rule_new (g, S_top, rhs, 1) >= 0)
+  ((R_A1_1 = marpa_g_rule_new (g, S_top, rhs, 1)) >= 0)
     || fail ("marpa_g_rule_new", g);
   rhs[0] = S_A2;
-  (marpa_g_rule_new (g, S_top, rhs, 1) >= 0)
+  ((R_A1_2 = marpa_g_rule_new (g, S_top, rhs, 1)) >= 0)
     || fail ("marpa_g_rule_new", g);
   rhs[0] = S_B1;
   (marpa_g_rule_new (g, S_A1, rhs, 1) >= 0)
@@ -145,8 +149,7 @@ main (int argc, char *argv[])
   (marpa_g_rule_new (g, S_C1, rhs, 0) >= 0)
     || fail ("marpa_g_rule_new", g);
 
-  highest_rule_id = marpa_g_rule_new (g, S_C2, rhs, 0);
-  (highest_rule_id >= 0)
+  ((R_C2_3 = marpa_g_rule_new (g, S_C2, rhs, 0)) >= 0)
     || fail ("marpa_g_rule_new", g);
 
   (marpa_g_start_symbol_set (g, S_top) >= 0)
@@ -175,7 +178,8 @@ main (int argc, char *argv[])
   is_int(0, marpa_g_symbol_is_terminal(g, S_top), "marpa_g_symbol_is_terminal()");
   
   /* 11.5 Rules */
-  is_int(highest_rule_id, marpa_g_highest_rule_id (g), "marpa_g_highest_rule_id ()");
+  is_int(R_C2_3, marpa_g_highest_rule_id (g), "marpa_g_highest_rule_id ()");
+  is_int(1, marpa_g_rule_is_accessible (g, R_A1_1), "marpa_g_rule_is_accessible()");
 
   /* recognizer methods */
   r = marpa_r_new (g);
