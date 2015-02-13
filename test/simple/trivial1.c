@@ -152,8 +152,8 @@ main (int argc, char *argv[])
   ((R_C2_3 = marpa_g_rule_new (g, S_C2, rhs, 0)) >= 0)
     || fail ("marpa_g_rule_new", g);
   
-  /* this must hard fail as the start symbol is not set */
-  is_int(-2, marpa_g_symbol_is_start (g, S_top), "marpa_g_symbol_is_start() before marpa_g_start_symbol_set()");
+  /* this must soft fail if there is not start symbol */
+  is_int(-1, marpa_g_symbol_is_start (g, S_top), "marpa_g_symbol_is_start() before marpa_g_start_symbol_set()");
   is_int(-1, marpa_g_start_symbol (g), "marpa_g_start_symbol() before marpa_g_start_symbol_set()");
 
   (marpa_g_start_symbol_set (g, S_top) >= 0)
