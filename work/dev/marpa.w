@@ -1261,8 +1261,6 @@ marpa_g_symbol_new (Marpa_Grammar g)
 }
 
 @*0 Symbol is start?.
-@<Bit aligned XSY elements@> = BITFIELD t_is_start:1;
-@ @<Initialize XSY elements@> = xsy->t_is_start = 0;
 @ @<Function definitions@> =
 int marpa_g_symbol_is_start( Marpa_Grammar g, Marpa_Symbol_ID xsy_id)
 {
@@ -1270,7 +1268,7 @@ int marpa_g_symbol_is_start( Marpa_Grammar g, Marpa_Symbol_ID xsy_id)
     @<Fail if fatal error@>@;
     @<Fail if |xsy_id| is malformed@>@;
     @<Soft fail if |xsy_id| does not exist@>@;
-   return XSY_by_ID(xsy_id)->t_is_start;
+   return xsy_id == g->t_start_xsy_id ? 1 : 0;
 }
 
 @*0 Symbol rank.
@@ -4607,8 +4605,6 @@ in the literature --- it is called ``augmenting the grammar".
 
   const NSY new_start_nsy = nsy_new(g, start_xsy);
   NSY_is_Start(new_start_nsy) = 1;
-
-  start_xsy->t_is_start = 0;
 
   new_start_irl = irl_start(g, 1);
   LHSID_of_IRL(new_start_irl) = ID_of_NSY(new_start_nsy);
