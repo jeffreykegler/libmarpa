@@ -154,7 +154,7 @@ main (int argc, char *argv[])
   
   /* this must hard fail as the start symbol is not set */
   is_int(-2, marpa_g_symbol_is_start (g, S_top), "marpa_g_symbol_is_start() before marpa_g_start_symbol_set()");
-  is_int(-2, marpa_g_start_symbol (g), "marpa_g_start_symbol() before marpa_g_start_symbol_set()");
+  is_int(-1, marpa_g_start_symbol (g), "marpa_g_start_symbol() before marpa_g_start_symbol_set()");
 
   (marpa_g_start_symbol_set (g, S_top) >= 0)
     || fail ("marpa_g_start_symbol_set", g);
