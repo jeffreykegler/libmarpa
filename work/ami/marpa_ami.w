@@ -155,7 +155,7 @@ The internal interface can assume that no library will be included
 unless the Libmarpa implementor decided it should be, so that most
 names are available for his use.
 \li The ami interface cannot use Libmarpa's error handling -- although
-it can be part of the implementation of that error handlind.
+it can be part of the implementation of that error handling.
 The ami interface must be useable in a situation where another
 error handling regime is in effect.
 
