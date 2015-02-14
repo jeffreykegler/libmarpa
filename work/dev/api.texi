@@ -5089,14 +5089,13 @@ Suggested message: "Symbol is nulling".
 @end deftypevr
 
 @deftypevr Macro int MARPA_ERR_SYMBOL_IS_UNUSED
-An attempt was made to do something with a nulling
-symbol that is not allowed.
+An attempt was made to do something with an unused symbol that is not allowed.
 An ``unused'' symbol is a inaccessible or unproductive symbol.
 For example,
 the ID of a unused symbol cannot be an argument
 to @code{marpa_r_expected_symbol_event_set} ---
 because it is not possible to create an ``expected symbol'' event
-for a nulling symbol.
+for an unused symbol.
 Numeric value: 88.
 Suggested message: "Symbol is not used".
 @end deftypevr
