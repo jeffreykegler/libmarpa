@@ -1541,7 +1541,7 @@ By default, a symbol is a terminal if and only if it
 does not appear on the LHS of any rule.
 An attempt to flag a nulling symbol
 as a terminal will cause a failure,
-but this is not necesssarily detected before precomputation.
+but this is not necessarily detected before precomputation.
 
 Return value: On success, 1 if symbol @var{sym_id}
 is a terminal symbol after the
