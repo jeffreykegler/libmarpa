@@ -231,15 +231,23 @@ main (int argc, char *argv[])
   is_failure(g, MARPA_ERR_TERMINAL_IS_LOCKED, -2, marpa_g_symbol_is_terminal_set(g, S_C1, 0), 
     "marpa_g_symbol_is_terminal_set", "on a symbol already set to be a terminal");
   is_failure(g, MARPA_ERR_NULLING_TERMINAL, -2, marpa_g_precompute (g), "marpa_g_precompute", "with a nulling terminal");
+  
+  /* terminals are locked after setting, so we recreate the grammar */
+  marpa_g_unref(g);
+  g = trivial_grammar(&marpa_configuration);
+  
+  is_failure(g, MARPA_ERR_NO_START_SYMBOL, -2, marpa_g_precompute (g), "marpa_g_precompute", "with a nulling terminal");
+
+  /* set start symbol */
+  (marpa_g_start_symbol_set (g, S_top) >= 0)
+    || fail ("marpa_g_start_symbol_set", g);
+
   /* set start as terminal */  
   is_success(g, 1, marpa_g_symbol_is_terminal_set(g, S_top, 1), 
     "marpa_g_symbol_is_terminal_set()");
-  /* set nulable symbol as terminal */
+  /* set nullable symbol as terminal */
   is_success(g, 1, marpa_g_symbol_is_terminal_set(g, S_A1, 1), 
     "marpa_g_symbol_is_terminal_set()");
-  
-  /* terminals are locked after as */
-  marpa_g_unref(g);
   
   if (marpa_g_precompute (g) < 0)
     fail("marpa_g_precompute", g);
