@@ -25,7 +25,7 @@
 static int
 warn (const char *s, Marpa_Grammar g)
 {
-  printf ("%s returned %d: %s", s, marpa_g_error (g, NULL));
+  printf ("%s returned %d\n", s, marpa_g_error (g, NULL));
 }
 
 static int
@@ -42,6 +42,13 @@ Marpa_Symbol_ID S_B1;
 Marpa_Symbol_ID S_B2;
 Marpa_Symbol_ID S_C1;
 Marpa_Symbol_ID S_C2;
+
+/* Longest rule is <= 4 symbols */
+Marpa_Symbol_ID rhs[4];
+
+Marpa_Rule_ID R_top_1;
+Marpa_Rule_ID R_top_2;
+Marpa_Rule_ID R_C2_3; // highest rule id
 
 /* For (error) messages */
 char msgbuf[80];
@@ -68,6 +75,14 @@ is_nullable (Marpa_Symbol_ID id)
   if (id == S_A2) return 1;
   if (id == S_B1) return 1;
   if (id == S_B2) return 1;
+  if (id == S_C1) return 1;
+  if (id == S_C2) return 1;
+  return 0;
+}
+
+int
+is_nulling (Marpa_Symbol_ID id)
+{
   if (id == S_C1) return 1;
   if (id == S_C2) return 1;
   return 0;
@@ -110,12 +125,6 @@ main (int argc, char *argv[])
 
   Marpa_Grammar g;
   Marpa_Recognizer r;
-  /* Longest rule is <= 4 symbols */
-  Marpa_Symbol_ID rhs[4];
-
-  Marpa_Rule_ID R_top_1;
-  Marpa_Rule_ID R_top_2;
-  Marpa_Rule_ID R_C2_3; // highest rule id
 
   plan_lazy();
 
@@ -181,7 +190,7 @@ main (int argc, char *argv[])
   ((R_C2_3 = marpa_g_rule_new (g, S_C2, rhs, 0)) >= 0)
     || fail ("marpa_g_rule_new", g);
   
-  /* this must soft fail if there is not start symbol */
+  /* these must soft fail if there is not start symbol */
 #define NO_START_TEST_MSG "fail before marpa_g_start_symbol_set()"
   is_failure(g, MARPA_ERR_NO_START_SYMBOL, -1, marpa_g_symbol_is_start (g, S_top), "marpa_g_symbol_is_start", NO_START_TEST_MSG);
   is_failure(g, MARPA_ERR_NO_START_SYMBOL, -1, marpa_g_start_symbol (g), "marpa_g_start_symbol", NO_START_TEST_MSG);
@@ -201,11 +210,25 @@ main (int argc, char *argv[])
   is_failure(g, MARPA_ERR_NOT_PRECOMPUTED, -2, marpa_g_symbol_is_nulling (g, S_A1), "marpa_g_symbol_is_nulling", NOT_PRECOMPUTED_TEST_MSG);
   is_failure(g, MARPA_ERR_NOT_PRECOMPUTED, -2, marpa_g_symbol_is_productive (g, S_top), "marpa_g_symbol_is_productive", NOT_PRECOMPUTED_TEST_MSG);
   is_failure(g, MARPA_ERR_NOT_PRECOMPUTED, -2, marpa_g_symbol_is_terminal(g, S_top), "marpa_g_symbol_is_terminal", NOT_PRECOMPUTED_TEST_MSG);
+
   /* Rules */
   is_failure(g, MARPA_ERR_NOT_PRECOMPUTED, -2, marpa_g_rule_is_nullable (g, R_top_2), "marpa_g_rule_is_nullable", NOT_PRECOMPUTED_TEST_MSG);
   is_failure(g, MARPA_ERR_NOT_PRECOMPUTED, -2, marpa_g_rule_is_nulling (g, R_top_2), "marpa_g_rule_is_nulling", NOT_PRECOMPUTED_TEST_MSG);
   is_failure(g, MARPA_ERR_NOT_PRECOMPUTED, -2, marpa_g_rule_is_loop (g, R_C2_3), "marpa_g_rule_is_loop", NOT_PRECOMPUTED_TEST_MSG);
   
+  /* set a nulling symbol to be terminal and test precomputation failure */
+  is_success(g, 1, marpa_g_symbol_is_terminal_set(g, S_C1, 1), 
+    "marpa_g_symbol_is_terminal_set()");
+  is_failure(g, MARPA_ERR_TERMINAL_IS_LOCKED, -2, marpa_g_symbol_is_terminal_set(g, S_C1, 0), 
+    "marpa_g_symbol_is_terminal_set", "on a symbol already set to be a terminal");
+  is_failure(g, MARPA_ERR_NULLING_TERMINAL, -2, marpa_g_precompute (g), "marpa_g_precompute", "with a nulling terminal");
+  /* set start as terminal */  
+  is_success(g, MARPA_ERR_NONE, marpa_g_symbol_is_terminal_set(g, S_top, 1), 
+    "marpa_g_symbol_is_terminal_set()");
+  /* set nulable symbol as terminal */
+  is_success(g, MARPA_ERR_NONE, marpa_g_symbol_is_terminal_set(g, S_A1, 1), 
+    "marpa_g_symbol_is_terminal_set()");
+    
   if (marpa_g_precompute (g) < 0)
     fail("marpa_g_precompute", g);
   ok(1, "precomputation succeeded");
@@ -219,6 +242,9 @@ main (int argc, char *argv[])
   is_success(g, 1, marpa_g_symbol_is_productive (g, S_top), "marpa_g_symbol_is_productive()");
   is_success(g, 1, marpa_g_symbol_is_start (g, S_top), "marpa_g_symbol_is_start()");
   is_success(g, 0, marpa_g_symbol_is_terminal(g, S_top), "marpa_g_symbol_is_terminal()");
+
+  is_failure(g, MARPA_ERR_PRECOMPUTED, -2, marpa_g_symbol_is_terminal_set(g, S_top, 0), 
+    "marpa_g_symbol_is_terminal_set", "on precomputed grammar");
   
   /* Rules */
   is_success(g, R_C2_3, marpa_g_highest_rule_id (g), "marpa_g_highest_rule_id()");
