@@ -22,8 +22,6 @@
 
 #include "tap/basic.h"
 
-#define TESTS 33
-
 static int
 warn (const char *s, Marpa_Grammar g)
 {
@@ -120,7 +118,7 @@ main (int argc, char *argv[])
   Marpa_Rule_ID R_top_2;
   Marpa_Rule_ID R_C2_3; // highest rule id
 
-  plan(TESTS);
+  plan_lazy();
 
   marpa_c_init (&marpa_configuration);
   g = marpa_g_new (&marpa_configuration);
