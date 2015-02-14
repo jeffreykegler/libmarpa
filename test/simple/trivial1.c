@@ -242,13 +242,6 @@ main (int argc, char *argv[])
   (marpa_g_start_symbol_set (g, S_top) >= 0)
     || fail ("marpa_g_start_symbol_set", g);
 
-  /* set start as terminal */  
-  is_success(g, 1, marpa_g_symbol_is_terminal_set(g, S_top, 1), 
-    "marpa_g_symbol_is_terminal_set()");
-  /* set nullable symbol as terminal */
-  is_success(g, 1, marpa_g_symbol_is_terminal_set(g, S_A1, 1), 
-    "marpa_g_symbol_is_terminal_set()");
-  
   if (marpa_g_precompute (g) < 0)
     fail("marpa_g_precompute", g);
   ok(1, "precomputation succeeded");
