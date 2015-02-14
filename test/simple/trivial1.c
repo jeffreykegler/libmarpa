@@ -189,9 +189,9 @@ main (int argc, char *argv[])
   (marpa_g_start_symbol_set (g, S_top) >= 0)
     || fail ("marpa_g_start_symbol_set", g);
 
-  /* these don't have @<Fail if not precomputed@>@ and must succeed */
-  is_int(S_top, marpa_g_start_symbol (g), "marpa_g_start_symbol()");
-  is_int(S_C2, marpa_g_highest_symbol_id (g), "marpa_g_highest_symbol_id()"); 
+  /* these must succeed after the start symbol is set */
+  is_success(g, S_top, marpa_g_start_symbol (g), "marpa_g_start_symbol()");
+  is_success(g, S_C2, marpa_g_highest_symbol_id (g), "marpa_g_highest_symbol_id()"); 
   
   /* these must return -2 and set error code to MARPA_ERR_NOT_PRECOMPUTED */
   /* Symbols */
