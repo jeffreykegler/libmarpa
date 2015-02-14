@@ -22,6 +22,8 @@
 
 #include "tap/basic.h"
 
+#define TESTS 33
+
 static int
 warn (const char *s, Marpa_Grammar g)
 {
@@ -75,18 +77,31 @@ is_nullable (Marpa_Symbol_ID id)
 
 /* test retcode and error code on expected failure */
 static int
-is_failure(Marpa_Grammar g, Marpa_Error_Code wanted, int retcode, char *method_name, char *msg)
+is_failure(Marpa_Grammar g, Marpa_Error_Code errcode_wanted, int retcode_wanted, int retcode, char *method_name, char *msg)
 {
+  int errcode;
+
+  sprintf (msgbuf, "%s(): %s", method_name, msg);
+  is_int(retcode_wanted, retcode, msgbuf);
+
+  errcode = marpa_g_error (g, NULL);
+  sprintf (msgbuf, "%s() error code", method_name);
+  is_int(errcode_wanted, errcode, msgbuf);  
+
+  marpa_g_error_clear(g);
 }
 
 /* test retval and print error code on unexpected failure */
 static int
 is_success(Marpa_Grammar g, int wanted, int retval, char *method_name, char *msg)
 {
-  sprintf (msgbuf, "%s(), %s", method_name, msg);
+  sprintf (msgbuf, "%s(): %s", method_name, msg);
   is_int(wanted, retval, msgbuf);
+
   if (retval < 0)
     warn(method_name, g);
+
+  marpa_g_error_clear(g);
 }
 
 int
@@ -105,7 +120,7 @@ main (int argc, char *argv[])
   Marpa_Rule_ID R_top_2;
   Marpa_Rule_ID R_C2_3; // highest rule id
 
-  plan(31);
+  plan(TESTS);
 
   marpa_c_init (&marpa_configuration);
   g = marpa_g_new (&marpa_configuration);
@@ -170,8 +185,8 @@ main (int argc, char *argv[])
     || fail ("marpa_g_rule_new", g);
   
   /* this must soft fail if there is not start symbol */
-  is_int(-1, marpa_g_symbol_is_start (g, S_top), "marpa_g_symbol_is_start() before marpa_g_start_symbol_set()");
-  is_int(-1, marpa_g_start_symbol (g), "marpa_g_start_symbol() before marpa_g_start_symbol_set()");
+  is_failure(g, 43, -1, marpa_g_symbol_is_start (g, S_top), "marpa_g_symbol_is_start", "before marpa_g_start_symbol_set()");
+  is_failure(g, 43, -1, marpa_g_start_symbol (g), "marpa_g_start_symbol", "before marpa_g_start_symbol_set()");
 
   (marpa_g_start_symbol_set (g, S_top) >= 0)
     || fail ("marpa_g_start_symbol_set", g);
