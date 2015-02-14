@@ -183,8 +183,9 @@ main (int argc, char *argv[])
     || fail ("marpa_g_rule_new", g);
   
   /* this must soft fail if there is not start symbol */
-  is_failure(g, 43, -1, marpa_g_symbol_is_start (g, S_top), "marpa_g_symbol_is_start", "before marpa_g_start_symbol_set()");
-  is_failure(g, 43, -1, marpa_g_start_symbol (g), "marpa_g_start_symbol", "before marpa_g_start_symbol_set()");
+#define NO_START_TEST_MSG "fail before marpa_g_start_symbol_set()"
+  is_failure(g, 43, -1, marpa_g_symbol_is_start (g, S_top), "marpa_g_symbol_is_start", NO_START_TEST_MSG);
+  is_failure(g, 43, -1, marpa_g_start_symbol (g), "marpa_g_start_symbol", NO_START_TEST_MSG);
 
   (marpa_g_start_symbol_set (g, S_top) >= 0)
     || fail ("marpa_g_start_symbol_set", g);
@@ -193,17 +194,18 @@ main (int argc, char *argv[])
   is_int(S_top, marpa_g_start_symbol (g), "marpa_g_start_symbol()");
   is_int(S_C2, marpa_g_highest_symbol_id (g), "marpa_g_highest_symbol_id()"); 
   
-  /* these must return -2 as the grammar is not precomputed */
+  /* these must return -2 and set error code to MARPA_ERR_NOT_PRECOMPUTED */
   /* Symbols */
-  is_int(-2, marpa_g_symbol_is_accessible  (g, S_C2), "marpa_g_symbol_is_accessible() before marpa_g_precompute()");
-  is_int(-2, marpa_g_symbol_is_nullable (g, S_A1), "marpa_g_symbol_is_nullable() before marpa_g_precompute()");
-  is_int(-2, marpa_g_symbol_is_nulling (g, S_A1), "marpa_g_symbol_is_nulling()  before marpa_g_precompute()");
-  is_int(-2, marpa_g_symbol_is_productive (g, S_top), "marpa_g_symbol_is_productive() before marpa_g_precompute()");
-  is_int(-2, marpa_g_symbol_is_terminal(g, S_top), "marpa_g_symbol_is_terminal() before marpa_g_precompute()");
+#define NOT_PRECOMPUTED_TEST_MSG "fail before marpa_g_precompute()"  
+  is_failure(g, 34, -2, marpa_g_symbol_is_accessible  (g, S_C2), "marpa_g_symbol_is_accessible", NOT_PRECOMPUTED_TEST_MSG);
+  is_failure(g, 34, -2, marpa_g_symbol_is_nullable (g, S_A1), "marpa_g_symbol_is_nullable", NOT_PRECOMPUTED_TEST_MSG);
+  is_failure(g, 34, -2, marpa_g_symbol_is_nulling (g, S_A1), "marpa_g_symbol_is_nulling", NOT_PRECOMPUTED_TEST_MSG);
+  is_failure(g, 34, -2, marpa_g_symbol_is_productive (g, S_top), "marpa_g_symbol_is_productive", NOT_PRECOMPUTED_TEST_MSG);
+  is_failure(g, 34, -2, marpa_g_symbol_is_terminal(g, S_top), "marpa_g_symbol_is_terminal", NOT_PRECOMPUTED_TEST_MSG);
   /* Rules */
-  is_int(-2, marpa_g_rule_is_nullable (g, R_top_2), "marpa_g_rule_is_nullable() before marpa_g_precompute()");
-  is_int(-2, marpa_g_rule_is_nulling (g, R_top_2), "marpa_g_rule_is_nulling() before marpa_g_precompute()");
-  is_int(-2, marpa_g_rule_is_loop (g, R_C2_3), "marpa_g_rule_is_loop() before marpa_g_precompute()");
+  is_failure(g, 34, -2, marpa_g_rule_is_nullable (g, R_top_2), "marpa_g_rule_is_nullable", NOT_PRECOMPUTED_TEST_MSG);
+  is_failure(g, 34, -2, marpa_g_rule_is_nulling (g, R_top_2), "marpa_g_rule_is_nulling", NOT_PRECOMPUTED_TEST_MSG);
+  is_failure(g, 34, -2, marpa_g_rule_is_loop (g, R_C2_3), "marpa_g_rule_is_loop", NOT_PRECOMPUTED_TEST_MSG);
   
   if (marpa_g_precompute (g) < 0)
     fail("marpa_g_precompute", g);
