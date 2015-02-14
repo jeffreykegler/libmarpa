@@ -88,51 +88,14 @@ is_nulling (Marpa_Symbol_ID id)
   return 0;
 }
 
-/* test retcode and error code on expected failure */
-static int
-is_failure(Marpa_Grammar g, Marpa_Error_Code errcode_wanted, int retcode_wanted, int retcode, char *method_name, char *msg)
+static Marpa_Grammar
+trivial_grammar(Marpa_Config *config)
 {
-  int errcode;
-
-  sprintf (msgbuf, "%s(): %s", method_name, msg);
-  is_int(retcode_wanted, retcode, msgbuf);
-
-  errcode = marpa_g_error (g, NULL);
-  sprintf (msgbuf, "%s() error code", method_name);
-  is_int(errcode_wanted, errcode, msgbuf);  
-
-  marpa_g_error_clear(g);
-}
-
-/* test retval and print error code on unexpected failure */
-static int
-is_success(Marpa_Grammar g, int wanted, int retval, char *method_name)
-{
-  is_int(wanted, retval, method_name);
-
-  if (retval < 0)
-    warn(method_name, g);
-
-  marpa_g_error_clear(g);
-}
-
-int
-main (int argc, char *argv[])
-{
-  int rc;
-
-  Marpa_Config marpa_configuration;
-
   Marpa_Grammar g;
-  Marpa_Recognizer r;
-
-  plan_lazy();
-
-  marpa_c_init (&marpa_configuration);
-  g = marpa_g_new (&marpa_configuration);
+  g = marpa_g_new (config);
   if (!g)
     {
-      Marpa_Error_Code errcode = marpa_c_error (&marpa_configuration, NULL);
+      Marpa_Error_Code errcode = marpa_c_error (config, NULL);
       printf ("marpa_g_new returned %d", errcode);
       exit (1);
     }
@@ -190,6 +153,52 @@ main (int argc, char *argv[])
   ((R_C2_3 = marpa_g_rule_new (g, S_C2, rhs, 0)) >= 0)
     || fail ("marpa_g_rule_new", g);
   
+  return g;
+}
+
+/* test retcode and error code on expected failure */
+static int
+is_failure(Marpa_Grammar g, Marpa_Error_Code errcode_wanted, int retcode_wanted, int retcode, char *method_name, char *msg)
+{
+  int errcode;
+
+  sprintf (msgbuf, "%s(): %s", method_name, msg);
+  is_int(retcode_wanted, retcode, msgbuf);
+
+  errcode = marpa_g_error (g, NULL);
+  sprintf (msgbuf, "%s() error code", method_name);
+  is_int(errcode_wanted, errcode, msgbuf);  
+
+  marpa_g_error_clear(g);
+}
+
+/* test retval and print error code on unexpected failure */
+static int
+is_success(Marpa_Grammar g, int wanted, int retval, char *method_name)
+{
+  is_int(wanted, retval, method_name);
+
+  if (retval < 0)
+    warn(method_name, g);
+
+  marpa_g_error_clear(g);
+}
+
+int
+main (int argc, char *argv[])
+{
+  int rc;
+
+  Marpa_Config marpa_configuration;
+
+  Marpa_Grammar g;
+  Marpa_Recognizer r;
+
+  plan_lazy();
+
+  marpa_c_init (&marpa_configuration);
+  g = trivial_grammar(&marpa_configuration);
+  
   /* these must soft fail if there is not start symbol */
 #define NO_START_TEST_MSG "fail before marpa_g_start_symbol_set()"
   is_failure(g, MARPA_ERR_NO_START_SYMBOL, -1, marpa_g_symbol_is_start (g, S_top), "marpa_g_symbol_is_start", NO_START_TEST_MSG);
@@ -223,17 +232,20 @@ main (int argc, char *argv[])
     "marpa_g_symbol_is_terminal_set", "on a symbol already set to be a terminal");
   is_failure(g, MARPA_ERR_NULLING_TERMINAL, -2, marpa_g_precompute (g), "marpa_g_precompute", "with a nulling terminal");
   /* set start as terminal */  
-  is_success(g, MARPA_ERR_NONE, marpa_g_symbol_is_terminal_set(g, S_top, 1), 
+  is_success(g, 1, marpa_g_symbol_is_terminal_set(g, S_top, 1), 
     "marpa_g_symbol_is_terminal_set()");
   /* set nulable symbol as terminal */
-  is_success(g, MARPA_ERR_NONE, marpa_g_symbol_is_terminal_set(g, S_A1, 1), 
+  is_success(g, 1, marpa_g_symbol_is_terminal_set(g, S_A1, 1), 
     "marpa_g_symbol_is_terminal_set()");
-    
+  
+  /* terminals are locked after as */
+  marpa_g_unref(g);
+  
   if (marpa_g_precompute (g) < 0)
     fail("marpa_g_precompute", g);
   ok(1, "precomputation succeeded");
 
-  /* grammar methods, per sections of api.texi's Grammar Methods */
+  /* Grammar Methods per sections of api.texi */
 
   /* Symbols -- these do have @<Fail if not precomputed@>@ */
   is_success(g, 1, marpa_g_symbol_is_accessible  (g, S_C2), "marpa_g_symbol_is_accessible()");
