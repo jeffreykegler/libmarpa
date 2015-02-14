@@ -242,7 +242,8 @@ main (int argc, char *argv[])
   if (!rc)
     fail("marpa_r_start_input", g);
 
-  ok((marpa_r_is_exhausted(r)), "exhausted at earleme 0");
+  diag ("at earleme 0");
+  is_success(g, 1, marpa_r_is_exhausted(r), "marpa_r_is_exhausted()");
   
   return 0;
 }
