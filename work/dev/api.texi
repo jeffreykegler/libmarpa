@@ -1515,13 +1515,13 @@ On other failure, @minus{}2.
 
 @end deftypefun
 
-@deftypefun int marpa_g_symbol_is_terminal ( @
-    Marpa_Grammar @var{g}, @
-    Marpa_Symbol_ID @var{sym_id})
-@deftypefunx int marpa_g_symbol_is_terminal_set ( @
+@deftypefun int marpa_g_symbol_is_terminal_set ( @
     Marpa_Grammar @var{g}, @
     Marpa_Symbol_ID @var{sym_id}, @
  int @var{value})
+@deftypefunx int marpa_g_symbol_is_terminal ( @
+    Marpa_Grammar @var{g}, @
+    Marpa_Symbol_ID @var{sym_id})
 
 These methods, respectively, set
 and query the ``terminal status'' of a symbol.
@@ -1874,14 +1874,13 @@ On failure, @minus{}2.
 @node Ranks, Grammar precomputation, Sequences, Grammar methods
 @section Ranks
 
-
-@deftypefun Marpa_Rank marpa_g_rule_rank ( @
-    Marpa_Grammar @var{g}, @
-    Marpa_Rule_ID rule_id)
-@deftypefunx Marpa_Rank marpa_g_rule_rank_set ( @
+@deftypefun Marpa_Rank marpa_g_rule_rank_set ( @
     Marpa_Grammar @var{g}, @
     Marpa_Rule_ID @var{rule_id}, @
     Marpa_Rank @var{rank})
+@deftypefunx Marpa_Rank marpa_g_rule_rank ( @
+    Marpa_Grammar @var{g}, @
+    Marpa_Rule_ID rule_id)
 
 These methods, respectively, set
 and query the rank of a rule @var{rule_id}.
@@ -1909,16 +1908,16 @@ The error code can be determined by using the
 
 @end deftypefun
 
-@deftypefun int marpa_g_rule_null_high ( @
-    Marpa_Grammar @var{g}, @
-    Marpa_Rule_ID rule_id)
-@deftypefunx int marpa_g_rule_null_high_set ( @
+@deftypefun int marpa_g_rule_null_high_set ( @
     Marpa_Grammar @var{g}, @
     Marpa_Rule_ID @var{rule_id}, @
     int @var{flag})
+@deftypefunx int marpa_g_rule_null_high ( @
+    Marpa_Grammar @var{g}, @
+    Marpa_Rule_ID rule_id)
 
 These methods, respectively, set
-and discover the ``null ranks high'' setting of the rule @var{rule_id}.
+and query the ``null ranks high'' setting of the rule @var{rule_id}.
 The ``null ranks high'' setting is either 0 or 1.
 When @var{rule_id} is created, its ``null ranks high''
 setting is initialized to 0.
@@ -2887,10 +2886,12 @@ the method fails.
 On failure, @minus{}2 is returned.
 @end deftypefun
 
-@deftypefun int marpa_r_earley_item_warning_threshold (Marpa_Recognizer @var{r})
-@deftypefunx int marpa_r_earley_item_warning_threshold_set (Marpa_Recognizer @var{r}, @
+@deftypefun int marpa_r_earley_item_warning_threshold_set (Marpa_Recognizer @var{r}, @
     int @var{threshold})
-These methods, respectively, report and set the Earley item warning threshold.
+@deftypefunx int marpa_r_earley_item_warning_threshold (Marpa_Recognizer @var{r})
+
+These methods, respectively, set and query
+the Earley item warning threshold.
 The @dfn{Earley item warning threshold}
 is a number that is compared with
 the count of Earley items in each Earley set.
@@ -3395,7 +3396,7 @@ Failures: On failure, @minus{}2.
     int @var{flag})
 @deftypefunx int marpa_o_high_rank_only ( @
     Marpa_Order @var{o})
-These methods, respectively, set and discover
+These methods, respectively, set and query
 the ``high rank only'' flag of ordering @var{o}.
 A @var{flag} of 1 indicates that, when ranking,
 all choices should be discarded except those of the
@@ -5408,11 +5409,11 @@ as unsupported.
 @node Ranking methods, Zero-width assertion methods, Untested methods, Untested methods
 @subsection Ranking methods
 
-@deftypefun Marpa_Rank marpa_g_default_rank ( @
-    Marpa_Grammar @var{g})
-@deftypefunx Marpa_Rank marpa_g_default_rank_set ( @
+@deftypefun Marpa_Rank marpa_g_default_rank_set ( @
     Marpa_Grammar @var{g}, @
     Marpa_Rank @var{rank})
+@deftypefunx Marpa_Rank marpa_g_default_rank ( @
+    Marpa_Grammar @var{g})
 
 These methods, respectively, set
 and query the default rank of the grammar.
@@ -5446,13 +5447,13 @@ The error code can be determined by using the
 
 @end deftypefun
 
-@deftypefun Marpa_Rank marpa_g_symbol_rank ( @
-    Marpa_Grammar @var{g}, @
-    Marpa_Symbol_ID sym_id)
-@deftypefunx Marpa_Rank marpa_g_symbol_rank_set ( @
+@deftypefun Marpa_Rank marpa_g_symbol_rank_set ( @
     Marpa_Grammar @var{g}, @
     Marpa_Symbol_ID @var{sym_id}, @
     Marpa_Rank @var{rank})
+@deftypefunx Marpa_Rank marpa_g_symbol_rank ( @
+    Marpa_Grammar @var{g}, @
+    Marpa_Symbol_ID sym_id)
 
 These methods, respectively, set
 and query the rank of a symbol @var{sym_id}.
@@ -5601,13 +5602,13 @@ some tricky debugging further down the road.
 @node Grammar methods dealing with unvalued symbols, Registering semantics in the valuator, What unvalued symbols were, Valued and unvalued symbols
 @subsection Grammar methods dealing with unvalued symbols
 
-@deftypefun int marpa_g_symbol_is_valued ( @
-    Marpa_Grammar @var{g}, @
-    Marpa_Symbol_ID @var{symbol_id})
-@deftypefunx int marpa_g_symbol_is_valued_set ( @
+@deftypefun int marpa_g_symbol_is_valued_set ( @
     Marpa_Grammar @var{g}, @
     Marpa_Symbol_ID @var{symbol_id}, @
     int value)
+@deftypefunx int marpa_g_symbol_is_valued ( @
+    Marpa_Grammar @var{g}, @
+    Marpa_Symbol_ID @var{symbol_id})
 
 These methods, respectively, set
 and query the ``valued status'' of a symbol.
@@ -5645,16 +5646,21 @@ Applications will typically register semantics by rule,
 and these applications will find
 the @code{marpa_v_rule_is_valued()} method more convenient.
 
-@deftypefun int marpa_v_symbol_is_valued ( @
-    Marpa_Value @var{v}, @
-    Marpa_Symbol_ID @var{sym_id} )
-@deftypefunx int marpa_v_symbol_is_valued_set ( @
+@deftypefun int marpa_v_symbol_is_valued_set ( @
     Marpa_Value @var{v}, @
     Marpa_Symbol_ID @var{sym_id}, @
-    int @var{value} )
+    int @var{status} )
+@deftypefunx int marpa_v_symbol_is_valued ( @
+    Marpa_Value @var{v}, @
+    Marpa_Symbol_ID @var{sym_id} )
+
 These methods, respectively,
-discover and set to @var{value},
-the valued status for symbol @var{sym_id}.
+set and query
+the valued status of symbol @var{sym_id}.
+@code{marpa_v_symbol_is_valued_set()} will set
+the valued status to
+the value of
+its @var{status} argument.
 A valued status of 1 indicates that the symbol is valued.
 A valued status of 0 indicates that the symbol is unvalued.
 If the valued status is locked,
@@ -5668,17 +5674,22 @@ If @var{value} is not either 0 or 1,
 or on other failure, @minus{}2.
 @end deftypefun
 
-@deftypefun int marpa_v_rule_is_valued ( @
-    Marpa_Value @var{v}, @
-    Marpa_Rule_ID @var{rule_id} )
-@deftypefunx int marpa_v_rule_is_valued_set ( @
+@deftypefun int marpa_v_rule_is_valued_set ( @
     Marpa_Value @var{v}, @
     Marpa_Rule_ID @var{rule_id}, @
-    int @var{value} )
-These methods respectively,
-discover and set to @var{value},
+    int @var{status} )
+@deftypefunx int marpa_v_rule_is_valued ( @
+    Marpa_Value @var{v}, @
+    Marpa_Rule_ID @var{rule_id} )
+
+These methods, respectively,
+set and query
 the valued status
 for the LHS symbol of rule @var{rule_id}.
+@code{marpa_v_rule_is_valued_set()} sets
+the valued status to the value
+of its @var{status} argument.
+
 A valued status of 1 indicates that the symbol is valued.
 A valued status of 0 indicates that the symbol is unvalued.
 If the valued status is locked,
