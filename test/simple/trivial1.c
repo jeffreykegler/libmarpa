@@ -91,10 +91,9 @@ is_failure(Marpa_Grammar g, Marpa_Error_Code errcode_wanted, int retcode_wanted,
 
 /* test retval and print error code on unexpected failure */
 static int
-is_success(Marpa_Grammar g, int wanted, int retval, char *method_name, char *msg)
+is_success(Marpa_Grammar g, int wanted, int retval, char *method_name)
 {
-  sprintf (msgbuf, "%s(): %s", method_name, msg);
-  is_int(wanted, retval, msgbuf);
+  is_int(wanted, retval, method_name);
 
   if (retval < 0)
     warn(method_name, g);
@@ -184,8 +183,8 @@ main (int argc, char *argv[])
   
   /* this must soft fail if there is not start symbol */
 #define NO_START_TEST_MSG "fail before marpa_g_start_symbol_set()"
-  is_failure(g, 43, -1, marpa_g_symbol_is_start (g, S_top), "marpa_g_symbol_is_start", NO_START_TEST_MSG);
-  is_failure(g, 43, -1, marpa_g_start_symbol (g), "marpa_g_start_symbol", NO_START_TEST_MSG);
+  is_failure(g, MARPA_ERR_NO_START_SYMBOL, -1, marpa_g_symbol_is_start (g, S_top), "marpa_g_symbol_is_start", NO_START_TEST_MSG);
+  is_failure(g, MARPA_ERR_NO_START_SYMBOL, -1, marpa_g_start_symbol (g), "marpa_g_start_symbol", NO_START_TEST_MSG);
 
   (marpa_g_start_symbol_set (g, S_top) >= 0)
     || fail ("marpa_g_start_symbol_set", g);
@@ -197,15 +196,15 @@ main (int argc, char *argv[])
   /* these must return -2 and set error code to MARPA_ERR_NOT_PRECOMPUTED */
   /* Symbols */
 #define NOT_PRECOMPUTED_TEST_MSG "fail before marpa_g_precompute()"  
-  is_failure(g, 34, -2, marpa_g_symbol_is_accessible  (g, S_C2), "marpa_g_symbol_is_accessible", NOT_PRECOMPUTED_TEST_MSG);
-  is_failure(g, 34, -2, marpa_g_symbol_is_nullable (g, S_A1), "marpa_g_symbol_is_nullable", NOT_PRECOMPUTED_TEST_MSG);
-  is_failure(g, 34, -2, marpa_g_symbol_is_nulling (g, S_A1), "marpa_g_symbol_is_nulling", NOT_PRECOMPUTED_TEST_MSG);
-  is_failure(g, 34, -2, marpa_g_symbol_is_productive (g, S_top), "marpa_g_symbol_is_productive", NOT_PRECOMPUTED_TEST_MSG);
-  is_failure(g, 34, -2, marpa_g_symbol_is_terminal(g, S_top), "marpa_g_symbol_is_terminal", NOT_PRECOMPUTED_TEST_MSG);
+  is_failure(g, MARPA_ERR_NOT_PRECOMPUTED, -2, marpa_g_symbol_is_accessible  (g, S_C2), "marpa_g_symbol_is_accessible", NOT_PRECOMPUTED_TEST_MSG);
+  is_failure(g, MARPA_ERR_NOT_PRECOMPUTED, -2, marpa_g_symbol_is_nullable (g, S_A1), "marpa_g_symbol_is_nullable", NOT_PRECOMPUTED_TEST_MSG);
+  is_failure(g, MARPA_ERR_NOT_PRECOMPUTED, -2, marpa_g_symbol_is_nulling (g, S_A1), "marpa_g_symbol_is_nulling", NOT_PRECOMPUTED_TEST_MSG);
+  is_failure(g, MARPA_ERR_NOT_PRECOMPUTED, -2, marpa_g_symbol_is_productive (g, S_top), "marpa_g_symbol_is_productive", NOT_PRECOMPUTED_TEST_MSG);
+  is_failure(g, MARPA_ERR_NOT_PRECOMPUTED, -2, marpa_g_symbol_is_terminal(g, S_top), "marpa_g_symbol_is_terminal", NOT_PRECOMPUTED_TEST_MSG);
   /* Rules */
-  is_failure(g, 34, -2, marpa_g_rule_is_nullable (g, R_top_2), "marpa_g_rule_is_nullable", NOT_PRECOMPUTED_TEST_MSG);
-  is_failure(g, 34, -2, marpa_g_rule_is_nulling (g, R_top_2), "marpa_g_rule_is_nulling", NOT_PRECOMPUTED_TEST_MSG);
-  is_failure(g, 34, -2, marpa_g_rule_is_loop (g, R_C2_3), "marpa_g_rule_is_loop", NOT_PRECOMPUTED_TEST_MSG);
+  is_failure(g, MARPA_ERR_NOT_PRECOMPUTED, -2, marpa_g_rule_is_nullable (g, R_top_2), "marpa_g_rule_is_nullable", NOT_PRECOMPUTED_TEST_MSG);
+  is_failure(g, MARPA_ERR_NOT_PRECOMPUTED, -2, marpa_g_rule_is_nulling (g, R_top_2), "marpa_g_rule_is_nulling", NOT_PRECOMPUTED_TEST_MSG);
+  is_failure(g, MARPA_ERR_NOT_PRECOMPUTED, -2, marpa_g_rule_is_loop (g, R_C2_3), "marpa_g_rule_is_loop", NOT_PRECOMPUTED_TEST_MSG);
   
   if (marpa_g_precompute (g) < 0)
     fail("marpa_g_precompute", g);
@@ -214,25 +213,25 @@ main (int argc, char *argv[])
   /* grammar methods, per sections of api.texi's Grammar Methods */
 
   /* Symbols -- these do have @<Fail if not precomputed@>@ */
-  is_int(1, marpa_g_symbol_is_accessible  (g, S_C2), "marpa_g_symbol_is_accessible()");
-  is_int(1, marpa_g_symbol_is_nullable (g, S_A1), "marpa_g_symbol_is_nullable()");
-  is_int(1, marpa_g_symbol_is_nulling (g, S_A1), "marpa_g_symbol_is_nulling()");
-  is_int(1, marpa_g_symbol_is_productive (g, S_top), "marpa_g_symbol_is_productive()");
-  is_int(1, marpa_g_symbol_is_start (g, S_top), "marpa_g_symbol_is_start()");
-  is_int(0, marpa_g_symbol_is_terminal(g, S_top), "marpa_g_symbol_is_terminal()");
+  is_success(g, 1, marpa_g_symbol_is_accessible  (g, S_C2), "marpa_g_symbol_is_accessible()");
+  is_success(g, 1, marpa_g_symbol_is_nullable (g, S_A1), "marpa_g_symbol_is_nullable()");
+  is_success(g, 1, marpa_g_symbol_is_nulling (g, S_A1), "marpa_g_symbol_is_nulling()");
+  is_success(g, 1, marpa_g_symbol_is_productive (g, S_top), "marpa_g_symbol_is_productive()");
+  is_success(g, 1, marpa_g_symbol_is_start (g, S_top), "marpa_g_symbol_is_start()");
+  is_success(g, 0, marpa_g_symbol_is_terminal(g, S_top), "marpa_g_symbol_is_terminal()");
   
   /* Rules */
-  is_int(R_C2_3, marpa_g_highest_rule_id (g), "marpa_g_highest_rule_id()");
-  is_int(1, marpa_g_rule_is_accessible (g, R_top_1), "marpa_g_rule_is_accessible()");
-  is_int(1, marpa_g_rule_is_nullable (g, R_top_2), "marpa_g_rule_is_nullable()");
-  is_int(1, marpa_g_rule_is_nulling (g, R_top_2), "marpa_g_rule_is_nulling()");
-  is_int(0, marpa_g_rule_is_loop (g, R_C2_3), "marpa_g_rule_is_loop()");
-  is_int(1, marpa_g_rule_is_productive (g, R_C2_3), "marpa_g_rule_is_productive()");
-  is_int(1, marpa_g_rule_length (g, R_top_1), "marpa_g_rule_length(), rule R_top_1");
-  is_int(0, marpa_g_rule_length (g, R_C2_3), "marpa_g_rule_length(), rule R_C2_3");
-  is_int(S_top, marpa_g_rule_lhs (g, R_top_1), "marpa_g_rule_lhs(), rule R_top_1");
-  is_int(S_A1, marpa_g_rule_rhs (g, R_top_1, 0), "marpa_g_rule_rhs(), rule R_top_1");
-  is_success(g, S_A2, marpa_g_rule_rhs (g, R_top_2, 0), "marpa_g_rule_rhs", "rule R_top_2");
+  is_success(g, R_C2_3, marpa_g_highest_rule_id (g), "marpa_g_highest_rule_id()");
+  is_success(g, 1, marpa_g_rule_is_accessible (g, R_top_1), "marpa_g_rule_is_accessible()");
+  is_success(g, 1, marpa_g_rule_is_nullable (g, R_top_2), "marpa_g_rule_is_nullable()");
+  is_success(g, 1, marpa_g_rule_is_nulling (g, R_top_2), "marpa_g_rule_is_nulling()");
+  is_success(g, 0, marpa_g_rule_is_loop (g, R_C2_3), "marpa_g_rule_is_loop()");
+  is_success(g, 1, marpa_g_rule_is_productive (g, R_C2_3), "marpa_g_rule_is_productive()");
+  is_success(g, 1, marpa_g_rule_length (g, R_top_1), "marpa_g_rule_length()");
+  is_success(g, 0, marpa_g_rule_length (g, R_C2_3), "marpa_g_rule_length()");
+  is_success(g, S_top, marpa_g_rule_lhs (g, R_top_1), "marpa_g_rule_lhs()");
+  is_success(g, S_A1, marpa_g_rule_rhs (g, R_top_1, 0), "marpa_g_rule_rhs()");
+  is_success(g, S_A2, marpa_g_rule_rhs (g, R_top_2, 0), "marpa_g_rule_rhs()");
 
   /* recognizer methods */
   r = marpa_r_new (g);
