@@ -832,6 +832,10 @@ Marpa_Symbol_ID marpa_g_start_symbol(Marpa_Grammar g)
 {
    @<Return |-2| on failure@>@;
     @<Fail if fatal error@>@;
+    if (g->t_start_xsy_id < 0) {
+      MARPA_ERROR (MARPA_ERR_NO_START_SYMBOL);
+      return -1;
+    }
     return g->t_start_xsy_id;
 }
 @ We return a soft failure on

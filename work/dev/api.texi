@@ -1501,9 +1501,14 @@ If the grammar is not precomputed, or on other failure, @minus{}2.
 This return value of this call indicates whether @var{sym_id}
 is the start symbol.
 
-Return value:
-On success, 1 if @var{sym_id} is the start symbol;
-0 otherwise.
+Success value:
+Returns 1 if @var{sym_id} is the start symbol.
+Returns 0 if @var{sym_id} is not the start symbol,
+either because the start symbol is different from
+@var{sym_id},
+or because the start symbol has not been set yet.
+
+Failure values:
 If @var{sym_id} is well-formed, but there is no
 such symbol, @minus{}1.
 On other failure, @minus{}2.
