@@ -43,8 +43,8 @@ Marpa_Symbol_ID S_B2;
 Marpa_Symbol_ID S_C1;
 Marpa_Symbol_ID S_C2;
 
-/* For fatal error messages */
-char error_buffer[80];
+/* For (error) messages */
+char msgbuf[80];
 
 char *
 symbol_name (Marpa_Symbol_ID id)
@@ -56,9 +56,9 @@ symbol_name (Marpa_Symbol_ID id)
   if (id == S_B2) return "B2";
   if (id == S_C1) return "C1";
   if (id == S_C2) return "C2";
-  sprintf (error_buffer, "no such symbol: %d", id);
-  return error_buffer;
-};
+  sprintf (msgbuf, "no such symbol: %d", id);
+  return msgbuf;
+}
 
 int
 is_nullable (Marpa_Symbol_ID id)
@@ -71,8 +71,23 @@ is_nullable (Marpa_Symbol_ID id)
   if (id == S_C1) return 1;
   if (id == S_C2) return 1;
   return 0;
-};
+}
 
+/* test retcode and error code on expected failure */
+static int
+is_failure(Marpa_Grammar g, Marpa_Error_Code wanted, int retcode, char *method_name, char *msg)
+{
+}
+
+/* test retval and print error code on unexpected failure */
+static int
+is_success(Marpa_Grammar g, int wanted, int retval, char *method_name, char *msg)
+{
+  sprintf (msgbuf, "%s(), %s", method_name, msg);
+  is_int(wanted, retval, msgbuf);
+  if (retval < 0)
+    warn(method_name, g);
+}
 
 int
 main (int argc, char *argv[])
@@ -202,12 +217,13 @@ main (int argc, char *argv[])
   is_int(0, marpa_g_rule_length (g, R_C2_3), "marpa_g_rule_length(), rule R_C2_3");
   is_int(S_top, marpa_g_rule_lhs (g, R_top_1), "marpa_g_rule_lhs(), rule R_top_1");
   is_int(S_A1, marpa_g_rule_rhs (g, R_top_1, 0), "marpa_g_rule_rhs(), rule R_top_1");
-  is_int(S_A2, marpa_g_rule_rhs (g, R_top_2, 0), "marpa_g_rule_rhs(), rule R_top_2");
+  is_success(g, S_A2, marpa_g_rule_rhs (g, R_top_2, 0), "marpa_g_rule_rhs", "rule R_top_2");
 
   /* recognizer methods */
   r = marpa_r_new (g);
   if (!r) 
     fail("marpa_r_new", g);
+
   rc = marpa_r_start_input (r);
   if (!rc)
     fail("marpa_r_start_input", g);
