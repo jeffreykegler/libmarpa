@@ -23,11 +23,15 @@
 #include "tap/basic.h"
 
 static int
+warn (const char *s, Marpa_Grammar g)
+{
+  printf ("%s returned %d: %s", s, marpa_g_error (g, NULL));
+}
+
+static int
 fail (const char *s, Marpa_Grammar g)
 {
-  const char *error_string;
-  Marpa_Error_Code errcode = marpa_g_error (g, &error_string);
-  printf ("%s returned %d: %s", s, errcode, error_string);
+  warn (s, g);
   exit (1);
 }
 
@@ -74,7 +78,6 @@ int
 main (int argc, char *argv[])
 {
   int rc;
-  const char *error_string;
 
   Marpa_Config marpa_configuration;
 
@@ -93,9 +96,8 @@ main (int argc, char *argv[])
   g = marpa_g_new (&marpa_configuration);
   if (!g)
     {
-      Marpa_Error_Code errcode =
-      marpa_c_error (&marpa_configuration, &error_string);
-      printf ("marpa_g_new returned %d: %s", errcode, error_string);
+      Marpa_Error_Code errcode = marpa_c_error (&marpa_configuration, NULL);
+      printf ("marpa_g_new returned %d", errcode);
       exit (1);
     }
 
@@ -176,11 +178,7 @@ main (int argc, char *argv[])
   is_int(-2, marpa_g_rule_is_loop (g, R_C2_3), "marpa_g_rule_is_loop() before marpa_g_precompute()");
   
   if (marpa_g_precompute (g) < 0)
-    {
-      marpa_g_error (g, &error_string);
-      puts (error_string);
-      exit (1);
-    }
+    fail("marpa_g_precompute", g);
   ok(1, "precomputation succeeded");
 
   /* grammar methods, per sections of api.texi's Grammar Methods */
@@ -208,19 +206,12 @@ main (int argc, char *argv[])
 
   /* recognizer methods */
   r = marpa_r_new (g);
-  if (!r)
-    {
-      marpa_g_error (g, &error_string);
-      puts (error_string);
-      exit (1);
-    }
+  if (!r) 
+    fail("marpa_r_new", g);
   rc = marpa_r_start_input (r);
   if (!rc)
-    {
-      marpa_g_error (g, &error_string);
-      puts (error_string);
-      exit (1);
-    }
+    fail("marpa_r_start_input", g);
+
   ok((marpa_r_is_exhausted(r)), "exhausted at earleme 0");
   
   return 0;
