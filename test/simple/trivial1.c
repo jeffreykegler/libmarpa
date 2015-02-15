@@ -304,6 +304,44 @@ main (int argc, char *argv[])
   /* Sequences */
   /* try to add a nulling sequence, and make sure that it fails with an appropriate
      error code -- http://irclog.perlgeek.de/marpa/2015-02-13#i_10111831  */
+  /* recreate the grammar */
+  marpa_g_unref(g);
+  g = trivial_grammar(&marpa_configuration);
+  /* try to add a nulling sequence */
+  is_failure(g, MARPA_ERR_SEQUENCE_LHS_NOT_UNIQUE, -2,
+    marpa_g_sequence_new (g, S_top, S_B1, S_B2, 0, MARPA_PROPER_SEPARATION),
+      "marpa_g_sequence_new", "with non-unique lhs");
+  /* test error codes of other sequence methods */
+  /* On success, if rule rule_id is not a sequence rule, 0. */
+  is_success(g, 0, marpa_g_rule_is_proper_separation (g, R_top_1), "marpa_g_rule_is_proper_separation");
+  /* -1 is returned if and only if the rule is valid but not a sequence rule. */
+  is_failure(g, 0, -1, marpa_g_sequence_min (g, R_top_1),
+    "marpa_g_sequence_min", "non-sequence rule id");
+  /* If rule_id is not a sequence rule, does not exist or is not well-formed;
+     or on other failure, -2. */
+  is_failure(g, 0, -2, marpa_g_sequence_separator (g, R_top_1),
+    "marpa_g_sequence_separator", "non-sequence rule id");
+  is_success(g, 0, marpa_g_symbol_is_counted (g, R_top_1), "marpa_g_symbol_is_counted");
+  /* invalid rule/symbol id */
+  is_failure(g, MARPA_ERR_INVALID_RULE_ID, -2, marpa_g_rule_is_proper_separation (g, -1),
+    "marpa_g_rule_is_proper_separation", "malformed rule id");
+  is_failure(g, MARPA_ERR_INVALID_RULE_ID, -2, marpa_g_sequence_min (g, -1),
+    "marpa_g_sequence_min", "malformed rule id");
+  is_failure(g, MARPA_ERR_INVALID_RULE_ID, -2, marpa_g_sequence_separator (g, -1),
+    "marpa_g_sequence_separator", "malformed rule id");
+  is_failure(g, MARPA_ERR_INVALID_SYMBOL_ID, -2, marpa_g_symbol_is_counted (g, -1),
+    "marpa_g_symbol_is_counted", "malformed rule id");
+  /* valid, but non-existent rule/symbol id */
+  is_failure(g, MARPA_ERR_NO_SUCH_RULE_ID, -2, marpa_g_rule_is_proper_separation (g, 150),
+    "marpa_g_rule_is_proper_separation", "non-existent rule id");
+  is_failure(g, MARPA_ERR_NO_SUCH_RULE_ID, -2, marpa_g_sequence_min (g, 150),
+    "marpa_g_sequence_min", "non-existent rule id");
+  is_failure(g, MARPA_ERR_NO_SUCH_RULE_ID, -2, marpa_g_sequence_separator (g, 150),
+    "marpa_g_sequence_separator", "non-existent rule id");
+  is_failure(g, MARPA_ERR_NO_SUCH_SYMBOL_ID, -2, marpa_g_symbol_is_counted (g, 150),
+    "marpa_g_symbol_is_counted", "non-existent rule id");
+
+  /* Ranks */
 
   /* Events */
   /* test that attempts to create events, other than nulled events,
