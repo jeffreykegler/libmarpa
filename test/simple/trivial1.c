@@ -235,6 +235,11 @@ main (int argc, char *argv[])
   is_failure(g, MARPA_ERR_NOT_PRECOMPUTED, -2, marpa_g_rule_is_nulling (g, R_top_2), "marpa_g_rule_is_nulling", NOT_PRECOMPUTED_TEST_MSG);
   is_failure(g, MARPA_ERR_NOT_PRECOMPUTED, -2, marpa_g_rule_is_loop (g, R_C2_3), "marpa_g_rule_is_loop", NOT_PRECOMPUTED_TEST_MSG);
   
+  /* expected failures on attempts to non-well-formed and non-existing symbols as terminals */
+  is_failure(g, MARPA_ERR_INVALID_SYMBOL_ID, -2, marpa_g_symbol_is_terminal_set (g, -1, 1), "marpa_g_symbol_is_terminal", 
+    "symbol is not well-formed");
+  is_failure(g, MARPA_ERR_NO_SUCH_SYMBOL_ID, -1, marpa_g_symbol_is_terminal_set (g, 150, 1), "marpa_g_symbol_is_terminal",
+    "symbol is well-formed, but doesn't exist");
   /* set a nulling symbol to be terminal and test precomputation failure */
   is_success(g, 1, marpa_g_symbol_is_terminal_set(g, S_C1, 1), 
     "marpa_g_symbol_is_terminal_set()");
@@ -263,6 +268,10 @@ main (int argc, char *argv[])
   is_success(g, 1, marpa_g_symbol_is_productive (g, S_top), "marpa_g_symbol_is_productive()");
   is_success(g, 1, marpa_g_symbol_is_start (g, S_top), "marpa_g_symbol_is_start()");
   is_success(g, 0, marpa_g_symbol_is_terminal(g, S_top), "marpa_g_symbol_is_terminal()");
+  is_failure(g, MARPA_ERR_INVALID_SYMBOL_ID, -2, marpa_g_symbol_is_terminal(g, -1), "marpa_g_symbol_is_terminal", 
+    "symbol is not well-formed");
+  is_failure(g, MARPA_ERR_NO_SUCH_SYMBOL_ID, -1, marpa_g_symbol_is_terminal (g, 150), "marpa_g_symbol_is_terminal",
+    "symbol is well-formed, but doesn't exist");
 
   is_failure(g, MARPA_ERR_PRECOMPUTED, -2, marpa_g_symbol_is_terminal_set (g, S_top, 0), 
     "marpa_g_symbol_is_terminal_set", "on precomputed grammar");
