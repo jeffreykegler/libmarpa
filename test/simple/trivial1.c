@@ -332,7 +332,7 @@ main (int argc, char *argv[])
   is_failure(g, MARPA_ERR_INVALID_SYMBOL_ID, -2, marpa_g_symbol_is_counted (g, -1),
     "marpa_g_symbol_is_counted", "malformed rule id");
   /* valid, but non-existent rule/symbol id */
-  is_failure(g, MARPA_ERR_NO_SUCH_RULE_ID, -2, marpa_g_rule_is_proper_separation (g, 150),
+  is_failure(g, MARPA_ERR_NO_SUCH_RULE_ID, -1, marpa_g_rule_is_proper_separation (g, 150),
     "marpa_g_rule_is_proper_separation", "non-existent rule id");
   is_failure(g, MARPA_ERR_NO_SUCH_RULE_ID, -2, marpa_g_sequence_min (g, 150),
     "marpa_g_sequence_min", "non-existent rule id");
