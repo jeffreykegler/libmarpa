@@ -199,11 +199,15 @@ main (int argc, char *argv[])
   marpa_c_init (&marpa_configuration);
   g = trivial_grammar(&marpa_configuration);
   
+  /* Grammar Methods per sections of api.texi: Symbols, Rules, Sequnces, Ranks, Events */
+
   /* these must soft fail if there is not start symbol */
 #define NO_START_TEST_MSG "fail before marpa_g_start_symbol_set()"
 
-  is_failure(g, MARPA_ERR_INVALID_SYMBOL_ID, -2, marpa_g_symbol_is_start (g, -1), "marpa_g_symbol_is_start", "symbol is not well-formed");
-  is_failure(g, MARPA_ERR_NO_SUCH_SYMBOL_ID, -1, marpa_g_symbol_is_start (g, 150), "marpa_g_symbol_is_start", "symbol doesn't exist");
+  is_failure(g, MARPA_ERR_INVALID_SYMBOL_ID, -2, marpa_g_symbol_is_start (g, -1), "marpa_g_symbol_is_start", 
+    "symbol is not well-formed");
+  is_failure(g, MARPA_ERR_NO_SUCH_SYMBOL_ID, -1, marpa_g_symbol_is_start (g, 150), "marpa_g_symbol_is_start",
+    "symbol is well-formed, but doesn't exist");
   /* Returns 0 if sym_id is not the start symbol, either because the start symbol 
      is different from sym_id, or because the start symbol has not been set yet. */
   is_success(g, 0, marpa_g_symbol_is_start (g, S_top), "marpa_g_symbol_is_start");
@@ -252,8 +256,6 @@ main (int argc, char *argv[])
     fail("marpa_g_precompute", g);
   ok(1, "precomputation succeeded");
 
-  /* Grammar Methods per sections of api.texi */
-
   /* Symbols -- these do have @<Fail if not precomputed@>@ */
   is_success(g, 1, marpa_g_symbol_is_accessible  (g, S_C2), "marpa_g_symbol_is_accessible()");
   is_success(g, 1, marpa_g_symbol_is_nullable (g, S_A1), "marpa_g_symbol_is_nullable()");
@@ -262,9 +264,11 @@ main (int argc, char *argv[])
   is_success(g, 1, marpa_g_symbol_is_start (g, S_top), "marpa_g_symbol_is_start()");
   is_success(g, 0, marpa_g_symbol_is_terminal(g, S_top), "marpa_g_symbol_is_terminal()");
 
-  is_failure(g, MARPA_ERR_PRECOMPUTED, -2, marpa_g_symbol_is_terminal_set(g, S_top, 0), 
+  is_failure(g, MARPA_ERR_PRECOMPUTED, -2, marpa_g_symbol_is_terminal_set (g, S_top, 0), 
     "marpa_g_symbol_is_terminal_set", "on precomputed grammar");
-  
+  is_failure(g, MARPA_ERR_PRECOMPUTED, -2, marpa_g_start_symbol_set (g, S_top), 
+    "marpa_g_start_symbol_set", "on precomputed grammar");
+
   /* Rules */
   is_success(g, R_C2_3, marpa_g_highest_rule_id (g), "marpa_g_highest_rule_id()");
   is_success(g, 1, marpa_g_rule_is_accessible (g, R_top_1), "marpa_g_rule_is_accessible()");
