@@ -268,12 +268,7 @@ main (int argc, char *argv[])
 
   is_failure(g, MARPA_ERR_NO_START_SYMBOL, -2, marpa_g_precompute (g), "marpa_g_precompute", "before marpa_g_start_symbol_set()");
 
-  /* set start symbol */
-  (marpa_g_start_symbol_set (g, S_top) >= 0)
-    || fail ("marpa_g_start_symbol_set", g);
-
-  if (marpa_g_precompute (g) < 0)
-    fail("marpa_g_precompute", g);
+  trivial_grammar_precompute(g, S_top);
   ok(1, "precomputation succeeded");
 
   /* Symbols -- these do have @<Fail if not precomputed@>@ */
@@ -313,6 +308,9 @@ main (int argc, char *argv[])
   /* Events */
   /* test that attempts to create events, other than nulled events,
      results in a reasonable error -- http://irclog.perlgeek.de/marpa/2015-02-13#i_10111838 */
+
+  trivial_grammar_precompute(g, S_top);
+  ok(1, "precomputation succeeded");
 
   /* Recognizer Methods */
   r = marpa_r_new (g);
