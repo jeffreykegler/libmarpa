@@ -246,7 +246,7 @@ main (int argc, char *argv[])
   marpa_g_unref(g);
   g = trivial_grammar(&marpa_configuration);
   
-  is_failure(g, MARPA_ERR_NO_START_SYMBOL, -2, marpa_g_precompute (g), "marpa_g_precompute", "with a nulling terminal");
+  is_failure(g, MARPA_ERR_NO_START_SYMBOL, -2, marpa_g_precompute (g), "marpa_g_precompute", "before marpa_g_start_symbol_set()");
 
   /* set start symbol */
   (marpa_g_start_symbol_set (g, S_top) >= 0)
