@@ -201,13 +201,19 @@ main (int argc, char *argv[])
   
   /* these must soft fail if there is not start symbol */
 #define NO_START_TEST_MSG "fail before marpa_g_start_symbol_set()"
-  is_failure(g, MARPA_ERR_NO_START_SYMBOL, -1, marpa_g_symbol_is_start (g, S_top), "marpa_g_symbol_is_start", NO_START_TEST_MSG);
+
+  is_failure(g, MARPA_ERR_INVALID_SYMBOL_ID, -2, marpa_g_symbol_is_start (g, -1), "marpa_g_symbol_is_start", "symbol is not well-formed");
+  is_failure(g, MARPA_ERR_NO_SUCH_SYMBOL_ID, -1, marpa_g_symbol_is_start (g, 150), "marpa_g_symbol_is_start", "symbol doesn't exist");
+  /* Returns 0 if sym_id is not the start symbol, either because the start symbol 
+     is different from sym_id, or because the start symbol has not been set yet. */
+  is_success(g, 0, marpa_g_symbol_is_start (g, S_top), "marpa_g_symbol_is_start");
   is_failure(g, MARPA_ERR_NO_START_SYMBOL, -1, marpa_g_start_symbol (g), "marpa_g_start_symbol", NO_START_TEST_MSG);
 
   (marpa_g_start_symbol_set (g, S_top) >= 0)
     || fail ("marpa_g_start_symbol_set", g);
 
   /* these must succeed after the start symbol is set */
+  is_success(g, 1, marpa_g_symbol_is_start (g, S_top), "marpa_g_symbol_is_start");
   is_success(g, S_top, marpa_g_start_symbol (g), "marpa_g_start_symbol()");
   is_success(g, S_C2, marpa_g_highest_symbol_id (g), "marpa_g_highest_symbol_id()"); 
   
@@ -218,7 +224,7 @@ main (int argc, char *argv[])
   is_failure(g, MARPA_ERR_NOT_PRECOMPUTED, -2, marpa_g_symbol_is_nullable (g, S_A1), "marpa_g_symbol_is_nullable", NOT_PRECOMPUTED_TEST_MSG);
   is_failure(g, MARPA_ERR_NOT_PRECOMPUTED, -2, marpa_g_symbol_is_nulling (g, S_A1), "marpa_g_symbol_is_nulling", NOT_PRECOMPUTED_TEST_MSG);
   is_failure(g, MARPA_ERR_NOT_PRECOMPUTED, -2, marpa_g_symbol_is_productive (g, S_top), "marpa_g_symbol_is_productive", NOT_PRECOMPUTED_TEST_MSG);
-  is_failure(g, MARPA_ERR_NOT_PRECOMPUTED, -2, marpa_g_symbol_is_terminal(g, S_top), "marpa_g_symbol_is_terminal", NOT_PRECOMPUTED_TEST_MSG);
+  is_success(g, 0, marpa_g_symbol_is_terminal(g, S_top), "marpa_g_symbol_is_terminal");
 
   /* Rules */
   is_failure(g, MARPA_ERR_NOT_PRECOMPUTED, -2, marpa_g_rule_is_nullable (g, R_top_2), "marpa_g_rule_is_nullable", NOT_PRECOMPUTED_TEST_MSG);
