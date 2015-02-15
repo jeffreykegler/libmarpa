@@ -86,6 +86,12 @@ test: work_install timestamp/do_test.stamp
 test_clean:
 	rm -f timestamp/do_test.stamp
 
+dist_clean: clean
+	rm -rf dist
+	rm -rf doc_dist
+	rm -rf doc1_dist
+	rm -f libmarpa-$(version).tar.gz libmarpa-doc-$(version).tar.gz libmarpa-doc1-$(version).tar.gz
+
 clean:
 	rm -rf work/doc
 	rm -rf work/doc1
