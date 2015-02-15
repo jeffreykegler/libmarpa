@@ -156,6 +156,21 @@ trivial_grammar(Marpa_Config *config)
   return g;
 }
 
+static Marpa_Error_Code
+trivial_grammar_precompute(Marpa_Grammar g, Marpa_Symbol_ID S_start)
+{
+  Marpa_Error_Code rc;
+
+  (marpa_g_start_symbol_set (g, S_start) >= 0)
+    || fail ("marpa_g_start_symbol_set", g);
+
+  rc = marpa_g_precompute (g);
+  if (rc < 0)
+    fail("marpa_g_precompute", g);
+
+  return rc;
+}
+
 /* test retcode and error code on expected failure */
 static int
 is_failure(Marpa_Grammar g, Marpa_Error_Code errcode_wanted, int retcode_wanted, int retcode, char *method_name, char *msg)
