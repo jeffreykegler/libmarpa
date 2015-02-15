@@ -2231,7 +2231,7 @@ when acceptable at a location,
 generates a prediction event at that location,
 and does not generate a nulled event.
 
-while it is not possible for
+While it is not possible for
 a @strong{symbol instance}
 to generate both a nulled event and
 a completion event at a location,
