@@ -1548,16 +1548,24 @@ An attempt to flag a nulling symbol
 as a terminal will cause a failure,
 but this is not necessarily detected before precomputation.
 
-Return value: On success, 1 if symbol @var{sym_id}
+Success returns:
+When successful,
+these methods return
+1 if symbol @var{sym_id}
 is a terminal symbol after the
 call, 0 otherwise.
+
+Failure returns:
 If @var{sym_id} is well-formed, but there is no
 such symbol, @minus{}1.
-If @var{value} is not 0 or 1;
-if the terminal status is locked and @var{value}
+On all other failures, @minus{}2.
+Other failures include
+when @var{value} is not 0 or 1;
+when the terminal status is locked and @var{value}
 is different from its current value;
-if the grammar @var{g} is precomputed;
-or on other failure, @minus{}2.
+and,
+in the case of @code{marpa_g_symbol_is_terminal_set()},
+when the grammar @var{g} is precomputed.
 @end deftypefun
 
 @deftypefun Marpa_Symbol_ID marpa_g_symbol_new (Marpa_Grammar @var{g})

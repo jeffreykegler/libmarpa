@@ -1504,7 +1504,6 @@ Marpa_Symbol_ID xsy_id)
 {
     @<Return |-2| on failure@>@;
     @<Fail if fatal error@>@;
-    @<Fail if not precomputed@>@;
     @<Fail if |xsy_id| is malformed@>@;
     @<Soft fail if |xsy_id| does not exist@>@;
     return XSYID_is_Terminal(xsy_id);
