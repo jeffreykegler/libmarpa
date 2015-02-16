@@ -352,9 +352,9 @@ main (int argc, char *argv[])
     "marpa_g_rule_rank_set", MARPA_TEST_MSG_NO_SUCH_RULE_ID);
   is_failure(g, MARPA_ERR_NO_SUCH_RULE_ID, -2, marpa_g_rule_rank (g, 42),
     "marpa_g_rule_rank", MARPA_TEST_MSG_NO_SUCH_RULE_ID);
-  is_failure(g, MARPA_ERR_NO_SUCH_RULE_ID, -2, marpa_g_rule_null_high_set (g, 42, flag),
+  is_failure(g, MARPA_ERR_NO_SUCH_RULE_ID, -1, marpa_g_rule_null_high_set (g, 42, flag),
     "marpa_g_rule_null_high_set", MARPA_TEST_MSG_NO_SUCH_RULE_ID);
-  is_failure(g, MARPA_ERR_NO_SUCH_RULE_ID, -2, marpa_g_rule_null_high (g, 42),
+  is_failure(g, MARPA_ERR_NO_SUCH_RULE_ID, -1, marpa_g_rule_null_high (g, 42),
     "marpa_g_rule_null_high", MARPA_TEST_MSG_NO_SUCH_RULE_ID);
 
   trivial_grammar_precompute(g, S_top);
