@@ -368,9 +368,16 @@ main (int argc, char *argv[])
     "marpa_g_rule_null_high_set", "on precomputed grammar");
   is_success(g, 1, marpa_g_rule_null_high (g, R_top_2), "marpa_g_rule_null_high()");
 
+  /* recreate the grammar to test event methods except nulled */
+  marpa_g_unref(g);
+  g = trivial_grammar(&marpa_configuration);
+
   /* Events */
   /* test that attempts to create events, other than nulled events,
      results in a reasonable error -- http://irclog.perlgeek.de/marpa/2015-02-13#i_10111838 */
+
+  trivial_grammar_precompute(g, S_top);
+  ok(1, "precomputation succeeded");
 
   /* Recognizer Methods */
   r = marpa_r_new (g);
