@@ -2251,7 +2251,7 @@ the first will generate only nulled events,
 while the second will generate only completion events.
 For similar reasons,
 while a @strong{symbol instance} will never
-generated both a null event and a prediction
+generate both a null event and a prediction
 event at a location,
 multiple instances of the same symbol
 may do so.
