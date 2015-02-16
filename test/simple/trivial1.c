@@ -319,7 +319,7 @@ main (int argc, char *argv[])
     "marpa_g_sequence_min", "non-sequence rule id");
   /* If rule_id is not a sequence rule, does not exist or is not well-formed;
      or on other failure, -2. */
-  is_failure(g, 0, -2, marpa_g_sequence_separator (g, R_top_1),
+  is_failure(g, MARPA_ERR_NOT_A_SEQUENCE, -2, marpa_g_sequence_separator (g, R_top_1),
     "marpa_g_sequence_separator", "non-sequence rule id");
   is_success(g, 0, marpa_g_symbol_is_counted (g, R_top_1), "marpa_g_symbol_is_counted");
   /* invalid rule/symbol id */
@@ -338,8 +338,8 @@ main (int argc, char *argv[])
     "marpa_g_sequence_min", "non-existent rule id");
   is_failure(g, MARPA_ERR_NO_SUCH_RULE_ID, -2, marpa_g_sequence_separator (g, 150),
     "marpa_g_sequence_separator", "non-existent rule id");
-  is_failure(g, MARPA_ERR_NO_SUCH_SYMBOL_ID, -2, marpa_g_symbol_is_counted (g, 150),
-    "marpa_g_symbol_is_counted", "non-existent rule id");
+  is_failure(g, MARPA_ERR_NO_SUCH_SYMBOL_ID, -1, marpa_g_symbol_is_counted (g, 150),
+    "marpa_g_symbol_is_counted", "non-existent symbol id");
 
   /* Ranks */
 

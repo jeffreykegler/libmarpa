@@ -1271,7 +1271,7 @@ int marpa_g_symbol_is_start( Marpa_Grammar g, Marpa_Symbol_ID xsy_id)
     @<Fail if fatal error@>@;
     @<Fail if |xsy_id| is malformed@>@;
     @<Soft fail if |xsy_id| does not exist@>@;
-    if (g->t_start_xsy_id < 0) return -1;
+    if (g->t_start_xsy_id < 0) return 0;
    return xsy_id == g->t_start_xsy_id ? 1 : 0;
 }
 
@@ -2642,9 +2642,6 @@ int marpa_g_sequence_min(
 }
 
 @*0 Sequence separator.
-ID of the separator, for sequence rules which have one.
-|-1| if the rule is not a sequence or does not have
-a separator (the two cases are not distinguished).
 Rule IDs which do not exist and
 other failures are hard failures.
 @d Separator_of_XRL(rule) ((rule)->t_separator_id)
@@ -2662,7 +2659,11 @@ Marpa_Symbol_ID marpa_g_sequence_separator(
     @<Fail if |xrl_id| is malformed@>@;
     @<Fail if |xrl_id| does not exist@>@;
     xrl = XRL_by_ID(xrl_id);
-    if (!XRL_is_Sequence(xrl)) return -1;
+    if (!XRL_is_Sequence(xrl))
+      {
+        MARPA_ERROR (MARPA_ERR_NOT_A_SEQUENCE);
+        return failure_indicator;
+      }
     return Separator_of_XRL(xrl);
 }
 
@@ -2733,7 +2734,7 @@ int marpa_g_rule_is_proper_separation(
     @<Fail if fatal error@>@;
     @<Fail if |xrl_id| is malformed@>@;
     @<Soft fail if |xrl_id| does not exist@>@;
-    return !XRL_is_Proper_Separation(XRL_by_ID(xrl_id));
+    return XRL_is_Proper_Separation(XRL_by_ID(xrl_id));
 }
 
 @*0 Loop rule.

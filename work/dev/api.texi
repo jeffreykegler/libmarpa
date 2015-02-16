@@ -1732,7 +1732,7 @@ Return value: On success,
 the ID of the symbol in position @var{ix}
 on the rules RHS.
 If @var{rule_id} is well-formed, but there is no
-such rule, -1.
+such rule, @minus{}1.
 If @var{ix} is greater than or equal to the length of
 the rule,
 or on other failure, @minus{}2.
@@ -1745,17 +1745,21 @@ or on other failure, @minus{}2.
     Marpa_Grammar @var{g}, @
     Marpa_Rule_ID @var{rule_id})
 
-Return value:
-On success, if rule @var{rule_id} is not a sequence rule, 0.
-On success, if rule @var{rule_id}
+Success returns:
+@code{marpa_g_rule_is_proper_separation()}
+succeeds if and only if @var{rule_id} is valid.
+If rule @var{rule_id}
 is a sequence rule where the proper separation flag
-is set, 1.
-On success, if rule @var{rule_id}
-is a sequence rule where the proper separation flag
-is @strong{not} set, 0.
+is set, returns 1.
+On other success,
+including the case 
+where rule @var{rule_id}
+is not a sequence rule, returns 0.
+
+Failure returns:
 If @var{rule_id} is well-formed, but there is no
-such rule, -1.
-On failure, @minus{}2.
+such rule, returns @minus{}1.
+On other failure, @minus{}2.
 @end deftypefun
 
 @deftypefun int marpa_g_sequence_min ( @
@@ -1874,9 +1878,14 @@ if it appears on the RHS of a sequence rule,
 or if it is used as
 the separator symbol of a sequence rule.
 
-Return value: On success,
-1 if symbol @var{sym_id} is counted, 0 if not.
-On failure, @minus{}2.
+Success return:
+Returns 1 if symbol @var{sym_id} is counted, 0 if not.
+
+Failure return:
+If @var{sym_id} is well-formed, but there is no
+such symbol, @minus{}1.
+If @var{sym_id} is not well-formed,
+and on other failure, @minus{}2.
 @end deftypefun
 
 @node Ranks, Grammar precomputation, Sequences, Grammar methods
@@ -4747,6 +4756,17 @@ the author knows of no uses of this technique.
 
 Numeric value: 44.
 Suggested message: "No token is expected at this earleme location".
+@end deftypevr
+
+@deftypevr Macro int MARPA_ERR_NOT_A_SEQUENCE
+This error occurs in situations where a rule
+is required to be a sequence,
+and indicates that the rule of interest is,
+in fact,
+not a sequence.
+
+Numeric value: 99.
+Suggested message: "Rule is not a sequence".
 @end deftypevr
 
 @deftypevr Macro int MARPA_ERR_NULLING_TERMINAL
