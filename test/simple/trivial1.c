@@ -349,6 +349,24 @@ main (int argc, char *argv[])
   is_success(g, flag, marpa_g_rule_null_high_set (g, R_top_2, flag), "marpa_g_rule_null_high_set()");
   is_success(g, flag, marpa_g_rule_null_high (g, R_top_2), "marpa_g_rule_null_high()");
 
+  is_failure(g, MARPA_ERR_INVALID_RULE_ID, -2, marpa_g_rule_rank_set (g, -1, rank),
+    "marpa_g_rule_rank_set", "malformed rule id");
+  is_failure(g, MARPA_ERR_INVALID_RULE_ID, -2, marpa_g_rule_rank (g, -1),
+    "marpa_g_rule_rank", "malformed rule id");
+  is_failure(g, MARPA_ERR_INVALID_RULE_ID, -2, marpa_g_rule_null_high_set (g, -1, flag),
+    "marpa_g_rule_null_high_set", "malformed rule id");
+  is_failure(g, MARPA_ERR_INVALID_RULE_ID, -2, marpa_g_rule_null_high (g, -1),
+    "marpa_g_rule_null_high", "malformed rule id");
+
+  is_failure(g, MARPA_ERR_NO_SUCH_RULE_ID, -2, marpa_g_rule_rank_set (g, 42, rank),
+    "marpa_g_rule_rank_set", "invalid rule id");
+  is_failure(g, MARPA_ERR_NO_SUCH_RULE_ID, -2, marpa_g_rule_rank (g, 42),
+    "marpa_g_rule_rank", "invalid rule id");
+  is_failure(g, MARPA_ERR_NO_SUCH_RULE_ID, -2, marpa_g_rule_null_high_set (g, 42, flag),
+    "marpa_g_rule_null_high_set", "invalid rule id");
+  is_failure(g, MARPA_ERR_NO_SUCH_RULE_ID, -2, marpa_g_rule_null_high (g, 42),
+    "marpa_g_rule_null_high", "invalid rule id");
+
   /* Events */
   /* test that attempts to create events, other than nulled events,
      results in a reasonable error -- http://irclog.perlgeek.de/marpa/2015-02-13#i_10111838 */
