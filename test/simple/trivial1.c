@@ -373,12 +373,10 @@ main (int argc, char *argv[])
   /* Ranks methods on precomputed grammar */
   is_failure(g, MARPA_ERR_PRECOMPUTED, -2, marpa_g_rule_rank_set (g, R_top_1, rank),
     "marpa_g_rule_rank_set", "on precomputed grammar");
-  is_failure(g, MARPA_ERR_PRECOMPUTED, -2, marpa_g_rule_rank (g, R_top_1),
-    "marpa_g_rule_rank", "on precomputed grammar");
+  is_success(g, rank, marpa_g_rule_rank (g, R_top_1), "marpa_g_rule_rank()");
   is_failure(g, MARPA_ERR_PRECOMPUTED, -2, marpa_g_rule_null_high_set (g, R_top_2, flag),
     "marpa_g_rule_null_high_set", "on precomputed grammar");
-  is_failure(g, MARPA_ERR_PRECOMPUTED, -2, marpa_g_rule_null_high (g, R_top_2),
-    "marpa_g_rule_null_high", "on precomputed grammar");
+  is_success(g, 1, marpa_g_rule_null_high (g, R_top_2), "marpa_g_rule_null_high()");
 
   /* Events */
   /* test that attempts to create events, other than nulled events,
