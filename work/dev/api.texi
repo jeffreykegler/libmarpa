@@ -1952,11 +1952,15 @@ If the ``null ranks high'' setting is 1,
 nulled symbols rank high.
 Ranking of a null variants is done from left-to-right.
 
-Return value: On success, the setting
+Success return:
+The value
 of the ``null ranks high'' flag @strong{after}
 the call.
-If the grammar has been precomputed,
-or on other failure, @minus{}2.
+
+Failure return:
+If rule_id is well-formed, but there is no such rule, @minus{}1.
+If the grammar has been precomputed, @minus{}2.
+On other failure, @minus{}2.
 
 @end deftypefun
 
