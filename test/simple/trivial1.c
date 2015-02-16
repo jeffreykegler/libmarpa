@@ -209,6 +209,9 @@ main (int argc, char *argv[])
   Marpa_Grammar g;
   Marpa_Recognizer r;
 
+  Marpa_Rank rank;
+  int flag;
+
   plan_lazy();
 
   marpa_c_init (&marpa_configuration);
@@ -339,9 +342,12 @@ main (int argc, char *argv[])
     "marpa_g_symbol_is_counted", "non-existent symbol id");
 
   /* Ranks */
-  Marpa_Rank rank = -2;
-  is_success(g, rank, marpa_g_rule_rank_set (g, R_top_1, rank), "marpa_g_rule_rank_set");
-  is_success(g, rank, marpa_g_rule_rank (g, R_top_1), "marpa_g_rule_rank");
+  rank = -2;
+  is_success(g, rank, marpa_g_rule_rank_set (g, R_top_1, rank), "marpa_g_rule_rank_set()");
+  is_success(g, rank, marpa_g_rule_rank (g, R_top_1), "marpa_g_rule_rank()");
+  flag = 1;
+  is_success(g, flag, marpa_g_rule_null_high_set (g, R_top_2, flag), "marpa_g_rule_null_high_set()");
+  is_success(g, flag, marpa_g_rule_null_high (g, R_top_2), "marpa_g_rule_null_high()");
 
   /* Events */
   /* test that attempts to create events, other than nulled events,
