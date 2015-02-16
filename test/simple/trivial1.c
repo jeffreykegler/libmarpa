@@ -221,7 +221,7 @@ main (int argc, char *argv[])
 
   is_failure(g, MARPA_ERR_INVALID_SYMBOL_ID, -2, marpa_g_symbol_is_start (g, -1), "marpa_g_symbol_is_start",
     "symbol is not well-formed");
-  is_failure(g, MARPA_ERR_NO_SUCH_SYMBOL_ID, -1, marpa_g_symbol_is_start (g, 150), "marpa_g_symbol_is_start",
+  is_failure(g, MARPA_ERR_NO_SUCH_SYMBOL_ID, -1, marpa_g_symbol_is_start (g, 42), "marpa_g_symbol_is_start",
     "symbol is well-formed, but doesn't exist");
   /* Returns 0 if sym_id is not the start symbol, either because the start symbol
      is different from sym_id, or because the start symbol has not been set yet. */
@@ -253,7 +253,7 @@ main (int argc, char *argv[])
   /* expected failures on attempts to non-well-formed and non-existing symbols as terminals */
   is_failure(g, MARPA_ERR_INVALID_SYMBOL_ID, -2, marpa_g_symbol_is_terminal_set (g, -1, 1), "marpa_g_symbol_is_terminal",
     "symbol is not well-formed");
-  is_failure(g, MARPA_ERR_NO_SUCH_SYMBOL_ID, -1, marpa_g_symbol_is_terminal_set (g, 150, 1), "marpa_g_symbol_is_terminal",
+  is_failure(g, MARPA_ERR_NO_SUCH_SYMBOL_ID, -1, marpa_g_symbol_is_terminal_set (g, 42, 1), "marpa_g_symbol_is_terminal",
     "symbol is well-formed, but doesn't exist");
   /* set a nulling symbol to be terminal and test precomputation failure */
   is_success(g, 1, marpa_g_symbol_is_terminal_set(g, S_C1, 1),
@@ -280,7 +280,7 @@ main (int argc, char *argv[])
   is_success(g, 0, marpa_g_symbol_is_terminal(g, S_top), "marpa_g_symbol_is_terminal()");
   is_failure(g, MARPA_ERR_INVALID_SYMBOL_ID, -2, marpa_g_symbol_is_terminal(g, -1), "marpa_g_symbol_is_terminal",
     "symbol is not well-formed");
-  is_failure(g, MARPA_ERR_NO_SUCH_SYMBOL_ID, -1, marpa_g_symbol_is_terminal (g, 150), "marpa_g_symbol_is_terminal",
+  is_failure(g, MARPA_ERR_NO_SUCH_SYMBOL_ID, -1, marpa_g_symbol_is_terminal (g, 42), "marpa_g_symbol_is_terminal",
     "symbol is well-formed, but doesn't exist");
 
   is_failure(g, MARPA_ERR_PRECOMPUTED, -2, marpa_g_symbol_is_terminal_set (g, S_top, 0),
@@ -312,17 +312,14 @@ main (int argc, char *argv[])
     marpa_g_sequence_new (g, S_top, S_B1, S_B2, 0, MARPA_PROPER_SEPARATION),
       "marpa_g_sequence_new", "with non-unique lhs");
   /* test error codes of other sequence methods */
-  /* On success, if rule rule_id is not a sequence rule, 0. */
+  /* non-sequence rule id */
   is_success(g, 0, marpa_g_rule_is_proper_separation (g, R_top_1), "marpa_g_rule_is_proper_separation");
-  /* -1 is returned if and only if the rule is valid but not a sequence rule. */
   is_failure(g, 0, -1, marpa_g_sequence_min (g, R_top_1),
     "marpa_g_sequence_min", "non-sequence rule id");
-  /* If rule_id is not a sequence rule, does not exist or is not well-formed;
-     or on other failure, -2. */
   is_failure(g, MARPA_ERR_NOT_A_SEQUENCE, -2, marpa_g_sequence_separator (g, R_top_1),
     "marpa_g_sequence_separator", "non-sequence rule id");
   is_success(g, 0, marpa_g_symbol_is_counted (g, R_top_1), "marpa_g_symbol_is_counted");
-  /* invalid rule/symbol id */
+  /* malformed rule/symbol id */
   is_failure(g, MARPA_ERR_INVALID_RULE_ID, -2, marpa_g_rule_is_proper_separation (g, -1),
     "marpa_g_rule_is_proper_separation", "malformed rule id");
   is_failure(g, MARPA_ERR_INVALID_RULE_ID, -2, marpa_g_sequence_min (g, -1),
@@ -331,14 +328,14 @@ main (int argc, char *argv[])
     "marpa_g_sequence_separator", "malformed rule id");
   is_failure(g, MARPA_ERR_INVALID_SYMBOL_ID, -2, marpa_g_symbol_is_counted (g, -1),
     "marpa_g_symbol_is_counted", "malformed rule id");
-  /* valid, but non-existent rule/symbol id */
-  is_failure(g, MARPA_ERR_NO_SUCH_RULE_ID, -1, marpa_g_rule_is_proper_separation (g, 150),
+  /* well-formed, but invalid rule/symbol id */
+  is_failure(g, MARPA_ERR_NO_SUCH_RULE_ID, -1, marpa_g_rule_is_proper_separation (g, 42),
     "marpa_g_rule_is_proper_separation", "non-existent rule id");
-  is_failure(g, MARPA_ERR_NO_SUCH_RULE_ID, -2, marpa_g_sequence_min (g, 150),
+  is_failure(g, MARPA_ERR_NO_SUCH_RULE_ID, -2, marpa_g_sequence_min (g, 42),
     "marpa_g_sequence_min", "non-existent rule id");
-  is_failure(g, MARPA_ERR_NO_SUCH_RULE_ID, -2, marpa_g_sequence_separator (g, 150),
+  is_failure(g, MARPA_ERR_NO_SUCH_RULE_ID, -2, marpa_g_sequence_separator (g, 42),
     "marpa_g_sequence_separator", "non-existent rule id");
-  is_failure(g, MARPA_ERR_NO_SUCH_SYMBOL_ID, -1, marpa_g_symbol_is_counted (g, 150),
+  is_failure(g, MARPA_ERR_NO_SUCH_SYMBOL_ID, -1, marpa_g_symbol_is_counted (g, 42),
     "marpa_g_symbol_is_counted", "non-existent symbol id");
 
   /* Ranks */
