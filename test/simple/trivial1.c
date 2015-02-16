@@ -193,7 +193,7 @@ is_success(Marpa_Grammar g, int wanted, int retval, char *method_name)
 {
   is_int(wanted, retval, method_name);
 
-  if (retval < 0)
+  if (retval < 0 && strstr(method_name, "marpa_g_rule_rank") == NULL )
     warn(method_name, g);
 
   marpa_g_error_clear(g);
@@ -339,6 +339,9 @@ main (int argc, char *argv[])
     "marpa_g_symbol_is_counted", "non-existent symbol id");
 
   /* Ranks */
+  Marpa_Rank rank = -2;
+  is_success(g, rank, marpa_g_rule_rank_set (g, R_top_1, rank), "marpa_g_rule_rank_set");
+  is_success(g, rank, marpa_g_rule_rank (g, R_top_1), "marpa_g_rule_rank");
 
   /* Events */
   /* test that attempts to create events, other than nulled events,
