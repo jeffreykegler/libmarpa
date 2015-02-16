@@ -102,32 +102,18 @@ trivial_grammar(Marpa_Config *config)
 
   ((S_top = marpa_g_symbol_new (g)) >= 0)
     || fail ("marpa_g_symbol_new", g);
-  ((marpa_g_symbol_is_nulled_event_set(g, S_top, 1)) >= 0)
-    || fail ("marpa_g_symbol_is_nulled_event_set", g);
   ((S_A1 = marpa_g_symbol_new (g)) >= 0)
     || fail ("marpa_g_symbol_new", g);
-  ((marpa_g_symbol_is_nulled_event_set(g, S_A1, 1)) >= 0)
-    || fail ("marpa_g_symbol_is_nulled_event_set", g);
   ((S_A2 = marpa_g_symbol_new (g)) >= 0)
     || fail ("marpa_g_symbol_new", g);
-  ((marpa_g_symbol_is_nulled_event_set(g, S_A2, 1)) >= 0)
-    || fail ("marpa_g_symbol_is_nulled_event_set", g);
   ((S_B1 = marpa_g_symbol_new (g)) >= 0)
     || fail ("marpa_g_symbol_new", g);
-  ((marpa_g_symbol_is_nulled_event_set(g, S_B1, 1)) >= 0)
-    || fail ("marpa_g_symbol_is_nulled_event_set", g);
   ((S_B2 = marpa_g_symbol_new (g)) >= 0)
     || fail ("marpa_g_symbol_new", g);
-  ((marpa_g_symbol_is_nulled_event_set(g, S_B2, 1)) >= 0)
-    || fail ("marpa_g_symbol_is_nulled_event_set", g);
   ((S_C1 = marpa_g_symbol_new (g)) >= 0)
     || fail ("marpa_g_symbol_new", g);
-  ((marpa_g_symbol_is_nulled_event_set(g, S_C1, 1)) >= 0)
-    || fail ("marpa_g_symbol_is_nulled_event_set", g);
   ((S_C2 = marpa_g_symbol_new (g)) >= 0)
     || fail ("marpa_g_symbol_new", g);
-  ((marpa_g_symbol_is_nulled_event_set(g, S_C2, 1)) >= 0)
-    || fail ("marpa_g_symbol_is_nulled_event_set", g);
 
   rhs[0] = S_A1;
   ((R_top_1 = marpa_g_rule_new (g, S_top, rhs, 1)) >= 0)
