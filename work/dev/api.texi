@@ -2194,7 +2194,7 @@ the grammar is precomputed.
 If a nulled event is marked,
 its activation status can be changed using the
 @code{marpa_g_nulled_symbol_activate()} method.
-Note that, If a symbol is marked as a nulled event symbol
+Note that, if a symbol is marked as a nulled event symbol
 in the recognizer,
 its nulled event can be deactivated
 and reactivated in the recognizer.
@@ -2309,7 +2309,7 @@ the grammar is precomputed.
 If a prediction event is marked,
 its activation status can be changed using the
 @code{marpa_g_prediction_symbol_activate()} method.
-Note that, If a symbol is marked as a prediction event symbol
+Note that, if a symbol is marked as a prediction event symbol
 in the recognizer,
 its prediction event can be deactivated
 and reactivated in the recognizer.
