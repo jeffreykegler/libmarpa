@@ -2169,7 +2169,7 @@ call, 0 otherwise.
 Failures:
 If @var{sym_id} is well-formed, but there is no
 such symbol, -1.
-if the grammar @var{g} is precomputed;
+If the grammar @var{g} is precomputed;
 or on other failure, @minus{}2.
 @end deftypefun
 
@@ -2281,7 +2281,7 @@ call, 0 otherwise.
 Failures:
 If @var{sym_id} is well-formed, but there is no
 such symbol, -1.
-if the grammar @var{g} is precomputed;
+If the grammar @var{g} is precomputed;
 or on other failure, @minus{}2.
 @end deftypefun
 
@@ -2334,7 +2334,7 @@ call, 0 otherwise.
 Failures:
 If @var{sym_id} is well-formed, but there is no
 such symbol, -1.
-if the grammar @var{g} is precomputed;
+If the grammar @var{g} is precomputed;
 or on other failure, @minus{}2.
 @end deftypefun
 
