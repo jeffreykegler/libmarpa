@@ -218,11 +218,15 @@ struct marpa_method_spec {
 typedef struct marpa_method_spec Marpa_Method_Spec;
 
 static Marpa_Method_Spec
-marpa_m_method_spec(const char *method_name)
+marpa_m_method_spec(const char *name)
 {
   Marpa_Method_Spec ms;
-  if ( strcmp(method_name, "marpa_g_symbol_is_start") == 0 ){
+  if ( strcmp(name, "marpa_g_symbol_is_start") == 0 ){
     ms.p = &marpa_g_symbol_is_start, ms.s = "%s";
+  }
+  else{
+    printf("Unknown Marpa method name %.\n", name);
+    exit(1);
   }
   return ms;
 }
@@ -242,21 +246,21 @@ marpa_m_success_test(const char* name, ...)
   Marpa_Symbol_ID S_id;
 
   ms = marpa_m_method_spec(name);
+
   va_list args;
   va_start(args, name);
 
   if (strncmp(name, "marpa_g_", 8) == 0)
   {
     g = va_arg(args, Marpa_Grammar);
-
     if (strcmp(ms.s, "%s") == 0)
+    {
       S_id = va_arg(args, Marpa_Symbol_ID);
-
-    is_int( va_arg(args, int), ms.p(g, S_id), name);
+      is_int( va_arg(args, int), ms.p(g, S_id), name);
+    }
   }
 
   va_end(args);
-
 }
 
 static int
