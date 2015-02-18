@@ -198,6 +198,52 @@ is_success(Marpa_Grammar g, int wanted, int retval, char *method_name)
   marpa_g_error_clear(g);
 }
 
+/*
+
+now
+
+  is_success(g, 1, marpa_g_symbol_is_start (g, S_top), "marpa_g_symbol_is_start");
+  is_failure(g,
+    MARPA_ERR_NO_START_SYMBOL, -1, marpa_g_start_symbol (g), "marpa_g_start_symbol", MARPA_TEST_MSG_NO_START_SYMBOL);
+
+then
+
+  marpa_m_object_g_set(Marpa_Grammar g);
+  marpa_m_test_success("marpa_g_symbol_is_start", S_top, 1);
+  marpa_m_test_failure("marpa_g_symbol_is_start", S_top, -1, MARPA_ERR_NO_START_SYMBOL);
+
+how
+
+  void marpa_m_object_g_set(Marpa_Grammar g)
+  void marpa_m_object_r_set(Marpa_Recognizer r)
+  void marpa_m_object_b_set(Marpa_Bocage b)
+  void marpa_m_object_o_set(Marpa_Order o)
+  void marpa_m_object_t_set(Marpa_Tree t)
+  void marpa_m_object_v_set(Marpa_Value v)
+
+  int (*marpa_m_pointer)(const char *method_name)
+  char *marpa_m_error_message (const char *method_name)
+  char *marpa_m_parameter_spec (const char *method_name)
+
+    %s -- Marpa_Symbol_ID
+    %r -- Marpa_Rule_ID
+    %n -- Marpa_Rank
+    int
+    void pointer
+    int pointer
+    Marpa_Event
+    Marpa_Event pointer
+
+  void marpa_m_success_test(const char* name, ...)
+  void marpa_m_failure_test(const char* name, ...)
+
+*/
+
+static int
+marpa_method_test(const char *spec, ...)
+{
+}
+
 int
 main (int argc, char *argv[])
 {
