@@ -257,6 +257,9 @@ main (int argc, char *argv[])
   Marpa_Rank rank;
   int flag;
 
+  int reactivate;
+  int value;
+
   plan_lazy();
 
   marpa_c_init (&marpa_configuration);
@@ -429,9 +432,36 @@ main (int argc, char *argv[])
   /* Events */
   /* test that attempts to create events, other than nulled events,
      results in a reasonable error -- http://irclog.perlgeek.de/marpa/2015-02-13#i_10111838 */
+/*
+
+reactivate = 1;
+reactivate = 0;
+int marpa_g_completion_symbol_activate (g, S_top, reactivate )
+int marpa_g_prediction_symbol_activate (g, S_top, reactivate )
+
+// If the active status of the completion event for sym_id cannot be set as
+// indicated by reactivate, the method fails. On failure, -2 is returned.
+
+value = 1;
+int marpa_g_symbol_is_completion_event (g, S_top)
+int marpa_g_symbol_is_completion_event_set ( g, S_top, value)
+
+int marpa_g_symbol_is_prediction_event (g, S_top)
+int marpa_g_symbol_is_prediction_event_set (g, S_top, value)
+
+// On success, 1 if symbol sym_id is an event symbol after the call, 0 otherwise.
+// If sym_id is well-formed, but there is no such symbol, -1.
+
+// malformed/invalid symbols
+
+*/
 
   trivial_grammar_precompute(g, S_top);
   ok(1, "precomputation succeeded");
+
+  /* event methods after precomputation
+     if the grammar g is precomputed; or on other failure, -2.
+   */
 
   /* Recognizer Methods */
   r = marpa_r_new (g);
