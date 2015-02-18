@@ -198,51 +198,69 @@ is_success(Marpa_Grammar g, int wanted, int retval, char *method_name)
   marpa_g_error_clear(g);
 }
 
+/* Marpa method test interface */
+
+typedef int (*marpa_m_pointer)();
+
 /*
-
-now
-
-  is_success(g, 1, marpa_g_symbol_is_start (g, S_top), "marpa_g_symbol_is_start");
-  is_failure(g,
-    MARPA_ERR_NO_START_SYMBOL, -1, marpa_g_start_symbol (g), "marpa_g_start_symbol", MARPA_TEST_MSG_NO_START_SYMBOL);
-
-then
-
-  marpa_m_object_g_set(Marpa_Grammar g);
-  marpa_m_test_success("marpa_g_symbol_is_start", S_top, 1);
-  marpa_m_test_failure("marpa_g_symbol_is_start", S_top, -1, MARPA_ERR_NO_START_SYMBOL);
-
-how
-
-  void marpa_m_object_g_set(Marpa_Grammar g)
-  void marpa_m_object_r_set(Marpa_Recognizer r)
-  void marpa_m_object_b_set(Marpa_Bocage b)
-  void marpa_m_object_o_set(Marpa_Order o)
-  void marpa_m_object_t_set(Marpa_Tree t)
-  void marpa_m_object_v_set(Marpa_Value v)
-
-  struct marpa_method_spec {
-    int (*fp)(...) ptr;
-    const char *parm_spec;
-  };
-  typedef struct marpa_method_spec Marpa_Method_Spec;
-
-  parameter spec
     %s -- Marpa_Symbol_ID
     %r -- Marpa_Rule_ID
     %n -- Marpa_Rank
-
-  Marpa_Method_Spec marpa_m_method_spec(const char *method_name)
-
-  char *marpa_m_error_message (Marpa_Error_Code error_code)
-
-  void marpa_m_success_test(const char* name, ...)
-  void marpa_m_failure_test(const char* name, ...)
-
+    ...
 */
+typedef const char *marpa_m_signature;
+
+struct marpa_method_spec {
+  marpa_m_pointer p;
+  marpa_m_signature s;
+};
+
+typedef struct marpa_method_spec Marpa_Method_Spec;
+
+static Marpa_Method_Spec
+marpa_m_method_spec(const char *method_name)
+{
+  Marpa_Method_Spec ms;
+  if ( strcmp(method_name, "marpa_g_symbol_is_start") == 0 ){
+    ms.p = &marpa_g_symbol_is_start, ms.s = "%s";
+  }
+  return ms;
+}
+
+static char *marpa_m_error_message (Marpa_Error_Code error_code)
+{
+  if ( error_code == MARPA_ERR_NO_START_SYMBOL ){
+    return "no start symbol";
+  }
+}
 
 static int
-marpa_method_test(const char *spec, ...)
+marpa_m_success_test(const char* name, ...)
+{
+  Marpa_Method_Spec ms;
+  Marpa_Grammar g;
+  Marpa_Symbol_ID S_id;
+
+  ms = marpa_m_method_spec(name);
+  va_list args;
+  va_start(args, name);
+
+  if (strncmp(name, "marpa_g_", 8) == 0)
+  {
+    g = va_arg(args, Marpa_Grammar);
+
+    if (strcmp(ms.s, "%s") == 0)
+      S_id = va_arg(args, Marpa_Symbol_ID);
+
+    is_int( va_arg(args, int), ms.p(g, S_id), name);
+  }
+
+  va_end(args);
+
+}
+
+static int
+marpa_m_failure_test(const char* name, ...)
 {
 }
 
@@ -275,14 +293,14 @@ main (int argc, char *argv[])
     MARPA_TEST_MSG_NO_SUCH_SYMBOL_ID);
   /* Returns 0 if sym_id is not the start symbol, either because the start symbol
      is different from sym_id, or because the start symbol has not been set yet. */
-  is_success(g, 0, marpa_g_symbol_is_start (g, S_top), "marpa_g_symbol_is_start");
+  marpa_m_success_test("marpa_g_symbol_is_start", g, S_top, 0);
   is_failure(g, MARPA_ERR_NO_START_SYMBOL, -1, marpa_g_start_symbol (g), "marpa_g_start_symbol", MARPA_TEST_MSG_NO_START_SYMBOL);
 
   (marpa_g_start_symbol_set (g, S_top) >= 0)
     || fail ("marpa_g_start_symbol_set", g);
 
   /* these must succeed after the start symbol is set */
-  is_success(g, 1, marpa_g_symbol_is_start (g, S_top), "marpa_g_symbol_is_start");
+  marpa_m_success_test("marpa_g_symbol_is_start", g, S_top, 1);
   is_success(g, S_top, marpa_g_start_symbol (g), "marpa_g_start_symbol()");
   is_success(g, S_C2, marpa_g_highest_symbol_id (g), "marpa_g_highest_symbol_id()");
 
