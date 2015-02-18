@@ -221,10 +221,11 @@ how
   void marpa_m_object_t_set(Marpa_Tree t)
   void marpa_m_object_v_set(Marpa_Value v)
 
-  typedef struct {
+  struct marpa_method_spec {
     int (*fp)(...) ptr;
     const char *parm_spec;
-  } Marpa_Method_Spec;
+  };
+  typedef struct marpa_method_spec Marpa_Method_Spec;
 
   Marpa_Method_Spec marpa_m_method_spec(const char *method_name)
   char *marpa_m_error_message (Marpa_Error_Code error_code)
