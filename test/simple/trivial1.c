@@ -250,8 +250,8 @@ main (int argc, char *argv[])
   is_failure(g, MARPA_ERR_NOT_PRECOMPUTED, -2, marpa_g_rule_is_loop (g, R_C2_3), "marpa_g_rule_is_loop", MSG_NOT_PRECOMPUTED);
 
   /* expected failures on attempts to non-well-formed and non-existing symbols as terminals */
-  is_failure(g, MARPA_ERR_INVALID_SYMBOL_ID, -2, marpa_g_symbol_is_terminal_set (g, -1, 1),
-    "marpa_g_symbol_is_terminal", MARPA_TEST_MSG_INVALID_SYMBOL_ID);
+  is_failure_invalid_symbol_id
+    (g, marpa_g_symbol_is_terminal_set (g, -1, 1), "marpa_g_symbol_is_terminal");
   is_failure(g, MARPA_ERR_NO_SUCH_SYMBOL_ID, -1, marpa_g_symbol_is_terminal_set (g, 42, 1),
     "marpa_g_symbol_is_terminal", MARPA_TEST_MSG_NO_SUCH_SYMBOL_ID);
   /* set a nulling symbol to be terminal and test precomputation failure */
@@ -277,8 +277,8 @@ main (int argc, char *argv[])
   is_success(g, 1, marpa_g_symbol_is_productive (g, S_top), "marpa_g_symbol_is_productive()");
   is_success(g, 1, marpa_g_symbol_is_start (g, S_top), "marpa_g_symbol_is_start()");
   is_success(g, 0, marpa_g_symbol_is_terminal(g, S_top), "marpa_g_symbol_is_terminal()");
-  is_failure(g, MARPA_ERR_INVALID_SYMBOL_ID, -2, marpa_g_symbol_is_terminal(g, -1),
-    "marpa_g_symbol_is_terminal", MARPA_TEST_MSG_INVALID_SYMBOL_ID);
+  is_failure_invalid_symbol_id
+    (g, marpa_g_symbol_is_terminal(g, -1), "marpa_g_symbol_is_terminal");
   is_failure(g, MARPA_ERR_NO_SUCH_SYMBOL_ID, -1, marpa_g_symbol_is_terminal (g, 42),
     "marpa_g_symbol_is_terminal", MARPA_TEST_MSG_NO_SUCH_SYMBOL_ID);
 
@@ -327,8 +327,8 @@ main (int argc, char *argv[])
     "marpa_g_sequence_min", MARPA_TEST_MSG_INVALID_RULE_ID);
   is_failure(g, MARPA_ERR_INVALID_RULE_ID, -2, marpa_g_sequence_separator (g, -1),
     "marpa_g_sequence_separator", MARPA_TEST_MSG_INVALID_RULE_ID);
-  is_failure(g, MARPA_ERR_INVALID_SYMBOL_ID, -2, marpa_g_symbol_is_counted (g, -1),
-    "marpa_g_symbol_is_counted", MARPA_TEST_MSG_INVALID_SYMBOL_ID);
+  is_failure_invalid_symbol_id
+    (g, marpa_g_symbol_is_counted (g, -1), "marpa_g_symbol_is_counted");
   /* well-formed, but invalid rule/symbol id */
   is_failure(g, MARPA_ERR_NO_SUCH_RULE_ID, -1, marpa_g_rule_is_proper_separation (g, 42),
     "marpa_g_rule_is_proper_separation", MARPA_TEST_MSG_NO_SUCH_RULE_ID);
