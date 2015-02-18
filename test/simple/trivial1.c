@@ -227,17 +227,14 @@ how
   };
   typedef struct marpa_method_spec Marpa_Method_Spec;
 
-  Marpa_Method_Spec marpa_m_method_spec(const char *method_name)
-  char *marpa_m_error_message (Marpa_Error_Code error_code)
-
+  parameter spec
     %s -- Marpa_Symbol_ID
     %r -- Marpa_Rule_ID
     %n -- Marpa_Rank
-    int
-    void pointer
-    int pointer
-    Marpa_Event
-    Marpa_Event pointer
+
+  Marpa_Method_Spec marpa_m_method_spec(const char *method_name)
+
+  char *marpa_m_error_message (Marpa_Error_Code error_code)
 
   void marpa_m_success_test(const char* name, ...)
   void marpa_m_failure_test(const char* name, ...)
