@@ -1441,7 +1441,7 @@ Sets the start symbol of grammar @var{g} to symbol @var{id}.
 
 Return value: On success, the ID of the new start symbol.
 If @var{sym_id} is well-formed, but there is no
-such symbol, -1.
+such symbol, @minus{}1.
 On failure, @minus{}2.
 
 @end deftypefun
@@ -1621,7 +1621,7 @@ A rule is @dfn{nulling} if it always produces the empty string.
 Return value: On success,
 1 if rule @var{ruleid} is nulling, 0 if not.
 If @var{rule_id} is well-formed, but there is no
-such rule, -1.
+such rule, @minus{}1.
 If the grammar is not precomputed, or on other failure, @minus{}2.
 @end deftypefun
 
@@ -1662,7 +1662,7 @@ an empty rule is considered productive.
 Return value: On success,
 1 if rule @var{rule_id} is productive, 0 if not.
 If @var{rule_id} is well-formed, but there is no
-such rule, -1.
+such rule, @minus{}1.
 If the grammar is not precomputed, or on other failure, @minus{}2.
 @end deftypefun
 
@@ -1680,7 +1680,7 @@ On failure, @minus{}2.
     Marpa_Rule_ID @var{rule_id})
 Return value: On success, the LHS symbol of rule @var{rule_id}.
 If @var{rule_id} is well-formed, but there is no
-such rule, -1.
+such rule, @minus{}1.
 On other failure, @minus{}2.
 @end deftypefun
 
@@ -2168,7 +2168,7 @@ call, 0 otherwise.
 
 Failures:
 If @var{sym_id} is well-formed, but there is no
-such symbol, -1.
+such symbol, @minus{}1.
 If the grammar @var{g} is precomputed;
 or on other failure, @minus{}2.
 @end deftypefun
@@ -2280,7 +2280,7 @@ call, 0 otherwise.
 
 Failures:
 If @var{sym_id} is well-formed, but there is no
-such symbol, -1.
+such symbol, @minus{}1.
 If the grammar @var{g} is precomputed;
 or on other failure, @minus{}2.
 @end deftypefun
@@ -2333,7 +2333,7 @@ call, 0 otherwise.
 
 Failures:
 If @var{sym_id} is well-formed, but there is no
-such symbol, -1.
+such symbol, @minus{}1.
 If the grammar @var{g} is precomputed;
 or on other failure, @minus{}2.
 @end deftypefun
