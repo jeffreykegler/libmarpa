@@ -599,7 +599,7 @@ main (int argc, char *argv[])
   marpa_m_test("marpa_g_rule_rank_set", g, R_top_2, positive_rank);
 
   marpa_m_test("marpa_g_rule_null_high_set", g, R_top_2, flag, -2, MARPA_ERR_PRECOMPUTED);
-  marpa_m_test("marpa_g_rule_null_high", g, R_top_2, flag);
+  marpa_m_test("marpa_g_rule_null_high", g, R_top_2, -2, MARPA_ERR_PRECOMPUTED);
 
   /* recreate the grammar to test event methods except nulled */
   marpa_g_unref(g);
