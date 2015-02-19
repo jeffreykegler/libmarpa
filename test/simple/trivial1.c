@@ -240,6 +240,17 @@ const Marpa_Method_Spec methspec[] = {
   { "marpa_g_rule_is_loop", &marpa_g_rule_is_loop, "%r" },
 
   { "marpa_g_precompute", &marpa_g_precompute, "" },
+
+  { "marpa_g_highest_rule_id", &marpa_g_highest_rule_id, "" },
+  { "marpa_g_rule_is_accessible", &marpa_g_rule_is_accessible, "%r" },
+  { "marpa_g_rule_is_nullable", &marpa_g_rule_is_nullable, "%r" },
+  { "marpa_g_rule_is_nulling", &marpa_g_rule_is_nulling, "%r" },
+  { "marpa_g_rule_is_loop", &marpa_g_rule_is_loop, "%r" },
+  { "marpa_g_rule_is_productive", &marpa_g_rule_is_productive, "%r" },
+  { "marpa_g_rule_length", &marpa_g_rule_length, "%r" },
+  { "marpa_g_rule_lhs", &marpa_g_rule_lhs, "%r" },
+  { "marpa_g_rule_rhs", &marpa_g_rule_rhs, "%r, %i" },
+
 };
 
 static Marpa_Method_Spec
@@ -324,7 +335,7 @@ marpa_m_test(const char* name, ...)
   /* unpack arguments */
   if (ms.as == "")
   {
-    /* dispatch based on what object is set */
+    /* method dispatch based on what object is set */
     if (g != NULL) rv_seen = ms.p(g);
     else if (r != NULL) rv_seen = ms.p(r);
   }
@@ -340,10 +351,16 @@ marpa_m_test(const char* name, ...)
 
       curr_arg = strtok(NULL, " ,-");
     }
-    /* call marpa method based on signature */
+    /* call marpa method based on argspec */
     if (strcmp(ms.as, "%s") == 0) rv_seen = ms.p(g, S_id);
-    if (strcmp(ms.as, "%r") == 0) rv_seen = ms.p(g, R_id);
     else if (strcmp(ms.as, "%s, %i") == 0) rv_seen = ms.p(g, S_id, intarg);
+    else if (strcmp(ms.as, "%r") == 0) rv_seen = ms.p(g, R_id);
+    else if (strcmp(ms.as, "%r, %i") == 0) rv_seen = ms.p(g, R_id, intarg);
+    else
+    {
+      printf("No method yet for argument spec %s.\n", ms.as);
+      exit(1);
+    }
   }
 
   rv_wanted = va_arg(args, int);
@@ -471,17 +488,17 @@ main (int argc, char *argv[])
   marpa_m_test("marpa_g_start_symbol_set", g, S_top, -2, MARPA_ERR_PRECOMPUTED);
 
   /* Rules */
-  is_success(g, R_C2_3, marpa_g_highest_rule_id (g), "marpa_g_highest_rule_id()");
-  is_success(g, 1, marpa_g_rule_is_accessible (g, R_top_1), "marpa_g_rule_is_accessible()");
-  is_success(g, 1, marpa_g_rule_is_nullable (g, R_top_2), "marpa_g_rule_is_nullable()");
-  is_success(g, 1, marpa_g_rule_is_nulling (g, R_top_2), "marpa_g_rule_is_nulling()");
-  is_success(g, 0, marpa_g_rule_is_loop (g, R_C2_3), "marpa_g_rule_is_loop()");
-  is_success(g, 1, marpa_g_rule_is_productive (g, R_C2_3), "marpa_g_rule_is_productive()");
-  is_success(g, 1, marpa_g_rule_length (g, R_top_1), "marpa_g_rule_length()");
-  is_success(g, 0, marpa_g_rule_length (g, R_C2_3), "marpa_g_rule_length()");
-  is_success(g, S_top, marpa_g_rule_lhs (g, R_top_1), "marpa_g_rule_lhs()");
-  is_success(g, S_A1, marpa_g_rule_rhs (g, R_top_1, 0), "marpa_g_rule_rhs()");
-  is_success(g, S_A2, marpa_g_rule_rhs (g, R_top_2, 0), "marpa_g_rule_rhs()");
+  marpa_m_test("marpa_g_highest_rule_id", g, R_C2_3);
+  marpa_m_test("marpa_g_rule_is_accessible", g, R_top_1, 1);
+  marpa_m_test("marpa_g_rule_is_nullable", g, R_top_2, 1);
+  marpa_m_test("marpa_g_rule_is_nulling", g, R_top_2, 1);
+  marpa_m_test("marpa_g_rule_is_loop", g, R_C2_3, 0);
+  marpa_m_test("marpa_g_rule_is_productive", g, R_C2_3, 1);
+  marpa_m_test("marpa_g_rule_length", g, R_top_1, 1);
+  marpa_m_test("marpa_g_rule_length", g, R_C2_3, 0);
+  marpa_m_test("marpa_g_rule_lhs", g, R_top_1, S_top);
+  marpa_m_test("marpa_g_rule_rhs", g, R_top_1, 0, S_A1);
+  marpa_m_test("marpa_g_rule_rhs", g, R_top_2, 0, S_A2);
 
   /* Sequences */
   /* try to add a nulling sequence, and make sure that it fails with an appropriate
