@@ -225,6 +225,10 @@ const Marpa_Method_Spec methspec[] = {
   { "marpa_g_start_symbol", &marpa_g_start_symbol, "" },
   { "marpa_g_highest_symbol_id", &marpa_g_highest_symbol_id, ""},
   { "marpa_g_symbol_is_accessible", &marpa_g_symbol_is_accessible, "%s" },
+  { "marpa_g_symbol_is_nullable", &marpa_g_symbol_is_nullable, "%s" },
+  { "marpa_g_symbol_is_nulling", &marpa_g_symbol_is_nulling, "%s" },
+  { "marpa_g_symbol_is_productive", &marpa_g_symbol_is_productive, "%s" },
+  { "marpa_g_symbol_is_terminal",  &marpa_g_symbol_is_terminal, "%s" },
 };
 
 static Marpa_Method_Spec
@@ -407,10 +411,10 @@ main (int argc, char *argv[])
   /* Symbols */
 #define MSG_NOT_PRECOMPUTED "fail before marpa_g_precompute()"
   marpa_m_test("marpa_g_symbol_is_accessible", g, S_C2, -2, MARPA_ERR_NOT_PRECOMPUTED);
-  is_failure(g, MARPA_ERR_NOT_PRECOMPUTED, -2, marpa_g_symbol_is_nullable (g, S_A1), "marpa_g_symbol_is_nullable", MSG_NOT_PRECOMPUTED);
-  is_failure(g, MARPA_ERR_NOT_PRECOMPUTED, -2, marpa_g_symbol_is_nulling (g, S_A1), "marpa_g_symbol_is_nulling", MSG_NOT_PRECOMPUTED);
-  is_failure(g, MARPA_ERR_NOT_PRECOMPUTED, -2, marpa_g_symbol_is_productive (g, S_top), "marpa_g_symbol_is_productive", MSG_NOT_PRECOMPUTED);
-  is_success(g, 0, marpa_g_symbol_is_terminal(g, S_top), "marpa_g_symbol_is_terminal");
+  marpa_m_test("marpa_g_symbol_is_nullable", g, S_A1, -2, MARPA_ERR_NOT_PRECOMPUTED);
+  marpa_m_test("marpa_g_symbol_is_nulling", g, S_A1, -2, MARPA_ERR_NOT_PRECOMPUTED);
+  marpa_m_test("marpa_g_symbol_is_productive", g, S_top, -2, MARPA_ERR_NOT_PRECOMPUTED);
+  marpa_m_test("marpa_g_symbol_is_terminal", g, S_top, 0);
 
   /* Rules */
   is_failure(g, MARPA_ERR_NOT_PRECOMPUTED, -2, marpa_g_rule_is_nullable (g, R_top_2), "marpa_g_rule_is_nullable", MSG_NOT_PRECOMPUTED);
