@@ -220,7 +220,7 @@ struct marpa_method_spec {
 typedef struct marpa_method_spec Marpa_Method_Spec;
 
 #define MAX_METHSPEC 4
-Marpa_Method_Spec methspec[MAX_METHSPEC] = {
+const Marpa_Method_Spec methspec[MAX_METHSPEC] = {
   { "marpa_g_symbol_is_start", &marpa_g_symbol_is_start, "%s" },
   { "marpa_g_symbol_is_terminal_set", &marpa_g_symbol_is_terminal_set, "%s, %i" },
   { "marpa_g_start_symbol", &marpa_g_start_symbol, "" },
@@ -244,11 +244,33 @@ marpa_m_method_spec(const char *name)
   exit(1);
 }
 
+typedef char *marpa_m_errmsg;
+struct marpa_m_error {
+  Marpa_Error_Code c;
+  marpa_m_errmsg m;
+};
+
+typedef struct marpa_m_error Marpa_Method_Error;
+
+#define MAX_ERRSPEC 3
+const Marpa_Method_Error errspec[MAX_ERRSPEC] = {
+  { MARPA_ERR_NO_START_SYMBOL, "no start symbol" },
+  { MARPA_ERR_INVALID_SYMBOL_ID, "invalid symbol id" },
+  { MARPA_ERR_NO_SUCH_SYMBOL_ID, "no such symbol id" },
+};
+
 static char *marpa_m_error_message (Marpa_Error_Code error_code)
 {
-  if ( error_code == MARPA_ERR_NO_START_SYMBOL ) return "no start symbol";
-  if ( error_code == MARPA_ERR_INVALID_SYMBOL_ID ) return "invalid symbol id";
-  if ( error_code == MARPA_ERR_NO_SUCH_SYMBOL_ID ) return "no such symbol id";
+  Marpa_Method_Error me;
+  int i;
+
+  for (i = 0; i < MAX_ERRSPEC; i++)
+  {
+    if ( error_code == errspec[i].c )
+    {
+      return errspec[i].m;
+    }
+  }
   printf("No message yet for Marpa error code %d.\n", error_code);
   exit(1);
 }
