@@ -173,19 +173,6 @@ is_failure(Marpa_Grammar g, Marpa_Error_Code errcode_wanted, int retcode_wanted,
   marpa_g_error_clear(g);
 }
 
-/* check that method_name returned -2 and
-   error code is set to MARPA_ERR_INVALID_SYMBOL_ID
-   */
-#define MARPA_TEST_MSG_NO_START_SYMBOL "fail before marpa_g_start_symbol_set()"
-#define MARPA_TEST_MSG_INVALID_SYMBOL_ID "malformed symbol id"
-#define MARPA_TEST_MSG_NO_SUCH_SYMBOL_ID "invalid symbol id"
-static int
-is_failure_invalid_symbol_id(Marpa_Grammar g, int retcode, char *method_name)
-{
-  return is_failure(g, MARPA_ERR_INVALID_SYMBOL_ID, -2, retcode, method_name,
-    MARPA_TEST_MSG_INVALID_SYMBOL_ID);
-}
-
 /* test retval and print error code on unexpected failure */
 static int
 is_success(Marpa_Grammar g, int wanted, int retval, char *method_name)
