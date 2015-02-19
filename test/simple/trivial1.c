@@ -421,7 +421,7 @@ main (int argc, char *argv[])
 
   Marpa_Symbol_ID S_invalid, S_no_such;
   Marpa_Rule_ID R_invalid, R_no_such;
-  Marpa_Rank rank;
+  Marpa_Rank negative_rank, positive_rank;
   int flag;
 
   int reactivate;
@@ -557,17 +557,21 @@ main (int argc, char *argv[])
   marpa_m_test("marpa_g_symbol_is_counted", g, S_no_such, -1, MARPA_ERR_NO_SUCH_SYMBOL_ID);
 
   /* Ranks */
-  rank = -2;
-  marpa_m_test("marpa_g_rule_rank_set", g, R_top_1, rank, rank);
-  marpa_m_test("marpa_g_rule_rank", g, R_top_1, rank);
+  negative_rank = -1;
+  marpa_m_test("marpa_g_rule_rank_set", g, R_top_1, negative_rank, negative_rank);
+  marpa_m_test("marpa_g_rule_rank", g, R_top_1, negative_rank);
+
+  positive_rank = 1;
+  marpa_m_test("marpa_g_rule_rank_set", g, R_top_2, positive_rank, positive_rank);
+  marpa_m_test("marpa_g_rule_rank", g, R_top_2, positive_rank);
 
   flag = 1;
   marpa_m_test("marpa_g_rule_null_high_set", g, R_top_2, flag, flag);
   marpa_m_test("marpa_g_rule_null_high", g, R_top_2, flag);
 
   /* invalid/no such rule id error handling */
-  marpa_m_test("marpa_g_rule_rank_set", g, R_invalid, rank, -2, MARPA_ERR_INVALID_RULE_ID);
-  marpa_m_test("marpa_g_rule_rank_set", g, R_no_such, rank, -2, MARPA_ERR_NO_SUCH_RULE_ID);
+  marpa_m_test("marpa_g_rule_rank_set", g, R_invalid, positive_rank, -2, MARPA_ERR_INVALID_RULE_ID);
+  marpa_m_test("marpa_g_rule_rank_set", g, R_no_such, negative_rank, -2, MARPA_ERR_NO_SUCH_RULE_ID);
 
   marpa_m_test("marpa_g_rule_rank", g, R_invalid, -2, MARPA_ERR_INVALID_RULE_ID);
   marpa_m_test("marpa_g_rule_rank", g, R_no_such, -2, MARPA_ERR_NO_SUCH_RULE_ID);
@@ -582,8 +586,17 @@ main (int argc, char *argv[])
   ok(1, "precomputation succeeded");
 
   /* Ranks methods on precomputed grammar */
-  marpa_m_test("marpa_g_rule_rank_set", g, R_top_1, rank, -2, MARPA_ERR_PRECOMPUTED);
-  marpa_m_test("marpa_g_rule_rank", g, R_top_1, -2, MARPA_ERR_PRECOMPUTED);
+  marpa_m_test("marpa_g_rule_rank_set", g, R_top_1, negative_rank, -2, MARPA_ERR_PRECOMPUTED);
+  if (marpa_g_rule_rank(g, R_top_1) == negative_rank)
+    if (marpa_g_error(g, NULL) == MARPA_ERR_NONE)
+      ok(1, "marpa_g_rule_rank() returns negative_rank and marpa_g_error() returns MARPA_ERR_NONE");
+    else
+      ok(0, "marpa_g_rule_rank() returns negative_rank and marpa_g_error() returns MARPA_ERR_NONE");
+  else
+    ok(0, "marpa_g_rule_rank() returns negative_rank");
+
+  marpa_m_test("marpa_g_rule_rank_set", g, R_top_2, positive_rank, -2, MARPA_ERR_PRECOMPUTED);
+  marpa_m_test("marpa_g_rule_rank_set", g, R_top_2, positive_rank);
 
   marpa_m_test("marpa_g_rule_null_high_set", g, R_top_2, flag, -2, MARPA_ERR_PRECOMPUTED);
   marpa_m_test("marpa_g_rule_null_high", g, R_top_2, flag);
