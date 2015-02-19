@@ -288,6 +288,8 @@ const Marpa_Method_Error errspec[] = {
   { MARPA_ERR_PRECOMPUTED, "grammar precomputed" },
   { MARPA_ERR_SEQUENCE_LHS_NOT_UNIQUE, "sequence lhs not unique" },
   { MARPA_ERR_NOT_A_SEQUENCE, "not a sequence rule" },
+  { MARPA_ERR_INVALID_RULE_ID, "invalid rule id" },
+  { MARPA_ERR_NO_SUCH_RULE_ID, "no such rule id" },
   { MARPA_ERR_NONE, "no error" },
 };
 
@@ -417,6 +419,7 @@ int
 main (int argc, char *argv[])
 {
   int rc;
+  int ix;
 
   Marpa_Config marpa_configuration;
 
@@ -424,6 +427,7 @@ main (int argc, char *argv[])
   Marpa_Recognizer r;
 
   Marpa_Symbol_ID S_invalid, S_no_such;
+  Marpa_Rule_ID R_invalid, R_no_such;
   Marpa_Rank rank;
   int flag;
 
@@ -436,8 +440,8 @@ main (int argc, char *argv[])
   g = marpa_g_trivial_new(&marpa_configuration);
 
   /* Grammar Methods per sections of api.texi: Symbols, Rules, Sequnces, Ranks, Events */
-  S_invalid = -1;
-  S_no_such = 42;
+  S_invalid = R_invalid = -1;
+  S_no_such = R_no_such = 42;
 
   marpa_m_test("marpa_g_symbol_is_start", g, S_invalid, -2, MARPA_ERR_INVALID_SYMBOL_ID);
   marpa_m_test("marpa_g_symbol_is_start", g, S_no_such, -1, MARPA_ERR_NO_SUCH_SYMBOL_ID);
@@ -513,6 +517,20 @@ main (int argc, char *argv[])
   marpa_m_test("marpa_g_rule_rhs", g, R_top_1, 0, S_A1);
   marpa_m_test("marpa_g_rule_rhs", g, R_top_2, 0, S_A2);
 
+  /* invalid/no such rule id error handling */
+  const char *marpa_g_rule_accessors[] = {
+    "marpa_g_rule_is_accessible", "marpa_g_rule_is_nullable",
+    "marpa_g_rule_is_nulling", "marpa_g_rule_is_loop", "marpa_g_rule_is_productive",
+    "marpa_g_rule_length", "marpa_g_rule_lhs",
+  };
+  for (ix = 0; ix < sizeof(marpa_g_rule_accessors) / sizeof(char *); ix++)
+  {
+    marpa_m_test(marpa_g_rule_accessors[ix], g, R_invalid, -2, MARPA_ERR_INVALID_RULE_ID);
+    marpa_m_test(marpa_g_rule_accessors[ix], g, R_no_such, -1, MARPA_ERR_NO_SUCH_RULE_ID);
+  }
+  marpa_m_test("marpa_g_rule_rhs", g, R_invalid, 0, -2, MARPA_ERR_INVALID_RULE_ID);
+  marpa_m_test("marpa_g_rule_rhs", g, R_no_such, 0, -1, MARPA_ERR_NO_SUCH_RULE_ID);
+
   /* Sequences */
   /* try to add a nulling sequence, and make sure that it fails with an appropriate
      error code -- http://irclog.perlgeek.de/marpa/2015-02-13#i_10111831  */
@@ -535,26 +553,21 @@ main (int argc, char *argv[])
   marpa_m_test("marpa_g_sequence_separator", g, R_top_1, -2, MARPA_ERR_NOT_A_SEQUENCE);
   marpa_m_test("marpa_g_symbol_is_counted", g, S_top, 0);
 
+  /* invalid/no such rule id error handling */
+  marpa_m_test("marpa_g_sequence_separator", g, R_invalid, -2, MARPA_ERR_INVALID_RULE_ID);
+  marpa_m_test("marpa_g_sequence_separator", g, R_no_such, -2, MARPA_ERR_NO_SUCH_RULE_ID);
+
+  marpa_m_test("marpa_g_sequence_min", g, R_invalid, -2, MARPA_ERR_INVALID_RULE_ID);
+  marpa_m_test("marpa_g_sequence_min", g, R_no_such, -2, MARPA_ERR_NO_SUCH_RULE_ID);
+
+  marpa_m_test("marpa_g_rule_is_proper_separation", g, R_invalid, -2, MARPA_ERR_INVALID_RULE_ID);
+  marpa_m_test("marpa_g_rule_is_proper_separation", g, R_no_such, -1, MARPA_ERR_NO_SUCH_RULE_ID);
+
+  marpa_m_test("marpa_g_symbol_is_counted", g, S_invalid, -2, MARPA_ERR_INVALID_SYMBOL_ID);
+  marpa_m_test("marpa_g_symbol_is_counted", g, S_no_such, -1, MARPA_ERR_NO_SUCH_SYMBOL_ID);
+
 #define MARPA_TEST_MSG_INVALID_RULE_ID "malformed rule id"
 #define MARPA_TEST_MSG_NO_SUCH_RULE_ID "invalid rule id"
-  /* malformed rule/symbol id */
-  is_failure(g, MARPA_ERR_INVALID_RULE_ID, -2, marpa_g_rule_is_proper_separation (g, -1),
-    "marpa_g_rule_is_proper_separation", MARPA_TEST_MSG_INVALID_RULE_ID);
-  is_failure(g, MARPA_ERR_INVALID_RULE_ID, -2, marpa_g_sequence_min (g, -1),
-    "marpa_g_sequence_min", MARPA_TEST_MSG_INVALID_RULE_ID);
-  is_failure(g, MARPA_ERR_INVALID_RULE_ID, -2, marpa_g_sequence_separator (g, -1),
-    "marpa_g_sequence_separator", MARPA_TEST_MSG_INVALID_RULE_ID);
-  is_failure_invalid_symbol_id
-    (g, marpa_g_symbol_is_counted (g, -1), "marpa_g_symbol_is_counted");
-  /* well-formed, but invalid rule/symbol id */
-  is_failure(g, MARPA_ERR_NO_SUCH_RULE_ID, -1, marpa_g_rule_is_proper_separation (g, 42),
-    "marpa_g_rule_is_proper_separation", MARPA_TEST_MSG_NO_SUCH_RULE_ID);
-  is_failure(g, MARPA_ERR_NO_SUCH_RULE_ID, -2, marpa_g_sequence_min (g, 42),
-    "marpa_g_sequence_min", MARPA_TEST_MSG_NO_SUCH_RULE_ID);
-  is_failure(g, MARPA_ERR_NO_SUCH_RULE_ID, -2, marpa_g_sequence_separator (g, 42),
-    "marpa_g_sequence_separator", MARPA_TEST_MSG_NO_SUCH_RULE_ID);
-  is_failure(g, MARPA_ERR_NO_SUCH_SYMBOL_ID, -1, marpa_g_symbol_is_counted (g, 42),
-    "marpa_g_symbol_is_counted", MARPA_TEST_MSG_NO_SUCH_SYMBOL_ID);
 
   /* Ranks */
   rank = -2;
