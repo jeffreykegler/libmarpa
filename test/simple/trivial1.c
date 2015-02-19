@@ -251,21 +251,21 @@ const Marpa_Method_Spec methspec[] = {
   { "marpa_g_rule_lhs", &marpa_g_rule_lhs, "%r" },
   { "marpa_g_rule_rhs", &marpa_g_rule_rhs, "%r, %i" },
 
+  { "marpa_g_sequence_new", &marpa_g_sequence_new, "%s, %s, %s, %i, %i" },
+  { "marpa_g_rule_is_proper_separation", &marpa_g_rule_is_proper_separation, "%r" },
+  { "marpa_g_sequence_min", &marpa_g_sequence_min, "%r" },
+  { "marpa_g_sequence_separator", &marpa_g_sequence_separator, "%r" },
+  { "marpa_g_symbol_is_counted", &marpa_g_symbol_is_counted, "%s" },
+
 };
 
 static Marpa_Method_Spec
 marpa_m_method_spec(const char *name)
 {
-  Marpa_Method_Spec ms;
   int i;
-
   for (i = 0; i < sizeof(methspec) / sizeof(Marpa_Method_Spec); i++)
-  {
     if ( strcmp(name, methspec[i].n ) == 0 )
-    {
       return methspec[i];
-    }
-  }
   printf("No spec yet for Marpa method %s().\n", name);
   exit(1);
 }
@@ -286,20 +286,17 @@ const Marpa_Method_Error errspec[] = {
   { MARPA_ERR_TERMINAL_IS_LOCKED, "terminal locked" },
   { MARPA_ERR_NULLING_TERMINAL, "nulling terminal" },
   { MARPA_ERR_PRECOMPUTED, "grammar precomputed" },
+  { MARPA_ERR_SEQUENCE_LHS_NOT_UNIQUE, "sequence lhs not unique" },
+  { MARPA_ERR_NOT_A_SEQUENCE, "not a sequence rule" },
+  { MARPA_ERR_NONE, "no error" },
 };
 
 static char *marpa_m_error_message (Marpa_Error_Code error_code)
 {
-  Marpa_Method_Error me;
   int i;
-
   for (i = 0; i < sizeof(errspec) / sizeof(Marpa_Method_Error); i++)
-  {
     if ( error_code == errspec[i].c )
-    {
       return errspec[i].m;
-    }
-  }
   printf("No message yet for Marpa error code %d.\n", error_code);
   exit(1);
 }
@@ -312,9 +309,9 @@ marpa_m_test(const char* name, ...)
   Marpa_Grammar g;
   Marpa_Recognizer r;
 
-  Marpa_Symbol_ID S_id;
+  Marpa_Symbol_ID S_id, S_id1, S_id2;
   Marpa_Rule_ID R_id;
-  int intarg;
+  int intarg, intarg1;
 
   int rv_wanted, rv_seen;
   int err_wanted, err_seen;
@@ -322,6 +319,7 @@ marpa_m_test(const char* name, ...)
   char tok_buf[32];  /* strtok() */
   char desc_buf[80]; /* test description  */
   char *curr_arg;
+  int curr_arg_ix;
 
   ms = marpa_m_method_spec(name);
 
@@ -329,6 +327,8 @@ marpa_m_test(const char* name, ...)
   va_start(args, name);
 
   g = NULL;
+#define ARG_UNDEF 42424242
+  R_id = S_id = S_id1 = S_id2 = intarg = intarg1 = ARG_UNDEF;
   if (strncmp(name, "marpa_g_", 8) == 0)
     g = va_arg(args, Marpa_Grammar);
 
@@ -345,17 +345,30 @@ marpa_m_test(const char* name, ...)
     curr_arg = strtok(tok_buf, " ,-");
     while (curr_arg != NULL)
     {
-      if (strncmp(curr_arg, "%s", 2) == 0) S_id = va_arg(args, Marpa_Symbol_ID);
-      else if (strncmp(curr_arg, "%r", 2) == 0) R_id   = va_arg(args, Marpa_Rule_ID);
-      else if (strncmp(curr_arg, "%i", 2) == 0) intarg = va_arg(args, int);
+      if (strncmp(curr_arg, "%s", 2) == 0){
+        if (S_id == ARG_UNDEF) S_id = va_arg(args, Marpa_Symbol_ID);
+        else if (S_id1 == ARG_UNDEF) S_id1 = va_arg(args, Marpa_Symbol_ID);
+        else if (S_id2 == ARG_UNDEF) S_id2 = va_arg(args, Marpa_Symbol_ID);
+      }
+      else if (strncmp(curr_arg, "%r", 2) == 0)
+      {
+        R_id   = va_arg(args, Marpa_Rule_ID);
+      }
+      else if (strncmp(curr_arg, "%i", 2) == 0)
+      {
+        if (intarg == ARG_UNDEF) intarg = va_arg(args, int);
+        else if (intarg1 == ARG_UNDEF) intarg1 = va_arg(args, int);
+      }
 
       curr_arg = strtok(NULL, " ,-");
+      curr_arg_ix++;
     }
     /* call marpa method based on argspec */
     if (strcmp(ms.as, "%s") == 0) rv_seen = ms.p(g, S_id);
-    else if (strcmp(ms.as, "%s, %i") == 0) rv_seen = ms.p(g, S_id, intarg);
     else if (strcmp(ms.as, "%r") == 0) rv_seen = ms.p(g, R_id);
+    else if (strcmp(ms.as, "%s, %i") == 0) rv_seen = ms.p(g, S_id, intarg);
     else if (strcmp(ms.as, "%r, %i") == 0) rv_seen = ms.p(g, R_id, intarg);
+    else if (strcmp(ms.as, "%s, %s, %s, %i, %i") == 0) rv_seen = ms.p(g, S_id, S_id1, S_id2, intarg, intarg1);
     else
     {
       printf("No method yet for argument spec %s.\n", ms.as);
@@ -425,7 +438,7 @@ main (int argc, char *argv[])
   /* Grammar Methods per sections of api.texi: Symbols, Rules, Sequnces, Ranks, Events */
   S_invalid = -1;
   S_no_such = 42;
-  /* these must soft fail if there is not start symbol */
+
   marpa_m_test("marpa_g_symbol_is_start", g, S_invalid, -2, MARPA_ERR_INVALID_SYMBOL_ID);
   marpa_m_test("marpa_g_symbol_is_start", g, S_no_such, -1, MARPA_ERR_NO_SUCH_SYMBOL_ID);
   /* Returns 0 if sym_id is not the start symbol, either because the start symbol
@@ -503,21 +516,25 @@ main (int argc, char *argv[])
   /* Sequences */
   /* try to add a nulling sequence, and make sure that it fails with an appropriate
      error code -- http://irclog.perlgeek.de/marpa/2015-02-13#i_10111831  */
+
   /* recreate the grammar */
   marpa_g_unref(g);
   g = marpa_g_trivial_new(&marpa_configuration);
+
+  is_failure(g, MARPA_ERR_NOT_A_SEQUENCE, -1, marpa_g_sequence_min (g, R_top_1),
+    "marpa_g_sequence_min", "non-sequence rule id");
+
   /* try to add a nulling sequence */
-  is_failure(g, MARPA_ERR_SEQUENCE_LHS_NOT_UNIQUE, -2,
-    marpa_g_sequence_new (g, S_top, S_B1, S_B2, 0, MARPA_PROPER_SEPARATION),
-      "marpa_g_sequence_new", "with non-unique lhs");
+  marpa_m_test("marpa_g_sequence_new", g, S_top, S_B1, S_B2, 0, MARPA_PROPER_SEPARATION,
+    -2, MARPA_ERR_SEQUENCE_LHS_NOT_UNIQUE);
+
   /* test error codes of other sequence methods */
   /* non-sequence rule id */
-  is_success(g, 0, marpa_g_rule_is_proper_separation (g, R_top_1), "marpa_g_rule_is_proper_separation");
-  is_failure(g, 0, -1, marpa_g_sequence_min (g, R_top_1),
-    "marpa_g_sequence_min", "non-sequence rule id");
-  is_failure(g, MARPA_ERR_NOT_A_SEQUENCE, -2, marpa_g_sequence_separator (g, R_top_1),
-    "marpa_g_sequence_separator", "non-sequence rule id");
-  is_success(g, 0, marpa_g_symbol_is_counted (g, R_top_1), "marpa_g_symbol_is_counted");
+  marpa_m_test("marpa_g_rule_is_proper_separation", g, R_top_1, 0);
+  marpa_m_test("marpa_g_sequence_min", g, R_top_1, -1, MARPA_ERR_NOT_A_SEQUENCE);
+  marpa_m_test("marpa_g_sequence_separator", g, R_top_1, -2, MARPA_ERR_NOT_A_SEQUENCE);
+  marpa_m_test("marpa_g_symbol_is_counted", g, S_top, 0);
+
 #define MARPA_TEST_MSG_INVALID_RULE_ID "malformed rule id"
 #define MARPA_TEST_MSG_NO_SUCH_RULE_ID "invalid rule id"
   /* malformed rule/symbol id */
