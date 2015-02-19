@@ -219,12 +219,12 @@ struct marpa_method_spec {
 
 typedef struct marpa_method_spec Marpa_Method_Spec;
 
-#define MAX_METHSPEC 4
-const Marpa_Method_Spec methspec[MAX_METHSPEC] = {
+const Marpa_Method_Spec methspec[] = {
   { "marpa_g_symbol_is_start", &marpa_g_symbol_is_start, "%s" },
   { "marpa_g_symbol_is_terminal_set", &marpa_g_symbol_is_terminal_set, "%s, %i" },
   { "marpa_g_start_symbol", &marpa_g_start_symbol, "" },
-  { "marpa_g_highest_symbol_id", &marpa_g_highest_symbol_id, ""}
+  { "marpa_g_highest_symbol_id", &marpa_g_highest_symbol_id, ""},
+  { "marpa_g_symbol_is_accessible", &marpa_g_symbol_is_accessible, "%s" },
 };
 
 static Marpa_Method_Spec
@@ -233,7 +233,7 @@ marpa_m_method_spec(const char *name)
   Marpa_Method_Spec ms;
   int i;
 
-  for (i = 0; i < MAX_METHSPEC; i++)
+  for (i = 0; i < sizeof(methspec) / sizeof(Marpa_Method_Spec); i++)
   {
     if ( strcmp(name, methspec[i].n ) == 0 )
     {
@@ -252,11 +252,11 @@ struct marpa_m_error {
 
 typedef struct marpa_m_error Marpa_Method_Error;
 
-#define MAX_ERRSPEC 3
-const Marpa_Method_Error errspec[MAX_ERRSPEC] = {
+const Marpa_Method_Error errspec[] = {
   { MARPA_ERR_NO_START_SYMBOL, "no start symbol" },
   { MARPA_ERR_INVALID_SYMBOL_ID, "invalid symbol id" },
   { MARPA_ERR_NO_SUCH_SYMBOL_ID, "no such symbol id" },
+  { MARPA_ERR_NOT_PRECOMPUTED, "grammar not precomputed" },
 };
 
 static char *marpa_m_error_message (Marpa_Error_Code error_code)
@@ -264,7 +264,7 @@ static char *marpa_m_error_message (Marpa_Error_Code error_code)
   Marpa_Method_Error me;
   int i;
 
-  for (i = 0; i < MAX_ERRSPEC; i++)
+  for (i = 0; i < sizeof(errspec) / sizeof(Marpa_Method_Error); i++)
   {
     if ( error_code == errspec[i].c )
     {
@@ -406,7 +406,7 @@ main (int argc, char *argv[])
   /* these must return -2 and set error code to MARPA_ERR_NOT_PRECOMPUTED */
   /* Symbols */
 #define MSG_NOT_PRECOMPUTED "fail before marpa_g_precompute()"
-  is_failure(g, MARPA_ERR_NOT_PRECOMPUTED, -2, marpa_g_symbol_is_accessible  (g, S_C2), "marpa_g_symbol_is_accessible", MSG_NOT_PRECOMPUTED);
+  marpa_m_test("marpa_g_symbol_is_accessible", g, S_C2, -2, MARPA_ERR_NOT_PRECOMPUTED);
   is_failure(g, MARPA_ERR_NOT_PRECOMPUTED, -2, marpa_g_symbol_is_nullable (g, S_A1), "marpa_g_symbol_is_nullable", MSG_NOT_PRECOMPUTED);
   is_failure(g, MARPA_ERR_NOT_PRECOMPUTED, -2, marpa_g_symbol_is_nulling (g, S_A1), "marpa_g_symbol_is_nulling", MSG_NOT_PRECOMPUTED);
   is_failure(g, MARPA_ERR_NOT_PRECOMPUTED, -2, marpa_g_symbol_is_productive (g, S_top), "marpa_g_symbol_is_productive", MSG_NOT_PRECOMPUTED);
