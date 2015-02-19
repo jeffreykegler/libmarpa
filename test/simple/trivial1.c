@@ -548,9 +548,6 @@ main (int argc, char *argv[])
   marpa_g_unref(g);
   g = marpa_g_trivial_new(&marpa_configuration);
 
-  is_failure(g, MARPA_ERR_NOT_A_SEQUENCE, -1, marpa_g_sequence_min (g, R_top_1),
-    "marpa_g_sequence_min", "non-sequence rule id");
-
   /* try to add a nulling sequence */
   marpa_m_test("marpa_g_sequence_new", g, S_top, S_B1, S_B2, 0, MARPA_PROPER_SEPARATION,
     -2, MARPA_ERR_SEQUENCE_LHS_NOT_UNIQUE);
