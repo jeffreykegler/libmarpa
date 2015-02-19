@@ -2637,7 +2637,11 @@ int marpa_g_sequence_min(
     @<Fail if |xrl_id| is malformed@>@;
     @<Fail if |xrl_id| does not exist@>@;
     xrl = XRL_by_ID(xrl_id);
-    if (!XRL_is_Sequence(xrl)) return -1;
+    if (!XRL_is_Sequence(xrl))
+      {
+        MARPA_ERROR (MARPA_ERR_NOT_A_SEQUENCE);
+        return -1;
+      }
     return Minimum_of_XRL(xrl);
 }
 

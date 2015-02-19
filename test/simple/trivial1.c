@@ -89,7 +89,7 @@ is_nulling (Marpa_Symbol_ID id)
 }
 
 static Marpa_Grammar
-trivial_grammar(Marpa_Config *config)
+marpa_g_trivial_new(Marpa_Config *config)
 {
   Marpa_Grammar g;
   g = marpa_g_new (config);
@@ -143,7 +143,7 @@ trivial_grammar(Marpa_Config *config)
 }
 
 static Marpa_Error_Code
-trivial_grammar_precompute(Marpa_Grammar g, Marpa_Symbol_ID S_start)
+marpa_g_trivial_precompute(Marpa_Grammar g, Marpa_Symbol_ID S_start)
 {
   Marpa_Error_Code rc;
 
@@ -157,227 +157,487 @@ trivial_grammar_precompute(Marpa_Grammar g, Marpa_Symbol_ID S_start)
   return rc;
 }
 
-/* test retcode and error code on expected failure */
-static int
-is_failure(Marpa_Grammar g, Marpa_Error_Code errcode_wanted, int retcode_wanted, int retcode, char *method_name, char *msg)
+/* Marpa method test interface */
+
+typedef int (*marpa_m_pointer)();
+
+/*
+    %s -- Marpa_Symbol_ID
+    %r -- Marpa_Rule_ID
+    %n -- Marpa_Rank
+    ...
+*/
+typedef char *marpa_m_argspec;
+typedef char *marpa_m_name;
+
+struct marpa_method_spec {
+  marpa_m_name n;
+  marpa_m_pointer p;
+  marpa_m_argspec as;
+};
+
+typedef struct marpa_method_spec Marpa_Method_Spec;
+
+const Marpa_Method_Spec methspec[] = {
+
+  { "marpa_g_start_symbol_set", &marpa_g_start_symbol_set, "%s" },
+  { "marpa_g_symbol_is_start", &marpa_g_symbol_is_start, "%s" },
+  { "marpa_g_start_symbol", &marpa_g_start_symbol, "" },
+
+  { "marpa_g_symbol_is_terminal_set", &marpa_g_symbol_is_terminal_set, "%s, %i" },
+  { "marpa_g_symbol_is_terminal",  &marpa_g_symbol_is_terminal, "%s" },
+
+  { "marpa_g_highest_symbol_id", &marpa_g_highest_symbol_id, ""},
+
+  { "marpa_g_symbol_is_accessible", &marpa_g_symbol_is_accessible, "%s" },
+  { "marpa_g_symbol_is_nullable", &marpa_g_symbol_is_nullable, "%s" },
+  { "marpa_g_symbol_is_nulling", &marpa_g_symbol_is_nulling, "%s" },
+  { "marpa_g_symbol_is_productive", &marpa_g_symbol_is_productive, "%s" },
+
+  { "marpa_g_rule_is_nullable", &marpa_g_rule_is_nullable, "%r" },
+  { "marpa_g_rule_is_nulling", &marpa_g_rule_is_nulling, "%r" },
+  { "marpa_g_rule_is_loop", &marpa_g_rule_is_loop, "%r" },
+
+  { "marpa_g_precompute", &marpa_g_precompute, "" },
+
+  { "marpa_g_highest_rule_id", &marpa_g_highest_rule_id, "" },
+  { "marpa_g_rule_is_accessible", &marpa_g_rule_is_accessible, "%r" },
+  { "marpa_g_rule_is_nullable", &marpa_g_rule_is_nullable, "%r" },
+  { "marpa_g_rule_is_nulling", &marpa_g_rule_is_nulling, "%r" },
+  { "marpa_g_rule_is_loop", &marpa_g_rule_is_loop, "%r" },
+  { "marpa_g_rule_is_productive", &marpa_g_rule_is_productive, "%r" },
+  { "marpa_g_rule_length", &marpa_g_rule_length, "%r" },
+  { "marpa_g_rule_lhs", &marpa_g_rule_lhs, "%r" },
+  { "marpa_g_rule_rhs", &marpa_g_rule_rhs, "%r, %i" },
+
+  { "marpa_g_sequence_new", &marpa_g_sequence_new, "%s, %s, %s, %i, %i" },
+  { "marpa_g_rule_is_proper_separation", &marpa_g_rule_is_proper_separation, "%r" },
+  { "marpa_g_sequence_min", &marpa_g_sequence_min, "%r" },
+  { "marpa_g_sequence_separator", &marpa_g_sequence_separator, "%r" },
+  { "marpa_g_symbol_is_counted", &marpa_g_symbol_is_counted, "%s" },
+
+  { "marpa_g_rule_rank_set", &marpa_g_rule_rank_set, "%r, %i" },
+  { "marpa_g_rule_rank", &marpa_g_rule_rank, "%r" },
+  { "marpa_g_rule_null_high_set", &marpa_g_rule_null_high_set, "%r, %i" },
+  { "marpa_g_rule_null_high", &marpa_g_rule_null_high, "%r" },
+
+  { "marpa_r_is_exhausted", &marpa_r_is_exhausted, "" },
+};
+
+static Marpa_Method_Spec
+marpa_m_method_spec(const char *name)
 {
-  int errcode;
-
-  sprintf (msgbuf, "%s(): %s", method_name, msg);
-  is_int(retcode_wanted, retcode, msgbuf);
-
-  errcode = marpa_g_error (g, NULL);
-  sprintf (msgbuf, "%s() error code", method_name);
-  is_int(errcode_wanted, errcode, msgbuf);
-
-  marpa_g_error_clear(g);
+  int i;
+  for (i = 0; i < sizeof(methspec) / sizeof(Marpa_Method_Spec); i++)
+    if ( strcmp(name, methspec[i].n ) == 0 )
+      return methspec[i];
+  printf("No spec yet for Marpa method %s().\n", name);
+  exit(1);
 }
 
-/* test retval and print error code on unexpected failure */
-static int
-is_success(Marpa_Grammar g, int wanted, int retval, char *method_name)
+typedef char *marpa_m_errmsg;
+struct marpa_m_error {
+  Marpa_Error_Code c;
+  marpa_m_errmsg m;
+};
+
+typedef struct marpa_m_error Marpa_Method_Error;
+
+const Marpa_Method_Error errspec[] = {
+  { MARPA_ERR_NO_START_SYMBOL, "no start symbol" },
+  { MARPA_ERR_INVALID_SYMBOL_ID, "invalid symbol id" },
+  { MARPA_ERR_NO_SUCH_SYMBOL_ID, "no such symbol id" },
+  { MARPA_ERR_NOT_PRECOMPUTED, "grammar not precomputed" },
+  { MARPA_ERR_TERMINAL_IS_LOCKED, "terminal locked" },
+  { MARPA_ERR_NULLING_TERMINAL, "nulling terminal" },
+  { MARPA_ERR_PRECOMPUTED, "grammar precomputed" },
+  { MARPA_ERR_SEQUENCE_LHS_NOT_UNIQUE, "sequence lhs not unique" },
+  { MARPA_ERR_NOT_A_SEQUENCE, "not a sequence rule" },
+  { MARPA_ERR_INVALID_RULE_ID, "invalid rule id" },
+  { MARPA_ERR_NO_SUCH_RULE_ID, "no such rule id" },
+};
+
+static char *marpa_m_error_message (Marpa_Error_Code error_code)
 {
-  is_int(wanted, retval, method_name);
+  int i;
+  for (i = 0; i < sizeof(errspec) / sizeof(Marpa_Method_Error); i++)
+    if ( error_code == errspec[i].c )
+      return errspec[i].m;
+  printf("No message yet for Marpa error code %d.\n", error_code);
+  exit(1);
+}
 
-  if (retval < 0 && strstr(method_name, "marpa_g_rule_rank") == NULL )
-    warn(method_name, g);
+/* we need a grammar to call marpa_g_error() */
+static Marpa_Grammar marpa_m_g = NULL;
 
-  marpa_g_error_clear(g);
+static int
+marpa_m_grammar_set(Marpa_Grammar g) { marpa_m_g = g; }
+
+static Marpa_Grammar
+marpa_m_grammar() { return marpa_m_g; }
+
+static int
+marpa_m_test(const char* name, ...)
+{
+  Marpa_Method_Spec ms;
+
+  Marpa_Grammar g;
+  Marpa_Recognizer r;
+
+  Marpa_Symbol_ID S_id, S_id1, S_id2;
+  Marpa_Rule_ID R_id;
+  int intarg, intarg1;
+
+  int rv_wanted, rv_seen;
+  int err_wanted, err_seen;
+
+  char tok_buf[32];  /* strtok() */
+  char desc_buf[80]; /* test description  */
+  char *curr_arg;
+  int curr_arg_ix;
+
+  ms = marpa_m_method_spec(name);
+
+  va_list args;
+  va_start(args, name);
+
+  g = NULL;
+#define ARG_UNDEF 42424242
+  R_id = S_id = S_id1 = S_id2 = intarg = intarg1 = ARG_UNDEF;
+  if (strncmp(name, "marpa_g_", 8) == 0)
+    g = va_arg(args, Marpa_Grammar);
+  else if (strncmp(name, "marpa_r_", 8) == 0)
+    r = va_arg(args, Marpa_Recognizer);
+
+  /* unpack arguments */
+  if (ms.as == "")
+  {
+    /* method dispatch based on what object is set */
+    if (g != NULL) rv_seen = ms.p(g);
+    else if (r != NULL) rv_seen = ms.p(r);
+  }
+  else
+  {
+    strcpy( tok_buf, ms.as );
+    curr_arg = strtok(tok_buf, " ,-");
+    while (curr_arg != NULL)
+    {
+      if (strncmp(curr_arg, "%s", 2) == 0){
+        if (S_id == ARG_UNDEF) S_id = va_arg(args, Marpa_Symbol_ID);
+        else if (S_id1 == ARG_UNDEF) S_id1 = va_arg(args, Marpa_Symbol_ID);
+        else if (S_id2 == ARG_UNDEF) S_id2 = va_arg(args, Marpa_Symbol_ID);
+      }
+      else if (strncmp(curr_arg, "%r", 2) == 0)
+      {
+        R_id   = va_arg(args, Marpa_Rule_ID);
+      }
+      else if (strncmp(curr_arg, "%i", 2) == 0)
+      {
+        if (intarg == ARG_UNDEF) intarg = va_arg(args, int);
+        else if (intarg1 == ARG_UNDEF) intarg1 = va_arg(args, int);
+      }
+
+      curr_arg = strtok(NULL, " ,-");
+      curr_arg_ix++;
+    }
+    /* call marpa method based on argspec */
+    if (strcmp(ms.as, "%s") == 0) rv_seen = ms.p(g, S_id);
+    else if (strcmp(ms.as, "%r") == 0) rv_seen = ms.p(g, R_id);
+    else if (strcmp(ms.as, "%s, %i") == 0) rv_seen = ms.p(g, S_id, intarg);
+    else if (strcmp(ms.as, "%r, %i") == 0) rv_seen = ms.p(g, R_id, intarg);
+    else if (strcmp(ms.as, "%s, %s, %s, %i, %i") == 0) rv_seen = ms.p(g, S_id, S_id1, S_id2, intarg, intarg1);
+    else
+    {
+      printf("No method yet for argument spec %s.\n", ms.as);
+      exit(1);
+    }
+  }
+
+  rv_wanted = va_arg(args, int);
+
+  /* success wanted */
+  if ( rv_wanted >= 0 )
+  {
+    /* failure seen */
+    if ( rv_seen < 0 )
+    {
+      sprintf(msgbuf, "%s() unexpectedly returned %d.", name, rv_seen);
+      ok(0, msgbuf);
+    }
+    /* success seen */
+    else {
+      sprintf(desc_buf, "%s() succeeded", name);
+      is_int( rv_wanted, rv_seen, desc_buf );
+    }
+  }
+  /* marpa_g_rule_rank() and marpa_g_rule_rank_set() may return negative values,
+     but they are actually ranks if marpa_g_error() returns MARPA_ERR_NONE.
+     So, we don't count them as failures. */
+  else if ( strncmp( name, "marpa_g_rule_rank", 17 ) == 0
+              && marpa_g_error(g, NULL) == MARPA_ERR_NONE )
+    {
+      sprintf(desc_buf, "%s() succeeded", name);
+      is_int( rv_wanted, rv_seen, desc_buf );
+    }
+  /* failure wanted */
+  else
+  {
+    /* return value */
+    err_wanted = va_arg(args, int);
+    sprintf(desc_buf, "%s() failed, returned %d", name, rv_seen);
+    is_int( rv_wanted, rv_seen, desc_buf );
+
+    /* error code */
+    if (g == NULL)
+      g = va_arg(args, Marpa_Grammar);
+    err_seen = marpa_g_error(g, NULL);
+
+    if (err_seen == MARPA_ERR_NONE && rv_seen < 0)
+    {
+      sprintf(msgbuf, "%s(): marpa_g_error() returned MARPA_ERR_NONE, but return value was %d.", name, rv_seen);
+      ok(0, msgbuf);
+    }
+    /* test error code */
+    else
+    {
+      sprintf(desc_buf, "%s() error is: %s", name, marpa_m_error_message(err_seen));
+      is_int( err_wanted, err_seen, desc_buf );
+    }
+  }
+
+  va_end(args);
 }
 
 int
 main (int argc, char *argv[])
 {
   int rc;
+  int ix;
 
   Marpa_Config marpa_configuration;
 
   Marpa_Grammar g;
   Marpa_Recognizer r;
 
-  Marpa_Rank rank;
+  Marpa_Symbol_ID S_invalid, S_no_such;
+  Marpa_Rule_ID R_invalid, R_no_such;
+  Marpa_Rank negative_rank, positive_rank;
   int flag;
+
+  int reactivate;
+  int value;
 
   plan_lazy();
 
   marpa_c_init (&marpa_configuration);
-  g = trivial_grammar(&marpa_configuration);
+  g = marpa_g_trivial_new(&marpa_configuration);
 
   /* Grammar Methods per sections of api.texi: Symbols, Rules, Sequnces, Ranks, Events */
+  S_invalid = R_invalid = -1;
+  S_no_such = R_no_such = 42;
 
-  /* these must soft fail if there is not start symbol */
-#define MARPA_TEST_MSG_NO_START_SYMBOL "fail before marpa_g_start_symbol_set()"
-#define MARPA_TEST_MSG_INVALID_SYMBOL_ID "malformed symbol id"
-#define MARPA_TEST_MSG_NO_SUCH_SYMBOL_ID "invalid symbol id"
-
-  is_failure(g, MARPA_ERR_INVALID_SYMBOL_ID, -2, marpa_g_symbol_is_start (g, -1), "marpa_g_symbol_is_start",
-    MARPA_TEST_MSG_INVALID_SYMBOL_ID);
-  is_failure(g, MARPA_ERR_NO_SUCH_SYMBOL_ID, -1, marpa_g_symbol_is_start (g, 42), "marpa_g_symbol_is_start",
-    MARPA_TEST_MSG_NO_SUCH_SYMBOL_ID);
+  marpa_m_test("marpa_g_symbol_is_start", g, S_invalid, -2, MARPA_ERR_INVALID_SYMBOL_ID);
+  marpa_m_test("marpa_g_symbol_is_start", g, S_no_such, -1, MARPA_ERR_NO_SUCH_SYMBOL_ID);
   /* Returns 0 if sym_id is not the start symbol, either because the start symbol
      is different from sym_id, or because the start symbol has not been set yet. */
-  is_success(g, 0, marpa_g_symbol_is_start (g, S_top), "marpa_g_symbol_is_start");
-  is_failure(g, MARPA_ERR_NO_START_SYMBOL, -1, marpa_g_start_symbol (g), "marpa_g_start_symbol", MARPA_TEST_MSG_NO_START_SYMBOL);
+  marpa_m_test("marpa_g_symbol_is_start", g, S_top, 0);
+  marpa_m_test("marpa_g_start_symbol", g, -1, MARPA_ERR_NO_START_SYMBOL);
 
   (marpa_g_start_symbol_set (g, S_top) >= 0)
     || fail ("marpa_g_start_symbol_set", g);
 
   /* these must succeed after the start symbol is set */
-  is_success(g, 1, marpa_g_symbol_is_start (g, S_top), "marpa_g_symbol_is_start");
-  is_success(g, S_top, marpa_g_start_symbol (g), "marpa_g_start_symbol()");
-  is_success(g, S_C2, marpa_g_highest_symbol_id (g), "marpa_g_highest_symbol_id()");
+  marpa_m_test("marpa_g_symbol_is_start", g, S_top, 1);
+  marpa_m_test("marpa_g_start_symbol", g, S_top);
+  marpa_m_test("marpa_g_highest_symbol_id", g, S_C2);
 
   /* these must return -2 and set error code to MARPA_ERR_NOT_PRECOMPUTED */
   /* Symbols */
-#define MSG_NOT_PRECOMPUTED "fail before marpa_g_precompute()"
-  is_failure(g, MARPA_ERR_NOT_PRECOMPUTED, -2, marpa_g_symbol_is_accessible  (g, S_C2), "marpa_g_symbol_is_accessible", MSG_NOT_PRECOMPUTED);
-  is_failure(g, MARPA_ERR_NOT_PRECOMPUTED, -2, marpa_g_symbol_is_nullable (g, S_A1), "marpa_g_symbol_is_nullable", MSG_NOT_PRECOMPUTED);
-  is_failure(g, MARPA_ERR_NOT_PRECOMPUTED, -2, marpa_g_symbol_is_nulling (g, S_A1), "marpa_g_symbol_is_nulling", MSG_NOT_PRECOMPUTED);
-  is_failure(g, MARPA_ERR_NOT_PRECOMPUTED, -2, marpa_g_symbol_is_productive (g, S_top), "marpa_g_symbol_is_productive", MSG_NOT_PRECOMPUTED);
-  is_success(g, 0, marpa_g_symbol_is_terminal(g, S_top), "marpa_g_symbol_is_terminal");
+  marpa_m_test("marpa_g_symbol_is_accessible", g, S_C2, -2, MARPA_ERR_NOT_PRECOMPUTED);
+  marpa_m_test("marpa_g_symbol_is_nullable", g, S_A1, -2, MARPA_ERR_NOT_PRECOMPUTED);
+  marpa_m_test("marpa_g_symbol_is_nulling", g, S_A1, -2, MARPA_ERR_NOT_PRECOMPUTED);
+  marpa_m_test("marpa_g_symbol_is_productive", g, S_top, -2, MARPA_ERR_NOT_PRECOMPUTED);
+  marpa_m_test("marpa_g_symbol_is_terminal", g, S_top, 0);
 
   /* Rules */
-  is_failure(g, MARPA_ERR_NOT_PRECOMPUTED, -2, marpa_g_rule_is_nullable (g, R_top_2), "marpa_g_rule_is_nullable", MSG_NOT_PRECOMPUTED);
-  is_failure(g, MARPA_ERR_NOT_PRECOMPUTED, -2, marpa_g_rule_is_nulling (g, R_top_2), "marpa_g_rule_is_nulling", MSG_NOT_PRECOMPUTED);
-  is_failure(g, MARPA_ERR_NOT_PRECOMPUTED, -2, marpa_g_rule_is_loop (g, R_C2_3), "marpa_g_rule_is_loop", MSG_NOT_PRECOMPUTED);
+  marpa_m_test("marpa_g_rule_is_nullable", g, R_top_2, -2, MARPA_ERR_NOT_PRECOMPUTED);
+  marpa_m_test("marpa_g_rule_is_nulling", g, R_top_2, -2, MARPA_ERR_NOT_PRECOMPUTED);
+  marpa_m_test("marpa_g_rule_is_loop", g, R_C2_3, -2, MARPA_ERR_NOT_PRECOMPUTED);
 
-  /* expected failures on attempts to non-well-formed and non-existing symbols as terminals */
-  is_failure(g, MARPA_ERR_INVALID_SYMBOL_ID, -2, marpa_g_symbol_is_terminal_set (g, -1, 1),
-    "marpa_g_symbol_is_terminal", MARPA_TEST_MSG_INVALID_SYMBOL_ID);
-  is_failure(g, MARPA_ERR_NO_SUCH_SYMBOL_ID, -1, marpa_g_symbol_is_terminal_set (g, 42, 1),
-    "marpa_g_symbol_is_terminal", MARPA_TEST_MSG_NO_SUCH_SYMBOL_ID);
-  /* set a nulling symbol to be terminal and test precomputation failure */
-  is_success(g, 1, marpa_g_symbol_is_terminal_set(g, S_C1, 1),
-    "marpa_g_symbol_is_terminal_set()");
-  is_failure(g, MARPA_ERR_TERMINAL_IS_LOCKED, -2, marpa_g_symbol_is_terminal_set(g, S_C1, 0),
-    "marpa_g_symbol_is_terminal_set", "symbol already set as terminal");
-  is_failure(g, MARPA_ERR_NULLING_TERMINAL, -2, marpa_g_precompute (g), "marpa_g_precompute", "nulling terminal");
+  /* marpa_g_symbol_is_terminal_set() on invalid and non-existing symbol IDs
+     on a non-precomputed grammar */
+  marpa_m_test("marpa_g_symbol_is_terminal_set", g, S_invalid, 1, -2, MARPA_ERR_INVALID_SYMBOL_ID);
+  marpa_m_test("marpa_g_symbol_is_terminal_set", g, S_no_such, 1, -1, MARPA_ERR_NO_SUCH_SYMBOL_ID);
+
+  /* marpa_g_symbol_is_terminal_set() on a nulling symbol */
+  marpa_m_test("marpa_g_symbol_is_terminal_set", g, S_C1, 1, 1);
+  /* can't change terminal status after it's been set */
+  marpa_m_test("marpa_g_symbol_is_terminal_set", g, S_C1, 0, -2, MARPA_ERR_TERMINAL_IS_LOCKED);
+
+  marpa_m_test("marpa_g_precompute", g, -2, MARPA_ERR_NULLING_TERMINAL);
 
   /* terminals are locked after setting, so we recreate the grammar */
   marpa_g_unref(g);
-  g = trivial_grammar(&marpa_configuration);
+  g = marpa_g_trivial_new(&marpa_configuration);
 
-  is_failure(g, MARPA_ERR_NO_START_SYMBOL, -2, marpa_g_precompute (g), "marpa_g_precompute", "before marpa_g_start_symbol_set()");
+  marpa_m_test("marpa_g_precompute", g, -2, MARPA_ERR_NO_START_SYMBOL);
 
-  trivial_grammar_precompute(g, S_top);
+  marpa_g_trivial_precompute(g, S_top);
   ok(1, "precomputation succeeded");
 
-  /* Symbols -- these do have @<Fail if not precomputed@>@ */
-  is_success(g, 1, marpa_g_symbol_is_accessible  (g, S_C2), "marpa_g_symbol_is_accessible()");
-  is_success(g, 1, marpa_g_symbol_is_nullable (g, S_A1), "marpa_g_symbol_is_nullable()");
-  is_success(g, 1, marpa_g_symbol_is_nulling (g, S_A1), "marpa_g_symbol_is_nulling()");
-  is_success(g, 1, marpa_g_symbol_is_productive (g, S_top), "marpa_g_symbol_is_productive()");
-  is_success(g, 1, marpa_g_symbol_is_start (g, S_top), "marpa_g_symbol_is_start()");
-  is_success(g, 0, marpa_g_symbol_is_terminal(g, S_top), "marpa_g_symbol_is_terminal()");
-  is_failure(g, MARPA_ERR_INVALID_SYMBOL_ID, -2, marpa_g_symbol_is_terminal(g, -1),
-    "marpa_g_symbol_is_terminal", MARPA_TEST_MSG_INVALID_SYMBOL_ID);
-  is_failure(g, MARPA_ERR_NO_SUCH_SYMBOL_ID, -1, marpa_g_symbol_is_terminal (g, 42),
-    "marpa_g_symbol_is_terminal", MARPA_TEST_MSG_NO_SUCH_SYMBOL_ID);
+  /* Symbols -- status accessors must succeed on precomputed grammar */
+  marpa_m_test("marpa_g_symbol_is_accessible", g, S_C2, 1);
+  marpa_m_test("marpa_g_symbol_is_nullable", g, S_A1, 1);
+  marpa_m_test("marpa_g_symbol_is_nulling", g, S_A1, 1);
+  marpa_m_test("marpa_g_symbol_is_productive", g, S_top, 1);
+  marpa_m_test("marpa_g_symbol_is_start", g, S_top, 1);
+  marpa_m_test("marpa_g_symbol_is_terminal", g, S_top, 0);
 
-  is_failure(g, MARPA_ERR_PRECOMPUTED, -2, marpa_g_symbol_is_terminal_set (g, S_top, 0),
-    "marpa_g_symbol_is_terminal_set", "on precomputed grammar");
-  is_failure(g, MARPA_ERR_PRECOMPUTED, -2, marpa_g_start_symbol_set (g, S_top),
-    "marpa_g_start_symbol_set", "on precomputed grammar");
+  /* terminal and start symbols can't be set on precomputed grammar */
+  marpa_m_test("marpa_g_symbol_is_terminal_set", g, S_top, 0, -2, MARPA_ERR_PRECOMPUTED);
+  marpa_m_test("marpa_g_start_symbol_set", g, S_top, -2, MARPA_ERR_PRECOMPUTED);
 
   /* Rules */
-  is_success(g, R_C2_3, marpa_g_highest_rule_id (g), "marpa_g_highest_rule_id()");
-  is_success(g, 1, marpa_g_rule_is_accessible (g, R_top_1), "marpa_g_rule_is_accessible()");
-  is_success(g, 1, marpa_g_rule_is_nullable (g, R_top_2), "marpa_g_rule_is_nullable()");
-  is_success(g, 1, marpa_g_rule_is_nulling (g, R_top_2), "marpa_g_rule_is_nulling()");
-  is_success(g, 0, marpa_g_rule_is_loop (g, R_C2_3), "marpa_g_rule_is_loop()");
-  is_success(g, 1, marpa_g_rule_is_productive (g, R_C2_3), "marpa_g_rule_is_productive()");
-  is_success(g, 1, marpa_g_rule_length (g, R_top_1), "marpa_g_rule_length()");
-  is_success(g, 0, marpa_g_rule_length (g, R_C2_3), "marpa_g_rule_length()");
-  is_success(g, S_top, marpa_g_rule_lhs (g, R_top_1), "marpa_g_rule_lhs()");
-  is_success(g, S_A1, marpa_g_rule_rhs (g, R_top_1, 0), "marpa_g_rule_rhs()");
-  is_success(g, S_A2, marpa_g_rule_rhs (g, R_top_2, 0), "marpa_g_rule_rhs()");
+  marpa_m_test("marpa_g_highest_rule_id", g, R_C2_3);
+  marpa_m_test("marpa_g_rule_is_accessible", g, R_top_1, 1);
+  marpa_m_test("marpa_g_rule_is_nullable", g, R_top_2, 1);
+  marpa_m_test("marpa_g_rule_is_nulling", g, R_top_2, 1);
+  marpa_m_test("marpa_g_rule_is_loop", g, R_C2_3, 0);
+  marpa_m_test("marpa_g_rule_is_productive", g, R_C2_3, 1);
+  marpa_m_test("marpa_g_rule_length", g, R_top_1, 1);
+  marpa_m_test("marpa_g_rule_length", g, R_C2_3, 0);
+  marpa_m_test("marpa_g_rule_lhs", g, R_top_1, S_top);
+  marpa_m_test("marpa_g_rule_rhs", g, R_top_1, 0, S_A1);
+  marpa_m_test("marpa_g_rule_rhs", g, R_top_2, 0, S_A2);
+
+  /* invalid/no such rule id error handling */
+  const char *marpa_g_rule_accessors[] = {
+    "marpa_g_rule_is_accessible", "marpa_g_rule_is_nullable",
+    "marpa_g_rule_is_nulling", "marpa_g_rule_is_loop", "marpa_g_rule_is_productive",
+    "marpa_g_rule_length", "marpa_g_rule_lhs",
+  };
+  for (ix = 0; ix < sizeof(marpa_g_rule_accessors) / sizeof(char *); ix++)
+  {
+    marpa_m_test(marpa_g_rule_accessors[ix], g, R_invalid, -2, MARPA_ERR_INVALID_RULE_ID);
+    marpa_m_test(marpa_g_rule_accessors[ix], g, R_no_such, -1, MARPA_ERR_NO_SUCH_RULE_ID);
+  }
+  marpa_m_test("marpa_g_rule_rhs", g, R_invalid, 0, -2, MARPA_ERR_INVALID_RULE_ID);
+  marpa_m_test("marpa_g_rule_rhs", g, R_no_such, 0, -1, MARPA_ERR_NO_SUCH_RULE_ID);
 
   /* Sequences */
   /* try to add a nulling sequence, and make sure that it fails with an appropriate
      error code -- http://irclog.perlgeek.de/marpa/2015-02-13#i_10111831  */
+
   /* recreate the grammar */
   marpa_g_unref(g);
-  g = trivial_grammar(&marpa_configuration);
+  g = marpa_g_trivial_new(&marpa_configuration);
+
   /* try to add a nulling sequence */
-  is_failure(g, MARPA_ERR_SEQUENCE_LHS_NOT_UNIQUE, -2,
-    marpa_g_sequence_new (g, S_top, S_B1, S_B2, 0, MARPA_PROPER_SEPARATION),
-      "marpa_g_sequence_new", "with non-unique lhs");
+  marpa_m_test("marpa_g_sequence_new", g, S_top, S_B1, S_B2, 0, MARPA_PROPER_SEPARATION,
+    -2, MARPA_ERR_SEQUENCE_LHS_NOT_UNIQUE);
+
   /* test error codes of other sequence methods */
   /* non-sequence rule id */
-  is_success(g, 0, marpa_g_rule_is_proper_separation (g, R_top_1), "marpa_g_rule_is_proper_separation");
-  is_failure(g, 0, -1, marpa_g_sequence_min (g, R_top_1),
-    "marpa_g_sequence_min", "non-sequence rule id");
-  is_failure(g, MARPA_ERR_NOT_A_SEQUENCE, -2, marpa_g_sequence_separator (g, R_top_1),
-    "marpa_g_sequence_separator", "non-sequence rule id");
-  is_success(g, 0, marpa_g_symbol_is_counted (g, R_top_1), "marpa_g_symbol_is_counted");
-#define MARPA_TEST_MSG_INVALID_RULE_ID "malformed rule id"
-#define MARPA_TEST_MSG_NO_SUCH_RULE_ID "invalid rule id"
-  /* malformed rule/symbol id */
-  is_failure(g, MARPA_ERR_INVALID_RULE_ID, -2, marpa_g_rule_is_proper_separation (g, -1),
-    "marpa_g_rule_is_proper_separation", MARPA_TEST_MSG_INVALID_RULE_ID);
-  is_failure(g, MARPA_ERR_INVALID_RULE_ID, -2, marpa_g_sequence_min (g, -1),
-    "marpa_g_sequence_min", MARPA_TEST_MSG_INVALID_RULE_ID);
-  is_failure(g, MARPA_ERR_INVALID_RULE_ID, -2, marpa_g_sequence_separator (g, -1),
-    "marpa_g_sequence_separator", MARPA_TEST_MSG_INVALID_RULE_ID);
-  is_failure(g, MARPA_ERR_INVALID_SYMBOL_ID, -2, marpa_g_symbol_is_counted (g, -1),
-    "marpa_g_symbol_is_counted", MARPA_TEST_MSG_INVALID_SYMBOL_ID);
-  /* well-formed, but invalid rule/symbol id */
-  is_failure(g, MARPA_ERR_NO_SUCH_RULE_ID, -1, marpa_g_rule_is_proper_separation (g, 42),
-    "marpa_g_rule_is_proper_separation", MARPA_TEST_MSG_NO_SUCH_RULE_ID);
-  is_failure(g, MARPA_ERR_NO_SUCH_RULE_ID, -2, marpa_g_sequence_min (g, 42),
-    "marpa_g_sequence_min", MARPA_TEST_MSG_NO_SUCH_RULE_ID);
-  is_failure(g, MARPA_ERR_NO_SUCH_RULE_ID, -2, marpa_g_sequence_separator (g, 42),
-    "marpa_g_sequence_separator", MARPA_TEST_MSG_NO_SUCH_RULE_ID);
-  is_failure(g, MARPA_ERR_NO_SUCH_SYMBOL_ID, -1, marpa_g_symbol_is_counted (g, 42),
-    "marpa_g_symbol_is_counted", MARPA_TEST_MSG_NO_SUCH_SYMBOL_ID);
+  marpa_m_test("marpa_g_rule_is_proper_separation", g, R_top_1, 0);
+  marpa_m_test("marpa_g_sequence_min", g, R_top_1, -1, MARPA_ERR_NOT_A_SEQUENCE);
+  marpa_m_test("marpa_g_sequence_separator", g, R_top_1, -2, MARPA_ERR_NOT_A_SEQUENCE);
+  marpa_m_test("marpa_g_symbol_is_counted", g, S_top, 0);
+
+  /* invalid/no such rule id error handling */
+  marpa_m_test("marpa_g_sequence_separator", g, R_invalid, -2, MARPA_ERR_INVALID_RULE_ID);
+  marpa_m_test("marpa_g_sequence_separator", g, R_no_such, -2, MARPA_ERR_NO_SUCH_RULE_ID);
+
+  marpa_m_test("marpa_g_sequence_min", g, R_invalid, -2, MARPA_ERR_INVALID_RULE_ID);
+  marpa_m_test("marpa_g_sequence_min", g, R_no_such, -2, MARPA_ERR_NO_SUCH_RULE_ID);
+
+  marpa_m_test("marpa_g_rule_is_proper_separation", g, R_invalid, -2, MARPA_ERR_INVALID_RULE_ID);
+  marpa_m_test("marpa_g_rule_is_proper_separation", g, R_no_such, -1, MARPA_ERR_NO_SUCH_RULE_ID);
+
+  marpa_m_test("marpa_g_symbol_is_counted", g, S_invalid, -2, MARPA_ERR_INVALID_SYMBOL_ID);
+  marpa_m_test("marpa_g_symbol_is_counted", g, S_no_such, -1, MARPA_ERR_NO_SUCH_SYMBOL_ID);
 
   /* Ranks */
-  rank = -2;
-  is_success(g, rank, marpa_g_rule_rank_set (g, R_top_1, rank), "marpa_g_rule_rank_set()");
-  is_success(g, rank, marpa_g_rule_rank (g, R_top_1), "marpa_g_rule_rank()");
+  negative_rank = -1;
+  marpa_m_test("marpa_g_rule_rank_set", g, R_top_1, negative_rank, negative_rank);
+  marpa_m_test("marpa_g_rule_rank", g, R_top_1, negative_rank);
+
+  positive_rank = 1;
+  marpa_m_test("marpa_g_rule_rank_set", g, R_top_2, positive_rank, positive_rank);
+  marpa_m_test("marpa_g_rule_rank", g, R_top_2, positive_rank);
+
   flag = 1;
-  is_success(g, flag, marpa_g_rule_null_high_set (g, R_top_2, flag), "marpa_g_rule_null_high_set()");
-  is_success(g, flag, marpa_g_rule_null_high (g, R_top_2), "marpa_g_rule_null_high()");
+  marpa_m_test("marpa_g_rule_null_high_set", g, R_top_2, flag, flag);
+  marpa_m_test("marpa_g_rule_null_high", g, R_top_2, flag);
 
-  is_failure(g, MARPA_ERR_INVALID_RULE_ID, -2, marpa_g_rule_rank_set (g, -1, rank),
-    "marpa_g_rule_rank_set", MARPA_TEST_MSG_INVALID_RULE_ID);
-  is_failure(g, MARPA_ERR_INVALID_RULE_ID, -2, marpa_g_rule_rank (g, -1),
-    "marpa_g_rule_rank", MARPA_TEST_MSG_INVALID_RULE_ID);
-  is_failure(g, MARPA_ERR_INVALID_RULE_ID, -2, marpa_g_rule_null_high_set (g, -1, flag),
-    "marpa_g_rule_null_high_set", MARPA_TEST_MSG_INVALID_RULE_ID);
-  is_failure(g, MARPA_ERR_INVALID_RULE_ID, -2, marpa_g_rule_null_high (g, -1),
-    "marpa_g_rule_null_high", MARPA_TEST_MSG_INVALID_RULE_ID);
+  /* invalid/no such rule id error handling */
+  marpa_m_test("marpa_g_rule_rank_set", g, R_invalid, positive_rank, -2, MARPA_ERR_INVALID_RULE_ID);
+  marpa_m_test("marpa_g_rule_rank_set", g, R_no_such, negative_rank, -2, MARPA_ERR_NO_SUCH_RULE_ID);
 
-  is_failure(g, MARPA_ERR_NO_SUCH_RULE_ID, -2, marpa_g_rule_rank_set (g, 42, rank),
-    "marpa_g_rule_rank_set", MARPA_TEST_MSG_NO_SUCH_RULE_ID);
-  is_failure(g, MARPA_ERR_NO_SUCH_RULE_ID, -2, marpa_g_rule_rank (g, 42),
-    "marpa_g_rule_rank", MARPA_TEST_MSG_NO_SUCH_RULE_ID);
-  is_failure(g, MARPA_ERR_NO_SUCH_RULE_ID, -1, marpa_g_rule_null_high_set (g, 42, flag),
-    "marpa_g_rule_null_high_set", MARPA_TEST_MSG_NO_SUCH_RULE_ID);
-  is_failure(g, MARPA_ERR_NO_SUCH_RULE_ID, -1, marpa_g_rule_null_high (g, 42),
-    "marpa_g_rule_null_high", MARPA_TEST_MSG_NO_SUCH_RULE_ID);
+  marpa_m_test("marpa_g_rule_rank", g, R_invalid, -2, MARPA_ERR_INVALID_RULE_ID);
+  marpa_m_test("marpa_g_rule_rank", g, R_no_such, -2, MARPA_ERR_NO_SUCH_RULE_ID);
 
-  trivial_grammar_precompute(g, S_top);
+  marpa_m_test("marpa_g_rule_null_high_set", g, R_invalid, flag, -2, MARPA_ERR_INVALID_RULE_ID);
+  marpa_m_test("marpa_g_rule_null_high_set", g, R_no_such, flag, -1, MARPA_ERR_NO_SUCH_RULE_ID);
+
+  marpa_m_test("marpa_g_rule_null_high", g, R_invalid, -2, MARPA_ERR_INVALID_RULE_ID);
+  marpa_m_test("marpa_g_rule_null_high", g, R_no_such, -1, MARPA_ERR_NO_SUCH_RULE_ID);
+
+  marpa_g_trivial_precompute(g, S_top);
   ok(1, "precomputation succeeded");
 
   /* Ranks methods on precomputed grammar */
-  is_failure(g, MARPA_ERR_PRECOMPUTED, -2, marpa_g_rule_rank_set (g, R_top_1, rank),
-    "marpa_g_rule_rank_set", "on precomputed grammar");
-  is_success(g, rank, marpa_g_rule_rank (g, R_top_1), "marpa_g_rule_rank()");
-  is_failure(g, MARPA_ERR_PRECOMPUTED, -2, marpa_g_rule_null_high_set (g, R_top_2, flag),
-    "marpa_g_rule_null_high_set", "on precomputed grammar");
-  is_success(g, 1, marpa_g_rule_null_high (g, R_top_2), "marpa_g_rule_null_high()");
+  marpa_m_test("marpa_g_rule_rank_set", g, R_top_1, negative_rank, -2, MARPA_ERR_PRECOMPUTED);
+  if (marpa_g_rule_rank(g, R_top_1) == negative_rank)
+    if (marpa_g_error(g, NULL) == MARPA_ERR_NONE)
+      ok(1, "marpa_g_rule_rank() returns negative_rank and marpa_g_error() returns MARPA_ERR_NONE");
+    else
+      ok(0, "marpa_g_rule_rank() returns negative_rank and marpa_g_error() returns MARPA_ERR_NONE");
+  else
+    ok(0, "marpa_g_rule_rank() returns negative_rank");
+
+  marpa_m_test("marpa_g_rule_rank_set", g, R_top_2, positive_rank, -2, MARPA_ERR_PRECOMPUTED);
+  marpa_m_test("marpa_g_rule_rank_set", g, R_top_2, positive_rank);
+
+  marpa_m_test("marpa_g_rule_null_high_set", g, R_top_2, flag, -2, MARPA_ERR_PRECOMPUTED);
+  marpa_m_test("marpa_g_rule_null_high", g, R_top_2, -2, MARPA_ERR_PRECOMPUTED);
 
   /* recreate the grammar to test event methods except nulled */
   marpa_g_unref(g);
-  g = trivial_grammar(&marpa_configuration);
+  g = marpa_g_trivial_new(&marpa_configuration);
 
   /* Events */
   /* test that attempts to create events, other than nulled events,
      results in a reasonable error -- http://irclog.perlgeek.de/marpa/2015-02-13#i_10111838 */
+/*
 
-  trivial_grammar_precompute(g, S_top);
+reactivate = 1;
+reactivate = 0;
+int marpa_g_completion_symbol_activate (g, S_top, reactivate )
+int marpa_g_prediction_symbol_activate (g, S_top, reactivate )
+
+// If the active status of the completion event for sym_id cannot be set as
+// indicated by reactivate, the method fails. On failure, -2 is returned.
+
+value = 1;
+int marpa_g_symbol_is_completion_event (g, S_top)
+int marpa_g_symbol_is_completion_event_set ( g, S_top, value)
+
+int marpa_g_symbol_is_prediction_event (g, S_top)
+int marpa_g_symbol_is_prediction_event_set (g, S_top, value)
+
+// On success, 1 if symbol sym_id is an event symbol after the call, 0 otherwise.
+// If sym_id is well-formed, but there is no such symbol, -1.
+
+// malformed/invalid symbols
+
+*/
+
+  marpa_g_trivial_precompute(g, S_top);
   ok(1, "precomputation succeeded");
+
+  /* event methods after precomputation
+     if the grammar g is precomputed; or on other failure, -2.
+   */
 
   /* Recognizer Methods */
   r = marpa_r_new (g);
@@ -388,8 +648,9 @@ main (int argc, char *argv[])
   if (!rc)
     fail("marpa_r_start_input", g);
 
+  marpa_m_grammar_set(g);
   diag ("at earleme 0");
-  is_success(g, 1, marpa_r_is_exhausted(r), "marpa_r_is_exhausted()");
+  marpa_m_test("marpa_r_is_exhausted", r, 1);
 
   return 0;
 }
