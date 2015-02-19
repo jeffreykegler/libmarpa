@@ -226,9 +226,11 @@ marpa_m_method_spec(const char *name)
     ms.p = &marpa_g_symbol_is_start,        ms.as = "%s";
   else if ( strcmp(name, "marpa_g_symbol_is_terminal_set") == 0 )
     ms.p = &marpa_g_symbol_is_terminal_set, ms.as = "%s, %i";
+  else if ( strcmp(name, "marpa_g_start_symbol") == 0 )
+    ms.p = &marpa_g_start_symbol, ms.as = "";
   else
   {
-    printf("Unknown Marpa method name %s.\n", name);
+    printf("No spec yet for Marpa method %s().\n", name);
     exit(1);
   }
 
@@ -240,7 +242,8 @@ static char *marpa_m_error_message (Marpa_Error_Code error_code)
   if ( error_code == MARPA_ERR_NO_START_SYMBOL ) return "no start symbol";
   if ( error_code == MARPA_ERR_INVALID_SYMBOL_ID ) return "invalid symbol id";
   if ( error_code == MARPA_ERR_NO_SUCH_SYMBOL_ID ) return "no such symbol id";
-  return "";
+  printf("No message yet for Marpa error code %d.\n", error_code);
+  exit(1);
 }
 
 static int
@@ -323,7 +326,7 @@ marpa_m_test(const char* name, ...)
     sprintf(desc_buf, "%s() failed, returned %d", name, rv_seen);
     is_int( rv_wanted, rv_seen, desc_buf );
 
-    sprintf(desc_buf, "%s() erred on %s", name, marpa_m_error_message(err_seen));
+    sprintf(desc_buf, "%s() error: %s", name, marpa_m_error_message(err_seen));
     is_int( err_wanted, err_seen, desc_buf );
   }
 
@@ -361,6 +364,7 @@ main (int argc, char *argv[])
   /* Returns 0 if sym_id is not the start symbol, either because the start symbol
      is different from sym_id, or because the start symbol has not been set yet. */
   marpa_m_test("marpa_g_symbol_is_start", g, S_top, 0);
+  marpa_m_test("marpa_g_start_symbol", g, -1, MARPA_ERR_NO_START_SYMBOL);
   is_failure(g, MARPA_ERR_NO_START_SYMBOL, -1, marpa_g_start_symbol (g), "marpa_g_start_symbol", MARPA_TEST_MSG_NO_START_SYMBOL);
 
   (marpa_g_start_symbol_set (g, S_top) >= 0)
