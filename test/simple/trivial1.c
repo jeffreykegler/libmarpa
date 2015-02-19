@@ -237,7 +237,7 @@ marpa_m_method_spec(const char *name)
 
 static char *marpa_m_error_message (Marpa_Error_Code error_code)
 {
-  if ( error_code == MARPA_ERR_NO_START_SYMBOL )   return "no start symbol";
+  if ( error_code == MARPA_ERR_NO_START_SYMBOL ) return "no start symbol";
   if ( error_code == MARPA_ERR_INVALID_SYMBOL_ID ) return "invalid symbol id";
   if ( error_code == MARPA_ERR_NO_SUCH_SYMBOL_ID ) return "no such symbol id";
   return "";
@@ -274,7 +274,7 @@ marpa_m_test(const char* name, ...)
   if (ms.as == "")
   {
     /* dispatch based on what object is set */
-    if (g != NULL)      rv_seen = ms.p(g);
+    if (g != NULL) rv_seen = ms.p(g);
     else if (r != NULL) rv_seen = ms.p(r);
   }
   else
@@ -283,13 +283,13 @@ marpa_m_test(const char* name, ...)
     curr_arg = strtok(tok_buf, " ,-");
     while (curr_arg != NULL)
     {
-      if (strncmp(curr_arg, "%s", 2) == 0)      S_id   = va_arg(args, Marpa_Symbol_ID);
+      if (strncmp(curr_arg, "%s", 2) == 0) S_id   = va_arg(args, Marpa_Symbol_ID);
       else if (strncmp(curr_arg, "%i", 2) == 0) intarg = va_arg(args, int);
 
       curr_arg = strtok(NULL, " ,-");
     }
     /* call marpa method based on signature */
-    if (strcmp(ms.as, "%s") == 0)          rv_seen = ms.p(g, S_id);
+    if (strcmp(ms.as, "%s") == 0) rv_seen = ms.p(g, S_id);
     else if (strcmp(ms.as, "%s, %i") == 0) rv_seen = ms.p(g, S_id, intarg);
   }
 
