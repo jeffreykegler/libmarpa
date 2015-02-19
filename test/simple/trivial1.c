@@ -157,22 +157,6 @@ marpa_g_trivial_precompute(Marpa_Grammar g, Marpa_Symbol_ID S_start)
   return rc;
 }
 
-/* test retcode and error code on expected failure */
-static int
-is_failure(Marpa_Grammar g, Marpa_Error_Code errcode_wanted, int retcode_wanted, int retcode, char *method_name, char *msg)
-{
-  int errcode;
-
-  sprintf (msgbuf, "%s(): %s", method_name, msg);
-  is_int(retcode_wanted, retcode, msgbuf);
-
-  errcode = marpa_g_error (g, NULL);
-  sprintf (msgbuf, "%s() error code", method_name);
-  is_int(errcode_wanted, errcode, msgbuf);
-
-  marpa_g_error_clear(g);
-}
-
 /* test retval and print error code on unexpected failure */
 static int
 is_success(Marpa_Grammar g, int wanted, int retval, char *method_name)
