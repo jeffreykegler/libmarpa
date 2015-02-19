@@ -342,10 +342,10 @@ marpa_m_test(const char* name, ...)
   {
     /* failure seen */
     if ( rv_seen < 0 )
-      if
-        (g != NULL) warn(name, g);
-      else
-        printf("%s() unexpectedly returned %d.", name, rv_seen);
+    {
+      sprintf(msgbuf, "%s() unexpectedly returned %d.", name, rv_seen);
+      ok(0, msgbuf);
+    }
     /* success seen */
     else {
       sprintf(desc_buf, "%s() succeeded", name);
