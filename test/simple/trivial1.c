@@ -220,18 +220,25 @@ struct marpa_method_spec {
 typedef struct marpa_method_spec Marpa_Method_Spec;
 
 const Marpa_Method_Spec methspec[] = {
+
+  { "marpa_g_start_symbol_set", &marpa_g_start_symbol_set, "%s" },
   { "marpa_g_symbol_is_start", &marpa_g_symbol_is_start, "%s" },
-  { "marpa_g_symbol_is_terminal_set", &marpa_g_symbol_is_terminal_set, "%s, %i" },
   { "marpa_g_start_symbol", &marpa_g_start_symbol, "" },
+
+  { "marpa_g_symbol_is_terminal_set", &marpa_g_symbol_is_terminal_set, "%s, %i" },
+  { "marpa_g_symbol_is_terminal",  &marpa_g_symbol_is_terminal, "%s" },
+
   { "marpa_g_highest_symbol_id", &marpa_g_highest_symbol_id, ""},
+
   { "marpa_g_symbol_is_accessible", &marpa_g_symbol_is_accessible, "%s" },
   { "marpa_g_symbol_is_nullable", &marpa_g_symbol_is_nullable, "%s" },
   { "marpa_g_symbol_is_nulling", &marpa_g_symbol_is_nulling, "%s" },
   { "marpa_g_symbol_is_productive", &marpa_g_symbol_is_productive, "%s" },
-  { "marpa_g_symbol_is_terminal",  &marpa_g_symbol_is_terminal, "%s" },
+
   { "marpa_g_rule_is_nullable", &marpa_g_rule_is_nullable, "%r" },
   { "marpa_g_rule_is_nulling", &marpa_g_rule_is_nulling, "%r" },
   { "marpa_g_rule_is_loop", &marpa_g_rule_is_loop, "%r" },
+
   { "marpa_g_precompute", &marpa_g_precompute, "" },
 };
 
@@ -267,6 +274,7 @@ const Marpa_Method_Error errspec[] = {
   { MARPA_ERR_NOT_PRECOMPUTED, "grammar not precomputed" },
   { MARPA_ERR_TERMINAL_IS_LOCKED, "terminal locked" },
   { MARPA_ERR_NULLING_TERMINAL, "nulling terminal" },
+  { MARPA_ERR_PRECOMPUTED, "grammar precomputed" },
 };
 
 static char *marpa_m_error_message (Marpa_Error_Code error_code)
@@ -429,7 +437,8 @@ main (int argc, char *argv[])
   marpa_m_test("marpa_g_rule_is_nulling", g, R_top_2, -2, MARPA_ERR_NOT_PRECOMPUTED);
   marpa_m_test("marpa_g_rule_is_loop", g, R_C2_3, -2, MARPA_ERR_NOT_PRECOMPUTED);
 
-  /* marpa_g_symbol_is_terminal_set() on invalid and non-existing symbol IDs */
+  /* marpa_g_symbol_is_terminal_set() on invalid and non-existing symbol IDs
+     on a non-precomputed grammar */
   marpa_m_test("marpa_g_symbol_is_terminal_set", g, S_invalid, 1, -2, MARPA_ERR_INVALID_SYMBOL_ID);
   marpa_m_test("marpa_g_symbol_is_terminal_set", g, S_no_such, 1, -1, MARPA_ERR_NO_SUCH_SYMBOL_ID);
 
@@ -444,27 +453,22 @@ main (int argc, char *argv[])
   marpa_g_unref(g);
   g = marpa_g_trivial_new(&marpa_configuration);
 
-  is_failure(g, MARPA_ERR_NO_START_SYMBOL, -2, marpa_g_precompute (g), "marpa_g_precompute", "before marpa_g_start_symbol_set()");
+  marpa_m_test("marpa_g_precompute", g, -2, MARPA_ERR_NO_START_SYMBOL);
 
   marpa_g_trivial_precompute(g, S_top);
   ok(1, "precomputation succeeded");
 
-  /* Symbols -- these do have @<Fail if not precomputed@>@ */
-  is_success(g, 1, marpa_g_symbol_is_accessible  (g, S_C2), "marpa_g_symbol_is_accessible()");
-  is_success(g, 1, marpa_g_symbol_is_nullable (g, S_A1), "marpa_g_symbol_is_nullable()");
-  is_success(g, 1, marpa_g_symbol_is_nulling (g, S_A1), "marpa_g_symbol_is_nulling()");
-  is_success(g, 1, marpa_g_symbol_is_productive (g, S_top), "marpa_g_symbol_is_productive()");
-  is_success(g, 1, marpa_g_symbol_is_start (g, S_top), "marpa_g_symbol_is_start()");
-  is_success(g, 0, marpa_g_symbol_is_terminal(g, S_top), "marpa_g_symbol_is_terminal()");
-  is_failure_invalid_symbol_id
-    (g, marpa_g_symbol_is_terminal(g, -1), "marpa_g_symbol_is_terminal");
-  is_failure(g, MARPA_ERR_NO_SUCH_SYMBOL_ID, -1, marpa_g_symbol_is_terminal (g, 42),
-    "marpa_g_symbol_is_terminal", MARPA_TEST_MSG_NO_SUCH_SYMBOL_ID);
+  /* Symbols -- status accessors must succeed on precomputed grammar */
+  marpa_m_test("marpa_g_symbol_is_accessible", g, S_C2, 1);
+  marpa_m_test("marpa_g_symbol_is_nullable", g, S_A1, 1);
+  marpa_m_test("marpa_g_symbol_is_nulling", g, S_A1, 1);
+  marpa_m_test("marpa_g_symbol_is_productive", g, S_top, 1);
+  marpa_m_test("marpa_g_symbol_is_start", g, S_top, 1);
+  marpa_m_test("marpa_g_symbol_is_terminal", g, S_top, 0);
 
-  is_failure(g, MARPA_ERR_PRECOMPUTED, -2, marpa_g_symbol_is_terminal_set (g, S_top, 0),
-    "marpa_g_symbol_is_terminal_set", "on precomputed grammar");
-  is_failure(g, MARPA_ERR_PRECOMPUTED, -2, marpa_g_start_symbol_set (g, S_top),
-    "marpa_g_start_symbol_set", "on precomputed grammar");
+  /* terminal and start symbols can't be set on precomputed grammar */
+  marpa_m_test("marpa_g_symbol_is_terminal_set", g, S_top, 0, -2, MARPA_ERR_PRECOMPUTED);
+  marpa_m_test("marpa_g_start_symbol_set", g, S_top, -2, MARPA_ERR_PRECOMPUTED);
 
   /* Rules */
   is_success(g, R_C2_3, marpa_g_highest_rule_id (g), "marpa_g_highest_rule_id()");
