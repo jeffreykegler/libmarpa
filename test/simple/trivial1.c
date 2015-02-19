@@ -230,6 +230,8 @@ const Marpa_Method_Spec methspec[] = {
   { "marpa_g_symbol_is_productive", &marpa_g_symbol_is_productive, "%s" },
   { "marpa_g_symbol_is_terminal",  &marpa_g_symbol_is_terminal, "%s" },
   { "marpa_g_rule_is_nullable", &marpa_g_rule_is_nullable, "%r" },
+  { "marpa_g_rule_is_nulling", &marpa_g_rule_is_nulling, "%r" },
+  { "marpa_g_rule_is_loop", &marpa_g_rule_is_loop, "%r" },
 };
 
 static Marpa_Method_Spec
@@ -422,11 +424,10 @@ main (int argc, char *argv[])
 
   /* Rules */
   marpa_m_test("marpa_g_rule_is_nullable", g, R_top_2, -2, MARPA_ERR_NOT_PRECOMPUTED);
-  is_failure(g, MARPA_ERR_NOT_PRECOMPUTED, -2, marpa_g_rule_is_nullable (g, R_top_2), "marpa_g_rule_is_nullable", MSG_NOT_PRECOMPUTED);
-  is_failure(g, MARPA_ERR_NOT_PRECOMPUTED, -2, marpa_g_rule_is_nulling (g, R_top_2), "marpa_g_rule_is_nulling", MSG_NOT_PRECOMPUTED);
-  is_failure(g, MARPA_ERR_NOT_PRECOMPUTED, -2, marpa_g_rule_is_loop (g, R_C2_3), "marpa_g_rule_is_loop", MSG_NOT_PRECOMPUTED);
+  marpa_m_test("marpa_g_rule_is_nulling", g, R_top_2, -2, MARPA_ERR_NOT_PRECOMPUTED);
+  marpa_m_test("marpa_g_rule_is_loop", g, R_C2_3, -2, MARPA_ERR_NOT_PRECOMPUTED);
 
-  /* expected failures on attempts to non-well-formed and non-existing symbols as terminals */
+  /* expected failures on attempts to invalid and non-existing symbols as terminals */
   is_failure_invalid_symbol_id
     (g, marpa_g_symbol_is_terminal_set (g, -1, 1), "marpa_g_symbol_is_terminal");
   is_failure(g, MARPA_ERR_NO_SUCH_SYMBOL_ID, -1, marpa_g_symbol_is_terminal_set (g, 42, 1),
