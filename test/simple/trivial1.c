@@ -89,7 +89,7 @@ is_nulling (Marpa_Symbol_ID id)
 }
 
 static Marpa_Grammar
-trivial_grammar(Marpa_Config *config)
+marpa_g_trivial_new(Marpa_Config *config)
 {
   Marpa_Grammar g;
   g = marpa_g_new (config);
@@ -143,7 +143,7 @@ trivial_grammar(Marpa_Config *config)
 }
 
 static Marpa_Error_Code
-trivial_grammar_precompute(Marpa_Grammar g, Marpa_Symbol_ID S_start)
+marpa_g_trivial_precompute(Marpa_Grammar g, Marpa_Symbol_ID S_start)
 {
   Marpa_Error_Code rc;
 
@@ -232,6 +232,7 @@ const Marpa_Method_Spec methspec[] = {
   { "marpa_g_rule_is_nullable", &marpa_g_rule_is_nullable, "%r" },
   { "marpa_g_rule_is_nulling", &marpa_g_rule_is_nulling, "%r" },
   { "marpa_g_rule_is_loop", &marpa_g_rule_is_loop, "%r" },
+  { "marpa_g_precompute", &marpa_g_precompute, "" },
 };
 
 static Marpa_Method_Spec
@@ -264,6 +265,8 @@ const Marpa_Method_Error errspec[] = {
   { MARPA_ERR_INVALID_SYMBOL_ID, "invalid symbol id" },
   { MARPA_ERR_NO_SUCH_SYMBOL_ID, "no such symbol id" },
   { MARPA_ERR_NOT_PRECOMPUTED, "grammar not precomputed" },
+  { MARPA_ERR_TERMINAL_IS_LOCKED, "terminal locked" },
+  { MARPA_ERR_NULLING_TERMINAL, "nulling terminal" },
 };
 
 static char *marpa_m_error_message (Marpa_Error_Code error_code)
@@ -392,7 +395,7 @@ main (int argc, char *argv[])
   plan_lazy();
 
   marpa_c_init (&marpa_configuration);
-  g = trivial_grammar(&marpa_configuration);
+  g = marpa_g_trivial_new(&marpa_configuration);
 
   /* Grammar Methods per sections of api.texi: Symbols, Rules, Sequnces, Ranks, Events */
   S_invalid = -1;
@@ -415,7 +418,6 @@ main (int argc, char *argv[])
 
   /* these must return -2 and set error code to MARPA_ERR_NOT_PRECOMPUTED */
   /* Symbols */
-#define MSG_NOT_PRECOMPUTED "fail before marpa_g_precompute()"
   marpa_m_test("marpa_g_symbol_is_accessible", g, S_C2, -2, MARPA_ERR_NOT_PRECOMPUTED);
   marpa_m_test("marpa_g_symbol_is_nullable", g, S_A1, -2, MARPA_ERR_NOT_PRECOMPUTED);
   marpa_m_test("marpa_g_symbol_is_nulling", g, S_A1, -2, MARPA_ERR_NOT_PRECOMPUTED);
@@ -427,27 +429,24 @@ main (int argc, char *argv[])
   marpa_m_test("marpa_g_rule_is_nulling", g, R_top_2, -2, MARPA_ERR_NOT_PRECOMPUTED);
   marpa_m_test("marpa_g_rule_is_loop", g, R_C2_3, -2, MARPA_ERR_NOT_PRECOMPUTED);
 
-  /* expected failures on attempts to invalid and non-existing symbols as terminals */
-  is_failure_invalid_symbol_id
-    (g, marpa_g_symbol_is_terminal_set (g, -1, 1), "marpa_g_symbol_is_terminal");
-  is_failure(g, MARPA_ERR_NO_SUCH_SYMBOL_ID, -1, marpa_g_symbol_is_terminal_set (g, 42, 1),
-    "marpa_g_symbol_is_terminal", MARPA_TEST_MSG_NO_SUCH_SYMBOL_ID);
-  /* set a nulling symbol to be terminal and test precomputation failure */
-  marpa_m_test("marpa_g_symbol_is_terminal_set", g, S_C1, 1, 1);
-  is_success(g, 1, marpa_g_symbol_is_terminal_set(g, S_C1, 1),
+  /* marpa_g_symbol_is_terminal_set() on invalid and non-existing symbol IDs */
+  marpa_m_test("marpa_g_symbol_is_terminal_set", g, S_invalid, 1, -2, MARPA_ERR_INVALID_SYMBOL_ID);
+  marpa_m_test("marpa_g_symbol_is_terminal_set", g, S_no_such, 1, -1, MARPA_ERR_NO_SUCH_SYMBOL_ID);
 
-    "marpa_g_symbol_is_terminal_set()");
-  is_failure(g, MARPA_ERR_TERMINAL_IS_LOCKED, -2, marpa_g_symbol_is_terminal_set(g, S_C1, 0),
-    "marpa_g_symbol_is_terminal_set", "symbol already set as terminal");
-  is_failure(g, MARPA_ERR_NULLING_TERMINAL, -2, marpa_g_precompute (g), "marpa_g_precompute", "nulling terminal");
+  /* marpa_g_symbol_is_terminal_set() on a nulling symbol */
+  marpa_m_test("marpa_g_symbol_is_terminal_set", g, S_C1, 1, 1);
+  /* can't change terminal status after it's been set */
+  marpa_m_test("marpa_g_symbol_is_terminal_set", g, S_C1, 0, -2, MARPA_ERR_TERMINAL_IS_LOCKED);
+
+  marpa_m_test("marpa_g_precompute", g, -2, MARPA_ERR_NULLING_TERMINAL);
 
   /* terminals are locked after setting, so we recreate the grammar */
   marpa_g_unref(g);
-  g = trivial_grammar(&marpa_configuration);
+  g = marpa_g_trivial_new(&marpa_configuration);
 
   is_failure(g, MARPA_ERR_NO_START_SYMBOL, -2, marpa_g_precompute (g), "marpa_g_precompute", "before marpa_g_start_symbol_set()");
 
-  trivial_grammar_precompute(g, S_top);
+  marpa_g_trivial_precompute(g, S_top);
   ok(1, "precomputation succeeded");
 
   /* Symbols -- these do have @<Fail if not precomputed@>@ */
@@ -485,7 +484,7 @@ main (int argc, char *argv[])
      error code -- http://irclog.perlgeek.de/marpa/2015-02-13#i_10111831  */
   /* recreate the grammar */
   marpa_g_unref(g);
-  g = trivial_grammar(&marpa_configuration);
+  g = marpa_g_trivial_new(&marpa_configuration);
   /* try to add a nulling sequence */
   is_failure(g, MARPA_ERR_SEQUENCE_LHS_NOT_UNIQUE, -2,
     marpa_g_sequence_new (g, S_top, S_B1, S_B2, 0, MARPA_PROPER_SEPARATION),
@@ -545,7 +544,7 @@ main (int argc, char *argv[])
   is_failure(g, MARPA_ERR_NO_SUCH_RULE_ID, -1, marpa_g_rule_null_high (g, 42),
     "marpa_g_rule_null_high", MARPA_TEST_MSG_NO_SUCH_RULE_ID);
 
-  trivial_grammar_precompute(g, S_top);
+  marpa_g_trivial_precompute(g, S_top);
   ok(1, "precomputation succeeded");
 
   /* Ranks methods on precomputed grammar */
@@ -558,7 +557,7 @@ main (int argc, char *argv[])
 
   /* recreate the grammar to test event methods except nulled */
   marpa_g_unref(g);
-  g = trivial_grammar(&marpa_configuration);
+  g = marpa_g_trivial_new(&marpa_configuration);
 
   /* Events */
   /* test that attempts to create events, other than nulled events,
@@ -587,7 +586,7 @@ int marpa_g_symbol_is_prediction_event_set (g, S_top, value)
 
 */
 
-  trivial_grammar_precompute(g, S_top);
+  marpa_g_trivial_precompute(g, S_top);
   ok(1, "precomputation succeeded");
 
   /* event methods after precomputation
