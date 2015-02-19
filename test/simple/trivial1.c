@@ -157,18 +157,6 @@ marpa_g_trivial_precompute(Marpa_Grammar g, Marpa_Symbol_ID S_start)
   return rc;
 }
 
-/* test retval and print error code on unexpected failure */
-static int
-is_success(Marpa_Grammar g, int wanted, int retval, char *method_name)
-{
-  is_int(wanted, retval, method_name);
-
-  if (retval < 0 && strstr(method_name, "marpa_g_rule_rank") == NULL )
-    warn(method_name, g);
-
-  marpa_g_error_clear(g);
-}
-
 /* Marpa method test interface */
 
 typedef int (*marpa_m_pointer)();
@@ -412,7 +400,7 @@ marpa_m_test(const char* name, ...)
     /* test error code */
     else
     {
-      sprintf(desc_buf, "%s() error: %s", name, marpa_m_error_message(err_seen));
+      sprintf(desc_buf, "%s() error is: %s", name, marpa_m_error_message(err_seen));
       is_int( err_wanted, err_seen, desc_buf );
     }
   }
@@ -595,11 +583,7 @@ main (int argc, char *argv[])
 
   /* Ranks methods on precomputed grammar */
   marpa_m_test("marpa_g_rule_rank_set", g, R_top_1, rank, -2, MARPA_ERR_PRECOMPUTED);
-  ok
-  (
-    marpa_g_rule_rank(g, R_top_1) == rank && marpa_g_error(g, NULL) == MARPA_ERR_NONE,
-    "direct marpa_g_rule_rank() on negative rank, error checked via marpa_g_error()"
-  );
+  marpa_m_test("marpa_g_rule_rank", g, R_top_1, -2, MARPA_ERR_PRECOMPUTED);
 
   marpa_m_test("marpa_g_rule_null_high_set", g, R_top_2, flag, -2, MARPA_ERR_PRECOMPUTED);
   marpa_m_test("marpa_g_rule_null_high", g, R_top_2, flag);
@@ -651,7 +635,6 @@ int marpa_g_symbol_is_prediction_event_set (g, S_top, value)
   if (!rc)
     fail("marpa_r_start_input", g);
 
-  /* */
   marpa_m_grammar_set(g);
   diag ("at earleme 0");
   marpa_m_test("marpa_r_is_exhausted", r, 1);
