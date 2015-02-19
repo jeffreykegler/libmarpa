@@ -295,10 +295,22 @@ marpa_m_test(const char* name, ...)
 
   rv_wanted = va_arg(args, int);
 
+  /* success wanted */
   if ( rv_wanted >= 0 )
   {
-    is_int( rv_wanted, rv_seen, name );
+    /* failure seen */
+    if ( rv_seen < 0 )
+      if
+        (g != NULL) warn(name, g);
+      else
+        printf("%s() unexpectedly returned %d.", name, rv_seen);
+    /* success seen */
+    else {
+      sprintf(desc_buf, "%s() succeeded", name);
+      is_int( rv_wanted, rv_seen, desc_buf );
+    }
   }
+  /* failure wanted */
   else
   {
     err_wanted = va_arg(args, int);
@@ -308,7 +320,10 @@ marpa_m_test(const char* name, ...)
 
     err_seen = marpa_g_error(g, NULL);
 
-    sprintf(desc_buf, "%s erred on %s", name, marpa_m_error_message(err_seen));
+    sprintf(desc_buf, "%s() failed, returned %d", name, rv_seen);
+    is_int( rv_wanted, rv_seen, desc_buf );
+
+    sprintf(desc_buf, "%s() erred on %s", name, marpa_m_error_message(err_seen));
     is_int( err_wanted, err_seen, desc_buf );
   }
 
@@ -341,7 +356,7 @@ main (int argc, char *argv[])
   S_invalid = -1;
   S_no_such = 42;
   /* these must soft fail if there is not start symbol */
-  marpa_m_test("marpa_g_symbol_is_start", g, S_invalid, -1, MARPA_ERR_INVALID_SYMBOL_ID);
+  marpa_m_test("marpa_g_symbol_is_start", g, S_invalid, -2, MARPA_ERR_INVALID_SYMBOL_ID);
   marpa_m_test("marpa_g_symbol_is_start", g, S_no_such, -1, MARPA_ERR_NO_SUCH_SYMBOL_ID);
   /* Returns 0 if sym_id is not the start symbol, either because the start symbol
      is different from sym_id, or because the start symbol has not been set yet. */
