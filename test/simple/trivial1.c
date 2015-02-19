@@ -209,34 +209,39 @@ typedef int (*marpa_m_pointer)();
     ...
 */
 typedef char *marpa_m_argspec;
+typedef char *marpa_m_name;
 
 struct marpa_method_spec {
+  marpa_m_name n;
   marpa_m_pointer p;
   marpa_m_argspec as;
 };
 
 typedef struct marpa_method_spec Marpa_Method_Spec;
 
+#define MAX_METHSPEC 4
+Marpa_Method_Spec methspec[MAX_METHSPEC] = {
+  { "marpa_g_symbol_is_start", &marpa_g_symbol_is_start, "%s" },
+  { "marpa_g_symbol_is_terminal_set", &marpa_g_symbol_is_terminal_set, "%s, %i" },
+  { "marpa_g_start_symbol", &marpa_g_start_symbol, "" },
+  { "marpa_g_highest_symbol_id", &marpa_g_highest_symbol_id, ""}
+};
+
 static Marpa_Method_Spec
 marpa_m_method_spec(const char *name)
 {
   Marpa_Method_Spec ms;
+  int i;
 
-  if ( strcmp(name, "marpa_g_symbol_is_start") == 0 )
-    ms.p = &marpa_g_symbol_is_start,        ms.as = "%s";
-  else if ( strcmp(name, "marpa_g_symbol_is_terminal_set") == 0 )
-    ms.p = &marpa_g_symbol_is_terminal_set, ms.as = "%s, %i";
-  else if ( strcmp(name, "marpa_g_start_symbol") == 0 )
-    ms.p = &marpa_g_start_symbol, ms.as = "";
-  else if ( strcmp(name, "marpa_g_highest_symbol_id") == 0 )
-    ms.p = &marpa_g_highest_symbol_id, ms.as = "";
-  else
+  for (i = 0; i < MAX_METHSPEC; i++)
   {
-    printf("No spec yet for Marpa method %s().\n", name);
-    exit(1);
+    if ( strcmp(name, methspec[i].n ) == 0 )
+    {
+      return methspec[i];
+    }
   }
-
-  return ms;
+  printf("No spec yet for Marpa method %s().\n", name);
+  exit(1);
 }
 
 static char *marpa_m_error_message (Marpa_Error_Code error_code)
