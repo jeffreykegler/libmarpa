@@ -611,13 +611,6 @@ main (int argc, char *argv[])
   marpa_m_test("marpa_g_rule_null_high_set", g, R_top_2, flag, -2, MARPA_ERR_PRECOMPUTED);
   marpa_m_test("marpa_g_rule_null_high", g, R_top_2, flag);
 
-  is_failure(g, MARPA_ERR_PRECOMPUTED, -2, marpa_g_rule_rank_set (g, R_top_1, rank),
-    "marpa_g_rule_rank_set", "on precomputed grammar");
-  is_success(g, rank, marpa_g_rule_rank (g, R_top_1), "marpa_g_rule_rank()");
-  is_failure(g, MARPA_ERR_PRECOMPUTED, -2, marpa_g_rule_null_high_set (g, R_top_2, flag),
-    "marpa_g_rule_null_high_set", "on precomputed grammar");
-  is_success(g, 1, marpa_g_rule_null_high (g, R_top_2), "marpa_g_rule_null_high()");
-
   /* recreate the grammar to test event methods except nulled */
   marpa_g_unref(g);
   g = marpa_g_trivial_new(&marpa_configuration);
