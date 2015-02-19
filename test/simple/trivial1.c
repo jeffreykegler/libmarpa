@@ -228,6 +228,8 @@ marpa_m_method_spec(const char *name)
     ms.p = &marpa_g_symbol_is_terminal_set, ms.as = "%s, %i";
   else if ( strcmp(name, "marpa_g_start_symbol") == 0 )
     ms.p = &marpa_g_start_symbol, ms.as = "";
+  else if ( strcmp(name, "marpa_g_highest_symbol_id") == 0 )
+    ms.p = &marpa_g_highest_symbol_id, ms.as = "";
   else
   {
     printf("No spec yet for Marpa method %s().\n", name);
@@ -365,15 +367,14 @@ main (int argc, char *argv[])
      is different from sym_id, or because the start symbol has not been set yet. */
   marpa_m_test("marpa_g_symbol_is_start", g, S_top, 0);
   marpa_m_test("marpa_g_start_symbol", g, -1, MARPA_ERR_NO_START_SYMBOL);
-  is_failure(g, MARPA_ERR_NO_START_SYMBOL, -1, marpa_g_start_symbol (g), "marpa_g_start_symbol", MARPA_TEST_MSG_NO_START_SYMBOL);
 
   (marpa_g_start_symbol_set (g, S_top) >= 0)
     || fail ("marpa_g_start_symbol_set", g);
 
   /* these must succeed after the start symbol is set */
   marpa_m_test("marpa_g_symbol_is_start", g, S_top, 1);
-  is_success(g, S_top, marpa_g_start_symbol (g), "marpa_g_start_symbol()");
-  is_success(g, S_C2, marpa_g_highest_symbol_id (g), "marpa_g_highest_symbol_id()");
+  marpa_m_test("marpa_g_start_symbol", g, S_top);
+  marpa_m_test("marpa_g_highest_symbol_id", g, S_C2);
 
   /* these must return -2 and set error code to MARPA_ERR_NOT_PRECOMPUTED */
   /* Symbols */
