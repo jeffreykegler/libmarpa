@@ -243,7 +243,7 @@ static char *marpa_m_error_message (Marpa_Error_Code error_code)
 }
 
 static int
-marpa_m_success_test(const char* name, ...)
+marpa_m_test(const char* name, ...)
 {
   Marpa_Method_Spec ms;
 
@@ -319,14 +319,14 @@ main (int argc, char *argv[])
     MARPA_TEST_MSG_NO_SUCH_SYMBOL_ID);
   /* Returns 0 if sym_id is not the start symbol, either because the start symbol
      is different from sym_id, or because the start symbol has not been set yet. */
-  marpa_m_success_test("marpa_g_symbol_is_start", g, S_top, 0);
+  marpa_m_test("marpa_g_symbol_is_start", g, S_top, 0);
   is_failure(g, MARPA_ERR_NO_START_SYMBOL, -1, marpa_g_start_symbol (g), "marpa_g_start_symbol", MARPA_TEST_MSG_NO_START_SYMBOL);
 
   (marpa_g_start_symbol_set (g, S_top) >= 0)
     || fail ("marpa_g_start_symbol_set", g);
 
   /* these must succeed after the start symbol is set */
-  marpa_m_success_test("marpa_g_symbol_is_start", g, S_top, 1);
+  marpa_m_test("marpa_g_symbol_is_start", g, S_top, 1);
   is_success(g, S_top, marpa_g_start_symbol (g), "marpa_g_start_symbol()");
   is_success(g, S_C2, marpa_g_highest_symbol_id (g), "marpa_g_highest_symbol_id()");
 
@@ -350,7 +350,7 @@ main (int argc, char *argv[])
   is_failure(g, MARPA_ERR_NO_SUCH_SYMBOL_ID, -1, marpa_g_symbol_is_terminal_set (g, 42, 1),
     "marpa_g_symbol_is_terminal", MARPA_TEST_MSG_NO_SUCH_SYMBOL_ID);
   /* set a nulling symbol to be terminal and test precomputation failure */
-  marpa_m_success_test("marpa_g_symbol_is_terminal_set", g, S_C1, 1, 1);
+  marpa_m_test("marpa_g_symbol_is_terminal_set", g, S_C1, 1, 1);
   is_success(g, 1, marpa_g_symbol_is_terminal_set(g, S_C1, 1),
 
     "marpa_g_symbol_is_terminal_set()");
