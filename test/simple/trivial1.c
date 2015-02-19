@@ -614,6 +614,16 @@ main (int argc, char *argv[])
   ok(1, "precomputation succeeded");
 
   /* Ranks methods on precomputed grammar */
+  marpa_m_test("marpa_g_rule_rank_set", g, R_top_1, rank, -2, MARPA_ERR_PRECOMPUTED);
+  ok
+  (
+    marpa_g_rule_rank(g, R_top_1) == rank && marpa_g_error(g, NULL) == MARPA_ERR_NONE,
+    "direct marpa_g_rule_rank() on negative rank, error checked via marpa_g_error()"
+  );
+
+  marpa_m_test("marpa_g_rule_null_high_set", g, R_top_2, flag, -2, MARPA_ERR_PRECOMPUTED);
+  marpa_m_test("marpa_g_rule_null_high", g, R_top_2, flag);
+
   is_failure(g, MARPA_ERR_PRECOMPUTED, -2, marpa_g_rule_rank_set (g, R_top_1, rank),
     "marpa_g_rule_rank_set", "on precomputed grammar");
   is_success(g, rank, marpa_g_rule_rank (g, R_top_1), "marpa_g_rule_rank()");
