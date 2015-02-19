@@ -2529,6 +2529,7 @@ int marpa_g_rule_rank(Marpa_Grammar g,
     @<Fail if fatal error@>@;
     @<Fail if |xrl_id| is malformed@>@;
     @<Fail if |xrl_id| does not exist@>@;
+    clear_error(g);
     xrl = XRL_by_ID (xrl_id);
     return Rank_of_XRL(xrl);
 }
