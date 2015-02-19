@@ -208,11 +208,11 @@ typedef int (*marpa_m_pointer)();
     %n -- Marpa_Rank
     ...
 */
-typedef const char *marpa_m_signature;
+typedef char *marpa_m_argspec;
 
 struct marpa_method_spec {
   marpa_m_pointer p;
-  marpa_m_signature s;
+  marpa_m_argspec as;
 };
 
 typedef struct marpa_method_spec Marpa_Method_Spec;
@@ -221,13 +221,17 @@ static Marpa_Method_Spec
 marpa_m_method_spec(const char *name)
 {
   Marpa_Method_Spec ms;
-  if ( strcmp(name, "marpa_g_symbol_is_start") == 0 ){
-    ms.p = &marpa_g_symbol_is_start, ms.s = "%s";
-  }
-  else{
-    printf("Unknown Marpa method name %.\n", name);
+
+  if ( strcmp(name, "marpa_g_symbol_is_start") == 0 )
+    ms.p = &marpa_g_symbol_is_start,        ms.as = "%s";
+  else if ( strcmp(name, "marpa_g_symbol_is_terminal_set") == 0 )
+    ms.p = &marpa_g_symbol_is_terminal_set, ms.as = "%s, %i";
+  else
+  {
+    printf("Unknown Marpa method name %s.\n", name);
     exit(1);
   }
+
   return ms;
 }
 
@@ -242,8 +246,15 @@ static int
 marpa_m_success_test(const char* name, ...)
 {
   Marpa_Method_Spec ms;
+
   Marpa_Grammar g;
   Marpa_Symbol_ID S_id;
+  int intarg;
+
+  int rv_wanted, rv_seen;
+
+  char tok_buf[32]; /* strtok() buffer  */
+  char *curr_arg;  /* current arg pointer */
 
   ms = marpa_m_method_spec(name);
 
@@ -251,14 +262,25 @@ marpa_m_success_test(const char* name, ...)
   va_start(args, name);
 
   if (strncmp(name, "marpa_g_", 8) == 0)
-  {
     g = va_arg(args, Marpa_Grammar);
-    if (strcmp(ms.s, "%s") == 0)
-    {
-      S_id = va_arg(args, Marpa_Symbol_ID);
-      is_int( va_arg(args, int), ms.p(g, S_id), name);
-    }
+
+  /* unpack arguments */
+  strcpy( tok_buf, ms.as );
+  curr_arg = strtok(tok_buf, " ,-");
+  while (curr_arg != NULL)
+  {
+    if (strncmp(curr_arg, "%s", 2) == 0)      S_id   = va_arg(args, Marpa_Symbol_ID);
+    else if (strncmp(curr_arg, "%i", 2) == 0) intarg = va_arg(args, int);
+
+    curr_arg = strtok(NULL, " ,-");
   }
+  rv_wanted = va_arg(args, int);
+
+  /* call marpa method based on signature */
+  if (strcmp(ms.as, "%s") == 0)          rv_seen = ms.p(g, S_id);
+  else if (strcmp(ms.as, "%s, %i") == 0) rv_seen = ms.p(g, S_id, intarg);
+
+  is_int( rv_wanted, rv_seen, name );
 
   va_end(args);
 }
@@ -328,7 +350,9 @@ main (int argc, char *argv[])
   is_failure(g, MARPA_ERR_NO_SUCH_SYMBOL_ID, -1, marpa_g_symbol_is_terminal_set (g, 42, 1),
     "marpa_g_symbol_is_terminal", MARPA_TEST_MSG_NO_SUCH_SYMBOL_ID);
   /* set a nulling symbol to be terminal and test precomputation failure */
+  marpa_m_success_test("marpa_g_symbol_is_terminal_set", g, S_C1, 1, 1);
   is_success(g, 1, marpa_g_symbol_is_terminal_set(g, S_C1, 1),
+
     "marpa_g_symbol_is_terminal_set()");
   is_failure(g, MARPA_ERR_TERMINAL_IS_LOCKED, -2, marpa_g_symbol_is_terminal_set(g, S_C1, 0),
     "marpa_g_symbol_is_terminal_set", "symbol already set as terminal");
