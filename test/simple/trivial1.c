@@ -237,9 +237,10 @@ marpa_m_method_spec(const char *name)
 
 static char *marpa_m_error_message (Marpa_Error_Code error_code)
 {
-  if ( error_code == MARPA_ERR_NO_START_SYMBOL ){
-    return "no start symbol";
-  }
+  if ( error_code == MARPA_ERR_NO_START_SYMBOL )   return "no start symbol";
+  if ( error_code == MARPA_ERR_INVALID_SYMBOL_ID ) return "invalid symbol id";
+  if ( error_code == MARPA_ERR_NO_SUCH_SYMBOL_ID ) return "no such symbol id";
+  return "";
 }
 
 static int
@@ -248,46 +249,70 @@ marpa_m_test(const char* name, ...)
   Marpa_Method_Spec ms;
 
   Marpa_Grammar g;
+  Marpa_Recognizer r;
+
   Marpa_Symbol_ID S_id;
   int intarg;
 
   int rv_wanted, rv_seen;
+  int err_wanted, err_seen;
 
-  char tok_buf[32]; /* strtok() buffer  */
-  char *curr_arg;  /* current arg pointer */
+  char tok_buf[32];  /* strtok() */
+  char desc_buf[80]; /* test description  */
+  char *curr_arg;
 
   ms = marpa_m_method_spec(name);
 
   va_list args;
   va_start(args, name);
 
+  g = NULL;
   if (strncmp(name, "marpa_g_", 8) == 0)
     g = va_arg(args, Marpa_Grammar);
 
   /* unpack arguments */
-  strcpy( tok_buf, ms.as );
-  curr_arg = strtok(tok_buf, " ,-");
-  while (curr_arg != NULL)
+  if (ms.as == "")
   {
-    if (strncmp(curr_arg, "%s", 2) == 0)      S_id   = va_arg(args, Marpa_Symbol_ID);
-    else if (strncmp(curr_arg, "%i", 2) == 0) intarg = va_arg(args, int);
-
-    curr_arg = strtok(NULL, " ,-");
+    /* dispatch based on what object is set */
+    if (g != NULL)      rv_seen = ms.p(g);
+    else if (r != NULL) rv_seen = ms.p(r);
   }
+  else
+  {
+    strcpy( tok_buf, ms.as );
+    curr_arg = strtok(tok_buf, " ,-");
+    while (curr_arg != NULL)
+    {
+      if (strncmp(curr_arg, "%s", 2) == 0)      S_id   = va_arg(args, Marpa_Symbol_ID);
+      else if (strncmp(curr_arg, "%i", 2) == 0) intarg = va_arg(args, int);
+
+      curr_arg = strtok(NULL, " ,-");
+    }
+    /* call marpa method based on signature */
+    if (strcmp(ms.as, "%s") == 0)          rv_seen = ms.p(g, S_id);
+    else if (strcmp(ms.as, "%s, %i") == 0) rv_seen = ms.p(g, S_id, intarg);
+  }
+
   rv_wanted = va_arg(args, int);
 
-  /* call marpa method based on signature */
-  if (strcmp(ms.as, "%s") == 0)          rv_seen = ms.p(g, S_id);
-  else if (strcmp(ms.as, "%s, %i") == 0) rv_seen = ms.p(g, S_id, intarg);
+  if ( rv_wanted >= 0 )
+  {
+    is_int( rv_wanted, rv_seen, name );
+  }
+  else
+  {
+    err_wanted = va_arg(args, int);
 
-  is_int( rv_wanted, rv_seen, name );
+    if (g == NULL)
+      g = va_arg(args, Marpa_Grammar);
+
+    err_seen = marpa_g_error(g, NULL);
+
+    sprintf(desc_buf, "%s erred on %s", name, marpa_m_error_message(err_seen));
+    is_int( err_wanted, err_seen, desc_buf );
+  }
 
   va_end(args);
-}
-
-static int
-marpa_m_failure_test(const char* name, ...)
-{
 }
 
 int
@@ -300,6 +325,7 @@ main (int argc, char *argv[])
   Marpa_Grammar g;
   Marpa_Recognizer r;
 
+  Marpa_Symbol_ID S_invalid, S_no_such;
   Marpa_Rank rank;
   int flag;
 
@@ -312,11 +338,11 @@ main (int argc, char *argv[])
   g = trivial_grammar(&marpa_configuration);
 
   /* Grammar Methods per sections of api.texi: Symbols, Rules, Sequnces, Ranks, Events */
-
+  S_invalid = -1;
+  S_no_such = 42;
   /* these must soft fail if there is not start symbol */
-  is_failure_invalid_symbol_id(g, marpa_g_symbol_is_start (g, -1), "marpa_g_symbol_is_start");
-  is_failure(g, MARPA_ERR_NO_SUCH_SYMBOL_ID, -1, marpa_g_symbol_is_start (g, 42), "marpa_g_symbol_is_start",
-    MARPA_TEST_MSG_NO_SUCH_SYMBOL_ID);
+  marpa_m_test("marpa_g_symbol_is_start", g, S_invalid, -1, MARPA_ERR_INVALID_SYMBOL_ID);
+  marpa_m_test("marpa_g_symbol_is_start", g, S_no_such, -1, MARPA_ERR_NO_SUCH_SYMBOL_ID);
   /* Returns 0 if sym_id is not the start symbol, either because the start symbol
      is different from sym_id, or because the start symbol has not been set yet. */
   marpa_m_test("marpa_g_symbol_is_start", g, S_top, 0);
