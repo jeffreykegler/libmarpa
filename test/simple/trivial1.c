@@ -399,6 +399,15 @@ marpa_m_test(const char* name, ...)
       is_int( rv_wanted, rv_seen, desc_buf );
     }
   }
+  /* marpa_g_rule_rank() and marpa_g_rule_rank_set() may return negative values,
+     but they are actually ranks if marpa_g_error() returns MARPA_ERR_NONE.
+     So, we don't count them as failures. */
+  else if ( strncmp( name, "marpa_g_rule_rank", 17 ) == 0
+              && marpa_g_error(g, NULL) == MARPA_ERR_NONE )
+    {
+      sprintf(desc_buf, "%s() succeeded", name);
+      is_int( rv_wanted, rv_seen, desc_buf );
+    }
   /* failure wanted */
   else
   {
@@ -412,17 +421,10 @@ marpa_m_test(const char* name, ...)
       g = va_arg(args, Marpa_Grammar);
     err_seen = marpa_g_error(g, NULL);
 
-    /* MARPA_ERR_NONE on negative return value */
     if (err_seen == MARPA_ERR_NONE && rv_seen < 0)
     {
-      /* marpa_g_rule_rank() and marpa_g_rule_rank_set() may return negative values,
-         but they are actually ranks if marpa_g_error() returns MARPA_ERR_NONE.
-         So, we don't count them as test failures. */
-      if ( strncmp( name, "marpa_g_rule_rank", 17 ) != 0 )
-      {
-        sprintf(msgbuf, "%s(): marpa_g_error() returned MARPA_ERR_NONE, but return value was %d.", name, rv_seen);
-        ok(0, msgbuf);
-      }
+      sprintf(msgbuf, "%s(): marpa_g_error() returned MARPA_ERR_NONE, but return value was %d.", name, rv_seen);
+      ok(0, msgbuf);
     }
     /* test error code */
     else
@@ -587,7 +589,7 @@ main (int argc, char *argv[])
   marpa_m_test("marpa_g_symbol_is_counted", g, S_no_such, -1, MARPA_ERR_NO_SUCH_SYMBOL_ID);
 
   /* Ranks */
-  rank = -1;
+  rank = -2;
   marpa_m_test("marpa_g_rule_rank_set", g, R_top_1, rank, rank);
   marpa_m_test("marpa_g_rule_rank", g, R_top_1, rank);
 
