@@ -257,6 +257,11 @@ const Marpa_Method_Spec methspec[] = {
   { "marpa_g_sequence_separator", &marpa_g_sequence_separator, "%r" },
   { "marpa_g_symbol_is_counted", &marpa_g_symbol_is_counted, "%s" },
 
+  { "marpa_g_rule_rank_set", &marpa_g_rule_rank_set, "%r, %i" },
+  { "marpa_g_rule_rank", &marpa_g_rule_rank, "%r" },
+  { "marpa_g_rule_null_high_set", &marpa_g_rule_null_high_set, "%r, %i" },
+  { "marpa_g_rule_null_high", &marpa_g_rule_null_high, "%r" },
+
 };
 
 static Marpa_Method_Spec
@@ -290,7 +295,6 @@ const Marpa_Method_Error errspec[] = {
   { MARPA_ERR_NOT_A_SEQUENCE, "not a sequence rule" },
   { MARPA_ERR_INVALID_RULE_ID, "invalid rule id" },
   { MARPA_ERR_NO_SUCH_RULE_ID, "no such rule id" },
-  { MARPA_ERR_NONE, "no error" },
 };
 
 static char *marpa_m_error_message (Marpa_Error_Code error_code)
@@ -398,18 +402,34 @@ marpa_m_test(const char* name, ...)
   /* failure wanted */
   else
   {
+    /* return value */
     err_wanted = va_arg(args, int);
-
-    if (g == NULL)
-      g = va_arg(args, Marpa_Grammar);
-
-    err_seen = marpa_g_error(g, NULL);
-
     sprintf(desc_buf, "%s() failed, returned %d", name, rv_seen);
     is_int( rv_wanted, rv_seen, desc_buf );
 
-    sprintf(desc_buf, "%s() error: %s", name, marpa_m_error_message(err_seen));
-    is_int( err_wanted, err_seen, desc_buf );
+    /* error code */
+    if (g == NULL)
+      g = va_arg(args, Marpa_Grammar);
+    err_seen = marpa_g_error(g, NULL);
+
+    /* MARPA_ERR_NONE on negative return value */
+    if (err_seen == MARPA_ERR_NONE && rv_seen < 0)
+    {
+      /* marpa_g_rule_rank() and marpa_g_rule_rank_set() may return negative values,
+         but they are actually ranks if marpa_g_error() returns MARPA_ERR_NONE.
+         So, we don't count them as test failures. */
+      if ( strncmp( name, "marpa_g_rule_rank", 17 ) != 0 )
+      {
+        sprintf(msgbuf, "%s(): marpa_g_error() returned MARPA_ERR_NONE, but return value was %d.", name, rv_seen);
+        ok(0, msgbuf);
+      }
+    }
+    /* test error code */
+    else
+    {
+      sprintf(desc_buf, "%s() error: %s", name, marpa_m_error_message(err_seen));
+      is_int( err_wanted, err_seen, desc_buf );
+    }
   }
 
   va_end(args);
@@ -566,34 +586,27 @@ main (int argc, char *argv[])
   marpa_m_test("marpa_g_symbol_is_counted", g, S_invalid, -2, MARPA_ERR_INVALID_SYMBOL_ID);
   marpa_m_test("marpa_g_symbol_is_counted", g, S_no_such, -1, MARPA_ERR_NO_SUCH_SYMBOL_ID);
 
-#define MARPA_TEST_MSG_INVALID_RULE_ID "malformed rule id"
-#define MARPA_TEST_MSG_NO_SUCH_RULE_ID "invalid rule id"
-
   /* Ranks */
-  rank = -2;
-  is_success(g, rank, marpa_g_rule_rank_set (g, R_top_1, rank), "marpa_g_rule_rank_set()");
-  is_success(g, rank, marpa_g_rule_rank (g, R_top_1), "marpa_g_rule_rank()");
+  rank = -1;
+  marpa_m_test("marpa_g_rule_rank_set", g, R_top_1, rank, rank);
+  marpa_m_test("marpa_g_rule_rank", g, R_top_1, rank);
+
   flag = 1;
-  is_success(g, flag, marpa_g_rule_null_high_set (g, R_top_2, flag), "marpa_g_rule_null_high_set()");
-  is_success(g, flag, marpa_g_rule_null_high (g, R_top_2), "marpa_g_rule_null_high()");
+  marpa_m_test("marpa_g_rule_null_high_set", g, R_top_2, flag, flag);
+  marpa_m_test("marpa_g_rule_null_high", g, R_top_2, flag);
 
-  is_failure(g, MARPA_ERR_INVALID_RULE_ID, -2, marpa_g_rule_rank_set (g, -1, rank),
-    "marpa_g_rule_rank_set", MARPA_TEST_MSG_INVALID_RULE_ID);
-  is_failure(g, MARPA_ERR_INVALID_RULE_ID, -2, marpa_g_rule_rank (g, -1),
-    "marpa_g_rule_rank", MARPA_TEST_MSG_INVALID_RULE_ID);
-  is_failure(g, MARPA_ERR_INVALID_RULE_ID, -2, marpa_g_rule_null_high_set (g, -1, flag),
-    "marpa_g_rule_null_high_set", MARPA_TEST_MSG_INVALID_RULE_ID);
-  is_failure(g, MARPA_ERR_INVALID_RULE_ID, -2, marpa_g_rule_null_high (g, -1),
-    "marpa_g_rule_null_high", MARPA_TEST_MSG_INVALID_RULE_ID);
+  /* invalid/no such rule id error handling */
+  marpa_m_test("marpa_g_rule_rank_set", g, R_invalid, rank, -2, MARPA_ERR_INVALID_RULE_ID);
+  marpa_m_test("marpa_g_rule_rank_set", g, R_no_such, rank, -2, MARPA_ERR_NO_SUCH_RULE_ID);
 
-  is_failure(g, MARPA_ERR_NO_SUCH_RULE_ID, -2, marpa_g_rule_rank_set (g, 42, rank),
-    "marpa_g_rule_rank_set", MARPA_TEST_MSG_NO_SUCH_RULE_ID);
-  is_failure(g, MARPA_ERR_NO_SUCH_RULE_ID, -2, marpa_g_rule_rank (g, 42),
-    "marpa_g_rule_rank", MARPA_TEST_MSG_NO_SUCH_RULE_ID);
-  is_failure(g, MARPA_ERR_NO_SUCH_RULE_ID, -1, marpa_g_rule_null_high_set (g, 42, flag),
-    "marpa_g_rule_null_high_set", MARPA_TEST_MSG_NO_SUCH_RULE_ID);
-  is_failure(g, MARPA_ERR_NO_SUCH_RULE_ID, -1, marpa_g_rule_null_high (g, 42),
-    "marpa_g_rule_null_high", MARPA_TEST_MSG_NO_SUCH_RULE_ID);
+  marpa_m_test("marpa_g_rule_rank", g, R_invalid, -2, MARPA_ERR_INVALID_RULE_ID);
+  marpa_m_test("marpa_g_rule_rank", g, R_no_such, -2, MARPA_ERR_NO_SUCH_RULE_ID);
+
+  marpa_m_test("marpa_g_rule_null_high_set", g, R_invalid, flag, -2, MARPA_ERR_INVALID_RULE_ID);
+  marpa_m_test("marpa_g_rule_null_high_set", g, R_no_such, flag, -1, MARPA_ERR_NO_SUCH_RULE_ID);
+
+  marpa_m_test("marpa_g_rule_null_high", g, R_invalid, -2, MARPA_ERR_INVALID_RULE_ID);
+  marpa_m_test("marpa_g_rule_null_high", g, R_no_such, -1, MARPA_ERR_NO_SUCH_RULE_ID);
 
   marpa_g_trivial_precompute(g, S_top);
   ok(1, "precomputation succeeded");
