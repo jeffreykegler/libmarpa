@@ -1952,15 +1952,21 @@ If the ``null ranks high'' setting is 1,
 nulled symbols rank high.
 Ranking of a null variants is done from left-to-right.
 
-Success return:
+The @code{marpa_g_rule_null_high_set()} method will
+return failure
+after the grammar has been precomputed.
+If there is no other cause of failure,
+the @code{marpa_g_rule_null_high()} method succeeds
+on both precomputed and unprecomputed grammars.
+
+Success return value:
 The value
 of the ``null ranks high'' flag @strong{after}
 the call.
 
-Failure return:
+Failure return value:
 If rule_id is well-formed, but there is no such rule, @minus{}1.
-If the grammar has been precomputed, @minus{}2.
-On other failure, @minus{}2.
+On all other failures, @minus{}2.
 
 @end deftypefun
 
