@@ -233,6 +233,7 @@ const Marpa_Method_Spec methspec[] = {
   { "marpa_g_rule_null_high_set", &marpa_g_rule_null_high_set, "%r, %i" },
   { "marpa_g_rule_null_high", &marpa_g_rule_null_high, "%r" },
 
+  { "marpa_r_is_exhausted", &marpa_r_is_exhausted, "" },
 };
 
 static Marpa_Method_Spec
@@ -308,6 +309,8 @@ marpa_m_test(const char* name, ...)
   R_id = S_id = S_id1 = S_id2 = intarg = intarg1 = ARG_UNDEF;
   if (strncmp(name, "marpa_g_", 8) == 0)
     g = va_arg(args, Marpa_Grammar);
+  else if (strncmp(name, "marpa_r_", 8) == 0)
+    r = va_arg(args, Marpa_Recognizer);
 
   /* unpack arguments */
   if (ms.as == "")
@@ -640,7 +643,7 @@ int marpa_g_symbol_is_prediction_event_set (g, S_top, value)
     fail("marpa_r_start_input", g);
 
   diag ("at earleme 0");
-  is_success(g, 1, marpa_r_is_exhausted(r), "marpa_r_is_exhausted()");
+  marpa_m_test("marpa_r_is_exhausted", r, 1);
 
   return 0;
 }
