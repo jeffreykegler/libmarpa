@@ -279,6 +279,15 @@ static char *marpa_m_error_message (Marpa_Error_Code error_code)
   exit(1);
 }
 
+/* we need a grammar to call marpa_g_error() */
+static Marpa_Grammar marpa_m_g = NULL;
+
+static int
+marpa_m_grammar_set(Marpa_Grammar g) { marpa_m_g = g; }
+
+static Marpa_Grammar
+marpa_m_grammar() { return marpa_m_g; }
+
 static int
 marpa_m_test(const char* name, ...)
 {
@@ -642,6 +651,8 @@ int marpa_g_symbol_is_prediction_event_set (g, S_top, value)
   if (!rc)
     fail("marpa_r_start_input", g);
 
+  /* */
+  marpa_m_grammar_set(g);
   diag ("at earleme 0");
   marpa_m_test("marpa_r_is_exhausted", r, 1);
 
