@@ -229,6 +229,7 @@ const Marpa_Method_Spec methspec[] = {
   { "marpa_g_symbol_is_nulling", &marpa_g_symbol_is_nulling, "%s" },
   { "marpa_g_symbol_is_productive", &marpa_g_symbol_is_productive, "%s" },
   { "marpa_g_symbol_is_terminal",  &marpa_g_symbol_is_terminal, "%s" },
+  { "marpa_g_rule_is_nullable", &marpa_g_rule_is_nullable, "%r" },
 };
 
 static Marpa_Method_Spec
@@ -288,6 +289,7 @@ marpa_m_test(const char* name, ...)
   Marpa_Recognizer r;
 
   Marpa_Symbol_ID S_id;
+  Marpa_Rule_ID R_id;
   int intarg;
 
   int rv_wanted, rv_seen;
@@ -319,13 +321,15 @@ marpa_m_test(const char* name, ...)
     curr_arg = strtok(tok_buf, " ,-");
     while (curr_arg != NULL)
     {
-      if (strncmp(curr_arg, "%s", 2) == 0) S_id   = va_arg(args, Marpa_Symbol_ID);
+      if (strncmp(curr_arg, "%s", 2) == 0) S_id = va_arg(args, Marpa_Symbol_ID);
+      else if (strncmp(curr_arg, "%r", 2) == 0) R_id   = va_arg(args, Marpa_Rule_ID);
       else if (strncmp(curr_arg, "%i", 2) == 0) intarg = va_arg(args, int);
 
       curr_arg = strtok(NULL, " ,-");
     }
     /* call marpa method based on signature */
     if (strcmp(ms.as, "%s") == 0) rv_seen = ms.p(g, S_id);
+    if (strcmp(ms.as, "%r") == 0) rv_seen = ms.p(g, R_id);
     else if (strcmp(ms.as, "%s, %i") == 0) rv_seen = ms.p(g, S_id, intarg);
   }
 
@@ -417,6 +421,7 @@ main (int argc, char *argv[])
   marpa_m_test("marpa_g_symbol_is_terminal", g, S_top, 0);
 
   /* Rules */
+  marpa_m_test("marpa_g_rule_is_nullable", g, R_top_2, -2, MARPA_ERR_NOT_PRECOMPUTED);
   is_failure(g, MARPA_ERR_NOT_PRECOMPUTED, -2, marpa_g_rule_is_nullable (g, R_top_2), "marpa_g_rule_is_nullable", MSG_NOT_PRECOMPUTED);
   is_failure(g, MARPA_ERR_NOT_PRECOMPUTED, -2, marpa_g_rule_is_nulling (g, R_top_2), "marpa_g_rule_is_nulling", MSG_NOT_PRECOMPUTED);
   is_failure(g, MARPA_ERR_NOT_PRECOMPUTED, -2, marpa_g_rule_is_loop (g, R_C2_3), "marpa_g_rule_is_loop", MSG_NOT_PRECOMPUTED);
