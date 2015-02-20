@@ -7808,11 +7808,16 @@ Marpa_Earleme marpa_r_alternative(
         MARPA_ERROR (MARPA_ERR_RECCE_NOT_ACCEPTING_INPUT);
         return MARPA_ERR_RECCE_NOT_ACCEPTING_INPUT;
       }
-    if (_MARPA_UNLIKELY (!xsy_id_is_valid (g, tkn_xsy_id)))
+    if (_MARPA_UNLIKELY (XSYID_is_Malformed(tkn_xsy_id)))
       {
         MARPA_ERROR (MARPA_ERR_INVALID_SYMBOL_ID);
         return MARPA_ERR_INVALID_SYMBOL_ID;
-    }
+      }
+    if (_MARPA_UNLIKELY (!XSYID_of_G_Exists(tkn_xsy_id)))
+      {
+        MARPA_ERROR (MARPA_ERR_NO_SUCH_SYMBOL_ID);
+        return MARPA_ERR_NO_SUCH_SYMBOL_ID;
+      }
     @<|marpa_alternative| initial check for failure conditions@>@;
     @<Set |current_earley_set|, failing if token is unexpected@>@;
     @<Set |target_earleme| or fail@>@;
