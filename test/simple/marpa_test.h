@@ -22,6 +22,9 @@
 
 #include "tap/basic.h"
 
+extern Marpa_Symbol_ID S_invalid, S_no_such;
+extern Marpa_Rule_ID R_invalid, R_no_such;
+
 /* Marpa method test interface */
 
 typedef int (*marpa_m_pointer)();

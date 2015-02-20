@@ -168,8 +168,6 @@ main (int argc, char *argv[])
   Marpa_Grammar g;
   Marpa_Recognizer r;
 
-  Marpa_Symbol_ID S_invalid, S_no_such;
-  Marpa_Rule_ID R_invalid, R_no_such;
   Marpa_Rank negative_rank, positive_rank;
   int flag;
 
@@ -183,8 +181,6 @@ main (int argc, char *argv[])
   marpa_m_grammar_set(g); /* for marpa_g_error() in marpa_m_test() */
 
   /* Grammar Methods per sections of api.texi: Symbols, Rules, Sequnces, Ranks, Events */
-  S_invalid = R_invalid = -1;
-  S_no_such = R_no_such = 42;
 
   marpa_m_test("marpa_g_symbol_is_start", g, S_invalid, -2, MARPA_ERR_INVALID_SYMBOL_ID);
   marpa_m_test("marpa_g_symbol_is_start", g, S_no_such, -1, MARPA_ERR_NO_SUCH_SYMBOL_ID);

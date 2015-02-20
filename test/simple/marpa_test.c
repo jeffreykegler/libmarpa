@@ -19,6 +19,9 @@
 
 #include "marpa_test.h"
 
+Marpa_Symbol_ID S_invalid = -1, S_no_such = 42;
+Marpa_Rule_ID R_invalid = -1, R_no_such = 42;
+
 /* For (error) messages */
 static char msgbuf[80];
 
