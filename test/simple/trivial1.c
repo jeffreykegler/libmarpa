@@ -436,20 +436,6 @@ main (int argc, char *argv[])
 
     diag ("The below recce tests are at earleme 0");
 
-    Marpa_Symbol_ID S_expected = S_A2;
-    int value = 1;
-    marpa_m_test("marpa_r_expected_symbol_event_set", r, S_expected, value, value);
-
-    /* recognizer reading methods */
-    Marpa_Symbol_ID S_token = S_A2;
-    marpa_m_test("marpa_r_alternative", r, S_invalid, 0, 0,
-      MARPA_ERR_RECCE_NOT_ACCEPTING_INPUT, "not accepting input is checked before invalid symbol");
-    marpa_m_test("marpa_r_alternative", r, S_no_such, 0, 0,
-      MARPA_ERR_RECCE_NOT_ACCEPTING_INPUT, "not accepting input is checked before no such symbol");
-    marpa_m_test("marpa_r_alternative", r, S_token, 0, 0,
-      MARPA_ERR_RECCE_NOT_ACCEPTING_INPUT, "not accepting input");
-    marpa_m_test("marpa_r_earleme_complete", r, -2, MARPA_ERR_RECCE_NOT_ACCEPTING_INPUT);
-
     { /* event loop -- just count events so far -- there must be no event except exhausted */
       Marpa_Event event;
       int exhausted_event_triggered = 0;
@@ -484,7 +470,21 @@ main (int argc, char *argv[])
 
     } /* event loop */
 
-    marpa_m_test("marpa_r_is_exhausted", r, 1);
+    Marpa_Symbol_ID S_expected = S_A2;
+    int value = 1;
+    marpa_m_test("marpa_r_expected_symbol_event_set", r, S_expected, value, value);
+
+    /* recognizer reading methods */
+    Marpa_Symbol_ID S_token = S_A2;
+    marpa_m_test("marpa_r_alternative", r, S_invalid, 0, 0,
+      MARPA_ERR_RECCE_NOT_ACCEPTING_INPUT, "not accepting input is checked before invalid symbol");
+    marpa_m_test("marpa_r_alternative", r, S_no_such, 0, 0,
+      MARPA_ERR_RECCE_NOT_ACCEPTING_INPUT, "not accepting input is checked before no such symbol");
+    marpa_m_test("marpa_r_alternative", r, S_token, 0, 0,
+      MARPA_ERR_RECCE_NOT_ACCEPTING_INPUT, "not accepting input");
+    marpa_m_test("marpa_r_earleme_complete", r, -2, MARPA_ERR_RECCE_NOT_ACCEPTING_INPUT);
+
+    marpa_m_test("marpa_r_is_exhausted", r, 1, "at earleme 0");
 
   } /* recce method tests */
 
