@@ -131,7 +131,7 @@ Marpa_Grammar
 marpa_m_grammar() { return marpa_m_g; }
 
 int
-marpa_m_test(const char* name, ...)
+marpa_m_test_func(const char* name, ...)
 {
   Marpa_Method_Spec ms;
 
