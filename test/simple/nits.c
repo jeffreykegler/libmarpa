@@ -169,10 +169,13 @@ main (int argc, char *argv[])
   marpa_m_test("marpa_r_expected_symbol_event_set", r, S_expected, value, value);
 
   /* recognizer reading methods */
-  marpa_m_test("marpa_r_alternative", r, S_invalid, 0, 0, MARPA_ERR_INVALID_SYMBOL_ID, "invalid token symbol");
-  marpa_m_test("marpa_r_alternative", r, S_no_such, 0, 0, MARPA_ERR_NO_SUCH_SYMBOL_ID, "no such token symbol");
-  marpa_m_test("marpa_r_alternative", r, S_token, 0, 0, MARPA_ERR_RECCE_NOT_ACCEPTING_INPUT);
-  marpa_m_test("marpa_r_earleme_complete", r, -2, MARPA_ERR_RECCE_NOT_ACCEPTING_INPUT);
+  marpa_m_test("marpa_r_alternative", r, S_invalid, 0, 0, MARPA_ERR_INVALID_SYMBOL_ID,
+    "invalid token symbol");
+  marpa_m_test("marpa_r_alternative", r, S_no_such, 0, 0, MARPA_ERR_NO_SUCH_SYMBOL_ID,
+    "no such token symbol");
+  marpa_m_test("marpa_r_alternative", r, S_token, 0, 0,
+    MARPA_ERR_TOKEN_LENGTH_LE_ZERO, marpa_m_error_message(MARPA_ERR_TOKEN_LENGTH_LE_ZERO));
+  marpa_m_test("marpa_r_earleme_complete", r, -2, MARPA_ERR_PARSE_EXHAUSTED);
 
   return 0;
 }
