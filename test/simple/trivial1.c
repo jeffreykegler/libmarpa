@@ -231,6 +231,10 @@ const Marpa_Method_Spec methspec[] = {
 
   { "marpa_r_expected_symbol_event_set", &marpa_r_expected_symbol_event_set, "%s, %i" },
   { "marpa_r_is_exhausted", &marpa_r_is_exhausted, "" },
+
+  { "marpa_r_alternative", &marpa_r_alternative, "%s, %i, %i" },
+  { "marpa_r_earleme_complete", &marpa_r_earleme_complete, "" },
+
 };
 
 static Marpa_Method_Spec
@@ -264,6 +268,7 @@ const Marpa_Method_Error errspec[] = {
   { MARPA_ERR_NOT_A_SEQUENCE, "not a sequence rule" },
   { MARPA_ERR_INVALID_RULE_ID, "invalid rule id" },
   { MARPA_ERR_NO_SUCH_RULE_ID, "no such rule id" },
+  { MARPA_ERR_RECCE_NOT_ACCEPTING_INPUT, "recce not accepting input" },
 };
 
 static char *marpa_m_error_message (Marpa_Error_Code error_code)
@@ -344,6 +349,7 @@ marpa_m_test(const char* name, ...)
   else if (strcmp(ms.as, "%s") == 0) rv_seen = ms.p(marpa_m_object, S_id);
   else if (strcmp(ms.as, "%r") == 0) rv_seen = ms.p(marpa_m_object, R_id);
   else if (strcmp(ms.as, "%s, %i") == 0) rv_seen = ms.p(marpa_m_object, S_id, intarg);
+  else if (strcmp(ms.as, "%s, %i, %i") == 0) rv_seen = ms.p(marpa_m_object, S_id, intarg, intarg1);
   else if (strcmp(ms.as, "%r, %i") == 0) rv_seen = ms.p(marpa_m_object, R_id, intarg);
   else if (strcmp(ms.as, "%s, %s, %s, %i, %i") == 0) rv_seen = ms.p(marpa_m_object, S_id, S_id1, S_id2, intarg, intarg1);
   else
@@ -365,7 +371,7 @@ marpa_m_test(const char* name, ...)
     }
     /* success seen */
     else {
-      sprintf(desc_buf, "%s() succeeded", name);
+      sprintf(desc_buf, "%s()", name);
       is_int( rv_wanted, rv_seen, desc_buf );
     }
   }
@@ -686,9 +692,18 @@ main (int argc, char *argv[])
     if (!rc)
       fail("marpa_r_start_input", g);
 
+    diag ("The below recce tests are at earleme 0");
+
     Marpa_Symbol_ID S_expected = S_A2;
     int value = 1;
     marpa_m_test("marpa_r_expected_symbol_event_set", r, S_expected, value, value);
+
+    /* recognizer reading methods */
+    Marpa_Symbol_ID S_token = S_A2;
+    marpa_m_test("marpa_r_alternative", r, S_invalid, 0, 0, MARPA_ERR_INVALID_SYMBOL_ID);
+    marpa_m_test("marpa_r_alternative", r, S_no_such, 0, 0, MARPA_ERR_NO_SUCH_SYMBOL_ID);
+    marpa_m_test("marpa_r_alternative", r, S_token, 0, 0, MARPA_ERR_RECCE_NOT_ACCEPTING_INPUT);
+    marpa_m_test("marpa_r_earleme_complete", r, -2, MARPA_ERR_RECCE_NOT_ACCEPTING_INPUT);
 
     { /* event loop -- just count events so far -- there must be no event except exhausted */
       Marpa_Event event;
@@ -724,7 +739,6 @@ main (int argc, char *argv[])
 
     } /* event loop */
 
-    diag ("at earleme 0");
     marpa_m_test("marpa_r_is_exhausted", r, 1);
 
   } /* recce method tests */
