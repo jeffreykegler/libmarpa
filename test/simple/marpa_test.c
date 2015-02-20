@@ -231,8 +231,8 @@ marpa_m_test_func(const char* name, ...)
       snprintf(msgbuf, MARPA_M_MSGBUF_LEN, "%s() succeeded", name);
       is_int( rv_wanted, rv_seen, msgbuf );
     }
-  /* failure wanted */
-  else
+  /* failure wanted, except if it marks arguments end */
+  else if (rv_wanted != ARGS_END)
   {
     /* return value */
     err_wanted = va_arg(args, int);
