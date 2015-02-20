@@ -60,4 +60,6 @@ extern const Marpa_Method_Error errspec[];
 
 int marpa_m_grammar_set(Marpa_Grammar g);
 Marpa_Grammar marpa_m_grammar();
-int marpa_m_test(const char* name, ...);
+#define ARGS_END (uintptr_t)42424242
+#define marpa_m_test(name, ...)  marpa_m_test_func(name, ##__VA_ARGS__, (ARGS_END))
+int marpa_m_test_func(const char* name, ...);
