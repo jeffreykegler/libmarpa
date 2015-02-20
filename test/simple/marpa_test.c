@@ -226,7 +226,7 @@ marpa_m_test_func(const char* name, ...)
       /* append message, if any, for methods returning error codes directly,
          e.g. marpa_r_alternative() */
       char *msg = va_arg(args, char *);
-      if ((uintptr_t)msg != ARGS_END)
+      if ((unsigned int *)msg != ARGS_END)
         snprintf(msgbuf, MARPA_M_MSGBUF_LEN, "%s(): %s", name, msg);
       else
         snprintf(msgbuf, MARPA_M_MSGBUF_LEN, "%s()", name);
