@@ -13,8 +13,12 @@ target_link_libraries(trivial ${LIBMARPA_STATIC} ${LIBTAP})
 add_executable(trivial1 trivial1.c marpa_test.c)
 target_link_libraries(trivial1 ${LIBMARPA_STATIC} ${LIBTAP})
 
+add_executable(nits nits.c marpa_test.c)
+target_link_libraries(nits ${LIBMARPA_STATIC} ${LIBTAP})
+
 add_test(rule1 rule1)
 add_test(trivial trivial)
 add_test(trivial1 trivial1)
+add_test(nits nits)
 
 # vim: expandtab shiftwidth=4:
