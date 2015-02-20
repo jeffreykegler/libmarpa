@@ -652,5 +652,45 @@ int marpa_g_symbol_is_prediction_event_set (g, S_top, value)
   diag ("at earleme 0");
   marpa_m_test("marpa_r_is_exhausted", r, 1);
 
+{
+  /* RNS -- please rewrite this using your marpa_m_test.
+   * I could not figure out how to add new methods, so
+   * I dummied up the following.
+   */
+  int taxicab = 1729;
+  char *value2 = NULL;
+  int earley_set;
+  for (earley_set = -1; earley_set <= 2; earley_set++)
+    {
+      /* I could not figure out how to add this to the marpa_m_test
+       * scheme, so what follows is rough */
+      rc = marpa_r_earleme (r, earley_set);
+      fprintf (stderr, "marpa_r_earleme returns %ld\n", (long) rc);
+      fprintf(stderr, "error code is: %d\n", marpa_g_error(g, NULL));
+      rc = marpa_r_latest_earley_set_value_set (r, taxicab);
+      fprintf (stderr,
+	       "marpa_r_latest_earley_set_value_set(%p, %i) returns %ld\n", r,
+	       taxicab, (long) rc);
+      fprintf(stderr, "error code is: %d\n", marpa_g_error(g, NULL));
+      rc = marpa_r_earley_set_value (r, earley_set);
+      fprintf (stderr, "marpa_r_earley_set_value returns %ld\n", (long) rc);
+      fprintf(stderr, "error code is: %d\n", marpa_g_error(g, NULL));
+      rc = marpa_r_latest_earley_set_values_set (r, 42, &taxicab);
+      fprintf (stderr,
+	       "marpa_r_earley_set_values_set(%p, %ld, %p) returns %ld\n",
+	       r, (long)42, &taxicab, (long) rc);
+      fprintf(stderr, "error code is: %d\n", marpa_g_error(g, NULL));
+      rc =
+	marpa_r_earley_set_values (r, earley_set, &taxicab, (void **)&value2);
+      fprintf (stderr,
+	       "marpa_r_earley_set_values(%p, %p, %p) returns %ld\n",
+	       r, &taxicab, &value2, (long) rc);
+      fprintf (stderr,
+	       "marpa_r_earley_set_values() values were %ld, %p\n", (long)taxicab,
+	       value2);
+      fprintf(stderr, "error code is: %d\n", marpa_g_error(g, NULL));
+    }
+}
+
   return 0;
 }

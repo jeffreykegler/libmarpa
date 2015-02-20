@@ -7592,6 +7592,11 @@ PRIVATE int alternative_insert(RECCE r, ALT new_alternative)
     Current_Earleme_of_R(r) = 0;
     @<Set up terminal-related boolean vectors@>@;
     G_EVENTS_CLEAR(g);
+
+    set0 = earley_set_new(r, 0);
+    Latest_YS_of_R(r) = set0;
+    First_YS_of_R(r) = set0;
+
     if (G_is_Trivial(g)) {
         return_value += trigger_trivial_events(r);
         @<Set |r| exhausted@>@;
@@ -7601,9 +7606,6 @@ PRIVATE int alternative_insert(RECCE r, ALT new_alternative)
     psar_reset(Dot_PSAR_of_R(r));
     @<Allocate recognizer containers@>@;
     @<Initialize Earley item work stacks@>@;
-    set0 = earley_set_new(r, 0);
-    Latest_YS_of_R(r) = set0;
-    First_YS_of_R(r) = set0;
 
     start_irl = g->t_start_irl;
     start_ahm = First_AHM_of_IRL(start_irl);
