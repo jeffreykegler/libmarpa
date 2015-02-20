@@ -434,10 +434,6 @@ main (int argc, char *argv[])
 
   int whatever;
 
-  int reactivate;
-  int value;
-  Marpa_Symbol_ID S_predicted, S_completed;
-
   plan_lazy();
 
   marpa_c_init (&marpa_configuration);
@@ -613,78 +609,81 @@ main (int argc, char *argv[])
   /* Events */
   /* test that attempts to create events, other than nulled events,
      results in a reasonable error -- http://irclog.perlgeek.de/marpa/2015-02-13#i_10111838 */
-
-  /* completion */
-  S_completed = S_B1;
-
-  value = 0;
-  marpa_m_test("marpa_g_symbol_is_completion_event_set", g, S_completed, value, value);
-  marpa_m_test("marpa_g_symbol_is_completion_event", g, S_completed, value);
-
-  value = 1;
-  marpa_m_test("marpa_g_symbol_is_completion_event_set", g, S_completed, value, value);
-  marpa_m_test("marpa_g_symbol_is_completion_event", g, S_completed, value);
-
-  reactivate = 1;
-  marpa_m_test("marpa_g_completion_symbol_activate", g, S_completed, reactivate, reactivate);
-
-  reactivate = 0;
-  marpa_m_test("marpa_g_completion_symbol_activate", g, S_completed, reactivate, reactivate);
-
-  /* prediction */
-  S_predicted = S_A1;
-
-  value = 0;
-  marpa_m_test("marpa_g_symbol_is_prediction_event_set", g, S_predicted, value, value);
-  marpa_m_test("marpa_g_symbol_is_prediction_event", g, S_predicted, value);
-
-  value = 1;
-  marpa_m_test("marpa_g_symbol_is_prediction_event_set", g, S_predicted, value, value);
-  marpa_m_test("marpa_g_symbol_is_prediction_event", g, S_predicted, value);
-
-  reactivate = 1;
-  marpa_m_test("marpa_g_prediction_symbol_activate", g, S_predicted, reactivate, reactivate);
-
-  reactivate = 0;
-  marpa_m_test("marpa_g_prediction_symbol_activate", g, S_predicted, reactivate, reactivate);
-
-  /* completion on predicted symbol */
-  value = 1;
-  marpa_m_test("marpa_g_symbol_is_completion_event_set", g, S_predicted, value, value);
-  marpa_m_test("marpa_g_symbol_is_completion_event", g, S_predicted, value);
-
-  /* predicton on completed symbol */
-  value = 1;
-  marpa_m_test("marpa_g_symbol_is_prediction_event_set", g, S_completed, value, value);
-  marpa_m_test("marpa_g_symbol_is_prediction_event", g, S_completed, value);
-
-  /* invalid/no such symbol IDs */
-  const char *marpa_g_event_setters[] = {
-    "marpa_g_symbol_is_completion_event_set", "marpa_g_completion_symbol_activate",
-    "marpa_g_symbol_is_prediction_event_set","marpa_g_prediction_symbol_activate",
-  };
-  for (ix = 0; ix < sizeof(marpa_g_event_setters) / sizeof(char *); ix++)
   {
-    marpa_m_test(marpa_g_event_setters[ix], g, S_invalid, whatever, -2, MARPA_ERR_INVALID_SYMBOL_ID);
-    marpa_m_test(marpa_g_event_setters[ix], g, S_no_such, whatever, -1, MARPA_ERR_NO_SUCH_SYMBOL_ID);
+    int reactivate;
+    int value;
+    Marpa_Symbol_ID S_predicted, S_completed;
+
+    /* completion */
+    S_completed = S_B1;
+
+    value = 0;
+    marpa_m_test("marpa_g_symbol_is_completion_event_set", g, S_completed, value, value);
+    marpa_m_test("marpa_g_symbol_is_completion_event", g, S_completed, value);
+
+    value = 1;
+    marpa_m_test("marpa_g_symbol_is_completion_event_set", g, S_completed, value, value);
+    marpa_m_test("marpa_g_symbol_is_completion_event", g, S_completed, value);
+
+    reactivate = 0;
+    marpa_m_test("marpa_g_completion_symbol_activate", g, S_completed, reactivate, reactivate);
+
+    reactivate = 1;
+    marpa_m_test("marpa_g_completion_symbol_activate", g, S_completed, reactivate, reactivate);
+
+    /* prediction */
+    S_predicted = S_A1;
+
+    value = 0;
+    marpa_m_test("marpa_g_symbol_is_prediction_event_set", g, S_predicted, value, value);
+    marpa_m_test("marpa_g_symbol_is_prediction_event", g, S_predicted, value);
+
+    value = 1;
+    marpa_m_test("marpa_g_symbol_is_prediction_event_set", g, S_predicted, value, value);
+    marpa_m_test("marpa_g_symbol_is_prediction_event", g, S_predicted, value);
+
+    reactivate = 0;
+    marpa_m_test("marpa_g_prediction_symbol_activate", g, S_predicted, reactivate, reactivate);
+
+    reactivate = 1;
+    marpa_m_test("marpa_g_prediction_symbol_activate", g, S_predicted, reactivate, reactivate);
+
+    /* completion on predicted symbol */
+    value = 1;
+    marpa_m_test("marpa_g_symbol_is_completion_event_set", g, S_predicted, value, value);
+    marpa_m_test("marpa_g_symbol_is_completion_event", g, S_predicted, value);
+
+    /* prediction on completed symbol */
+    value = 1;
+    marpa_m_test("marpa_g_symbol_is_prediction_event_set", g, S_completed, value, value);
+    marpa_m_test("marpa_g_symbol_is_prediction_event", g, S_completed, value);
+
+    /* invalid/no such symbol IDs */
+    const char *marpa_g_event_setters[] = {
+      "marpa_g_symbol_is_completion_event_set", "marpa_g_completion_symbol_activate",
+      "marpa_g_symbol_is_prediction_event_set","marpa_g_prediction_symbol_activate",
+    };
+    for (ix = 0; ix < sizeof(marpa_g_event_setters) / sizeof(char *); ix++)
+    {
+      marpa_m_test(marpa_g_event_setters[ix], g, S_invalid, whatever, -2, MARPA_ERR_INVALID_SYMBOL_ID);
+      marpa_m_test(marpa_g_event_setters[ix], g, S_no_such, whatever, -1, MARPA_ERR_NO_SUCH_SYMBOL_ID);
+    }
+    marpa_m_test("marpa_g_symbol_is_prediction_event", g, S_invalid, -2, MARPA_ERR_INVALID_SYMBOL_ID);
+    marpa_m_test("marpa_g_symbol_is_prediction_event", g, S_no_such, -1, MARPA_ERR_NO_SUCH_SYMBOL_ID);
+
+    marpa_m_test("marpa_g_symbol_is_completion_event", g, S_invalid, -2, MARPA_ERR_INVALID_SYMBOL_ID);
+    marpa_m_test("marpa_g_symbol_is_completion_event", g, S_no_such, -1, MARPA_ERR_NO_SUCH_SYMBOL_ID);
+
+    /* precomputation */
+    marpa_g_trivial_precompute(g, S_top);
+    ok(1, "precomputation succeeded");
+
+    /* event methods after precomputation */
+    for (ix = 0; ix < sizeof(marpa_g_event_setters) / sizeof(char *); ix++)
+      marpa_m_test(marpa_g_event_setters[ix], g, whatever, whatever, -2, MARPA_ERR_PRECOMPUTED);
+    marpa_m_test("marpa_g_symbol_is_prediction_event", g, S_predicted, value);
+    marpa_m_test("marpa_g_symbol_is_completion_event", g, S_completed, value);
   }
-  marpa_m_test("marpa_g_symbol_is_prediction_event", g, S_invalid, -2, MARPA_ERR_INVALID_SYMBOL_ID);
-  marpa_m_test("marpa_g_symbol_is_prediction_event", g, S_no_such, -1, MARPA_ERR_NO_SUCH_SYMBOL_ID);
-
-  marpa_m_test("marpa_g_symbol_is_completion_event", g, S_invalid, -2, MARPA_ERR_INVALID_SYMBOL_ID);
-  marpa_m_test("marpa_g_symbol_is_completion_event", g, S_no_such, -1, MARPA_ERR_NO_SUCH_SYMBOL_ID);
-
-  /* precomputation */
-  marpa_g_trivial_precompute(g, S_top);
-  ok(1, "precomputation succeeded");
-
-  /* event methods after precomputation */
-  for (ix = 0; ix < sizeof(marpa_g_event_setters) / sizeof(char *); ix++)
-  {
-    marpa_m_test(marpa_g_event_setters[ix], g, whatever, whatever, -2, MARPA_ERR_PRECOMPUTED);
-  }
-  marpa_m_test("marpa_g_symbol_is_prediction_event", g, S_predicted, value);
-  marpa_m_test("marpa_g_symbol_is_completion_event", g, S_completed, value);
 
   /* Recognizer Methods */
   r = marpa_r_new (g);
