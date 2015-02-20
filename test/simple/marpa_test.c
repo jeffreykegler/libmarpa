@@ -109,9 +109,11 @@ const Marpa_Method_Error errspec[] = {
   { MARPA_ERR_INVALID_RULE_ID, "invalid rule id" },
   { MARPA_ERR_NO_SUCH_RULE_ID, "no such rule id" },
   { MARPA_ERR_RECCE_NOT_ACCEPTING_INPUT, "recce not accepting input" },
+  { MARPA_ERR_TOKEN_LENGTH_LE_ZERO, "token length less than zero" },
+  { MARPA_ERR_PARSE_EXHAUSTED, "parse exhausted" },
 };
 
-static char *marpa_m_error_message (Marpa_Error_Code error_code)
+char *marpa_m_error_message (Marpa_Error_Code error_code)
 {
   int i;
   for (i = 0; i < sizeof(errspec) / sizeof(Marpa_Method_Error); i++)
