@@ -699,5 +699,36 @@ main (int argc, char *argv[])
   diag ("at earleme 0");
   marpa_m_test("marpa_r_is_exhausted", r, 1);
 
+  {
+    Marpa_Event event;
+    int exhausted_event_triggered = 0;
+    int spurious_events = 0;
+    int prediction_events = 0;
+    int completion_events = 0;
+    int event_ix;
+    const int event_count = marpa_g_event_count (g);
+
+    is_int(1, event_count, "event count at earleme 0 is %ld", (long) event_count);
+
+    for (event_ix = 0; event_ix < event_count; event_ix++)
+    {
+      int event_type = marpa_g_event (g, &event, event_ix);
+      if (event_type == MARPA_EVENT_SYMBOL_COMPLETED) completion_events++;
+      else if (event_type == MARPA_EVENT_SYMBOL_PREDICTED) prediction_events++;
+      else if (event_type == MARPA_EVENT_EXHAUSTED) exhausted_event_triggered++;
+      else
+      {
+        printf ("spurious event type is %ld\n", (long) event_type);
+        spurious_events++;
+      }
+    }
+
+    is_int(0, spurious_events, "spurious events triggered: %ld", (long) spurious_events);
+    is_int(0, completion_events, "completion events triggered: %ld", (long) completion_events);
+    is_int(0, prediction_events, "completion events triggered: %ld", (long) prediction_events);
+    ok (exhausted_event_triggered, "exhausted event triggered");
+
+  }
+
   return 0;
 }
