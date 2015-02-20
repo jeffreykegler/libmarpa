@@ -309,56 +309,46 @@ marpa_m_test(const char* name, ...)
   va_list args;
   va_start(args, name);
 
-  g = NULL;
+  g = marpa_m_grammar();
+
+  void *marpa_m_object = va_arg(args, void*);
+
 #define ARG_UNDEF 42424242
   R_id = S_id = S_id1 = S_id2 = intarg = intarg1 = ARG_UNDEF;
-  if (strncmp(name, "marpa_g_", 8) == 0)
-    g = va_arg(args, Marpa_Grammar);
-  else if (strncmp(name, "marpa_r_", 8) == 0)
-    r = va_arg(args, Marpa_Recognizer);
-
-  /* unpack arguments */
-  if (ms.as == "")
+  strcpy( tok_buf, ms.as );
+  curr_arg = strtok(tok_buf, " ,-");
+  while (curr_arg != NULL)
   {
-    /* method dispatch based on what object is set */
-    if (g != NULL) rv_seen = ms.p(g);
-    else if (r != NULL) rv_seen = ms.p(r);
+    if (strncmp(curr_arg, "%s", 2) == 0){
+      if (S_id == ARG_UNDEF) S_id = va_arg(args, Marpa_Symbol_ID);
+      else if (S_id1 == ARG_UNDEF) S_id1 = va_arg(args, Marpa_Symbol_ID);
+      else if (S_id2 == ARG_UNDEF) S_id2 = va_arg(args, Marpa_Symbol_ID);
+    }
+    else if (strncmp(curr_arg, "%r", 2) == 0)
+    {
+      R_id   = va_arg(args, Marpa_Rule_ID);
+    }
+    else if (strncmp(curr_arg, "%i", 2) == 0)
+    {
+      if (intarg == ARG_UNDEF) intarg = va_arg(args, int);
+      else if (intarg1 == ARG_UNDEF) intarg1 = va_arg(args, int);
+    }
+
+    curr_arg = strtok(NULL, " ,-");
+    curr_arg_ix++;
   }
+
+  /* call marpa method based on argspec */
+  if (ms.as == "") rv_seen = ms.p(marpa_m_object);
+  else if (strcmp(ms.as, "%s") == 0) rv_seen = ms.p(marpa_m_object, S_id);
+  else if (strcmp(ms.as, "%r") == 0) rv_seen = ms.p(marpa_m_object, R_id);
+  else if (strcmp(ms.as, "%s, %i") == 0) rv_seen = ms.p(marpa_m_object, S_id, intarg);
+  else if (strcmp(ms.as, "%r, %i") == 0) rv_seen = ms.p(marpa_m_object, R_id, intarg);
+  else if (strcmp(ms.as, "%s, %s, %s, %i, %i") == 0) rv_seen = ms.p(marpa_m_object, S_id, S_id1, S_id2, intarg, intarg1);
   else
   {
-    strcpy( tok_buf, ms.as );
-    curr_arg = strtok(tok_buf, " ,-");
-    while (curr_arg != NULL)
-    {
-      if (strncmp(curr_arg, "%s", 2) == 0){
-        if (S_id == ARG_UNDEF) S_id = va_arg(args, Marpa_Symbol_ID);
-        else if (S_id1 == ARG_UNDEF) S_id1 = va_arg(args, Marpa_Symbol_ID);
-        else if (S_id2 == ARG_UNDEF) S_id2 = va_arg(args, Marpa_Symbol_ID);
-      }
-      else if (strncmp(curr_arg, "%r", 2) == 0)
-      {
-        R_id   = va_arg(args, Marpa_Rule_ID);
-      }
-      else if (strncmp(curr_arg, "%i", 2) == 0)
-      {
-        if (intarg == ARG_UNDEF) intarg = va_arg(args, int);
-        else if (intarg1 == ARG_UNDEF) intarg1 = va_arg(args, int);
-      }
-
-      curr_arg = strtok(NULL, " ,-");
-      curr_arg_ix++;
-    }
-    /* call marpa method based on argspec */
-    if (strcmp(ms.as, "%s") == 0) rv_seen = ms.p(g, S_id);
-    else if (strcmp(ms.as, "%r") == 0) rv_seen = ms.p(g, R_id);
-    else if (strcmp(ms.as, "%s, %i") == 0) rv_seen = ms.p(g, S_id, intarg);
-    else if (strcmp(ms.as, "%r, %i") == 0) rv_seen = ms.p(g, R_id, intarg);
-    else if (strcmp(ms.as, "%s, %s, %s, %i, %i") == 0) rv_seen = ms.p(g, S_id, S_id1, S_id2, intarg, intarg1);
-    else
-    {
-      printf("No method yet for argument spec %s.\n", ms.as);
-      exit(1);
-    }
+    printf("No method yet for argument spec %s.\n", ms.as);
+    exit(1);
   }
 
   rv_wanted = va_arg(args, int);
@@ -396,8 +386,6 @@ marpa_m_test(const char* name, ...)
     is_int( rv_wanted, rv_seen, desc_buf );
 
     /* error code */
-    if (g == NULL)
-      g = va_arg(args, Marpa_Grammar);
     err_seen = marpa_g_error(g, NULL);
 
     if (err_seen == MARPA_ERR_NONE && rv_seen < 0)
@@ -438,6 +426,8 @@ main (int argc, char *argv[])
 
   marpa_c_init (&marpa_configuration);
   g = marpa_g_trivial_new(&marpa_configuration);
+
+  marpa_m_grammar_set(g); /* for marpa_g_error() in marpa_m_test() */
 
   /* Grammar Methods per sections of api.texi: Symbols, Rules, Sequnces, Ranks, Events */
   S_invalid = R_invalid = -1;
