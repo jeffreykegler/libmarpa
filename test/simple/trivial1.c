@@ -486,6 +486,20 @@ main (int argc, char *argv[])
 
     marpa_m_test("marpa_r_is_exhausted", r, 1, "at earleme 0");
 
+    /* Location accessors */
+    {
+      /* the below 2 always succeed */
+      unsigned int current_earleme = 0;
+      marpa_m_test("marpa_r_current_earleme", r, current_earleme);
+
+      unsigned int furthest_earleme = current_earleme;
+      marpa_m_test("marpa_r_furthest_earleme", r, furthest_earleme);
+
+      marpa_m_test("marpa_r_latest_earley_set", r, furthest_earleme);
+
+      marpa_m_test("marpa_r_earleme", r, current_earleme, -2, MARPA_ERR_NO_EARLEY_SET_AT_LOCATION);
+
+    }
   } /* recce method tests */
 
   return 0;
