@@ -170,7 +170,7 @@ main (int argc, char *argv[])
 
   /* recognizer reading methods */
   marpa_m_test("marpa_r_alternative", r, S_invalid, 0, 0, MARPA_ERR_INVALID_SYMBOL_ID,
-    "invalid token symbol");
+    "invalid token symbol is checked before no-such");
   marpa_m_test("marpa_r_alternative", r, S_no_such, 0, 0, MARPA_ERR_NO_SUCH_SYMBOL_ID,
     "no such token symbol");
   marpa_m_test("marpa_r_alternative", r, S_token, 0, 0,
