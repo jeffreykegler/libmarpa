@@ -686,14 +686,11 @@ main (int argc, char *argv[])
     if (!rc)
       fail("marpa_r_start_input", g);
 
-    Marpa_Symbol_ID S_expected = S_A1;
+    Marpa_Symbol_ID S_expected = S_A2;
     int value = 1;
     marpa_m_test("marpa_r_expected_symbol_event_set", r, S_expected, value, value);
 
-    diag ("at earleme 0");
-    marpa_m_test("marpa_r_is_exhausted", r, 1);
-
-    {
+    { /* event loop -- just count events so far -- there must be no event except exhausted */
       Marpa_Event event;
       int exhausted_event_triggered = 0;
       int spurious_events = 0;
@@ -725,7 +722,12 @@ main (int argc, char *argv[])
       is_int(0, prediction_events, "completion events triggered: %ld", (long) prediction_events);
       ok (exhausted_event_triggered, "exhausted event triggered");
 
-    }
-  }
+    } /* event loop */
+
+    diag ("at earleme 0");
+    marpa_m_test("marpa_r_is_exhausted", r, 1);
+
+  } /* recce method tests */
+
   return 0;
 }
