@@ -678,9 +678,13 @@ main (int argc, char *argv[])
   marpa_g_trivial_precompute(g, S_top);
   ok(1, "precomputation succeeded");
 
-  /* event methods after precomputation
-     if the grammar g is precomputed; or on other failure, -2.
-   */
+  /* event methods after precomputation */
+  for (ix = 0; ix < sizeof(marpa_g_event_setters) / sizeof(char *); ix++)
+  {
+    marpa_m_test(marpa_g_event_setters[ix], g, whatever, whatever, -2, MARPA_ERR_PRECOMPUTED);
+  }
+  marpa_m_test("marpa_g_symbol_is_prediction_event", g, S_predicted, value);
+  marpa_m_test("marpa_g_symbol_is_completion_event", g, S_completed, value);
 
   /* Recognizer Methods */
   r = marpa_r_new (g);
