@@ -221,6 +221,14 @@ const Marpa_Method_Spec methspec[] = {
   { "marpa_g_rule_null_high_set", &marpa_g_rule_null_high_set, "%r, %i" },
   { "marpa_g_rule_null_high", &marpa_g_rule_null_high, "%r" },
 
+  { "marpa_g_symbol_is_completion_event_set", &marpa_g_symbol_is_completion_event_set, "%s, %i" },
+  { "marpa_g_symbol_is_completion_event", &marpa_g_symbol_is_completion_event, "%s" },
+  { "marpa_g_completion_symbol_activate", &marpa_g_completion_symbol_activate, "%s, %i" },
+
+  { "marpa_g_symbol_is_prediction_event_set", &marpa_g_symbol_is_prediction_event_set, "%s, %i" },
+  { "marpa_g_symbol_is_prediction_event", &marpa_g_symbol_is_prediction_event, "%s" },
+  { "marpa_g_prediction_symbol_activate", &marpa_g_prediction_symbol_activate, "%s, %i" },
+
   { "marpa_r_is_exhausted", &marpa_r_is_exhausted, "" },
 };
 
