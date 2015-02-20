@@ -430,9 +430,6 @@ main (int argc, char *argv[])
     if (!r)
       fail("marpa_r_new", g);
 
-    Marpa_Symbol_ID S_token = S_A2;
-    marpa_m_test("marpa_r_alternative", r, S_token, 0, 0, MARPA_ERR_RECCE_NOT_ACCEPTING_INPUT);
-
     rc = marpa_r_start_input (r);
     if (!rc)
       fail("marpa_r_start_input", g);
@@ -444,9 +441,13 @@ main (int argc, char *argv[])
     marpa_m_test("marpa_r_expected_symbol_event_set", r, S_expected, value, value);
 
     /* recognizer reading methods */
-    marpa_m_test("marpa_r_alternative", r, S_invalid, 0, 0, MARPA_ERR_INVALID_SYMBOL_ID);
-    marpa_m_test("marpa_r_alternative", r, S_no_such, 0, 0, MARPA_ERR_NO_SUCH_SYMBOL_ID);
-    marpa_m_test("marpa_r_alternative", r, S_token, 0, 0, MARPA_ERR_RECCE_NOT_ACCEPTING_INPUT);
+    Marpa_Symbol_ID S_token = S_A2;
+    marpa_m_test("marpa_r_alternative", r, S_invalid, 0, 0,
+      MARPA_ERR_RECCE_NOT_ACCEPTING_INPUT, "not accepting input is checked before invalid symbol");
+    marpa_m_test("marpa_r_alternative", r, S_no_such, 0, 0,
+      MARPA_ERR_RECCE_NOT_ACCEPTING_INPUT, "not accepting input is checked before no such symbol");
+    marpa_m_test("marpa_r_alternative", r, S_token, 0, 0,
+      MARPA_ERR_RECCE_NOT_ACCEPTING_INPUT, "not accepting input");
     marpa_m_test("marpa_r_earleme_complete", r, -2, MARPA_ERR_RECCE_NOT_ACCEPTING_INPUT);
 
     { /* event loop -- just count events so far -- there must be no event except exhausted */
