@@ -587,13 +587,7 @@ main (int argc, char *argv[])
 
   /* Ranks methods on precomputed grammar */
   marpa_m_test("marpa_g_rule_rank_set", g, R_top_1, negative_rank, -2, MARPA_ERR_PRECOMPUTED);
-  if (marpa_g_rule_rank(g, R_top_1) == negative_rank)
-    if (marpa_g_error(g, NULL) == MARPA_ERR_NONE)
-      ok(1, "marpa_g_rule_rank() returns negative_rank and marpa_g_error() returns MARPA_ERR_NONE");
-    else
-      ok(0, "marpa_g_rule_rank() returns negative_rank and marpa_g_error() returns MARPA_ERR_NONE");
-  else
-    ok(0, "marpa_g_rule_rank() returns negative_rank");
+  marpa_m_test("marpa_g_rule_rank_set", g, R_top_1, negative_rank);
 
   marpa_m_test("marpa_g_rule_rank_set", g, R_top_2, positive_rank, -2, MARPA_ERR_PRECOMPUTED);
   marpa_m_test("marpa_g_rule_rank_set", g, R_top_2, positive_rank);
