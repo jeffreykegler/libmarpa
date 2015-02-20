@@ -82,6 +82,11 @@ const Marpa_Method_Spec methspec[] = {
 
   { "marpa_r_alternative", &marpa_r_alternative, "%s, %i, %i" },
   { "marpa_r_earleme_complete", &marpa_r_earleme_complete, "" },
+  { "marpa_r_current_earleme", (marpa_m_pointer)&marpa_r_current_earleme, "" },
+  { "marpa_r_furthest_earleme", (marpa_m_pointer)&marpa_r_furthest_earleme, "" },
+  { "marpa_r_latest_earley_set", &marpa_r_latest_earley_set, "" },
+  { "marpa_r_earleme", &marpa_r_earleme, "%i" },
+  { "marpa_r_earley_set_value", &marpa_r_earley_set_value, "%i" },
 
 };
 
@@ -111,6 +116,7 @@ const Marpa_Method_Error errspec[] = {
   { MARPA_ERR_RECCE_NOT_ACCEPTING_INPUT, "recce not accepting input" },
   { MARPA_ERR_TOKEN_LENGTH_LE_ZERO, "token length less than zero" },
   { MARPA_ERR_PARSE_EXHAUSTED, "parse exhausted" },
+  { MARPA_ERR_NO_EARLEY_SET_AT_LOCATION, "no earley set at location" },
 };
 
 char *marpa_m_error_message (Marpa_Error_Code error_code)
@@ -180,6 +186,10 @@ marpa_m_test_func(const char* name, ...)
       if (intarg == ARG_UNDEF) intarg = va_arg(args, int);
       else if (intarg1 == ARG_UNDEF) intarg1 = va_arg(args, int);
     }
+    else{
+      printf("No variable yet for argument spec %s.\n", curr_arg);
+      exit(1);
+    }
 
     curr_arg = strtok(NULL, " ,-");
     curr_arg_ix++;
@@ -187,6 +197,7 @@ marpa_m_test_func(const char* name, ...)
 
   /* call marpa method based on argspec */
   if (ms.as == "") rv_seen = ms.p(marpa_m_object);
+  else if (strcmp(ms.as, "%i") == 0) rv_seen = ms.p(marpa_m_object, intarg);
   else if (strcmp(ms.as, "%s") == 0) rv_seen = ms.p(marpa_m_object, S_id);
   else if (strcmp(ms.as, "%r") == 0) rv_seen = ms.p(marpa_m_object, R_id);
   else if (strcmp(ms.as, "%s, %i") == 0) rv_seen = ms.p(marpa_m_object, S_id, intarg);
