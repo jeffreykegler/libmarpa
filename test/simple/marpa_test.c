@@ -22,6 +22,19 @@
 Marpa_Symbol_ID S_invalid = -1, S_no_such = 42;
 Marpa_Rule_ID R_invalid = -1, R_no_such = 42;
 
+/*
+
+  argument specifiers:
+
+    %s    Marpa_Symbol_ID
+    %r    Marpa_Rule_ID
+    %i    int
+    %ip   pointer to int
+    %vp   pointer to void
+    %vp   pointer to pointer to void
+
+*/
+
 const Marpa_Method_Spec methspec[] = {
 
   { "marpa_g_start_symbol_set", &marpa_g_start_symbol_set, "%s" },
@@ -140,6 +153,33 @@ marpa_m_grammar_set(Marpa_Grammar g) { marpa_m_g = g; }
 Marpa_Grammar
 marpa_m_grammar() { return marpa_m_g; }
 
+/*
+
+// if a method returns a value, which is NOT an error code
+// Note: passing anything except char* as optional_message will dump core
+// because one can't check if an int contains a valid pointer
+marpa_m_test(
+  "method_name", method_arg1, method_arg2, ...,
+  expected_return_value,
+  "optional_message"
+);
+
+// if a method returns an error code
+marpa_m_test(
+  "method_name", method_arg1, method_arg2, ...,
+  expected_return_value, EXPECTED_ERROR_CODE,
+  "optional_message"
+);
+
+// if a method returns a non-negative value indicating failure
+// and sets an error code
+marpa_m_test(
+  "method_name", method_arg1, method_arg2, ...,
+  expected_return_value, EXPECTED_ERROR_CODE
+);
+
+*/
+
 int
 marpa_m_test_func(const char* name, ...)
 {
@@ -242,7 +282,7 @@ marpa_m_test_func(const char* name, ...)
     /* success seen */
     else {
       /* append message, if any, for methods returning error codes directly,
-         e.g. marpa_r_alternative() */
+         e.g. marpa_r_alternative(). Passing anything except char* dumps core. */
       char *msg = va_arg(args, char *);
       if ((unsigned int *)msg != ARGS_END)
         is_int( rv_wanted, rv_seen, "%s(): %s", name, msg );
