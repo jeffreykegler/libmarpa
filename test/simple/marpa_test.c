@@ -22,10 +22,6 @@
 Marpa_Symbol_ID S_invalid = -1, S_no_such = 42;
 Marpa_Rule_ID R_invalid = -1, R_no_such = 42;
 
-/* For (error) messages */
-#define MARPA_M_MSGBUF_LEN 80
-static char msgbuf[MARPA_M_MSGBUF_LEN];
-
 const Marpa_Method_Spec methspec[] = {
 
   { "marpa_g_start_symbol_set", &marpa_g_start_symbol_set, "%s" },
@@ -218,8 +214,7 @@ marpa_m_test_func(const char* name, ...)
     /* failure seen */
     if ( rv_seen < 0 )
     {
-      snprintf(msgbuf, MARPA_M_MSGBUF_LEN, "%s() unexpectedly returned %d.", name, rv_seen);
-      ok(0, msgbuf);
+      ok(0, "%s() unexpectedly returned %d.", name, rv_seen);
     }
     /* success seen */
     else {
@@ -227,10 +222,9 @@ marpa_m_test_func(const char* name, ...)
          e.g. marpa_r_alternative() */
       char *msg = va_arg(args, char *);
       if ((unsigned int *)msg != ARGS_END)
-        snprintf(msgbuf, MARPA_M_MSGBUF_LEN, "%s(): %s", name, msg);
+        is_int( rv_wanted, rv_seen, "%s(): %s", name, msg );
       else
-        snprintf(msgbuf, MARPA_M_MSGBUF_LEN, "%s()", name);
-      is_int( rv_wanted, rv_seen, msgbuf );
+        is_int( rv_wanted, rv_seen, "%s()", name );
     }
   }
   /* marpa_g_rule_rank() and marpa_g_rule_rank_set() may return negative values,
@@ -239,30 +233,27 @@ marpa_m_test_func(const char* name, ...)
   else if ( strncmp( name, "marpa_g_rule_rank", 17 ) == 0
               && marpa_g_error(g, NULL) == MARPA_ERR_NONE )
     {
-      snprintf(msgbuf, MARPA_M_MSGBUF_LEN, "%s() succeeded", name);
-      is_int( rv_wanted, rv_seen, msgbuf );
+      is_int( rv_wanted, rv_seen, "%s() succeeded", name );
     }
   /* failure wanted, except if it marks arguments end */
   else if (rv_wanted != ARGS_END)
   {
     /* return value */
     err_wanted = va_arg(args, int);
-    snprintf(msgbuf, MARPA_M_MSGBUF_LEN, "%s() failed, returned %d", name, rv_seen);
-    is_int( rv_wanted, rv_seen, msgbuf );
+    is_int( rv_wanted, rv_seen, "%s() failed, returned %d", name, rv_seen );
 
     /* error code */
     err_seen = marpa_g_error(g, NULL);
 
     if (err_seen == MARPA_ERR_NONE && rv_seen < 0)
     {
-      snprintf(msgbuf, MARPA_M_MSGBUF_LEN, "%s(): marpa_g_error() returned MARPA_ERR_NONE, but return value was %d.", name, rv_seen);
-      ok(0, msgbuf);
+      ok(0, "%s(): marpa_g_error() returned MARPA_ERR_NONE, but return value was %d.", name, rv_seen);
     }
     /* test error code */
     else
     {
-      snprintf(msgbuf, MARPA_M_MSGBUF_LEN, "%s() error is: %s", name, marpa_m_error_message(err_seen));
-      is_int( err_wanted, err_seen, msgbuf );
+      is_int( err_wanted, err_seen,
+        "%s() error is: %s", name, marpa_m_error_message(err_seen) );
     }
   }
 
