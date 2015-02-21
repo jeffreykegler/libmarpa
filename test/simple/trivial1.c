@@ -503,32 +503,74 @@ main (int argc, char *argv[])
   } /* recce method tests */
 
 {
-  /* Rewritten to use marpa_m_test() by author request
-   */
+  /* Rewritten to use marpa_m_test() as the author requested in commit 25f4589 */
   int taxicab = 1729;
   char *value2 = NULL;
   int earley_set;
-  for (earley_set = -1; earley_set <= 2; earley_set++)
+
+  struct marpa_r_earley_set_value_test {
+    int earley_set;
+
+    int rv_marpa_r_earleme;
+    int rv_marpa_r_latest_earley_set_value_set;
+    int rv_marpa_r_earley_set_value;
+    int rv_marpa_r_latest_earley_set_values_set;
+
+    int   rv_marpa_r_earley_set_values;
+    int   int_p_value_rv_marpa_r_earley_set_values;
+    char* void_p_value_rv_marpa_r_earley_set_values;
+
+    Marpa_Error_Code errcode;
+  };
+  typedef struct marpa_r_earley_set_value_test Marpa_R_Earley_Set_Value_Test;
+
+  const Marpa_R_Earley_Set_Value_Test tests[] = {
+    { -1, -2, taxicab,      -2, 1, -2, taxicab, value2, MARPA_ERR_INVALID_LOCATION },
+    {  0,  0, taxicab, taxicab, 1,  1,      42, value2, MARPA_ERR_INVALID_LOCATION },
+    {  1, -2,      42,      -2, 1, -2,      42, value2, MARPA_ERR_NO_EARLEY_SET_AT_LOCATION },
+    {  2, -2,      42,      -2, 1, -2,      42, value2, MARPA_ERR_NO_EARLEY_SET_AT_LOCATION },
+  };
+
+  for (ix = 0; ix < sizeof(tests) / sizeof(Marpa_R_Earley_Set_Value_Test); ix++)
     {
-      diag("marpa_r_earley_set_value_*() methods, earley_set: %d", earley_set);
+      const Marpa_R_Earley_Set_Value_Test t = tests[ix];
+      diag("marpa_r_earley_set_value_*() methods, earley_set: %d", t.earley_set);
 
-      marpa_m_test("marpa_r_earleme", r, earley_set, -2, MARPA_ERR_INVALID_LOCATION);
+      if (t.earley_set == -1 || t.earley_set == 1 || t.earley_set == 2)
+        marpa_m_test("marpa_r_earleme", r, t.earley_set, t.rv_marpa_r_earleme, t.errcode);
+      else
+        marpa_m_test("marpa_r_earleme", r, t.earley_set, t.rv_marpa_r_earleme);
 
-      marpa_m_test("marpa_r_latest_earley_set_value_set", r, taxicab, taxicab);
-      is_int(MARPA_ERR_INVALID_LOCATION, marpa_g_error(g, NULL),
+      marpa_m_test("marpa_r_latest_earley_set_value_set", r, taxicab,
+        t.rv_marpa_r_latest_earley_set_value_set);
+      is_int(t.errcode, marpa_g_error(g, NULL),
         "marpa_r_latest_earley_set_value_set() error code");
 
-      marpa_m_test("marpa_r_earley_set_value", r, earley_set, -2, MARPA_ERR_INVALID_LOCATION);
+      if (t.earley_set == -1 || t.earley_set == 1 || t.earley_set == 2)
+        marpa_m_test("marpa_r_earley_set_value", r,
+          t.earley_set, t.rv_marpa_r_earley_set_value, t.errcode);
+      else
+        marpa_m_test("marpa_r_earley_set_value", r,
+          t.earley_set, t.rv_marpa_r_earley_set_value);
 
-      marpa_m_test("marpa_r_latest_earley_set_values_set", r, 42, &taxicab, 1);
-      is_int(MARPA_ERR_INVALID_LOCATION, marpa_g_error(g, NULL),
+      marpa_m_test("marpa_r_latest_earley_set_values_set", r, 42, &taxicab,
+        t.rv_marpa_r_latest_earley_set_values_set);
+      is_int(t.errcode, marpa_g_error(g, NULL),
         "marpa_r_latest_earley_set_values_set() error code");
 
-      marpa_m_test(
-        "marpa_r_earley_set_values", r, earley_set, &taxicab, (void **)&value2,
-        -2, MARPA_ERR_INVALID_LOCATION);
-      is_int(taxicab, 1729, "marpa_r_earley_set_values() int* value");
-      is_int(value2, NULL, "marpa_r_earley_set_values() void** value");
+      if (t.earley_set == -1 || t.earley_set == 1 || t.earley_set == 2)
+        marpa_m_test(
+          "marpa_r_earley_set_values", r, t.earley_set, &taxicab, (void **)&value2,
+          t.rv_marpa_r_earley_set_values, t.errcode);
+      else
+        marpa_m_test(
+          "marpa_r_earley_set_values", r, t.earley_set, &taxicab, (void **)&value2,
+          t.rv_marpa_r_earley_set_values);
+
+      is_int ( t.int_p_value_rv_marpa_r_earley_set_values, taxicab,
+        "marpa_r_earley_set_values() int* value" );
+      is_string ( t.void_p_value_rv_marpa_r_earley_set_values, NULL,
+        "marpa_r_earley_set_values() void** value" );
     }
 
     /* this dumps core unless p_pvalue is set to NULL
