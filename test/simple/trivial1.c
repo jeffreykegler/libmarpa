@@ -574,10 +574,29 @@ main (int argc, char *argv[])
     }
 
   /* dumps core unless p_pvalue is set to NULL */
+
+  /* RNS -- the core dump is an application problem.
+   * The "value"
+   * is written to the location pointed to by p_value,
+   * but p_value was not initialized to point to a valid
+   * location in memory.
+   *
+   * Note above -- my parameters to 
+   * marpa_r_earley_set_values() are ADDRESSES of
+   * locations in memory.  That's not the only safe
+   * way to do it, but it is one.
+   */
+  if (0)
   {
     int *p_value;
     void** p_pvalue;
     marpa_r_earley_set_values(r, 0, p_value, p_pvalue);
+  }
+  if (1)
+  {
+    int value;
+    void* pvalue;
+    marpa_r_earley_set_values(r, 0, &value, &pvalue);
   }
 
 }
