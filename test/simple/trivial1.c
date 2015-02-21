@@ -514,32 +514,50 @@ main (int argc, char *argv[])
     {
       /* I could not figure out how to add this to the marpa_m_test
        * scheme, so what follows is rough */
+      marpa_m_test("marpa_r_earleme", r, earley_set, -2, MARPA_ERR_INVALID_LOCATION);
+/*
       rc = marpa_r_earleme (r, earley_set);
       fprintf (stderr, "marpa_r_earleme returns %ld\n", (long) rc);
       fprintf(stderr, "error code is: %d\n", marpa_g_error(g, NULL));
+*/
+      marpa_m_test("marpa_r_latest_earley_set_value_set", r, taxicab, taxicab);
+      is_int(MARPA_ERR_INVALID_LOCATION, marpa_g_error(g, NULL), "marpa_r_latest_earley_set_value_set() error code");
+/*
       rc = marpa_r_latest_earley_set_value_set (r, taxicab);
       fprintf (stderr,
-	       "marpa_r_latest_earley_set_value_set(%p, %i) returns %ld\n", r,
-	       taxicab, (long) rc);
+         "marpa_r_latest_earley_set_value_set(%p, %i) returns %ld\n", r,
+         taxicab, (long) rc);
       fprintf(stderr, "error code is: %d\n", marpa_g_error(g, NULL));
+*/
+
       rc = marpa_r_earley_set_value (r, earley_set);
       fprintf (stderr, "marpa_r_earley_set_value returns %ld\n", (long) rc);
       fprintf(stderr, "error code is: %d\n", marpa_g_error(g, NULL));
+
       rc = marpa_r_latest_earley_set_values_set (r, 42, &taxicab);
       fprintf (stderr,
-	       "marpa_r_earley_set_values_set(%p, %ld, %p) returns %ld\n",
-	       r, (long)42, &taxicab, (long) rc);
+         "marpa_r_earley_set_values_set(%p, %ld, %p) returns %ld\n",
+         r, (long)42, &taxicab, (long) rc);
       fprintf(stderr, "error code is: %d\n", marpa_g_error(g, NULL));
-      rc =
-	marpa_r_earley_set_values (r, earley_set, &taxicab, (void **)&value2);
+
+      rc = marpa_r_earley_set_values (r, earley_set, &taxicab, (void **)&value2);
       fprintf (stderr,
-	       "marpa_r_earley_set_values(%p, %p, %p) returns %ld\n",
-	       r, &taxicab, &value2, (long) rc);
+         "marpa_r_earley_set_values(%p, %p, %p) returns %ld\n",
+         r, &taxicab, &value2, (long) rc);
       fprintf (stderr,
-	       "marpa_r_earley_set_values() values were %ld, %p\n", (long)taxicab,
-	       value2);
+         "marpa_r_earley_set_values() values were %ld, %p\n", (long)taxicab,
+         value2);
       fprintf(stderr, "error code is: %d\n", marpa_g_error(g, NULL));
+
     }
+
+    /* this dumps core unless p_pvalue is set to NULL
+  {
+    int *p_value;
+    void** p_pvalue;
+    marpa_r_earley_set_values(r, 0, p_value, p_pvalue);
+  }
+  */
 }
 
   return 0;
