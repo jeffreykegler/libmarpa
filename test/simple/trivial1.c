@@ -588,6 +588,10 @@ main (int argc, char *argv[])
       marpa_m_test("marpa_r_earley_item_warning_threshold_set", r, threshold, threshold);
       marpa_m_test("marpa_r_earley_item_warning_threshold", r, threshold);
 
+      Marpa_Symbol_ID S_expected = S_B1;
+      value = 1;
+      marpa_m_test("marpa_r_expected_symbol_event_set", r, S_B1, value, value);
+
     }
 
   } /* recce method tests */
