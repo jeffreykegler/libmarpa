@@ -598,7 +598,8 @@ main (int argc, char *argv[])
         -2, MARPA_ERR_SYMBOL_IS_NULLING);
 
       Marpa_Symbol_ID buffer[42];
-      marpa_m_test("marpa_r_terminals_expected", r, buffer, -2, 0);
+      marpa_m_test("marpa_r_terminals_expected", r, buffer, 0);
+
       marpa_m_test("marpa_r_terminal_is_expected", r, S_C1, 0);
       marpa_m_test("marpa_r_terminal_is_expected", r, S_invalid,
         -2, MARPA_ERR_INVALID_SYMBOL_ID);
