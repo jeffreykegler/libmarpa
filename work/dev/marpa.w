@@ -6246,10 +6246,12 @@ marpa_r_expected_symbol_event_set (Marpa_Recognizer r, Marpa_Symbol_ID xsy_id,
     xsy = XSY_by_ID(xsy_id);
     if (_MARPA_UNLIKELY(XSY_is_Nulling(xsy))) {
       MARPA_ERROR (MARPA_ERR_SYMBOL_IS_NULLING);
+      return -2;
     }
     nsy = NSY_of_XSY(xsy);
     if (_MARPA_UNLIKELY(!nsy)) {
       MARPA_ERROR (MARPA_ERR_SYMBOL_IS_UNUSED);
+      return -2;
     }
     nsyid = ID_of_NSY(nsy);
     if (value) {

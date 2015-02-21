@@ -348,81 +348,79 @@ main (int argc, char *argv[])
   /* Events */
   /* test that attempts to create events, other than nulled events,
      results in a reasonable error -- http://irclog.perlgeek.de/marpa/2015-02-13#i_10111838 */
+  int reactivate;
+  int value;
+  Marpa_Symbol_ID S_predicted, S_completed;
+
+  /* completion */
+  S_completed = S_B1;
+
+  value = 0;
+  marpa_m_test("marpa_g_symbol_is_completion_event_set", g, S_completed, value, value);
+  marpa_m_test("marpa_g_symbol_is_completion_event", g, S_completed, value);
+
+  value = 1;
+  marpa_m_test("marpa_g_symbol_is_completion_event_set", g, S_completed, value, value);
+  marpa_m_test("marpa_g_symbol_is_completion_event", g, S_completed, value);
+
+  reactivate = 0;
+  marpa_m_test("marpa_g_completion_symbol_activate", g, S_completed, reactivate, reactivate);
+
+  reactivate = 1;
+  marpa_m_test("marpa_g_completion_symbol_activate", g, S_completed, reactivate, reactivate);
+
+  /* prediction */
+  S_predicted = S_A1;
+
+  value = 0;
+  marpa_m_test("marpa_g_symbol_is_prediction_event_set", g, S_predicted, value, value);
+  marpa_m_test("marpa_g_symbol_is_prediction_event", g, S_predicted, value);
+
+  value = 1;
+  marpa_m_test("marpa_g_symbol_is_prediction_event_set", g, S_predicted, value, value);
+  marpa_m_test("marpa_g_symbol_is_prediction_event", g, S_predicted, value);
+
+  reactivate = 0;
+  marpa_m_test("marpa_g_prediction_symbol_activate", g, S_predicted, reactivate, reactivate);
+
+  reactivate = 1;
+  marpa_m_test("marpa_g_prediction_symbol_activate", g, S_predicted, reactivate, reactivate);
+
+  /* completion on predicted symbol */
+  value = 1;
+  marpa_m_test("marpa_g_symbol_is_completion_event_set", g, S_predicted, value, value);
+  marpa_m_test("marpa_g_symbol_is_completion_event", g, S_predicted, value);
+
+  /* prediction on completed symbol */
+  value = 1;
+  marpa_m_test("marpa_g_symbol_is_prediction_event_set", g, S_completed, value, value);
+  marpa_m_test("marpa_g_symbol_is_prediction_event", g, S_completed, value);
+
+  /* invalid/no such symbol IDs */
+  const char *marpa_g_event_setters[] = {
+    "marpa_g_symbol_is_completion_event_set", "marpa_g_completion_symbol_activate",
+    "marpa_g_symbol_is_prediction_event_set","marpa_g_prediction_symbol_activate",
+  };
+  for (ix = 0; ix < sizeof(marpa_g_event_setters) / sizeof(char *); ix++)
   {
-    int reactivate;
-    int value;
-    Marpa_Symbol_ID S_predicted, S_completed;
-
-    /* completion */
-    S_completed = S_B1;
-
-    value = 0;
-    marpa_m_test("marpa_g_symbol_is_completion_event_set", g, S_completed, value, value);
-    marpa_m_test("marpa_g_symbol_is_completion_event", g, S_completed, value);
-
-    value = 1;
-    marpa_m_test("marpa_g_symbol_is_completion_event_set", g, S_completed, value, value);
-    marpa_m_test("marpa_g_symbol_is_completion_event", g, S_completed, value);
-
-    reactivate = 0;
-    marpa_m_test("marpa_g_completion_symbol_activate", g, S_completed, reactivate, reactivate);
-
-    reactivate = 1;
-    marpa_m_test("marpa_g_completion_symbol_activate", g, S_completed, reactivate, reactivate);
-
-    /* prediction */
-    S_predicted = S_A1;
-
-    value = 0;
-    marpa_m_test("marpa_g_symbol_is_prediction_event_set", g, S_predicted, value, value);
-    marpa_m_test("marpa_g_symbol_is_prediction_event", g, S_predicted, value);
-
-    value = 1;
-    marpa_m_test("marpa_g_symbol_is_prediction_event_set", g, S_predicted, value, value);
-    marpa_m_test("marpa_g_symbol_is_prediction_event", g, S_predicted, value);
-
-    reactivate = 0;
-    marpa_m_test("marpa_g_prediction_symbol_activate", g, S_predicted, reactivate, reactivate);
-
-    reactivate = 1;
-    marpa_m_test("marpa_g_prediction_symbol_activate", g, S_predicted, reactivate, reactivate);
-
-    /* completion on predicted symbol */
-    value = 1;
-    marpa_m_test("marpa_g_symbol_is_completion_event_set", g, S_predicted, value, value);
-    marpa_m_test("marpa_g_symbol_is_completion_event", g, S_predicted, value);
-
-    /* prediction on completed symbol */
-    value = 1;
-    marpa_m_test("marpa_g_symbol_is_prediction_event_set", g, S_completed, value, value);
-    marpa_m_test("marpa_g_symbol_is_prediction_event", g, S_completed, value);
-
-    /* invalid/no such symbol IDs */
-    const char *marpa_g_event_setters[] = {
-      "marpa_g_symbol_is_completion_event_set", "marpa_g_completion_symbol_activate",
-      "marpa_g_symbol_is_prediction_event_set","marpa_g_prediction_symbol_activate",
-    };
-    for (ix = 0; ix < sizeof(marpa_g_event_setters) / sizeof(char *); ix++)
-    {
-      marpa_m_test(marpa_g_event_setters[ix], g, S_invalid, whatever, -2, MARPA_ERR_INVALID_SYMBOL_ID);
-      marpa_m_test(marpa_g_event_setters[ix], g, S_no_such, whatever, -1, MARPA_ERR_NO_SUCH_SYMBOL_ID);
-    }
-    marpa_m_test("marpa_g_symbol_is_prediction_event", g, S_invalid, -2, MARPA_ERR_INVALID_SYMBOL_ID);
-    marpa_m_test("marpa_g_symbol_is_prediction_event", g, S_no_such, -1, MARPA_ERR_NO_SUCH_SYMBOL_ID);
-
-    marpa_m_test("marpa_g_symbol_is_completion_event", g, S_invalid, -2, MARPA_ERR_INVALID_SYMBOL_ID);
-    marpa_m_test("marpa_g_symbol_is_completion_event", g, S_no_such, -1, MARPA_ERR_NO_SUCH_SYMBOL_ID);
-
-    /* precomputation */
-    marpa_g_trivial_precompute(g, S_top);
-    ok(1, "precomputation succeeded");
-
-    /* event methods after precomputation */
-    for (ix = 0; ix < sizeof(marpa_g_event_setters) / sizeof(char *); ix++)
-      marpa_m_test(marpa_g_event_setters[ix], g, whatever, whatever, -2, MARPA_ERR_PRECOMPUTED);
-    marpa_m_test("marpa_g_symbol_is_prediction_event", g, S_predicted, value);
-    marpa_m_test("marpa_g_symbol_is_completion_event", g, S_completed, value);
+    marpa_m_test(marpa_g_event_setters[ix], g, S_invalid, whatever, -2, MARPA_ERR_INVALID_SYMBOL_ID);
+    marpa_m_test(marpa_g_event_setters[ix], g, S_no_such, whatever, -1, MARPA_ERR_NO_SUCH_SYMBOL_ID);
   }
+  marpa_m_test("marpa_g_symbol_is_prediction_event", g, S_invalid, -2, MARPA_ERR_INVALID_SYMBOL_ID);
+  marpa_m_test("marpa_g_symbol_is_prediction_event", g, S_no_such, -1, MARPA_ERR_NO_SUCH_SYMBOL_ID);
+
+  marpa_m_test("marpa_g_symbol_is_completion_event", g, S_invalid, -2, MARPA_ERR_INVALID_SYMBOL_ID);
+  marpa_m_test("marpa_g_symbol_is_completion_event", g, S_no_such, -1, MARPA_ERR_NO_SUCH_SYMBOL_ID);
+
+  /* precomputation */
+  marpa_g_trivial_precompute(g, S_top);
+  ok(1, "precomputation succeeded");
+
+  /* event methods after precomputation */
+  for (ix = 0; ix < sizeof(marpa_g_event_setters) / sizeof(char *); ix++)
+    marpa_m_test(marpa_g_event_setters[ix], g, whatever, whatever, -2, MARPA_ERR_PRECOMPUTED);
+  marpa_m_test("marpa_g_symbol_is_prediction_event", g, S_predicted, value);
+  marpa_m_test("marpa_g_symbol_is_completion_event", g, S_completed, value);
 
   /* Recognizer Methods */
   {
@@ -470,10 +468,6 @@ main (int argc, char *argv[])
 
     } /* event loop */
 
-    Marpa_Symbol_ID S_expected = S_A2;
-    int value = 1;
-    marpa_m_test("marpa_r_expected_symbol_event_set", r, S_expected, value, value);
-
     /* recognizer reading methods */
     Marpa_Symbol_ID S_token = S_A2;
     marpa_m_test("marpa_r_alternative", r, S_invalid, 0, 0,
@@ -498,108 +492,122 @@ main (int argc, char *argv[])
       marpa_m_test("marpa_r_latest_earley_set", r, furthest_earleme);
       marpa_m_test("marpa_r_earleme", r, current_earleme, current_earleme);
       marpa_m_test("marpa_r_earley_set_value", r, current_earleme, -1, MARPA_ERR_RECCE_NOT_ACCEPTING_INPUT);
+
+      /* marpa_r_earley_set_value_*() methods */
+      int taxicab = 1729;
+      char *value2 = NULL;
+      int earley_set;
+
+      struct marpa_r_earley_set_value_test {
+        int earley_set;
+
+        int rv_marpa_r_earleme;
+        int rv_marpa_r_latest_earley_set_value_set;
+        int rv_marpa_r_earley_set_value;
+        int rv_marpa_r_latest_earley_set_values_set;
+
+        int   rv_marpa_r_earley_set_values;
+        int   int_p_value_rv_marpa_r_earley_set_values;
+        char* void_p_value_rv_marpa_r_earley_set_values;
+
+        Marpa_Error_Code errcode;
+      };
+      typedef struct marpa_r_earley_set_value_test Marpa_R_Earley_Set_Value_Test;
+
+      const Marpa_R_Earley_Set_Value_Test tests[] = {
+        { -1, -2, taxicab,      -2, 1, -2, taxicab, value2, MARPA_ERR_INVALID_LOCATION },
+        {  0,  0, taxicab, taxicab, 1,  1,      42, value2, MARPA_ERR_INVALID_LOCATION },
+        {  1, -2,      42,      -2, 1, -2,      42, value2, MARPA_ERR_NO_EARLEY_SET_AT_LOCATION },
+        {  2, -2,      42,      -2, 1, -2,      42, value2, MARPA_ERR_NO_EARLEY_SET_AT_LOCATION },
+      };
+
+      for (ix = 0; ix < sizeof(tests) / sizeof(Marpa_R_Earley_Set_Value_Test); ix++)
+        {
+          const Marpa_R_Earley_Set_Value_Test t = tests[ix];
+          diag("marpa_r_earley_set_value_*() methods, earley_set: %d", t.earley_set);
+
+          if (t.earley_set == -1 || t.earley_set == 1 || t.earley_set == 2)
+            marpa_m_test("marpa_r_earleme", r, t.earley_set, t.rv_marpa_r_earleme, t.errcode);
+          else
+            marpa_m_test("marpa_r_earleme", r, t.earley_set, t.rv_marpa_r_earleme);
+
+          marpa_m_test("marpa_r_latest_earley_set_value_set", r, taxicab,
+            t.rv_marpa_r_latest_earley_set_value_set);
+          is_int(t.errcode, marpa_g_error(g, NULL),
+            "marpa_r_latest_earley_set_value_set() error code");
+
+          if (t.earley_set == -1 || t.earley_set == 1 || t.earley_set == 2)
+            marpa_m_test("marpa_r_earley_set_value", r,
+              t.earley_set, t.rv_marpa_r_earley_set_value, t.errcode);
+          else
+            marpa_m_test("marpa_r_earley_set_value", r,
+              t.earley_set, t.rv_marpa_r_earley_set_value);
+
+          marpa_m_test("marpa_r_latest_earley_set_values_set", r, 42, &taxicab,
+            t.rv_marpa_r_latest_earley_set_values_set);
+          is_int(t.errcode, marpa_g_error(g, NULL),
+            "marpa_r_latest_earley_set_values_set() error code");
+
+          if (t.earley_set == -1 || t.earley_set == 1 || t.earley_set == 2)
+            marpa_m_test(
+              "marpa_r_earley_set_values", r, t.earley_set, &taxicab, (void **)&value2,
+              t.rv_marpa_r_earley_set_values, t.errcode);
+          else
+            marpa_m_test(
+              "marpa_r_earley_set_values", r, t.earley_set, &taxicab, (void **)&value2,
+              t.rv_marpa_r_earley_set_values);
+
+          is_int ( t.int_p_value_rv_marpa_r_earley_set_values, taxicab,
+            "marpa_r_earley_set_values() int* value" );
+          is_string ( t.void_p_value_rv_marpa_r_earley_set_values, NULL,
+            "marpa_r_earley_set_values() void** value" );
+        }
+    } /* Location Accessors */
+
+    /* Other parse status methods */
+    {
+      int boolean = 0;
+      marpa_m_test("marpa_r_prediction_symbol_activate", r, S_predicted, boolean, boolean );
+      marpa_m_test("marpa_r_prediction_symbol_activate", r, S_invalid, boolean,
+        -2, MARPA_ERR_INVALID_SYMBOL_ID);
+      marpa_m_test("marpa_r_prediction_symbol_activate", r, S_no_such, boolean,
+        -1, MARPA_ERR_NO_SUCH_SYMBOL_ID);
+
+      reactivate = 1;
+      marpa_m_test("marpa_r_completion_symbol_activate", r, S_completed, reactivate, reactivate );
+      marpa_m_test("marpa_r_completion_symbol_activate", r, S_invalid, reactivate,
+        -2, MARPA_ERR_INVALID_SYMBOL_ID);
+      marpa_m_test("marpa_r_completion_symbol_activate", r, S_no_such, reactivate,
+        -1, MARPA_ERR_NO_SUCH_SYMBOL_ID);
+
+      boolean = 1;
+      Marpa_Symbol_ID S_nulled = S_C1;
+      marpa_m_test("marpa_r_nulled_symbol_activate", r, S_nulled, boolean, boolean );
+      marpa_m_test("marpa_r_nulled_symbol_activate", r, S_invalid, boolean,
+        -2, MARPA_ERR_INVALID_SYMBOL_ID);
+      marpa_m_test("marpa_r_nulled_symbol_activate", r, S_no_such, boolean,
+        -1, MARPA_ERR_NO_SUCH_SYMBOL_ID);
+
+      int threshold = 1;
+      marpa_m_test("marpa_r_earley_item_warning_threshold_set", r, threshold, threshold);
+      marpa_m_test("marpa_r_earley_item_warning_threshold", r, threshold);
+
+      Marpa_Symbol_ID S_expected = S_C1;
+      value = 1;
+      marpa_m_test("marpa_r_expected_symbol_event_set", r, S_B1, value,
+        -2, MARPA_ERR_SYMBOL_IS_NULLING);
+
+      Marpa_Symbol_ID buffer[42];
+      marpa_m_test("marpa_r_terminals_expected", r, buffer, 0);
+
+      marpa_m_test("marpa_r_terminal_is_expected", r, S_C1, 0);
+      marpa_m_test("marpa_r_terminal_is_expected", r, S_invalid,
+        -2, MARPA_ERR_INVALID_SYMBOL_ID);
+      marpa_m_test("marpa_r_terminal_is_expected", r, S_no_such,
+        -2, MARPA_ERR_NO_SUCH_SYMBOL_ID);
     }
 
   } /* recce method tests */
-
-{
-  /* Rewritten to use marpa_m_test() as the author requested in commit 25f4589 */
-  int taxicab = 1729;
-  char *value2 = NULL;
-  int earley_set;
-
-  struct marpa_r_earley_set_value_test {
-    int earley_set;
-
-    int rv_marpa_r_earleme;
-    int rv_marpa_r_latest_earley_set_value_set;
-    int rv_marpa_r_earley_set_value;
-    int rv_marpa_r_latest_earley_set_values_set;
-
-    int   rv_marpa_r_earley_set_values;
-    int   int_p_value_rv_marpa_r_earley_set_values;
-    char* void_p_value_rv_marpa_r_earley_set_values;
-
-    Marpa_Error_Code errcode;
-  };
-  typedef struct marpa_r_earley_set_value_test Marpa_R_Earley_Set_Value_Test;
-
-  const Marpa_R_Earley_Set_Value_Test tests[] = {
-    { -1, -2, taxicab,      -2, 1, -2, taxicab, value2, MARPA_ERR_INVALID_LOCATION },
-    {  0,  0, taxicab, taxicab, 1,  1,      42, value2, MARPA_ERR_INVALID_LOCATION },
-    {  1, -2,      42,      -2, 1, -2,      42, value2, MARPA_ERR_NO_EARLEY_SET_AT_LOCATION },
-    {  2, -2,      42,      -2, 1, -2,      42, value2, MARPA_ERR_NO_EARLEY_SET_AT_LOCATION },
-  };
-
-  for (ix = 0; ix < sizeof(tests) / sizeof(Marpa_R_Earley_Set_Value_Test); ix++)
-    {
-      const Marpa_R_Earley_Set_Value_Test t = tests[ix];
-      diag("marpa_r_earley_set_value_*() methods, earley_set: %d", t.earley_set);
-
-      if (t.earley_set == -1 || t.earley_set == 1 || t.earley_set == 2)
-        marpa_m_test("marpa_r_earleme", r, t.earley_set, t.rv_marpa_r_earleme, t.errcode);
-      else
-        marpa_m_test("marpa_r_earleme", r, t.earley_set, t.rv_marpa_r_earleme);
-
-      marpa_m_test("marpa_r_latest_earley_set_value_set", r, taxicab,
-        t.rv_marpa_r_latest_earley_set_value_set);
-      is_int(t.errcode, marpa_g_error(g, NULL),
-        "marpa_r_latest_earley_set_value_set() error code");
-
-      if (t.earley_set == -1 || t.earley_set == 1 || t.earley_set == 2)
-        marpa_m_test("marpa_r_earley_set_value", r,
-          t.earley_set, t.rv_marpa_r_earley_set_value, t.errcode);
-      else
-        marpa_m_test("marpa_r_earley_set_value", r,
-          t.earley_set, t.rv_marpa_r_earley_set_value);
-
-      marpa_m_test("marpa_r_latest_earley_set_values_set", r, 42, &taxicab,
-        t.rv_marpa_r_latest_earley_set_values_set);
-      is_int(t.errcode, marpa_g_error(g, NULL),
-        "marpa_r_latest_earley_set_values_set() error code");
-
-      if (t.earley_set == -1 || t.earley_set == 1 || t.earley_set == 2)
-        marpa_m_test(
-          "marpa_r_earley_set_values", r, t.earley_set, &taxicab, (void **)&value2,
-          t.rv_marpa_r_earley_set_values, t.errcode);
-      else
-        marpa_m_test(
-          "marpa_r_earley_set_values", r, t.earley_set, &taxicab, (void **)&value2,
-          t.rv_marpa_r_earley_set_values);
-
-      is_int ( t.int_p_value_rv_marpa_r_earley_set_values, taxicab,
-        "marpa_r_earley_set_values() int* value" );
-      is_string ( t.void_p_value_rv_marpa_r_earley_set_values, NULL,
-        "marpa_r_earley_set_values() void** value" );
-    }
-
-  /* dumps core unless p_pvalue is set to NULL */
-
-  /* RNS -- the core dump is an application problem.
-   * The "value"
-   * is written to the location pointed to by p_value,
-   * but p_value was not initialized to point to a valid
-   * location in memory.
-   *
-   * Note above -- my parameters to 
-   * marpa_r_earley_set_values() are ADDRESSES of
-   * locations in memory.  That's not the only safe
-   * way to do it, but it is one.
-   */
-  if (0)
-  {
-    int *p_value;
-    void** p_pvalue;
-    marpa_r_earley_set_values(r, 0, p_value, p_pvalue);
-  }
-  if (1)
-  {
-    int value;
-    void* pvalue;
-    marpa_r_earley_set_values(r, 0, &value, &pvalue);
-  }
-
-}
 
   return 0;
 }

@@ -100,8 +100,18 @@ const Marpa_Method_Spec methspec[] = {
   { "marpa_r_earley_set_value", &marpa_r_earley_set_value, "%i" },
   { "marpa_r_earley_set_values", &marpa_r_earley_set_values, "%i, %ip, %vpp" },
   { "marpa_r_latest_earley_set_value_set", &marpa_r_latest_earley_set_value_set, "%i" },
-  { "marpa_r_latest_earley_set_values_set", &marpa_r_latest_earley_set_values_set, "%i, %vp" }
+  { "marpa_r_latest_earley_set_values_set", &marpa_r_latest_earley_set_values_set, "%i, %vp" },
 
+  { "marpa_r_prediction_symbol_activate", &marpa_r_prediction_symbol_activate, "%s, %i" },
+  { "marpa_r_completion_symbol_activate", &marpa_r_completion_symbol_activate, "%s, %i" },
+  { "marpa_r_nulled_symbol_activate", &marpa_r_nulled_symbol_activate, "%s, %i" },
+
+  { "marpa_r_earley_item_warning_threshold_set", &marpa_r_earley_item_warning_threshold_set, "%i" },
+  { "marpa_r_earley_item_warning_threshold", &marpa_r_earley_item_warning_threshold, "" },
+
+  { "marpa_r_expected_symbol_event_set", &marpa_r_expected_symbol_event_set, "%s, %i" },
+  { "marpa_r_terminals_expected", &marpa_r_terminals_expected, "%s, %ip" },
+  { "marpa_r_terminal_is_expected", &marpa_r_terminal_is_expected, "%s" },
 };
 
 static Marpa_Method_Spec
@@ -132,6 +142,7 @@ const Marpa_Method_Error errspec[] = {
   { MARPA_ERR_PARSE_EXHAUSTED, "parse exhausted" },
   { MARPA_ERR_NO_EARLEY_SET_AT_LOCATION, "no earley set at location" },
   { MARPA_ERR_INVALID_LOCATION, "location not valid" },
+  { MARPA_ERR_SYMBOL_IS_NULLING, "symbol is nulling" },
 };
 
 char *marpa_m_error_message (Marpa_Error_Code error_code)
@@ -257,6 +268,8 @@ marpa_m_test_func(const char* name, ...)
     rv_seen = ms.p(marpa_m_object, R_id);
   else if (strcmp(ms.as, "%s, %i") == 0)
     rv_seen = ms.p(marpa_m_object, S_id, arg_int);
+  else if (strcmp(ms.as, "%s, %ip") == 0)
+    rv_seen = ms.p(marpa_m_object, S_id, arg_p_int);
   else if (strcmp(ms.as, "%s, %i, %i") == 0)
     rv_seen = ms.p(marpa_m_object, S_id, arg_int, arg_int1);
   else if (strcmp(ms.as, "%r, %i") == 0)
@@ -319,6 +332,7 @@ marpa_m_test_func(const char* name, ...)
         "%s() error is: %s", name, marpa_m_error_message(err_seen) );
     }
   }
+  /* todo: add handling */
 
   va_end(args);
 }
