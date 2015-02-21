@@ -584,6 +584,14 @@ main (int argc, char *argv[])
       marpa_m_test("marpa_r_completion_symbol_activate", r, S_no_such, reactivate,
         -1, MARPA_ERR_NO_SUCH_SYMBOL_ID);
 
+      boolean = 1;
+      Marpa_Symbol_ID S_nulled = S_C1;
+      marpa_m_test("marpa_r_nulled_symbol_activate", r, S_nulled, boolean, boolean );
+      marpa_m_test("marpa_r_nulled_symbol_activate", r, S_invalid, boolean,
+        -2, MARPA_ERR_INVALID_SYMBOL_ID);
+      marpa_m_test("marpa_r_nulled_symbol_activate", r, S_no_such, boolean,
+        -1, MARPA_ERR_NO_SUCH_SYMBOL_ID);
+
       int threshold = 1;
       marpa_m_test("marpa_r_earley_item_warning_threshold_set", r, threshold, threshold);
       marpa_m_test("marpa_r_earley_item_warning_threshold", r, threshold);
@@ -592,6 +600,13 @@ main (int argc, char *argv[])
       value = 1;
       marpa_m_test("marpa_r_expected_symbol_event_set", r, S_B1, value, value);
 
+      Marpa_Symbol_ID buffer[42];
+      marpa_m_test("marpa_r_terminals_expected", r, buffer, -2, 0);
+      marpa_m_test("marpa_r_terminal_is_expected", r, S_C1, 0);
+      marpa_m_test("marpa_r_terminal_is_expected", r, S_invalid,
+        -2, MARPA_ERR_INVALID_SYMBOL_ID);
+      marpa_m_test("marpa_r_terminal_is_expected", r, S_no_such,
+        -2, MARPA_ERR_NO_SUCH_SYMBOL_ID);
     }
 
   } /* recce method tests */
