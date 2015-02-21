@@ -118,6 +118,7 @@ const Marpa_Method_Error errspec[] = {
   { MARPA_ERR_TOKEN_LENGTH_LE_ZERO, "token length less than zero" },
   { MARPA_ERR_PARSE_EXHAUSTED, "parse exhausted" },
   { MARPA_ERR_NO_EARLEY_SET_AT_LOCATION, "no earley set at location" },
+  { MARPA_ERR_INVALID_LOCATION, "location not valid" },
 };
 
 char *marpa_m_error_message (Marpa_Error_Code error_code)
@@ -150,9 +151,9 @@ marpa_m_test_func(const char* name, ...)
   Marpa_Symbol_ID S_id, S_id1, S_id2;
   Marpa_Rule_ID R_id;
   int arg_int, arg_int1;
-  int *arg_int_p;
-  void *arg_void_p;
-  void **arg_void_p_p;
+  int *arg_p_int;
+  void *arg_p_void;
+  void **arg_p_p_void;
 
   int rv_wanted, rv_seen;
   int err_wanted, err_seen;
@@ -190,9 +191,9 @@ marpa_m_test_func(const char* name, ...)
       if (arg_int == ARG_UNDEF) arg_int = va_arg(args, int);
       else if (arg_int1 == ARG_UNDEF) arg_int1 = va_arg(args, int);
     }
-    else if (strcmp(curr_arg, "%ip") == 0) arg_int_p = va_arg(args, int *);
-    else if (strcmp(curr_arg, "%vpp") == 0) arg_void_p_p = va_arg(args, void **);
-    else if (strcmp(curr_arg, "%vp") == 0) arg_void_p = va_arg(args, void *);
+    else if (strcmp(curr_arg, "%ip") == 0) arg_p_int = va_arg(args, int *);
+    else if (strcmp(curr_arg, "%vpp") == 0) arg_p_p_void = va_arg(args, void **);
+    else if (strcmp(curr_arg, "%vp") == 0) arg_p_void = va_arg(args, void *);
     else{
       printf("No variable yet for argument spec %s.\n", curr_arg);
       exit(1);
@@ -204,15 +205,24 @@ marpa_m_test_func(const char* name, ...)
 
   /* call marpa method based on argspec */
   if (ms.as == "") rv_seen = ms.p(marpa_m_object);
-  else if (strcmp(ms.as, "%i") == 0) rv_seen = ms.p(marpa_m_object, arg_int);
-  else if (strcmp(ms.as, "%i, %vp") == 0) rv_seen = ms.p(marpa_m_object, arg_int, arg_void_p);
-  else if (strcmp(ms.as, "%i, %ip, %vpp") == 0) rv_seen = ms.p(marpa_m_object, arg_int, arg_int_p, arg_void_p_p);
-  else if (strcmp(ms.as, "%s") == 0) rv_seen = ms.p(marpa_m_object, S_id);
-  else if (strcmp(ms.as, "%r") == 0) rv_seen = ms.p(marpa_m_object, R_id);
-  else if (strcmp(ms.as, "%s, %i") == 0) rv_seen = ms.p(marpa_m_object, S_id, arg_int);
-  else if (strcmp(ms.as, "%s, %i, %i") == 0) rv_seen = ms.p(marpa_m_object, S_id, arg_int, arg_int1);
-  else if (strcmp(ms.as, "%r, %i") == 0) rv_seen = ms.p(marpa_m_object, R_id, arg_int);
-  else if (strcmp(ms.as, "%s, %s, %s, %i, %i") == 0) rv_seen = ms.p(marpa_m_object, S_id, S_id1, S_id2, arg_int, arg_int1);
+  else if (strcmp(ms.as, "%i") == 0)
+    rv_seen = ms.p(marpa_m_object, arg_int);
+  else if (strcmp(ms.as, "%i, %vp") == 0)
+    rv_seen = ms.p(marpa_m_object, arg_int, arg_p_void);
+  else if (strcmp(ms.as, "%i, %ip, %vpp") == 0)
+    rv_seen = ms.p(marpa_m_object, arg_int, arg_p_int, arg_p_p_void);
+  else if (strcmp(ms.as, "%s") == 0)
+    rv_seen = ms.p(marpa_m_object, S_id);
+  else if (strcmp(ms.as, "%r") == 0)
+    rv_seen = ms.p(marpa_m_object, R_id);
+  else if (strcmp(ms.as, "%s, %i") == 0)
+    rv_seen = ms.p(marpa_m_object, S_id, arg_int);
+  else if (strcmp(ms.as, "%s, %i, %i") == 0)
+    rv_seen = ms.p(marpa_m_object, S_id, arg_int, arg_int1);
+  else if (strcmp(ms.as, "%r, %i") == 0)
+    rv_seen = ms.p(marpa_m_object, R_id, arg_int);
+  else if (strcmp(ms.as, "%s, %s, %s, %i, %i") == 0)
+    rv_seen = ms.p(marpa_m_object, S_id, S_id1, S_id2, arg_int, arg_int1);
   else
   {
     printf("No method yet for argument spec %s.\n", ms.as);
