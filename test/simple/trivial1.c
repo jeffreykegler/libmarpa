@@ -468,10 +468,6 @@ main (int argc, char *argv[])
 
     } /* event loop */
 
-    Marpa_Symbol_ID S_expected = S_A2;
-    value = 1;
-    marpa_m_test("marpa_r_expected_symbol_event_set", r, S_expected, value, value);
-
     /* recognizer reading methods */
     Marpa_Symbol_ID S_token = S_A2;
     marpa_m_test("marpa_r_alternative", r, S_invalid, 0, 0,
@@ -596,9 +592,10 @@ main (int argc, char *argv[])
       marpa_m_test("marpa_r_earley_item_warning_threshold_set", r, threshold, threshold);
       marpa_m_test("marpa_r_earley_item_warning_threshold", r, threshold);
 
-      Marpa_Symbol_ID S_expected = S_B1;
+      Marpa_Symbol_ID S_expected = S_C1;
       value = 1;
-      marpa_m_test("marpa_r_expected_symbol_event_set", r, S_B1, value, value);
+      marpa_m_test("marpa_r_expected_symbol_event_set", r, S_B1, value,
+        -2, MARPA_ERR_SYMBOL_IS_NULLING);
 
       Marpa_Symbol_ID buffer[42];
       marpa_m_test("marpa_r_terminals_expected", r, buffer, -2, 0);
