@@ -100,8 +100,10 @@ const Marpa_Method_Spec methspec[] = {
   { "marpa_r_earley_set_value", &marpa_r_earley_set_value, "%i" },
   { "marpa_r_earley_set_values", &marpa_r_earley_set_values, "%i, %ip, %vpp" },
   { "marpa_r_latest_earley_set_value_set", &marpa_r_latest_earley_set_value_set, "%i" },
-  { "marpa_r_latest_earley_set_values_set", &marpa_r_latest_earley_set_values_set, "%i, %vp" }
+  { "marpa_r_latest_earley_set_values_set", &marpa_r_latest_earley_set_values_set, "%i, %vp" },
 
+  { "marpa_r_prediction_symbol_activate", &marpa_r_prediction_symbol_activate, "%s, %i" },
+  { "marpa_r_completion_symbol_activate", &marpa_r_completion_symbol_activate, "%s, %i" },
 };
 
 static Marpa_Method_Spec

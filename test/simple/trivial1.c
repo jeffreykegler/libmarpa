@@ -570,8 +570,23 @@ main (int argc, char *argv[])
 
     /* Other parse status methods */
     {
+      int boolean = 0;
+      marpa_m_test("marpa_r_prediction_symbol_activate", r, S_predicted, boolean, boolean );
+      marpa_m_test("marpa_r_prediction_symbol_activate", r, S_invalid, boolean,
+        -2, MARPA_ERR_INVALID_SYMBOL_ID);
+      marpa_m_test("marpa_r_prediction_symbol_activate", r, S_no_such, boolean,
+        -1, MARPA_ERR_NO_SUCH_SYMBOL_ID);
+
+      reactivate = 1;
+      marpa_m_test("marpa_r_completion_symbol_activate", r, S_completed, reactivate, reactivate );
+      marpa_m_test("marpa_r_completion_symbol_activate", r, S_invalid, reactivate,
+        -2, MARPA_ERR_INVALID_SYMBOL_ID);
+      marpa_m_test("marpa_r_completion_symbol_activate", r, S_no_such, reactivate,
+        -1, MARPA_ERR_NO_SUCH_SYMBOL_ID);
+
 
     }
+
   } /* recce method tests */
 
   return 0;
