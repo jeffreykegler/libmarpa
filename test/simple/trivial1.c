@@ -573,13 +573,13 @@ main (int argc, char *argv[])
         "marpa_r_earley_set_values() void** value" );
     }
 
-    /* this dumps core unless p_pvalue is set to NULL
+  /* dumps core unless p_pvalue is set to NULL */
   {
     int *p_value;
     void** p_pvalue;
     marpa_r_earley_set_values(r, 0, p_value, p_pvalue);
   }
-  */
+
 }
 
   return 0;
