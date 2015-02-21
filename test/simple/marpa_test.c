@@ -78,11 +78,16 @@ const Marpa_Method_Spec methspec[] = {
 
   { "marpa_r_alternative", &marpa_r_alternative, "%s, %i, %i" },
   { "marpa_r_earleme_complete", &marpa_r_earleme_complete, "" },
+
   { "marpa_r_current_earleme", (marpa_m_pointer)&marpa_r_current_earleme, "" },
   { "marpa_r_furthest_earleme", (marpa_m_pointer)&marpa_r_furthest_earleme, "" },
   { "marpa_r_latest_earley_set", &marpa_r_latest_earley_set, "" },
   { "marpa_r_earleme", &marpa_r_earleme, "%i" },
+
   { "marpa_r_earley_set_value", &marpa_r_earley_set_value, "%i" },
+  { "marpa_r_earley_set_values", &marpa_r_earley_set_values, "%i, %ip, %vpp" },
+  { "marpa_r_latest_earley_set_value_set", &marpa_r_latest_earley_set_value_set, "%i" },
+  { "marpa_r_latest_earley_set_values_set", &marpa_r_latest_earley_set_values_set, "%i, %vp" }
 
 };
 
@@ -144,7 +149,10 @@ marpa_m_test_func(const char* name, ...)
 
   Marpa_Symbol_ID S_id, S_id1, S_id2;
   Marpa_Rule_ID R_id;
-  int intarg, intarg1;
+  int arg_int, arg_int1;
+  int *arg_int_p;
+  void *arg_void_p;
+  void **arg_void_p_p;
 
   int rv_wanted, rv_seen;
   int err_wanted, err_seen;
@@ -163,25 +171,28 @@ marpa_m_test_func(const char* name, ...)
   void *marpa_m_object = va_arg(args, void*);
 
 #define ARG_UNDEF 42424242
-  R_id = S_id = S_id1 = S_id2 = intarg = intarg1 = ARG_UNDEF;
+  R_id = S_id = S_id1 = S_id2 = arg_int = arg_int1 = ARG_UNDEF;
   strcpy( tok_buf, ms.as );
   curr_arg = strtok(tok_buf, " ,-");
   while (curr_arg != NULL)
   {
-    if (strncmp(curr_arg, "%s", 2) == 0){
+    if (strcmp(curr_arg, "%s") == 0){
       if (S_id == ARG_UNDEF) S_id = va_arg(args, Marpa_Symbol_ID);
       else if (S_id1 == ARG_UNDEF) S_id1 = va_arg(args, Marpa_Symbol_ID);
       else if (S_id2 == ARG_UNDEF) S_id2 = va_arg(args, Marpa_Symbol_ID);
     }
-    else if (strncmp(curr_arg, "%r", 2) == 0)
+    else if (strcmp(curr_arg, "%r") == 0)
     {
       R_id   = va_arg(args, Marpa_Rule_ID);
     }
-    else if (strncmp(curr_arg, "%i", 2) == 0)
+    else if (strcmp(curr_arg, "%i") == 0)
     {
-      if (intarg == ARG_UNDEF) intarg = va_arg(args, int);
-      else if (intarg1 == ARG_UNDEF) intarg1 = va_arg(args, int);
+      if (arg_int == ARG_UNDEF) arg_int = va_arg(args, int);
+      else if (arg_int1 == ARG_UNDEF) arg_int1 = va_arg(args, int);
     }
+    else if (strcmp(curr_arg, "%ip") == 0) arg_int_p = va_arg(args, int *);
+    else if (strcmp(curr_arg, "%vpp") == 0) arg_void_p_p = va_arg(args, void **);
+    else if (strcmp(curr_arg, "%vp") == 0) arg_void_p = va_arg(args, void *);
     else{
       printf("No variable yet for argument spec %s.\n", curr_arg);
       exit(1);
@@ -193,13 +204,15 @@ marpa_m_test_func(const char* name, ...)
 
   /* call marpa method based on argspec */
   if (ms.as == "") rv_seen = ms.p(marpa_m_object);
-  else if (strcmp(ms.as, "%i") == 0) rv_seen = ms.p(marpa_m_object, intarg);
+  else if (strcmp(ms.as, "%i") == 0) rv_seen = ms.p(marpa_m_object, arg_int);
+  else if (strcmp(ms.as, "%i, %vp") == 0) rv_seen = ms.p(marpa_m_object, arg_int, arg_void_p);
+  else if (strcmp(ms.as, "%i, %ip, %vpp") == 0) rv_seen = ms.p(marpa_m_object, arg_int, arg_int_p, arg_void_p_p);
   else if (strcmp(ms.as, "%s") == 0) rv_seen = ms.p(marpa_m_object, S_id);
   else if (strcmp(ms.as, "%r") == 0) rv_seen = ms.p(marpa_m_object, R_id);
-  else if (strcmp(ms.as, "%s, %i") == 0) rv_seen = ms.p(marpa_m_object, S_id, intarg);
-  else if (strcmp(ms.as, "%s, %i, %i") == 0) rv_seen = ms.p(marpa_m_object, S_id, intarg, intarg1);
-  else if (strcmp(ms.as, "%r, %i") == 0) rv_seen = ms.p(marpa_m_object, R_id, intarg);
-  else if (strcmp(ms.as, "%s, %s, %s, %i, %i") == 0) rv_seen = ms.p(marpa_m_object, S_id, S_id1, S_id2, intarg, intarg1);
+  else if (strcmp(ms.as, "%s, %i") == 0) rv_seen = ms.p(marpa_m_object, S_id, arg_int);
+  else if (strcmp(ms.as, "%s, %i, %i") == 0) rv_seen = ms.p(marpa_m_object, S_id, arg_int, arg_int1);
+  else if (strcmp(ms.as, "%r, %i") == 0) rv_seen = ms.p(marpa_m_object, R_id, arg_int);
+  else if (strcmp(ms.as, "%s, %s, %s, %i, %i") == 0) rv_seen = ms.p(marpa_m_object, S_id, S_id1, S_id2, arg_int, arg_int1);
   else
   {
     printf("No method yet for argument spec %s.\n", ms.as);
