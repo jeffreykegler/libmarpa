@@ -29,12 +29,6 @@ extern Marpa_Rule_ID R_invalid, R_no_such;
 
 typedef int (*marpa_m_pointer)();
 
-/*
-    %s -- Marpa_Symbol_ID
-    %r -- Marpa_Rule_ID
-    %n -- Marpa_Rank
-    ...
-*/
 typedef char *marpa_m_argspec;
 typedef char *marpa_m_name;
 
