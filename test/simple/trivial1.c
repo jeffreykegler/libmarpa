@@ -584,6 +584,9 @@ main (int argc, char *argv[])
       marpa_m_test("marpa_r_completion_symbol_activate", r, S_no_such, reactivate,
         -1, MARPA_ERR_NO_SUCH_SYMBOL_ID);
 
+      int threshold = 1;
+      marpa_m_test("marpa_r_earley_item_warning_threshold_set", r, threshold, threshold);
+      marpa_m_test("marpa_r_earley_item_warning_threshold", r, threshold);
 
     }
 
