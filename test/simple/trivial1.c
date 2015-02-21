@@ -496,14 +496,9 @@ main (int argc, char *argv[])
       marpa_m_test("marpa_r_furthest_earleme", r, furthest_earleme);
 
       marpa_m_test("marpa_r_latest_earley_set", r, furthest_earleme);
-
-//      marpa_m_test("marpa_r_earleme", r, current_earleme, -2, MARPA_ERR_NO_EARLEY_SET_AT_LOCATION);
-
+      marpa_m_test("marpa_r_earleme", r, current_earleme, current_earleme);
+      marpa_m_test("marpa_r_earley_set_value", r, current_earleme, -1, MARPA_ERR_RECCE_NOT_ACCEPTING_INPUT);
     }
-
-    marpa_r_earleme(r, 0);
-    diag("about to call marpa_r_earley_set_value(r, 0) after marpa_r_earleme(r, 0)");
-    marpa_r_earley_set_value (r, 0);
 
   } /* recce method tests */
 
