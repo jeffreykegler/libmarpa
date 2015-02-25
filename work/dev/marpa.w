@@ -363,7 +363,7 @@ macro and subroutine arguments.
 
 @*0 Mixed case macros.
 In programming in general, accessors are very common.
-In |libmarpa|, the percentage of the logic the consists
+In |libmarpa|, the percentage of the logic that consists
 of accessors is even higher than usual,
 and their variety approaches the botanical.
 Most of these accessors are simple or even trivial,
