@@ -439,6 +439,9 @@ this section is
 very incomplete and possibly obsolete.
 @
 \li alloc: Allocate.
+\li AHFA: Aycock-Horspool Finite Automaton.
+\li AHM: Aycock-Horspool item.
+\li AIMID: a legacy term for AHM ID, preserved for backward compatibility.
 \li assign: Find something, creating it when necessary.
 \li bv: Bit Vector.
 \li cmp: Compare.
@@ -461,6 +464,7 @@ where C89 reserved names are not an issue.
 \li es: Earley set.  Used for clarity
 in a few places were
 \li g: Grammar.
+\li IRL: Internal Rule.
 \li |_ix|, |_IX|, ix, IX: Index.  Often used as a suffix.
 \li JEARLEME: Used instead of |EARLEME| because C89 reserves
 names starting with a capital `E'.
@@ -479,17 +483,21 @@ for all LR-regular grammars.
 In an Earley implementation
 without Leo items, a parse with right recursion
 can have the time complexity $O(n^2)$.
+\li LBV: Lightweight Boolean Vector.
+\li LBW: LBV Word.
 \li LIM: Leo item.
-\li \_Object: Suffix indicating that the type is of an
-actual object, and not a pointer as is usually the case.
+\li NOOK, nook: any node of a parse tree, a pun on both "node" and "fork".
 \li NSY, nsy: Internal symbol.  This is inconsistent with the use of `I' for
 internal, as in |IRL|, for internal rule.
 C89 reserves names beginning in `is', making this
 inconsistency necessary.
-\li PIM, pim: Postdot item.
+\li |ord_|, |Ord_|, |_ord|, |_Ord|, ord, Ord: ordinal of the Earley set.
+Often used as a prefix or a suffix.
 \li p: A Pointer.  Often as |_p|, as the end of a variable name, or as |p_| at
 the beginning of one.
 \li pp: A Pointer to pointer.  Often as |_pp|, as the end of a variable name.
+\li PIM, pim: Postdot item.
+\li PSI: Per Set and Item -- a container of data per Earley Set and, within that, Earley Item.
 \li R, r: Recognizer.
 \li RECCE, recce: Recognizer.  Originally British military slang for a
 reconnaissance.
@@ -498,6 +506,7 @@ it is not good English, because it is easier to spot in text.
 For example, the plural of |YS| is |YSes|.
 \li |s_|: Prefix for a structure tag.  Cweb does not format C code well
 unless tag names are distinct from other names.
+\li SRCL: Source Link.
 \li |t_|: Prefix for an element tag.  Cweb does not format C code well
 unless tag names are distinct from others.
 Since each structure and union in C has a different namespace,
@@ -507,8 +516,12 @@ object.
 \li tkn: Token.  Needed because C89 reserves names beginning with `to'.
 \li |u_|: Prefix for a union tag.  Cweb does not format C code well
 unless tag names are distinct from other names.
+\li UR: Ur-nodes, precursors of and-nodes and or-nodes.
+\li URS: UR Stack.
 \li |YIM_Object|: Earley item (object).  `Y' is used instead of `E'
 because C89 reserveds names starting with a capital `E'.
+\li XRL: External Rule.
+\li XSY: External Symbol.
 \li YIX: Earley item index.
 \li YS: Earley set.
 
