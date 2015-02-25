@@ -961,7 +961,7 @@ return g->t_has_cycle;
 }
 
 @*0 Terminal boolean vector.
-A boolean vector, with bits sets if the symbol is a
+A boolean vector, with bits set if the symbol is a
 terminal.
 This is not used as the working vector while doing
 the census, because not all symbols have been added at
@@ -973,7 +973,7 @@ can tell if there is a boolean vector to be freed.
 @ @<Initialize grammar elements@> = g->t_bv_nsyid_is_terminal = NULL;
 
 @*0 Event boolean vectors.
-A boolean vector, with bits sets if there is an event
+A boolean vector, with bits set if there is an event
 on completion of a rule with that symbol on the LHS.
 At grammar initialization, this vector cannot be sized.
 It is initialized to |NULL| so that the destructor
