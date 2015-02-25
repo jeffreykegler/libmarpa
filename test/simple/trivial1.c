@@ -428,6 +428,9 @@ main (int argc, char *argv[])
     if (!r)
       fail("marpa_r_new", g);
 
+    /* If input has not started, -1. */
+    marpa_m_test("marpa_r_current_earleme", r, -1, MARPA_ERR_RECCE_NOT_STARTED);
+
     rc = marpa_r_start_input (r);
     if (!rc)
       fail("marpa_r_start_input", g);
