@@ -1145,7 +1145,7 @@ and what return values will accompany it.
 
 Informational error codes are set
 because some applications may find them convenient.
-Typically information error codes are redundant information,
+Typically, informational error codes are redundant information,
 which may be ignored.
 
 A method can have many reasons for
