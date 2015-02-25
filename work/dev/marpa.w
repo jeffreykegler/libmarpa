@@ -6057,7 +6057,14 @@ r->t_current_earleme = -1;
 @d Current_Earleme_of_R(r) ((r)->t_current_earleme)
 @<Function definitions@> =
 unsigned int marpa_r_current_earleme(Marpa_Recognizer r)
-{ return (unsigned int)Current_Earleme_of_R(r); }
+{
+  @<Unpack recognizer objects@>@;
+  if (_MARPA_UNLIKELY(Input_Phase_of_R(r) == R_BEFORE_INPUT)) {
+      MARPA_ERROR(MARPA_ERR_RECCE_NOT_STARTED);
+      return -1;
+  }
+  return (unsigned int)Current_Earleme_of_R(r);
+}
 
 @ The ``Earley set at the current earleme'' is always
 the latest YS, if it is defined.
