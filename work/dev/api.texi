@@ -1288,6 +1288,9 @@ which leaves @code{marpa_g_new()} no place to put
 its error code on failure.
 Objects of
 the @code{Marpa_Config} class provide such a place.
+@var{p_error_string} is reserved for use by
+the internals.
+Applications should set it to @code{NULL}.
 
 Return value:
 The error code in @var{config}.
