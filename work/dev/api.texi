@@ -2635,7 +2635,7 @@ On failure, some other error code.
 
 @end deftypefun
 
-@deftypefun Marpa_Earleme marpa_r_earleme_complete (Marpa_Recognizer @var{r})
+@deftypefun int marpa_r_earleme_complete (Marpa_Recognizer @var{r})
 This method does the final processing for the current earleme.
 It then advances the current earleme by one.
 Note that @code{marpa_r_earleme_complete()} may be called

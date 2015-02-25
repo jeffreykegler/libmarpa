@@ -8023,7 +8023,7 @@ exhausted parse is significant to the higher layers,
 they must explicitly check the phase whenever this function
 returns zero.
 @<Function definitions@> =
-Marpa_Earleme
+int
 marpa_r_earleme_complete(Marpa_Recognizer r)
 {
   @<Return |-2| on failure@>@;
