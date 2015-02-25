@@ -3255,7 +3255,7 @@ is to make the start symbol productive.
 
 In |libmarpa|,
 inaccessibility is determined based on the assumption that
-unproductive symbols will be make productive somehow,
+unproductive symbols will be made productive somehow,
 and not eliminated.
 The downside of this choice is that, in a few uncommon cases,
 a user relying entirely
