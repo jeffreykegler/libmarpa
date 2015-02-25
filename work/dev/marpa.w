@@ -257,7 +257,7 @@ the practical worst-case complexity.
 Often, however, for theoretical complexity I consider
 myself entitled to claim
 the time complexity for a
-better algorithm, even thought that is not the one
+better algorithm, even though that is not the one
 used in the actual implementation.
 @
 Sorting is a good example of a case where
