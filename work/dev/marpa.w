@@ -279,7 +279,7 @@ and I do not care to second-guess them on this.
 But quicksort and insertion sorts are both, theoretically, $O(n^2)$.
 @ Clearly, in both cases, I could drop in a merge sort and achieve
 a theoretical time complexity $O(n \log n)$ in the worst case.
-Often it is just as clear is that, in practice,
+Often it is just as clear as that, in practice,
 the merge sort would be inferior.
 @ When I claim a complexity from a theoretical choice of algorithm,
 rather than the actually implemented one, the following will always be
