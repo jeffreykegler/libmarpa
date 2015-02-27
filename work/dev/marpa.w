@@ -9713,6 +9713,7 @@ int marpa_r_progress_report_finish(Marpa_Recognizer r) {
   const int success = 1;
   @<Return |-2| on failure@>@;
   @<Unpack recognizer objects@>@;
+    @<Fail if recognizer not started@>@;
   const MARPA_AVL_TRAV traverser = r->t_progress_report_traverser;
   @<Fail if no |traverser|@>@;
     @<Clear progress report in |r|@>@;
