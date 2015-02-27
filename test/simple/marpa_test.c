@@ -305,7 +305,7 @@ marpa_m_test_func(const char* name, ...)
   }
 
   rv_wanted = va_arg(args, int);
-  diag("rv_wanted: %d", rv_wanted);
+
   /* success wanted */
   if ( rv_wanted >= 0 )
   {
@@ -354,7 +354,7 @@ marpa_m_test_func(const char* name, ...)
         "%s() error is: %s", name, marpa_m_error_message(err_seen) );
     }
   }
-  /* todo: add handling */
+  /* todo: add impossible seen/wanted combo handling */
 
   va_end(args);
 }

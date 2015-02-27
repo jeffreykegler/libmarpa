@@ -626,7 +626,7 @@ main (int argc, char *argv[])
       marpa_m_test("marpa_r_progress_item", r, &whatever, &whatever,
         -2, MARPA_ERR_PROGRESS_REPORT_NOT_STARTED);
 
-      /* start report */
+      /* start report at bad locations */
       Marpa_Earley_Set_ID ys_id_negative = -1;
       marpa_m_test("marpa_r_progress_report_start", r, ys_id_negative,
         -2, MARPA_ERR_INVALID_LOCATION);
@@ -635,13 +635,17 @@ main (int argc, char *argv[])
       marpa_m_test("marpa_r_progress_report_start", r, ys_id_not_existing,
         -2, MARPA_ERR_NO_EARLEY_SET_AT_LOCATION);
 
+      /* start report at earleme 0 */
       Marpa_Earley_Set_ID earleme_0 = 0;
       marpa_m_test("marpa_r_progress_report_start", r, earleme_0, 0, "no items at earleme 0");
 
       marpa_m_test("marpa_r_progress_item", r, &whatever, &whatever,
         -1, MARPA_ERR_PROGRESS_REPORT_EXHAUSTED);
 
-      marpa_m_test("marpa_r_progress_report_finish", r, 1, "at earleme 0");
+      int non_negative_value = 1;
+      marpa_m_test("marpa_r_progress_report_reset", r, non_negative_value);
+
+      marpa_m_test("marpa_r_progress_report_finish", r, non_negative_value, "at earleme 0");
     }
 
   } /* recce method tests */
