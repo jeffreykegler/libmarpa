@@ -615,7 +615,20 @@ main (int argc, char *argv[])
 
     /* Progress reports */
     {
-      marpa_m_test("marpa_r_progress_report_reset", r, -2, MARPA_ERR_PROGRESS_REPORT_NOT_STARTED);
+      marpa_m_test("marpa_r_progress_report_reset", r,
+        -2, MARPA_ERR_PROGRESS_REPORT_NOT_STARTED);
+
+      Marpa_Earley_Set_ID ys_id_negative = -1;
+      marpa_m_test("marpa_r_progress_report_start", r, ys_id_negative,
+        -2, MARPA_ERR_INVALID_LOCATION);
+
+      Marpa_Earley_Set_ID ys_id_not_existing = 1;
+      marpa_m_test("marpa_r_progress_report_start", r, ys_id_not_existing,
+        -2, MARPA_ERR_NO_EARLEY_SET_AT_LOCATION);
+
+      Marpa_Earley_Set_ID earleme_0 = 0;
+      marpa_m_test("marpa_r_progress_report_start", r, earleme_0, 0, "no items at earleme 0");
+
     }
 
   } /* recce method tests */

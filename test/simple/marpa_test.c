@@ -148,6 +148,8 @@ const Marpa_Method_Error errspec[] = {
   { MARPA_ERR_SYMBOL_IS_NULLING, "symbol is nulling" },
   { MARPA_ERR_RECCE_NOT_STARTED, "recce not started" },
   { MARPA_ERR_PROGRESS_REPORT_NOT_STARTED, "progress report not started" },
+  { MARPA_ERR_INVALID_LOCATION, "invalid location" },
+  { MARPA_ERR_NO_EARLEY_SET_AT_LOCATION, "no earley set at location" },
 };
 
 char *marpa_m_error_message (Marpa_Error_Code error_code)
