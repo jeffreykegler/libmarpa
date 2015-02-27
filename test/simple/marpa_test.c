@@ -114,6 +114,7 @@ const Marpa_Method_Spec methspec[] = {
   { "marpa_r_terminal_is_expected", &marpa_r_terminal_is_expected, "%s" },
 
   { "marpa_r_progress_report_reset", &marpa_r_progress_report_reset, "" },
+  { "marpa_r_progress_report_start", &marpa_r_progress_report_start, "%i" }
 };
 
 static Marpa_Method_Spec
