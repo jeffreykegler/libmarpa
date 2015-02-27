@@ -613,7 +613,7 @@ main (int argc, char *argv[])
         -2, MARPA_ERR_INVALID_SYMBOL_ID);
       marpa_m_test("marpa_r_terminal_is_expected", r, S_no_such,
         -2, MARPA_ERR_NO_SUCH_SYMBOL_ID);
-    }
+    } /* Other parse status methods */
 
     /* Progress reports */
     {
@@ -642,7 +642,6 @@ main (int argc, char *argv[])
         -1, MARPA_ERR_PROGRESS_REPORT_EXHAUSTED);
 
       marpa_m_test("marpa_r_progress_report_finish", r, 1, "at earleme 0");
-
     }
 
   } /* recce method tests */
