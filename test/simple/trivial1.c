@@ -433,6 +433,7 @@ main (int argc, char *argv[])
     marpa_m_test("marpa_r_progress_report_reset", r, -2, MARPA_ERR_RECCE_NOT_STARTED);
     marpa_m_test("marpa_r_progress_report_start", r, whatever, -2, MARPA_ERR_RECCE_NOT_STARTED);
     marpa_m_test("marpa_r_progress_report_finish", r, -2, MARPA_ERR_RECCE_NOT_STARTED);
+    marpa_m_test("marpa_r_progress_item", r, &whatever, &whatever, -2, MARPA_ERR_RECCE_NOT_STARTED);
 
     /* start the recce */
     rc = marpa_r_start_input (r);
@@ -620,6 +621,9 @@ main (int argc, char *argv[])
         -2, MARPA_ERR_PROGRESS_REPORT_NOT_STARTED);
 
       marpa_m_test("marpa_r_progress_report_finish", r,
+        -2, MARPA_ERR_PROGRESS_REPORT_NOT_STARTED);
+
+      marpa_m_test("marpa_r_progress_item", r, &whatever, &whatever,
         -2, MARPA_ERR_PROGRESS_REPORT_NOT_STARTED);
 
       /* start report */

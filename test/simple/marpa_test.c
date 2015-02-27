@@ -116,6 +116,7 @@ const Marpa_Method_Spec methspec[] = {
   { "marpa_r_progress_report_reset", &marpa_r_progress_report_reset, "" },
   { "marpa_r_progress_report_start", &marpa_r_progress_report_start, "%i" },
   { "marpa_r_progress_report_finish", &marpa_r_progress_report_finish, "" },
+  { "marpa_r_progress_item", &marpa_r_progress_item, "%ip, %ip" },
 
 };
 
@@ -211,7 +212,7 @@ marpa_m_test_func(const char* name, ...)
   Marpa_Symbol_ID S_id, S_id1, S_id2;
   Marpa_Rule_ID R_id;
   int arg_int, arg_int1;
-  int *arg_p_int;
+  int *arg_p_int, arg_p_int1;
   void *arg_p_void;
   void **arg_p_p_void;
 
@@ -232,7 +233,11 @@ marpa_m_test_func(const char* name, ...)
   void *marpa_m_object = va_arg(args, void*);
 
 #define ARG_UNDEF 42424242
-  R_id = S_id = S_id1 = S_id2 = arg_int = arg_int1 = ARG_UNDEF;
+  R_id =
+  S_id = S_id1 = S_id2 =
+  arg_int = arg_int1 =
+  arg_p_int = arg_p_int1 = ARG_UNDEF;
+
   strcpy( tok_buf, ms.as );
   curr_arg = strtok(tok_buf, " ,-");
   while (curr_arg != NULL)
@@ -251,7 +256,10 @@ marpa_m_test_func(const char* name, ...)
       if (arg_int == ARG_UNDEF) arg_int = va_arg(args, int);
       else if (arg_int1 == ARG_UNDEF) arg_int1 = va_arg(args, int);
     }
-    else if (strcmp(curr_arg, "%ip") == 0) arg_p_int = va_arg(args, int *);
+    else if (strcmp(curr_arg, "%ip") == 0) {
+      if (arg_p_int == ARG_UNDEF) arg_p_int = va_arg(args, int *);
+      else if (arg_p_int1 == ARG_UNDEF) arg_p_int1 = va_arg(args, int *);
+    }
     else if (strcmp(curr_arg, "%vpp") == 0) arg_p_p_void = va_arg(args, void **);
     else if (strcmp(curr_arg, "%vp") == 0) arg_p_void = va_arg(args, void *);
     else{
@@ -267,6 +275,8 @@ marpa_m_test_func(const char* name, ...)
   if (ms.as == "") rv_seen = ms.p(marpa_m_object);
   else if (strcmp(ms.as, "%i") == 0)
     rv_seen = ms.p(marpa_m_object, arg_int);
+  else if (strcmp(ms.as, "%ip, %ip") == 0)
+    rv_seen = ms.p(marpa_m_object, arg_p_int, arg_p_int1);
   else if (strcmp(ms.as, "%i, %vp") == 0)
     rv_seen = ms.p(marpa_m_object, arg_int, arg_p_void);
   else if (strcmp(ms.as, "%i, %ip, %vpp") == 0)
