@@ -112,6 +112,8 @@ const Marpa_Method_Spec methspec[] = {
   { "marpa_r_expected_symbol_event_set", &marpa_r_expected_symbol_event_set, "%s, %i" },
   { "marpa_r_terminals_expected", &marpa_r_terminals_expected, "%s, %ip" },
   { "marpa_r_terminal_is_expected", &marpa_r_terminal_is_expected, "%s" },
+
+  { "marpa_r_progress_report_reset", &marpa_r_progress_report_reset, "" },
 };
 
 static Marpa_Method_Spec
@@ -144,6 +146,7 @@ const Marpa_Method_Error errspec[] = {
   { MARPA_ERR_INVALID_LOCATION, "location not valid" },
   { MARPA_ERR_SYMBOL_IS_NULLING, "symbol is nulling" },
   { MARPA_ERR_RECCE_NOT_STARTED, "recce not started" },
+  { MARPA_ERR_PROGRESS_REPORT_NOT_STARTED, "progress report not started" },
 };
 
 char *marpa_m_error_message (Marpa_Error_Code error_code)

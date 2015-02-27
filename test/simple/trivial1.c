@@ -428,9 +428,11 @@ main (int argc, char *argv[])
     if (!r)
       fail("marpa_r_new", g);
 
-    /* If input has not started, -1. */
+    /* the recce hasn't been started yet */
     marpa_m_test("marpa_r_current_earleme", r, -1, MARPA_ERR_RECCE_NOT_STARTED);
+    marpa_m_test("marpa_r_progress_report_reset", r, -2, MARPA_ERR_RECCE_NOT_STARTED);
 
+    /* start the recce */
     rc = marpa_r_start_input (r);
     if (!rc)
       fail("marpa_r_start_input", g);
@@ -608,6 +610,11 @@ main (int argc, char *argv[])
         -2, MARPA_ERR_INVALID_SYMBOL_ID);
       marpa_m_test("marpa_r_terminal_is_expected", r, S_no_such,
         -2, MARPA_ERR_NO_SUCH_SYMBOL_ID);
+    }
+
+    /* Progress reports */
+    {
+      marpa_m_test("marpa_r_progress_report_reset", r, -2, MARPA_ERR_PROGRESS_REPORT_NOT_STARTED);
     }
 
   } /* recce method tests */
