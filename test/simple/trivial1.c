@@ -428,9 +428,14 @@ main (int argc, char *argv[])
     if (!r)
       fail("marpa_r_new", g);
 
-    /* If input has not started, -1. */
+    /* the recce hasn't been started yet */
     marpa_m_test("marpa_r_current_earleme", r, -1, MARPA_ERR_RECCE_NOT_STARTED);
+    marpa_m_test("marpa_r_progress_report_reset", r, -2, MARPA_ERR_RECCE_NOT_STARTED);
+    marpa_m_test("marpa_r_progress_report_start", r, whatever, -2, MARPA_ERR_RECCE_NOT_STARTED);
+    marpa_m_test("marpa_r_progress_report_finish", r, -2, MARPA_ERR_RECCE_NOT_STARTED);
+    marpa_m_test("marpa_r_progress_item", r, &whatever, &whatever, -2, MARPA_ERR_RECCE_NOT_STARTED);
 
+    /* start the recce */
     rc = marpa_r_start_input (r);
     if (!rc)
       fail("marpa_r_start_input", g);
@@ -608,6 +613,39 @@ main (int argc, char *argv[])
         -2, MARPA_ERR_INVALID_SYMBOL_ID);
       marpa_m_test("marpa_r_terminal_is_expected", r, S_no_such,
         -2, MARPA_ERR_NO_SUCH_SYMBOL_ID);
+    } /* Other parse status methods */
+
+    /* Progress reports */
+    {
+      marpa_m_test("marpa_r_progress_report_reset", r,
+        -2, MARPA_ERR_PROGRESS_REPORT_NOT_STARTED);
+
+      marpa_m_test("marpa_r_progress_report_finish", r,
+        -2, MARPA_ERR_PROGRESS_REPORT_NOT_STARTED);
+
+      marpa_m_test("marpa_r_progress_item", r, &whatever, &whatever,
+        -2, MARPA_ERR_PROGRESS_REPORT_NOT_STARTED);
+
+      /* start report at bad locations */
+      Marpa_Earley_Set_ID ys_id_negative = -1;
+      marpa_m_test("marpa_r_progress_report_start", r, ys_id_negative,
+        -2, MARPA_ERR_INVALID_LOCATION);
+
+      Marpa_Earley_Set_ID ys_id_not_existing = 1;
+      marpa_m_test("marpa_r_progress_report_start", r, ys_id_not_existing,
+        -2, MARPA_ERR_NO_EARLEY_SET_AT_LOCATION);
+
+      /* start report at earleme 0 */
+      Marpa_Earley_Set_ID earleme_0 = 0;
+      marpa_m_test("marpa_r_progress_report_start", r, earleme_0, 0, "no items at earleme 0");
+
+      marpa_m_test("marpa_r_progress_item", r, &whatever, &whatever,
+        -1, MARPA_ERR_PROGRESS_REPORT_EXHAUSTED);
+
+      int non_negative_value = 1;
+      marpa_m_test("marpa_r_progress_report_reset", r, non_negative_value);
+
+      marpa_m_test("marpa_r_progress_report_finish", r, non_negative_value, "at earleme 0");
     }
 
   } /* recce method tests */

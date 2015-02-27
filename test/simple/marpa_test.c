@@ -112,6 +112,12 @@ const Marpa_Method_Spec methspec[] = {
   { "marpa_r_expected_symbol_event_set", &marpa_r_expected_symbol_event_set, "%s, %i" },
   { "marpa_r_terminals_expected", &marpa_r_terminals_expected, "%s, %ip" },
   { "marpa_r_terminal_is_expected", &marpa_r_terminal_is_expected, "%s" },
+
+  { "marpa_r_progress_report_reset", &marpa_r_progress_report_reset, "" },
+  { "marpa_r_progress_report_start", &marpa_r_progress_report_start, "%i" },
+  { "marpa_r_progress_report_finish", &marpa_r_progress_report_finish, "" },
+  { "marpa_r_progress_item", &marpa_r_progress_item, "%ip, %ip" },
+
 };
 
 static Marpa_Method_Spec
@@ -144,6 +150,10 @@ const Marpa_Method_Error errspec[] = {
   { MARPA_ERR_INVALID_LOCATION, "location not valid" },
   { MARPA_ERR_SYMBOL_IS_NULLING, "symbol is nulling" },
   { MARPA_ERR_RECCE_NOT_STARTED, "recce not started" },
+  { MARPA_ERR_PROGRESS_REPORT_NOT_STARTED, "progress report not started" },
+  { MARPA_ERR_INVALID_LOCATION, "invalid location" },
+  { MARPA_ERR_NO_EARLEY_SET_AT_LOCATION, "no earley set at location" },
+  { MARPA_ERR_PROGRESS_REPORT_EXHAUSTED, "progress report exhausted" },
 };
 
 char *marpa_m_error_message (Marpa_Error_Code error_code)
@@ -203,7 +213,7 @@ marpa_m_test_func(const char* name, ...)
   Marpa_Symbol_ID S_id, S_id1, S_id2;
   Marpa_Rule_ID R_id;
   int arg_int, arg_int1;
-  int *arg_p_int;
+  int *arg_p_int, arg_p_int1;
   void *arg_p_void;
   void **arg_p_p_void;
 
@@ -224,12 +234,17 @@ marpa_m_test_func(const char* name, ...)
   void *marpa_m_object = va_arg(args, void*);
 
 #define ARG_UNDEF 42424242
-  R_id = S_id = S_id1 = S_id2 = arg_int = arg_int1 = ARG_UNDEF;
+  R_id =
+  S_id = S_id1 = S_id2 =
+  arg_int = arg_int1 =
+  arg_p_int = arg_p_int1 = ARG_UNDEF;
+
   strcpy( tok_buf, ms.as );
   curr_arg = strtok(tok_buf, " ,-");
   while (curr_arg != NULL)
   {
-    if (strcmp(curr_arg, "%s") == 0){
+    if (strcmp(curr_arg, "%s") == 0)
+    {
       if (S_id == ARG_UNDEF) S_id = va_arg(args, Marpa_Symbol_ID);
       else if (S_id1 == ARG_UNDEF) S_id1 = va_arg(args, Marpa_Symbol_ID);
       else if (S_id2 == ARG_UNDEF) S_id2 = va_arg(args, Marpa_Symbol_ID);
@@ -243,7 +258,11 @@ marpa_m_test_func(const char* name, ...)
       if (arg_int == ARG_UNDEF) arg_int = va_arg(args, int);
       else if (arg_int1 == ARG_UNDEF) arg_int1 = va_arg(args, int);
     }
-    else if (strcmp(curr_arg, "%ip") == 0) arg_p_int = va_arg(args, int *);
+    else if (strcmp(curr_arg, "%ip") == 0)
+    {
+      if (arg_p_int == ARG_UNDEF) arg_p_int = va_arg(args, int *);
+      else if (arg_p_int1 == ARG_UNDEF) arg_p_int1 = va_arg(args, int *);
+    }
     else if (strcmp(curr_arg, "%vpp") == 0) arg_p_p_void = va_arg(args, void **);
     else if (strcmp(curr_arg, "%vp") == 0) arg_p_void = va_arg(args, void *);
     else{
@@ -259,6 +278,8 @@ marpa_m_test_func(const char* name, ...)
   if (ms.as == "") rv_seen = ms.p(marpa_m_object);
   else if (strcmp(ms.as, "%i") == 0)
     rv_seen = ms.p(marpa_m_object, arg_int);
+  else if (strcmp(ms.as, "%ip, %ip") == 0)
+    rv_seen = ms.p(marpa_m_object, arg_p_int, arg_p_int1);
   else if (strcmp(ms.as, "%i, %vp") == 0)
     rv_seen = ms.p(marpa_m_object, arg_int, arg_p_void);
   else if (strcmp(ms.as, "%i, %ip, %vpp") == 0)
@@ -333,7 +354,7 @@ marpa_m_test_func(const char* name, ...)
         "%s() error is: %s", name, marpa_m_error_message(err_seen) );
     }
   }
-  /* todo: add handling */
+  /* todo: add impossible seen/wanted combo handling */
 
   va_end(args);
 }
