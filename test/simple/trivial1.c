@@ -619,6 +619,10 @@ main (int argc, char *argv[])
       marpa_m_test("marpa_r_progress_report_reset", r,
         -2, MARPA_ERR_PROGRESS_REPORT_NOT_STARTED);
 
+      marpa_m_test("marpa_r_progress_report_finish", r,
+        -2, MARPA_ERR_PROGRESS_REPORT_NOT_STARTED);
+
+      /* start report */
       Marpa_Earley_Set_ID ys_id_negative = -1;
       marpa_m_test("marpa_r_progress_report_start", r, ys_id_negative,
         -2, MARPA_ERR_INVALID_LOCATION);
