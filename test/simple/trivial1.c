@@ -638,6 +638,11 @@ main (int argc, char *argv[])
       Marpa_Earley_Set_ID earleme_0 = 0;
       marpa_m_test("marpa_r_progress_report_start", r, earleme_0, 0, "no items at earleme 0");
 
+      marpa_m_test("marpa_r_progress_item", r, &whatever, &whatever,
+        -1, MARPA_ERR_PROGRESS_REPORT_EXHAUSTED);
+
+      marpa_m_test("marpa_r_progress_report_finish", r, 1, "at earleme 0");
+
     }
 
   } /* recce method tests */

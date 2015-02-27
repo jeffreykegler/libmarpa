@@ -153,6 +153,7 @@ const Marpa_Method_Error errspec[] = {
   { MARPA_ERR_PROGRESS_REPORT_NOT_STARTED, "progress report not started" },
   { MARPA_ERR_INVALID_LOCATION, "invalid location" },
   { MARPA_ERR_NO_EARLEY_SET_AT_LOCATION, "no earley set at location" },
+  { MARPA_ERR_PROGRESS_REPORT_EXHAUSTED, "progress report exhausted" },
 };
 
 char *marpa_m_error_message (Marpa_Error_Code error_code)
@@ -242,7 +243,8 @@ marpa_m_test_func(const char* name, ...)
   curr_arg = strtok(tok_buf, " ,-");
   while (curr_arg != NULL)
   {
-    if (strcmp(curr_arg, "%s") == 0){
+    if (strcmp(curr_arg, "%s") == 0)
+    {
       if (S_id == ARG_UNDEF) S_id = va_arg(args, Marpa_Symbol_ID);
       else if (S_id1 == ARG_UNDEF) S_id1 = va_arg(args, Marpa_Symbol_ID);
       else if (S_id2 == ARG_UNDEF) S_id2 = va_arg(args, Marpa_Symbol_ID);
@@ -256,7 +258,8 @@ marpa_m_test_func(const char* name, ...)
       if (arg_int == ARG_UNDEF) arg_int = va_arg(args, int);
       else if (arg_int1 == ARG_UNDEF) arg_int1 = va_arg(args, int);
     }
-    else if (strcmp(curr_arg, "%ip") == 0) {
+    else if (strcmp(curr_arg, "%ip") == 0)
+    {
       if (arg_p_int == ARG_UNDEF) arg_p_int = va_arg(args, int *);
       else if (arg_p_int1 == ARG_UNDEF) arg_p_int1 = va_arg(args, int *);
     }
@@ -302,7 +305,7 @@ marpa_m_test_func(const char* name, ...)
   }
 
   rv_wanted = va_arg(args, int);
-
+  diag("rv_wanted: %d", rv_wanted);
   /* success wanted */
   if ( rv_wanted >= 0 )
   {
