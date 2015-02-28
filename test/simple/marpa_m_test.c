@@ -129,6 +129,7 @@ const Marpa_Method_Spec methspec[] = {
   { "marpa_o_high_rank_only", &marpa_o_high_rank_only, "" },
 
   { "marpa_t_next", &marpa_t_next, "" },
+  { "marpa_t_parse_count", &marpa_t_parse_count, "" },
 
 };
 
