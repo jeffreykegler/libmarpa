@@ -279,7 +279,7 @@ marpa_m_test_func(const char* name, ...)
     /* failure seen */
     if ( rv_seen < 0 )
     {
-      ok(0, "%s() unexpectedly returned %d.", name, rv_seen);
+      ok(0, "%s() unexpectedly returned %d, error code: %d", name, rv_seen, marpa_g_error(g, NULL));
     }
     /* success seen */
     else {
