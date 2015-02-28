@@ -695,6 +695,8 @@ main (int argc, char *argv[])
       else
         ok(1, "marpa_t_new() at earleme 0");
 
+      marpa_m_test("marpa_t_parse_count", t, 0, "before the first parse tree");
+
       marpa_m_test("marpa_t_next", t, 0);
       marpa_m_test("marpa_t_next", t, -1, MARPA_ERR_TREE_EXHAUSTED);
 
