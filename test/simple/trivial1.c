@@ -702,6 +702,13 @@ main (int argc, char *argv[])
 
       marpa_m_test("marpa_t_parse_count", t, 1);
 
+      /* Value */
+      Marpa_Value v = marpa_v_new(t);
+      if (!t)
+        fail("marpa_v_new", g);
+      else
+        ok(1, "marpa_v_new() at earleme 0");
+
     } /* Bocage, Order, Tree, Value */
 
   } /* recce method tests */
