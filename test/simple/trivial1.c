@@ -659,6 +659,7 @@ main (int argc, char *argv[])
       marpa_m_test("marpa_b_new", r, ys_non_existing, NULL, MARPA_ERR_NO_PARSE);
 
       Marpa_Bocage b = marpa_b_new(r, 0);
+
       if (!b)
         fail("marpa_b_new", g);
       else
@@ -687,11 +688,14 @@ main (int argc, char *argv[])
 
       /* Tree */
       Marpa_Tree t;
+
       t = marpa_t_new (o);
       if (!t)
         fail("marpa_t_new", g);
       else
         ok(1, "marpa_t_new() at earleme 0");
+
+      marpa_m_test("marpa_t_next", t, 0);
 
     } /* Bocage, Order, Tree, Value */
 

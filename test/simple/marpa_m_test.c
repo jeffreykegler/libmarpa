@@ -127,6 +127,9 @@ const Marpa_Method_Spec methspec[] = {
 
   { "marpa_o_high_rank_only_set", &marpa_o_high_rank_only_set, "%i" },
   { "marpa_o_high_rank_only", &marpa_o_high_rank_only, "" },
+
+  { "marpa_t_next", &marpa_t_next, "" },
+
 };
 
 static Marpa_Method_Spec
