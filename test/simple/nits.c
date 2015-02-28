@@ -204,7 +204,7 @@ main (int argc, char *argv[])
   marpa_m_test("marpa_o_is_null", o, 0);
 
   int flag = 1;
-  marpa_m_test("marpa_o_high_rank_only_set", o, flag, flag);
+  marpa_m_test("marpa_o_high_rank_only_set", o, flag, -2, MARPA_ERR_ORDER_FROZEN);
   marpa_m_test("marpa_o_high_rank_only", o, flag);
 
   return 0;

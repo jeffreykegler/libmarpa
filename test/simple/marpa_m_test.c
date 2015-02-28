@@ -164,6 +164,7 @@ const Marpa_Method_Error errspec[] = {
   { MARPA_ERR_NO_EARLEY_SET_AT_LOCATION, "no earley set at location" },
   { MARPA_ERR_PROGRESS_REPORT_EXHAUSTED, "progress report exhausted" },
   { MARPA_ERR_NO_PARSE, "no parse" },
+  { MARPA_ERR_ORDER_FROZEN, "order frozen" },
 };
 
 char *marpa_m_error_message (Marpa_Error_Code error_code)
