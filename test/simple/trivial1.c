@@ -649,6 +649,16 @@ main (int argc, char *argv[])
       marpa_m_test("marpa_r_progress_report_finish", r, non_negative_value, "at earleme 0");
     }
 
+    /* Bocage, Order, Value, Tree */
+    {
+      Marpa_Bocage b = marpa_b_new(r, 0);
+      ok(b != NULL, "marpa_b_new(): null parse at earleme 0");
+
+      marpa_m_test("marpa_b_ambiguity_metric", b, 1);
+      marpa_m_test("marpa_b_is_null", b, 1);
+
+    } /* Bocage, Order, Value, Tree */
+
   } /* recce method tests */
 
   return 0;

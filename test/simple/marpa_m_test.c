@@ -118,6 +118,9 @@ const Marpa_Method_Spec methspec[] = {
   { "marpa_r_progress_report_finish", &marpa_r_progress_report_finish, "" },
   { "marpa_r_progress_item", &marpa_r_progress_item, "%ip, %ip" },
 
+  { "marpa_b_ambiguity_metric", &marpa_b_ambiguity_metric, "" },
+  { "marpa_b_is_null", &marpa_b_is_null, "" },
+
 };
 
 static Marpa_Method_Spec
