@@ -11050,7 +11050,7 @@ Marpa_Bocage marpa_b_new(Marpa_Recognizer r,
 {
     @<Return |NULL| on failure@>@;
     @<Declare bocage locals@>@;
-    if (ordinal_arg < 0)
+    if (_MARPA_UNLIKELY( ordinal_arg < 0 ))
     {
         MARPA_ERROR(MARPA_ERR_INVALID_LOCATION);
         return failure_indicator;
