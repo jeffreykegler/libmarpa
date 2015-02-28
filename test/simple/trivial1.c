@@ -651,7 +651,15 @@ main (int argc, char *argv[])
 
     /* Bocage, Order, Value, Tree */
     {
-      Marpa_Bocage b = marpa_b_new(r, 0);
+      Marpa_Bocage b;
+
+      Marpa_Earley_Set_ID ys_invalid = -1;
+      marpa_m_test("marpa_b_new", r, ys_invalid, NULL, MARPA_ERR_INVALID_LOCATION);
+
+      Marpa_Earley_Set_ID ys_non_existing = 1;
+      marpa_m_test("marpa_b_new", r, ys_non_existing, NULL, MARPA_ERR_NO_PARSE);
+
+      b = marpa_b_new(r, 0);
       ok(b != NULL, "marpa_b_new(): null parse at earleme 0");
 
       marpa_m_test("marpa_b_ambiguity_metric", b, 1);

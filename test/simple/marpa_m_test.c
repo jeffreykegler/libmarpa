@@ -118,6 +118,7 @@ const Marpa_Method_Spec methspec[] = {
   { "marpa_r_progress_report_finish", &marpa_r_progress_report_finish, "" },
   { "marpa_r_progress_item", &marpa_r_progress_item, "%ip, %ip" },
 
+  { "marpa_b_new", &marpa_b_new, "%i" },
   { "marpa_b_ambiguity_metric", &marpa_b_ambiguity_metric, "" },
   { "marpa_b_is_null", &marpa_b_is_null, "" },
 
@@ -157,6 +158,7 @@ const Marpa_Method_Error errspec[] = {
   { MARPA_ERR_INVALID_LOCATION, "invalid location" },
   { MARPA_ERR_NO_EARLEY_SET_AT_LOCATION, "no earley set at location" },
   { MARPA_ERR_PROGRESS_REPORT_EXHAUSTED, "progress report exhausted" },
+  { MARPA_ERR_NO_PARSE, "no parse" },
 };
 
 char *marpa_m_error_message (Marpa_Error_Code error_code)
@@ -266,8 +268,8 @@ marpa_m_test_func(const char* name, ...)
 
   rv_wanted = va_arg(va_args, int);
 
-  /* success wanted */
-  if ( rv_wanted >= 0 )
+  /* success wanted, except for methods returning NULL on failure */
+  if ( rv_wanted >= 0 && strcmp(name, "marpa_b_new") != 0 )
   {
     /* failure seen */
     if ( rv_seen < 0 )
