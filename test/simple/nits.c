@@ -168,7 +168,7 @@ main (int argc, char *argv[])
   int value = 1;
   marpa_m_test("marpa_r_expected_symbol_event_set", r, S_expected, value, value);
 
-  /* recognizer reading methods */
+  /* recognizer reading methods on invalid and missing symbols */
   marpa_m_test("marpa_r_alternative", r, S_invalid, 0, 0, MARPA_ERR_INVALID_SYMBOL_ID,
     "invalid token symbol is checked before no-such");
   marpa_m_test("marpa_r_alternative", r, S_no_such, 0, 0, MARPA_ERR_NO_SUCH_SYMBOL_ID,
@@ -176,6 +176,36 @@ main (int argc, char *argv[])
   marpa_m_test("marpa_r_alternative", r, S_token, 0, 0,
     MARPA_ERR_TOKEN_LENGTH_LE_ZERO, marpa_m_error_message(MARPA_ERR_TOKEN_LENGTH_LE_ZERO));
   marpa_m_test("marpa_r_earleme_complete", r, -2, MARPA_ERR_PARSE_EXHAUSTED);
+
+  /* re-create the recce and try some input */
+  r = marpa_r_new (g);
+  if (!r)
+    fail("marpa_r_new", g);
+
+  rc = marpa_r_start_input (r);
+  if (!rc)
+    fail("marpa_r_start_input", g);
+
+  marpa_m_test("marpa_r_alternative", r, S_C1, 1, 1, MARPA_ERR_NONE);
+  marpa_m_test("marpa_r_earleme_complete", r, 1);
+
+  /* marpa_o_high_rank_only_* */
+  Marpa_Bocage b = marpa_b_new(r, marpa_r_current_earleme(r));
+  if(!b)
+    fail("marpa_b_new", g);
+
+  marpa_m_test("marpa_b_ambiguity_metric", b, 1);
+  marpa_m_test("marpa_b_is_null", b, 0);
+
+  Marpa_Order o = marpa_o_new (b);
+  ok(o != NULL, "marpa_o_new(): ordering at earleme 0");
+
+  marpa_m_test("marpa_o_ambiguity_metric", o, 1);
+  marpa_m_test("marpa_o_is_null", o, 0);
+
+  int flag = 1;
+  marpa_m_test("marpa_o_high_rank_only_set", o, flag, flag);
+  marpa_m_test("marpa_o_high_rank_only", o, flag);
 
   return 0;
 }
