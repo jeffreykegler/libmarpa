@@ -12106,6 +12106,7 @@ int marpa_t_next(Marpa_Tree t)
     return FSTACK_LENGTH(t->t_nook_stack);
     TREE_IS_EXHAUSTED: ;
     tree_exhaust(t);
+    MARPA_ERROR (MARPA_ERR_TREE_EXHAUSTED);
     return termination_indicator;
 
 }
