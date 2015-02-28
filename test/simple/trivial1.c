@@ -696,6 +696,8 @@ main (int argc, char *argv[])
         ok(1, "marpa_t_new() at earleme 0");
 
       marpa_m_test("marpa_t_next", t, 0);
+      marpa_m_test("marpa_t_next", t, -1, MARPA_ERR_TREE_EXHAUSTED);
+
       marpa_m_test("marpa_t_parse_count", t, 1);
 
     } /* Bocage, Order, Tree, Value */
