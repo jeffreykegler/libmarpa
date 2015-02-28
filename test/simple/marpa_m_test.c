@@ -122,6 +122,9 @@ const Marpa_Method_Spec methspec[] = {
   { "marpa_b_ambiguity_metric", &marpa_b_ambiguity_metric, "" },
   { "marpa_b_is_null", &marpa_b_is_null, "" },
 
+  { "marpa_o_ambiguity_metric", &marpa_o_ambiguity_metric, "" },
+  { "marpa_o_is_null", &marpa_o_is_null, "" },
+
 };
 
 static Marpa_Method_Spec
