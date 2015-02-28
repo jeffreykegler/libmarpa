@@ -698,9 +698,6 @@ main (int argc, char *argv[])
       marpa_m_test("marpa_t_parse_count", t, 0, "before the first parse tree");
 
       marpa_m_test("marpa_t_next", t, 0);
-      marpa_m_test("marpa_t_next", t, -1, MARPA_ERR_TREE_EXHAUSTED);
-
-      marpa_m_test("marpa_t_parse_count", t, 1);
 
       /* Value */
       Marpa_Value v = marpa_v_new(t);
@@ -708,6 +705,55 @@ main (int argc, char *argv[])
         fail("marpa_v_new", g);
       else
         ok(1, "marpa_v_new() at earleme 0");
+
+      int step_inactive_count = 0;
+      int step_initial_count = 0;
+      int step_token_count = 0;
+      int step_rule_count = 0;
+      int step_nulling_symbol_count = 0;
+      while (1)
+      {
+        Marpa_Step_Type step_type = marpa_v_step (v);
+        Marpa_Symbol_ID token;
+
+        if (step_type < 0)
+            fail("marpa_v_step", g);
+
+        if (step_type == MARPA_STEP_INACTIVE)
+        {
+            step_inactive_count++;
+            break;
+        }
+
+        switch (step_type)
+        {
+          case MARPA_STEP_INITIAL:
+            step_initial_count++;
+            break;
+          case MARPA_STEP_TOKEN:
+            step_token_count++;
+            break;
+          case MARPA_STEP_RULE:
+            step_rule_count++;
+            break;
+          case MARPA_STEP_NULLING_SYMBOL:
+            step_nulling_symbol_count++;
+            break;
+         }
+      }
+      is_int(1, step_inactive_count, "MARPA_STEP_INACTIVE seen once.");
+      is_int(0, step_initial_count, "MARPA_STEP_INITIAL not seen.");
+      is_int(0, step_token_count, "MARPA_STEP_TOKEN not seen.");
+      is_int(0, step_rule_count, "MARPA_STEP_RULE not seen.");
+      is_int(0, step_nulling_symbol_count, "MARPA_STEP_NULLING_SYMBOL not seen.");
+
+      marpa_m_test("marpa_t_parse_count", t, 1);
+      marpa_m_test("marpa_t_next", t, -2, MARPA_ERR_TREE_PAUSED);
+
+      marpa_v_unref(v);
+
+      marpa_m_test("marpa_t_parse_count", t, 1);
+      marpa_m_test("marpa_t_next", t, -1, MARPA_ERR_TREE_EXHAUSTED);
 
     } /* Bocage, Order, Tree, Value */
 

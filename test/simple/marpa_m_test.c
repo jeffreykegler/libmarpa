@@ -170,6 +170,7 @@ const Marpa_Method_Error errspec[] = {
   { MARPA_ERR_NO_PARSE, "no parse" },
   { MARPA_ERR_ORDER_FROZEN, "order frozen" },
   { MARPA_ERR_TREE_EXHAUSTED, "tree exhausted" },
+  { MARPA_ERR_TREE_PAUSED, "tree paused" },
 };
 
 char *marpa_m_error_message (Marpa_Error_Code error_code)
