@@ -201,7 +201,7 @@ main (int argc, char *argv[])
   ok(o != NULL, "marpa_o_new(): ordering at earleme 0");
 
   int flag = 1;
-  marpa_m_test("marpa_o_high_rank_only_set", o, flag, -2, MARPA_ERR_ORDER_FROZEN);
+  marpa_m_test("marpa_o_high_rank_only_set", o, flag, flag);
   marpa_m_test("marpa_o_high_rank_only", o, flag);
 
   marpa_m_test("marpa_o_ambiguity_metric", o, 1);
