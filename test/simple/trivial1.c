@@ -20,7 +20,7 @@
 #include <stdio.h>
 #include "marpa.h"
 
-#include "marpa_test.h"
+#include "marpa_m_test.h"
 
 static int
 warn (const char *s, Marpa_Grammar g)
@@ -332,13 +332,14 @@ main (int argc, char *argv[])
   ok(1, "precomputation succeeded");
 
   /* Ranks methods on precomputed grammar */
+  /* setters fail */
   marpa_m_test("marpa_g_rule_rank_set", g, R_top_1, negative_rank, -2, MARPA_ERR_PRECOMPUTED);
-  marpa_m_test("marpa_g_rule_rank_set", g, R_top_1, negative_rank);
-
   marpa_m_test("marpa_g_rule_rank_set", g, R_top_2, positive_rank, -2, MARPA_ERR_PRECOMPUTED);
-  marpa_m_test("marpa_g_rule_rank_set", g, R_top_2, positive_rank);
-
   marpa_m_test("marpa_g_rule_null_high_set", g, R_top_2, flag, -2, MARPA_ERR_PRECOMPUTED);
+
+  /* getters succeed */
+  marpa_m_test("marpa_g_rule_rank", g, R_top_1, negative_rank);
+  marpa_m_test("marpa_g_rule_rank", g, R_top_2, positive_rank);
   marpa_m_test("marpa_g_rule_null_high", g, R_top_2, flag);
 
   /* recreate the grammar to test event methods except nulled */

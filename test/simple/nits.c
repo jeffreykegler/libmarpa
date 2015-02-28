@@ -20,7 +20,7 @@
 #include <stdio.h>
 #include "marpa.h"
 
-#include "marpa_test.h"
+#include "marpa_m_test.h"
 
 static int
 warn (const char *s, Marpa_Grammar g)
