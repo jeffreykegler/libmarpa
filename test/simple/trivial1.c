@@ -673,6 +673,10 @@ main (int argc, char *argv[])
       marpa_m_test("marpa_o_ambiguity_metric", o, 1);
       marpa_m_test("marpa_o_is_null", o, 1);
 
+      int flag = 1;
+      marpa_m_test("marpa_o_high_rank_only_set", o, flag, flag);
+      marpa_m_test("marpa_o_high_rank_only", o, flag);
+
     } /* Bocage, Order, Value, Tree */
 
   } /* recce method tests */
