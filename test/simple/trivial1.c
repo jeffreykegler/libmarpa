@@ -659,17 +659,21 @@ main (int argc, char *argv[])
       marpa_m_test("marpa_b_new", r, ys_non_existing, NULL, MARPA_ERR_NO_PARSE);
 
       Marpa_Bocage b = marpa_b_new(r, 0);
-      ok(b != NULL, "marpa_b_new(): null parse at earleme 0");
       if (!b)
-        fail("marpa_b_new", g);;
+        fail("marpa_b_new", g);
+      else
+        ok(1, "marpa_b_new(): null parse at earleme 0");
 
       marpa_m_test("marpa_b_ambiguity_metric", b, 1);
       marpa_m_test("marpa_b_is_null", b, 1);
 
       /* Order */
       Marpa_Order o = marpa_o_new (b);
+
       if (!o)
         fail("marpa_o_new", g);
+      else
+        ok(1, "marpa_o_new() at earleme 0");
 
       int flag = 1;
       marpa_m_test("marpa_o_high_rank_only_set", o, flag, flag);
@@ -686,6 +690,8 @@ main (int argc, char *argv[])
       t = marpa_t_new (o);
       if (!t)
         fail("marpa_t_new", g);
+      else
+        ok(1, "marpa_t_new() at earleme 0");
 
     } /* Bocage, Order, Tree, Value */
 
