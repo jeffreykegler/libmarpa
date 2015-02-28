@@ -3397,7 +3397,7 @@ it will be frozen on return from
 @code{marpa_o_ambiguity_metric()}.
 @code{marpa_o_ambiguity_metric()}
 is considered an ``accessor'',
-because It is assumed that the ordering is frozen
+because it is assumed that the ordering is frozen
 when @code{marpa_o_ambiguity_metric()}
 is called.
 
