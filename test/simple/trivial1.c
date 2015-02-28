@@ -20,7 +20,7 @@
 #include <stdio.h>
 #include "marpa.h"
 
-#include "marpa_test.h"
+#include "marpa_m_test.h"
 
 static int
 warn (const char *s, Marpa_Grammar g)
@@ -332,13 +332,14 @@ main (int argc, char *argv[])
   ok(1, "precomputation succeeded");
 
   /* Ranks methods on precomputed grammar */
+  /* setters fail */
   marpa_m_test("marpa_g_rule_rank_set", g, R_top_1, negative_rank, -2, MARPA_ERR_PRECOMPUTED);
-  marpa_m_test("marpa_g_rule_rank_set", g, R_top_1, negative_rank);
-
   marpa_m_test("marpa_g_rule_rank_set", g, R_top_2, positive_rank, -2, MARPA_ERR_PRECOMPUTED);
-  marpa_m_test("marpa_g_rule_rank_set", g, R_top_2, positive_rank);
-
   marpa_m_test("marpa_g_rule_null_high_set", g, R_top_2, flag, -2, MARPA_ERR_PRECOMPUTED);
+
+  /* getters succeed */
+  marpa_m_test("marpa_g_rule_rank", g, R_top_1, negative_rank);
+  marpa_m_test("marpa_g_rule_rank", g, R_top_2, positive_rank);
   marpa_m_test("marpa_g_rule_null_high", g, R_top_2, flag);
 
   /* recreate the grammar to test event methods except nulled */
@@ -647,6 +648,114 @@ main (int argc, char *argv[])
 
       marpa_m_test("marpa_r_progress_report_finish", r, non_negative_value, "at earleme 0");
     }
+
+    /* Bocage, Order, Tree, Value */
+    {
+      /* Bocage */
+      Marpa_Earley_Set_ID ys_invalid = -1;
+      marpa_m_test("marpa_b_new", r, ys_invalid, NULL, MARPA_ERR_INVALID_LOCATION);
+
+      Marpa_Earley_Set_ID ys_non_existing = 1;
+      marpa_m_test("marpa_b_new", r, ys_non_existing, NULL, MARPA_ERR_NO_PARSE);
+
+      Marpa_Bocage b = marpa_b_new(r, 0);
+
+      if (!b)
+        fail("marpa_b_new", g);
+      else
+        ok(1, "marpa_b_new(): null parse at earleme 0");
+
+      marpa_m_test("marpa_b_ambiguity_metric", b, 1);
+      marpa_m_test("marpa_b_is_null", b, 1);
+
+      /* Order */
+      Marpa_Order o = marpa_o_new (b);
+
+      if (!o)
+        fail("marpa_o_new", g);
+      else
+        ok(1, "marpa_o_new() at earleme 0");
+
+      int flag = 1;
+      marpa_m_test("marpa_o_high_rank_only_set", o, flag, flag);
+      marpa_m_test("marpa_o_high_rank_only", o, flag);
+
+      marpa_m_test("marpa_o_ambiguity_metric", o, 1);
+      marpa_m_test("marpa_o_is_null", o, 1);
+
+      marpa_m_test("marpa_o_high_rank_only_set", o, flag, -2, MARPA_ERR_ORDER_FROZEN);
+      marpa_m_test("marpa_o_high_rank_only", o, flag);
+
+      /* Tree */
+      Marpa_Tree t;
+
+      t = marpa_t_new (o);
+      if (!t)
+        fail("marpa_t_new", g);
+      else
+        ok(1, "marpa_t_new() at earleme 0");
+
+      marpa_m_test("marpa_t_parse_count", t, 0, "before the first parse tree");
+
+      marpa_m_test("marpa_t_next", t, 0);
+
+      /* Value */
+      Marpa_Value v = marpa_v_new(t);
+      if (!t)
+        fail("marpa_v_new", g);
+      else
+        ok(1, "marpa_v_new() at earleme 0");
+
+      int step_inactive_count = 0;
+      int step_initial_count = 0;
+      int step_token_count = 0;
+      int step_rule_count = 0;
+      int step_nulling_symbol_count = 0;
+      while (1)
+      {
+        Marpa_Step_Type step_type = marpa_v_step (v);
+        Marpa_Symbol_ID token;
+
+        if (step_type < 0)
+            fail("marpa_v_step", g);
+
+        if (step_type == MARPA_STEP_INACTIVE)
+        {
+            step_inactive_count++;
+            break;
+        }
+
+        switch (step_type)
+        {
+          case MARPA_STEP_INITIAL:
+            step_initial_count++;
+            break;
+          case MARPA_STEP_TOKEN:
+            step_token_count++;
+            break;
+          case MARPA_STEP_RULE:
+            step_rule_count++;
+            break;
+          case MARPA_STEP_NULLING_SYMBOL:
+            step_nulling_symbol_count++;
+            break;
+         }
+      }
+      is_int(1, step_inactive_count, "MARPA_STEP_INACTIVE seen once.");
+      is_int(0, step_initial_count, "MARPA_STEP_INITIAL not seen.");
+      is_int(0, step_token_count, "MARPA_STEP_TOKEN not seen.");
+      is_int(0, step_rule_count, "MARPA_STEP_RULE not seen.");
+      is_int(0, step_nulling_symbol_count, "MARPA_STEP_NULLING_SYMBOL not seen.");
+
+      marpa_m_test("marpa_t_parse_count", t, 1);
+      marpa_m_test("marpa_t_next", t, -2, MARPA_ERR_TREE_PAUSED);
+
+      marpa_v_unref(v);
+
+      marpa_m_test("marpa_t_parse_count", t, 1);
+      marpa_m_test("marpa_t_next", t, -1, MARPA_ERR_TREE_EXHAUSTED);
+
+    } /* Bocage, Order, Tree, Value */
 
   } /* recce method tests */
 

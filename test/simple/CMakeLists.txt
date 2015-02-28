@@ -10,10 +10,10 @@ target_link_libraries(rule1 ${LIBMARPA_STATIC} ${LIBTAP})
 add_executable(trivial trivial.c)
 target_link_libraries(trivial ${LIBMARPA_STATIC} ${LIBTAP})
 
-add_executable(trivial1 trivial1.c marpa_test.c)
+add_executable(trivial1 trivial1.c marpa_m_test.c)
 target_link_libraries(trivial1 ${LIBMARPA_STATIC} ${LIBTAP})
 
-add_executable(nits nits.c marpa_test.c)
+add_executable(nits nits.c marpa_m_test.c)
 target_link_libraries(nits ${LIBMARPA_STATIC} ${LIBTAP})
 
 add_test(rule1 rule1)

@@ -17,13 +17,15 @@
 
 /* Libmarpa method test interface -- marpa_m_test */
 
-#ifndef MARPA_TEST_H
-#define MARPA_TEST_H 1
+#ifndef MARPA_M_TEST_H
+#define MARPA_M_TEST_H 1
 
 #include <stdio.h>
 #include "marpa.h"
 
 #include "tap/basic.h"
+
+#define MARPA_M_MAX_ARG 5
 
 extern Marpa_Symbol_ID S_invalid, S_no_such;
 extern Marpa_Rule_ID R_invalid, R_no_such;
@@ -63,4 +65,4 @@ char *marpa_m_error_message (Marpa_Error_Code error_code);
 #define marpa_m_test(name, ...)  marpa_m_test_func(name, ##__VA_ARGS__, (ARGS_END))
 int marpa_m_test_func(const char* name, ...);
 
-#endif /* MARPA_TEST_H */
+#endif /* MARPA_M_TEST_H */

@@ -17,7 +17,7 @@
 
 /* Libmarpa method test interface -- marpa_m_test */
 
-#include "marpa_test.h"
+#include "marpa_m_test.h"
 
 Marpa_Symbol_ID S_invalid = -1, S_no_such = 42;
 Marpa_Rule_ID R_invalid = -1, R_no_such = 42;
@@ -110,13 +110,26 @@ const Marpa_Method_Spec methspec[] = {
   { "marpa_r_earley_item_warning_threshold", &marpa_r_earley_item_warning_threshold, "" },
 
   { "marpa_r_expected_symbol_event_set", &marpa_r_expected_symbol_event_set, "%s, %i" },
-  { "marpa_r_terminals_expected", &marpa_r_terminals_expected, "%s, %ip" },
+  { "marpa_r_terminals_expected", &marpa_r_terminals_expected, "%ip" },
   { "marpa_r_terminal_is_expected", &marpa_r_terminal_is_expected, "%s" },
 
   { "marpa_r_progress_report_reset", &marpa_r_progress_report_reset, "" },
   { "marpa_r_progress_report_start", &marpa_r_progress_report_start, "%i" },
   { "marpa_r_progress_report_finish", &marpa_r_progress_report_finish, "" },
   { "marpa_r_progress_item", &marpa_r_progress_item, "%ip, %ip" },
+
+  { "marpa_b_new", &marpa_b_new, "%i" },
+  { "marpa_b_ambiguity_metric", &marpa_b_ambiguity_metric, "" },
+  { "marpa_b_is_null", &marpa_b_is_null, "" },
+
+  { "marpa_o_ambiguity_metric", &marpa_o_ambiguity_metric, "" },
+  { "marpa_o_is_null", &marpa_o_is_null, "" },
+
+  { "marpa_o_high_rank_only_set", &marpa_o_high_rank_only_set, "%i" },
+  { "marpa_o_high_rank_only", &marpa_o_high_rank_only, "" },
+
+  { "marpa_t_next", &marpa_t_next, "" },
+  { "marpa_t_parse_count", &marpa_t_parse_count, "" },
 
 };
 
@@ -154,6 +167,10 @@ const Marpa_Method_Error errspec[] = {
   { MARPA_ERR_INVALID_LOCATION, "invalid location" },
   { MARPA_ERR_NO_EARLEY_SET_AT_LOCATION, "no earley set at location" },
   { MARPA_ERR_PROGRESS_REPORT_EXHAUSTED, "progress report exhausted" },
+  { MARPA_ERR_NO_PARSE, "no parse" },
+  { MARPA_ERR_ORDER_FROZEN, "order frozen" },
+  { MARPA_ERR_TREE_EXHAUSTED, "tree exhausted" },
+  { MARPA_ERR_TREE_PAUSED, "tree paused" },
 };
 
 char *marpa_m_error_message (Marpa_Error_Code error_code)
@@ -179,25 +196,25 @@ marpa_m_grammar() { return marpa_m_g; }
 
 // if a method returns a value, which is NOT an error code
 // Note: passing anything except char* as optional_message will dump core
-// because one can't check if an int contains a valid pointer
+//       because one can't check if an int contains a valid pointer
 marpa_m_test(
-  "method_name", method_arg1, method_arg2, ...,
+  "marpa_method_name", method_arg1, method_arg2, ...,
   expected_return_value,
   "optional_message"
 );
 
-// if a method returns an error code
+// if a method returns an negative error code
 marpa_m_test(
-  "method_name", method_arg1, method_arg2, ...,
-  expected_return_value, EXPECTED_ERROR_CODE,
+  "marpa_method_name", method_arg1, method_arg2, ...,
+  expected_negative_return_value, EXPECTED_ERROR_CODE,
   "optional_message"
 );
 
-// if a method returns a non-negative value indicating failure
+// if a method returns a negative value indicating failure
 // and sets an error code
 marpa_m_test(
-  "method_name", method_arg1, method_arg2, ...,
-  expected_return_value, EXPECTED_ERROR_CODE
+  "marpa_method_name", method_arg1, method_arg2, ...,
+  expected_negative_return_value, EXPECTED_ERROR_CODE
 );
 
 */
@@ -210,62 +227,36 @@ marpa_m_test_func(const char* name, ...)
   Marpa_Grammar g;
   Marpa_Recognizer r;
 
-  Marpa_Symbol_ID S_id, S_id1, S_id2;
-  Marpa_Rule_ID R_id;
-  int arg_int, arg_int1;
-  int *arg_p_int, arg_p_int1;
-  void *arg_p_void;
-  void **arg_p_p_void;
+  int args[MARPA_M_MAX_ARG];
+  char strtok_buf[32];
+  char *curr_arg;
+  int curr_arg_ix;
 
   int rv_wanted, rv_seen;
   int err_wanted, err_seen;
 
-  char tok_buf[32];  /* strtok() */
-  char *curr_arg;
-  int curr_arg_ix;
-
   ms = marpa_m_method_spec(name);
 
-  va_list args;
-  va_start(args, name);
+  va_list va_args;
+  va_start(va_args, name);
 
   g = marpa_m_grammar();
 
-  void *marpa_m_object = va_arg(args, void*);
+  void *marpa_m_object = va_arg(va_args, void*);
 
-#define ARG_UNDEF 42424242
-  R_id =
-  S_id = S_id1 = S_id2 =
-  arg_int = arg_int1 =
-  arg_p_int = arg_p_int1 = ARG_UNDEF;
-
-  strcpy( tok_buf, ms.as );
-  curr_arg = strtok(tok_buf, " ,-");
+  strcpy( strtok_buf, ms.as );
+  curr_arg = strtok(strtok_buf, " ,-");
+  curr_arg_ix = 0;
   while (curr_arg != NULL)
   {
-    if (strcmp(curr_arg, "%s") == 0)
+    if (strcmp(curr_arg, "%s") == 0)        args[curr_arg_ix] = va_arg(va_args, Marpa_Symbol_ID);
+    else if (strcmp(curr_arg, "%r") == 0)   args[curr_arg_ix] = va_arg(va_args, Marpa_Rule_ID);
+    else if (strcmp(curr_arg, "%i") == 0)   args[curr_arg_ix] = va_arg(va_args, int);
+    else if (strcmp(curr_arg, "%ip") == 0)  args[curr_arg_ix] = va_arg(va_args, int *);
+    else if (strcmp(curr_arg, "%vpp") == 0) args[curr_arg_ix] = va_arg(va_args, void **);
+    else if (strcmp(curr_arg, "%vp") == 0)  args[curr_arg_ix] = va_arg(va_args, void *);
+    else
     {
-      if (S_id == ARG_UNDEF) S_id = va_arg(args, Marpa_Symbol_ID);
-      else if (S_id1 == ARG_UNDEF) S_id1 = va_arg(args, Marpa_Symbol_ID);
-      else if (S_id2 == ARG_UNDEF) S_id2 = va_arg(args, Marpa_Symbol_ID);
-    }
-    else if (strcmp(curr_arg, "%r") == 0)
-    {
-      R_id   = va_arg(args, Marpa_Rule_ID);
-    }
-    else if (strcmp(curr_arg, "%i") == 0)
-    {
-      if (arg_int == ARG_UNDEF) arg_int = va_arg(args, int);
-      else if (arg_int1 == ARG_UNDEF) arg_int1 = va_arg(args, int);
-    }
-    else if (strcmp(curr_arg, "%ip") == 0)
-    {
-      if (arg_p_int == ARG_UNDEF) arg_p_int = va_arg(args, int *);
-      else if (arg_p_int1 == ARG_UNDEF) arg_p_int1 = va_arg(args, int *);
-    }
-    else if (strcmp(curr_arg, "%vpp") == 0) arg_p_p_void = va_arg(args, void **);
-    else if (strcmp(curr_arg, "%vp") == 0) arg_p_void = va_arg(args, void *);
-    else{
       printf("No variable yet for argument spec %s.\n", curr_arg);
       exit(1);
     }
@@ -275,69 +266,52 @@ marpa_m_test_func(const char* name, ...)
   }
 
   /* call marpa method based on argspec */
-  if (ms.as == "") rv_seen = ms.p(marpa_m_object);
-  else if (strcmp(ms.as, "%i") == 0)
-    rv_seen = ms.p(marpa_m_object, arg_int);
-  else if (strcmp(ms.as, "%ip, %ip") == 0)
-    rv_seen = ms.p(marpa_m_object, arg_p_int, arg_p_int1);
-  else if (strcmp(ms.as, "%i, %vp") == 0)
-    rv_seen = ms.p(marpa_m_object, arg_int, arg_p_void);
-  else if (strcmp(ms.as, "%i, %ip, %vpp") == 0)
-    rv_seen = ms.p(marpa_m_object, arg_int, arg_p_int, arg_p_p_void);
-  else if (strcmp(ms.as, "%s") == 0)
-    rv_seen = ms.p(marpa_m_object, S_id);
-  else if (strcmp(ms.as, "%r") == 0)
-    rv_seen = ms.p(marpa_m_object, R_id);
-  else if (strcmp(ms.as, "%s, %i") == 0)
-    rv_seen = ms.p(marpa_m_object, S_id, arg_int);
-  else if (strcmp(ms.as, "%s, %ip") == 0)
-    rv_seen = ms.p(marpa_m_object, S_id, arg_p_int);
-  else if (strcmp(ms.as, "%s, %i, %i") == 0)
-    rv_seen = ms.p(marpa_m_object, S_id, arg_int, arg_int1);
-  else if (strcmp(ms.as, "%r, %i") == 0)
-    rv_seen = ms.p(marpa_m_object, R_id, arg_int);
-  else if (strcmp(ms.as, "%s, %s, %s, %i, %i") == 0)
-    rv_seen = ms.p(marpa_m_object, S_id, S_id1, S_id2, arg_int, arg_int1);
-  else
+  switch (curr_arg_ix)
   {
-    printf("No method yet for argument spec %s.\n", ms.as);
-    exit(1);
+    case 0: rv_seen = ms.p(marpa_m_object); break;
+    case 1: rv_seen = ms.p(marpa_m_object, args[0]); break;
+    case 2: rv_seen = ms.p(marpa_m_object, args[0], args[1]); break;
+    case 3: rv_seen = ms.p(marpa_m_object, args[0], args[1], args[2]); break;
+    case 5: rv_seen = ms.p(marpa_m_object, args[0], args[1], args[2], args[3], args[4]); break;
+    default:
+      printf("No method yet for argument spec %s(%s), count %d.\n", name, ms.as, curr_arg_ix);
+      exit(1);
   }
 
-  rv_wanted = va_arg(args, int);
+  rv_wanted = va_arg(va_args, int);
 
-  /* success wanted */
-  if ( rv_wanted >= 0 )
+  /* success wanted, except for methods returning NULL on failure */
+  if ( rv_wanted >= 0 && strcmp(name, "marpa_b_new") != 0 )
   {
     /* failure seen */
     if ( rv_seen < 0 )
     {
-      ok(0, "%s() unexpectedly returned %d.", name, rv_seen);
+      ok(0, "%s() unexpectedly returned %d, error code: %d", name, rv_seen, marpa_g_error(g, NULL));
     }
     /* success seen */
     else {
       /* append message, if any, for methods returning error codes directly,
          e.g. marpa_r_alternative(). Passing anything except char* dumps core. */
-      char *msg = va_arg(args, char *);
+      char *msg = va_arg(va_args, char *);
       if ((unsigned int *)msg != ARGS_END)
         is_int( rv_wanted, rv_seen, "%s(): %s", name, msg );
       else
         is_int( rv_wanted, rv_seen, "%s()", name );
     }
   }
-  /* marpa_g_rule_rank() and marpa_g_rule_rank_set() may return negative values,
-     but they are actually ranks if marpa_g_error() returns MARPA_ERR_NONE.
-     So, we don't count them as failures. */
-  else if ( strncmp( name, "marpa_g_rule_rank", 17 ) == 0
-              && marpa_g_error(g, NULL) == MARPA_ERR_NONE )
-    {
-      is_int( rv_wanted, rv_seen, "%s() succeeded", name );
-    }
+  /* a Marpa method, e.g. marpa_g_rule_rank() and marpa_g_rule_rank_set()
+   * may return a negative value, which can be distinguished from failure
+   * by checking that marpa_g_error() returns MARPA_ERR_NONE.
+   */
+  else if ( marpa_g_error(g, NULL) == MARPA_ERR_NONE )
+  {
+    is_int( rv_wanted, rv_seen, "%s() succeeded", name );
+  }
   /* failure wanted, except if it marks arguments end */
   else if (rv_wanted != ARGS_END)
   {
     /* return value */
-    err_wanted = va_arg(args, int);
+    err_wanted = va_arg(va_args, int);
     is_int( rv_wanted, rv_seen, "%s() failed, returned %d", name, rv_seen );
 
     /* error code */
@@ -354,7 +328,11 @@ marpa_m_test_func(const char* name, ...)
         "%s() error is: %s", name, marpa_m_error_message(err_seen) );
     }
   }
-  /* todo: add impossible seen/wanted combo handling */
+  else{
+    printf("Test of %s(), argspec: '%s', argcount: %d, rv_wanted: %d, rv_seen: %d not defined yet.\n",
+      name, ms.as, curr_arg_ix, rv_wanted, rv_seen);
+    exit(1);
+  }
 
-  va_end(args);
+  va_end(va_args);
 }
