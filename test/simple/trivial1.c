@@ -649,26 +649,27 @@ main (int argc, char *argv[])
       marpa_m_test("marpa_r_progress_report_finish", r, non_negative_value, "at earleme 0");
     }
 
-    /* Bocage, Order, Value, Tree */
+    /* Bocage, Order, Tree, Value */
     {
       /* Bocage */
-      Marpa_Bocage b;
-
       Marpa_Earley_Set_ID ys_invalid = -1;
       marpa_m_test("marpa_b_new", r, ys_invalid, NULL, MARPA_ERR_INVALID_LOCATION);
 
       Marpa_Earley_Set_ID ys_non_existing = 1;
       marpa_m_test("marpa_b_new", r, ys_non_existing, NULL, MARPA_ERR_NO_PARSE);
 
-      b = marpa_b_new(r, 0);
+      Marpa_Bocage b = marpa_b_new(r, 0);
       ok(b != NULL, "marpa_b_new(): null parse at earleme 0");
+      if (!b)
+        fail("marpa_b_new", g);;
 
       marpa_m_test("marpa_b_ambiguity_metric", b, 1);
       marpa_m_test("marpa_b_is_null", b, 1);
 
       /* Order */
       Marpa_Order o = marpa_o_new (b);
-      ok(o != NULL, "marpa_o_new(): ordering at earleme 0");
+      if (!o)
+        fail("marpa_o_new", g);
 
       int flag = 1;
       marpa_m_test("marpa_o_high_rank_only_set", o, flag, flag);
@@ -680,7 +681,13 @@ main (int argc, char *argv[])
       marpa_m_test("marpa_o_high_rank_only_set", o, flag, -2, MARPA_ERR_ORDER_FROZEN);
       marpa_m_test("marpa_o_high_rank_only", o, flag);
 
-    } /* Bocage, Order, Value, Tree */
+      /* Tree */
+      Marpa_Tree t;
+      t = marpa_t_new (o);
+      if (!t)
+        fail("marpa_t_new", g);
+
+    } /* Bocage, Order, Tree, Value */
 
   } /* recce method tests */
 
