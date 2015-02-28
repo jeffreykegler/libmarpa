@@ -651,6 +651,7 @@ main (int argc, char *argv[])
 
     /* Bocage, Order, Value, Tree */
     {
+      /* Bocage */
       Marpa_Bocage b;
 
       Marpa_Earley_Set_ID ys_invalid = -1;
@@ -664,6 +665,13 @@ main (int argc, char *argv[])
 
       marpa_m_test("marpa_b_ambiguity_metric", b, 1);
       marpa_m_test("marpa_b_is_null", b, 1);
+
+      /* Order */
+      Marpa_Order o = marpa_o_new (b);
+      ok(o != NULL, "marpa_o_new(): ordering at earleme 0");
+
+      marpa_m_test("marpa_o_ambiguity_metric", o, 1);
+      marpa_m_test("marpa_o_is_null", o, 1);
 
     } /* Bocage, Order, Value, Tree */
 
