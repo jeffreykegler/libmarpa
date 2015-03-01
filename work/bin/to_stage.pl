@@ -91,7 +91,8 @@ stage/marpa_avl.h: avl/marpa_avl.h
 stage/marpa_tavl.h: tavl/marpa_tavl.h
 stage/marpa_tavl.c: tavl/marpa_tavl.c
 stage/AUTHORS: ac/AUTHORS
-stage/COPYING.LESSER: ac/COPYING.LESSER
+stage/COPYING: shared/COPYING
+stage/COPYING.LESSER: obs/COPYING.LESSER
 stage/ChangeLog: ac/ChangeLog
 stage/NEWS: ac/NEWS
 stage/README: ac/README
@@ -99,7 +100,6 @@ stage/LIB_VERSION.in: public/LIB_VERSION.in
 doc/README: ac_doc/README
 doc/NEWS: ac_doc/NEWS
 doc/AUTHORS: ac_doc/AUTHORS
-doc/COPYING.LESSER: ac_doc/COPYING.LESSER
 doc/ChangeLog: ac_doc/ChangeLog
 doc/fdl-1.3.texi: ac_doc/fdl-1.3.texi
 doc/lgpl-3.0.texi: ac_doc/lgpl-3.0.texi
@@ -108,7 +108,6 @@ doc/internal.texi: dev/internal.texi
 doc1/README: ac_doc1/README
 doc1/NEWS: ac_doc1/NEWS
 doc1/AUTHORS: ac_doc1/AUTHORS
-doc1/COPYING.LESSER: ac_doc1/COPYING.LESSER
 doc1/ChangeLog: ac_doc1/ChangeLog
 doc1/fdl-1.3.texi: ac_doc1/fdl-1.3.texi
 doc1/lgpl-3.0.texi: ac_doc1/lgpl-3.0.texi

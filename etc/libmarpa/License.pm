@@ -5,10 +5,10 @@
 # the rights to use, copy, modify, merge, publish, distribute, sublicense,
 # and/or sell copies of the Software, and to permit persons to whom the
 # Software is furnished to do so, subject to the following conditions:
-# 
+#
 # The above copyright notice and this permission notice shall be included
 # in all copies or substantial portions of the Software.
-# 
+#
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 # IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 # FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
@@ -94,7 +94,7 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 @end quotation
 @end copying
-END_OF_TEXI_LANGUAGE
+END_OF_TEXI_LICENSE
 
 sub hash_comment {
     my ( $text, $char ) = @_;
@@ -301,9 +301,17 @@ my %files_by_type = (
     'etc/my_suppressions'              => \&trivial,
     'libmarpa/tavl/README' => \&trivial,
 
+    # Leave obstack licensing as is
+    'cm_dist/marpa_obs.c' => \&ignored,
+    'cm_dist/marpa_obs.h' => \&ignored,
+
     # Leave Pfaff's licensing as is
+    'dist/marpa_avl.c' => \&ignored,
+    'dist/marpa_avl.h' => \&ignored,
     'dist/marpa_tavl.c' => \&ignored,
     'dist/marpa_tavl.h' => \&ignored,
+    'cm_dist/marpa_avl.c' => \&ignored,
+    'cm_dist/marpa_avl.h' => \&ignored,
     'cm_dist/marpa_tavl.c' => \&ignored,
     'cm_dist/marpa_tavl.h' => \&ignored,
     'libmarpa/tavl/marpa_tavl.c' => \&ignored,
