@@ -1,17 +1,21 @@
 # Copyright 2015 Jeffrey Kegler
-# This file is part of Libmarpa.  Libmarpa is free software: you can
-# redistribute it and/or modify it under the terms of the GNU Lesser
-# General Public License as published by the Free Software Foundation,
-# either version 3 of the License, or (at your option) any later version.
-#
-# Libmarpa is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-# Lesser General Public License for more details.
-#
-# You should have received a copy of the GNU Lesser
-# General Public License along with Libmarpa.  If not, see
-# http://www.gnu.org/licenses/.
+# Permission is hereby granted, free of charge, to any person obtaining a
+# copy of this software and associated documentation files (the "Software"),
+# to deal in the Software without restriction, including without limitation
+# the rights to use, copy, modify, merge, publish, distribute, sublicense,
+# and/or sell copies of the Software, and to permit persons to whom the
+# Software is furnished to do so, subject to the following conditions:
+# 
+# The above copyright notice and this permission notice shall be included
+# in all copies or substantial portions of the Software.
+# 
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+# THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+# OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+# ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+# OTHER DEALINGS IN THE SOFTWARE.
 
 package libmarpa::Internal::License;
 
@@ -37,19 +41,23 @@ Jeffrey Kegler retains full rights.
 END_OF_STRING
 
 my $license_body = <<'END_OF_STRING';
-This file is part of Libmarpa.  Libmarpa is free software: you can
-redistribute it and/or modify it under the terms of the GNU Lesser
-General Public License as published by the Free Software Foundation,
-either version 3 of the License, or (at your option) any later version.
+Permission is hereby granted, free of charge, to any person obtaining a
+copy of this software and associated documentation files (the "Software"),
+to deal in the Software without restriction, including without limitation
+the rights to use, copy, modify, merge, publish, distribute, sublicense,
+and/or sell copies of the Software, and to permit persons to whom the
+Software is furnished to do so, subject to the following conditions:
 
-Libmarpa is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-Lesser General Public License for more details.
+The above copyright notice and this permission notice shall be included
+in all copies or substantial portions of the Software.
 
-You should have received a copy of the GNU Lesser
-General Public License along with Libmarpa.  If not, see
-http://www.gnu.org/licenses/.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+OTHER DEALINGS IN THE SOFTWARE.
 END_OF_STRING
 
 my $license = "$copyright_line\n$license_body";
@@ -59,35 +67,34 @@ my $license_in_tex =
     "$copyright_line_in_tex\n" . "\\bigskip\\noindent\n" . "$license_body";
 $license_in_tex =~ s/^$/\\smallskip\\noindent/gxms;
 
-my $license_file = $license . <<'END_OF_STRING';
-
-In the Libmarpa distribution, the GNU Lesser General Public License
-version 3 should be in a file named "COPYING.LESSER".
-END_OF_STRING
+my $license_file = $license;
 
 my $texi_copyright = <<'END_OF_TEXI_COPYRIGHT';
 Copyright @copyright{} 2015 Jeffrey Kegler.
 END_OF_TEXI_COPYRIGHT
 
-my $fdl_license = <<'END_OF_FDL_LANGUAGE';
+my $texi_license = <<'END_OF_TEXI_LICENSE';
 @quotation
-Permission is granted to copy, distribute and/or modify this document
-under the terms of the @acronym{GNU} Free Documentation License,
-Version 1.3 or any later version published by the Free Software
-Foundation.
-A copy of the license is included in the section entitled
-``@acronym{GNU} Free Documentation License.''
+Permission is hereby granted, free of charge, to any person obtaining a
+copy of this software and associated documentation files (the ``Software''),
+to deal in the Software without restriction, including without limitation
+the rights to use, copy, modify, merge, publish, distribute, sublicense,
+and/or sell copies of the Software, and to permit persons to whom the
+Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included
+in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED ``AS IS'', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+OTHER DEALINGS IN THE SOFTWARE.
 @end quotation
 @end copying
-END_OF_FDL_LANGUAGE
-
-my $cc_a_nd_body = <<'END_OF_CC_A_ND_LANGUAGE';
-This document is licensed under
-a Creative Commons Attribution-NoDerivs 3.0 United States License.
-END_OF_CC_A_ND_LANGUAGE
-
-my $cc_a_nd_license = "$copyright_line\n$cc_a_nd_body";
-my $cc_a_nd_thanks = $cc_a_nd_body;
+END_OF_TEXI_LANGUAGE
 
 sub hash_comment {
     my ( $text, $char ) = @_;
@@ -110,7 +117,6 @@ my $r2_hash_license    = hash_comment($license);
 my $xsh_hash_license    = hash_comment($license, q{ #});
 my $tex_closed_license = hash_comment( $closed_license, q{%} );
 my $tex_license        = hash_comment( $license, q{%} );
-my $tex_cc_a_nd_license = hash_comment( $cc_a_nd_license, q{%} );
 my $indented_license   = $license;
 $indented_license =~ s/^/  /gxms;
 $indented_license =~ s/[ ]+$//gxms;
@@ -284,22 +290,12 @@ my %files_by_type = (
     'libmarpa/shared/copyright_page_license.w' => \&copyright_page,
     'libmarpa/shared/cwebmac.tex' =>
         \&ignored,    # originally from Cweb, leave it alone
-    'work/ac_doc/fdl-1.3.texi'  => \&ignored,
-    'work/ac_doc/lgpl-3.0.texi' => \&ignored,
-    'work/ac_doc1/fdl-1.3.texi'  => \&ignored,
-    'work/ac_doc1/lgpl-3.0.texi' => \&ignored,
     'libmarpa/test/Makefile'        => \&trivial,
     'libmarpa/test/README'          => \&trivial,
     'libmarpa/test/dev/install-sh'  => \&check_X_copyright,
     'libmarpa/win32/make.bat'           => \&trivial,
-    'doc_dist/fdl-1.3.texi' =>
-        \&ignored,    ## GNU license text, leave it alone
-    'doc_dist/lgpl-3.0.texi'  => \&ignored,
     'doc_dist/version.texi'   => \&trivial,
     'doc_dist/version_i.texi' => \&trivial,
-    'doc1_dist/fdl-1.3.texi' =>
-        \&ignored,    ## GNU license text, leave it alone
-    'doc1_dist/lgpl-3.0.texi'  => \&ignored,
     'doc1_dist/version.texi'   => \&trivial,
     'doc1_dist/version_i.texi' => \&trivial,
     'etc/my_suppressions'              => \&trivial,
@@ -372,9 +368,9 @@ sub file_type {
         if $filepart =~ /[.] (t|pl|pm|PL) \z /xms;
     return \&license_problems_in_perl_file
         if $filepart eq 'typemap';
-    return \&license_problems_in_fdl_file
+    return \&license_problems_in_texi_file
         if $filepart eq 'internal.texi';
-    return \&license_problems_in_fdl_file
+    return \&license_problems_in_texi_file
         if $filepart eq 'api.texi';
     return \&license_problems_in_pod_file if $filepart =~ /[.]pod \z/xms;
     return \&license_problems_in_c_file
@@ -675,60 +671,6 @@ sub tex_closed {
     return @problems;
 } ## end sub tex_closed
 
-# Note!!!  This license is not Debian-compatible!!!
-sub tex_cc_a_nd {
-    my ( $filename, $verbose ) = @_;
-    my @problems = ();
-    my $text = slurp( $filename );
-
-# say "=== Looking for\n", $tex_cc_a_nd_license, "===";
-# say "=== Looking in\n", ${$text}, "===";
-# say STDERR index ${$text}, $tex_cc_a_nd_license ;
-
-    if ( ( index ${$text}, $tex_cc_a_nd_license ) != 0 ) {
-        my $problem = "No CC-A-ND language in $filename (TeX style)\n";
-        push @problems, $problem;
-    } ## end if ( ( index ${$text}, $tex_cc_a_nd_license ) != 0 )
-    if ( ( index ${$text}, $cc_a_nd_thanks ) < 0 ) {
-        my $problem = "No CC-A-ND LaTeX thanks in $filename\n";
-        push @problems, $problem;
-    } ## end if ( ( index ${$text}, $tex_cc_a_nd_license ) != 0 )
-    if ( ( index ${$text}, $copyright_line_in_tex ) < 0 ) {
-        my $problem = "No copyright line in $filename\n";
-        push @problems, $problem;
-    } ## end if ( ( index ${$text}, $tex_cc_a_nd_license ) != 0 )
-    if ( scalar @problems and $verbose >= 2 ) {
-        my $problem =
-              "=== license for $filename should be as follows:\n"
-            . $tex_closed_license
-            . ( q{=} x 30 );
-        push @problems, $problem;
-    } ## end if ( scalar @problems and $verbose >= 2 )
-    return @problems;
-} ## end sub tex_closed
-
-sub cc_a_nd {
-    my ( $filename, $verbose ) = @_;
-    my @problems = ();
-    my $text     = slurp($filename);
-    if ( ( index ${$text}, $cc_a_nd_body ) < 0 ) {
-        my $problem = "No CC-A-ND language in $filename (TeX style)\n";
-        push @problems, $problem;
-    }
-    if ( ( index ${$text}, $copyright_line ) < 0 ) {
-        my $problem = "No copyright line in $filename\n";
-        push @problems, $problem;
-    }
-    if ( scalar @problems and $verbose >= 2 ) {
-        my $problem =
-              "=== license for $filename should be as follows:\n"
-            . $cc_a_nd_body
-            . ( q{=} x 30 );
-        push @problems, $problem;
-    } ## end if ( scalar @problems and $verbose >= 2 )
-    return @problems;
-} ## end sub cc_a_nd
-
 sub copyright_page {
     my ( $filename, $verbose ) = @_;
 
@@ -830,10 +772,10 @@ sub license_problems_in_text_file {
 
 # In "Text" files, just look for the full language.
 # No need to comment it out.
-sub license_problems_in_fdl_file {
+sub license_problems_in_texi_file {
     my ( $filename, $verbose ) = @_;
     if ($verbose) {
-        say {*STDERR} "Checking $filename as FDL file"
+        say {*STDERR} "Checking $filename as texinfo file"
             or die "say failed: $ERRNO";
     }
     my @problems = ();
@@ -841,28 +783,28 @@ sub license_problems_in_fdl_file {
     if ( ( index ${$text}, $texi_copyright ) < 0 ) {
         my $problem = "Copyright missing in texinfo file $filename\n";
         if ($verbose) {
-            $problem .= "\nMissing FDL license language:\n"
-                . Text::Diff::diff( $text, \$fdl_license );
+            $problem .= "\nMissing texinfo license language:\n"
+                . Text::Diff::diff( $text, \$texi_license );
         }
         push @problems, $problem;
-    }
-    if ( ( index ${$text}, $fdl_license ) < 0 ) {
-        my $problem = "FDL language missing in text file $filename\n";
+    } ## end if ( ( index ${$text}, $texi_copyright ) < 0 )
+    if ( ( index ${$text}, $texi_license ) < 0 ) {
+        my $problem = "texinfo language missing in text file $filename\n";
         if ($verbose) {
-            $problem .= "\nMissing FDL license language:\n"
-                . Text::Diff::diff( $text, \$fdl_license );
+            $problem .= "\nMissing texinfo license language:\n"
+                . Text::Diff::diff( $text, \$texi_license );
         }
         push @problems, $problem;
-    } ## end if ( ( index ${$text}, $fdl_license ) < 0 )
+    } ## end if ( ( index ${$text}, $texi_license ) < 0 )
     if ( scalar @problems and $verbose >= 2 ) {
         my $problem =
-            "=== FDL licensing section for $filename should be as follows:\n"
+            "=== texinfo licensing section for $filename should be as follows:\n"
             . $pod_section
             . ( q{=} x 30 );
         push @problems, $problem;
     } ## end if ( scalar @problems and $verbose >= 2 )
     return @problems;
-} ## end sub license_problems_in_fdl_file
+} ## end sub license_problems_in_texi_file
 
 1;
 
