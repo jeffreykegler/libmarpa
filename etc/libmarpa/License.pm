@@ -264,6 +264,9 @@ my %files_by_type = (
     'COPYING.LESSER' => \&ignored,    # GNU license text, leave it alone
     'cm_dist/COPYING.LESSER' => \&ignored,    # GNU license text, leave it alone
     'cm_dist/COPYING' => \&ignored,    # MIT license text, leave it alone
+    'dist/COPYING' => \&ignored,    # MIT license text, leave it alone
+    'doc_dist/COPYING' => \&ignored,    # MIT license text, leave it alone
+    'doc1_dist/COPYING' => \&ignored,    # MIT license text, leave it alone
     'LICENSE' => \&license_problems_in_license_file,
     'META.json' =>
         \&ignored,    # not source, and not clear how to add license at top
@@ -303,6 +306,8 @@ my %files_by_type = (
     'libmarpa/tavl/README' => \&trivial,
 
     # Leave obstack licensing as is
+    'dist/marpa_obs.c' => \&ignored,
+    'dist/marpa_obs.h' => \&ignored,
     'cm_dist/marpa_obs.c' => \&ignored,
     'cm_dist/marpa_obs.h' => \&ignored,
 

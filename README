@@ -7,9 +7,8 @@ By submitting code to this repository, you are considered to have
 signed off on the Developer's Certificate of Origin, which is given
 below.
 
-All code contributed must be compatible with version 3 of the Lesser
-GNU General Public License (LGPLv3), which is the license covering
-the Marpa::R3 distribution as a whole.
+All code contributed must be compatible with the MIT License:
+http://www.opensource.org/licenses/mit-license.html
 
 Copyright assignments are not required (or requested). All code
 retains its original ownership.  One implication of this ownership
