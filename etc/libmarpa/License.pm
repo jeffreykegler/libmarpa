@@ -263,6 +263,7 @@ sub check_tag {
 my %files_by_type = (
     'COPYING.LESSER' => \&ignored,    # GNU license text, leave it alone
     'cm_dist/COPYING.LESSER' => \&ignored,    # GNU license text, leave it alone
+    'cm_dist/COPYING' => \&ignored,    # MIT license text, leave it alone
     'LICENSE' => \&license_problems_in_license_file,
     'META.json' =>
         \&ignored,    # not source, and not clear how to add license at top
