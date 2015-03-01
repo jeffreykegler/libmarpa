@@ -286,7 +286,7 @@ my %files_by_type = (
     'dist/LIB_VERSION'                => \&trivial,
     'dist/LIB_VERSION.in'             => \&trivial,
     'cm_dist/LIB_VERSION.cmake'             => \&trivial,
-    'cm_dist/README'             => \&trivial,
+    'cm_dist/README'             => \&license_problems_in_text_file,
     'cm_dist/modules/inline.c'             => \&trivial,
     'cm_dist/config.h.cmake'             => \&trivial,
     'libmarpa/public/LIB_VERSION.in'           => \&trivial,
@@ -765,7 +765,7 @@ sub license_problems_in_text_file {
         say {*STDERR} "Checking $filename as text file" or die "say failed: $ERRNO";
     }
     my @problems = ();
-    my $text     = slurp_top($filename);
+    my $text     = slurp_top($filename, (length $license)*2);
     if ( ( index ${$text}, $license ) < 0 ) {
         my $problem = "Full language missing in text file $filename\n";
         if ($verbose) {
