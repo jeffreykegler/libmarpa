@@ -220,6 +220,14 @@ main (int argc, char *argv[])
   marpa_m_test("marpa_g_symbol_is_terminal_set", g, S_invalid, 1, -2, MARPA_ERR_INVALID_SYMBOL_ID);
   marpa_m_test("marpa_g_symbol_is_terminal_set", g, S_no_such, 1, -1, MARPA_ERR_NO_SUCH_SYMBOL_ID);
 
+  /* Rules */
+  marpa_m_test("marpa_g_highest_rule_id", g, R_C2_3, "before precomputation");
+  marpa_m_test("marpa_g_rule_length", g, R_top_1, 1, "before precomputation");
+  marpa_m_test("marpa_g_rule_length", g, R_C2_3, 0, "before precomputation");
+  marpa_m_test("marpa_g_rule_lhs", g, R_top_1, S_top, "before precomputation");
+  marpa_m_test("marpa_g_rule_rhs", g, R_top_1, 0, S_A1, "before precomputation");
+  marpa_m_test("marpa_g_rule_rhs", g, R_top_2, 0, S_A2, "before precomputation");
+
   /* marpa_g_symbol_is_terminal_set() on a nulling symbol */
   marpa_m_test("marpa_g_symbol_is_terminal_set", g, S_C1, 1, 1);
   /* can't change terminal status after it's been set */
