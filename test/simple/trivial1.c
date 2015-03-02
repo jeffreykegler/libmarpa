@@ -184,7 +184,7 @@ main (int argc, char *argv[])
 
   marpa_m_grammar_set(g); /* for marpa_g_error() in marpa_m_test() */
 
-  /* Grammar Methods per sections of api.texi: Symbols, Rules, Sequnces, Ranks, Events */
+  /* Grammar Methods per sections of api.texi: Symbols, Rules, Sequences, Ranks, Events ... */
 
   marpa_m_test("marpa_g_symbol_is_start", g, S_invalid, -2, MARPA_ERR_INVALID_SYMBOL_ID);
   marpa_m_test("marpa_g_symbol_is_start", g, S_no_such, -1, MARPA_ERR_NO_SUCH_SYMBOL_ID);
@@ -207,6 +207,7 @@ main (int argc, char *argv[])
   marpa_m_test("marpa_g_symbol_is_nullable", g, S_A1, -2, MARPA_ERR_NOT_PRECOMPUTED);
   marpa_m_test("marpa_g_symbol_is_nulling", g, S_A1, -2, MARPA_ERR_NOT_PRECOMPUTED);
   marpa_m_test("marpa_g_symbol_is_productive", g, S_top, -2, MARPA_ERR_NOT_PRECOMPUTED);
+
   marpa_m_test("marpa_g_symbol_is_terminal", g, S_top, 0);
 
   /* Rules */
