@@ -2829,6 +2829,7 @@ int marpa_g_rule_is_accessible(Marpa_Grammar g, Marpa_Rule_ID xrl_id)
   @<Return |-2| on failure@>@;
   XRL xrl;
   @<Fail if fatal error@>@;
+   @<Fail if not precomputed@>@;
     @<Fail if |xrl_id| is malformed@>@;
     @<Soft fail if |xrl_id| does not exist@>@;
   xrl = XRL_by_ID(xrl_id);
@@ -2847,6 +2848,7 @@ int marpa_g_rule_is_productive(Marpa_Grammar g, Marpa_Rule_ID xrl_id)
   @<Return |-2| on failure@>@;
   XRL xrl;
   @<Fail if fatal error@>@;
+   @<Fail if not precomputed@>@;
     @<Fail if |xrl_id| is malformed@>@;
     @<Soft fail if |xrl_id| does not exist@>@;
   xrl = XRL_by_ID(xrl_id);
