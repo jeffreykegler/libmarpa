@@ -212,12 +212,16 @@ main (int argc, char *argv[])
   marpa_m_test("marpa_g_symbol_is_terminal", g, S_top, 0);
 
   /* Rules */
-  marpa_m_test("marpa_g_rule_is_nullable", g, R_top_2, -2, MARPA_ERR_NOT_PRECOMPUTED);
-  marpa_m_test("marpa_g_rule_is_nulling", g, R_top_2, -2, MARPA_ERR_NOT_PRECOMPUTED);
-  marpa_m_test("marpa_g_rule_is_loop", g, R_C2_3, -2, MARPA_ERR_NOT_PRECOMPUTED);
+  const char *marpa_g_rule_classifiers[] = {
+    "marpa_g_rule_is_nullable",
+    "marpa_g_rule_is_nulling",
+    "marpa_g_rule_is_loop",
 
-  marpa_m_test("marpa_g_rule_is_accessible", g, R_top_1, -2, MARPA_ERR_NOT_PRECOMPUTED);
-  marpa_m_test("marpa_g_rule_is_productive", g, R_C2_3, -2, MARPA_ERR_NOT_PRECOMPUTED);
+    "marpa_g_rule_is_accessible",
+    "marpa_g_rule_is_productive",
+  };
+
+  marpa_m_tests(marpa_g_rule_classifiers, g, whatever, -2, MARPA_ERR_NOT_PRECOMPUTED);
 
   /* marpa_g_symbol_is_terminal_set() on invalid and non-existing symbol IDs
      on a non-precomputed grammar */
