@@ -11054,11 +11054,6 @@ Marpa_Bocage marpa_b_new(Marpa_Recognizer r,
 {
     @<Return |NULL| on failure@>@;
     @<Declare bocage locals@>@;
-    if (_MARPA_UNLIKELY( ordinal_arg < 0 ))
-    {
-        MARPA_ERROR(MARPA_ERR_INVALID_LOCATION);
-        return failure_indicator;
-    }
     @<Fail if fatal error@>@;
     @<Fail if recognizer not started@>@;
     {
