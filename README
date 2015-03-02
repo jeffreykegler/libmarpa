@@ -21,7 +21,7 @@ It is imperative that all contributed code be legitimately free
 software.  For that reason, code from anonymous (or pseudonymous)
 contributors will not be accepted.  By contributing code to this
 repository, all contributors "sign off" on that code, agreeing that
-the code can be distributed under the LGPL.  Code which has not
+the code can be distributed under the MIT License.  Code which has not
 been licensed as free software by its owner, or which risks creating
 copyright-related problems (such as code which derives from
 reverse-engineering efforts lacking proper safeguards) cannot be
