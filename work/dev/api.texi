@@ -1764,6 +1764,16 @@ including the case
 where rule @var{rule_id}
 is not a sequence rule, returns 0.
 
+The @code{marpa_g_rule_is_proper_separation()}
+does not distinguish rules without proper
+separation from rules for which separation
+is not defined, because they are not
+sequence rules.
+Applications for which this distinction is
+important should use
+the 
+@code{marpa_g_sequence_min()} method.
+
 Failure returns:
 If @var{rule_id} is well-formed, but there is no
 such rule, returns @minus{}1.
