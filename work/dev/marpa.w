@@ -1660,7 +1660,10 @@ Marpa_Symbol_ID xsy_id)
     @<Soft fail if |xsy_id| does not exist@>@;
     return XSYID_is_Nulled_Event(xsy_id);
 }
-@ @<Function definitions@> =
+
+@ Does not check if the symbol is actually nullable --
+this is by design.
+@<Function definitions@> =
 int marpa_g_symbol_is_nulled_event_set(
 Marpa_Grammar g, Marpa_Symbol_ID xsy_id, int value)
 {

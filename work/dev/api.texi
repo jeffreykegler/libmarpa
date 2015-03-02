@@ -2288,6 +2288,20 @@ When a zero length symbol is recognized,
 all of its zero-length derivations are also considered to be
 recognized.
 
+The @code{marpa_g_symbol_is_nulled_event_set()} method will
+mark a symbol as a nulled event symbol,
+even if the symbol is non-nullable.
+This is convenient, for example,
+for automatically generated grammars.
+Applications which wish to treat
+it as a failure if there is an
+attempt to
+mark a non-nullable symbol
+as a nulled event symbol,
+can check for this case using
+the @code{marpa_g_symbol_is_nullable()}
+method.
+
 Success: On success, 1 if symbol @var{sym_id}
 is a nulled event symbol after the
 call, 0 otherwise.
