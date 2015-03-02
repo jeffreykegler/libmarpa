@@ -269,8 +269,15 @@ main (int argc, char *argv[])
   marpa_m_test("marpa_g_rule_length", g, R_top_1, 1);
   marpa_m_test("marpa_g_rule_length", g, R_C2_3, 0);
   marpa_m_test("marpa_g_rule_lhs", g, R_top_1, S_top);
+
   marpa_m_test("marpa_g_rule_rhs", g, R_top_1, 0, S_A1);
   marpa_m_test("marpa_g_rule_rhs", g, R_top_2, 0, S_A2);
+
+  int ix_out_of_bounds = 25;
+  marpa_m_test("marpa_g_rule_rhs", g, R_top_2, ix_out_of_bounds, -2, MARPA_ERR_RHS_IX_OOB);
+
+  int ix_negative = -1;
+  marpa_m_test("marpa_g_rule_rhs", g, R_top_2, ix_negative, -2, MARPA_ERR_RHS_IX_NEGATIVE);
 
   /* invalid/no such rule id error handling */
   const char *marpa_g_rule_accessors[] = {
