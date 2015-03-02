@@ -175,6 +175,8 @@ const Marpa_Method_Error errspec[] = {
   { MARPA_ERR_ORDER_FROZEN, "order frozen" },
   { MARPA_ERR_TREE_EXHAUSTED, "tree exhausted" },
   { MARPA_ERR_TREE_PAUSED, "tree paused" },
+  { MARPA_ERR_RHS_IX_OOB, "rhs index out of bounds" },
+  { MARPA_ERR_RHS_IX_NEGATIVE, "rhs index negative" },
 };
 
 char *marpa_m_error_message (Marpa_Error_Code error_code)
@@ -197,7 +199,6 @@ Marpa_Grammar
 marpa_m_grammar() { return marpa_m_g; }
 
 /*
-
 // if a method returns a value, which is NOT an error code
 // Note: passing anything except char* as optional_message will dump core
 //       because one can't check if an int contains a valid pointer
