@@ -203,10 +203,11 @@ main (int argc, char *argv[])
 
   /* these must return -2 and set error code to MARPA_ERR_NOT_PRECOMPUTED */
   /* Symbols */
-  marpa_m_test("marpa_g_symbol_is_accessible", g, S_C2, -2, MARPA_ERR_NOT_PRECOMPUTED);
-  marpa_m_test("marpa_g_symbol_is_nullable", g, S_A1, -2, MARPA_ERR_NOT_PRECOMPUTED);
-  marpa_m_test("marpa_g_symbol_is_nulling", g, S_A1, -2, MARPA_ERR_NOT_PRECOMPUTED);
-  marpa_m_test("marpa_g_symbol_is_productive", g, S_top, -2, MARPA_ERR_NOT_PRECOMPUTED);
+  const char *marpa_g_symbol_classifiers[] = {
+    "marpa_g_symbol_is_accessible", "marpa_g_symbol_is_nullable",
+    "marpa_g_symbol_is_nulling", "marpa_g_symbol_is_productive",
+  };
+  marpa_m_tests(marpa_g_symbol_classifiers, g, whatever, -2, MARPA_ERR_NOT_PRECOMPUTED);
 
   marpa_m_test("marpa_g_symbol_is_terminal", g, S_top, 0);
 
