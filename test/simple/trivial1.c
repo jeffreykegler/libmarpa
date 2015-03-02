@@ -656,13 +656,22 @@ main (int argc, char *argv[])
     /* Bocage, Order, Tree, Value */
     {
       /* Bocage */
-      Marpa_Earley_Set_ID ys_invalid = -1;
+      Marpa_Earley_Set_ID ys_invalid = -2;
       marpa_m_test("marpa_b_new", r, ys_invalid, NULL, MARPA_ERR_INVALID_LOCATION);
 
       Marpa_Earley_Set_ID ys_non_existing = 1;
       marpa_m_test("marpa_b_new", r, ys_non_existing, NULL, MARPA_ERR_NO_PARSE);
 
-      Marpa_Bocage b = marpa_b_new(r, 0);
+      Marpa_Earley_Set_ID ys_at_current_earleme = -1;
+      Marpa_Bocage b = marpa_b_new(r, ys_at_current_earleme);
+      if (!b)
+        fail("marpa_b_new", g);
+      else
+        ok(1, "marpa_b_new(): parse at current earleme of trivial parse");
+
+      marpa_b_unref(b);
+
+      b = marpa_b_new(r, 0);
 
       if (!b)
         fail("marpa_b_new", g);

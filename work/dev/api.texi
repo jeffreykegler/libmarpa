@@ -2749,7 +2749,7 @@ On failure, @minus{}2.
 @node Location accessors, Other parse status methods, Recognizer life cycle mutators, Recognizer methods
 @section Location accessors
 
-@deftypefun @code{unsigned int} marpa_r_current_earleme (Marpa_Recognizer @var{r})
+@deftypefun @code{Marpa_Earleme} marpa_r_current_earleme (Marpa_Recognizer @var{r})
 Return value: If input has started, the current earleme.
 If input has not started, @minus{}1.
 Always succeeds.

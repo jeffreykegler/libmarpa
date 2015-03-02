@@ -6073,14 +6073,14 @@ r->t_current_earleme = -1;
 @d Latest_YS_of_R(r) ((r)->t_latest_earley_set)
 @d Current_Earleme_of_R(r) ((r)->t_current_earleme)
 @<Function definitions@> =
-unsigned int marpa_r_current_earleme(Marpa_Recognizer r)
+Marpa_Earleme marpa_r_current_earleme(Marpa_Recognizer r)
 {
   @<Unpack recognizer objects@>@;
   if (_MARPA_UNLIKELY(Input_Phase_of_R(r) == R_BEFORE_INPUT)) {
       MARPA_ERROR(MARPA_ERR_RECCE_NOT_STARTED);
       return -1;
   }
-  return (unsigned int)Current_Earleme_of_R(r);
+  return Current_Earleme_of_R(r);
 }
 
 @ The ``Earley set at the current earleme'' is always
@@ -11055,6 +11055,12 @@ Marpa_Bocage marpa_b_new(Marpa_Recognizer r,
     @<Return |NULL| on failure@>@;
     @<Declare bocage locals@>@;
     @<Fail if fatal error@>@;
+    if (_MARPA_UNLIKELY( ordinal_arg <= -2 ))
+    {
+        MARPA_ERROR(MARPA_ERR_INVALID_LOCATION);
+        return failure_indicator;
+    }
+
     @<Fail if recognizer not started@>@;
     {
         struct marpa_obstack* const obstack = marpa_obs_init;
@@ -11064,7 +11070,10 @@ Marpa_Bocage marpa_b_new(Marpa_Recognizer r,
     @<Initialize bocage elements@>@;
 
     if (G_is_Trivial(g)) {
-        if (ordinal_arg > 0) goto NO_PARSE;
+        switch (ordinal_arg) {
+          default: goto NO_PARSE;
+          case 0: case -1: break;
+        }
         B_is_Nulling(b) = 1;
         return b;
     }
