@@ -287,13 +287,8 @@ main (int argc, char *argv[])
     "marpa_g_rule_is_nulling", "marpa_g_rule_is_loop", "marpa_g_rule_is_productive",
     "marpa_g_rule_length", "marpa_g_rule_lhs",
   };
-  for (ix = 0; ix < sizeof(marpa_g_rule_accessors) / sizeof(char *); ix++)
-  {
-    marpa_m_test(marpa_g_rule_accessors[ix], g, R_invalid, -2, MARPA_ERR_INVALID_RULE_ID);
-    marpa_m_test(marpa_g_rule_accessors[ix], g, R_no_such, -1, MARPA_ERR_NO_SUCH_RULE_ID);
-  }
-  marpa_m_test("marpa_g_rule_rhs", g, R_invalid, 0, -2, MARPA_ERR_INVALID_RULE_ID);
-  marpa_m_test("marpa_g_rule_rhs", g, R_no_such, 0, -1, MARPA_ERR_NO_SUCH_RULE_ID);
+  marpa_m_tests(marpa_g_rule_accessors, g, R_invalid, -2, MARPA_ERR_INVALID_RULE_ID);
+  marpa_m_tests(marpa_g_rule_accessors, g, R_no_such, -1, MARPA_ERR_NO_SUCH_RULE_ID);
 
   /* Sequences */
   /* try to add a nulling sequence, and make sure that it fails with an appropriate

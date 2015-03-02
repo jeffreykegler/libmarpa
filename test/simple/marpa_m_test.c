@@ -199,7 +199,6 @@ Marpa_Grammar
 marpa_m_grammar() { return marpa_m_g; }
 
 /*
-
 // if a method returns a value, which is NOT an error code
 // Note: passing anything except char* as optional_message will dump core
 //       because one can't check if an int contains a valid pointer
