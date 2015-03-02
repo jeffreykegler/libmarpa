@@ -344,14 +344,20 @@ main (int argc, char *argv[])
   marpa_m_test("marpa_g_rule_null_high", g, R_top_2, flag);
 
   /* invalid/no such rule id error handling */
-  marpa_m_test("marpa_g_rule_rank_set", g, R_invalid, positive_rank, -2, MARPA_ERR_INVALID_RULE_ID);
-  marpa_m_test("marpa_g_rule_rank_set", g, R_no_such, negative_rank, -2, MARPA_ERR_NO_SUCH_RULE_ID);
+  const char *marpa_g_rule_rank_setters[] = {
+    "marpa_g_rule_rank_set",
+    "marpa_g_rule_null_high_set",
+  };
+  marpa_m_tests(marpa_g_rule_rank_setters, g, R_invalid, whatever, -2, MARPA_ERR_INVALID_RULE_ID);
 
-  marpa_m_test("marpa_g_rule_rank", g, R_invalid, -2, MARPA_ERR_INVALID_RULE_ID);
-  marpa_m_test("marpa_g_rule_rank", g, R_no_such, -2, MARPA_ERR_NO_SUCH_RULE_ID);
+  marpa_m_test("marpa_g_rule_rank_set", g, R_no_such, whatever, -2, MARPA_ERR_NO_SUCH_RULE_ID);
+  marpa_m_test("marpa_g_rule_null_high_set", g, R_no_such, whatever, -1, MARPA_ERR_NO_SUCH_RULE_ID);
 
-  marpa_m_test("marpa_g_rule_null_high_set", g, R_invalid, flag, -2, MARPA_ERR_INVALID_RULE_ID);
-  marpa_m_test("marpa_g_rule_null_high_set", g, R_no_such, flag, -1, MARPA_ERR_NO_SUCH_RULE_ID);
+  const char *marpa_g_rule_rank_getters[] = {
+    "marpa_g_rule_rank",
+    "marpa_g_rule_null_high",
+  };
+  marpa_m_tests(marpa_g_rule_rank_getters, g, R_invalid, -2, MARPA_ERR_INVALID_RULE_ID);
 
   marpa_m_test("marpa_g_rule_null_high", g, R_invalid, -2, MARPA_ERR_INVALID_RULE_ID);
   marpa_m_test("marpa_g_rule_null_high", g, R_no_such, -1, MARPA_ERR_NO_SUCH_RULE_ID);
