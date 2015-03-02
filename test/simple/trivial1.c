@@ -288,8 +288,8 @@ main (int argc, char *argv[])
 
   /* invalid/no such rule id error handling */
   const char *marpa_g_rule_accessors[] = {
-    "marpa_g_rule_is_accessible", "marpa_g_rule_is_nullable",
-    "marpa_g_rule_is_nulling", "marpa_g_rule_is_loop", "marpa_g_rule_is_productive",
+    "marpa_g_rule_is_accessible", "marpa_g_rule_is_loop", "marpa_g_rule_is_productive",
+    "marpa_g_rule_is_nullable", "marpa_g_rule_is_nulling", 
     "marpa_g_rule_length", "marpa_g_rule_lhs",
   };
   marpa_m_tests(marpa_g_rule_accessors, g, R_invalid, -2, MARPA_ERR_INVALID_RULE_ID);
