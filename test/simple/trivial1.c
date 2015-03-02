@@ -315,14 +315,17 @@ main (int argc, char *argv[])
   marpa_m_test("marpa_g_symbol_is_counted", g, S_top, 0);
 
   /* invalid/no such rule id error handling */
-  marpa_m_test("marpa_g_sequence_separator", g, R_invalid, -2, MARPA_ERR_INVALID_RULE_ID);
-  marpa_m_test("marpa_g_sequence_separator", g, R_no_such, -2, MARPA_ERR_NO_SUCH_RULE_ID);
+  const char *marpa_g_sequence_mutators[] = {
+    "marpa_g_sequence_separator",
+    "marpa_g_sequence_min",
+  };
+  marpa_m_tests(marpa_g_sequence_mutators, g, R_invalid, -2, MARPA_ERR_INVALID_RULE_ID);
+  marpa_m_tests(marpa_g_sequence_mutators, g, R_no_such, -2, MARPA_ERR_NO_SUCH_RULE_ID);
 
-  marpa_m_test("marpa_g_sequence_min", g, R_invalid, -2, MARPA_ERR_INVALID_RULE_ID);
-  marpa_m_test("marpa_g_sequence_min", g, R_no_such, -2, MARPA_ERR_NO_SUCH_RULE_ID);
-
-  marpa_m_test("marpa_g_rule_is_proper_separation", g, R_invalid, -2, MARPA_ERR_INVALID_RULE_ID);
-  marpa_m_test("marpa_g_rule_is_proper_separation", g, R_no_such, -1, MARPA_ERR_NO_SUCH_RULE_ID);
+  marpa_m_test("marpa_g_rule_is_proper_separation", g, R_invalid,
+    -2, MARPA_ERR_INVALID_RULE_ID);
+  marpa_m_test("marpa_g_rule_is_proper_separation", g, R_no_such,
+    -1, MARPA_ERR_NO_SUCH_RULE_ID);
 
   marpa_m_test("marpa_g_symbol_is_counted", g, S_invalid, -2, MARPA_ERR_INVALID_SYMBOL_ID);
   marpa_m_test("marpa_g_symbol_is_counted", g, S_no_such, -1, MARPA_ERR_NO_SUCH_SYMBOL_ID);
