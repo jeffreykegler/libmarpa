@@ -903,7 +903,7 @@ to @code{marpa_r_earleme_complete()}.
 Suppose, in the generalized input model that,
 for a call
 to @code{marpa_r_earleme_complete()}
-that does not creates an empty earleme,
+that does not create an empty earleme,
 the following is true:
 @itemize
 @item The current earleme before the call is @var{c}.
