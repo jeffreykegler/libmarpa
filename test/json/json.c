@@ -43,28 +43,28 @@ scan_number (const unsigned char *s, const unsigned char *end)
     {
       s++;
       if (s == end)
-	return s;
+        return s;
     }
   else
     {
       while ((unsigned char) (*s - '0') < 10)
-	{
-	  s++;
-	  if (s == end)
-	    return s;
-	}
+        {
+          s++;
+          if (s == end)
+            return s;
+        }
     }
   if (*s == '.')
     {
       s++;
       if (s == end)
-	return s;
+        return s;
       while ((unsigned) (*s - '0') < 10)
-	{
-	  s++;
-	  if (s == end)
-	    return s;
-	}
+        {
+          s++;
+          if (s == end)
+            return s;
+        }
     }
   if (*s != 'e' && *s != 'E')
     return s;
@@ -76,7 +76,7 @@ scan_number (const unsigned char *s, const unsigned char *end)
     {
       s++;
       if (s == end)
-	return s;
+        return s;
     }
   return s;
 }
@@ -96,14 +96,14 @@ scan_string (const unsigned char *s, const unsigned char *end)
        * we don't try to deal with hex chars at this point.
        */
       if (*s == '\\')
-	{
-	  s++;
-	  if (s == end)
-	    return s;
-	}
+        {
+          s++;
+          if (s == end)
+            return s;
+        }
       s++;
       if (s == end)
-	return s;
+        return s;
     }
   s++;
   return s;
@@ -113,7 +113,7 @@ scan_string (const unsigned char *s, const unsigned char *end)
  * */
 static const unsigned char *
 scan_constant (const unsigned char *target, const unsigned char *s,
-	       const unsigned char *end)
+               const unsigned char *end)
 {
   const unsigned char *t = target + 1;
   s++;
@@ -122,10 +122,10 @@ scan_constant (const unsigned char *target, const unsigned char *s,
   while (*t)
     {
       if (*s != *t)
-	return s;
+        return s;
       s++;
       if (s == end)
-	return s;
+        return s;
       t++;
     }
   return s;
@@ -243,7 +243,7 @@ main (int argc, char *argv[])
   if (!g)
     {
       Marpa_Error_Code errcode =
-	marpa_c_error (&marpa_configuration, &error_string);
+        marpa_c_error (&marpa_configuration, &error_string);
       printf ("marpa_g_new returned %d: %s", errcode, error_string);
       exit (1);
     }
@@ -328,7 +328,7 @@ main (int argc, char *argv[])
   if (0)
     {
       (marpa_g_symbol_is_terminal_set (g, S_value_separator, 1) >= 0) ||
-	fail ("marpa_g_symbol_is_terminal", g);
+        fail ("marpa_g_symbol_is_terminal", g);
     }
 
   (marpa_g_start_symbol_set (g, S_value) >= 0)
@@ -361,95 +361,95 @@ main (int argc, char *argv[])
       const int start_of_token = i;
 
       switch (p[i])
-	{
-	case '-':
-	case '+':
-	case '0':
-	case '1':
-	case '2':
-	case '3':
-	case '4':
-	case '5':
-	case '6':
-	case '7':
-	case '8':
-	case '9':
-	  i = scan_number (p + i, eof) - p;
-	  token = S_number;
-	  break;
-	case '"':
-	  i = scan_string (p + i, eof) - p;
-	  token = S_string;
-	  break;
-	case '[':
-	  token = S_begin_array;
-	  i++;
-	  break;
-	case ']':
-	  token = S_end_array;
-	  i++;
-	  break;
-	case '{':
-	  token = S_begin_object;
-	  i++;
-	  break;
-	case '}':
-	  token = S_end_object;
-	  i++;
-	  break;
-	case ',':
-	  token = S_value_separator;
-	  i++;
-	  break;
-	case ':':
-	  token = S_name_separator;
-	  i++;
-	  break;
-	case 'n':
-	  i = scan_constant ("null", (p + i), eof) - p;
-	  token = S_null;
-	  break;
-	case ' ':
-	case 0x09:
-	case 0x0A:
-	case 0x0D:
-	  i++;
-	  goto NEXT_TOKEN;
-	default:
-	  marpa_g_error (g, &error_string);
-	  printf ("lexer failed at char %d: '%c'", i, p[i]);
-	  exit (1);
-	}
+        {
+        case '-':
+        case '+':
+        case '0':
+        case '1':
+        case '2':
+        case '3':
+        case '4':
+        case '5':
+        case '6':
+        case '7':
+        case '8':
+        case '9':
+          i = scan_number (p + i, eof) - p;
+          token = S_number;
+          break;
+        case '"':
+          i = scan_string (p + i, eof) - p;
+          token = S_string;
+          break;
+        case '[':
+          token = S_begin_array;
+          i++;
+          break;
+        case ']':
+          token = S_end_array;
+          i++;
+          break;
+        case '{':
+          token = S_begin_object;
+          i++;
+          break;
+        case '}':
+          token = S_end_object;
+          i++;
+          break;
+        case ',':
+          token = S_value_separator;
+          i++;
+          break;
+        case ':':
+          token = S_name_separator;
+          i++;
+          break;
+        case 'n':
+          i = scan_constant ("null", (p + i), eof) - p;
+          token = S_null;
+          break;
+        case ' ':
+        case 0x09:
+        case 0x0A:
+        case 0x0D:
+          i++;
+          goto NEXT_TOKEN;
+        default:
+          marpa_g_error (g, &error_string);
+          printf ("lexer failed at char %d: '%c'", i, p[i]);
+          exit (1);
+        }
       /* Token value of zero is not allowed, so we add one */
       if (0)
-	fprintf (stderr, "reading token %ld, %s\n",
-		 (long) token, symbol_name (token));
+        fprintf (stderr, "reading token %ld, %s\n",
+                 (long) token, symbol_name (token));
       int status = marpa_r_alternative (r, token, start_of_token + 1, 1);
       if (status != MARPA_ERR_NONE)
-	{
-	  Marpa_Symbol_ID expected[20];
-	  int count_of_expected = marpa_r_terminals_expected (r, expected);
-	  int i;
-	  for (i = 0; i < count_of_expected; i++)
-	    {
-	      fprintf (stderr, "expecting symbol %ld, %s\n",
-		       (long) i, symbol_name (expected[i]));
-	    }
-	  marpa_g_error (g, &error_string);
-	  fprintf (stderr,
-		   "marpa_alternative(%p,%ld,%s,%ld,1) returned %d: %s", r,
-		   (long) token, symbol_name (token),
-		   (long) (start_of_token + 1), status, error_string);
-	  exit (1);
-	}
+        {
+          Marpa_Symbol_ID expected[20];
+          int count_of_expected = marpa_r_terminals_expected (r, expected);
+          int i;
+          for (i = 0; i < count_of_expected; i++)
+            {
+              fprintf (stderr, "expecting symbol %ld, %s\n",
+                       (long) i, symbol_name (expected[i]));
+            }
+          marpa_g_error (g, &error_string);
+          fprintf (stderr,
+                   "marpa_alternative(%p,%ld,%s,%ld,1) returned %d: %s", r,
+                   (long) token, symbol_name (token),
+                   (long) (start_of_token + 1), status, error_string);
+          exit (1);
+        }
       status = marpa_r_earleme_complete (r);
       if (status < 0)
-	{
-	  marpa_g_error (g, &error_string);
-	  printf ("marpa_earleme_complete returned %d: %s", status,
-		  error_string);
-	  exit (1);
-	}
+        {
+          marpa_g_error (g, &error_string);
+          printf ("marpa_earleme_complete returned %d: %s", status,
+                  error_string);
+          exit (1);
+        }
     NEXT_TOKEN:;
     }
 
@@ -460,23 +460,23 @@ main (int argc, char *argv[])
     bocage = marpa_b_new (r, -1);
     if (!bocage)
       {
-	int errcode = marpa_g_error (g, &error_string);
-	printf ("marpa_bocage_new returned %d: %s", errcode, error_string);
-	exit (1);
+        int errcode = marpa_g_error (g, &error_string);
+        printf ("marpa_bocage_new returned %d: %s", errcode, error_string);
+        exit (1);
       }
     order = marpa_o_new (bocage);
     if (!order)
       {
-	int errcode = marpa_g_error (g, &error_string);
-	printf ("marpa_order_new returned %d: %s", errcode, error_string);
-	exit (1);
+        int errcode = marpa_g_error (g, &error_string);
+        printf ("marpa_order_new returned %d: %s", errcode, error_string);
+        exit (1);
       }
     tree = marpa_t_new (order);
     if (!tree)
       {
-	Marpa_Error_Code errcode = marpa_g_error (g, &error_string);
-	printf ("marpa_t_new returned %d: %s", errcode, error_string);
-	exit (1);
+        Marpa_Error_Code errcode = marpa_g_error (g, &error_string);
+        printf ("marpa_t_new returned %d: %s", errcode, error_string);
+        exit (1);
       }
     {
       Marpa_Value value = NULL;
@@ -484,220 +484,220 @@ main (int argc, char *argv[])
       int tree_status;
       tree_status = marpa_t_next (tree);
       if (tree_status <= -1)
-	{
-	  Marpa_Error_Code errcode = marpa_g_error (g, &error_string);
-	  printf ("marpa_t_next returned %d: %s", errcode, error_string);
-	  exit (1);
-	}
+        {
+          Marpa_Error_Code errcode = marpa_g_error (g, &error_string);
+          printf ("marpa_t_next returned %d: %s", errcode, error_string);
+          exit (1);
+        }
 
       value = marpa_v_new (tree);
       if (!value)
-	{
-	  Marpa_Error_Code errcode = marpa_g_error (g, &error_string);
-	  printf ("marpa_v_new returned %d: %s", errcode, error_string);
-	  exit (1);
-	}
+        {
+          Marpa_Error_Code errcode = marpa_g_error (g, &error_string);
+          printf ("marpa_v_new returned %d: %s", errcode, error_string);
+          exit (1);
+        }
       while (1)
-	{
-	  Marpa_Step_Type step_type = marpa_v_step (value);
-	  Marpa_Symbol_ID token;
-	  if (step_type < 0)
-	    {
-	      Marpa_Error_Code errcode = marpa_g_error (g, &error_string);
-	      printf ("marpa_v_event returned %d: %s", errcode, error_string);
-	      exit (1);
-	    }
-	  if (step_type == MARPA_STEP_INACTIVE)
-	    {
-	      if (0)
-		printf ("No more events\n");
-	      break;
-	    }
-	  if (step_type != MARPA_STEP_TOKEN)
-	    continue;
-	  token = marpa_v_token (value);
-	  if (1)
-	    {
-	      if (column > 60)
-		{
-		  putchar ('\n');
-		  column = 0;
-		}
-	      if (token == S_begin_array)
-		{
-		  putchar ('[');
-		  column++;
-		  continue;
-		}
-	      if (token == S_end_array)
-		{
-		  putchar (']');
-		  column++;
-		  continue;
-		}
-	      if (token == S_begin_object)
-		{
-		  putchar ('{');
-		  column++;
-		  continue;
-		}
-	      if (token == S_end_object)
-		{
-		  putchar ('}');
-		  column++;
-		  continue;
-		}
-	      if (token == S_name_separator)
-		{
-		  putchar (':');
-		  column++;
-		  continue;
-		}
-	      if (token == S_value_separator)
-		{
-		  putchar (',');
-		  column++;
-		  continue;
-		}
-	      if (token == S_null)
-		{
-		  fputs ("undef", stdout);
-		  column += 5;
-		  continue;
-		}
-	      if (token == S_true)
-		{
-		  putchar ('1');
-		  column++;
-		  continue;
-		}
-	      if (token == S_false)
-		{
-		  putchar ('0');
-		  column++;
-		  continue;
-		}
-	      if (token == S_number)
-		{
-		  /* We added one to avoid zero
-		   * Now we must subtract it
-		   */
-		  int i;
-		  const int start_of_number = marpa_v_token_value (value) - 1;
-		  const int end_of_number =
-		    scan_number (p + start_of_number, eof) - p;
-		  column += 2 + (end_of_number - start_of_number);
+        {
+          Marpa_Step_Type step_type = marpa_v_step (value);
+          Marpa_Symbol_ID token;
+          if (step_type < 0)
+            {
+              Marpa_Error_Code errcode = marpa_g_error (g, &error_string);
+              printf ("marpa_v_event returned %d: %s", errcode, error_string);
+              exit (1);
+            }
+          if (step_type == MARPA_STEP_INACTIVE)
+            {
+              if (0)
+                printf ("No more events\n");
+              break;
+            }
+          if (step_type != MARPA_STEP_TOKEN)
+            continue;
+          token = marpa_v_token (value);
+          if (1)
+            {
+              if (column > 60)
+                {
+                  putchar ('\n');
+                  column = 0;
+                }
+              if (token == S_begin_array)
+                {
+                  putchar ('[');
+                  column++;
+                  continue;
+                }
+              if (token == S_end_array)
+                {
+                  putchar (']');
+                  column++;
+                  continue;
+                }
+              if (token == S_begin_object)
+                {
+                  putchar ('{');
+                  column++;
+                  continue;
+                }
+              if (token == S_end_object)
+                {
+                  putchar ('}');
+                  column++;
+                  continue;
+                }
+              if (token == S_name_separator)
+                {
+                  putchar (':');
+                  column++;
+                  continue;
+                }
+              if (token == S_value_separator)
+                {
+                  putchar (',');
+                  column++;
+                  continue;
+                }
+              if (token == S_null)
+                {
+                  fputs ("undef", stdout);
+                  column += 5;
+                  continue;
+                }
+              if (token == S_true)
+                {
+                  putchar ('1');
+                  column++;
+                  continue;
+                }
+              if (token == S_false)
+                {
+                  putchar ('0');
+                  column++;
+                  continue;
+                }
+              if (token == S_number)
+                {
+                  /* We added one to avoid zero
+                   * Now we must subtract it
+                   */
+                  int i;
+                  const int start_of_number = marpa_v_token_value (value) - 1;
+                  const int end_of_number =
+                    scan_number (p + start_of_number, eof) - p;
+                  column += 2 + (end_of_number - start_of_number);
 
-		  /* We output numbers as Perl strings */
-		  putchar ('"');
-		  for (i = start_of_number; i < end_of_number; i++)
-		    {
-		      putchar (p[i]);
-		    }
-		  putchar ('"');
-		  continue;
-		}
-	      if (token == S_string)
-		{
-		  /* We added one to avoid zero
-		   * Now we must subtract it, but we also
-		   * add one for the initial double quote
-		   */
-		  int i;
-		  const int start_of_string = marpa_v_token_value (value);
-		  /* Subtract one for the final double quote */
-		  const int end_of_string =
-		    (scan_string (p + start_of_string, eof) - p) - 1;
+                  /* We output numbers as Perl strings */
+                  putchar ('"');
+                  for (i = start_of_number; i < end_of_number; i++)
+                    {
+                      putchar (p[i]);
+                    }
+                  putchar ('"');
+                  continue;
+                }
+              if (token == S_string)
+                {
+                  /* We added one to avoid zero
+                   * Now we must subtract it, but we also
+                   * add one for the initial double quote
+                   */
+                  int i;
+                  const int start_of_string = marpa_v_token_value (value);
+                  /* Subtract one for the final double quote */
+                  const int end_of_string =
+                    (scan_string (p + start_of_string, eof) - p) - 1;
 
-		  /* We add back the inital and final double quotes,
-		   * and increment the column accordingly.
-		   */
-		  column += 2;
-		  putchar ('"');
-		  i = start_of_string;
-		  while( i < end_of_string)
-		    {
-		      const unsigned char ch0 = p[i++];
-		      if (ch0 == '\\')
-			{
-			  const unsigned char ch1 = p[i++];
-			  switch (ch1)
-			    {
-			    case '\\':
-			    case '/':
-			    case '"':
-			    case 'b':
-			    case 'f':
-			    case 'n':
-			    case 'r':
-			    case 't':
-			      /* explicit non-hex JSON escapes are the same
-			       * as the Perl escapes */
-			      column += 2;
-			      putchar ('\\');
-			      putchar (ch1);
-			      continue;
-			    case 'u':
-			      {
-				int digit;
-				putchar ('x');
-				putchar ('{');
-				for (digit = 0; digit < 4; digit++)
-				  {
-				    const unsigned char hex_ch = p[i + digit];
-				    if ((hex_ch >= 'a' && hex_ch <= 'f')
-					|| (hex_ch >= 'A' && hex_ch <= 'F')
-					|| (hex_ch >= '0' && hex_ch <= '9'))
-				      {
-					printf
-					  ("illegal char in JSON hex number at location %d (0x%x): '%c' ",
-					   i, hex_ch, hex_ch);
-					exit (1);
-				      }
-				    putchar (hex_ch);
-				  }
-				putchar ('}');
-				column += 7;
-				i += 4;
-			      }
-			      continue;
-			    default:
-			      printf
-				("illegal escaped char in JSON input (0x%x):'%c' ",
-				 i, p[i]);
-			      exit (1);
-			    }
-			}
+                  /* We add back the inital and final double quotes,
+                   * and increment the column accordingly.
+                   */
+                  column += 2;
+                  putchar ('"');
+                  i = start_of_string;
+                  while (i < end_of_string)
+                    {
+                      const unsigned char ch0 = p[i++];
+                      if (ch0 == '\\')
+                        {
+                          const unsigned char ch1 = p[i++];
+                          switch (ch1)
+                            {
+                            case '\\':
+                            case '/':
+                            case '"':
+                            case 'b':
+                            case 'f':
+                            case 'n':
+                            case 'r':
+                            case 't':
+                              /* explicit non-hex JSON escapes are the same
+                               * as the Perl escapes */
+                              column += 2;
+                              putchar ('\\');
+                              putchar (ch1);
+                              continue;
+                            case 'u':
+                              {
+                                int digit;
+                                putchar ('x');
+                                putchar ('{');
+                                for (digit = 0; digit < 4; digit++)
+                                  {
+                                    const unsigned char hex_ch = p[i + digit];
+                                    if ((hex_ch >= 'a' && hex_ch <= 'f')
+                                        || (hex_ch >= 'A' && hex_ch <= 'F')
+                                        || (hex_ch >= '0' && hex_ch <= '9'))
+                                      {
+                                        printf
+                                          ("illegal char in JSON hex number at location %d (0x%x): '%c' ",
+                                           i, hex_ch, hex_ch);
+                                        exit (1);
+                                      }
+                                    putchar (hex_ch);
+                                  }
+                                putchar ('}');
+                                column += 7;
+                                i += 4;
+                              }
+                              continue;
+                            default:
+                              printf
+                                ("illegal escaped char in JSON input (0x%x):'%c' ",
+                                 i, p[i]);
+                              exit (1);
+                            }
+                        }
 
-		      /* An unescaped JSON char, one that does not need Perl escaping */
-		      if (ch0 == '_' || (ch0 >= '0' && ch0 <= '9')
-			  || (ch0 >= 'a' && ch0 <= 'z') || (ch0 >= 'A'
-							  && ch0 <= 'Z'))
-			{
-			  putchar (ch0);
-			  column++;
-			  continue;
-			}
-		      /* An unescaped JSON char,
-		       * but one which quotemeta would escape for Perl */
-		      putchar ('\\');
-		      putchar (ch0);
-		      column += 2;
-		      continue;
-		    }
-		  putchar ('"');
-		  continue;
-		}
-	      fprintf (stderr, "Unknown symbol %s at %d",
-		       symbol_name (token), marpa_v_token_value (value) - 1);
-	      exit (1);
-	    }
-	}
+                      /* An unescaped JSON char, one that does not need Perl escaping */
+                      if (ch0 == '_' || (ch0 >= '0' && ch0 <= '9')
+                          || (ch0 >= 'a' && ch0 <= 'z') || (ch0 >= 'A'
+                                                            && ch0 <= 'Z'))
+                        {
+                          putchar (ch0);
+                          column++;
+                          continue;
+                        }
+                      /* An unescaped JSON char,
+                       * but one which quotemeta would escape for Perl */
+                      putchar ('\\');
+                      putchar (ch0);
+                      column += 2;
+                      continue;
+                    }
+                  putchar ('"');
+                  continue;
+                }
+              fprintf (stderr, "Unknown symbol %s at %d",
+                       symbol_name (token), marpa_v_token_value (value) - 1);
+              exit (1);
+            }
+        }
       if (column > 60)
-	{
-	  putchar ('\n');
-	  column = 0;
-	}
+        {
+          putchar ('\n');
+          column = 0;
+        }
     }
   }
 
