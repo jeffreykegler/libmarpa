@@ -145,7 +145,7 @@ main (int argc, char *argv[])
   Marpa_Grammar g;
   Marpa_Recognizer r;
 
-  plan_lazy();
+  plan(20);
 
   marpa_c_init (&marpa_configuration);
   g = marpa_g_simple_new(&marpa_configuration);
