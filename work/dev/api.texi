@@ -133,6 +133,7 @@ Grammar methods
 * Rules::                       
 * Sequences::                   
 * Ranks::                       
+* Events::                      
 * Grammar precomputation::      
 
 Recognizer methods
