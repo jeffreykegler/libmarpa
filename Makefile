@@ -62,9 +62,9 @@ distcheck:
 	perl etc/license_check.pl  --verbose=0 `find Makefile cm_dist dist doc_dist doc1_dist -type f`
 
 tar_clean:
-	rm work/doc/*.tar.gz
-	rm work/doc1/*.tar.gz
-	rm work/stage/*.tar.gz
+	rm -f work/doc/*.tar.gz
+	rm -f work/doc1/*.tar.gz
+	rm -f work/stage/*.tar.gz
 
 tag:
 	git tag -a v$(version) -m "Version $(version)"
@@ -105,3 +105,4 @@ clean:
 	rm -rf do_test
 	rm -rf timestamp
 
+realclean: dist_clean test_clean tar_clean
