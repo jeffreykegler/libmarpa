@@ -4390,7 +4390,7 @@ Suggested message: "Symbol was nulled".
 The recognizer can be set to generate an event when a
 symbol is predicted.
 To set an predicted symbol event,
-use the recognizer's @code{marpa_r_predicted_symbol_event_set()}
+use the recognizer's @code{marpa_g_symbol_is_prediction_event_set()}
 method.
 Unlike the 
 @code{MARPA_EVENT_SYMBOL_EXPECTED} event,
