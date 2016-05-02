@@ -1,0 +1,6 @@
+To bump version number, currently you must change the following files:
+
+LIB_VERSION
+work/ac/configure.ac
+work/ac_doc/configure.ac
+work/ac_doc1/configure.ac
