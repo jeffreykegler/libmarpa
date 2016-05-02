@@ -6927,7 +6927,7 @@ PRIVATE YIM earley_item_create(const RECCE r,
   YIM* end_of_work_stack;
   const YS set = key.t_set;
   const int count = ++YIM_Count_of_YS(set);
-  @<Check count against Earley item thresholds@>@;
+  @<Check count against Earley item fatal threshold@>@;
   new_item = marpa_obs_new (r->t_obs, struct s_earley_item, 1);
   new_item->t_key = key;
   new_item->t_source_type = NO_SOURCE;
@@ -6976,16 +6976,21 @@ earley_item_assign (const RECCE r, const YS set, const YS origin,
 }
 
 @ The fatal threshold always applies.
-The warning threshold does not count against items added by a Leo expansion.
-@<Check count against Earley item thresholds@> =
-if (count >= r->t_earley_item_warning_threshold)
+@<Check count against Earley item fatal threshold@> =
+  if (_MARPA_UNLIKELY (count >= YIM_FATAL_THRESHOLD))
+    {                         /* Set the recognizer to a fatal error */
+      MARPA_FATAL (MARPA_ERR_YIM_COUNT);
+      return failure_indicator;
+    }
+
+@ The warning threshold does not count against items added by a Leo expansion.
+@<Check count against Earley item warning threshold@> =
   {
-    if (_MARPA_UNLIKELY (count >= YIM_FATAL_THRESHOLD))
-      {                         /* Set the recognizer to a fatal error */
-        MARPA_FATAL (MARPA_ERR_YIM_COUNT);
-        return failure_indicator;
+    const int yim_count = YIM_Count_of_YS (current_earley_set);
+    if (yim_count >= r->t_earley_item_warning_threshold)
+      {
+        int_event_new (g, MARPA_EVENT_EARLEY_ITEM_THRESHOLD, yim_count);
       }
-      int_event_new (g, MARPA_EVENT_EARLEY_ITEM_THRESHOLD, count);
   }
 
 @*0 Destructor.
@@ -8084,6 +8089,7 @@ marpa_r_earleme_complete(Marpa_Recognizer r)
         @<Set |r| exhausted@>@;
       }
     earley_set_update_items(r, current_earley_set);
+    @<Check count against Earley item warning threshold@>@;
     if (r->t_active_event_count > 0) {
         trigger_events(r);
     }
