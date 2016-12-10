@@ -448,6 +448,10 @@ very incomplete and possibly obsolete.
 \li AIMID: a legacy term for AHM ID, preserved for backward compatibility.
 \li assign: Find something, creating it when necessary.
 \li bv: Bit Vector.
+\li CIL: Constant Integer List,
+a variable-length list of integers,
+which uses AVL's as a memory allocation device.
+\li CILAR: CIL ARena.
 \li cmp: Compare.
 Usually as |_cmp|, the suffix or ``verb" of a function name.
 \li \_Object: As a suffix of a type name, this means an object,
