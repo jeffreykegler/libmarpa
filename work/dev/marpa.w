@@ -781,6 +781,8 @@ PRIVATE int xsy_id_is_valid(GRAMMAR g, XSYID xsy_id)
 }
 
 @ Check that internal symbol is in valid range.
+@d NSYID_is_Malformed(nsy_id) ((nsy_id) < 0)
+@d NSYID_of_G_Exists(nsy_id) ((nsy_id) < NSY_Count_of_G(g))
 @<Function definitions@> =
 PRIVATE int nsy_is_valid(GRAMMAR g, NSYID nsyid)
 {
@@ -4048,6 +4050,28 @@ And rule ID's increase by one each time,
 so that all the new
 rules will have ID's equal to or greater than
 the pre-CHAF rule count.
+
+@*0 Is this a CHAF IRL?.
+Is this IRL a product of the CHAF rewrite?
+@d IRL_is_CHAF(irl) ((irl)->t_is_chaf)
+@<Bit aligned IRL elements@> = BITFIELD t_is_chaf:1;
+@ @<Initialize IRL elements@> =
+  IRL_is_CHAF(irl) = 0;
+@ @<Public function prototypes@> =
+int _marpa_g_irl_is_chaf(
+    Marpa_Grammar g,
+    Marpa_IRL_ID irl_id);
+@ @<Function definitions@> =
+int _marpa_g_irl_is_chaf(
+    Marpa_Grammar g,
+    Marpa_IRL_ID irl_id)
+{
+    @<Return |-2| on failure@>@;
+    @<Fail if not precomputed@>@;
+    @<Fail if |irl_id| is invalid@>@;
+    return IRL_is_CHAF(IRL_by_ID(irl_id));
+}
+
 @ @<Rewrite grammar |g| into CHAF form@> =
 {
   @<CHAF rewrite declarations@>@;
@@ -4613,6 +4637,7 @@ rule structure, and performing the call back.
 @<Add CHAF IRL@> =
 {
   const int is_virtual_lhs = (piece_start > 0);
+  IRL_is_CHAF(chaf_irl) = 1;
   Source_XRL_of_IRL(chaf_irl) = rule;
   IRL_has_Virtual_LHS (chaf_irl) = Boolean(is_virtual_lhs);
   IRL_has_Virtual_RHS (chaf_irl) =
@@ -4831,7 +4856,7 @@ the successor can be found by decrementing it,
 and AHM pointers can be portably compared.
 A lot of code relies on these facts.
 @d AHM_by_ID(id) (g->t_ahms+(id))
-@d ID_of_AHM(ahm) ((ahm) - g->t_ahms)
+@d ID_of_AHM(ahm) (AHMID)((ahm) - g->t_ahms)
 @ These require the caller to make sure all the |AHM|'s
 involved exist.
 @d Next_AHM_of_AHM(ahm) ((ahm)+1)
@@ -4893,7 +4918,9 @@ Raw position is the same as position except
 for completions, in which case it is the length of the IRL.
 @d Position_of_AHM(ahm) ((ahm)->t_position)
 @d Raw_Position_of_AHM(ahm)
-  (Position_of_AHM(ahm) < 0 ? Length_of_IRL(IRL_of_AHM(ahm)))
+  (Position_of_AHM(ahm) < 0
+    ? ((Length_of_IRL(IRL_of_AHM(ahm))) + Position_of_AHM(ahm) + 1)
+    : Position_of_AHM(ahm))
 @<Int aligned AHM elements@> =
 int t_position;
 
@@ -5062,7 +5089,7 @@ Marpa_Symbol_ID _marpa_g_ahm_postdot(Marpa_Grammar g,
     }
   @<Create an AHM for a completion@>@;
   current_item++;
-  AHM_Count_of_IRL(irl) = current_item - first_ahm_of_irl;
+  AHM_Count_of_IRL(irl) = (int)(current_item - first_ahm_of_irl);
 }
 
 @ @<Count the AHMs in a rule@> =
@@ -5088,7 +5115,7 @@ Marpa_Symbol_ID _marpa_g_ahm_postdot(Marpa_Grammar g,
     = AHM_is_Prediction (current_item)
       ? -1
       : SYMI_of_IRL (irl) + Position_of_AHM (current_item - 1);
-  @<Memoize XRL data for AHM@>@;
+  memoize_xrl_data_for_AHM(current_item, irl);
 }
 
 @ @<Create an AHM for a completion@> =
@@ -5097,14 +5124,14 @@ Marpa_Symbol_ID _marpa_g_ahm_postdot(Marpa_Grammar g,
   Postdot_NSYID_of_AHM (current_item) = -1;
   Position_of_AHM (current_item) = -1;
   SYMI_of_AHM(current_item) = SYMI_of_IRL(irl) + Position_of_AHM(current_item-1);
-  @<Memoize XRL data for AHM@>@;
+  memoize_xrl_data_for_AHM(current_item, irl);
 }
 
 @ @<Initializations common to all AHMs@> =
 {
   IRL_of_AHM (current_item) = irl;
   Null_Count_of_AHM (current_item) = leading_nulls;
-  Quasi_Position_of_AHM (current_item) = current_item - first_ahm_of_irl;
+  Quasi_Position_of_AHM (current_item) = (int)(current_item - first_ahm_of_irl);
   if (Quasi_Position_of_AHM (current_item) == 0) {
      if (ID_of_IRL(irl) == ID_of_IRL (g->t_start_irl))
      {
@@ -5121,7 +5148,9 @@ Marpa_Symbol_ID _marpa_g_ahm_postdot(Marpa_Grammar g,
   @<Initialize event data for |current_item|@>@;
 }
 
-@ @<Memoize XRL data for AHM@> =
+@ @<Function definitions@> =
+PRIVATE void
+memoize_xrl_data_for_AHM(AHM current_item, IRL irl)
 {
   XRL source_xrl = Source_XRL_of_IRL(irl);
   XRL_of_AHM(current_item) = source_xrl;
@@ -5129,24 +5158,36 @@ Marpa_Symbol_ID _marpa_g_ahm_postdot(Marpa_Grammar g,
     @t}\comment{@>
     /* |source_xrl = NULL|, which is the case only for the start rule */
     XRL_Position_of_AHM(current_item) = -2;
-  } else {
+    return;
+  }
+  {
     const int virtual_start = Virtual_Start_of_IRL (irl);
     const int irl_position = Position_of_AHM (current_item);
-    int xrl_position = irl_position;
-    if (virtual_start >= 0)
-      {
-        xrl_position += virtual_start;
-      }
     if (XRL_is_Sequence (source_xrl))
       {
         @t}\comment{@>
         /* Note that a sequence XRL,
           because of the way it is rewritten, may have several
          IRL's, and therefore several AHM's at position 0. */
-        xrl_position = irl_position > 0 ? -1 : 0;
+        XRL_Position_of_AHM(current_item) = irl_position ? -1 : 0;
+        return;
       }
-    XRL_Position_of_AHM(current_item) = xrl_position;
+    @t}\comment{@>
+    /* Completed CHAF rules are a special case */
+    if (IRL_is_CHAF (irl) &&
+        (irl_position < 0 || irl_position >= Length_of_IRL(irl)))
+    {
+      XRL_Position_of_AHM(current_item) = -1;
+      return;
+    }
+    if (virtual_start >= 0)
+      {
+        XRL_Position_of_AHM(current_item) = irl_position + virtual_start;
+        return;
+      }
+    XRL_Position_of_AHM(current_item) = irl_position;
   }
+  return;
 }
 
 @ This is done after creating the AHMs, because in
@@ -5189,7 +5230,7 @@ result of a prediction, and does not always
 indicate whether the AHM or YIM contains a
 prediction.
 This is relevant in the case of the the
-initial AHM, which contains a predicted,
+initial AHM, which contains a prediction,
 but for which ``was predicted'' is false.
 @d AHM_was_Predicted(ahm) ((ahm)->t_was_predicted)
 @d YIM_was_Predicted(yim) AHM_was_Predicted(AHM_of_YIM(yim))
@@ -6666,7 +6707,7 @@ typedef struct s_earley_set_key YSK_Object;
 @ @<Private structures@> =
 struct s_earley_set {
     YSK_Object t_key;
-    union u_postdot_item** t_postdot_ary;
+    PIM* t_postdot_ary;
     YS t_next_earley_set;
     @<Widely aligned Earley set elements@>@;
     int t_postdot_sym_count;
@@ -6863,6 +6904,7 @@ the Earley set.
 @d Postdot_NSYID_of_YIM(yim) Postdot_NSYID_of_AHM(AHM_of_YIM(yim))
 @d IRL_of_YIM(yim) IRL_of_AHM(AHM_of_YIM(yim))
 @d IRLID_of_YIM(yim) ID_of_IRL(IRL_of_YIM(yim))
+@d XRL_of_YIM(yim) XRL_of_AHM(AHM_of_YIM(yim))
 @d Origin_Earleme_of_YIM(yim) (Earleme_of_YS(Origin_of_YIM(yim)))
 @d Origin_Ord_of_YIM(yim) (Ord_of_YS(Origin_of_YIM(yim)))
 @d Origin_of_YIM(yim) ((yim)->t_key.t_origin)
@@ -7044,12 +7086,11 @@ a postdot symbol.
 @<Private incomplete structures@> =
 struct s_earley_ix;
 typedef struct s_earley_ix* YIX;
-union u_postdot_item;
 @ @<Private structures@> =
 struct s_earley_ix {
-     union u_postdot_item* t_next;
+     PIM t_next;
      NSYID t_postdot_nsyid;
-     YIM t_earley_item; // Never NULL if this is an index item
+     YIM t_earley_item; // NULL iff this is a LIM
 };
 typedef struct s_earley_ix YIX_Object;
 
@@ -7113,15 +7154,20 @@ for each Earley set.
 @ |PIM_of_LIM| assumes that PIM is in fact a LIM.
 |PIM_is_LIM| is available to check this.
 @d PIM_of_LIM(pim) ((PIM)(pim))
-@d PIM_is_LIM(pim) (YIM_of_YIX(YIX_of_PIM(pim)) == NULL)
+@d PIM_is_LIM(pim) (YIM_of_PIM(pim) == NULL)
 @s PIM int
-@<Private structures@> =
-union u_postdot_item {
+@<Public incomplete structures@> =
+union _Marpa_PIM_Object;
+@ @<Public typedefs@> =
+typedef union _Marpa_PIM_Object* _Marpa_PIM;
+@ @<Private unions@> =
+union _Marpa_PIM_Object {
     LIM_Object t_leo;
     YIX_Object t_earley;
 };
-typedef union u_postdot_item PIM_Object;
-typedef union u_postdot_item* PIM;
+@ @<Private typedefs@> =
+typedef union _Marpa_PIM_Object PIM_Object;
+typedef union _Marpa_PIM_Object* PIM;
 
 @ This function searches for the
 first postdot item for an Earley set
@@ -7603,7 +7649,7 @@ PRIVATE int alternative_insert(RECCE r, ALT new_alternative)
     @t}\comment{@>
   /* base will not change after this */
   base_of_stack = MARPA_DSTACK_BASE(*alternatives, ALT_Object);
-   for (ix = end_of_stack-base_of_stack; ix > insertion_point; ix--) {
+   for (ix = (int)(end_of_stack-base_of_stack); ix > insertion_point; ix--) {
        base_of_stack[ix] = base_of_stack[ix-1];
    }
    base_of_stack[insertion_point] = *new_alternative;
@@ -9660,8 +9706,8 @@ int marpa_r_progress_report_reset( Marpa_Recognizer r)
 
    MARPA_OFF_DEBUG2("At %s, Do the progress report", STRLOC);
 
-  progress_report_item_insert (report_tree, AHM_of_YIM (earley_item),
-			       Origin_Ord_of_YIM (earley_item));
+  progress_report_items_insert (report_tree, AHM_of_YIM (earley_item),
+			       earley_item);
   for (leo_source_link = First_Leo_SRCL_of_YIM (earley_item);
        leo_source_link; leo_source_link = Next_SRCL_of_SRCL (leo_source_link))
     {
@@ -9679,10 +9725,9 @@ int marpa_r_progress_report_reset( Marpa_Recognizer r)
 	   leo_item; leo_item = Predecessor_LIM_of_LIM (leo_item))
 	{
           const YIM trailhead_yim = Trailhead_YIM_of_LIM (leo_item);
-	  const YSID trailhead_origin = Ord_of_YS (Origin_of_YIM (trailhead_yim));
 	  const AHM trailhead_ahm = Trailhead_AHM_of_LIM (leo_item);
-	  progress_report_item_insert (report_tree, trailhead_ahm,
-				       trailhead_origin);
+	  progress_report_items_insert (report_tree, trailhead_ahm,
+				       trailhead_yim);
 	}
 
        MARPA_OFF_DEBUG3("At %s, finished Leo source link %p", STRLOC, leo_source_link);
@@ -9691,37 +9736,91 @@ int marpa_r_progress_report_reset( Marpa_Recognizer r)
 
 @ @<Function definitions@> =
 PRIVATE void
-progress_report_item_insert(MARPA_AVL_TREE report_tree,
+progress_report_items_insert(MARPA_AVL_TREE report_tree,
   AHM report_ahm,
-    YSID report_origin)
+    YIM origin_yim)
 {
-  PROGRESS new_report_item;
   const XRL source_xrl = XRL_of_AHM (report_ahm);
-  const int xrl_position = XRL_Position_of_AHM (report_ahm);
-  if (!source_xrl)
-    return;
 
   MARPA_OFF_DEBUG5(
-    "At %s, report item insert rule=%ld pos=%ld origin=%ld",
-    STRLOC, (long)ID_of_XRL (source_xrl),
-    (long)xrl_position, (long)report_origin);
+     "%s Calling progress_report_items_insert(%p, %p, %p)",
+     STRLOC, report_tree, report_ahm, origin_yim);
+
+  if (!source_xrl) return;
 
   @t}\comment{@>
-  /* As a special case, for the starting rules of a sequence rewrite, we
-  skip all but the top one, which is the one with a semantic LHS */
-  if (XRL_is_Sequence (source_xrl)
-      && Position_of_AHM(report_ahm) <= 0
-      && IRL_has_Virtual_LHS (IRL_of_AHM (report_ahm)))
-    return;
+  /* If LHS is a brick symbol, we are done --
+   insert the report item and return
+   */
+  if (!IRL_has_Virtual_LHS (IRL_of_YIM (origin_yim))) {
+    int xrl_position = XRL_Position_of_AHM (report_ahm);
+    int origin_of_xrl = Origin_Ord_of_YIM(origin_yim);
+    XRLID xrl_id = ID_of_XRL (source_xrl);
 
-  new_report_item =
-    marpa_obs_new (MARPA_AVL_OBSTACK (report_tree),
-		   struct marpa_progress_item, 1);
-  Position_of_PROGRESS (new_report_item) = xrl_position;
-  Origin_of_PROGRESS (new_report_item) = report_origin;
-  RULEID_of_PROGRESS (new_report_item) = ID_of_XRL (source_xrl);
-  _marpa_avl_insert (report_tree, new_report_item);
-  return;
+    PROGRESS new_report_item =
+      marpa_obs_new (MARPA_AVL_OBSTACK (report_tree),
+                     struct marpa_progress_item, 1);
+
+    MARPA_OFF_DEBUG2("%s, === Adding report item ===", STRLOC);
+    MARPA_OFF_DEBUG3("%s, report irl = %d", STRLOC, IRLID_of_AHM(report_ahm));
+    MARPA_OFF_DEBUG3("%s, report irl position = %d", STRLOC, Position_of_AHM(report_ahm));
+
+    MARPA_OFF_DEBUG3("%s, xrl = %d", STRLOC, ID_of_XRL (source_xrl));
+    MARPA_OFF_DEBUG3("%s, xrl dot = %d", STRLOC, XRL_Position_of_AHM (report_ahm));
+    MARPA_OFF_DEBUG3("%s, origin ord = %d", STRLOC, Origin_Ord_of_YIM(origin_yim));
+
+    Position_of_PROGRESS (new_report_item) = xrl_position;
+    Origin_of_PROGRESS (new_report_item) = origin_of_xrl;
+    RULEID_of_PROGRESS (new_report_item) = xrl_id;
+    _marpa_avl_insert (report_tree, new_report_item);
+
+    @t}\comment{@>
+    /* If this is the prediction of a nullable, then also
+       add its completion */
+
+    if (XRL_is_Nullable(source_xrl) && xrl_position == 0) {
+        new_report_item = marpa_obs_new (MARPA_AVL_OBSTACK (report_tree),
+                       struct marpa_progress_item, 1);
+        Position_of_PROGRESS (new_report_item) = -1;
+        Origin_of_PROGRESS (new_report_item) = origin_of_xrl;
+        RULEID_of_PROGRESS (new_report_item) = xrl_id;
+    }
+    return;
+  }
+  @t}\comment{@>
+  /* If here, LHS is a mortar symbol */
+  @t}\comment{@>
+  /* We don't recurse on sequence rules --
+   we only need to look at the top rules, which
+   have brick LHS's
+   */
+  if (XRL_is_Sequence(source_xrl)) return;
+
+  @t}\comment{@>
+  /* Look at the predecessor items for
+   the origin of the XRL.  At this point, only
+   CHAF rules do this.  Source rules and sequence rules
+   were specifically excluded above.  And BNF rules
+   will also have a non-virtual LHS.
+   */
+  {
+     const NSYID lhs_nsyid = LHS_NSYID_of_YIM(origin_yim);
+     const YS origin_of_origin_ys = Origin_of_YIM(origin_yim);
+     PIM pim = First_PIM_of_YS_by_NSYID (origin_of_origin_ys, lhs_nsyid);
+     for (; pim; pim = Next_PIM_of_PIM (pim))
+     {
+         const YIM predecessor = YIM_of_PIM (pim);
+         @t}\comment{@>
+         /* Ignore PIM chains with Leo items in them.
+          (Leo items will always be first.)
+          */
+         if (!predecessor) return;
+         if (YIM_is_Active(predecessor)) {
+           progress_report_items_insert(report_tree,
+             report_ahm, predecessor);
+         }
+     }
+  }
 }
 
 @ @<Function definitions@> =
@@ -11717,7 +11816,7 @@ int marpa_o_rank( Marpa_Order o)
             *order++ = and_node_id;
         }
       {
-        int final_count = (order - order_base) - 1;
+        int final_count = (int)(order - order_base) - 1;
         *order_base = final_count;
         marpa_obs_confirm_fast (obs, (int)sizeof (ANDID) * (final_count + 1));
         and_node_orderings[or_node_id] = marpa_obs_finish (obs);
@@ -13113,7 +13212,7 @@ typedef LBW* LBV;
 @<Function definitions@> =
 PRIVATE int lbv_bits_to_size(int bits)
 {
-  const LBW result = ((LBW) bits + (lbv_wordbits - 1)) / lbv_wordbits;
+  const LBW result = (LBW)(((unsigned int)bits + (lbv_wordbits - 1)) / lbv_wordbits);
   return (int) result;
 }
 
@@ -13236,7 +13335,7 @@ by |bv_hiddenwords|.
 PRIVATE Bit_Vector bv_create(int bits)
 {
     LBW size = bv_bits_to_size(bits);
-    LBW bytes = (size + bv_hiddenwords) * sizeof(Bit_Vector_Word);
+    LBW bytes = (size + (LBW)bv_hiddenwords) * (LBW)sizeof(Bit_Vector_Word);
     LBW* addr = (Bit_Vector) my_malloc0((size_t) bytes);
     *addr++ = (LBW)bits;
     *addr++ = size;
@@ -13255,7 +13354,7 @@ PRIVATE Bit_Vector
 bv_obs_create (struct marpa_obstack *obs, int bits)
 {
   LBW size = bv_bits_to_size (bits);
-  LBW bytes = (size + bv_hiddenwords) * sizeof (Bit_Vector_Word);
+  LBW bytes = (size + (LBW)bv_hiddenwords) * (LBW)sizeof (Bit_Vector_Word);
   LBW *addr = (Bit_Vector) marpa__obs_alloc (obs, (size_t) bytes, ALIGNOF(LBW));
   *addr++ = (LBW)bits;
   *addr++ = size;
@@ -13760,8 +13859,9 @@ PRIVATE size_t matrix_sizeof(int rows, int columns)
 {
   const LBW bv_data_words = bv_bits_to_size (columns);
   const LBW row_bytes =
-    (bv_data_words + bv_hiddenwords) * sizeof (Bit_Vector_Word);
-  return offsetof (struct s_bit_matrix, t_row_data) +((size_t)rows) * row_bytes;
+    (LBW) (bv_data_words + bv_hiddenwords) * (LBW) sizeof (Bit_Vector_Word);
+  return offsetof (struct s_bit_matrix,
+		   t_row_data) +((size_t) rows) * row_bytes;
 }
 
 @*0 Create a boolean matrix on an obstack.
@@ -14587,11 +14687,25 @@ if (_MARPA_UNLIKELY(!XSYID_of_G_Exists(xsy_id))) {
     MARPA_ERROR (MARPA_ERR_NO_SUCH_SYMBOL_ID);
     return failure_indicator;
 }
+
 @ @<Fail if |nsy_id| is invalid@> =
 if (_MARPA_UNLIKELY(!nsy_is_valid(g, nsy_id))) {
     MARPA_ERROR(MARPA_ERR_INVALID_NSYID);
     return failure_indicator;
 }
+@ @<Fail if |nsy_id| is malformed@> =
+if (_MARPA_UNLIKELY(NSYID_is_Malformed(nsy_id))) {
+    MARPA_ERROR(MARPA_ERR_INVALID_SYMBOL_ID);
+    return failure_indicator;
+}
+@ Fail with |-1| for well-formed,
+but non-existent symbol ID.
+@<Soft fail if |nsy_id| does not exist@> =
+if (_MARPA_UNLIKELY(!NSYID_of_G_Exists(nsy_id))) {
+    MARPA_ERROR (MARPA_ERR_NO_SUCH_SYMBOL_ID);
+    return -1;
+}
+
 @ @<Fail if |irl_id| is invalid@> =
 if (_MARPA_UNLIKELY(!IRLID_of_G_is_Valid(irl_id))) {
     MARPA_ERROR (MARPA_ERR_INVALID_IRLID);
@@ -14800,7 +14914,15 @@ typedef const char* Marpa_Message_ID;
 
 @** Trace functions.
 
-@** Earley set trace functions.
+The ``trace '' functions were designed for just that --
+use in tracing and diagnostics.
+They were not designed for use in production -- they
+lack some of the efficiency and coverage needed.
+For the recognizer's trace functions,
+this intent is, in Kollos,
+to replace them
+with the ``looker'' functions.
+
 Many of the
 trace functions use
 a ``trace Earley set" which is
@@ -15013,7 +15135,7 @@ Marpa_Earley_Set_ID _marpa_r_earley_item_origin(Marpa_Recognizer r)
     return Origin_Ord_of_YIM(item);
 }
 
-@** Leo item (LIM) trace functions.
+@*0 Leo item (LIM) trace functions.
 The functions in this section are all accessors.
 The trace Leo item is selected by setting the trace postdot item
 to a Leo item.
@@ -15084,15 +15206,20 @@ a ``trace postdot item".
 This is
 tracked on a per-recognizer basis.
 @<Widely aligned recognizer elements@> =
-union u_postdot_item** t_trace_pim_nsy_p;
-union u_postdot_item* t_trace_postdot_item;
+PIM* t_trace_pim_nsy_p;
+PIM t_trace_postdot_item;
 @ @<Initialize recognizer elements@> =
 r->t_trace_pim_nsy_p = NULL;
 r->t_trace_postdot_item = NULL;
 @ |marpa_r_postdot_symbol_trace|
-takes a recognizer and a symbol ID
+takes a recognizer and an internal symbol ID
 as an argument.
-It sets the trace postdot item to the first
+(Note untested previous versions used an
+external symbol ID, which was inconsistent
+with the rest of the interface.)
+
+|marpa_r_postdot_symbol_trace|
+sets the trace postdot item to the first
 postdot item for the symbol ID.
 If there is no postdot item
 for that symbol ID,
@@ -15103,7 +15230,7 @@ and clears the trace postdot item.
 @<Function definitions@> =
 Marpa_Symbol_ID
 _marpa_r_postdot_symbol_trace (Marpa_Recognizer r,
-    Marpa_Symbol_ID xsy_id)
+    Marpa_Symbol_ID nsy_id)
 {
   @<Return |-2| on failure@>@;
   YS current_ys = r->t_trace_earley_set;
@@ -15112,18 +15239,18 @@ _marpa_r_postdot_symbol_trace (Marpa_Recognizer r,
   @<Unpack recognizer objects@>@;
   @<Clear trace postdot item data@>@;
   @<Fail if not trace-safe@>@;
-    @<Fail if |xsy_id| is malformed@>@;
-    @<Soft fail if |xsy_id| does not exist@>@;
+  @<Fail if |nsy_id| is malformed@>@;
+  @<Soft fail if |nsy_id| does not exist@>@;
   if (!current_ys) {
       MARPA_ERROR(MARPA_ERR_NO_TRACE_YS);
       return failure_indicator;
   }
-  pim_nsy_p = PIM_NSY_P_of_YS_by_NSYID(current_ys, NSYID_by_XSYID(xsy_id));
+  pim_nsy_p = PIM_NSY_P_of_YS_by_NSYID(current_ys, nsy_id);
   pim = *pim_nsy_p;
   if (!pim) return -1;
   r->t_trace_pim_nsy_p = pim_nsy_p;
   r->t_trace_postdot_item = pim;
-  return xsy_id;
+  return nsy_id;
 }
 
 @ @<Clear trace postdot item data@> =
@@ -16047,6 +16174,235 @@ int _marpa_t_nook_is_predecessor(Marpa_Tree t, int nook_id)
     return NOOK_is_Predecessor(nook);
 }
 
+@** Looker functions.
+
+The functions are intended as a run-time and
+production-quality way of examining the Earley tables.
+For the recognizer data, in Kollos,
+they will replace the ``trace'' functions.
+
+Lookers are internal.
+Many Libmarpa internal calls currently do
+some checking of arguments.
+Libmarpa methods,
+including at least one of the looker methods,
+will do checking for the user.
+Callers of looker methods
+are required to ensure all necessary
+argument checking is done.
+
+All looker function calls are mutators.
+In addition, the lookers have public accessor macros.
+Looker data can be safely accessed only via
+a looker accessor or the return value of a
+looker mutator.
+After any call to a looker function,
+only a specified set of accessors are valid.
+This is because the lookers mutators
+reuse data fields.
+
+@<Public structures@> =
+struct s_marpa_yim_look {
+    Marpa_Rule_ID t_yim_look_rule_id;
+    int t_yim_look_dot;
+    Marpa_Earley_Set_ID t_yim_look_origin_id;
+    Marpa_IRL_ID t_yim_look_irl_id;
+    int t_yim_look_irl_dot;
+};
+typedef struct s_marpa_yim_look Marpa_Earley_Item_Look;
+
+@ These accessors are valid for |marpa_r_look_yim|.
+@<Public defines@> =
+#define marpa_eim_look_rule_id(l) ((l)->t_yim_look_rule_id)
+#define marpa_eim_look_dot(l) ((l)->t_yim_look_dot)
+#define marpa_eim_look_origin(l) ((l)->t_yim_look_origin_id)
+#define marpa_eim_look_irl_id(l) ((l)->t_yim_look_irl_id)
+#define marpa_eim_look_irl_dot(l) ((l)->t_yim_look_irl_dot)
+
+@ The YIM looker returns data specific to a YIM.
+It is also necessary before the use of any
+other looker accessor or mutator,
+to initializes the looker's Earley set
+and Earley item.
+
+@<Function definitions@> =
+PRIVATE int look_yim(Marpa_Earley_Item_Look* look,
+  YS earley_set, Marpa_Earley_Item_ID eim_id)
+{
+  int xrl_position;
+  int raw_xrl_position;
+  YIM* earley_items = YIMs_of_YS (earley_set);
+  YIM earley_item = earley_items[eim_id];
+  AHM ahm = AHM_of_YIM(earley_item);
+  XRL xrl = XRL_of_AHM(ahm);
+  if (xrl) {
+    marpa_eim_look_rule_id(look) = ID_of_XRL(xrl);
+    xrl_position = XRL_Position_of_AHM(ahm);
+    raw_xrl_position = Raw_XRL_Position_of_AHM(ahm);
+  } else {
+    marpa_eim_look_rule_id(look) = -1;
+    raw_xrl_position = xrl_position = -1;
+  }
+  marpa_eim_look_dot(look) = xrl_position;
+  marpa_eim_look_origin(look) = Origin_Ord_of_YIM(earley_item);
+  marpa_eim_look_irl_id(look) = IRLID_of_AHM(ahm);
+  marpa_eim_look_irl_dot(look) = Position_of_AHM(ahm);
+  return raw_xrl_position;
+}
+
+@ This is the external wrapper of the YIM looker.
+Caller must ensure that its arguments are checked.
+@<Public function prototypes@> =
+int
+_marpa_r_look_yim(Marpa_Recognizer r, Marpa_Earley_Item_Look* look,
+  Marpa_Earley_Set_ID es_id, Marpa_Earley_Item_ID eim_id);
+@ @<Function definitions@> =
+int
+_marpa_r_look_yim(Marpa_Recognizer r, Marpa_Earley_Item_Look* look,
+  Marpa_Earley_Set_ID es_id, Marpa_Earley_Item_ID eim_id)
+{
+  const YS earley_set = YS_of_R_by_Ord (r, es_id);
+  return look_yim(look, earley_set, eim_id);
+}
+
+@ This function is convenient for checking looker
+arguments.
+Returns 1 if all are OK, 0 if no such Earley item,
+-1 if no such Earley set.
+If Earley item or Earley set are malformed,
+or on other hard failure,
+returns -2.
+@<Public function prototypes@> =
+int
+_marpa_r_yim_check(Marpa_Recognizer r,
+  Marpa_Earley_Set_ID es_id, Marpa_Earley_Item_ID eim_id);
+@ @<Function definitions@> =
+int
+_marpa_r_yim_check(Marpa_Recognizer r,
+  Marpa_Earley_Set_ID es_id, Marpa_Earley_Item_ID eim_id)
+{
+  YS earley_set;
+  @<Unpack recognizer objects@>@;
+  @<Return |-2| on failure@>@/
+
+  if (es_id < 0)
+  {
+        MARPA_ERROR(MARPA_ERR_INVALID_LOCATION);
+        return failure_indicator;
+  }
+  if (eim_id < 0)
+    {
+      MARPA_ERROR (MARPA_ERR_YIM_ID_INVALID);
+      return failure_indicator;
+  }
+  r_update_earley_sets (r);
+  earley_set = YS_of_R_by_Ord (r, es_id);
+  if (es_id >= MARPA_DSTACK_LENGTH (r->t_earley_set_stack))
+    {
+        MARPA_ERROR(MARPA_ERR_INVALID_LOCATION);
+        return -1;
+    }
+  if (eim_id >= YIM_Count_of_YS (earley_set))
+    {
+    return 0;
+    }
+  return 1;
+}
+
+@*0 Basic PIM Looker functions.
+
+@ The only PIM looker functions at the moment
+are ``basic''.
+They return data only for PIMs chains which do
+not contain a LIM.
+For efficiency, they use the fact that the LIMs
+come first in a PIM chain.
+
+@ The structure for looking at PIM data.
+Eventually there will be a lot of fields for LIM data.
+|t_pim_eim_id| is $-1$ if PIM is a LIM,
+otherwise it is the ordinal of the EIM.
+@<Public structures@> =
+struct s_marpa_pim_look {
+    _Marpa_PIM t_pim_look_current;
+    Marpa_Earley_Item_ID t_pim_look_eim_id;
+};
+typedef struct s_marpa_pim_look Marpa_Postdot_Item_Look;
+
+@ These accessors are valid for |marpa_r_look_pim_eim_first|
+and |marpa_r_look_pim_eim_next|.
+@<Public defines@> =
+#define marpa_pim_look_eim(l) ((l)->t_pim_look_eim_id)
+
+@ Return the first Earley Item ID from a PIM chain.
+Caller must ensure that its arguments are checked.
+
+On success, returns the Earley item index,
+and sets up the field in the |look| structure.
+If there is no PIM chain for |es_id| and |nsy_id|,
+returns -1.
+If this PIM chain contains a LIM,
+returns -1.
+
+@<Public function prototypes@> =
+int
+_marpa_r_look_pim_eim_first(Marpa_Recognizer r, Marpa_Postdot_Item_Look* look,
+  Marpa_Earley_Set_ID es_id, Marpa_Symbol_ID nsy_id);
+@ This function is prototyped here rather than
+the internal.texi file.
+@<Function definitions@> =
+int
+_marpa_r_look_pim_eim_first(Marpa_Recognizer r, Marpa_Postdot_Item_Look* look,
+  Marpa_Earley_Set_ID es_id, Marpa_Symbol_ID nsy_id)
+{
+    int earley_item_ix = -1;
+    const YS earley_set = YS_of_R_by_Ord (r, es_id);
+    YIM earley_item = NULL;
+    PIM pim = First_PIM_of_YS_by_NSYID (earley_set, nsy_id);
+    if (!pim) return -1;
+    earley_item = YIM_of_PIM (pim);
+    if (!earley_item) return -1;
+    look->t_pim_look_current = pim;
+    earley_item_ix = Ord_of_YIM (earley_item);
+    marpa_pim_look_eim (look) = earley_item_ix;
+    return earley_item_ix;
+}
+
+@ Return the data for the next PIM from a PIM chain.
+Caller must ensure that its arguments are checked.
+|look| must have been initialized by a previous call
+to |_marpa_r_look_pim_eim_first|.
+
+On success, returns the Earley item index,
+and sets up the field in the |look| structure.
+If there is no next PIM,
+returns -1.
+|_marpa_r_look_pim_eim_first| should soft fail if there
+is a LIM in this PIM chain but,
+just in case,
+|_marpa_r_look_pim_eim_next| soft fails and returns -1
+if this PIM chain contains a LIM.
+@<Public function prototypes@> =
+int
+_marpa_r_look_pim_eim_next(Marpa_Postdot_Item_Look* look);
+@ This function is prototyped here rather than
+the internal.texi file.
+@<Function definitions@> =
+int
+_marpa_r_look_pim_eim_next(Marpa_Postdot_Item_Look* look)
+{
+    int earley_item_ix = -1;
+    YIM earley_item = NULL;
+    PIM pim = Next_PIM_of_PIM (look->t_pim_look_current);
+    if (!pim) return -1;
+    earley_item = YIM_of_PIM (pim);
+    if (!earley_item) return -1;
+    look->t_pim_look_current = pim;
+    earley_item_ix = Ord_of_YIM (earley_item);
+    marpa_pim_look_eim (look) = earley_item_ix;
+    return earley_item_ix;
+}
+
 @** Debugging functions.
 Much of the debugging logic is in other documents.
 Here is the public interface, which allows resetting the
@@ -16224,6 +16580,7 @@ So I add such a comment.
 @<Private typedefs@>@;
 @<Private utility structures@>@;
 @<Private structures@>@;
+@<Private unions@>@;
 
 @ To preserve thread-safety,
 global variables are either constants,
@@ -16258,6 +16615,7 @@ extern const int marpa_micro_version;
 @<Public typedefs@>@;
 @<Public structures@>@;
 @<Debugging variable declarations@>@;
+@<Public function prototypes@>@;
 
 @** Index.
 
