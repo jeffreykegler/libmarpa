@@ -22,6 +22,7 @@
 /* Tests of Libmarpa methods on trivial grammar */
 
 #include <stdio.h>
+#include <string.h>
 #include "marpa.h"
 
 #include "marpa_m_test.h"
@@ -37,6 +38,27 @@ fail (const char *s, Marpa_Grammar g)
 {
   warn (s, g);
   exit (1);
+}
+
+char *my_strdup(const char *s) {
+    size_t size = strlen(s) + 1;
+    char *p = malloc(size);
+    if (!p) {
+        perror("Malloc failed");
+	exit(1);
+    }
+    memcpy(p, s, size);
+    return p;
+}
+
+/* The most we can safely to with a void*
+ * of unknown provenance is test it for NULL.
+ * (Actually I think that is strictly non C89,
+ * but hey live dangerously :-) .)
+ */
+char *value2_to_str(void *s)
+{
+    return s ? "non-NULL" : "NULL";
 }
 
 Marpa_Symbol_ID S_top;
@@ -162,6 +184,52 @@ marpa_g_trivial_precompute(Marpa_Grammar g, Marpa_Symbol_ID S_start)
 }
 
 int
+test_r_earley_set_values(
+  Marpa_Grammar g,
+  Marpa_Recognizer r,
+  Marpa_Earley_Set_ID set_id,
+  int expected_return,
+  int expected_int_value,
+  void* expected_value2,
+  int expected_errcode
+)
+{
+  const int orig_int_value = 86;
+  int int_value = orig_int_value;
+  /* A pointer that will not match NULL */
+  void* orig_value2 = strdup("");
+  void* value2 = orig_value2;
+
+  const char* name = "marpa_r_earley_set_values";
+  int rv_seen = marpa_r_earley_set_values(r, set_id, &int_value, &value2);
+
+  /* success wanted */
+  if ( rv_seen >= 0 ) {
+    if (expected_return == rv_seen) {
+      ok( 1, "%s(r, %d, ...) succeeded, returned %d", name, set_id, rv_seen );
+    } else {
+      ok( 0, "%s(r, $d, ...) succeeded, but returned %d; %d expected",
+	name, set_id, rv_seen, expected_return );
+    }
+    is_int ( expected_int_value, int_value,
+      "marpa_r_earley_set_values() int* value" );
+    ok ( (expected_value2 != value2),
+       "marpa_r_earley_set_values() void** value" );
+  } else {
+    /* return value */
+    int err_seen = marpa_g_error(g, NULL);
+    is_int( expected_errcode, err_seen,
+        "%s() error is: %s", name, marpa_m_error_message(err_seen) );
+    is_int ( int_value, orig_int_value,
+      "marpa_r_earley_set_values() int* value" );
+    ok ( (value2 != orig_value2),
+       "marpa_r_earley_set_values() void** value" );
+  }
+  free(orig_value2);
+
+}
+
+int
 main (int argc, char *argv[])
 {
   int rc;
@@ -178,6 +246,12 @@ main (int argc, char *argv[])
   int whatever;
 
   plan(350);
+
+  /* We are not guaranteed the ability to safely match pointers strings to
+   * garbage pointers, the best we can do is compare NULL and non-NULL
+   */
+  char *value2_base = my_strdup("[NO MATCH -- main]");
+  void *value2 = value2_base;
 
   marpa_c_init (&marpa_configuration);
   g = marpa_g_trivial_new(&marpa_configuration);
@@ -538,7 +612,7 @@ main (int argc, char *argv[])
 
       /* marpa_r_earley_set_value_*() methods */
       int taxicab = 1729;
-      char *value2 = NULL;
+
       int earley_set;
 
       struct marpa_r_earley_set_value_test {
@@ -551,7 +625,7 @@ main (int argc, char *argv[])
 
         int   rv_marpa_r_earley_set_values;
         int   int_p_value_rv_marpa_r_earley_set_values;
-        char* void_p_value_rv_marpa_r_earley_set_values;
+        void* void_p_value_rv_marpa_r_earley_set_values;
 
         Marpa_Error_Code errcode;
       };
@@ -574,6 +648,7 @@ main (int argc, char *argv[])
           else
             marpa_m_test("marpa_r_earleme", r, t.earley_set, t.rv_marpa_r_earleme);
 
+          diag("Trying marpa_r_earley_set_value_set(); earley_set: %d; value: %d", t.earley_set, taxicab);
           marpa_m_test("marpa_r_latest_earley_set_value_set", r, taxicab,
             t.rv_marpa_r_latest_earley_set_value_set);
           is_int(t.errcode, marpa_g_error(g, NULL),
@@ -586,24 +661,33 @@ main (int argc, char *argv[])
             marpa_m_test("marpa_r_earley_set_value", r,
               t.earley_set, t.rv_marpa_r_earley_set_value);
 
-          marpa_m_test("marpa_r_latest_earley_set_values_set", r, 42, &taxicab,
+          diag("Trying marpa_r_latest_earley_set_values_set(); int value: %d; value2: %s",
+	    taxicab,
+	    value2_to_str(t.void_p_value_rv_marpa_r_earley_set_values));
+          marpa_m_test("marpa_r_latest_earley_set_values_set", r, 42,
+	    value2_to_str(value2),
             t.rv_marpa_r_latest_earley_set_values_set);
           is_int(t.errcode, marpa_g_error(g, NULL),
             "marpa_r_latest_earley_set_values_set() error code");
 
-          if (t.earley_set == -1 || t.earley_set == 1 || t.earley_set == 2)
-            marpa_m_test(
-              "marpa_r_earley_set_values", r, t.earley_set, &taxicab, (void **)&value2,
-              t.rv_marpa_r_earley_set_values, t.errcode);
-          else
-            marpa_m_test(
-              "marpa_r_earley_set_values", r, t.earley_set, &taxicab, (void **)&value2,
-              t.rv_marpa_r_earley_set_values);
+	  test_r_earley_set_values(g, r,
+	     t.earley_set,
+	     t.rv_marpa_r_earley_set_values,
+	     t.int_p_value_rv_marpa_r_earley_set_values,
+	     t.void_p_value_rv_marpa_r_earley_set_values,
+	     t.errcode);
 
-          is_int ( t.int_p_value_rv_marpa_r_earley_set_values, taxicab,
-            "marpa_r_earley_set_values() int* value" );
-          is_string ( t.void_p_value_rv_marpa_r_earley_set_values, NULL,
-            "marpa_r_earley_set_values() void** value" );
+	  if (0) {
+	    if (t.earley_set == -1 || t.earley_set == 1 || t.earley_set == 2)
+	      marpa_m_test(
+		"marpa_r_earley_set_values", r, t.earley_set, &taxicab, &value2,
+		t.rv_marpa_r_earley_set_values, t.errcode);
+	    else
+	      marpa_m_test(
+		"marpa_r_earley_set_values", r, t.earley_set, &taxicab, &value2,
+		t.rv_marpa_r_earley_set_values);
+	  }
+
         }
     } /* Location Accessors */
 
@@ -801,6 +885,8 @@ main (int argc, char *argv[])
     } /* Bocage, Order, Tree, Value */
 
   } /* recce method tests */
+
+  free( value2_base );
 
   return 0;
 }

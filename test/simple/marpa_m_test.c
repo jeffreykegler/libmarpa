@@ -291,7 +291,7 @@ marpa_m_test_func(const char* name, ...)
     /* failure seen */
     if ( rv_seen < 0 )
     {
-      ok(0, "%s() unexpectedly returned %d, error code: %d", name, rv_seen, marpa_g_error(g, NULL));
+      ok(0, "%s() unexpectedly failed %d, error code: %d", name, rv_seen, marpa_g_error(g, NULL));
     }
     /* success seen */
     else {
@@ -299,9 +299,9 @@ marpa_m_test_func(const char* name, ...)
          e.g. marpa_r_alternative(). Passing anything except char* dumps core. */
       char *msg = va_arg(va_args, char *);
       if ((unsigned int *)msg != ARGS_END)
-        is_int( rv_wanted, rv_seen, "%s(): %s", name, msg );
+        is_int( rv_wanted, rv_seen, "%s() succeeded: %s", name, msg );
       else
-        is_int( rv_wanted, rv_seen, "%s()", name );
+        is_int( rv_wanted, rv_seen, "%s() succeeded", name );
     }
   }
   /* a Marpa method, e.g. marpa_g_rule_rank() and marpa_g_rule_rank_set()
