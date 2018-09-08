@@ -183,6 +183,30 @@ marpa_g_trivial_precompute(Marpa_Grammar g, Marpa_Symbol_ID S_start)
   return rc;
 }
 
+int test_r_latest_earley_set_values_set(
+  Marpa_Grammar g,
+  Marpa_Recognizer r,
+  int expected_return,
+  int int_value,
+  void* ptr_value
+)
+{
+  const char* name = "marpa_r_latest_earley_set_values_set";
+  int rv_seen = marpa_r_latest_earley_set_values_set(r, int_value, ptr_value);
+
+  /* success wanted */
+  if ( rv_seen >= 0 ) {
+    if (expected_return == rv_seen) {
+      ok( 1, "%s(r, %d, ...) succeeded as expected, returned %d", name, int_value, rv_seen );
+    } else {
+      ok( 0, "%s(r, %d, ...) succeeded, but returned %d; %d expected",
+	name, int_value, rv_seen, expected_return );
+    }
+  } else {
+    ok( 1, "%s(r, %d, ...) failed, returned %d", name, int_value, rv_seen );
+  }
+}
+
 int
 test_r_earley_set_values(
   Marpa_Grammar g,
@@ -664,11 +688,16 @@ main (int argc, char *argv[])
           diag("Trying marpa_r_latest_earley_set_values_set(); int value: %d; value2: %s",
 	    taxicab,
 	    value2_to_str(t.void_p_value_rv_marpa_r_earley_set_values));
-          marpa_m_test("marpa_r_latest_earley_set_values_set", r, 42,
-	    value2_to_str(value2),
-            t.rv_marpa_r_latest_earley_set_values_set);
-          is_int(t.errcode, marpa_g_error(g, NULL),
-            "marpa_r_latest_earley_set_values_set() error code");
+	  test_r_latest_earley_set_values_set(g, r,
+	      t.rv_marpa_r_latest_earley_set_values_set, 42, value2);
+
+	  if (0) {
+	    marpa_m_test("marpa_r_latest_earley_set_values_set", r, 42,
+	      value2_to_str(value2),
+	      t.rv_marpa_r_latest_earley_set_values_set);
+	  }
+	  is_int(t.errcode, marpa_g_error(g, NULL),
+	    "marpa_r_latest_earley_set_values_set() error code");
 
 	  test_r_earley_set_values(g, r,
 	     t.earley_set,
