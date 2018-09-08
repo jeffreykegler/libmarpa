@@ -35,7 +35,6 @@ Marpa_Rule_ID R_invalid = -1, R_no_such = 42;
     %i    int
     %ip   pointer to int
     %vp   pointer to void
-    %vp   pointer to pointer to void
 
 */
 
@@ -102,7 +101,6 @@ const Marpa_Method_Spec methspec[] = {
   { "marpa_r_earleme", &marpa_r_earleme, "%i" },
 
   { "marpa_r_earley_set_value", &marpa_r_earley_set_value, "%i" },
-  { "marpa_r_earley_set_values", &marpa_r_earley_set_values, "%i, %ip, %vpp" },
   { "marpa_r_latest_earley_set_value_set", &marpa_r_latest_earley_set_value_set, "%i" },
   { "marpa_r_latest_earley_set_values_set", &marpa_r_latest_earley_set_values_set, "%i, %vp" },
 
@@ -122,7 +120,7 @@ const Marpa_Method_Spec methspec[] = {
   { "marpa_r_progress_report_finish", &marpa_r_progress_report_finish, "" },
   { "marpa_r_progress_item", &marpa_r_progress_item, "%ip, %ip" },
 
-  { "marpa_b_new", &marpa_b_new, "%i" },
+  { "marpa_b_new", (marpa_m_pointer)&marpa_b_new, "%i" },
   { "marpa_b_ambiguity_metric", &marpa_b_ambiguity_metric, "" },
   { "marpa_b_is_null", &marpa_b_is_null, "" },
 
@@ -258,7 +256,6 @@ marpa_m_test_func(const char* name, ...)
     else if (strcmp(curr_arg, "%r") == 0)   args[curr_arg_ix] = va_arg(va_args, Marpa_Rule_ID);
     else if (strcmp(curr_arg, "%i") == 0)   args[curr_arg_ix] = va_arg(va_args, int);
     else if (strcmp(curr_arg, "%ip") == 0)  args[curr_arg_ix] = va_arg(va_args, int *);
-    else if (strcmp(curr_arg, "%vpp") == 0) args[curr_arg_ix] = va_arg(va_args, void **);
     else if (strcmp(curr_arg, "%vp") == 0)  args[curr_arg_ix] = va_arg(va_args, void *);
     else
     {
@@ -291,7 +288,7 @@ marpa_m_test_func(const char* name, ...)
     /* failure seen */
     if ( rv_seen < 0 )
     {
-      ok(0, "%s() unexpectedly failed %d, error code: %d", name, rv_seen, marpa_g_error(g, NULL));
+      ok(0, "%s() unexpectedly returned %d, error code: %d", name, rv_seen, marpa_g_error(g, NULL));
     }
     /* success seen */
     else {
@@ -299,9 +296,9 @@ marpa_m_test_func(const char* name, ...)
          e.g. marpa_r_alternative(). Passing anything except char* dumps core. */
       char *msg = va_arg(va_args, char *);
       if ((unsigned int *)msg != ARGS_END)
-        is_int( rv_wanted, rv_seen, "%s() succeeded: %s", name, msg );
+        is_int( rv_wanted, rv_seen, "%s(): %s", name, msg );
       else
-        is_int( rv_wanted, rv_seen, "%s() succeeded", name );
+        is_int( rv_wanted, rv_seen, "%s()", name );
     }
   }
   /* a Marpa method, e.g. marpa_g_rule_rank() and marpa_g_rule_rank_set()
