@@ -181,7 +181,7 @@ int test_r_terminals_expected(
 	name, rv_seen, expected_return );
     }
   } else {
-    ok( 1, "%s(r, %d, ...) failed, returned %d", name, rv_seen );
+    ok( 1, "%s(r, ...) failed, returned %d", name, rv_seen );
   }
 }
 
@@ -207,7 +207,7 @@ int test_r_progress_item(
 	name, rv_seen, expected_return );
     }
   } else {
-    ok( 1, "%s(r, %d, ...) failed, returned %d", name, rv_seen );
+    ok( 1, "%s(r, ...) failed, returned %d", name, rv_seen );
     int err_seen = marpa_g_error(g, NULL);
     is_int( expected_errcode, err_seen,
         "%s() error is: %s", name, marpa_m_error_message(err_seen) );
@@ -263,7 +263,7 @@ test_r_earley_set_values(
     if (expected_return == rv_seen) {
       ok( 1, "%s(r, %d, ...) succeeded, returned %d", name, set_id, rv_seen );
     } else {
-      ok( 0, "%s(r, $d, ...) succeeded, but returned %d; %d expected",
+      ok( 0, "%s(r, ...) succeeded, but returned %d; %d expected",
 	name, set_id, rv_seen, expected_return );
     }
     is_int ( expected_int_value, int_value,
