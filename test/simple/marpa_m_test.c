@@ -331,3 +331,71 @@ marpa_m_test_func(const char* name, ...)
 
   va_end(va_args);
 }
+
+#define MSG_MAX 120
+#define MSG_BUFLEN (MSG_MAX+2+1)
+
+char *sep_msg(char *msg) {
+   static char msg_buffer[MSG_BUFLEN];
+   if (!msg || *msg) {
+      return "";
+   }
+   strcpy(msg_buffer, "; ");
+   strncat(msg_buffer, msg, MSG_MAX);
+   return msg_buffer;
+}
+
+/* Report success/failure on "normal" return value.
+ * "Normal" means negative is failure,
+ * non-negative is success
+ */
+void rv_report(API_test_data td, char *name, int rv_wanted, Marpa_Error_Code err_wanted)
+{
+   int rv_seen = td.rv_seen.int_rv;
+   int err_seen = td.err_seen;
+
+   if (rv_seen >= 0) {
+      char* msg = td.msg;
+      if (rv_wanted >= 0) {
+	if (rv_wanted == rv_seen) {
+	  if (msg) {
+	    ok(1, "%s() success as expected; %s", name, msg);
+	  } else {
+	    ok(1, "%s() success as expected", name);
+	  }
+	} else {
+	  if (msg) {
+	    ok(0, "%s() expected success; value wanted = %d, got %d; %s", name, rv_wanted, rv_seen, msg);
+	  } else {
+	    ok(0, "%s() expected success; value wanted = %d, got %d", name, rv_wanted, rv_seen);
+	  }
+	}
+      }
+      return;
+   }
+   /* If here, the call failed */
+   if (rv_wanted >= 0) {
+     ok(0, "%s() unexpected failure; got return %d, expected %d; error = %s", name,
+       rv_seen, rv_wanted,
+       marpa_g_error(td.g, NULL));
+     return;
+   }
+   /* If here, the call failed and was expected to fail */
+   if (rv_wanted == rv_seen && err_wanted == err_seen) {
+     ok(0, "%s() failure as expected; return %d; error = %s", name,
+       rv_seen,
+       marpa_g_error(td.g, NULL));
+       return;
+   }
+   /* If here, the call failed and was expected to fail, but with anomalies */
+   if (rv_wanted == rv_seen) {
+     ok(1, "%s() expected failure; value = %d as expected", name, rv_seen);
+   } else {
+     ok(0, "%s() expected failure; value wanted = %d, but got %d", name, rv_wanted, rv_seen);
+   }
+   if (err_wanted == err_seen) {
+     ok(1, "%s() expected failure; error as expected: %s", name, marpa_g_error(td.g, NULL));
+   } else {
+     ok(0, "%s() expected failure; error code not expected: %s", name, marpa_g_error(td.g, NULL));
+   }
+}

@@ -78,4 +78,17 @@ char *marpa_m_error_message (Marpa_Error_Code error_code);
 
 int marpa_m_test_func(const char* name, ...);
 
+typedef union {
+    void *void_rv;
+    int int_rv;
+} API_RV;
+
+typedef struct api_test_data {
+    Marpa_Grammar g;
+    Marpa_Error_Code expected_errcode;
+    char *msg;
+    API_RV rv_seen;
+    Marpa_Error_Code err_seen;
+} API_test_data;
+
 #endif /* MARPA_M_TEST_H */

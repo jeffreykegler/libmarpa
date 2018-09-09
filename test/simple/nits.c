@@ -153,10 +153,21 @@ main (int argc, char *argv[])
   Marpa_Grammar g;
   Marpa_Recognizer r;
 
+  API_test_data defaults;
+  API_test_data this_test;
+
   plan(20);
 
   marpa_c_init (&marpa_configuration);
   g = marpa_g_simple_new(&marpa_configuration);
+
+  defaults.g = g;
+  defaults.expected_errcode = MARPA_ERR_NONE;
+  defaults.msg = "";
+  defaults.rv_seen.int_rv = -86;
+  defaults.err_seen = MARPA_ERR_NONE;
+
+  this_test = defaults;
 
   /* for marpa_g_error() in marpa_m_test() */
   marpa_m_grammar_set(g);
