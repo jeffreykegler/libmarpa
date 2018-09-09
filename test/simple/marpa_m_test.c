@@ -34,7 +34,6 @@ Marpa_Rule_ID R_invalid = -1, R_no_such = 42;
     %r    Marpa_Rule_ID
     %i    int
     %ip   pointer to int
-    %vp   pointer to void
 
 */
 
@@ -102,7 +101,6 @@ const Marpa_Method_Spec methspec[] = {
 
   { "marpa_r_earley_set_value", &marpa_r_earley_set_value, "%i" },
   { "marpa_r_latest_earley_set_value_set", &marpa_r_latest_earley_set_value_set, "%i" },
-  { "marpa_r_latest_earley_set_values_set", &marpa_r_latest_earley_set_values_set, "%i, %vp" },
 
   { "marpa_r_prediction_symbol_activate", &marpa_r_prediction_symbol_activate, "%s, %i" },
   { "marpa_r_completion_symbol_activate", &marpa_r_completion_symbol_activate, "%s, %i" },
@@ -256,7 +254,6 @@ marpa_m_test_func(const char* name, ...)
     else if (strcmp(curr_arg, "%r") == 0)   args[curr_arg_ix] = va_arg(va_args, Marpa_Rule_ID);
     else if (strcmp(curr_arg, "%i") == 0)   args[curr_arg_ix] = va_arg(va_args, int);
     else if (strcmp(curr_arg, "%ip") == 0)  args[curr_arg_ix] = va_arg(va_args, int *);
-    else if (strcmp(curr_arg, "%vp") == 0)  args[curr_arg_ix] = va_arg(va_args, void *);
     else
     {
       printf("No variable yet for argument spec %s.\n", curr_arg);

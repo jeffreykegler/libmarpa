@@ -183,6 +183,29 @@ marpa_g_trivial_precompute(Marpa_Grammar g, Marpa_Symbol_ID S_start)
   return rc;
 }
 
+int test_r_terminals_expected(
+  Marpa_Grammar g,
+  Marpa_Recognizer r,
+  int expected_return
+)
+{
+  Marpa_Symbol_ID buffer[42];
+  const char* name = "marpa_r_latest_earley_set_values_set";
+  int rv_seen = marpa_r_terminals_expected(r, buffer);
+
+  /* success wanted */
+  if ( rv_seen >= 0 ) {
+    if (expected_return == rv_seen) {
+      ok( 1, "%s(r, ...) succeeded as expected, returned %d", name, rv_seen );
+    } else {
+      ok( 0, "%s(r, ...) succeeded, but returned %d; %d expected",
+	name, rv_seen, expected_return );
+    }
+  } else {
+    ok( 1, "%s(r, %d, ...) failed, returned %d", name, rv_seen );
+  }
+}
+
 int test_r_latest_earley_set_values_set(
   Marpa_Grammar g,
   Marpa_Recognizer r,
@@ -690,12 +713,6 @@ main (int argc, char *argv[])
 	    value2_to_str(t.void_p_value_rv_marpa_r_earley_set_values));
 	  test_r_latest_earley_set_values_set(g, r,
 	      t.rv_marpa_r_latest_earley_set_values_set, 42, value2);
-
-	  if (0) {
-	    marpa_m_test("marpa_r_latest_earley_set_values_set", r, 42,
-	      value2_to_str(value2),
-	      t.rv_marpa_r_latest_earley_set_values_set);
-	  }
 	  is_int(t.errcode, marpa_g_error(g, NULL),
 	    "marpa_r_latest_earley_set_values_set() error code");
 
@@ -705,17 +722,6 @@ main (int argc, char *argv[])
 	     t.int_p_value_rv_marpa_r_earley_set_values,
 	     t.void_p_value_rv_marpa_r_earley_set_values,
 	     t.errcode);
-
-	  if (0) {
-	    if (t.earley_set == -1 || t.earley_set == 1 || t.earley_set == 2)
-	      marpa_m_test(
-		"marpa_r_earley_set_values", r, t.earley_set, &taxicab, &value2,
-		t.rv_marpa_r_earley_set_values, t.errcode);
-	    else
-	      marpa_m_test(
-		"marpa_r_earley_set_values", r, t.earley_set, &taxicab, &value2,
-		t.rv_marpa_r_earley_set_values);
-	  }
 
         }
     } /* Location Accessors */
@@ -753,8 +759,7 @@ main (int argc, char *argv[])
       marpa_m_test("marpa_r_expected_symbol_event_set", r, S_B1, value,
         -2, MARPA_ERR_SYMBOL_IS_NULLING);
 
-      Marpa_Symbol_ID buffer[42];
-      marpa_m_test("marpa_r_terminals_expected", r, buffer, 0);
+      test_r_terminals_expected(g, r, 0);
 
       marpa_m_test("marpa_r_terminal_is_expected", r, S_C1, 0);
       marpa_m_test("marpa_r_terminal_is_expected", r, S_invalid,
