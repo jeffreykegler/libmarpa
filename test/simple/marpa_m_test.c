@@ -387,3 +387,36 @@ void rv_std_report(API_test_data* td, char *name, int rv_wanted, Marpa_Error_Cod
        name, err_msg, wanted_err_msg, msg);
    }
 }
+
+/* Report success/failure when the return value is
+ * an error code.
+ */
+void rv_code_report(API_test_data* td, char *name,
+  Marpa_Error_Code err_seen, Marpa_Error_Code err_wanted)
+{
+   char* err_msg  = marpa_m_error_message(err_seen);
+   char* msg = sep_msg(td->msg);
+
+   if (err_seen == MARPA_ERR_NONE) {
+      if (err_wanted == MARPA_ERR_NONE ) {
+	  ok(1, "%s() success as expected%s", name, msg);
+	} else {
+	  ok(0, "%s() unexpected success; wanted error '%s'%d", name, err_msg, msg);
+	}
+      return;
+   }
+   /* If here, the call failed */
+   if (err_wanted == MARPA_ERR_NONE) {
+     ok(0, "%s() unexpected failure; error = %s%s", name,
+       err_msg, msg);
+     return;
+   }
+   /* If here, the call failed and was expected to fail */
+   if (err_wanted == err_seen) {
+     ok(1, "%s() expected failure; error as expected: '%s'%s", name, err_msg, msg);
+   } else {
+     char* wanted_err_msg  = marpa_m_error_message(err_wanted);
+     ok(0, "%s() expected failure but unexpected error code: got '%s', expected '%s'%s",
+       name, err_msg, wanted_err_msg, msg);
+   }
+}

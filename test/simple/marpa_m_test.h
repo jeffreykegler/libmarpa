@@ -117,4 +117,10 @@ void rv_std_report( API_test_data* td,
    rv_std_report(&test_data, #method , rv_wanted, err_wanted); \
 }
 
+#define API_CODE_TEST3(test_data, err_wanted, method, object, arg1, arg2, arg3) \
+{ \
+   Marpa_Error_Code err_seen = method(object, arg1, arg2, arg3); \
+   rv_code_report(&test_data, #method , err_seen, err_wanted); \
+}
+
 #endif /* MARPA_M_TEST_H */
