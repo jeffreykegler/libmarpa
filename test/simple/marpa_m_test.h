@@ -92,6 +92,8 @@ typedef struct api_test_data {
 
 void rv_std_report( API_test_data* td,
   char *method, int rv_wanted, Marpa_Error_Code err_wanted);
+void rv_code_report( API_test_data* td,
+  char *method, Marpa_Error_Code err_seen, Marpa_Error_Code err_wanted);
 
 #define API_STD_TEST0(test_data, rv_wanted, err_wanted, method, object) \
 { \

@@ -179,15 +179,12 @@ main (int argc, char *argv[])
     fail("marpa_r_new", g);
 
   Marpa_Symbol_ID S_token = S_A2;
-  marpa_m_test("marpa_r_alternative", r, S_token, 0, 0,
-      MARPA_ERR_RECCE_NOT_ACCEPTING_INPUT, "before marpa_r_start_input()");
+  /* marpa_m_test("marpa_r_alternative", r, S_token, 0, 0,
+      MARPA_ERR_RECCE_NOT_ACCEPTING_INPUT, "before marpa_r_start_input()"); */
 
-  if (0) {
-    /* Wrong -- should be NYI API_CODE_TEST3 */
-    this_test.msg = "before marpa_r_start_input()";
-    API_STD_TEST3(this_test, 0, MARPA_ERR_RECCE_NOT_ACCEPTING_INPUT,
-      marpa_r_alternative, r, S_token, 0, 0);
-  }
+  this_test.msg = "before marpa_r_start_input()";
+  API_CODE_TEST3(this_test, MARPA_ERR_RECCE_NOT_ACCEPTING_INPUT,
+    marpa_r_alternative, r, S_token, 0, 0);
 
   rc = marpa_r_start_input (r);
   if (!rc)
