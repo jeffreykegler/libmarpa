@@ -1,0 +1,18 @@
+language: c
+
+compiler:
+  - clang
+  - gcc
+
+branches:
+  only:
+  - travis
+
+# build libmarpa and execute tests
+script:
+  - (make test)
+
+sudo: false  # faster builds using containers
+
+notifications:
+  irc: "irc.freenode.net#marpa"
