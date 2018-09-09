@@ -8,6 +8,9 @@ branches:
   only:
   - travis
 
+install:
+  - sudo apt-get install cweb-latex
+
 # build libmarpa and execute tests
 script:
   - (make test)
