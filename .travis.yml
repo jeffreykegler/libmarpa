@@ -10,6 +10,7 @@ branches:
 
 install:
   - sudo apt-get install cweb-latex
+  - sudo apt-get install texlive-fonts-extra
 
 # build libmarpa and execute tests
 script:
