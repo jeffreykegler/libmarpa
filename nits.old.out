@@ -1,0 +1,22 @@
+1..20
+ok 1 - precomputation succeeded
+ok 2 - marpa_r_alternative(): before marpa_r_start_input()
+ok 3 - marpa_r_expected_symbol_event_set()
+ok 4 - marpa_r_alternative(): invalid token symbol is checked before no-such
+ok 5 - marpa_r_alternative(): no such token symbol
+ok 6 - marpa_r_alternative(): token length less than zero
+ok 7 - marpa_r_earleme_complete() failed, returned -2
+ok 8 - marpa_r_earleme_complete() error is: parse exhausted
+ok 9 - marpa_r_alternative()
+ok 10 - marpa_r_earleme_complete()
+ok 11 - marpa_b_ambiguity_metric()
+ok 12 - marpa_b_is_null()
+ok 13 - marpa_o_new(): ordering at earleme 0
+ok 14 - marpa_o_high_rank_only_set()
+ok 15 - marpa_o_high_rank_only()
+ok 16 - marpa_o_ambiguity_metric()
+ok 17 - marpa_o_is_null()
+ok 18 - marpa_o_high_rank_only_set() failed, returned -2
+ok 19 - marpa_o_high_rank_only_set() error is: order frozen
+ok 20 - marpa_o_high_rank_only()
+# All 20 tests successful or skipped

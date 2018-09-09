@@ -165,7 +165,6 @@ main (int argc, char *argv[])
   defaults.expected_errcode = MARPA_ERR_NONE;
   defaults.msg = "";
   defaults.rv_seen.int_rv = -86;
-  defaults.err_seen = MARPA_ERR_NONE;
 
   this_test = defaults;
 
@@ -181,7 +180,14 @@ main (int argc, char *argv[])
 
   Marpa_Symbol_ID S_token = S_A2;
   marpa_m_test("marpa_r_alternative", r, S_token, 0, 0,
-    MARPA_ERR_RECCE_NOT_ACCEPTING_INPUT, "before marpa_r_start_input()");
+      MARPA_ERR_RECCE_NOT_ACCEPTING_INPUT, "before marpa_r_start_input()");
+
+  if (0) {
+    /* Wrong -- should be NYI API_CODE_TEST3 */
+    this_test.msg = "before marpa_r_start_input()";
+    API_STD_TEST3(this_test, 0, MARPA_ERR_RECCE_NOT_ACCEPTING_INPUT,
+      marpa_r_alternative, r, S_token, 0, 0);
+  }
 
   rc = marpa_r_start_input (r);
   if (!rc)
@@ -189,7 +195,9 @@ main (int argc, char *argv[])
 
   Marpa_Symbol_ID S_expected = S_A2;
   int value = 1;
-  marpa_m_test("marpa_r_expected_symbol_event_set", r, S_expected, value, value);
+  API_STD_TEST2(this_test, value, MARPA_ERR_NONE,
+      marpa_r_expected_symbol_event_set, r, S_expected, value);
+  /* marpa_m_test("marpa_r_expected_symbol_event_set", r, S_expected, value, value); */
 
   /* recognizer reading methods on invalid and missing symbols */
   marpa_m_test("marpa_r_alternative", r, S_invalid, 0, 0, MARPA_ERR_INVALID_SYMBOL_ID,

@@ -1,0 +1,358 @@
+1..343
+ok 1 - marpa_g_symbol_is_start() failed, returned -2
+ok 2 - marpa_g_symbol_is_start() error is: invalid symbol id
+ok 3 - marpa_g_symbol_is_start() failed, returned -1
+ok 4 - marpa_g_symbol_is_start() error is: no such symbol id
+ok 5 - marpa_g_symbol_is_start()
+ok 6 - marpa_g_start_symbol() failed, returned -1
+ok 7 - marpa_g_start_symbol() error is: no start symbol
+ok 8 - marpa_g_symbol_is_start()
+ok 9 - marpa_g_start_symbol()
+ok 10 - marpa_g_highest_symbol_id()
+ok 11 - marpa_g_symbol_is_accessible() failed, returned -2
+ok 12 - marpa_g_symbol_is_accessible() error is: grammar not precomputed
+ok 13 - marpa_g_symbol_is_nullable() failed, returned -2
+ok 14 - marpa_g_symbol_is_nullable() error is: grammar not precomputed
+ok 15 - marpa_g_symbol_is_nulling() failed, returned -2
+ok 16 - marpa_g_symbol_is_nulling() error is: grammar not precomputed
+ok 17 - marpa_g_symbol_is_productive() failed, returned -2
+ok 18 - marpa_g_symbol_is_productive() error is: grammar not precomputed
+ok 19 - marpa_g_symbol_is_terminal()
+ok 20 - marpa_g_rule_is_nullable() failed, returned -2
+ok 21 - marpa_g_rule_is_nullable() error is: grammar not precomputed
+ok 22 - marpa_g_rule_is_nulling() failed, returned -2
+ok 23 - marpa_g_rule_is_nulling() error is: grammar not precomputed
+ok 24 - marpa_g_rule_is_loop() failed, returned -2
+ok 25 - marpa_g_rule_is_loop() error is: grammar not precomputed
+ok 26 - marpa_g_rule_is_accessible() failed, returned -2
+ok 27 - marpa_g_rule_is_accessible() error is: grammar not precomputed
+ok 28 - marpa_g_rule_is_productive() failed, returned -2
+ok 29 - marpa_g_rule_is_productive() error is: grammar not precomputed
+ok 30 - marpa_g_symbol_is_terminal_set() failed, returned -2
+ok 31 - marpa_g_symbol_is_terminal_set() error is: invalid symbol id
+ok 32 - marpa_g_symbol_is_terminal_set() failed, returned -1
+ok 33 - marpa_g_symbol_is_terminal_set() error is: no such symbol id
+ok 34 - marpa_g_highest_rule_id(): before precomputation
+ok 35 - marpa_g_rule_length(): before precomputation
+ok 36 - marpa_g_rule_length(): before precomputation
+ok 37 - marpa_g_rule_lhs(): before precomputation
+ok 38 - marpa_g_rule_rhs(): before precomputation
+ok 39 - marpa_g_rule_rhs(): before precomputation
+ok 40 - marpa_g_symbol_is_terminal_set()
+ok 41 - marpa_g_symbol_is_terminal_set() failed, returned -2
+ok 42 - marpa_g_symbol_is_terminal_set() error is: terminal locked
+ok 43 - marpa_g_precompute() failed, returned -2
+ok 44 - marpa_g_precompute() error is: nulling terminal
+ok 45 - marpa_g_precompute() failed, returned -2
+ok 46 - marpa_g_precompute() error is: no start symbol
+ok 47 - precomputation succeeded
+ok 48 - marpa_g_symbol_is_accessible()
+ok 49 - marpa_g_symbol_is_nullable()
+ok 50 - marpa_g_symbol_is_nulling()
+ok 51 - marpa_g_symbol_is_productive()
+ok 52 - marpa_g_symbol_is_start()
+ok 53 - marpa_g_symbol_is_terminal()
+ok 54 - marpa_g_symbol_is_terminal_set() failed, returned -2
+ok 55 - marpa_g_symbol_is_terminal_set() error is: grammar precomputed
+ok 56 - marpa_g_start_symbol_set() failed, returned -2
+ok 57 - marpa_g_start_symbol_set() error is: grammar precomputed
+ok 58 - marpa_g_highest_rule_id()
+ok 59 - marpa_g_rule_is_accessible()
+ok 60 - marpa_g_rule_is_nullable()
+ok 61 - marpa_g_rule_is_nulling()
+ok 62 - marpa_g_rule_is_loop()
+ok 63 - marpa_g_rule_is_productive()
+ok 64 - marpa_g_rule_length()
+ok 65 - marpa_g_rule_length()
+ok 66 - marpa_g_rule_lhs()
+ok 67 - marpa_g_rule_rhs()
+ok 68 - marpa_g_rule_rhs()
+ok 69 - marpa_g_rule_rhs() failed, returned -2
+ok 70 - marpa_g_rule_rhs() error is: rhs index out of bounds
+ok 71 - marpa_g_rule_rhs() failed, returned -2
+ok 72 - marpa_g_rule_rhs() error is: rhs index negative
+ok 73 - marpa_g_rule_is_accessible() failed, returned -2
+ok 74 - marpa_g_rule_is_accessible() error is: invalid rule id
+ok 75 - marpa_g_rule_is_loop() failed, returned -2
+ok 76 - marpa_g_rule_is_loop() error is: invalid rule id
+ok 77 - marpa_g_rule_is_productive() failed, returned -2
+ok 78 - marpa_g_rule_is_productive() error is: invalid rule id
+ok 79 - marpa_g_rule_is_nullable() failed, returned -2
+ok 80 - marpa_g_rule_is_nullable() error is: invalid rule id
+ok 81 - marpa_g_rule_is_nulling() failed, returned -2
+ok 82 - marpa_g_rule_is_nulling() error is: invalid rule id
+ok 83 - marpa_g_rule_length() failed, returned -2
+ok 84 - marpa_g_rule_length() error is: invalid rule id
+ok 85 - marpa_g_rule_lhs() failed, returned -2
+ok 86 - marpa_g_rule_lhs() error is: invalid rule id
+ok 87 - marpa_g_rule_is_accessible() failed, returned -1
+ok 88 - marpa_g_rule_is_accessible() error is: no such rule id
+ok 89 - marpa_g_rule_is_loop() failed, returned -1
+ok 90 - marpa_g_rule_is_loop() error is: no such rule id
+ok 91 - marpa_g_rule_is_productive() failed, returned -1
+ok 92 - marpa_g_rule_is_productive() error is: no such rule id
+ok 93 - marpa_g_rule_is_nullable() failed, returned -1
+ok 94 - marpa_g_rule_is_nullable() error is: no such rule id
+ok 95 - marpa_g_rule_is_nulling() failed, returned -1
+ok 96 - marpa_g_rule_is_nulling() error is: no such rule id
+ok 97 - marpa_g_rule_length() failed, returned -1
+ok 98 - marpa_g_rule_length() error is: no such rule id
+ok 99 - marpa_g_rule_lhs() failed, returned -1
+ok 100 - marpa_g_rule_lhs() error is: no such rule id
+ok 101 - marpa_g_sequence_new() failed, returned -2
+ok 102 - marpa_g_sequence_new() error is: sequence lhs not unique
+ok 103 - marpa_g_rule_is_proper_separation()
+ok 104 - marpa_g_sequence_min() failed, returned -1
+ok 105 - marpa_g_sequence_min() error is: not a sequence rule
+ok 106 - marpa_g_sequence_separator() failed, returned -2
+ok 107 - marpa_g_sequence_separator() error is: not a sequence rule
+ok 108 - marpa_g_symbol_is_counted()
+ok 109 - marpa_g_sequence_separator() failed, returned -2
+ok 110 - marpa_g_sequence_separator() error is: invalid rule id
+ok 111 - marpa_g_sequence_min() failed, returned -2
+ok 112 - marpa_g_sequence_min() error is: invalid rule id
+ok 113 - marpa_g_sequence_separator() failed, returned -2
+ok 114 - marpa_g_sequence_separator() error is: no such rule id
+ok 115 - marpa_g_sequence_min() failed, returned -2
+ok 116 - marpa_g_sequence_min() error is: no such rule id
+ok 117 - marpa_g_rule_is_proper_separation() failed, returned -2
+ok 118 - marpa_g_rule_is_proper_separation() error is: invalid rule id
+ok 119 - marpa_g_rule_is_proper_separation() failed, returned -1
+ok 120 - marpa_g_rule_is_proper_separation() error is: no such rule id
+ok 121 - marpa_g_symbol_is_counted() failed, returned -2
+ok 122 - marpa_g_symbol_is_counted() error is: invalid symbol id
+ok 123 - marpa_g_symbol_is_counted() failed, returned -1
+ok 124 - marpa_g_symbol_is_counted() error is: no such symbol id
+ok 125 - marpa_g_rule_rank_set() succeeded
+ok 126 - marpa_g_rule_rank() succeeded
+ok 127 - marpa_g_rule_rank_set()
+ok 128 - marpa_g_rule_rank()
+ok 129 - marpa_g_rule_null_high_set()
+ok 130 - marpa_g_rule_null_high()
+ok 131 - marpa_g_rule_rank_set() failed, returned -2
+ok 132 - marpa_g_rule_rank_set() error is: invalid rule id
+ok 133 - marpa_g_rule_null_high_set() failed, returned -2
+ok 134 - marpa_g_rule_null_high_set() error is: invalid rule id
+ok 135 - marpa_g_rule_rank_set() failed, returned -2
+ok 136 - marpa_g_rule_rank_set() error is: no such rule id
+ok 137 - marpa_g_rule_null_high_set() failed, returned -1
+ok 138 - marpa_g_rule_null_high_set() error is: no such rule id
+ok 139 - marpa_g_rule_rank() failed, returned -2
+ok 140 - marpa_g_rule_rank() error is: invalid rule id
+ok 141 - marpa_g_rule_null_high() failed, returned -2
+ok 142 - marpa_g_rule_null_high() error is: invalid rule id
+ok 143 - marpa_g_rule_null_high() failed, returned -2
+ok 144 - marpa_g_rule_null_high() error is: invalid rule id
+ok 145 - marpa_g_rule_null_high() failed, returned -1
+ok 146 - marpa_g_rule_null_high() error is: no such rule id
+ok 147 - precomputation succeeded
+ok 148 - marpa_g_rule_rank_set() failed, returned -2
+ok 149 - marpa_g_rule_rank_set() error is: grammar precomputed
+ok 150 - marpa_g_rule_rank_set() failed, returned -2
+ok 151 - marpa_g_rule_rank_set() error is: grammar precomputed
+ok 152 - marpa_g_rule_null_high_set() failed, returned -2
+ok 153 - marpa_g_rule_null_high_set() error is: grammar precomputed
+ok 154 - marpa_g_rule_rank() succeeded
+ok 155 - marpa_g_rule_rank()
+ok 156 - marpa_g_rule_null_high()
+ok 157 - marpa_g_symbol_is_completion_event_set()
+ok 158 - marpa_g_symbol_is_completion_event()
+ok 159 - marpa_g_symbol_is_completion_event_set()
+ok 160 - marpa_g_symbol_is_completion_event()
+ok 161 - marpa_g_completion_symbol_activate()
+ok 162 - marpa_g_completion_symbol_activate()
+ok 163 - marpa_g_symbol_is_prediction_event_set()
+ok 164 - marpa_g_symbol_is_prediction_event()
+ok 165 - marpa_g_symbol_is_prediction_event_set()
+ok 166 - marpa_g_symbol_is_prediction_event()
+ok 167 - marpa_g_prediction_symbol_activate()
+ok 168 - marpa_g_prediction_symbol_activate()
+ok 169 - marpa_g_symbol_is_completion_event_set()
+ok 170 - marpa_g_symbol_is_completion_event()
+ok 171 - marpa_g_symbol_is_prediction_event_set()
+ok 172 - marpa_g_symbol_is_prediction_event()
+ok 173 - marpa_g_symbol_is_completion_event_set() failed, returned -2
+ok 174 - marpa_g_symbol_is_completion_event_set() error is: invalid symbol id
+ok 175 - marpa_g_completion_symbol_activate() failed, returned -2
+ok 176 - marpa_g_completion_symbol_activate() error is: invalid symbol id
+ok 177 - marpa_g_symbol_is_prediction_event_set() failed, returned -2
+ok 178 - marpa_g_symbol_is_prediction_event_set() error is: invalid symbol id
+ok 179 - marpa_g_prediction_symbol_activate() failed, returned -2
+ok 180 - marpa_g_prediction_symbol_activate() error is: invalid symbol id
+ok 181 - marpa_g_symbol_is_completion_event_set() failed, returned -1
+ok 182 - marpa_g_symbol_is_completion_event_set() error is: no such symbol id
+ok 183 - marpa_g_completion_symbol_activate() failed, returned -1
+ok 184 - marpa_g_completion_symbol_activate() error is: no such symbol id
+ok 185 - marpa_g_symbol_is_prediction_event_set() failed, returned -1
+ok 186 - marpa_g_symbol_is_prediction_event_set() error is: no such symbol id
+ok 187 - marpa_g_prediction_symbol_activate() failed, returned -1
+ok 188 - marpa_g_prediction_symbol_activate() error is: no such symbol id
+ok 189 - marpa_g_symbol_is_completion_event() failed, returned -2
+ok 190 - marpa_g_symbol_is_completion_event() error is: invalid symbol id
+ok 191 - marpa_g_symbol_is_prediction_event() failed, returned -2
+ok 192 - marpa_g_symbol_is_prediction_event() error is: invalid symbol id
+ok 193 - marpa_g_symbol_is_completion_event() failed, returned -1
+ok 194 - marpa_g_symbol_is_completion_event() error is: no such symbol id
+ok 195 - marpa_g_symbol_is_prediction_event() failed, returned -1
+ok 196 - marpa_g_symbol_is_prediction_event() error is: no such symbol id
+ok 197 - precomputation succeeded
+ok 198 - marpa_g_symbol_is_completion_event_set() failed, returned -2
+ok 199 - marpa_g_symbol_is_completion_event_set() error is: grammar precomputed
+ok 200 - marpa_g_completion_symbol_activate() failed, returned -2
+ok 201 - marpa_g_completion_symbol_activate() error is: grammar precomputed
+ok 202 - marpa_g_symbol_is_prediction_event_set() failed, returned -2
+ok 203 - marpa_g_symbol_is_prediction_event_set() error is: grammar precomputed
+ok 204 - marpa_g_prediction_symbol_activate() failed, returned -2
+ok 205 - marpa_g_prediction_symbol_activate() error is: grammar precomputed
+ok 206 - marpa_g_symbol_is_prediction_event()
+ok 207 - marpa_g_symbol_is_completion_event()
+ok 208 - marpa_r_current_earleme() failed, returned -1
+ok 209 - marpa_r_current_earleme() error is: recce not started
+ok 210 - marpa_r_progress_report_reset() failed, returned -2
+ok 211 - marpa_r_progress_report_reset() error is: recce not started
+ok 212 - marpa_r_progress_report_start() failed, returned -2
+ok 213 - marpa_r_progress_report_start() error is: recce not started
+ok 214 - marpa_r_progress_report_finish() failed, returned -2
+ok 215 - marpa_r_progress_report_finish() error is: recce not started
+ok 216 - marpa_r_progress_item(r, ...) failed, returned -2
+ok 217 - marpa_r_progress_item() error is: recce not started
+# The below recce tests are at earleme 0
+ok 218 - event count at earleme 0 is 1
+ok 219 - spurious events triggered: 0
+ok 220 - completion events triggered: 0
+ok 221 - completion events triggered: 0
+ok 222 - exhausted event triggered
+ok 223 - marpa_r_alternative(): not accepting input is checked before invalid symbol
+ok 224 - marpa_r_alternative(): not accepting input is checked before no such symbol
+ok 225 - marpa_r_alternative(): not accepting input
+ok 226 - marpa_r_earleme_complete() failed, returned -2
+ok 227 - marpa_r_earleme_complete() error is: recce not accepting input
+ok 228 - marpa_r_is_exhausted(): at earleme 0
+ok 229 - marpa_r_current_earleme()
+ok 230 - marpa_r_furthest_earleme()
+ok 231 - marpa_r_latest_earley_set()
+ok 232 - marpa_r_earleme()
+ok 233 - marpa_r_earley_set_value() failed, returned -1
+ok 234 - marpa_r_earley_set_value() error is: recce not accepting input
+# marpa_r_earley_set_value_*() methods, earley_set: -1
+ok 235 - marpa_r_earleme() failed, returned -2
+ok 236 - marpa_r_earleme() error is: location not valid
+# Trying marpa_r_latest_earley_set_value_set(); earley_set: -1; value: 1729
+ok 237 - marpa_r_latest_earley_set_value_set()
+ok 238 - marpa_r_latest_earley_set_value_set() error code
+ok 239 - marpa_r_earley_set_value() failed, returned -2
+ok 240 - marpa_r_earley_set_value() error is: location not valid
+# Trying marpa_r_latest_earley_set_values_set(); int value: 1729
+ok 241 - marpa_r_latest_earley_set_values_set(r, 42, ...) succeeded as expected, returned 1
+ok 242 - marpa_r_latest_earley_set_values_set() error code
+ok 243 - marpa_r_earley_set_values() error is: location not valid
+ok 244 - marpa_r_earley_set_values() int* value
+# marpa_r_earley_set_value_*() methods, earley_set: 0
+ok 245 - marpa_r_earleme()
+# Trying marpa_r_latest_earley_set_value_set(); earley_set: 0; value: 1729
+ok 246 - marpa_r_latest_earley_set_value_set()
+ok 247 - marpa_r_latest_earley_set_value_set() error code
+ok 248 - marpa_r_earley_set_value()
+# Trying marpa_r_latest_earley_set_values_set(); int value: 1729
+ok 249 - marpa_r_latest_earley_set_values_set(r, 42, ...) succeeded as expected, returned 1
+ok 250 - marpa_r_latest_earley_set_values_set() error code
+ok 251 - marpa_r_earley_set_values(r, 0, ...) succeeded, returned 1
+ok 252 - marpa_r_earley_set_values() int* value
+# marpa_r_earley_set_value_*() methods, earley_set: 1
+ok 253 - marpa_r_earleme() failed, returned -2
+ok 254 - marpa_r_earleme() error is: no earley set at location
+# Trying marpa_r_latest_earley_set_value_set(); earley_set: 1; value: 1729
+ok 255 - marpa_r_latest_earley_set_value_set()
+ok 256 - marpa_r_latest_earley_set_value_set() error code
+ok 257 - marpa_r_earley_set_value() failed, returned -2
+ok 258 - marpa_r_earley_set_value() error is: no earley set at location
+# Trying marpa_r_latest_earley_set_values_set(); int value: 1729
+ok 259 - marpa_r_latest_earley_set_values_set(r, 42, ...) succeeded as expected, returned 1
+ok 260 - marpa_r_latest_earley_set_values_set() error code
+ok 261 - marpa_r_earley_set_values() error is: no earley set at location
+ok 262 - marpa_r_earley_set_values() int* value
+# marpa_r_earley_set_value_*() methods, earley_set: 2
+ok 263 - marpa_r_earleme() failed, returned -2
+ok 264 - marpa_r_earleme() error is: no earley set at location
+# Trying marpa_r_latest_earley_set_value_set(); earley_set: 2; value: 1729
+ok 265 - marpa_r_latest_earley_set_value_set()
+ok 266 - marpa_r_latest_earley_set_value_set() error code
+ok 267 - marpa_r_earley_set_value() failed, returned -2
+ok 268 - marpa_r_earley_set_value() error is: no earley set at location
+# Trying marpa_r_latest_earley_set_values_set(); int value: 1729
+ok 269 - marpa_r_latest_earley_set_values_set(r, 42, ...) succeeded as expected, returned 1
+ok 270 - marpa_r_latest_earley_set_values_set() error code
+ok 271 - marpa_r_earley_set_values() error is: no earley set at location
+ok 272 - marpa_r_earley_set_values() int* value
+ok 273 - marpa_r_prediction_symbol_activate()
+ok 274 - marpa_r_prediction_symbol_activate() failed, returned -2
+ok 275 - marpa_r_prediction_symbol_activate() error is: invalid symbol id
+ok 276 - marpa_r_prediction_symbol_activate() failed, returned -1
+ok 277 - marpa_r_prediction_symbol_activate() error is: no such symbol id
+ok 278 - marpa_r_completion_symbol_activate()
+ok 279 - marpa_r_completion_symbol_activate() failed, returned -2
+ok 280 - marpa_r_completion_symbol_activate() error is: invalid symbol id
+ok 281 - marpa_r_completion_symbol_activate() failed, returned -1
+ok 282 - marpa_r_completion_symbol_activate() error is: no such symbol id
+ok 283 - marpa_r_nulled_symbol_activate()
+ok 284 - marpa_r_nulled_symbol_activate() failed, returned -2
+ok 285 - marpa_r_nulled_symbol_activate() error is: invalid symbol id
+ok 286 - marpa_r_nulled_symbol_activate() failed, returned -1
+ok 287 - marpa_r_nulled_symbol_activate() error is: no such symbol id
+ok 288 - marpa_r_earley_item_warning_threshold_set()
+ok 289 - marpa_r_earley_item_warning_threshold()
+ok 290 - marpa_r_expected_symbol_event_set() failed, returned -2
+ok 291 - marpa_r_expected_symbol_event_set() error is: symbol is nulling
+ok 292 - marpa_r_latest_earley_set_values_set(r, ...) succeeded as expected, returned 0
+ok 293 - marpa_r_terminal_is_expected()
+ok 294 - marpa_r_terminal_is_expected() failed, returned -2
+ok 295 - marpa_r_terminal_is_expected() error is: invalid symbol id
+ok 296 - marpa_r_terminal_is_expected() failed, returned -2
+ok 297 - marpa_r_terminal_is_expected() error is: no such symbol id
+ok 298 - marpa_r_progress_report_reset() failed, returned -2
+ok 299 - marpa_r_progress_report_reset() error is: progress report not started
+ok 300 - marpa_r_progress_report_finish() failed, returned -2
+ok 301 - marpa_r_progress_report_finish() error is: progress report not started
+ok 302 - marpa_r_progress_item(r, ...) failed, returned -2
+ok 303 - marpa_r_progress_item() error is: progress report not started
+ok 304 - marpa_r_progress_report_start() failed, returned -2
+ok 305 - marpa_r_progress_report_start() error is: location not valid
+ok 306 - marpa_r_progress_report_start() failed, returned -2
+ok 307 - marpa_r_progress_report_start() error is: no earley set at location
+ok 308 - marpa_r_progress_report_start(): no items at earleme 0
+ok 309 - marpa_r_progress_item(r, ...) failed, returned -1
+ok 310 - marpa_r_progress_item() error is: progress report exhausted
+ok 311 - marpa_r_progress_report_reset()
+ok 312 - marpa_r_progress_report_finish(): at earleme 0
+ok 313 - marpa_b_new() failed, returned 0
+ok 314 - marpa_b_new() error is: location not valid
+ok 315 - marpa_b_new() failed, returned 0
+ok 316 - marpa_b_new() error is: no parse
+ok 317 - marpa_b_new(): parse at current earleme of trivial parse
+ok 318 - marpa_b_new(): null parse at earleme 0
+ok 319 - marpa_b_ambiguity_metric()
+ok 320 - marpa_b_is_null()
+ok 321 - marpa_o_new() at earleme 0
+ok 322 - marpa_o_high_rank_only_set()
+ok 323 - marpa_o_high_rank_only()
+ok 324 - marpa_o_ambiguity_metric()
+ok 325 - marpa_o_is_null()
+ok 326 - marpa_o_high_rank_only_set() failed, returned -2
+ok 327 - marpa_o_high_rank_only_set() error is: order frozen
+ok 328 - marpa_o_high_rank_only()
+ok 329 - marpa_t_new() at earleme 0
+ok 330 - marpa_t_parse_count(): before the first parse tree
+ok 331 - marpa_t_next()
+ok 332 - marpa_v_new() at earleme 0
+ok 333 - MARPA_STEP_INACTIVE seen once.
+ok 334 - MARPA_STEP_INITIAL not seen.
+ok 335 - MARPA_STEP_TOKEN not seen.
+ok 336 - MARPA_STEP_RULE not seen.
+ok 337 - MARPA_STEP_NULLING_SYMBOL not seen.
+ok 338 - marpa_t_parse_count()
+ok 339 - marpa_t_next() failed, returned -2
+ok 340 - marpa_t_next() error is: tree paused
+ok 341 - marpa_t_parse_count()
+ok 342 - marpa_t_next() failed, returned -1
+ok 343 - marpa_t_next() error is: tree exhausted
+# All 343 tests successful or skipped
