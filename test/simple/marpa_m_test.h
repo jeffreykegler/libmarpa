@@ -93,6 +93,18 @@ typedef struct api_test_data {
 void rv_std_report( API_test_data* td,
   char *method, int rv_wanted, Marpa_Error_Code err_wanted);
 
+#define API_STD_TEST0(test_data, rv_wanted, err_wanted, method, object) \
+{ \
+   test_data.rv_seen.int_rv = method(object); \
+   rv_std_report(&test_data, #method , rv_wanted, err_wanted); \
+}
+
+#define API_STD_TEST1(test_data, rv_wanted, err_wanted, method, object, arg1) \
+{ \
+   test_data.rv_seen.int_rv = method(object, arg1); \
+   rv_std_report(&test_data, #method , rv_wanted, err_wanted); \
+}
+
 #define API_STD_TEST2(test_data, rv_wanted, err_wanted, method, object, arg1, arg2) \
 { \
    test_data.rv_seen.int_rv = method(object, arg1, arg2); \

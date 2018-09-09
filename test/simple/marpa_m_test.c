@@ -374,20 +374,16 @@ void rv_std_report(API_test_data* td, char *name, int rv_wanted, Marpa_Error_Cod
      return;
    }
    /* If here, the call failed and was expected to fail */
-   if (rv_wanted == rv_seen && err_wanted == err_seen) {
-     ok(0, "%s() failure as expected; return %d; error = %s%s", name,
-       rv_seen, err_msg, msg);
-       return;
-   }
-   /* If here, the call failed and was expected to fail, but with anomalies */
    if (rv_wanted == rv_seen) {
      ok(1, "%s() expected failure; value = %d as expected%s", name, rv_seen, msg);
    } else {
      ok(0, "%s() expected failure; value wanted = %d, but got %d%s", name, rv_wanted, rv_seen, msg);
    }
    if (err_wanted == err_seen) {
-     ok(1, "%s() expected failure; error as expected: '%s';%s", name, err_msg, msg);
+     ok(1, "%s() expected failure; error as expected: '%s'%s", name, err_msg, msg);
    } else {
-     ok(0, "%s() expected failure; error code not expected: '%s;%s", name, err_msg, msg);
+     char* wanted_err_msg  = marpa_m_error_message(err_wanted);
+     ok(0, "%s() expected failure but unexpected error code: got '%s', expected '%s'%s",
+       name, err_msg, wanted_err_msg, msg);
    }
 }
