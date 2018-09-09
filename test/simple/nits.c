@@ -179,9 +179,6 @@ main (int argc, char *argv[])
     fail("marpa_r_new", g);
 
   Marpa_Symbol_ID S_token = S_A2;
-  /* marpa_m_test("marpa_r_alternative", r, S_token, 0, 0,
-      MARPA_ERR_RECCE_NOT_ACCEPTING_INPUT, "before marpa_r_start_input()"); */
-
   this_test.msg = "before marpa_r_start_input()";
   API_CODE_TEST3(this_test, MARPA_ERR_RECCE_NOT_ACCEPTING_INPUT,
     marpa_r_alternative, r, S_token, 0, 0);
@@ -196,12 +193,17 @@ main (int argc, char *argv[])
       marpa_r_expected_symbol_event_set, r, S_expected, value);
 
   /* recognizer reading methods on invalid and missing symbols */
-  marpa_m_test("marpa_r_alternative", r, S_invalid, 0, 0, MARPA_ERR_INVALID_SYMBOL_ID,
-    "invalid token symbol is checked before no-such");
-  marpa_m_test("marpa_r_alternative", r, S_no_such, 0, 0, MARPA_ERR_NO_SUCH_SYMBOL_ID,
-    "no such token symbol");
-  marpa_m_test("marpa_r_alternative", r, S_token, 0, 0,
-    MARPA_ERR_TOKEN_LENGTH_LE_ZERO, marpa_m_error_message(MARPA_ERR_TOKEN_LENGTH_LE_ZERO));
+
+  this_test.msg = "invalid token symbol is checked before no-such";
+  API_CODE_TEST3(this_test, MARPA_ERR_INVALID_SYMBOL_ID,
+    marpa_r_alternative, r, S_invalid, 0, 0);
+  this_test.msg = "no such token symbol";
+  API_CODE_TEST3(this_test, MARPA_ERR_NO_SUCH_SYMBOL_ID,
+    marpa_r_alternative, r, S_no_such, 0, 0);
+  this_test.msg = marpa_m_error_message(MARPA_ERR_TOKEN_LENGTH_LE_ZERO);
+  API_CODE_TEST3(this_test, MARPA_ERR_TOKEN_LENGTH_LE_ZERO,
+    marpa_r_alternative, r, S_token, 0, 0);
+
 
   API_STD_TEST0(defaults, -2, MARPA_ERR_PARSE_EXHAUSTED,
       marpa_r_earleme_complete, r);
@@ -215,7 +217,9 @@ main (int argc, char *argv[])
   if (!rc)
     fail("marpa_r_start_input", g);
 
-  marpa_m_test("marpa_r_alternative", r, S_C1, 1, 1, MARPA_ERR_NONE);
+  this_test = defaults;
+  API_CODE_TEST3(this_test, MARPA_ERR_NONE,
+    marpa_r_alternative, r, S_C1, 1, 1);
 
   API_STD_TEST0(defaults, 1, MARPA_ERR_NONE,
       marpa_r_earleme_complete, r);

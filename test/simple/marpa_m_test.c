@@ -142,6 +142,7 @@ marpa_m_method_spec(const char *name)
 }
 
 const Marpa_Method_Error errspec[] = {
+  { MARPA_ERR_NONE, "no error" },
   { MARPA_ERR_NO_START_SYMBOL, "no start symbol" },
   { MARPA_ERR_INVALID_SYMBOL_ID, "invalid symbol id" },
   { MARPA_ERR_NO_SUCH_SYMBOL_ID, "no such symbol id" },
