@@ -98,6 +98,14 @@ marpa_g_simple_new(Marpa_Config *config)
   ((S_C2 = marpa_g_symbol_new (g)) >= 0)
     || fail ("marpa_g_symbol_new", g);
 
+  /* 
+   * top ::= A1
+   * top ::= A2
+   * A1  ::= B1
+   * A2  ::= B2
+   * B1  ::= C1
+   * B2  ::= C2
+   */
   rhs[0] = S_A1;
   ((R_top_1 = marpa_g_rule_new (g, S_top, rhs, 1)) >= 0)
     || fail ("marpa_g_rule_new", g);
