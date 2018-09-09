@@ -206,6 +206,35 @@ int test_r_terminals_expected(
   }
 }
 
+int test_r_progress_item(
+  Marpa_Grammar g,
+  Marpa_Recognizer r,
+  int expected_return,
+  int expected_errcode
+)
+{
+  int set_id;
+  Marpa_Earley_Set_ID origin;
+
+  const char* name = "marpa_r_progress_item";
+  int rv_seen = marpa_r_progress_item(r, &set_id, &origin);
+
+  /* success wanted */
+  if ( rv_seen >= 0 ) {
+    if (expected_return == rv_seen) {
+      ok( 1, "%s(r, ...) succeeded as expected, returned %d", name, rv_seen );
+    } else {
+      ok( 0, "%s(r, ...) succeeded, but returned %d; %d expected",
+	name, rv_seen, expected_return );
+    }
+  } else {
+    ok( 1, "%s(r, %d, ...) failed, returned %d", name, rv_seen );
+    int err_seen = marpa_g_error(g, NULL);
+    is_int( expected_errcode, err_seen,
+        "%s() error is: %s", name, marpa_m_error_message(err_seen) );
+  }
+}
+
 int test_r_latest_earley_set_values_set(
   Marpa_Grammar g,
   Marpa_Recognizer r,
@@ -589,7 +618,7 @@ main (int argc, char *argv[])
     marpa_m_test("marpa_r_progress_report_reset", r, -2, MARPA_ERR_RECCE_NOT_STARTED);
     marpa_m_test("marpa_r_progress_report_start", r, whatever, -2, MARPA_ERR_RECCE_NOT_STARTED);
     marpa_m_test("marpa_r_progress_report_finish", r, -2, MARPA_ERR_RECCE_NOT_STARTED);
-    marpa_m_test("marpa_r_progress_item", r, &whatever, &whatever, -2, MARPA_ERR_RECCE_NOT_STARTED);
+    test_r_progress_item( g, r, -2, MARPA_ERR_RECCE_NOT_STARTED);
 
     /* start the recce */
     rc = marpa_r_start_input (r);
@@ -776,8 +805,7 @@ main (int argc, char *argv[])
       marpa_m_test("marpa_r_progress_report_finish", r,
         -2, MARPA_ERR_PROGRESS_REPORT_NOT_STARTED);
 
-      marpa_m_test("marpa_r_progress_item", r, &whatever, &whatever,
-        -2, MARPA_ERR_PROGRESS_REPORT_NOT_STARTED);
+      test_r_progress_item( g, r, -2, MARPA_ERR_PROGRESS_REPORT_NOT_STARTED);
 
       /* start report at bad locations */
       Marpa_Earley_Set_ID ys_id_negative = -1;
@@ -792,8 +820,7 @@ main (int argc, char *argv[])
       Marpa_Earley_Set_ID earleme_0 = 0;
       marpa_m_test("marpa_r_progress_report_start", r, earleme_0, 0, "no items at earleme 0");
 
-      marpa_m_test("marpa_r_progress_item", r, &whatever, &whatever,
-        -1, MARPA_ERR_PROGRESS_REPORT_EXHAUSTED);
+      test_r_progress_item( g, r, -1, MARPA_ERR_PROGRESS_REPORT_EXHAUSTED);
 
       int non_negative_value = 1;
       marpa_m_test("marpa_r_progress_report_reset", r, non_negative_value);

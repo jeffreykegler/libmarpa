@@ -110,7 +110,6 @@ const Marpa_Method_Spec methspec[] = {
   { "marpa_r_earley_item_warning_threshold", &marpa_r_earley_item_warning_threshold, "" },
 
   { "marpa_r_expected_symbol_event_set", &marpa_r_expected_symbol_event_set, "%s, %i" },
-  { "marpa_r_terminals_expected", &marpa_r_terminals_expected, "%ip" },
   { "marpa_r_terminal_is_expected", &marpa_r_terminal_is_expected, "%s" },
 
   { "marpa_r_progress_report_reset", &marpa_r_progress_report_reset, "" },
