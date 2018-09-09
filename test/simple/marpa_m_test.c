@@ -33,7 +33,6 @@ Marpa_Rule_ID R_invalid = -1, R_no_such = 42;
     %s    Marpa_Symbol_ID
     %r    Marpa_Rule_ID
     %i    int
-    %ip   pointer to int
 
 */
 
@@ -115,7 +114,6 @@ const Marpa_Method_Spec methspec[] = {
   { "marpa_r_progress_report_reset", &marpa_r_progress_report_reset, "" },
   { "marpa_r_progress_report_start", &marpa_r_progress_report_start, "%i" },
   { "marpa_r_progress_report_finish", &marpa_r_progress_report_finish, "" },
-  { "marpa_r_progress_item", &marpa_r_progress_item, "%ip, %ip" },
 
   { "marpa_b_new", (marpa_m_pointer)&marpa_b_new, "%i" },
   { "marpa_b_ambiguity_metric", &marpa_b_ambiguity_metric, "" },
@@ -252,7 +250,6 @@ marpa_m_test_func(const char* name, ...)
     if (strcmp(curr_arg, "%s") == 0)        args[curr_arg_ix] = va_arg(va_args, Marpa_Symbol_ID);
     else if (strcmp(curr_arg, "%r") == 0)   args[curr_arg_ix] = va_arg(va_args, Marpa_Rule_ID);
     else if (strcmp(curr_arg, "%i") == 0)   args[curr_arg_ix] = va_arg(va_args, int);
-    else if (strcmp(curr_arg, "%ip") == 0)  args[curr_arg_ix] = va_arg(va_args, int *);
     else
     {
       printf("No variable yet for argument spec %s.\n", curr_arg);
