@@ -64,7 +64,7 @@ extern const Marpa_Method_Error errspec[];
 int marpa_m_grammar_set(Marpa_Grammar g);
 Marpa_Grammar marpa_m_grammar();
 
-char *marpa_m_error_message (Marpa_Error_Code error_code);
+const char *marpa_m_error_message (Marpa_Error_Code error_code);
 #define ARGS_END (unsigned int *)-42424242
 #define marpa_m_test(name, ...)  marpa_m_test_func(name, ##__VA_ARGS__, (ARGS_END))
 

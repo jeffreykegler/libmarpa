@@ -718,26 +718,46 @@ main (int argc, char *argv[])
     /* Other parse status methods */
     {
       int boolean = 0;
-      marpa_m_test("marpa_r_prediction_symbol_activate", r, S_predicted, boolean, boolean );
-      marpa_m_test("marpa_r_prediction_symbol_activate", r, S_invalid, boolean,
-        -2, MARPA_ERR_INVALID_SYMBOL_ID);
-      marpa_m_test("marpa_r_prediction_symbol_activate", r, S_no_such, boolean,
-        -1, MARPA_ERR_NO_SUCH_SYMBOL_ID);
+      /* marpa_m_test("marpa_r_prediction_symbol_activate", r, S_predicted, boolean, boolean ); */
+      /* marpa_m_test("marpa_r_prediction_symbol_activate", r, S_invalid, boolean,
+        -2, MARPA_ERR_INVALID_SYMBOL_ID); */
+      /* marpa_m_test("marpa_r_prediction_symbol_activate", r, S_no_such, boolean,
+        -1, MARPA_ERR_NO_SUCH_SYMBOL_ID); */
+      API_STD_TEST2(defaults, boolean, MARPA_ERR_NONE,
+         marpa_r_prediction_symbol_activate, r, S_predicted, boolean);
+      API_STD_TEST2(defaults, -2, MARPA_ERR_INVALID_SYMBOL_ID,
+         marpa_r_prediction_symbol_activate, r, S_invalid, boolean);
+      API_STD_TEST2(defaults, -1, MARPA_ERR_NO_SUCH_SYMBOL_ID,
+         marpa_r_prediction_symbol_activate, r, S_no_such, boolean);
 
       reactivate = 1;
-      marpa_m_test("marpa_r_completion_symbol_activate", r, S_completed, reactivate, reactivate );
-      marpa_m_test("marpa_r_completion_symbol_activate", r, S_invalid, reactivate,
-        -2, MARPA_ERR_INVALID_SYMBOL_ID);
-      marpa_m_test("marpa_r_completion_symbol_activate", r, S_no_such, reactivate,
-        -1, MARPA_ERR_NO_SUCH_SYMBOL_ID);
+      /* marpa_m_test("marpa_r_completion_symbol_activate", r, S_completed, reactivate, reactivate ); */
+      /* marpa_m_test("marpa_r_completion_symbol_activate", r, S_invalid, reactivate,
+        -2, MARPA_ERR_INVALID_SYMBOL_ID); */
+      /* marpa_m_test("marpa_r_completion_symbol_activate", r, S_no_such, reactivate,
+        -1, MARPA_ERR_NO_SUCH_SYMBOL_ID); */
+      API_STD_TEST2(defaults, reactivate, MARPA_ERR_NONE,
+         marpa_r_completion_symbol_activate, r, S_completed, reactivate);
+      API_STD_TEST2(defaults, -2, MARPA_ERR_INVALID_SYMBOL_ID,
+         marpa_r_completion_symbol_activate, r, S_invalid, reactivate);
+      API_STD_TEST2(defaults, -1, MARPA_ERR_NO_SUCH_SYMBOL_ID,
+         marpa_r_completion_symbol_activate, r, S_no_such, reactivate);
 
       boolean = 1;
       Marpa_Symbol_ID S_nulled = S_C1;
-      marpa_m_test("marpa_r_nulled_symbol_activate", r, S_nulled, boolean, boolean );
-      marpa_m_test("marpa_r_nulled_symbol_activate", r, S_invalid, boolean,
-        -2, MARPA_ERR_INVALID_SYMBOL_ID);
-      marpa_m_test("marpa_r_nulled_symbol_activate", r, S_no_such, boolean,
-        -1, MARPA_ERR_NO_SUCH_SYMBOL_ID);
+      /* marpa_m_test("marpa_r_nulled_symbol_activate", r, S_nulled, boolean, boolean ); */
+      /* marpa_m_test("marpa_r_nulled_symbol_activate", r, S_invalid, boolean,
+        -2, MARPA_ERR_INVALID_SYMBOL_ID); */
+      /* marpa_m_test("marpa_r_nulled_symbol_activate", r, S_no_such, boolean,
+        -1, MARPA_ERR_NO_SUCH_SYMBOL_ID); */
+    diag ("hi 1");
+      API_STD_TEST2(defaults, boolean, MARPA_ERR_NONE,
+         marpa_r_nulled_symbol_activate, r, S_nulled, boolean);
+    diag ("hi 2");
+      API_STD_TEST2(defaults, -2, MARPA_ERR_INVALID_SYMBOL_ID,
+         marpa_r_nulled_symbol_activate, r, S_invalid, boolean);
+      API_STD_TEST2(defaults, -1, MARPA_ERR_NO_SUCH_SYMBOL_ID,
+         marpa_r_nulled_symbol_activate, r, S_no_such, boolean);
 
       int threshold = 1;
       marpa_m_test("marpa_r_earley_item_warning_threshold_set", r, threshold, threshold);

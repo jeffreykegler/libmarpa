@@ -200,7 +200,7 @@ main (int argc, char *argv[])
   this_test.msg = "no such token symbol";
   API_CODE_TEST3(this_test, MARPA_ERR_NO_SUCH_SYMBOL_ID,
     marpa_r_alternative, r, S_no_such, 0, 0);
-  this_test.msg = marpa_m_error_message(MARPA_ERR_TOKEN_LENGTH_LE_ZERO);
+  this_test.msg = (char *)marpa_m_error_message(MARPA_ERR_TOKEN_LENGTH_LE_ZERO);
   API_CODE_TEST3(this_test, MARPA_ERR_TOKEN_LENGTH_LE_ZERO,
     marpa_r_alternative, r, S_token, 0, 0);
 
