@@ -82,10 +82,13 @@ typedef struct api_test_data {
     API_RV rv_seen;
 } API_test_data;
 
-void rv_std_report( API_test_data* td,
-  char *method, int rv_wanted, Marpa_Error_Code err_wanted);
-void rv_code_report( API_test_data* td,
-  char *method, Marpa_Error_Code err_seen, Marpa_Error_Code err_wanted);
+void rv_std_report (API_test_data * td,
+		    char *method, int rv_wanted, Marpa_Error_Code err_wanted);
+void rv_code_report (API_test_data * td,
+		     char *method, Marpa_Error_Code err_seen,
+		     Marpa_Error_Code err_wanted);
+void rv_hidden_report (API_test_data * td, char *name, int rv_wanted,
+		       Marpa_Error_Code err_wanted);
 
 #define API_STD_TEST0(test_data, rv_wanted, err_wanted, method, object) \
 { \
@@ -115,6 +118,18 @@ void rv_code_report( API_test_data* td,
 { \
    Marpa_Error_Code err_seen = method(object, arg1, arg2, arg3); \
    rv_code_report(&test_data, #method , err_seen, err_wanted); \
+}
+
+#define API_HIDDEN_TEST1(test_data, rv_wanted, err_wanted, method, object, arg1 ) \
+{ \
+   test_data.rv_seen.int_rv = method(object, arg1 ); \
+   rv_hidden_report(&test_data, #method , rv_wanted, err_wanted); \
+}
+
+#define API_HIDDEN_TEST2(test_data, rv_wanted, err_wanted, method, object, arg1, arg2 ) \
+{ \
+   test_data.rv_seen.int_rv = method(object, arg1, arg2 ); \
+   rv_hidden_report(&test_data, #method , rv_wanted, err_wanted); \
 }
 
 #endif /* MARPA_M_TEST_H */
