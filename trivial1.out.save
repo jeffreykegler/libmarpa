@@ -232,16 +232,16 @@ ok 229 - marpa_r_current_earleme()
 ok 230 - marpa_r_furthest_earleme()
 ok 231 - marpa_r_latest_earley_set()
 ok 232 - marpa_r_earleme()
-ok 233 - marpa_r_earley_set_value() failed, returned -1
-ok 234 - marpa_r_earley_set_value() error is: The recognizer is not accepting input
+ok 233 - marpa_r_earley_set_value() expected failure; value = -1 as expected
+ok 234 - marpa_r_earley_set_value() expected failure; error as expected: 'The recognizer is not accepting input'
 # marpa_r_earley_set_value_*() methods, earley_set: -1
 ok 235 - marpa_r_earleme() failed, returned -2
 ok 236 - marpa_r_earleme() error is: Location is not valid
 # Trying marpa_r_latest_earley_set_value_set(); earley_set: -1; value: 1729
 ok 237 - marpa_r_latest_earley_set_value_set()
 ok 238 - marpa_r_latest_earley_set_value_set() error code
-ok 239 - marpa_r_earley_set_value() failed, returned -2
-ok 240 - marpa_r_earley_set_value() error is: Location is not valid
+ok 239 - marpa_r_earley_set_value() expected failure; value = -2 as expected
+ok 240 - marpa_r_earley_set_value() expected failure; error as expected: 'Location is not valid'
 ok 241 - marpa_r_latest_earley_set_values_set() success as expected
 ok 242 - marpa_r_earley_set_values() expected failure; value = -2 as expected
 ok 243 - marpa_r_earley_set_values() expected failure; error as expected: 'Location is not valid'
@@ -251,7 +251,7 @@ ok 245 - marpa_r_earleme()
 # Trying marpa_r_latest_earley_set_value_set(); earley_set: 0; value: 1729
 ok 246 - marpa_r_latest_earley_set_value_set()
 ok 247 - marpa_r_latest_earley_set_value_set() error code
-ok 248 - marpa_r_earley_set_value()
+ok 248 - marpa_r_earley_set_value() success as expected
 ok 249 - marpa_r_latest_earley_set_values_set() success as expected
 ok 250 - marpa_r_earley_set_values() success as expected
 ok 251 - marpa_r_earley_set_values() int* value
@@ -261,8 +261,8 @@ ok 253 - marpa_r_earleme() error is: Earley set ID is after latest Earley set
 # Trying marpa_r_latest_earley_set_value_set(); earley_set: 1; value: 1729
 ok 254 - marpa_r_latest_earley_set_value_set()
 ok 255 - marpa_r_latest_earley_set_value_set() error code
-ok 256 - marpa_r_earley_set_value() failed, returned -2
-ok 257 - marpa_r_earley_set_value() error is: Earley set ID is after latest Earley set
+ok 256 - marpa_r_earley_set_value() expected failure; value = -2 as expected
+ok 257 - marpa_r_earley_set_value() expected failure; error as expected: 'Earley set ID is after latest Earley set'
 ok 258 - marpa_r_latest_earley_set_values_set() success as expected
 ok 259 - marpa_r_earley_set_values() expected failure; value = -2 as expected
 ok 260 - marpa_r_earley_set_values() expected failure; error as expected: 'Earley set ID is after latest Earley set'
@@ -273,8 +273,8 @@ ok 263 - marpa_r_earleme() error is: Earley set ID is after latest Earley set
 # Trying marpa_r_latest_earley_set_value_set(); earley_set: 2; value: 1729
 ok 264 - marpa_r_latest_earley_set_value_set()
 ok 265 - marpa_r_latest_earley_set_value_set() error code
-ok 266 - marpa_r_earley_set_value() failed, returned -2
-ok 267 - marpa_r_earley_set_value() error is: Earley set ID is after latest Earley set
+ok 266 - marpa_r_earley_set_value() expected failure; value = -2 as expected
+ok 267 - marpa_r_earley_set_value() expected failure; error as expected: 'Earley set ID is after latest Earley set'
 ok 268 - marpa_r_latest_earley_set_values_set() success as expected
 ok 269 - marpa_r_earley_set_values() expected failure; value = -2 as expected
 ok 270 - marpa_r_earley_set_values() expected failure; error as expected: 'Earley set ID is after latest Earley set'
@@ -296,8 +296,8 @@ ok 285 - marpa_r_nulled_symbol_activate() expected failure; value = -1 as expect
 ok 286 - marpa_r_nulled_symbol_activate() expected failure; error as expected: 'No symbol with this ID exists'
 ok 287 - marpa_r_earley_item_warning_threshold_set()
 ok 288 - marpa_r_earley_item_warning_threshold()
-ok 289 - marpa_r_expected_symbol_event_set() failed, returned -2
-ok 290 - marpa_r_expected_symbol_event_set() error is: Symbol is nulling
+ok 289 - marpa_r_expected_symbol_event_set() expected failure; value = -2 as expected
+ok 290 - marpa_r_expected_symbol_event_set() expected failure; error as expected: 'Symbol is nulling'
 ok 291 - marpa_r_terminals_expected() success as expected
 ok 292 - marpa_r_terminal_is_expected()
 ok 293 - marpa_r_terminal_is_expected() failed, returned -2

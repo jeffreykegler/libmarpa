@@ -38,26 +38,26 @@ Marpa_Rule_ID R_invalid = -1, R_no_such = 42;
 
 const Marpa_Method_Spec methspec[] = {
 
-  { "marpa_g_start_symbol_set", &marpa_g_start_symbol_set, "%s" },
   { "marpa_g_start_symbol", &marpa_g_start_symbol, "" },
-
-  { "marpa_g_symbol_is_terminal_set", &marpa_g_symbol_is_terminal_set, "%s, %i" },
-  { "marpa_g_symbol_is_terminal",  &marpa_g_symbol_is_terminal, "%s" },
-
   { "marpa_g_highest_symbol_id", &marpa_g_highest_symbol_id, ""},
+  { "marpa_g_precompute", &marpa_g_precompute, "" },
+  { "marpa_g_highest_rule_id", &marpa_g_highest_rule_id, "" },
 
+  { "marpa_g_start_symbol_set", &marpa_g_start_symbol_set, "%s" },
+  { "marpa_g_symbol_is_terminal",  &marpa_g_symbol_is_terminal, "%s" },
   { "marpa_g_symbol_is_accessible", &marpa_g_symbol_is_accessible, "%s" },
   { "marpa_g_symbol_is_nullable", &marpa_g_symbol_is_nullable, "%s" },
   { "marpa_g_symbol_is_nulling", &marpa_g_symbol_is_nulling, "%s" },
   { "marpa_g_symbol_is_productive", &marpa_g_symbol_is_productive, "%s" },
-
+  { "marpa_g_rule_is_proper_separation", &marpa_g_rule_is_proper_separation, "%r" },
+  { "marpa_g_sequence_min", &marpa_g_sequence_min, "%r" },
+  { "marpa_g_sequence_separator", &marpa_g_sequence_separator, "%r" },
+  { "marpa_g_symbol_is_counted", &marpa_g_symbol_is_counted, "%s" },
   { "marpa_g_rule_is_nullable", &marpa_g_rule_is_nullable, "%r" },
   { "marpa_g_rule_is_nulling", &marpa_g_rule_is_nulling, "%r" },
   { "marpa_g_rule_is_loop", &marpa_g_rule_is_loop, "%r" },
-
-  { "marpa_g_precompute", &marpa_g_precompute, "" },
-
-  { "marpa_g_highest_rule_id", &marpa_g_highest_rule_id, "" },
+  { "marpa_g_rule_rank", &marpa_g_rule_rank, "%r" },
+  { "marpa_g_rule_null_high", &marpa_g_rule_null_high, "%r" },
   { "marpa_g_rule_is_accessible", &marpa_g_rule_is_accessible, "%r" },
   { "marpa_g_rule_is_nullable", &marpa_g_rule_is_nullable, "%r" },
   { "marpa_g_rule_is_nulling", &marpa_g_rule_is_nulling, "%r" },
@@ -65,26 +65,17 @@ const Marpa_Method_Spec methspec[] = {
   { "marpa_g_rule_is_productive", &marpa_g_rule_is_productive, "%r" },
   { "marpa_g_rule_length", &marpa_g_rule_length, "%r" },
   { "marpa_g_rule_lhs", &marpa_g_rule_lhs, "%r" },
+  { "marpa_g_symbol_is_completion_event", &marpa_g_symbol_is_completion_event, "%s" },
+  { "marpa_g_symbol_is_prediction_event", &marpa_g_symbol_is_prediction_event, "%s" },
+
+  { "marpa_g_symbol_is_terminal_set", &marpa_g_symbol_is_terminal_set, "%s, %i" },
   { "marpa_g_rule_rhs", &marpa_g_rule_rhs, "%r, %i" },
+  { "marpa_g_rule_rank_set", &marpa_g_rule_rank_set, "%r, %i" },
+  { "marpa_g_rule_null_high_set", &marpa_g_rule_null_high_set, "%r, %i" },
+  { "marpa_g_symbol_is_prediction_event_set", &marpa_g_symbol_is_prediction_event_set, "%s, %i" },
+  { "marpa_g_symbol_is_completion_event_set", &marpa_g_symbol_is_completion_event_set, "%s, %i" },
 
   { "marpa_g_sequence_new", &marpa_g_sequence_new, "%s, %s, %s, %i, %i" },
-  { "marpa_g_rule_is_proper_separation", &marpa_g_rule_is_proper_separation, "%r" },
-  { "marpa_g_sequence_min", &marpa_g_sequence_min, "%r" },
-  { "marpa_g_sequence_separator", &marpa_g_sequence_separator, "%r" },
-  { "marpa_g_symbol_is_counted", &marpa_g_symbol_is_counted, "%s" },
-
-  { "marpa_g_rule_rank_set", &marpa_g_rule_rank_set, "%r, %i" },
-  { "marpa_g_rule_rank", &marpa_g_rule_rank, "%r" },
-  { "marpa_g_rule_null_high_set", &marpa_g_rule_null_high_set, "%r, %i" },
-  { "marpa_g_rule_null_high", &marpa_g_rule_null_high, "%r" },
-
-  { "marpa_g_symbol_is_completion_event_set", &marpa_g_symbol_is_completion_event_set, "%s, %i" },
-  { "marpa_g_symbol_is_completion_event", &marpa_g_symbol_is_completion_event, "%s" },
-  { "marpa_g_completion_symbol_activate", &marpa_g_completion_symbol_activate, "%s, %i" },
-
-  { "marpa_g_symbol_is_prediction_event_set", &marpa_g_symbol_is_prediction_event_set, "%s, %i" },
-  { "marpa_g_symbol_is_prediction_event", &marpa_g_symbol_is_prediction_event, "%s" },
-  { "marpa_g_prediction_symbol_activate", &marpa_g_prediction_symbol_activate, "%s, %i" },
 
   { "marpa_r_earley_item_warning_threshold", &marpa_r_earley_item_warning_threshold, "" },
   { "marpa_r_is_exhausted", &marpa_r_is_exhausted, "" },
@@ -93,16 +84,9 @@ const Marpa_Method_Spec methspec[] = {
   { "marpa_r_latest_earley_set", &marpa_r_latest_earley_set, "" },
 
   { "marpa_r_earleme", &marpa_r_earleme, "%i" },
-  { "marpa_r_earley_set_value", &marpa_r_earley_set_value, "%i" },
   { "marpa_r_terminal_is_expected", &marpa_r_terminal_is_expected, "%s" },
   { "marpa_r_earley_item_warning_threshold_set", &marpa_r_earley_item_warning_threshold_set, "%i" },
   { "marpa_r_latest_earley_set_value_set", &marpa_r_latest_earley_set_value_set, "%i" },
-
-  { "marpa_r_expected_symbol_event_set", &marpa_r_expected_symbol_event_set, "%s, %i" },
-  { "marpa_r_prediction_symbol_activate", &marpa_r_prediction_symbol_activate, "%s, %i" },
-  { "marpa_r_completion_symbol_activate", &marpa_r_completion_symbol_activate, "%s, %i" },
-  { "marpa_r_nulled_symbol_activate", &marpa_r_nulled_symbol_activate, "%s, %i" },
-  { "marpa_r_expected_symbol_event_set", &marpa_r_expected_symbol_event_set, "%s, %i" },
 
 };
 

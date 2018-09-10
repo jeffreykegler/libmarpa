@@ -654,7 +654,10 @@ main (int argc, char *argv[])
 
       marpa_m_test("marpa_r_latest_earley_set", r, furthest_earleme);
       marpa_m_test("marpa_r_earleme", r, current_earleme, current_earleme);
-      marpa_m_test("marpa_r_earley_set_value", r, current_earleme, -1, MARPA_ERR_RECCE_NOT_ACCEPTING_INPUT);
+
+      /* marpa_m_test("marpa_r_earley_set_value", r, current_earleme, -1, MARPA_ERR_RECCE_NOT_ACCEPTING_INPUT); */
+      API_STD_TEST1(defaults, -1, MARPA_ERR_RECCE_NOT_ACCEPTING_INPUT,
+	marpa_r_earley_set_value, r, current_earleme);
 
       /* marpa_r_earley_set_value_*() methods */
       int taxicab = 1729;
@@ -701,12 +704,17 @@ main (int argc, char *argv[])
           is_int(t.errcode, marpa_g_error(g, NULL),
             "marpa_r_latest_earley_set_value_set() error code");
 
-          if (t.earley_set == -1 || t.earley_set == 1 || t.earley_set == 2)
-            marpa_m_test("marpa_r_earley_set_value", r,
-              t.earley_set, t.rv_marpa_r_earley_set_value, t.errcode);
-          else
-            marpa_m_test("marpa_r_earley_set_value", r,
-              t.earley_set, t.rv_marpa_r_earley_set_value);
+          if (t.earley_set == -1 || t.earley_set == 1 || t.earley_set == 2) {
+            /* marpa_m_test("marpa_r_earley_set_value", r,
+              t.earley_set, t.rv_marpa_r_earley_set_value, t.errcode); */
+	    API_STD_TEST1(defaults, t.rv_marpa_r_earley_set_value, t.errcode,
+	      marpa_r_earley_set_value, r, t.earley_set);
+          } else {
+            /* marpa_m_test("marpa_r_earley_set_value", r,
+              t.earley_set, t.rv_marpa_r_earley_set_value); */
+	    API_STD_TEST1(defaults, t.rv_marpa_r_earley_set_value, MARPA_ERR_NONE,
+	      marpa_r_earley_set_value, r, t.earley_set);
+	  }
 
 	  {
 	    API_STD_TEST2(defaults,
@@ -786,8 +794,8 @@ main (int argc, char *argv[])
 
       Marpa_Symbol_ID S_expected = S_C1;
       value = 1;
-      marpa_m_test("marpa_r_expected_symbol_event_set", r, S_B1, value,
-        -2, MARPA_ERR_SYMBOL_IS_NULLING);
+      /* marpa_m_test("marpa_r_expected_symbol_event_set", r, S_B1, value, -2, MARPA_ERR_SYMBOL_IS_NULLING); */
+      API_STD_TEST2(defaults, -2, MARPA_ERR_SYMBOL_IS_NULLING, marpa_r_expected_symbol_event_set, r, S_B1, value);
 
       {
 	Marpa_Symbol_ID buffer[42];
