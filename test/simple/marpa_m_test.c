@@ -352,9 +352,11 @@ void rv_std_report(API_test_data* td, char *name, int rv_wanted, Marpa_Error_Cod
 	if (rv_wanted == rv_seen) {
 	  ok(1, "%s() success as expected%s", name, msg);
 	} else {
-	  ok(0, "%s() expected success; value wanted = %d, got %d%s", name, rv_wanted, rv_seen, msg);
+	  ok(0, "%s() success as expected but wrong value, wanted = %d, got %d%s", name, rv_wanted, rv_seen, msg);
 	}
+	return;
       }
+      ok(0, "%s() unexpected success; value wanted = %d, got %d%s", name, rv_wanted, rv_seen, msg);
       return;
    }
    /* If here, the call failed */
@@ -397,9 +399,11 @@ void rv_hidden_report(API_test_data* td, char *name, int rv_wanted, Marpa_Error_
 	if (rv_wanted == rv_seen) {
 	  ok(1, "%s() success as expected%s", name, msg);
 	} else {
-	  ok(0, "%s() expected success; value wanted = %d, got %d%s", name, rv_wanted, rv_seen, msg);
+	  ok(0, "%s() success as expected, but wrong value, wanted = %d, got %d%s", name, rv_wanted, rv_seen, msg);
 	}
+	return;
       }
+      ok(0, "%s() unexpected success; value wanted = %d, got %d%s", name, rv_wanted, rv_seen, msg);
       return;
    }
    /* If here, the call failed */
@@ -457,3 +461,39 @@ void rv_code_report(API_test_data* td, char *name,
        name, err_msg, wanted_err_msg, msg);
    }
 }
+
+/* Report success/failure on pointer return value.
+ * NULL pointer indicates an error.
+ */
+void rv_ptr_report(API_test_data* td, char *name, Marpa_Error_Code err_wanted)
+{
+   void* rv_seen = td->rv_seen.ptr_rv;
+   int err_seen = marpa_g_error(td->g, NULL);
+   char* err_msg  = marpa_m_error_message(err_seen);
+   char* wanted_err_msg  = marpa_m_error_message(err_wanted);
+   char* msg = sep_msg(td->msg);
+   int success = rv_seen ? 1 : 0;
+   int success_wanted = err_wanted == MARPA_ERR_NONE;
+
+   if (success) {
+      if (success_wanted) {
+	ok(1, "%s() success as expected%s", name, msg);
+	return;
+      }
+      ok(0, "%s() unexpected success; error wanted = %s%s", name, wanted_err_msg, msg);
+      return;
+   }
+   /* If here, the call failed */
+   if (success_wanted) {
+     ok(0, "%s() unexpected failure; error = %s%s", name, err_msg, msg);
+     return;
+   }
+   /* If here, the call failed and was expected to fail */
+   if (err_wanted == err_seen) {
+     ok(1, "%s() expected failure; error as expected: '%s'%s", name, err_msg, msg);
+   } else {
+     ok(0, "%s() expected failure but unexpected error code: got '%s', expected '%s'%s",
+       name, err_msg, wanted_err_msg, msg);
+   }
+}
+
