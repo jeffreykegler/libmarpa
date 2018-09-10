@@ -205,18 +205,30 @@ main (int argc, char *argv[])
 
   /* Grammar Methods per sections of api.texi: Symbols, Rules, Sequences, Ranks, Events ... */
 
-  marpa_m_test("marpa_g_symbol_is_start", g, S_invalid, -2, MARPA_ERR_INVALID_SYMBOL_ID);
-  marpa_m_test("marpa_g_symbol_is_start", g, S_no_such, -1, MARPA_ERR_NO_SUCH_SYMBOL_ID);
+  /* marpa_m_test("marpa_g_symbol_is_start", g, S_invalid, -2, MARPA_ERR_INVALID_SYMBOL_ID); */
+  API_STD_TEST1(defaults, -2, MARPA_ERR_INVALID_SYMBOL_ID,
+      marpa_g_symbol_is_start, g, S_invalid);
+
+  /* marpa_m_test("marpa_g_symbol_is_start", g, S_no_such, -1, MARPA_ERR_NO_SUCH_SYMBOL_ID); */
+  API_STD_TEST1(defaults, -1, MARPA_ERR_NO_SUCH_SYMBOL_ID,
+      marpa_g_symbol_is_start, g, S_no_such);
+
   /* Returns 0 if sym_id is not the start symbol, either because the start symbol
      is different from sym_id, or because the start symbol has not been set yet. */
-  marpa_m_test("marpa_g_symbol_is_start", g, S_top, 0);
+  /* marpa_m_test("marpa_g_symbol_is_start", g, S_top, 0); */
+  API_STD_TEST1(defaults, 0, MARPA_ERR_NONE,
+      marpa_g_symbol_is_start, g, S_top);
+
   marpa_m_test("marpa_g_start_symbol", g, -1, MARPA_ERR_NO_START_SYMBOL);
 
   (marpa_g_start_symbol_set (g, S_top) >= 0)
     || fail ("marpa_g_start_symbol_set", g);
 
   /* these must succeed after the start symbol is set */
-  marpa_m_test("marpa_g_symbol_is_start", g, S_top, 1);
+  /* marpa_m_test("marpa_g_symbol_is_start", g, S_top, 1); */
+  API_STD_TEST1(defaults, 1, MARPA_ERR_NONE,
+      marpa_g_symbol_is_start, g, S_top);
+
   marpa_m_test("marpa_g_start_symbol", g, S_top);
   marpa_m_test("marpa_g_highest_symbol_id", g, S_C2);
 
@@ -273,7 +285,11 @@ main (int argc, char *argv[])
   marpa_m_test("marpa_g_symbol_is_nullable", g, S_A1, 1);
   marpa_m_test("marpa_g_symbol_is_nulling", g, S_A1, 1);
   marpa_m_test("marpa_g_symbol_is_productive", g, S_top, 1);
-  marpa_m_test("marpa_g_symbol_is_start", g, S_top, 1);
+
+  /* marpa_m_test("marpa_g_symbol_is_start", g, S_top, 1); */
+  API_STD_TEST1(defaults, 1, MARPA_ERR_NONE,
+      marpa_g_symbol_is_start, g, S_top);
+
   marpa_m_test("marpa_g_symbol_is_terminal", g, S_top, 0);
 
   /* terminal and start symbols can't be set on precomputed grammar */
