@@ -378,6 +378,53 @@ void rv_std_report(API_test_data* td, char *name, int rv_wanted, Marpa_Error_Cod
    }
 }
 
+/* Report success/failure on "hidden" return value.
+ * "Hidden" means that the return value does not
+ * unambiguously indicate an error, and the error
+ * code must always be consulted as well.
+ */
+void rv_hidden_report(API_test_data* td, char *name, int rv_wanted, Marpa_Error_Code err_wanted)
+{
+   int rv_seen = td->rv_seen.int_rv;
+   int err_seen = marpa_g_error(td->g, NULL);
+   char* err_msg  = marpa_m_error_message(err_seen);
+   char* msg = sep_msg(td->msg);
+   int success = err_seen == MARPA_ERR_NONE;
+   int success_wanted = err_wanted == MARPA_ERR_NONE;
+
+   if (success) {
+      if (success_wanted) {
+	if (rv_wanted == rv_seen) {
+	  ok(1, "%s() success as expected%s", name, msg);
+	} else {
+	  ok(0, "%s() expected success; value wanted = %d, got %d%s", name, rv_wanted, rv_seen, msg);
+	}
+      }
+      return;
+   }
+   /* If here, the call failed */
+   if (success_wanted) {
+     ok(0, "%s() unexpected failure; got return %d, expected %d; error = %s%s", name,
+       rv_seen, rv_wanted, err_msg, msg);
+     ok(0, "%s() unexpected failure; error code: '%s'%s",
+       name, err_msg, msg);
+     return;
+   }
+   /* If here, the call failed and was expected to fail */
+   if (rv_wanted == rv_seen) {
+     ok(1, "%s() expected failure; value = %d as expected%s", name, rv_seen, msg);
+   } else {
+     ok(0, "%s() expected failure; value wanted = %d, but got %d%s", name, rv_wanted, rv_seen, msg);
+   }
+   if (err_wanted == err_seen) {
+     ok(1, "%s() expected failure; error as expected: '%s'%s", name, err_msg, msg);
+   } else {
+     char* wanted_err_msg  = marpa_m_error_message(err_wanted);
+     ok(0, "%s() expected failure but unexpected error code: got '%s', expected '%s'%s",
+       name, err_msg, wanted_err_msg, msg);
+   }
+}
+
 /* Report success/failure when the return value is
  * an error code.
  */
