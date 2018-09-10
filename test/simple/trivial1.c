@@ -557,24 +557,17 @@ main (int argc, char *argv[])
     this_test.msg = "not accepting input is checked before invalid symbol";
     API_CODE_TEST3(this_test, MARPA_ERR_RECCE_NOT_ACCEPTING_INPUT,
         marpa_r_alternative, r, S_invalid, 0, 0);
-    /* marpa_m_test("marpa_r_alternative", r, S_invalid, 0, 0,
-      MARPA_ERR_RECCE_NOT_ACCEPTING_INPUT, "not accepting input is checked before invalid symbol"); */
 
     this_test.msg = "not accepting input is checked before no such symbol";
     API_CODE_TEST3(this_test, MARPA_ERR_RECCE_NOT_ACCEPTING_INPUT,
         marpa_r_alternative, r, S_no_such, 0, 0);
-    /* marpa_m_test("marpa_r_alternative", r, S_no_such, 0, 0,
-      MARPA_ERR_RECCE_NOT_ACCEPTING_INPUT, "not accepting input is checked before no such symbol"); */
 
     this_test.msg = "not accepting input";
     API_CODE_TEST3(this_test, MARPA_ERR_RECCE_NOT_ACCEPTING_INPUT,
         marpa_r_alternative, r, S_token, 0, 0);
-    /* marpa_m_test("marpa_r_alternative", r, S_token, 0, 0,
-      MARPA_ERR_RECCE_NOT_ACCEPTING_INPUT, "not accepting input"); */
 
     this_test = defaults;
 
-    /* marpa_m_test("marpa_r_earleme_complete", r, -2, MARPA_ERR_RECCE_NOT_ACCEPTING_INPUT); */
     API_STD_TEST0(defaults, -2, MARPA_ERR_RECCE_NOT_ACCEPTING_INPUT,
 	marpa_r_earleme_complete, r);
 
@@ -788,8 +781,6 @@ main (int argc, char *argv[])
       else
         ok(1, "marpa_b_new(): null parse at earleme 0");
 
-      /* marpa_m_test("marpa_b_ambiguity_metric", b, 1); */
-      /* marpa_m_test("marpa_b_is_null", b, 1); */
       API_STD_TEST0(defaults, 1, MARPA_ERR_NONE,
 	  marpa_b_ambiguity_metric, b);
       API_STD_TEST0(defaults, 1, MARPA_ERR_NONE,
@@ -804,22 +795,16 @@ main (int argc, char *argv[])
         ok(1, "marpa_o_new() at earleme 0");
 
       int flag = 1;
-      /* marpa_m_test("marpa_o_high_rank_only_set", o, flag, flag); */
-      /* marpa_m_test("marpa_o_high_rank_only", o, flag); */
       API_STD_TEST1(defaults, flag, MARPA_ERR_NONE,
 	  marpa_o_high_rank_only_set, o, flag);
       API_STD_TEST0(defaults, flag, MARPA_ERR_NONE,
 	  marpa_o_high_rank_only, o);
 
-      /* marpa_m_test("marpa_o_ambiguity_metric", o, 1); */
-      /* marpa_m_test("marpa_o_is_null", o, 1); */
       API_STD_TEST0(defaults, 1, MARPA_ERR_NONE,
 	  marpa_o_ambiguity_metric, o);
       API_STD_TEST0(defaults, 1, MARPA_ERR_NONE,
 	  marpa_o_is_null, o);
 
-      /* marpa_m_test("marpa_o_high_rank_only_set", o, flag, -2, MARPA_ERR_ORDER_FROZEN); */
-      /* marpa_m_test("marpa_o_high_rank_only", o, flag); */
       API_STD_TEST1(defaults, -2, MARPA_ERR_ORDER_FROZEN,
 	  marpa_o_high_rank_only_set, o, flag);
       API_STD_TEST0(defaults, flag, MARPA_ERR_NONE,
