@@ -385,8 +385,12 @@ main (int argc, char *argv[])
       marpa_g_rule_rank, g, R_top_2);
 
   flag = 1;
-  marpa_m_test("marpa_g_rule_null_high_set", g, R_top_2, flag, flag);
-  marpa_m_test("marpa_g_rule_null_high", g, R_top_2, flag);
+  /* marpa_m_test("marpa_g_rule_null_high_set", g, R_top_2, flag, flag); */
+  /* marpa_m_test("marpa_g_rule_null_high", g, R_top_2, flag); */
+  API_HIDDEN_TEST2(defaults, flag, MARPA_ERR_NONE,
+      marpa_g_rule_null_high_set, g, R_top_2, flag);
+  API_HIDDEN_TEST1(defaults, flag, MARPA_ERR_NONE,
+      marpa_g_rule_null_high, g, R_top_2);
 
   /* invalid/no such rule id error handling */
 
@@ -394,21 +398,31 @@ main (int argc, char *argv[])
   API_HIDDEN_TEST2(defaults, -2, MARPA_ERR_INVALID_RULE_ID,
       marpa_g_rule_rank_set, g, R_invalid, negative_rank);
 
-  marpa_m_test( "marpa_g_rule_null_high_set", g, R_invalid, whatever, -2, MARPA_ERR_INVALID_RULE_ID);
+  /* marpa_m_test( "marpa_g_rule_null_high_set", g, R_invalid, whatever, -2, MARPA_ERR_INVALID_RULE_ID); */
+  API_HIDDEN_TEST2(defaults, -2, MARPA_ERR_INVALID_RULE_ID,
+      marpa_g_rule_null_high_set, g, R_invalid, whatever);
 
   API_HIDDEN_TEST2(defaults, -2, MARPA_ERR_NO_SUCH_RULE_ID,
       marpa_g_rule_rank_set, g, R_no_such, negative_rank);
 
-  marpa_m_test("marpa_g_rule_null_high_set", g, R_no_such, whatever, -1, MARPA_ERR_NO_SUCH_RULE_ID);
+  /* marpa_m_test("marpa_g_rule_null_high_set", g, R_no_such, whatever, -1, MARPA_ERR_NO_SUCH_RULE_ID); */
+  API_HIDDEN_TEST2(defaults, -1, MARPA_ERR_NO_SUCH_RULE_ID,
+      marpa_g_rule_null_high_set, g, R_no_such, whatever);
 
   /* Rank getter methods */
   API_HIDDEN_TEST1(defaults, -2, MARPA_ERR_INVALID_RULE_ID,
       marpa_g_rule_rank, g, R_invalid);
 
-  marpa_m_test( "marpa_g_rule_null_high", g, R_invalid, -2, MARPA_ERR_INVALID_RULE_ID);
+  /* marpa_m_test( "marpa_g_rule_null_high", g, R_invalid, -2, MARPA_ERR_INVALID_RULE_ID); */
+  API_HIDDEN_TEST1(defaults, -2, MARPA_ERR_INVALID_RULE_ID,
+      marpa_g_rule_null_high, g, R_invalid);
 
-  marpa_m_test("marpa_g_rule_null_high", g, R_invalid, -2, MARPA_ERR_INVALID_RULE_ID);
-  marpa_m_test("marpa_g_rule_null_high", g, R_no_such, -1, MARPA_ERR_NO_SUCH_RULE_ID);
+  /* marpa_m_test("marpa_g_rule_null_high", g, R_invalid, -2, MARPA_ERR_INVALID_RULE_ID); */
+  /* marpa_m_test("marpa_g_rule_null_high", g, R_no_such, -1, MARPA_ERR_NO_SUCH_RULE_ID); */
+  API_HIDDEN_TEST1(defaults, -2, MARPA_ERR_INVALID_RULE_ID,
+      marpa_g_rule_null_high, g, R_invalid);
+  API_HIDDEN_TEST1(defaults, -1, MARPA_ERR_NO_SUCH_RULE_ID,
+      marpa_g_rule_null_high, g, R_no_such);
 
   marpa_g_trivial_precompute(g, S_top);
   ok(1, "precomputation succeeded");
@@ -420,7 +434,9 @@ main (int argc, char *argv[])
   API_HIDDEN_TEST2(defaults, -2, MARPA_ERR_PRECOMPUTED,
       marpa_g_rule_rank_set, g, R_top_2, negative_rank);
 
-  marpa_m_test("marpa_g_rule_null_high_set", g, R_top_2, flag, -2, MARPA_ERR_PRECOMPUTED);
+  /* marpa_m_test("marpa_g_rule_null_high_set", g, R_top_2, flag, -2, MARPA_ERR_PRECOMPUTED); */
+  API_HIDDEN_TEST2(defaults, -2, MARPA_ERR_PRECOMPUTED,
+      marpa_g_rule_null_high_set, g, R_top_2, flag);
 
   /* getters succeed */
   API_HIDDEN_TEST1(defaults, negative_rank, MARPA_ERR_NONE,
@@ -428,7 +444,9 @@ main (int argc, char *argv[])
   API_HIDDEN_TEST1(defaults, positive_rank, MARPA_ERR_NONE,
       marpa_g_rule_rank, g, R_top_2);
 
-  marpa_m_test("marpa_g_rule_null_high", g, R_top_2, flag);
+  /* marpa_m_test("marpa_g_rule_null_high", g, R_top_2, flag); */
+  API_HIDDEN_TEST1(defaults, flag, MARPA_ERR_NONE,
+      marpa_g_rule_null_high, g, R_top_2);
 
   /* recreate the grammar to test event methods except nulled */
   marpa_g_unref(g);
