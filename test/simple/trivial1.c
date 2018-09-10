@@ -182,9 +182,6 @@ main (int argc, char *argv[])
 
   int whatever;
 
-  /* We are not guaranteed the ability to safely match pointers strings to
-   * garbage pointers, the best we can do is compare NULL and non-NULL
-   */
   char *value2_base = NULL;
   void *value2 = value2_base;
 
@@ -557,13 +554,29 @@ main (int argc, char *argv[])
 
     /* recognizer reading methods */
     Marpa_Symbol_ID S_token = S_A2;
-    marpa_m_test("marpa_r_alternative", r, S_invalid, 0, 0,
-      MARPA_ERR_RECCE_NOT_ACCEPTING_INPUT, "not accepting input is checked before invalid symbol");
-    marpa_m_test("marpa_r_alternative", r, S_no_such, 0, 0,
-      MARPA_ERR_RECCE_NOT_ACCEPTING_INPUT, "not accepting input is checked before no such symbol");
-    marpa_m_test("marpa_r_alternative", r, S_token, 0, 0,
-      MARPA_ERR_RECCE_NOT_ACCEPTING_INPUT, "not accepting input");
-    marpa_m_test("marpa_r_earleme_complete", r, -2, MARPA_ERR_RECCE_NOT_ACCEPTING_INPUT);
+    this_test.msg = "not accepting input is checked before invalid symbol";
+    API_CODE_TEST3(this_test, MARPA_ERR_RECCE_NOT_ACCEPTING_INPUT,
+        marpa_r_alternative, r, S_invalid, 0, 0);
+    /* marpa_m_test("marpa_r_alternative", r, S_invalid, 0, 0,
+      MARPA_ERR_RECCE_NOT_ACCEPTING_INPUT, "not accepting input is checked before invalid symbol"); */
+
+    this_test.msg = "not accepting input is checked before no such symbol";
+    API_CODE_TEST3(this_test, MARPA_ERR_RECCE_NOT_ACCEPTING_INPUT,
+        marpa_r_alternative, r, S_no_such, 0, 0);
+    /* marpa_m_test("marpa_r_alternative", r, S_no_such, 0, 0,
+      MARPA_ERR_RECCE_NOT_ACCEPTING_INPUT, "not accepting input is checked before no such symbol"); */
+
+    this_test.msg = "not accepting input";
+    API_CODE_TEST3(this_test, MARPA_ERR_RECCE_NOT_ACCEPTING_INPUT,
+        marpa_r_alternative, r, S_token, 0, 0);
+    /* marpa_m_test("marpa_r_alternative", r, S_token, 0, 0,
+      MARPA_ERR_RECCE_NOT_ACCEPTING_INPUT, "not accepting input"); */
+
+    this_test = defaults;
+
+    /* marpa_m_test("marpa_r_earleme_complete", r, -2, MARPA_ERR_RECCE_NOT_ACCEPTING_INPUT); */
+    API_STD_TEST0(defaults, -2, MARPA_ERR_RECCE_NOT_ACCEPTING_INPUT,
+	marpa_r_earleme_complete, r);
 
     marpa_m_test("marpa_r_is_exhausted", r, 1, "at earleme 0");
 
