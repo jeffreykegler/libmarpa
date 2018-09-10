@@ -155,57 +155,57 @@ ok 153 - marpa_g_rule_null_high_set() error is: This grammar is precomputed
 ok 154 - marpa_g_rule_rank() success as expected
 ok 155 - marpa_g_rule_rank() success as expected
 ok 156 - marpa_g_rule_null_high()
-ok 157 - marpa_g_symbol_is_completion_event_set()
-ok 158 - marpa_g_symbol_is_completion_event()
-ok 159 - marpa_g_symbol_is_completion_event_set()
-ok 160 - marpa_g_symbol_is_completion_event()
+ok 157 - marpa_g_symbol_is_completion_event_set() success as expected
+ok 158 - marpa_g_symbol_is_completion_event() success as expected
+ok 159 - marpa_g_symbol_is_completion_event_set() success as expected
+ok 160 - marpa_g_symbol_is_completion_event() success as expected
 ok 161 - marpa_g_completion_symbol_activate() success as expected
 ok 162 - marpa_g_completion_symbol_activate() success as expected
-ok 163 - marpa_g_symbol_is_prediction_event_set()
-ok 164 - marpa_g_symbol_is_prediction_event()
-ok 165 - marpa_g_symbol_is_prediction_event_set()
-ok 166 - marpa_g_symbol_is_prediction_event()
+ok 163 - marpa_g_symbol_is_prediction_event_set() success as expected
+ok 164 - marpa_g_symbol_is_prediction_event() success as expected
+ok 165 - marpa_g_symbol_is_prediction_event_set() success as expected
+ok 166 - marpa_g_symbol_is_prediction_event() success as expected
 ok 167 - marpa_g_prediction_symbol_activate() success as expected
 ok 168 - marpa_g_completion_symbol_activate() success as expected
-ok 169 - marpa_g_symbol_is_completion_event_set()
-ok 170 - marpa_g_symbol_is_completion_event()
-ok 171 - marpa_g_symbol_is_prediction_event_set()
-ok 172 - marpa_g_symbol_is_prediction_event()
-ok 173 - marpa_g_symbol_is_completion_event_set() failed, returned -2
-ok 174 - marpa_g_symbol_is_completion_event_set() error is: Symbol ID is malformed
+ok 169 - marpa_g_symbol_is_completion_event_set() success as expected
+ok 170 - marpa_g_symbol_is_completion_event() success as expected
+ok 171 - marpa_g_symbol_is_prediction_event_set() success as expected
+ok 172 - marpa_g_symbol_is_prediction_event() success as expected
+ok 173 - marpa_g_symbol_is_completion_event_set() expected failure; value = -2 as expected
+ok 174 - marpa_g_symbol_is_completion_event_set() expected failure; error as expected: 'Symbol ID is malformed'
 ok 175 - marpa_g_completion_symbol_activate() expected failure; value = -2 as expected
 ok 176 - marpa_g_completion_symbol_activate() expected failure; error as expected: 'Symbol ID is malformed'
-ok 177 - marpa_g_symbol_is_prediction_event_set() failed, returned -2
-ok 178 - marpa_g_symbol_is_prediction_event_set() error is: Symbol ID is malformed
+ok 177 - marpa_g_symbol_is_prediction_event_set() expected failure; value = -2 as expected
+ok 178 - marpa_g_symbol_is_prediction_event_set() expected failure; error as expected: 'Symbol ID is malformed'
 ok 179 - marpa_g_prediction_symbol_activate() expected failure; value = -2 as expected
 ok 180 - marpa_g_prediction_symbol_activate() expected failure; error as expected: 'Symbol ID is malformed'
-ok 181 - marpa_g_symbol_is_completion_event_set() failed, returned -1
-ok 182 - marpa_g_symbol_is_completion_event_set() error is: No symbol with this ID exists
+ok 181 - marpa_g_symbol_is_completion_event_set() expected failure; value = -1 as expected
+ok 182 - marpa_g_symbol_is_completion_event_set() expected failure; error as expected: 'No symbol with this ID exists'
 ok 183 - marpa_g_completion_symbol_activate() expected failure; value = -1 as expected
 ok 184 - marpa_g_completion_symbol_activate() expected failure; error as expected: 'No symbol with this ID exists'
-ok 185 - marpa_g_symbol_is_prediction_event_set() failed, returned -1
-ok 186 - marpa_g_symbol_is_prediction_event_set() error is: No symbol with this ID exists
+ok 185 - marpa_g_symbol_is_prediction_event_set() expected failure; value = -1 as expected
+ok 186 - marpa_g_symbol_is_prediction_event_set() expected failure; error as expected: 'No symbol with this ID exists'
 ok 187 - marpa_g_prediction_symbol_activate() expected failure; value = -1 as expected
 ok 188 - marpa_g_prediction_symbol_activate() expected failure; error as expected: 'No symbol with this ID exists'
-ok 189 - marpa_g_symbol_is_completion_event() failed, returned -2
-ok 190 - marpa_g_symbol_is_completion_event() error is: Symbol ID is malformed
-ok 191 - marpa_g_symbol_is_prediction_event() failed, returned -2
-ok 192 - marpa_g_symbol_is_prediction_event() error is: Symbol ID is malformed
-ok 193 - marpa_g_symbol_is_completion_event() failed, returned -1
-ok 194 - marpa_g_symbol_is_completion_event() error is: No symbol with this ID exists
-ok 195 - marpa_g_symbol_is_prediction_event() failed, returned -1
-ok 196 - marpa_g_symbol_is_prediction_event() error is: No symbol with this ID exists
+ok 189 - marpa_g_symbol_is_completion_event() expected failure; value = -2 as expected
+ok 190 - marpa_g_symbol_is_completion_event() expected failure; error as expected: 'Symbol ID is malformed'
+ok 191 - marpa_g_symbol_is_prediction_event() expected failure; value = -2 as expected
+ok 192 - marpa_g_symbol_is_prediction_event() expected failure; error as expected: 'Symbol ID is malformed'
+ok 193 - marpa_g_symbol_is_completion_event() expected failure; value = -1 as expected
+ok 194 - marpa_g_symbol_is_completion_event() expected failure; error as expected: 'No symbol with this ID exists'
+ok 195 - marpa_g_symbol_is_prediction_event() expected failure; value = -1 as expected
+ok 196 - marpa_g_symbol_is_prediction_event() expected failure; error as expected: 'No symbol with this ID exists'
 ok 197 - precomputation succeeded
-ok 198 - marpa_g_symbol_is_completion_event_set() failed, returned -2
-ok 199 - marpa_g_symbol_is_completion_event_set() error is: This grammar is precomputed
+ok 198 - marpa_g_symbol_is_completion_event_set() expected failure; value = -2 as expected
+ok 199 - marpa_g_symbol_is_completion_event_set() expected failure; error as expected: 'This grammar is precomputed'
 ok 200 - marpa_g_completion_symbol_activate() expected failure; value = -2 as expected
 ok 201 - marpa_g_completion_symbol_activate() expected failure; error as expected: 'This grammar is precomputed'
-ok 202 - marpa_g_symbol_is_prediction_event_set() failed, returned -2
-ok 203 - marpa_g_symbol_is_prediction_event_set() error is: This grammar is precomputed
+ok 202 - marpa_g_symbol_is_prediction_event_set() expected failure; value = -2 as expected
+ok 203 - marpa_g_symbol_is_prediction_event_set() expected failure; error as expected: 'This grammar is precomputed'
 ok 204 - marpa_g_prediction_symbol_activate() expected failure; value = -2 as expected
 ok 205 - marpa_g_prediction_symbol_activate() expected failure; error as expected: 'This grammar is precomputed'
-ok 206 - marpa_g_symbol_is_prediction_event()
-ok 207 - marpa_g_symbol_is_completion_event()
+ok 206 - marpa_g_symbol_is_prediction_event() success as expected
+ok 207 - marpa_g_symbol_is_completion_event() success as expected
 ok 208 - marpa_r_current_earleme() expected failure; value = -1 as expected
 ok 209 - marpa_r_current_earleme() expected failure; error as expected: 'The recognizer has not been started'
 ok 210 - marpa_r_progress_report_reset() expected failure; value = -2 as expected
