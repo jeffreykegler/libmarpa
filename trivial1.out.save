@@ -127,34 +127,34 @@ ok 125 - marpa_g_rule_rank_set() success as expected
 ok 126 - marpa_g_rule_rank() success as expected
 ok 127 - marpa_g_rule_rank_set() success as expected
 ok 128 - marpa_g_rule_rank() success as expected
-ok 129 - marpa_g_rule_null_high_set()
-ok 130 - marpa_g_rule_null_high()
+ok 129 - marpa_g_rule_null_high_set() success as expected
+ok 130 - marpa_g_rule_null_high() success as expected
 ok 131 - marpa_g_rule_rank_set() expected failure; value = -2 as expected
 ok 132 - marpa_g_rule_rank_set() expected failure; error as expected: 'Rule ID is malformed'
-ok 133 - marpa_g_rule_null_high_set() failed, returned -2
-ok 134 - marpa_g_rule_null_high_set() error is: Rule ID is malformed
+ok 133 - marpa_g_rule_null_high_set() expected failure; value = -2 as expected
+ok 134 - marpa_g_rule_null_high_set() expected failure; error as expected: 'Rule ID is malformed'
 ok 135 - marpa_g_rule_rank_set() expected failure; value = -2 as expected
 ok 136 - marpa_g_rule_rank_set() expected failure; error as expected: 'No rule with this ID exists'
-ok 137 - marpa_g_rule_null_high_set() failed, returned -1
-ok 138 - marpa_g_rule_null_high_set() error is: No rule with this ID exists
+ok 137 - marpa_g_rule_null_high_set() expected failure; value = -1 as expected
+ok 138 - marpa_g_rule_null_high_set() expected failure; error as expected: 'No rule with this ID exists'
 ok 139 - marpa_g_rule_rank() expected failure; value = -2 as expected
 ok 140 - marpa_g_rule_rank() expected failure; error as expected: 'Rule ID is malformed'
-ok 141 - marpa_g_rule_null_high() failed, returned -2
-ok 142 - marpa_g_rule_null_high() error is: Rule ID is malformed
-ok 143 - marpa_g_rule_null_high() failed, returned -2
-ok 144 - marpa_g_rule_null_high() error is: Rule ID is malformed
-ok 145 - marpa_g_rule_null_high() failed, returned -1
-ok 146 - marpa_g_rule_null_high() error is: No rule with this ID exists
+ok 141 - marpa_g_rule_null_high() expected failure; value = -2 as expected
+ok 142 - marpa_g_rule_null_high() expected failure; error as expected: 'Rule ID is malformed'
+ok 143 - marpa_g_rule_null_high() expected failure; value = -2 as expected
+ok 144 - marpa_g_rule_null_high() expected failure; error as expected: 'Rule ID is malformed'
+ok 145 - marpa_g_rule_null_high() expected failure; value = -1 as expected
+ok 146 - marpa_g_rule_null_high() expected failure; error as expected: 'No rule with this ID exists'
 ok 147 - precomputation succeeded
 ok 148 - marpa_g_rule_rank_set() expected failure; value = -2 as expected
 ok 149 - marpa_g_rule_rank_set() expected failure; error as expected: 'This grammar is precomputed'
 ok 150 - marpa_g_rule_rank_set() expected failure; value = -2 as expected
 ok 151 - marpa_g_rule_rank_set() expected failure; error as expected: 'This grammar is precomputed'
-ok 152 - marpa_g_rule_null_high_set() failed, returned -2
-ok 153 - marpa_g_rule_null_high_set() error is: This grammar is precomputed
+ok 152 - marpa_g_rule_null_high_set() expected failure; value = -2 as expected
+ok 153 - marpa_g_rule_null_high_set() expected failure; error as expected: 'This grammar is precomputed'
 ok 154 - marpa_g_rule_rank() success as expected
 ok 155 - marpa_g_rule_rank() success as expected
-ok 156 - marpa_g_rule_null_high()
+ok 156 - marpa_g_rule_null_high() success as expected
 ok 157 - marpa_g_symbol_is_completion_event_set() success as expected
 ok 158 - marpa_g_symbol_is_completion_event() success as expected
 ok 159 - marpa_g_symbol_is_completion_event_set() success as expected
