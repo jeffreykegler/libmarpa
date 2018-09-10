@@ -107,15 +107,6 @@ const Marpa_Method_Spec methspec[] = {
   { "marpa_r_expected_symbol_event_set", &marpa_r_expected_symbol_event_set, "%s, %i" },
   { "marpa_r_terminal_is_expected", &marpa_r_terminal_is_expected, "%s" },
 
-  { "marpa_r_progress_report_reset", &marpa_r_progress_report_reset, "" },
-  { "marpa_r_progress_report_start", &marpa_r_progress_report_start, "%i" },
-  { "marpa_r_progress_report_finish", &marpa_r_progress_report_finish, "" },
-
-  { "marpa_b_new", (marpa_m_pointer)&marpa_b_new, "%i" },
-
-  { "marpa_t_next", &marpa_t_next, "" },
-  { "marpa_t_parse_count", &marpa_t_parse_count, "" },
-
 };
 
 static Marpa_Method_Spec

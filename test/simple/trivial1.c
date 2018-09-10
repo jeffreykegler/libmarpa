@@ -886,7 +886,6 @@ main (int argc, char *argv[])
 
       this_test.msg = "before the first parse tree";
       API_STD_TEST0(this_test, 0, MARPA_ERR_NONE, marpa_t_parse_count, t);
-
       API_STD_TEST0(defaults, 0, MARPA_ERR_NONE, marpa_t_next, t);
 
       /* Value */
@@ -937,13 +936,17 @@ main (int argc, char *argv[])
       is_int(0, step_rule_count, "MARPA_STEP_RULE not seen.");
       is_int(0, step_nulling_symbol_count, "MARPA_STEP_NULLING_SYMBOL not seen.");
 
-      marpa_m_test("marpa_t_parse_count", t, 1);
-      marpa_m_test("marpa_t_next", t, -2, MARPA_ERR_TREE_PAUSED);
+      /* marpa_m_test("marpa_t_parse_count", t, 1); */
+      /* marpa_m_test("marpa_t_next", t, -2, MARPA_ERR_TREE_PAUSED); */
+      API_STD_TEST0(defaults, 1, MARPA_ERR_NONE, marpa_t_parse_count, t);
+      API_STD_TEST0(defaults, -2, MARPA_ERR_TREE_PAUSED, marpa_t_next, t);
 
       marpa_v_unref(v);
 
-      marpa_m_test("marpa_t_parse_count", t, 1);
-      marpa_m_test("marpa_t_next", t, -1, MARPA_ERR_TREE_EXHAUSTED);
+      /* marpa_m_test("marpa_t_parse_count", t, 1); */
+      /* marpa_m_test("marpa_t_next", t, -1, MARPA_ERR_TREE_EXHAUSTED); */
+      API_STD_TEST0(defaults, 1, MARPA_ERR_NONE, marpa_t_parse_count, t);
+      API_STD_TEST0(defaults, -1, MARPA_ERR_TREE_EXHAUSTED, marpa_t_next, t);
 
     } /* Bocage, Order, Tree, Value */
 
