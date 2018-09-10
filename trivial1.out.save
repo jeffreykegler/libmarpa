@@ -208,12 +208,12 @@ ok 206 - marpa_g_symbol_is_prediction_event()
 ok 207 - marpa_g_symbol_is_completion_event()
 ok 208 - marpa_r_current_earleme() failed, returned -1
 ok 209 - marpa_r_current_earleme() error is: recce not started
-ok 210 - marpa_r_progress_report_reset() failed, returned -2
-ok 211 - marpa_r_progress_report_reset() error is: recce not started
-ok 212 - marpa_r_progress_report_start() failed, returned -2
-ok 213 - marpa_r_progress_report_start() error is: recce not started
-ok 214 - marpa_r_progress_report_finish() failed, returned -2
-ok 215 - marpa_r_progress_report_finish() error is: recce not started
+ok 210 - marpa_r_progress_report_reset() expected failure; value = -2 as expected
+ok 211 - marpa_r_progress_report_reset() expected failure; error as expected: 'recce not started'
+ok 212 - marpa_r_progress_report_start() expected failure; value = -2 as expected
+ok 213 - marpa_r_progress_report_start() expected failure; error as expected: 'recce not started'
+ok 214 - marpa_r_progress_report_finish() expected failure; value = -2 as expected
+ok 215 - marpa_r_progress_report_finish() expected failure; error as expected: 'recce not started'
 ok 216 - marpa_r_progress_item() expected failure; value = -2 as expected
 ok 217 - marpa_r_progress_item() expected failure; error as expected: 'recce not started'
 # The below recce tests are at earleme 0
@@ -304,21 +304,21 @@ ok 293 - marpa_r_terminal_is_expected() failed, returned -2
 ok 294 - marpa_r_terminal_is_expected() error is: invalid symbol id
 ok 295 - marpa_r_terminal_is_expected() failed, returned -2
 ok 296 - marpa_r_terminal_is_expected() error is: no such symbol id
-ok 297 - marpa_r_progress_report_reset() failed, returned -2
-ok 298 - marpa_r_progress_report_reset() error is: progress report not started
-ok 299 - marpa_r_progress_report_finish() failed, returned -2
-ok 300 - marpa_r_progress_report_finish() error is: progress report not started
+ok 297 - marpa_r_progress_report_reset() expected failure; value = -2 as expected
+ok 298 - marpa_r_progress_report_reset() expected failure; error as expected: 'progress report not started'
+ok 299 - marpa_r_progress_report_finish() expected failure; value = -2 as expected
+ok 300 - marpa_r_progress_report_finish() expected failure; error as expected: 'progress report not started'
 ok 301 - marpa_r_progress_item() expected failure; value = -2 as expected
 ok 302 - marpa_r_progress_item() expected failure; error as expected: 'progress report not started'
-ok 303 - marpa_r_progress_report_start() failed, returned -2
-ok 304 - marpa_r_progress_report_start() error is: location not valid
-ok 305 - marpa_r_progress_report_start() failed, returned -2
-ok 306 - marpa_r_progress_report_start() error is: no earley set at location
-ok 307 - marpa_r_progress_report_start(): no items at earleme 0
+ok 303 - marpa_r_progress_report_start() expected failure; value = -2 as expected
+ok 304 - marpa_r_progress_report_start() expected failure; error as expected: 'location not valid'
+ok 305 - marpa_r_progress_report_start() expected failure; value = -2 as expected
+ok 306 - marpa_r_progress_report_start() expected failure; error as expected: 'no earley set at location'
+ok 307 - marpa_r_progress_report_start() success as expected; no items at earleme 0
 ok 308 - marpa_r_progress_item() expected failure; value = -1 as expected
 ok 309 - marpa_r_progress_item() expected failure; error as expected: 'progress report exhausted'
-ok 310 - marpa_r_progress_report_reset()
-ok 311 - marpa_r_progress_report_finish(): at earleme 0
+ok 310 - marpa_r_progress_report_reset() success as expected; no items at earleme 0
+ok 311 - marpa_r_progress_report_finish() success as expected; at earleme 0
 ok 312 - marpa_b_new() expected failure
 ok 313 - marpa_b_new() error as expected: 'location not valid'
 ok 314 - marpa_b_new() expected failure
@@ -336,8 +336,8 @@ ok 325 - marpa_o_high_rank_only_set() expected failure; value = -2 as expected
 ok 326 - marpa_o_high_rank_only_set() expected failure; error as expected: 'order frozen'
 ok 327 - marpa_o_high_rank_only() success as expected
 ok 328 - marpa_t_new() at earleme 0
-ok 329 - marpa_t_parse_count(): before the first parse tree
-ok 330 - marpa_t_next()
+ok 329 - marpa_t_parse_count() success as expected; before the first parse tree
+ok 330 - marpa_t_next() success as expected
 ok 331 - marpa_v_new() at earleme 0
 ok 332 - MARPA_STEP_INACTIVE seen once.
 ok 333 - MARPA_STEP_INITIAL not seen.
