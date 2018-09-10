@@ -866,9 +866,12 @@ main (int argc, char *argv[])
       else
         ok(1, "marpa_t_new() at earleme 0");
 
-      marpa_m_test("marpa_t_parse_count", t, 0, "before the first parse tree");
+      /* marpa_m_test("marpa_t_parse_count", t, 0, "before the first parse tree"); */
+      this_test.msg = "before the first parse tree";
+      API_STD_TEST0(this_test, 0, MARPA_ERR_NONE, marpa_t_parse_count, t);
 
-      marpa_m_test("marpa_t_next", t, 0);
+      /* marpa_m_test("marpa_t_next", t, 0); */
+      API_STD_TEST0(defaults, 0, MARPA_ERR_NONE, marpa_t_next, t);
 
       /* Value */
       Marpa_Value v = marpa_v_new(t);

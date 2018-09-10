@@ -1,12 +1,12 @@
 1..342
-ok 1 - marpa_g_symbol_is_start() failed, returned -2
-ok 2 - marpa_g_symbol_is_start() error is: invalid symbol id
-ok 3 - marpa_g_symbol_is_start() failed, returned -1
-ok 4 - marpa_g_symbol_is_start() error is: no such symbol id
-ok 5 - marpa_g_symbol_is_start()
+ok 1 - marpa_g_symbol_is_start() expected failure; value = -2 as expected
+ok 2 - marpa_g_symbol_is_start() expected failure; error as expected: 'invalid symbol id'
+ok 3 - marpa_g_symbol_is_start() expected failure; value = -1 as expected
+ok 4 - marpa_g_symbol_is_start() expected failure; error as expected: 'no such symbol id'
+ok 5 - marpa_g_symbol_is_start() success as expected
 ok 6 - marpa_g_start_symbol() failed, returned -1
 ok 7 - marpa_g_start_symbol() error is: no start symbol
-ok 8 - marpa_g_symbol_is_start()
+ok 8 - marpa_g_symbol_is_start() success as expected
 ok 9 - marpa_g_start_symbol()
 ok 10 - marpa_g_highest_symbol_id()
 ok 11 - marpa_g_symbol_is_accessible() failed, returned -2
@@ -50,7 +50,7 @@ ok 48 - marpa_g_symbol_is_accessible()
 ok 49 - marpa_g_symbol_is_nullable()
 ok 50 - marpa_g_symbol_is_nulling()
 ok 51 - marpa_g_symbol_is_productive()
-ok 52 - marpa_g_symbol_is_start()
+ok 52 - marpa_g_symbol_is_start() success as expected
 ok 53 - marpa_g_symbol_is_terminal()
 ok 54 - marpa_g_symbol_is_terminal_set() failed, returned -2
 ok 55 - marpa_g_symbol_is_terminal_set() error is: grammar precomputed
@@ -123,22 +123,22 @@ ok 121 - marpa_g_symbol_is_counted() failed, returned -2
 ok 122 - marpa_g_symbol_is_counted() error is: invalid symbol id
 ok 123 - marpa_g_symbol_is_counted() failed, returned -1
 ok 124 - marpa_g_symbol_is_counted() error is: no such symbol id
-ok 125 - marpa_g_rule_rank_set() succeeded
-ok 126 - marpa_g_rule_rank() succeeded
-ok 127 - marpa_g_rule_rank_set()
-ok 128 - marpa_g_rule_rank()
+ok 125 - marpa_g_rule_rank_set() success as expected
+ok 126 - marpa_g_rule_rank() success as expected
+ok 127 - marpa_g_rule_rank_set() success as expected
+ok 128 - marpa_g_rule_rank() success as expected
 ok 129 - marpa_g_rule_null_high_set()
 ok 130 - marpa_g_rule_null_high()
-ok 131 - marpa_g_rule_rank_set() failed, returned -2
-ok 132 - marpa_g_rule_rank_set() error is: invalid rule id
+ok 131 - marpa_g_rule_rank_set() expected failure; value = -2 as expected
+ok 132 - marpa_g_rule_rank_set() expected failure; error as expected: 'invalid rule id'
 ok 133 - marpa_g_rule_null_high_set() failed, returned -2
 ok 134 - marpa_g_rule_null_high_set() error is: invalid rule id
-ok 135 - marpa_g_rule_rank_set() failed, returned -2
-ok 136 - marpa_g_rule_rank_set() error is: no such rule id
+ok 135 - marpa_g_rule_rank_set() expected failure; value = -2 as expected
+ok 136 - marpa_g_rule_rank_set() expected failure; error as expected: 'no such rule id'
 ok 137 - marpa_g_rule_null_high_set() failed, returned -1
 ok 138 - marpa_g_rule_null_high_set() error is: no such rule id
-ok 139 - marpa_g_rule_rank() failed, returned -2
-ok 140 - marpa_g_rule_rank() error is: invalid rule id
+ok 139 - marpa_g_rule_rank() expected failure; value = -2 as expected
+ok 140 - marpa_g_rule_rank() expected failure; error as expected: 'invalid rule id'
 ok 141 - marpa_g_rule_null_high() failed, returned -2
 ok 142 - marpa_g_rule_null_high() error is: invalid rule id
 ok 143 - marpa_g_rule_null_high() failed, returned -2
@@ -146,14 +146,14 @@ ok 144 - marpa_g_rule_null_high() error is: invalid rule id
 ok 145 - marpa_g_rule_null_high() failed, returned -1
 ok 146 - marpa_g_rule_null_high() error is: no such rule id
 ok 147 - precomputation succeeded
-ok 148 - marpa_g_rule_rank_set() failed, returned -2
-ok 149 - marpa_g_rule_rank_set() error is: grammar precomputed
-ok 150 - marpa_g_rule_rank_set() failed, returned -2
-ok 151 - marpa_g_rule_rank_set() error is: grammar precomputed
+ok 148 - marpa_g_rule_rank_set() expected failure; value = -2 as expected
+ok 149 - marpa_g_rule_rank_set() expected failure; error as expected: 'grammar precomputed'
+ok 150 - marpa_g_rule_rank_set() expected failure; value = -2 as expected
+ok 151 - marpa_g_rule_rank_set() expected failure; error as expected: 'grammar precomputed'
 ok 152 - marpa_g_rule_null_high_set() failed, returned -2
 ok 153 - marpa_g_rule_null_high_set() error is: grammar precomputed
-ok 154 - marpa_g_rule_rank() succeeded
-ok 155 - marpa_g_rule_rank()
+ok 154 - marpa_g_rule_rank() success as expected
+ok 155 - marpa_g_rule_rank() success as expected
 ok 156 - marpa_g_rule_null_high()
 ok 157 - marpa_g_symbol_is_completion_event_set()
 ok 158 - marpa_g_symbol_is_completion_event()
@@ -319,10 +319,10 @@ ok 308 - marpa_r_progress_item() expected failure; value = -1 as expected
 ok 309 - marpa_r_progress_item() expected failure; error as expected: 'progress report exhausted'
 ok 310 - marpa_r_progress_report_reset()
 ok 311 - marpa_r_progress_report_finish(): at earleme 0
-ok 312 - marpa_b_new() failed, returned 0
-ok 313 - marpa_b_new() error is: location not valid
-ok 314 - marpa_b_new() failed, returned 0
-ok 315 - marpa_b_new() error is: no parse
+ok 312 - marpa_b_new() expected failure
+ok 313 - marpa_b_new() error as expected: 'location not valid'
+ok 314 - marpa_b_new() expected failure
+ok 315 - marpa_b_new() error as expected: 'no parse'
 ok 316 - marpa_b_new(): parse at current earleme of trivial parse
 ok 317 - marpa_b_new(): null parse at earleme 0
 ok 318 - marpa_b_ambiguity_metric() success as expected

@@ -39,7 +39,6 @@ Marpa_Rule_ID R_invalid = -1, R_no_such = 42;
 const Marpa_Method_Spec methspec[] = {
 
   { "marpa_g_start_symbol_set", &marpa_g_start_symbol_set, "%s" },
-  { "marpa_g_symbol_is_start", &marpa_g_symbol_is_start, "%s" },
   { "marpa_g_start_symbol", &marpa_g_start_symbol, "" },
 
   { "marpa_g_symbol_is_terminal_set", &marpa_g_symbol_is_terminal_set, "%s, %i" },
