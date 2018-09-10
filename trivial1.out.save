@@ -1,4 +1,4 @@
-1..342
+1..338
 ok 1 - marpa_g_symbol_is_start() expected failure; value = -2 as expected
 ok 2 - marpa_g_symbol_is_start() expected failure; error as expected: 'Symbol ID is malformed'
 ok 3 - marpa_g_symbol_is_start() expected failure; value = -1 as expected
@@ -237,117 +237,109 @@ ok 234 - marpa_r_earley_set_value() expected failure; error as expected: 'The re
 # marpa_r_earley_set_value_*() methods, earley_set: -1
 ok 235 - marpa_r_earleme() failed, returned -2
 ok 236 - marpa_r_earleme() error is: Location is not valid
-# Trying marpa_r_latest_earley_set_value_set(); earley_set: -1; value: 1729
-ok 237 - marpa_r_latest_earley_set_value_set()
-ok 238 - marpa_r_latest_earley_set_value_set() error code
-ok 239 - marpa_r_earley_set_value() expected failure; value = -2 as expected
-ok 240 - marpa_r_earley_set_value() expected failure; error as expected: 'Location is not valid'
-ok 241 - marpa_r_latest_earley_set_values_set() success as expected
-ok 242 - marpa_r_earley_set_values() expected failure; value = -2 as expected
-ok 243 - marpa_r_earley_set_values() expected failure; error as expected: 'Location is not valid'
-ok 244 - marpa_r_earley_set_values() int* value
+ok 237 - marpa_r_latest_earley_set_value_set() success as expected
+ok 238 - marpa_r_earley_set_value() expected failure; value = -2 as expected
+ok 239 - marpa_r_earley_set_value() expected failure; error as expected: 'Location is not valid'
+ok 240 - marpa_r_latest_earley_set_values_set() success as expected
+ok 241 - marpa_r_earley_set_values() expected failure; value = -2 as expected
+ok 242 - marpa_r_earley_set_values() expected failure; error as expected: 'Location is not valid'
+ok 243 - marpa_r_earley_set_values() int* value
 # marpa_r_earley_set_value_*() methods, earley_set: 0
-ok 245 - marpa_r_earleme()
-# Trying marpa_r_latest_earley_set_value_set(); earley_set: 0; value: 1729
-ok 246 - marpa_r_latest_earley_set_value_set()
-ok 247 - marpa_r_latest_earley_set_value_set() error code
-ok 248 - marpa_r_earley_set_value() success as expected
-ok 249 - marpa_r_latest_earley_set_values_set() success as expected
-ok 250 - marpa_r_earley_set_values() success as expected
-ok 251 - marpa_r_earley_set_values() int* value
+ok 244 - marpa_r_earleme()
+ok 245 - marpa_r_latest_earley_set_value_set() success as expected
+ok 246 - marpa_r_earley_set_value() success as expected
+ok 247 - marpa_r_latest_earley_set_values_set() success as expected
+ok 248 - marpa_r_earley_set_values() success as expected
+ok 249 - marpa_r_earley_set_values() int* value
 # marpa_r_earley_set_value_*() methods, earley_set: 1
-ok 252 - marpa_r_earleme() failed, returned -2
-ok 253 - marpa_r_earleme() error is: Earley set ID is after latest Earley set
-# Trying marpa_r_latest_earley_set_value_set(); earley_set: 1; value: 1729
-ok 254 - marpa_r_latest_earley_set_value_set()
-ok 255 - marpa_r_latest_earley_set_value_set() error code
-ok 256 - marpa_r_earley_set_value() expected failure; value = -2 as expected
-ok 257 - marpa_r_earley_set_value() expected failure; error as expected: 'Earley set ID is after latest Earley set'
-ok 258 - marpa_r_latest_earley_set_values_set() success as expected
-ok 259 - marpa_r_earley_set_values() expected failure; value = -2 as expected
-ok 260 - marpa_r_earley_set_values() expected failure; error as expected: 'Earley set ID is after latest Earley set'
-ok 261 - marpa_r_earley_set_values() int* value
+ok 250 - marpa_r_earleme() failed, returned -2
+ok 251 - marpa_r_earleme() error is: Earley set ID is after latest Earley set
+ok 252 - marpa_r_latest_earley_set_value_set() success as expected
+ok 253 - marpa_r_earley_set_value() expected failure; value = -2 as expected
+ok 254 - marpa_r_earley_set_value() expected failure; error as expected: 'Earley set ID is after latest Earley set'
+ok 255 - marpa_r_latest_earley_set_values_set() success as expected
+ok 256 - marpa_r_earley_set_values() expected failure; value = -2 as expected
+ok 257 - marpa_r_earley_set_values() expected failure; error as expected: 'Earley set ID is after latest Earley set'
+ok 258 - marpa_r_earley_set_values() int* value
 # marpa_r_earley_set_value_*() methods, earley_set: 2
-ok 262 - marpa_r_earleme() failed, returned -2
-ok 263 - marpa_r_earleme() error is: Earley set ID is after latest Earley set
-# Trying marpa_r_latest_earley_set_value_set(); earley_set: 2; value: 1729
-ok 264 - marpa_r_latest_earley_set_value_set()
-ok 265 - marpa_r_latest_earley_set_value_set() error code
-ok 266 - marpa_r_earley_set_value() expected failure; value = -2 as expected
-ok 267 - marpa_r_earley_set_value() expected failure; error as expected: 'Earley set ID is after latest Earley set'
-ok 268 - marpa_r_latest_earley_set_values_set() success as expected
-ok 269 - marpa_r_earley_set_values() expected failure; value = -2 as expected
-ok 270 - marpa_r_earley_set_values() expected failure; error as expected: 'Earley set ID is after latest Earley set'
-ok 271 - marpa_r_earley_set_values() int* value
-ok 272 - marpa_r_prediction_symbol_activate() success as expected
-ok 273 - marpa_r_prediction_symbol_activate() expected failure; value = -2 as expected
-ok 274 - marpa_r_prediction_symbol_activate() expected failure; error as expected: 'Symbol ID is malformed'
-ok 275 - marpa_r_prediction_symbol_activate() expected failure; value = -1 as expected
-ok 276 - marpa_r_prediction_symbol_activate() expected failure; error as expected: 'No symbol with this ID exists'
-ok 277 - marpa_r_completion_symbol_activate() success as expected
-ok 278 - marpa_r_completion_symbol_activate() expected failure; value = -2 as expected
-ok 279 - marpa_r_completion_symbol_activate() expected failure; error as expected: 'Symbol ID is malformed'
-ok 280 - marpa_r_completion_symbol_activate() expected failure; value = -1 as expected
-ok 281 - marpa_r_completion_symbol_activate() expected failure; error as expected: 'No symbol with this ID exists'
-ok 282 - marpa_r_nulled_symbol_activate() success as expected
-ok 283 - marpa_r_nulled_symbol_activate() expected failure; value = -2 as expected
-ok 284 - marpa_r_nulled_symbol_activate() expected failure; error as expected: 'Symbol ID is malformed'
-ok 285 - marpa_r_nulled_symbol_activate() expected failure; value = -1 as expected
-ok 286 - marpa_r_nulled_symbol_activate() expected failure; error as expected: 'No symbol with this ID exists'
-ok 287 - marpa_r_earley_item_warning_threshold_set()
-ok 288 - marpa_r_earley_item_warning_threshold()
-ok 289 - marpa_r_expected_symbol_event_set() expected failure; value = -2 as expected
-ok 290 - marpa_r_expected_symbol_event_set() expected failure; error as expected: 'Symbol is nulling'
-ok 291 - marpa_r_terminals_expected() success as expected
-ok 292 - marpa_r_terminal_is_expected()
-ok 293 - marpa_r_terminal_is_expected() failed, returned -2
-ok 294 - marpa_r_terminal_is_expected() error is: Symbol ID is malformed
-ok 295 - marpa_r_terminal_is_expected() failed, returned -2
-ok 296 - marpa_r_terminal_is_expected() error is: No symbol with this ID exists
-ok 297 - marpa_r_progress_report_reset() expected failure; value = -2 as expected
-ok 298 - marpa_r_progress_report_reset() expected failure; error as expected: 'No progress report has been started'
-ok 299 - marpa_r_progress_report_finish() expected failure; value = -2 as expected
-ok 300 - marpa_r_progress_report_finish() expected failure; error as expected: 'No progress report has been started'
-ok 301 - marpa_r_progress_item() expected failure; value = -2 as expected
-ok 302 - marpa_r_progress_item() expected failure; error as expected: 'No progress report has been started'
-ok 303 - marpa_r_progress_report_start() expected failure; value = -2 as expected
-ok 304 - marpa_r_progress_report_start() expected failure; error as expected: 'Location is not valid'
-ok 305 - marpa_r_progress_report_start() expected failure; value = -2 as expected
-ok 306 - marpa_r_progress_report_start() expected failure; error as expected: 'Earley set ID is after latest Earley set'
-ok 307 - marpa_r_progress_report_start() success as expected; no items at earleme 0
-ok 308 - marpa_r_progress_item() expected failure; value = -1 as expected
-ok 309 - marpa_r_progress_item() expected failure; error as expected: 'The progress report is exhausted'
-ok 310 - marpa_r_progress_report_reset() success as expected; no items at earleme 0
-ok 311 - marpa_r_progress_report_finish() success as expected; at earleme 0
-ok 312 - marpa_b_new() expected failure
-ok 313 - marpa_b_new() error as expected: 'Location is not valid'
-ok 314 - marpa_b_new() expected failure
-ok 315 - marpa_b_new() error as expected: 'No parse'
-ok 316 - marpa_b_new(): parse at current earleme of trivial parse
-ok 317 - marpa_b_new(): null parse at earleme 0
-ok 318 - marpa_b_ambiguity_metric() success as expected
-ok 319 - marpa_b_is_null() success as expected
-ok 320 - marpa_o_new() at earleme 0
-ok 321 - marpa_o_high_rank_only_set() success as expected
-ok 322 - marpa_o_high_rank_only() success as expected
-ok 323 - marpa_o_ambiguity_metric() success as expected
-ok 324 - marpa_o_is_null() success as expected
-ok 325 - marpa_o_high_rank_only_set() expected failure; value = -2 as expected
-ok 326 - marpa_o_high_rank_only_set() expected failure; error as expected: 'The ordering is frozen'
-ok 327 - marpa_o_high_rank_only() success as expected
-ok 328 - marpa_t_new() at earleme 0
-ok 329 - marpa_t_parse_count() success as expected; before the first parse tree
-ok 330 - marpa_t_next() success as expected
-ok 331 - marpa_v_new() at earleme 0
-ok 332 - MARPA_STEP_INACTIVE seen once.
-ok 333 - MARPA_STEP_INITIAL not seen.
-ok 334 - MARPA_STEP_TOKEN not seen.
-ok 335 - MARPA_STEP_RULE not seen.
-ok 336 - MARPA_STEP_NULLING_SYMBOL not seen.
-ok 337 - marpa_t_parse_count() success as expected
-ok 338 - marpa_t_next() expected failure; value = -2 as expected
-ok 339 - marpa_t_next() expected failure; error as expected: 'Tree iterator is paused'
-ok 340 - marpa_t_parse_count() success as expected
-ok 341 - marpa_t_next() expected failure; value = -1 as expected
-ok 342 - marpa_t_next() expected failure; error as expected: 'Tree iterator is exhausted'
-# All 342 tests successful or skipped
+ok 259 - marpa_r_earleme() failed, returned -2
+ok 260 - marpa_r_earleme() error is: Earley set ID is after latest Earley set
+ok 261 - marpa_r_latest_earley_set_value_set() success as expected
+ok 262 - marpa_r_earley_set_value() expected failure; value = -2 as expected
+ok 263 - marpa_r_earley_set_value() expected failure; error as expected: 'Earley set ID is after latest Earley set'
+ok 264 - marpa_r_latest_earley_set_values_set() success as expected
+ok 265 - marpa_r_earley_set_values() expected failure; value = -2 as expected
+ok 266 - marpa_r_earley_set_values() expected failure; error as expected: 'Earley set ID is after latest Earley set'
+ok 267 - marpa_r_earley_set_values() int* value
+ok 268 - marpa_r_prediction_symbol_activate() success as expected
+ok 269 - marpa_r_prediction_symbol_activate() expected failure; value = -2 as expected
+ok 270 - marpa_r_prediction_symbol_activate() expected failure; error as expected: 'Symbol ID is malformed'
+ok 271 - marpa_r_prediction_symbol_activate() expected failure; value = -1 as expected
+ok 272 - marpa_r_prediction_symbol_activate() expected failure; error as expected: 'No symbol with this ID exists'
+ok 273 - marpa_r_completion_symbol_activate() success as expected
+ok 274 - marpa_r_completion_symbol_activate() expected failure; value = -2 as expected
+ok 275 - marpa_r_completion_symbol_activate() expected failure; error as expected: 'Symbol ID is malformed'
+ok 276 - marpa_r_completion_symbol_activate() expected failure; value = -1 as expected
+ok 277 - marpa_r_completion_symbol_activate() expected failure; error as expected: 'No symbol with this ID exists'
+ok 278 - marpa_r_nulled_symbol_activate() success as expected
+ok 279 - marpa_r_nulled_symbol_activate() expected failure; value = -2 as expected
+ok 280 - marpa_r_nulled_symbol_activate() expected failure; error as expected: 'Symbol ID is malformed'
+ok 281 - marpa_r_nulled_symbol_activate() expected failure; value = -1 as expected
+ok 282 - marpa_r_nulled_symbol_activate() expected failure; error as expected: 'No symbol with this ID exists'
+ok 283 - marpa_r_earley_item_warning_threshold_set()
+ok 284 - marpa_r_earley_item_warning_threshold()
+ok 285 - marpa_r_expected_symbol_event_set() expected failure; value = -2 as expected
+ok 286 - marpa_r_expected_symbol_event_set() expected failure; error as expected: 'Symbol is nulling'
+ok 287 - marpa_r_terminals_expected() success as expected
+ok 288 - marpa_r_terminal_is_expected()
+ok 289 - marpa_r_terminal_is_expected() failed, returned -2
+ok 290 - marpa_r_terminal_is_expected() error is: Symbol ID is malformed
+ok 291 - marpa_r_terminal_is_expected() failed, returned -2
+ok 292 - marpa_r_terminal_is_expected() error is: No symbol with this ID exists
+ok 293 - marpa_r_progress_report_reset() expected failure; value = -2 as expected
+ok 294 - marpa_r_progress_report_reset() expected failure; error as expected: 'No progress report has been started'
+ok 295 - marpa_r_progress_report_finish() expected failure; value = -2 as expected
+ok 296 - marpa_r_progress_report_finish() expected failure; error as expected: 'No progress report has been started'
+ok 297 - marpa_r_progress_item() expected failure; value = -2 as expected
+ok 298 - marpa_r_progress_item() expected failure; error as expected: 'No progress report has been started'
+ok 299 - marpa_r_progress_report_start() expected failure; value = -2 as expected
+ok 300 - marpa_r_progress_report_start() expected failure; error as expected: 'Location is not valid'
+ok 301 - marpa_r_progress_report_start() expected failure; value = -2 as expected
+ok 302 - marpa_r_progress_report_start() expected failure; error as expected: 'Earley set ID is after latest Earley set'
+ok 303 - marpa_r_progress_report_start() success as expected; no items at earleme 0
+ok 304 - marpa_r_progress_item() expected failure; value = -1 as expected
+ok 305 - marpa_r_progress_item() expected failure; error as expected: 'The progress report is exhausted'
+ok 306 - marpa_r_progress_report_reset() success as expected; no items at earleme 0
+ok 307 - marpa_r_progress_report_finish() success as expected; at earleme 0
+ok 308 - marpa_b_new() expected failure
+ok 309 - marpa_b_new() error as expected: 'Location is not valid'
+ok 310 - marpa_b_new() expected failure
+ok 311 - marpa_b_new() error as expected: 'No parse'
+ok 312 - marpa_b_new(): parse at current earleme of trivial parse
+ok 313 - marpa_b_new(): null parse at earleme 0
+ok 314 - marpa_b_ambiguity_metric() success as expected
+ok 315 - marpa_b_is_null() success as expected
+ok 316 - marpa_o_new() at earleme 0
+ok 317 - marpa_o_high_rank_only_set() success as expected
+ok 318 - marpa_o_high_rank_only() success as expected
+ok 319 - marpa_o_ambiguity_metric() success as expected
+ok 320 - marpa_o_is_null() success as expected
+ok 321 - marpa_o_high_rank_only_set() expected failure; value = -2 as expected
+ok 322 - marpa_o_high_rank_only_set() expected failure; error as expected: 'The ordering is frozen'
+ok 323 - marpa_o_high_rank_only() success as expected
+ok 324 - marpa_t_new() at earleme 0
+ok 325 - marpa_t_parse_count() success as expected; before the first parse tree
+ok 326 - marpa_t_next() success as expected
+ok 327 - marpa_v_new() at earleme 0
+ok 328 - MARPA_STEP_INACTIVE seen once.
+ok 329 - MARPA_STEP_INITIAL not seen.
+ok 330 - MARPA_STEP_TOKEN not seen.
+ok 331 - MARPA_STEP_RULE not seen.
+ok 332 - MARPA_STEP_NULLING_SYMBOL not seen.
+ok 333 - marpa_t_parse_count() success as expected
+ok 334 - marpa_t_next() expected failure; value = -2 as expected
+ok 335 - marpa_t_next() expected failure; error as expected: 'Tree iterator is paused'
+ok 336 - marpa_t_parse_count() success as expected
+ok 337 - marpa_t_next() expected failure; value = -1 as expected
+ok 338 - marpa_t_next() expected failure; error as expected: 'Tree iterator is exhausted'
+# All 338 tests successful or skipped

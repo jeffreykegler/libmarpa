@@ -188,7 +188,7 @@ main (int argc, char *argv[])
   API_test_data defaults;
   API_test_data this_test;
 
-  plan(342);
+  plan(338);
 
   marpa_c_init (&marpa_configuration);
   g = marpa_g_trivial_new(&marpa_configuration);
@@ -697,12 +697,11 @@ main (int argc, char *argv[])
           else
             marpa_m_test("marpa_r_earleme", r, t.earley_set, t.rv_marpa_r_earleme);
 
-          diag("Trying marpa_r_latest_earley_set_value_set(); earley_set: %d; value: %d", t.earley_set, taxicab);
-          marpa_m_test("marpa_r_latest_earley_set_value_set", r,
+          /* marpa_m_test("marpa_r_latest_earley_set_value_set", r,
             t.rv_marpa_r_latest_earley_set_value_set,
-            t.rv_marpa_r_latest_earley_set_value_set);
-          is_int(t.errcode, marpa_g_error(g, NULL),
-            "marpa_r_latest_earley_set_value_set() error code");
+            t.rv_marpa_r_latest_earley_set_value_set); */
+	  API_STD_TEST1(defaults, t.rv_marpa_r_latest_earley_set_value_set, MARPA_ERR_NONE,
+	    marpa_r_latest_earley_set_value_set, r, t.rv_marpa_r_latest_earley_set_value_set);
 
           if (t.earley_set == -1 || t.earley_set == 1 || t.earley_set == 2) {
             /* marpa_m_test("marpa_r_earley_set_value", r,
