@@ -124,6 +124,9 @@ struct error_description_s
   const char *suggested;
 };
 
+/* This is hard-copied in.  It really should be generated from
+ * the Libmarpa source files to catch new error codes.
+ */
 static const struct error_description_s error_description[] = {
   { 0, "MARPA_ERR_NONE", "No error" },
   { 1, "MARPA_ERR_AHFA_IX_NEGATIVE", "MARPA_ERR_AHFA_IX_NEGATIVE" },
