@@ -788,8 +788,12 @@ main (int argc, char *argv[])
       else
         ok(1, "marpa_b_new(): null parse at earleme 0");
 
-      marpa_m_test("marpa_b_ambiguity_metric", b, 1);
-      marpa_m_test("marpa_b_is_null", b, 1);
+      /* marpa_m_test("marpa_b_ambiguity_metric", b, 1); */
+      /* marpa_m_test("marpa_b_is_null", b, 1); */
+      API_STD_TEST0(defaults, 1, MARPA_ERR_NONE,
+	  marpa_b_ambiguity_metric, b);
+      API_STD_TEST0(defaults, 1, MARPA_ERR_NONE,
+	  marpa_b_is_null, b);
 
       /* Order */
       Marpa_Order o = marpa_o_new (b);
@@ -800,14 +804,26 @@ main (int argc, char *argv[])
         ok(1, "marpa_o_new() at earleme 0");
 
       int flag = 1;
-      marpa_m_test("marpa_o_high_rank_only_set", o, flag, flag);
-      marpa_m_test("marpa_o_high_rank_only", o, flag);
+      /* marpa_m_test("marpa_o_high_rank_only_set", o, flag, flag); */
+      /* marpa_m_test("marpa_o_high_rank_only", o, flag); */
+      API_STD_TEST1(defaults, flag, MARPA_ERR_NONE,
+	  marpa_o_high_rank_only_set, o, flag);
+      API_STD_TEST0(defaults, flag, MARPA_ERR_NONE,
+	  marpa_o_high_rank_only, o);
 
-      marpa_m_test("marpa_o_ambiguity_metric", o, 1);
-      marpa_m_test("marpa_o_is_null", o, 1);
+      /* marpa_m_test("marpa_o_ambiguity_metric", o, 1); */
+      /* marpa_m_test("marpa_o_is_null", o, 1); */
+      API_STD_TEST0(defaults, 1, MARPA_ERR_NONE,
+	  marpa_o_ambiguity_metric, o);
+      API_STD_TEST0(defaults, 1, MARPA_ERR_NONE,
+	  marpa_o_is_null, o);
 
-      marpa_m_test("marpa_o_high_rank_only_set", o, flag, -2, MARPA_ERR_ORDER_FROZEN);
-      marpa_m_test("marpa_o_high_rank_only", o, flag);
+      /* marpa_m_test("marpa_o_high_rank_only_set", o, flag, -2, MARPA_ERR_ORDER_FROZEN); */
+      /* marpa_m_test("marpa_o_high_rank_only", o, flag); */
+      API_STD_TEST1(defaults, -2, MARPA_ERR_ORDER_FROZEN,
+	  marpa_o_high_rank_only_set, o, flag);
+      API_STD_TEST0(defaults, flag, MARPA_ERR_NONE,
+	  marpa_o_high_rank_only, o);
 
       /* Tree */
       Marpa_Tree t;
