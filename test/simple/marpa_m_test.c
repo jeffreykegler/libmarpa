@@ -77,11 +77,6 @@ const Marpa_Method_Spec methspec[] = {
 
   { "marpa_g_sequence_new", &marpa_g_sequence_new, "%s, %s, %s, %i, %i" },
 
-  { "marpa_r_is_exhausted", &marpa_r_is_exhausted, "" },
-  { "marpa_r_current_earleme", (marpa_m_pointer)&marpa_r_current_earleme, "" },
-  { "marpa_r_furthest_earleme", (marpa_m_pointer)&marpa_r_furthest_earleme, "" },
-  { "marpa_r_latest_earley_set", &marpa_r_latest_earley_set, "" },
-
 };
 
 static Marpa_Method_Spec

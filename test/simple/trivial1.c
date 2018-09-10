@@ -565,11 +565,12 @@ main (int argc, char *argv[])
       fail("marpa_r_new", g);
 
     /* the recce hasn't been started yet */
-    marpa_m_test("marpa_r_current_earleme", r, -1, MARPA_ERR_RECCE_NOT_STARTED);
+    /* marpa_m_test("marpa_r_current_earleme", r, -1, MARPA_ERR_RECCE_NOT_STARTED); */
     /* marpa_m_test("marpa_r_progress_report_reset", r, -2, MARPA_ERR_RECCE_NOT_STARTED); */
     /* marpa_m_test("marpa_r_progress_report_start", r, whatever, -2, MARPA_ERR_RECCE_NOT_STARTED); */
     /* marpa_m_test("marpa_r_progress_report_finish", r, -2, MARPA_ERR_RECCE_NOT_STARTED); */
 
+    API_STD_TEST0(this_test, -1, MARPA_ERR_RECCE_NOT_STARTED, marpa_r_current_earleme, r);
     API_STD_TEST0(this_test, -2, MARPA_ERR_RECCE_NOT_STARTED, marpa_r_progress_report_reset, r);
     API_STD_TEST1(this_test, -2, MARPA_ERR_RECCE_NOT_STARTED, marpa_r_progress_report_start, r, whatever);
     API_STD_TEST0(this_test, -2, MARPA_ERR_RECCE_NOT_STARTED, marpa_r_progress_report_finish, r);
@@ -641,18 +642,23 @@ main (int argc, char *argv[])
     API_STD_TEST0(defaults, -2, MARPA_ERR_RECCE_NOT_ACCEPTING_INPUT,
 	marpa_r_earleme_complete, r);
 
-    marpa_m_test("marpa_r_is_exhausted", r, 1, "at earleme 0");
+    /* marpa_m_test("marpa_r_is_exhausted", r, 1, "at earleme 0"); */
+    this_test.msg = "at earleme 0";
+    API_STD_TEST0(this_test, 1, MARPA_ERR_NONE, marpa_r_is_exhausted, r);
 
     /* Location accessors */
     {
       /* the below 2 always succeed */
       unsigned int current_earleme = 0;
-      marpa_m_test("marpa_r_current_earleme", r, current_earleme);
+      /* marpa_m_test("marpa_r_current_earleme", r, current_earleme); */
+      API_STD_TEST0(defaults, current_earleme, MARPA_ERR_NONE, marpa_r_current_earleme, r);
 
       unsigned int furthest_earleme = current_earleme;
-      marpa_m_test("marpa_r_furthest_earleme", r, furthest_earleme);
+      /* marpa_m_test("marpa_r_furthest_earleme", r, furthest_earleme); */
+      API_STD_TEST0(defaults, furthest_earleme, MARPA_ERR_NONE, marpa_r_furthest_earleme, r);
 
-      marpa_m_test("marpa_r_latest_earley_set", r, furthest_earleme);
+      /* marpa_m_test("marpa_r_latest_earley_set", r, furthest_earleme); */
+      API_STD_TEST0(defaults, furthest_earleme, MARPA_ERR_NONE, marpa_r_latest_earley_set, r);
 
       /* marpa_m_test("marpa_r_earleme", r, current_earleme, current_earleme); */
       API_STD_TEST1(defaults, current_earleme, MARPA_ERR_NONE,
@@ -829,10 +835,10 @@ main (int argc, char *argv[])
 
     /* Progress reports */
     {
-      API_STD_TEST0(this_test, -2, MARPA_ERR_PROGRESS_REPORT_NOT_STARTED,
+      API_STD_TEST0(defaults, -2, MARPA_ERR_PROGRESS_REPORT_NOT_STARTED,
           marpa_r_progress_report_reset, r);
 
-      API_STD_TEST0(this_test, -2, MARPA_ERR_PROGRESS_REPORT_NOT_STARTED,
+      API_STD_TEST0(defaults, -2, MARPA_ERR_PROGRESS_REPORT_NOT_STARTED,
           marpa_r_progress_report_finish, r);
 
       {
@@ -845,11 +851,11 @@ main (int argc, char *argv[])
 
       /* start report at bad locations */
       Marpa_Earley_Set_ID ys_id_negative = -1;
-      API_STD_TEST1(this_test, -2, MARPA_ERR_INVALID_LOCATION,
+      API_STD_TEST1(defaults, -2, MARPA_ERR_INVALID_LOCATION,
           marpa_r_progress_report_start, r, ys_id_negative);
 
       Marpa_Earley_Set_ID ys_id_not_existing = 1;
-      API_STD_TEST1(this_test, -2, MARPA_ERR_NO_EARLEY_SET_AT_LOCATION,
+      API_STD_TEST1(defaults, -2, MARPA_ERR_NO_EARLEY_SET_AT_LOCATION,
           marpa_r_progress_report_start, r, ys_id_not_existing);
 
       /* start report at earleme 0 */

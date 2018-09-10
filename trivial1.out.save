@@ -206,8 +206,8 @@ ok 204 - marpa_g_prediction_symbol_activate() expected failure; value = -2 as ex
 ok 205 - marpa_g_prediction_symbol_activate() expected failure; error as expected: 'This grammar is precomputed'
 ok 206 - marpa_g_symbol_is_prediction_event()
 ok 207 - marpa_g_symbol_is_completion_event()
-ok 208 - marpa_r_current_earleme() failed, returned -1
-ok 209 - marpa_r_current_earleme() error is: The recognizer has not been started
+ok 208 - marpa_r_current_earleme() expected failure; value = -1 as expected
+ok 209 - marpa_r_current_earleme() expected failure; error as expected: 'The recognizer has not been started'
 ok 210 - marpa_r_progress_report_reset() expected failure; value = -2 as expected
 ok 211 - marpa_r_progress_report_reset() expected failure; error as expected: 'The recognizer has not been started'
 ok 212 - marpa_r_progress_report_start() expected failure; value = -2 as expected
@@ -227,10 +227,10 @@ ok 224 - marpa_r_alternative() expected failure; error as expected: 'The recogni
 ok 225 - marpa_r_alternative() expected failure; error as expected: 'The recognizer is not accepting input'; not accepting input
 ok 226 - marpa_r_earleme_complete() expected failure; value = -2 as expected
 ok 227 - marpa_r_earleme_complete() expected failure; error as expected: 'The recognizer is not accepting input'
-ok 228 - marpa_r_is_exhausted(): at earleme 0
-ok 229 - marpa_r_current_earleme()
-ok 230 - marpa_r_furthest_earleme()
-ok 231 - marpa_r_latest_earley_set()
+ok 228 - marpa_r_is_exhausted() success as expected; at earleme 0
+ok 229 - marpa_r_current_earleme() success as expected
+ok 230 - marpa_r_furthest_earleme() success as expected
+ok 231 - marpa_r_latest_earley_set() success as expected
 ok 232 - marpa_r_earleme() success as expected
 ok 233 - marpa_r_earley_set_value() expected failure; value = -1 as expected
 ok 234 - marpa_r_earley_set_value() expected failure; error as expected: 'The recognizer is not accepting input'
