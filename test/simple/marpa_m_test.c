@@ -77,15 +77,10 @@ const Marpa_Method_Spec methspec[] = {
 
   { "marpa_g_sequence_new", &marpa_g_sequence_new, "%s, %s, %s, %i, %i" },
 
-  { "marpa_r_earley_item_warning_threshold", &marpa_r_earley_item_warning_threshold, "" },
   { "marpa_r_is_exhausted", &marpa_r_is_exhausted, "" },
   { "marpa_r_current_earleme", (marpa_m_pointer)&marpa_r_current_earleme, "" },
   { "marpa_r_furthest_earleme", (marpa_m_pointer)&marpa_r_furthest_earleme, "" },
   { "marpa_r_latest_earley_set", &marpa_r_latest_earley_set, "" },
-
-  { "marpa_r_earleme", &marpa_r_earleme, "%i" },
-  { "marpa_r_terminal_is_expected", &marpa_r_terminal_is_expected, "%s" },
-  { "marpa_r_earley_item_warning_threshold_set", &marpa_r_earley_item_warning_threshold_set, "%i" },
 
 };
 
