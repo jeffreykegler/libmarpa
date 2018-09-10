@@ -787,10 +787,14 @@ main (int argc, char *argv[])
     {
       /* Bocage */
       Marpa_Earley_Set_ID ys_invalid = -2;
-      marpa_m_test("marpa_b_new", r, ys_invalid, NULL, MARPA_ERR_INVALID_LOCATION);
+      /* marpa_m_test("marpa_b_new", r, ys_invalid, NULL, MARPA_ERR_INVALID_LOCATION); */
+      API_PTR_TEST1(defaults, MARPA_ERR_INVALID_LOCATION,
+          marpa_b_new, r, ys_invalid);
 
       Marpa_Earley_Set_ID ys_non_existing = 1;
-      marpa_m_test("marpa_b_new", r, ys_non_existing, NULL, MARPA_ERR_NO_PARSE);
+      /* marpa_m_test("marpa_b_new", r, ys_non_existing, NULL, MARPA_ERR_NO_PARSE); */
+      API_PTR_TEST1(defaults, MARPA_ERR_NO_PARSE,
+          marpa_b_new, r, ys_non_existing);
 
       Marpa_Earley_Set_ID ys_at_current_earleme = -1;
       Marpa_Bocage b = marpa_b_new(r, ys_at_current_earleme);

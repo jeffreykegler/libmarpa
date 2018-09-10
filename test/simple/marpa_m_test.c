@@ -489,11 +489,12 @@ void rv_ptr_report(API_test_data* td, char *name, Marpa_Error_Code err_wanted)
      return;
    }
    /* If here, the call failed and was expected to fail */
+   ok(1, "%s() expected failure%s", name, msg);
    if (err_wanted == err_seen) {
-     ok(1, "%s() expected failure; error as expected: '%s'%s", name, err_msg, msg);
+     ok(1, "%s() error as expected: '%s'", name, err_msg);
    } else {
-     ok(0, "%s() expected failure but unexpected error code: got '%s', expected '%s'%s",
-       name, err_msg, wanted_err_msg, msg);
+     ok(0, "%s() unexpected error code: got '%s', expected '%s'",
+       name, err_msg, wanted_err_msg);
    }
 }
 

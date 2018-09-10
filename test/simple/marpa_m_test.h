@@ -89,6 +89,8 @@ void rv_code_report (API_test_data * td,
 		     Marpa_Error_Code err_wanted);
 void rv_hidden_report (API_test_data * td, char *name, int rv_wanted,
 		       Marpa_Error_Code err_wanted);
+void rv_ptr_report (API_test_data * td, char *name,
+		    Marpa_Error_Code err_wanted);
 
 #define API_STD_TEST0(test_data, rv_wanted, err_wanted, method, object) \
 { \
