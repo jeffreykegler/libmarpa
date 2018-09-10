@@ -75,8 +75,6 @@ const Marpa_Method_Spec methspec[] = {
   { "marpa_g_symbol_is_prediction_event_set", &marpa_g_symbol_is_prediction_event_set, "%s, %i" },
   { "marpa_g_symbol_is_completion_event_set", &marpa_g_symbol_is_completion_event_set, "%s, %i" },
 
-  { "marpa_g_sequence_new", &marpa_g_sequence_new, "%s, %s, %s, %i, %i" },
-
 };
 
 static Marpa_Method_Spec

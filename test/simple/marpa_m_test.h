@@ -116,6 +116,13 @@ void rv_ptr_report (API_test_data * td, char *name,
    rv_std_report(&test_data, #method , rv_wanted, err_wanted); \
 }
 
+#define API_STD_TEST5(test_data, rv_wanted, err_wanted, method, object, \
+  arg1, arg2, arg3, arg4, arg5) \
+{ \
+   test_data.rv_seen.int_rv = method(object, arg1, arg2, arg3, arg4, arg5); \
+   rv_std_report(&test_data, #method , rv_wanted, err_wanted); \
+}
+
 #define API_CODE_TEST3(test_data, err_wanted, method, object, arg1, arg2, arg3) \
 { \
    Marpa_Error_Code err_seen = method(object, arg1, arg2, arg3); \

@@ -99,8 +99,8 @@ ok 97 - marpa_g_rule_length() failed, returned -1
 ok 98 - marpa_g_rule_length() error is: No rule with this ID exists
 ok 99 - marpa_g_rule_lhs() failed, returned -1
 ok 100 - marpa_g_rule_lhs() error is: No rule with this ID exists
-ok 101 - marpa_g_sequence_new() failed, returned -2
-ok 102 - marpa_g_sequence_new() error is: LHS of sequence rule would not be unique
+ok 101 - marpa_g_sequence_new() expected failure; value = -2 as expected
+ok 102 - marpa_g_sequence_new() expected failure; error as expected: 'LHS of sequence rule would not be unique'
 ok 103 - marpa_g_rule_is_proper_separation()
 ok 104 - marpa_g_sequence_min() failed, returned -1
 ok 105 - marpa_g_sequence_min() error is: Rule is not a sequence
