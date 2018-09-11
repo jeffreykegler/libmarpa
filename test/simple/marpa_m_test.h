@@ -29,46 +29,12 @@
 
 #include "tap/basic.h"
 
-#define MARPA_M_MAX_ARG 5
-
 extern Marpa_Symbol_ID S_invalid, S_no_such;
 extern Marpa_Rule_ID R_invalid, R_no_such;
 
 /* Marpa method test interface */
 
-typedef int (*marpa_m_pointer)();
-
-typedef char *marpa_m_argspec;
-typedef char *marpa_m_name;
-
-struct marpa_method_spec {
-  marpa_m_name n;
-  marpa_m_pointer p;
-  marpa_m_argspec as;
-};
-
-typedef struct marpa_method_spec Marpa_Method_Spec;
-
-extern const Marpa_Method_Spec methspec[];
-
-typedef char *marpa_m_errmsg;
-struct marpa_m_error {
-  Marpa_Error_Code c;
-  marpa_m_errmsg m;
-};
-
-typedef struct marpa_m_error Marpa_Method_Error;
-
-extern const Marpa_Method_Error errspec[];
-
-int marpa_m_grammar_set(Marpa_Grammar g);
-Marpa_Grammar marpa_m_grammar();
-
 const char *marpa_m_error_message (Marpa_Error_Code error_code);
-#define ARGS_END (unsigned int *)-42424242
-#define marpa_m_test(name, ...)  marpa_m_test_func(name, ##__VA_ARGS__, (ARGS_END))
-
-int marpa_m_test_func(const char* name, ...);
 
 typedef union {
     void *ptr_rv;

@@ -168,9 +168,6 @@ main (int argc, char *argv[])
 
   this_test = defaults;
 
-  /* for marpa_g_error() in marpa_m_test() */
-  marpa_m_grammar_set(g);
-
   marpa_g_simple_precompute(g, S_top);
   ok(1, "precomputation succeeded");
 

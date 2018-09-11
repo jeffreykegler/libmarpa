@@ -200,9 +200,6 @@ main (int argc, char *argv[])
 
   this_test = defaults;
 
-  /* TODO delete this */
-  marpa_m_grammar_set(g); /* for marpa_g_error() in MARPA_M_TEST() */
-
   /* Grammar Methods per sections of api.texi: Symbols, Rules, Sequences, Ranks, Events ... */
 
   API_STD_TEST1(defaults, -2, MARPA_ERR_INVALID_SYMBOL_ID,
