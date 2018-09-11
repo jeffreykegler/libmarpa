@@ -229,30 +229,20 @@ main (int argc, char *argv[])
   /* Symbols */
 
   /* Symbol classifier methods */
-  /* MARPA_M_TEST("marpa_g_symbol_is_accessible", g, whatever, -2, MARPA_ERR_NOT_PRECOMPUTED); */
   API_STD_TEST1(defaults, -2, MARPA_ERR_NOT_PRECOMPUTED, marpa_g_symbol_is_accessible, g, whatever);
-  /* MARPA_M_TEST("marpa_g_symbol_is_nullable", g, whatever, -2, MARPA_ERR_NOT_PRECOMPUTED); */
   API_STD_TEST1(defaults, -2, MARPA_ERR_NOT_PRECOMPUTED, marpa_g_symbol_is_nullable, g, whatever);
-  /* MARPA_M_TEST("marpa_g_symbol_is_nulling", g, whatever, -2, MARPA_ERR_NOT_PRECOMPUTED); */
   API_STD_TEST1(defaults, -2, MARPA_ERR_NOT_PRECOMPUTED, marpa_g_symbol_is_nulling, g, whatever);
-  /* MARPA_M_TEST("marpa_g_symbol_is_productive", g, whatever, -2, MARPA_ERR_NOT_PRECOMPUTED); */
   API_STD_TEST1(defaults, -2, MARPA_ERR_NOT_PRECOMPUTED, marpa_g_symbol_is_productive, g, whatever);
 
-  /* MARPA_M_TEST("marpa_g_symbol_is_terminal", g, S_top, 0); */
   API_STD_TEST1(defaults, 0, MARPA_ERR_NONE, marpa_g_symbol_is_terminal, g, S_top);
 
   /* Rules */
 
   /* Rule classifier methods */
-  /* MARPA_M_TEST("marpa_g_rule_is_nullable", g, whatever, -2, MARPA_ERR_NOT_PRECOMPUTED); */
   API_STD_TEST1(defaults, -2, MARPA_ERR_NOT_PRECOMPUTED, marpa_g_rule_is_nullable, g, whatever);
-  /* MARPA_M_TEST("marpa_g_rule_is_nulling", g, whatever, -2, MARPA_ERR_NOT_PRECOMPUTED); */
   API_STD_TEST1(defaults, -2, MARPA_ERR_NOT_PRECOMPUTED, marpa_g_rule_is_nulling, g, whatever);
-  /* MARPA_M_TEST("marpa_g_rule_is_loop", g, whatever, -2, MARPA_ERR_NOT_PRECOMPUTED); */
   API_STD_TEST1(defaults, -2, MARPA_ERR_NOT_PRECOMPUTED, marpa_g_rule_is_loop, g, whatever);
-  /* MARPA_M_TEST("marpa_g_rule_is_accessible", g, whatever, -2, MARPA_ERR_NOT_PRECOMPUTED); */
   API_STD_TEST1(defaults, -2, MARPA_ERR_NOT_PRECOMPUTED, marpa_g_rule_is_accessible, g, whatever);
-  /* MARPA_M_TEST("marpa_g_rule_is_productive", g, whatever, -2, MARPA_ERR_NOT_PRECOMPUTED); */
   API_STD_TEST1(defaults, -2, MARPA_ERR_NOT_PRECOMPUTED, marpa_g_rule_is_productive, g, whatever);
 
   /* marpa_g_symbol_is_terminal_set() on invalid and non-existing symbol IDs
@@ -286,45 +276,31 @@ main (int argc, char *argv[])
   ok(1, "precomputation succeeded");
 
   /* Symbols -- status accessors must succeed on precomputed grammar */
-  /* MARPA_M_TEST("marpa_g_symbol_is_accessible", g, S_C2, 1); */
   API_STD_TEST1(defaults, 1, MARPA_ERR_NONE, marpa_g_symbol_is_accessible, g, S_C2);
-  /* MARPA_M_TEST("marpa_g_symbol_is_nullable", g, S_A1, 1); */
   API_STD_TEST1(defaults, 1, MARPA_ERR_NONE, marpa_g_symbol_is_nullable, g, S_A1);
-  /* MARPA_M_TEST("marpa_g_symbol_is_nulling", g, S_A1, 1); */
   API_STD_TEST1(defaults, 1, MARPA_ERR_NONE, marpa_g_symbol_is_nulling, g, S_A1);
-  /* MARPA_M_TEST("marpa_g_symbol_is_productive", g, S_top, 1); */
   API_STD_TEST1(defaults, 1, MARPA_ERR_NONE, marpa_g_symbol_is_productive, g, S_top);
 
   API_STD_TEST1(defaults, 1, MARPA_ERR_NONE,
       marpa_g_symbol_is_start, g, S_top);
 
-  /* MARPA_M_TEST("marpa_g_symbol_is_terminal", g, S_top, 0); */
   API_STD_TEST1(defaults, 0, MARPA_ERR_NONE, marpa_g_symbol_is_terminal, g, S_top);
 
   /* terminal and start symbols can't be set on precomputed grammar */
   API_STD_TEST2(defaults, -2, MARPA_ERR_PRECOMPUTED, marpa_g_symbol_is_terminal_set, g, S_top, 0);
 
-  /* MARPA_M_TEST("marpa_g_start_symbol_set", g, S_top, -2, MARPA_ERR_PRECOMPUTED); */
   API_STD_TEST1(defaults, -2, MARPA_ERR_PRECOMPUTED, marpa_g_start_symbol_set, g, S_top);
 
   /* Rules */
   API_STD_TEST0(this_test, R_C2_3, MARPA_ERR_NONE, marpa_g_highest_rule_id, g);
 
-  /* MARPA_M_TEST("marpa_g_rule_is_accessible", g, R_top_1, 1); */
   API_STD_TEST1(defaults, 1, MARPA_ERR_NONE, marpa_g_rule_is_accessible, g, R_top_1);
-  /* MARPA_M_TEST("marpa_g_rule_is_nullable", g, R_top_2, 1); */
   API_STD_TEST1(defaults, 1, MARPA_ERR_NONE, marpa_g_rule_is_nullable, g, R_top_2);
-  /* MARPA_M_TEST("marpa_g_rule_is_nulling", g, R_top_2, 1); */
   API_STD_TEST1(defaults, 1, MARPA_ERR_NONE, marpa_g_rule_is_nulling, g, R_top_2);
-  /* MARPA_M_TEST("marpa_g_rule_is_loop", g, R_C2_3, 0); */
   API_STD_TEST1(defaults, 0, MARPA_ERR_NONE, marpa_g_rule_is_loop, g, R_C2_3);
-  /* MARPA_M_TEST("marpa_g_rule_is_productive", g, R_C2_3, 1); */
   API_STD_TEST1(defaults, 1, MARPA_ERR_NONE, marpa_g_rule_is_productive, g, R_C2_3);
-  /* MARPA_M_TEST("marpa_g_rule_length", g, R_top_1, 1); */
   API_STD_TEST1(defaults, 1, MARPA_ERR_NONE, marpa_g_rule_length, g, R_top_1);
-  /* MARPA_M_TEST("marpa_g_rule_length", g, R_C2_3, 0); */
   API_STD_TEST1(defaults, 0, MARPA_ERR_NONE, marpa_g_rule_length, g, R_C2_3);
-  /* MARPA_M_TEST("marpa_g_rule_lhs", g, R_top_1, S_top); */
   API_STD_TEST1(defaults, S_top, MARPA_ERR_NONE, marpa_g_rule_lhs, g, R_top_1);
 
   {
@@ -340,35 +316,21 @@ main (int argc, char *argv[])
 
   /* invalid/no such rule id error handling */
   /* Rule accessor methods */
-  /* MARPA_M_TEST("marpa_g_rule_is_accessible", g, R_invalid, -2, MARPA_ERR_INVALID_RULE_ID); */
   API_STD_TEST1(defaults, -2, MARPA_ERR_INVALID_RULE_ID, marpa_g_rule_is_accessible, g, R_invalid);
-  /* MARPA_M_TEST("marpa_g_rule_is_loop", g, R_invalid, -2, MARPA_ERR_INVALID_RULE_ID); */
   API_STD_TEST1(defaults, -2, MARPA_ERR_INVALID_RULE_ID, marpa_g_rule_is_loop, g, R_invalid);
-  /* MARPA_M_TEST("marpa_g_rule_is_productive", g, R_invalid, -2, MARPA_ERR_INVALID_RULE_ID); */
   API_STD_TEST1(defaults, -2, MARPA_ERR_INVALID_RULE_ID, marpa_g_rule_is_productive, g, R_invalid);
-  /* MARPA_M_TEST("marpa_g_rule_is_nullable", g, R_invalid, -2, MARPA_ERR_INVALID_RULE_ID); */
   API_STD_TEST1(defaults, -2, MARPA_ERR_INVALID_RULE_ID, marpa_g_rule_is_nullable, g, R_invalid);
-  /* MARPA_M_TEST("marpa_g_rule_is_nulling", g, R_invalid, -2, MARPA_ERR_INVALID_RULE_ID); */
   API_STD_TEST1(defaults, -2, MARPA_ERR_INVALID_RULE_ID, marpa_g_rule_is_nulling, g, R_invalid);
-  /* MARPA_M_TEST("marpa_g_rule_length", g, R_invalid, -2, MARPA_ERR_INVALID_RULE_ID); */
   API_STD_TEST1(defaults, -2, MARPA_ERR_INVALID_RULE_ID, marpa_g_rule_length, g, R_invalid);
-  /* MARPA_M_TEST("marpa_g_rule_lhs", g, R_invalid, -2, MARPA_ERR_INVALID_RULE_ID); */
   API_STD_TEST1(defaults, -2, MARPA_ERR_INVALID_RULE_ID, marpa_g_rule_lhs, g, R_invalid);
 
   /* Rule accessor methods */
-  /* MARPA_M_TEST("marpa_g_rule_is_accessible", g, R_no_such, -1, MARPA_ERR_NO_SUCH_RULE_ID); */
   API_STD_TEST1(defaults, -1, MARPA_ERR_NO_SUCH_RULE_ID, marpa_g_rule_is_accessible, g, R_no_such);
-  /* MARPA_M_TEST("marpa_g_rule_is_loop", g, R_no_such, -1, MARPA_ERR_NO_SUCH_RULE_ID); */
   API_STD_TEST1(defaults, -1, MARPA_ERR_NO_SUCH_RULE_ID, marpa_g_rule_is_loop, g, R_no_such);
-  /* MARPA_M_TEST("marpa_g_rule_is_productive", g, R_no_such, -1, MARPA_ERR_NO_SUCH_RULE_ID); */
   API_STD_TEST1(defaults, -1, MARPA_ERR_NO_SUCH_RULE_ID, marpa_g_rule_is_productive, g, R_no_such);
-  /* MARPA_M_TEST("marpa_g_rule_is_nullable", g, R_no_such, -1, MARPA_ERR_NO_SUCH_RULE_ID); */
   API_STD_TEST1(defaults, -1, MARPA_ERR_NO_SUCH_RULE_ID, marpa_g_rule_is_nullable, g, R_no_such);
-  /* MARPA_M_TEST("marpa_g_rule_is_nulling", g, R_no_such, -1, MARPA_ERR_NO_SUCH_RULE_ID); */
   API_STD_TEST1(defaults, -1, MARPA_ERR_NO_SUCH_RULE_ID, marpa_g_rule_is_nulling, g, R_no_such);
-  /* MARPA_M_TEST("marpa_g_rule_length", g, R_no_such, -1, MARPA_ERR_NO_SUCH_RULE_ID); */
   API_STD_TEST1(defaults, -1, MARPA_ERR_NO_SUCH_RULE_ID, marpa_g_rule_length, g, R_no_such);
-  /* MARPA_M_TEST("marpa_g_rule_lhs", g, R_no_such, -1, MARPA_ERR_NO_SUCH_RULE_ID); */
   API_STD_TEST1(defaults, -1, MARPA_ERR_NO_SUCH_RULE_ID, marpa_g_rule_lhs, g, R_no_such);
 
   /* Sequences */
@@ -385,37 +347,25 @@ main (int argc, char *argv[])
 
   /* test error codes of other sequence methods */
   /* non-sequence rule id */
-  /* MARPA_M_TEST("marpa_g_rule_is_proper_separation", g, R_top_1, 0); */
   API_STD_TEST1(defaults, 0, MARPA_ERR_NONE, marpa_g_rule_is_proper_separation, g, R_top_1);
-  /* MARPA_M_TEST("marpa_g_sequence_min", g, R_top_1, -1, MARPA_ERR_NOT_A_SEQUENCE); */
   API_STD_TEST1(defaults, -1, MARPA_ERR_NOT_A_SEQUENCE, marpa_g_sequence_min, g, R_top_1);
-  /* MARPA_M_TEST("marpa_g_sequence_separator", g, R_top_1, -2, MARPA_ERR_NOT_A_SEQUENCE); */
   API_STD_TEST1(defaults, -2, MARPA_ERR_NOT_A_SEQUENCE, marpa_g_sequence_separator, g, R_top_1);
-  /* MARPA_M_TEST("marpa_g_symbol_is_counted", g, S_top, 0); */
   API_STD_TEST1(defaults, 0, MARPA_ERR_NONE, marpa_g_symbol_is_counted, g, S_top);
 
   /* invalid/no such rule id error handling */
 
   /* Sequence mutator methods */
-  /* MARPA_M_TEST( "marpa_g_sequence_separator", g, R_invalid, -2, MARPA_ERR_INVALID_RULE_ID); */
   API_STD_TEST1(defaults, -2, MARPA_ERR_INVALID_RULE_ID, marpa_g_sequence_separator, g, R_invalid);
-  /* MARPA_M_TEST( "marpa_g_sequence_min", g, R_invalid, -2, MARPA_ERR_INVALID_RULE_ID); */
   API_STD_TEST1(defaults, -2, MARPA_ERR_INVALID_RULE_ID, marpa_g_sequence_min, g, R_invalid);
 
   /* Sequence mutator methods */
-  /* MARPA_M_TEST( "marpa_g_sequence_separator", g, R_no_such, -2, MARPA_ERR_NO_SUCH_RULE_ID); */
   API_STD_TEST1(defaults, -2, MARPA_ERR_NO_SUCH_RULE_ID, marpa_g_sequence_separator, g, R_no_such);
-  /* MARPA_M_TEST( "marpa_g_sequence_min", g, R_no_such, -2, MARPA_ERR_NO_SUCH_RULE_ID); */
   API_STD_TEST1(defaults, -2, MARPA_ERR_NO_SUCH_RULE_ID, marpa_g_sequence_min, g, R_no_such);
 
-  /* MARPA_M_TEST("marpa_g_rule_is_proper_separation", g, R_invalid, -2, MARPA_ERR_INVALID_RULE_ID); */
   API_STD_TEST1(defaults, -2, MARPA_ERR_INVALID_RULE_ID, marpa_g_rule_is_proper_separation, g, R_invalid);
-  /* MARPA_M_TEST("marpa_g_rule_is_proper_separation", g, R_no_such, -1, MARPA_ERR_NO_SUCH_RULE_ID); */
   API_STD_TEST1(defaults, -1, MARPA_ERR_NO_SUCH_RULE_ID, marpa_g_rule_is_proper_separation, g, R_no_such);
 
-  /* MARPA_M_TEST("marpa_g_symbol_is_counted", g, S_invalid, -2, MARPA_ERR_INVALID_SYMBOL_ID); */
   API_STD_TEST1(defaults, -2, MARPA_ERR_INVALID_SYMBOL_ID, marpa_g_symbol_is_counted, g, S_invalid);
-  /* MARPA_M_TEST("marpa_g_symbol_is_counted", g, S_no_such, -1, MARPA_ERR_NO_SUCH_SYMBOL_ID); */
   API_STD_TEST1(defaults, -1, MARPA_ERR_NO_SUCH_SYMBOL_ID, marpa_g_symbol_is_counted, g, S_no_such);
 
   /* Ranks */
