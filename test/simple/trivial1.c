@@ -249,8 +249,10 @@ main (int argc, char *argv[])
 
   /* marpa_g_symbol_is_terminal_set() on invalid and non-existing symbol IDs
      on a non-precomputed grammar */
-  marpa_m_test("marpa_g_symbol_is_terminal_set", g, S_invalid, 1, -2, MARPA_ERR_INVALID_SYMBOL_ID);
-  marpa_m_test("marpa_g_symbol_is_terminal_set", g, S_no_such, 1, -1, MARPA_ERR_NO_SUCH_SYMBOL_ID);
+  /* marpa_m_test("marpa_g_symbol_is_terminal_set", g, S_invalid, 1, -2, MARPA_ERR_INVALID_SYMBOL_ID); */
+  /* marpa_m_test("marpa_g_symbol_is_terminal_set", g, S_no_such, 1, -1, MARPA_ERR_NO_SUCH_SYMBOL_ID); */
+  API_STD_TEST2(defaults, -2, MARPA_ERR_INVALID_SYMBOL_ID, marpa_g_symbol_is_terminal_set, g, S_invalid, 1);
+  API_STD_TEST2(defaults, -1, MARPA_ERR_NO_SUCH_SYMBOL_ID, marpa_g_symbol_is_terminal_set, g, S_no_such, 1);
 
   /* Rules */
   /* marpa_m_test("marpa_g_highest_rule_id", g, R_C2_3, "before precomputation"); */
@@ -269,9 +271,11 @@ main (int argc, char *argv[])
   API_STD_TEST2(this_test, S_A2, MARPA_ERR_NONE, marpa_g_rule_rhs, g, R_top_2, 0);
 
   /* marpa_g_symbol_is_terminal_set() on a nulling symbol */
-  marpa_m_test("marpa_g_symbol_is_terminal_set", g, S_C1, 1, 1);
+  /* marpa_m_test("marpa_g_symbol_is_terminal_set", g, S_C1, 1, 1); */
   /* can't change terminal status after it's been set */
-  marpa_m_test("marpa_g_symbol_is_terminal_set", g, S_C1, 0, -2, MARPA_ERR_TERMINAL_IS_LOCKED);
+  /* marpa_m_test("marpa_g_symbol_is_terminal_set", g, S_C1, 0, -2, MARPA_ERR_TERMINAL_IS_LOCKED); */
+  API_STD_TEST2(defaults, 1, MARPA_ERR_NONE, marpa_g_symbol_is_terminal_set, g, S_C1, 1);
+  API_STD_TEST2(defaults, -2, MARPA_ERR_TERMINAL_IS_LOCKED, marpa_g_symbol_is_terminal_set, g, S_C1, 0);
 
   marpa_m_test("marpa_g_precompute", g, -2, MARPA_ERR_NULLING_TERMINAL);
 
@@ -296,7 +300,9 @@ main (int argc, char *argv[])
   marpa_m_test("marpa_g_symbol_is_terminal", g, S_top, 0);
 
   /* terminal and start symbols can't be set on precomputed grammar */
-  marpa_m_test("marpa_g_symbol_is_terminal_set", g, S_top, 0, -2, MARPA_ERR_PRECOMPUTED);
+  /* marpa_m_test("marpa_g_symbol_is_terminal_set", g, S_top, 0, -2, MARPA_ERR_PRECOMPUTED); */
+  API_STD_TEST2(defaults, -2, MARPA_ERR_PRECOMPUTED, marpa_g_symbol_is_terminal_set, g, S_top, 0);
+
   marpa_m_test("marpa_g_start_symbol_set", g, S_top, -2, MARPA_ERR_PRECOMPUTED);
 
   /* Rules */
@@ -311,14 +317,18 @@ main (int argc, char *argv[])
   marpa_m_test("marpa_g_rule_lhs", g, R_top_1, S_top);
 
   {
-    marpa_m_test("marpa_g_rule_rhs", g, R_top_1, 0, S_A1);
-    marpa_m_test("marpa_g_rule_rhs", g, R_top_2, 0, S_A2);
+    /* marpa_m_test("marpa_g_rule_rhs", g, R_top_1, 0, S_A1); */
+    /* marpa_m_test("marpa_g_rule_rhs", g, R_top_2, 0, S_A2); */
+    API_STD_TEST2(defaults, S_A1, MARPA_ERR_NONE, marpa_g_rule_rhs, g, R_top_1, 0);
+    API_STD_TEST2(defaults, S_A2, MARPA_ERR_NONE, marpa_g_rule_rhs, g, R_top_2, 0);
 
     int ix_out_of_bounds = 25;
-    marpa_m_test("marpa_g_rule_rhs", g, R_top_2, ix_out_of_bounds, -2, MARPA_ERR_RHS_IX_OOB);
+    /* marpa_m_test("marpa_g_rule_rhs", g, R_top_2, ix_out_of_bounds, -2, MARPA_ERR_RHS_IX_OOB); */
+    API_STD_TEST2(defaults, -2, MARPA_ERR_RHS_IX_OOB, marpa_g_rule_rhs, g, R_top_2, ix_out_of_bounds);
 
     int ix_negative = -1;
-    marpa_m_test("marpa_g_rule_rhs", g, R_top_2, ix_negative, -2, MARPA_ERR_RHS_IX_NEGATIVE);
+    /* marpa_m_test("marpa_g_rule_rhs", g, R_top_2, ix_negative, -2, MARPA_ERR_RHS_IX_NEGATIVE); */
+    API_STD_TEST2(defaults, -2, MARPA_ERR_RHS_IX_NEGATIVE, marpa_g_rule_rhs, g, R_top_2, ix_negative);
   }
 
   /* invalid/no such rule id error handling */

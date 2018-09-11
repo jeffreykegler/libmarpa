@@ -28,19 +28,19 @@ ok 26 - marpa_g_rule_is_accessible() failed, returned -2
 ok 27 - marpa_g_rule_is_accessible() error is: This grammar is not precomputed
 ok 28 - marpa_g_rule_is_productive() failed, returned -2
 ok 29 - marpa_g_rule_is_productive() error is: This grammar is not precomputed
-ok 30 - marpa_g_symbol_is_terminal_set() failed, returned -2
-ok 31 - marpa_g_symbol_is_terminal_set() error is: Symbol ID is malformed
-ok 32 - marpa_g_symbol_is_terminal_set() failed, returned -1
-ok 33 - marpa_g_symbol_is_terminal_set() error is: No symbol with this ID exists
+ok 30 - marpa_g_symbol_is_terminal_set() expected failure; value = -2 as expected
+ok 31 - marpa_g_symbol_is_terminal_set() expected failure; error as expected: 'Symbol ID is malformed'
+ok 32 - marpa_g_symbol_is_terminal_set() expected failure; value = -1 as expected
+ok 33 - marpa_g_symbol_is_terminal_set() expected failure; error as expected: 'No symbol with this ID exists'
 ok 34 - marpa_g_highest_rule_id() success as expected; before precomputation
 ok 35 - marpa_g_rule_length() success as expected; before precomputation
 ok 36 - marpa_g_rule_length() success as expected; before precomputation
 ok 37 - marpa_g_rule_lhs() success as expected; before precomputation
 ok 38 - marpa_g_rule_rhs() success as expected; before precomputation
 ok 39 - marpa_g_rule_rhs() success as expected; before precomputation
-ok 40 - marpa_g_symbol_is_terminal_set()
-ok 41 - marpa_g_symbol_is_terminal_set() failed, returned -2
-ok 42 - marpa_g_symbol_is_terminal_set() error is: The terminal status of the symbol is locked
+ok 40 - marpa_g_symbol_is_terminal_set() success as expected
+ok 41 - marpa_g_symbol_is_terminal_set() expected failure; value = -2 as expected
+ok 42 - marpa_g_symbol_is_terminal_set() expected failure; error as expected: 'The terminal status of the symbol is locked'
 ok 43 - marpa_g_precompute() failed, returned -2
 ok 44 - marpa_g_precompute() error is: A symbol is both terminal and nulling
 ok 45 - marpa_g_precompute() failed, returned -2
@@ -52,8 +52,8 @@ ok 50 - marpa_g_symbol_is_nulling()
 ok 51 - marpa_g_symbol_is_productive()
 ok 52 - marpa_g_symbol_is_start() success as expected
 ok 53 - marpa_g_symbol_is_terminal()
-ok 54 - marpa_g_symbol_is_terminal_set() failed, returned -2
-ok 55 - marpa_g_symbol_is_terminal_set() error is: This grammar is precomputed
+ok 54 - marpa_g_symbol_is_terminal_set() expected failure; value = -2 as expected
+ok 55 - marpa_g_symbol_is_terminal_set() expected failure; error as expected: 'This grammar is precomputed'
 ok 56 - marpa_g_start_symbol_set() failed, returned -2
 ok 57 - marpa_g_start_symbol_set() error is: This grammar is precomputed
 ok 58 - marpa_g_highest_rule_id()
@@ -65,12 +65,12 @@ ok 63 - marpa_g_rule_is_productive()
 ok 64 - marpa_g_rule_length()
 ok 65 - marpa_g_rule_length()
 ok 66 - marpa_g_rule_lhs()
-ok 67 - marpa_g_rule_rhs()
-ok 68 - marpa_g_rule_rhs()
-ok 69 - marpa_g_rule_rhs() failed, returned -2
-ok 70 - marpa_g_rule_rhs() error is: RHS index must be less than rule length
-ok 71 - marpa_g_rule_rhs() failed, returned -2
-ok 72 - marpa_g_rule_rhs() error is: RHS index cannot be negative
+ok 67 - marpa_g_rule_rhs() success as expected
+ok 68 - marpa_g_rule_rhs() success as expected
+ok 69 - marpa_g_rule_rhs() expected failure; value = -2 as expected
+ok 70 - marpa_g_rule_rhs() expected failure; error as expected: 'RHS index must be less than rule length'
+ok 71 - marpa_g_rule_rhs() expected failure; value = -2 as expected
+ok 72 - marpa_g_rule_rhs() expected failure; error as expected: 'RHS index cannot be negative'
 ok 73 - marpa_g_rule_is_accessible() failed, returned -2
 ok 74 - marpa_g_rule_is_accessible() error is: Rule ID is malformed
 ok 75 - marpa_g_rule_is_loop() failed, returned -2

@@ -64,9 +64,6 @@ const Marpa_Method_Spec methspec[] = {
   { "marpa_g_rule_length", &marpa_g_rule_length, "%r" },
   { "marpa_g_rule_lhs", &marpa_g_rule_lhs, "%r" },
 
-  { "marpa_g_symbol_is_terminal_set", &marpa_g_symbol_is_terminal_set, "%s, %i" },
-  { "marpa_g_rule_rhs", &marpa_g_rule_rhs, "%r, %i" },
-
 };
 
 static Marpa_Method_Spec
