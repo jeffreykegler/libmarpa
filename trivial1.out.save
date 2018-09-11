@@ -9,25 +9,25 @@ ok 7 - marpa_g_start_symbol() expected failure; error as expected: 'This grammar
 ok 8 - marpa_g_symbol_is_start() success as expected
 ok 9 - marpa_g_start_symbol() success as expected
 ok 10 - marpa_g_highest_symbol_id() success as expected
-ok 11 - marpa_g_symbol_is_accessible() failed, returned -2
-ok 12 - marpa_g_symbol_is_accessible() error is: This grammar is not precomputed
-ok 13 - marpa_g_symbol_is_nullable() failed, returned -2
-ok 14 - marpa_g_symbol_is_nullable() error is: This grammar is not precomputed
-ok 15 - marpa_g_symbol_is_nulling() failed, returned -2
-ok 16 - marpa_g_symbol_is_nulling() error is: This grammar is not precomputed
-ok 17 - marpa_g_symbol_is_productive() failed, returned -2
-ok 18 - marpa_g_symbol_is_productive() error is: This grammar is not precomputed
+ok 11 - marpa_g_symbol_is_accessible() expected failure; value = -2 as expected
+ok 12 - marpa_g_symbol_is_accessible() expected failure; error as expected: 'This grammar is not precomputed'
+ok 13 - marpa_g_symbol_is_nullable() expected failure; value = -2 as expected
+ok 14 - marpa_g_symbol_is_nullable() expected failure; error as expected: 'This grammar is not precomputed'
+ok 15 - marpa_g_symbol_is_nulling() expected failure; value = -2 as expected
+ok 16 - marpa_g_symbol_is_nulling() expected failure; error as expected: 'This grammar is not precomputed'
+ok 17 - marpa_g_symbol_is_productive() expected failure; value = -2 as expected
+ok 18 - marpa_g_symbol_is_productive() expected failure; error as expected: 'This grammar is not precomputed'
 ok 19 - marpa_g_symbol_is_terminal()
-ok 20 - marpa_g_rule_is_nullable() failed, returned -2
-ok 21 - marpa_g_rule_is_nullable() error is: This grammar is not precomputed
-ok 22 - marpa_g_rule_is_nulling() failed, returned -2
-ok 23 - marpa_g_rule_is_nulling() error is: This grammar is not precomputed
-ok 24 - marpa_g_rule_is_loop() failed, returned -2
-ok 25 - marpa_g_rule_is_loop() error is: This grammar is not precomputed
-ok 26 - marpa_g_rule_is_accessible() failed, returned -2
-ok 27 - marpa_g_rule_is_accessible() error is: This grammar is not precomputed
-ok 28 - marpa_g_rule_is_productive() failed, returned -2
-ok 29 - marpa_g_rule_is_productive() error is: This grammar is not precomputed
+ok 20 - marpa_g_rule_is_nullable() expected failure; value = -2 as expected
+ok 21 - marpa_g_rule_is_nullable() expected failure; error as expected: 'This grammar is not precomputed'
+ok 22 - marpa_g_rule_is_nulling() expected failure; value = -2 as expected
+ok 23 - marpa_g_rule_is_nulling() expected failure; error as expected: 'This grammar is not precomputed'
+ok 24 - marpa_g_rule_is_loop() expected failure; value = -2 as expected
+ok 25 - marpa_g_rule_is_loop() expected failure; error as expected: 'This grammar is not precomputed'
+ok 26 - marpa_g_rule_is_accessible() expected failure; value = -2 as expected
+ok 27 - marpa_g_rule_is_accessible() expected failure; error as expected: 'This grammar is not precomputed'
+ok 28 - marpa_g_rule_is_productive() expected failure; value = -2 as expected
+ok 29 - marpa_g_rule_is_productive() expected failure; error as expected: 'This grammar is not precomputed'
 ok 30 - marpa_g_symbol_is_terminal_set() expected failure; value = -2 as expected
 ok 31 - marpa_g_symbol_is_terminal_set() expected failure; error as expected: 'Symbol ID is malformed'
 ok 32 - marpa_g_symbol_is_terminal_set() expected failure; value = -1 as expected
@@ -54,8 +54,8 @@ ok 52 - marpa_g_symbol_is_start() success as expected
 ok 53 - marpa_g_symbol_is_terminal()
 ok 54 - marpa_g_symbol_is_terminal_set() expected failure; value = -2 as expected
 ok 55 - marpa_g_symbol_is_terminal_set() expected failure; error as expected: 'This grammar is precomputed'
-ok 56 - marpa_g_start_symbol_set() failed, returned -2
-ok 57 - marpa_g_start_symbol_set() error is: This grammar is precomputed
+ok 56 - marpa_g_start_symbol_set() expected failure; value = -2 as expected
+ok 57 - marpa_g_start_symbol_set() expected failure; error as expected: 'This grammar is precomputed'
 ok 58 - marpa_g_highest_rule_id() success as expected; before precomputation
 ok 59 - marpa_g_rule_is_accessible()
 ok 60 - marpa_g_rule_is_nullable()
@@ -71,58 +71,58 @@ ok 69 - marpa_g_rule_rhs() expected failure; value = -2 as expected
 ok 70 - marpa_g_rule_rhs() expected failure; error as expected: 'RHS index must be less than rule length'
 ok 71 - marpa_g_rule_rhs() expected failure; value = -2 as expected
 ok 72 - marpa_g_rule_rhs() expected failure; error as expected: 'RHS index cannot be negative'
-ok 73 - marpa_g_rule_is_accessible() failed, returned -2
-ok 74 - marpa_g_rule_is_accessible() error is: Rule ID is malformed
-ok 75 - marpa_g_rule_is_loop() failed, returned -2
-ok 76 - marpa_g_rule_is_loop() error is: Rule ID is malformed
-ok 77 - marpa_g_rule_is_productive() failed, returned -2
-ok 78 - marpa_g_rule_is_productive() error is: Rule ID is malformed
-ok 79 - marpa_g_rule_is_nullable() failed, returned -2
-ok 80 - marpa_g_rule_is_nullable() error is: Rule ID is malformed
-ok 81 - marpa_g_rule_is_nulling() failed, returned -2
-ok 82 - marpa_g_rule_is_nulling() error is: Rule ID is malformed
-ok 83 - marpa_g_rule_length() failed, returned -2
-ok 84 - marpa_g_rule_length() error is: Rule ID is malformed
-ok 85 - marpa_g_rule_lhs() failed, returned -2
-ok 86 - marpa_g_rule_lhs() error is: Rule ID is malformed
-ok 87 - marpa_g_rule_is_accessible() failed, returned -1
-ok 88 - marpa_g_rule_is_accessible() error is: No rule with this ID exists
-ok 89 - marpa_g_rule_is_loop() failed, returned -1
-ok 90 - marpa_g_rule_is_loop() error is: No rule with this ID exists
-ok 91 - marpa_g_rule_is_productive() failed, returned -1
-ok 92 - marpa_g_rule_is_productive() error is: No rule with this ID exists
-ok 93 - marpa_g_rule_is_nullable() failed, returned -1
-ok 94 - marpa_g_rule_is_nullable() error is: No rule with this ID exists
-ok 95 - marpa_g_rule_is_nulling() failed, returned -1
-ok 96 - marpa_g_rule_is_nulling() error is: No rule with this ID exists
-ok 97 - marpa_g_rule_length() failed, returned -1
-ok 98 - marpa_g_rule_length() error is: No rule with this ID exists
-ok 99 - marpa_g_rule_lhs() failed, returned -1
-ok 100 - marpa_g_rule_lhs() error is: No rule with this ID exists
+ok 73 - marpa_g_rule_is_accessible() expected failure; value = -2 as expected
+ok 74 - marpa_g_rule_is_accessible() expected failure; error as expected: 'Rule ID is malformed'
+ok 75 - marpa_g_rule_is_loop() expected failure; value = -2 as expected
+ok 76 - marpa_g_rule_is_loop() expected failure; error as expected: 'Rule ID is malformed'
+ok 77 - marpa_g_rule_is_productive() expected failure; value = -2 as expected
+ok 78 - marpa_g_rule_is_productive() expected failure; error as expected: 'Rule ID is malformed'
+ok 79 - marpa_g_rule_is_nullable() expected failure; value = -2 as expected
+ok 80 - marpa_g_rule_is_nullable() expected failure; error as expected: 'Rule ID is malformed'
+ok 81 - marpa_g_rule_is_nulling() expected failure; value = -2 as expected
+ok 82 - marpa_g_rule_is_nulling() expected failure; error as expected: 'Rule ID is malformed'
+ok 83 - marpa_g_rule_length() expected failure; value = -2 as expected
+ok 84 - marpa_g_rule_length() expected failure; error as expected: 'Rule ID is malformed'
+ok 85 - marpa_g_rule_lhs() expected failure; value = -2 as expected
+ok 86 - marpa_g_rule_lhs() expected failure; error as expected: 'Rule ID is malformed'
+ok 87 - marpa_g_rule_is_accessible() expected failure; value = -1 as expected
+ok 88 - marpa_g_rule_is_accessible() expected failure; error as expected: 'No rule with this ID exists'
+ok 89 - marpa_g_rule_is_loop() expected failure; value = -1 as expected
+ok 90 - marpa_g_rule_is_loop() expected failure; error as expected: 'No rule with this ID exists'
+ok 91 - marpa_g_rule_is_productive() expected failure; value = -1 as expected
+ok 92 - marpa_g_rule_is_productive() expected failure; error as expected: 'No rule with this ID exists'
+ok 93 - marpa_g_rule_is_nullable() expected failure; value = -1 as expected
+ok 94 - marpa_g_rule_is_nullable() expected failure; error as expected: 'No rule with this ID exists'
+ok 95 - marpa_g_rule_is_nulling() expected failure; value = -1 as expected
+ok 96 - marpa_g_rule_is_nulling() expected failure; error as expected: 'No rule with this ID exists'
+ok 97 - marpa_g_rule_length() expected failure; value = -1 as expected
+ok 98 - marpa_g_rule_length() expected failure; error as expected: 'No rule with this ID exists'
+ok 99 - marpa_g_rule_lhs() expected failure; value = -1 as expected
+ok 100 - marpa_g_rule_lhs() expected failure; error as expected: 'No rule with this ID exists'
 ok 101 - marpa_g_sequence_new() expected failure; value = -2 as expected
 ok 102 - marpa_g_sequence_new() expected failure; error as expected: 'LHS of sequence rule would not be unique'
 ok 103 - marpa_g_rule_is_proper_separation()
-ok 104 - marpa_g_sequence_min() failed, returned -1
-ok 105 - marpa_g_sequence_min() error is: Rule is not a sequence
-ok 106 - marpa_g_sequence_separator() failed, returned -2
-ok 107 - marpa_g_sequence_separator() error is: Rule is not a sequence
+ok 104 - marpa_g_sequence_min() expected failure; value = -1 as expected
+ok 105 - marpa_g_sequence_min() expected failure; error as expected: 'Rule is not a sequence'
+ok 106 - marpa_g_sequence_separator() expected failure; value = -2 as expected
+ok 107 - marpa_g_sequence_separator() expected failure; error as expected: 'Rule is not a sequence'
 ok 108 - marpa_g_symbol_is_counted()
-ok 109 - marpa_g_sequence_separator() failed, returned -2
-ok 110 - marpa_g_sequence_separator() error is: Rule ID is malformed
-ok 111 - marpa_g_sequence_min() failed, returned -2
-ok 112 - marpa_g_sequence_min() error is: Rule ID is malformed
-ok 113 - marpa_g_sequence_separator() failed, returned -2
-ok 114 - marpa_g_sequence_separator() error is: No rule with this ID exists
-ok 115 - marpa_g_sequence_min() failed, returned -2
-ok 116 - marpa_g_sequence_min() error is: No rule with this ID exists
-ok 117 - marpa_g_rule_is_proper_separation() failed, returned -2
-ok 118 - marpa_g_rule_is_proper_separation() error is: Rule ID is malformed
-ok 119 - marpa_g_rule_is_proper_separation() failed, returned -1
-ok 120 - marpa_g_rule_is_proper_separation() error is: No rule with this ID exists
-ok 121 - marpa_g_symbol_is_counted() failed, returned -2
-ok 122 - marpa_g_symbol_is_counted() error is: Symbol ID is malformed
-ok 123 - marpa_g_symbol_is_counted() failed, returned -1
-ok 124 - marpa_g_symbol_is_counted() error is: No symbol with this ID exists
+ok 109 - marpa_g_sequence_separator() expected failure; value = -2 as expected
+ok 110 - marpa_g_sequence_separator() expected failure; error as expected: 'Rule ID is malformed'
+ok 111 - marpa_g_sequence_min() expected failure; value = -2 as expected
+ok 112 - marpa_g_sequence_min() expected failure; error as expected: 'Rule ID is malformed'
+ok 113 - marpa_g_sequence_separator() expected failure; value = -2 as expected
+ok 114 - marpa_g_sequence_separator() expected failure; error as expected: 'No rule with this ID exists'
+ok 115 - marpa_g_sequence_min() expected failure; value = -2 as expected
+ok 116 - marpa_g_sequence_min() expected failure; error as expected: 'No rule with this ID exists'
+ok 117 - marpa_g_rule_is_proper_separation() expected failure; value = -2 as expected
+ok 118 - marpa_g_rule_is_proper_separation() expected failure; error as expected: 'Rule ID is malformed'
+ok 119 - marpa_g_rule_is_proper_separation() expected failure; value = -1 as expected
+ok 120 - marpa_g_rule_is_proper_separation() expected failure; error as expected: 'No rule with this ID exists'
+ok 121 - marpa_g_symbol_is_counted() expected failure; value = -2 as expected
+ok 122 - marpa_g_symbol_is_counted() expected failure; error as expected: 'Symbol ID is malformed'
+ok 123 - marpa_g_symbol_is_counted() expected failure; value = -1 as expected
+ok 124 - marpa_g_symbol_is_counted() expected failure; error as expected: 'No symbol with this ID exists'
 ok 125 - marpa_g_rule_rank_set() success as expected
 ok 126 - marpa_g_rule_rank() success as expected
 ok 127 - marpa_g_rule_rank_set() success as expected
