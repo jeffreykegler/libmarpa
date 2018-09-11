@@ -216,7 +216,8 @@ main (int argc, char *argv[])
   API_STD_TEST1(defaults, 0, MARPA_ERR_NONE,
       marpa_g_symbol_is_start, g, S_top);
 
-  marpa_m_test("marpa_g_start_symbol", g, -1, MARPA_ERR_NO_START_SYMBOL);
+  /* marpa_m_test("marpa_g_start_symbol", g, -1, MARPA_ERR_NO_START_SYMBOL); */
+  API_STD_TEST0(defaults, -1, MARPA_ERR_NO_START_SYMBOL, marpa_g_start_symbol, g);
 
   (marpa_g_start_symbol_set (g, S_top) >= 0)
     || fail ("marpa_g_start_symbol_set", g);
@@ -225,8 +226,11 @@ main (int argc, char *argv[])
   API_STD_TEST1(defaults, 1, MARPA_ERR_NONE,
       marpa_g_symbol_is_start, g, S_top);
 
-  marpa_m_test("marpa_g_start_symbol", g, S_top);
-  marpa_m_test("marpa_g_highest_symbol_id", g, S_C2);
+  /* marpa_m_test("marpa_g_start_symbol", g, S_top); */
+  API_STD_TEST0(defaults, S_top, MARPA_ERR_NONE, marpa_g_start_symbol, g);
+
+  /* marpa_m_test("marpa_g_highest_symbol_id", g, S_C2); */
+  API_STD_TEST0(this_test, S_C2, MARPA_ERR_NONE, marpa_g_highest_symbol_id, g);
 
   /* Symbols */
 
@@ -277,13 +281,15 @@ main (int argc, char *argv[])
   API_STD_TEST2(defaults, 1, MARPA_ERR_NONE, marpa_g_symbol_is_terminal_set, g, S_C1, 1);
   API_STD_TEST2(defaults, -2, MARPA_ERR_TERMINAL_IS_LOCKED, marpa_g_symbol_is_terminal_set, g, S_C1, 0);
 
-  marpa_m_test("marpa_g_precompute", g, -2, MARPA_ERR_NULLING_TERMINAL);
+  /* marpa_m_test("marpa_g_precompute", g, -2, MARPA_ERR_NULLING_TERMINAL); */
+  API_STD_TEST0(defaults, -2, MARPA_ERR_NULLING_TERMINAL, marpa_g_precompute, g);
 
   /* terminals are locked after setting, so we recreate the grammar */
   marpa_g_unref(g);
   g = marpa_g_trivial_new(&marpa_configuration);
 
-  marpa_m_test("marpa_g_precompute", g, -2, MARPA_ERR_NO_START_SYMBOL);
+  /* marpa_m_test("marpa_g_precompute", g, -2, MARPA_ERR_NO_START_SYMBOL); */
+  API_STD_TEST0(defaults, -2, MARPA_ERR_NO_START_SYMBOL, marpa_g_precompute, g);
 
   marpa_g_trivial_precompute(g, S_top);
   ok(1, "precomputation succeeded");
@@ -306,7 +312,9 @@ main (int argc, char *argv[])
   marpa_m_test("marpa_g_start_symbol_set", g, S_top, -2, MARPA_ERR_PRECOMPUTED);
 
   /* Rules */
-  marpa_m_test("marpa_g_highest_rule_id", g, R_C2_3);
+  /* marpa_m_test("marpa_g_highest_rule_id", g, R_C2_3); */
+  API_STD_TEST0(this_test, R_C2_3, MARPA_ERR_NONE, marpa_g_highest_rule_id, g);
+
   marpa_m_test("marpa_g_rule_is_accessible", g, R_top_1, 1);
   marpa_m_test("marpa_g_rule_is_nullable", g, R_top_2, 1);
   marpa_m_test("marpa_g_rule_is_nulling", g, R_top_2, 1);

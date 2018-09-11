@@ -4,11 +4,11 @@ ok 2 - marpa_g_symbol_is_start() expected failure; error as expected: 'Symbol ID
 ok 3 - marpa_g_symbol_is_start() expected failure; value = -1 as expected
 ok 4 - marpa_g_symbol_is_start() expected failure; error as expected: 'No symbol with this ID exists'
 ok 5 - marpa_g_symbol_is_start() success as expected
-ok 6 - marpa_g_start_symbol() failed, returned -1
-ok 7 - marpa_g_start_symbol() error is: This grammar has no start symbol
+ok 6 - marpa_g_start_symbol() expected failure; value = -1 as expected
+ok 7 - marpa_g_start_symbol() expected failure; error as expected: 'This grammar has no start symbol'
 ok 8 - marpa_g_symbol_is_start() success as expected
-ok 9 - marpa_g_start_symbol()
-ok 10 - marpa_g_highest_symbol_id()
+ok 9 - marpa_g_start_symbol() success as expected
+ok 10 - marpa_g_highest_symbol_id() success as expected
 ok 11 - marpa_g_symbol_is_accessible() failed, returned -2
 ok 12 - marpa_g_symbol_is_accessible() error is: This grammar is not precomputed
 ok 13 - marpa_g_symbol_is_nullable() failed, returned -2
@@ -41,10 +41,10 @@ ok 39 - marpa_g_rule_rhs() success as expected; before precomputation
 ok 40 - marpa_g_symbol_is_terminal_set() success as expected
 ok 41 - marpa_g_symbol_is_terminal_set() expected failure; value = -2 as expected
 ok 42 - marpa_g_symbol_is_terminal_set() expected failure; error as expected: 'The terminal status of the symbol is locked'
-ok 43 - marpa_g_precompute() failed, returned -2
-ok 44 - marpa_g_precompute() error is: A symbol is both terminal and nulling
-ok 45 - marpa_g_precompute() failed, returned -2
-ok 46 - marpa_g_precompute() error is: This grammar has no start symbol
+ok 43 - marpa_g_precompute() expected failure; value = -2 as expected
+ok 44 - marpa_g_precompute() expected failure; error as expected: 'A symbol is both terminal and nulling'
+ok 45 - marpa_g_precompute() expected failure; value = -2 as expected
+ok 46 - marpa_g_precompute() expected failure; error as expected: 'This grammar has no start symbol'
 ok 47 - precomputation succeeded
 ok 48 - marpa_g_symbol_is_accessible()
 ok 49 - marpa_g_symbol_is_nullable()
@@ -56,7 +56,7 @@ ok 54 - marpa_g_symbol_is_terminal_set() expected failure; value = -2 as expecte
 ok 55 - marpa_g_symbol_is_terminal_set() expected failure; error as expected: 'This grammar is precomputed'
 ok 56 - marpa_g_start_symbol_set() failed, returned -2
 ok 57 - marpa_g_start_symbol_set() error is: This grammar is precomputed
-ok 58 - marpa_g_highest_rule_id()
+ok 58 - marpa_g_highest_rule_id() success as expected; before precomputation
 ok 59 - marpa_g_rule_is_accessible()
 ok 60 - marpa_g_rule_is_nullable()
 ok 61 - marpa_g_rule_is_nulling()

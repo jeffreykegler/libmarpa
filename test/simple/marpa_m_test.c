@@ -38,11 +38,6 @@ Marpa_Rule_ID R_invalid = -1, R_no_such = 42;
 
 const Marpa_Method_Spec methspec[] = {
 
-  { "marpa_g_start_symbol", &marpa_g_start_symbol, "" },
-  { "marpa_g_highest_symbol_id", &marpa_g_highest_symbol_id, ""},
-  { "marpa_g_precompute", &marpa_g_precompute, "" },
-  { "marpa_g_highest_rule_id", &marpa_g_highest_rule_id, "" },
-
   { "marpa_g_start_symbol_set", &marpa_g_start_symbol_set, "%s" },
   { "marpa_g_symbol_is_terminal",  &marpa_g_symbol_is_terminal, "%s" },
   { "marpa_g_symbol_is_accessible", &marpa_g_symbol_is_accessible, "%s" },
