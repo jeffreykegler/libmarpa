@@ -56,7 +56,6 @@ const Marpa_Method_Spec methspec[] = {
   { "marpa_g_rule_is_nullable", &marpa_g_rule_is_nullable, "%r" },
   { "marpa_g_rule_is_nulling", &marpa_g_rule_is_nulling, "%r" },
   { "marpa_g_rule_is_loop", &marpa_g_rule_is_loop, "%r" },
-  { "marpa_g_rule_rank", &marpa_g_rule_rank, "%r" },
   { "marpa_g_rule_is_accessible", &marpa_g_rule_is_accessible, "%r" },
   { "marpa_g_rule_is_nullable", &marpa_g_rule_is_nullable, "%r" },
   { "marpa_g_rule_is_nulling", &marpa_g_rule_is_nulling, "%r" },
@@ -67,7 +66,6 @@ const Marpa_Method_Spec methspec[] = {
 
   { "marpa_g_symbol_is_terminal_set", &marpa_g_symbol_is_terminal_set, "%s, %i" },
   { "marpa_g_rule_rhs", &marpa_g_rule_rhs, "%r, %i" },
-  { "marpa_g_rule_rank_set", &marpa_g_rule_rank_set, "%r, %i" },
 
 };
 

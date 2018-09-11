@@ -32,12 +32,12 @@ ok 30 - marpa_g_symbol_is_terminal_set() failed, returned -2
 ok 31 - marpa_g_symbol_is_terminal_set() error is: Symbol ID is malformed
 ok 32 - marpa_g_symbol_is_terminal_set() failed, returned -1
 ok 33 - marpa_g_symbol_is_terminal_set() error is: No symbol with this ID exists
-ok 34 - marpa_g_highest_rule_id(): before precomputation
-ok 35 - marpa_g_rule_length(): before precomputation
-ok 36 - marpa_g_rule_length(): before precomputation
-ok 37 - marpa_g_rule_lhs(): before precomputation
-ok 38 - marpa_g_rule_rhs(): before precomputation
-ok 39 - marpa_g_rule_rhs(): before precomputation
+ok 34 - marpa_g_highest_rule_id() success as expected; before precomputation
+ok 35 - marpa_g_rule_length() success as expected; before precomputation
+ok 36 - marpa_g_rule_length() success as expected; before precomputation
+ok 37 - marpa_g_rule_lhs() success as expected; before precomputation
+ok 38 - marpa_g_rule_rhs() success as expected; before precomputation
+ok 39 - marpa_g_rule_rhs() success as expected; before precomputation
 ok 40 - marpa_g_symbol_is_terminal_set()
 ok 41 - marpa_g_symbol_is_terminal_set() failed, returned -2
 ok 42 - marpa_g_symbol_is_terminal_set() error is: The terminal status of the symbol is locked

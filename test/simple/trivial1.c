@@ -253,12 +253,20 @@ main (int argc, char *argv[])
   marpa_m_test("marpa_g_symbol_is_terminal_set", g, S_no_such, 1, -1, MARPA_ERR_NO_SUCH_SYMBOL_ID);
 
   /* Rules */
-  marpa_m_test("marpa_g_highest_rule_id", g, R_C2_3, "before precomputation");
-  marpa_m_test("marpa_g_rule_length", g, R_top_1, 1, "before precomputation");
-  marpa_m_test("marpa_g_rule_length", g, R_C2_3, 0, "before precomputation");
-  marpa_m_test("marpa_g_rule_lhs", g, R_top_1, S_top, "before precomputation");
-  marpa_m_test("marpa_g_rule_rhs", g, R_top_1, 0, S_A1, "before precomputation");
-  marpa_m_test("marpa_g_rule_rhs", g, R_top_2, 0, S_A2, "before precomputation");
+  /* marpa_m_test("marpa_g_highest_rule_id", g, R_C2_3, "before precomputation"); */
+  /* marpa_m_test("marpa_g_rule_length", g, R_top_1, 1, "before precomputation"); */
+  /* marpa_m_test("marpa_g_rule_length", g, R_C2_3, 0, "before precomputation"); */
+  /* marpa_m_test("marpa_g_rule_lhs", g, R_top_1, S_top, "before precomputation"); */
+  /* marpa_m_test("marpa_g_rule_rhs", g, R_top_1, 0, S_A1, "before precomputation"); */
+  /* marpa_m_test("marpa_g_rule_rhs", g, R_top_2, 0, S_A2, "before precomputation"); */
+
+  this_test.msg = "before precomputation";
+  API_STD_TEST0(this_test, R_C2_3, MARPA_ERR_NONE, marpa_g_highest_rule_id, g);
+  API_STD_TEST1(this_test, 1, MARPA_ERR_NONE, marpa_g_rule_length, g, R_top_1);
+  API_STD_TEST1(this_test, 0, MARPA_ERR_NONE, marpa_g_rule_length, g, R_C2_3);
+  API_STD_TEST1(this_test, S_top, MARPA_ERR_NONE, marpa_g_rule_lhs, g, R_top_1);
+  API_STD_TEST2(this_test, S_A1, MARPA_ERR_NONE, marpa_g_rule_rhs, g, R_top_1, 0);
+  API_STD_TEST2(this_test, S_A2, MARPA_ERR_NONE, marpa_g_rule_rhs, g, R_top_2, 0);
 
   /* marpa_g_symbol_is_terminal_set() on a nulling symbol */
   marpa_m_test("marpa_g_symbol_is_terminal_set", g, S_C1, 1, 1);
@@ -573,10 +581,10 @@ main (int argc, char *argv[])
 
     /* the recce hasn't been started yet */
 
-    API_STD_TEST0(this_test, -1, MARPA_ERR_RECCE_NOT_STARTED, marpa_r_current_earleme, r);
-    API_STD_TEST0(this_test, -2, MARPA_ERR_RECCE_NOT_STARTED, marpa_r_progress_report_reset, r);
-    API_STD_TEST1(this_test, -2, MARPA_ERR_RECCE_NOT_STARTED, marpa_r_progress_report_start, r, whatever);
-    API_STD_TEST0(this_test, -2, MARPA_ERR_RECCE_NOT_STARTED, marpa_r_progress_report_finish, r);
+    API_STD_TEST0(defaults, -1, MARPA_ERR_RECCE_NOT_STARTED, marpa_r_current_earleme, r);
+    API_STD_TEST0(defaults, -2, MARPA_ERR_RECCE_NOT_STARTED, marpa_r_progress_report_reset, r);
+    API_STD_TEST1(defaults, -2, MARPA_ERR_RECCE_NOT_STARTED, marpa_r_progress_report_start, r, whatever);
+    API_STD_TEST0(defaults, -2, MARPA_ERR_RECCE_NOT_STARTED, marpa_r_progress_report_finish, r);
 
     {
       int set_id;
