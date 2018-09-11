@@ -17,7 +17,7 @@ ok 15 - marpa_g_symbol_is_nulling() expected failure; value = -2 as expected
 ok 16 - marpa_g_symbol_is_nulling() expected failure; error as expected: 'This grammar is not precomputed'
 ok 17 - marpa_g_symbol_is_productive() expected failure; value = -2 as expected
 ok 18 - marpa_g_symbol_is_productive() expected failure; error as expected: 'This grammar is not precomputed'
-ok 19 - marpa_g_symbol_is_terminal()
+ok 19 - marpa_g_symbol_is_terminal() success as expected
 ok 20 - marpa_g_rule_is_nullable() expected failure; value = -2 as expected
 ok 21 - marpa_g_rule_is_nullable() expected failure; error as expected: 'This grammar is not precomputed'
 ok 22 - marpa_g_rule_is_nulling() expected failure; value = -2 as expected
@@ -46,25 +46,25 @@ ok 44 - marpa_g_precompute() expected failure; error as expected: 'A symbol is b
 ok 45 - marpa_g_precompute() expected failure; value = -2 as expected
 ok 46 - marpa_g_precompute() expected failure; error as expected: 'This grammar has no start symbol'
 ok 47 - precomputation succeeded
-ok 48 - marpa_g_symbol_is_accessible()
-ok 49 - marpa_g_symbol_is_nullable()
-ok 50 - marpa_g_symbol_is_nulling()
-ok 51 - marpa_g_symbol_is_productive()
+ok 48 - marpa_g_symbol_is_accessible() success as expected
+ok 49 - marpa_g_symbol_is_nullable() success as expected
+ok 50 - marpa_g_symbol_is_nulling() success as expected
+ok 51 - marpa_g_symbol_is_productive() success as expected
 ok 52 - marpa_g_symbol_is_start() success as expected
-ok 53 - marpa_g_symbol_is_terminal()
+ok 53 - marpa_g_symbol_is_terminal() success as expected
 ok 54 - marpa_g_symbol_is_terminal_set() expected failure; value = -2 as expected
 ok 55 - marpa_g_symbol_is_terminal_set() expected failure; error as expected: 'This grammar is precomputed'
 ok 56 - marpa_g_start_symbol_set() expected failure; value = -2 as expected
 ok 57 - marpa_g_start_symbol_set() expected failure; error as expected: 'This grammar is precomputed'
 ok 58 - marpa_g_highest_rule_id() success as expected; before precomputation
-ok 59 - marpa_g_rule_is_accessible()
-ok 60 - marpa_g_rule_is_nullable()
-ok 61 - marpa_g_rule_is_nulling()
-ok 62 - marpa_g_rule_is_loop()
-ok 63 - marpa_g_rule_is_productive()
-ok 64 - marpa_g_rule_length()
-ok 65 - marpa_g_rule_length()
-ok 66 - marpa_g_rule_lhs()
+ok 59 - marpa_g_rule_is_accessible() success as expected
+ok 60 - marpa_g_rule_is_nullable() success as expected
+ok 61 - marpa_g_rule_is_nulling() success as expected
+ok 62 - marpa_g_rule_is_loop() success as expected
+ok 63 - marpa_g_rule_is_productive() success as expected
+ok 64 - marpa_g_rule_length() success as expected
+ok 65 - marpa_g_rule_length() success as expected
+ok 66 - marpa_g_rule_lhs() success as expected
 ok 67 - marpa_g_rule_rhs() success as expected
 ok 68 - marpa_g_rule_rhs() success as expected
 ok 69 - marpa_g_rule_rhs() expected failure; value = -2 as expected
@@ -101,12 +101,12 @@ ok 99 - marpa_g_rule_lhs() expected failure; value = -1 as expected
 ok 100 - marpa_g_rule_lhs() expected failure; error as expected: 'No rule with this ID exists'
 ok 101 - marpa_g_sequence_new() expected failure; value = -2 as expected
 ok 102 - marpa_g_sequence_new() expected failure; error as expected: 'LHS of sequence rule would not be unique'
-ok 103 - marpa_g_rule_is_proper_separation()
+ok 103 - marpa_g_rule_is_proper_separation() success as expected
 ok 104 - marpa_g_sequence_min() expected failure; value = -1 as expected
 ok 105 - marpa_g_sequence_min() expected failure; error as expected: 'Rule is not a sequence'
 ok 106 - marpa_g_sequence_separator() expected failure; value = -2 as expected
 ok 107 - marpa_g_sequence_separator() expected failure; error as expected: 'Rule is not a sequence'
-ok 108 - marpa_g_symbol_is_counted()
+ok 108 - marpa_g_symbol_is_counted() success as expected
 ok 109 - marpa_g_sequence_separator() expected failure; value = -2 as expected
 ok 110 - marpa_g_sequence_separator() expected failure; error as expected: 'Rule ID is malformed'
 ok 111 - marpa_g_sequence_min() expected failure; value = -2 as expected
