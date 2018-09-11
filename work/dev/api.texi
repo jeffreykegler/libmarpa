@@ -871,11 +871,33 @@ There has been no call
 to @code{marpa_r_alternative()} since
 recognizer initialization.
 @item
-There has been no call
-to @code{marpa_r_alternative()} since
-the previous call
-to @code{marpa_r_earleme_complete()}.
+No previous call to @code{marpa_r_alternative()} created
+a lexeme which ends at the next earleme.
+The "next earleme" is @var{c+1},
+where @var{c} is the current earleme.
 @end itemize
+
+A previous call to
+@code{marpa_r_alternative()} created
+an earleme which ends at @var{lex_end},
+if
+@itemize
+@item
+It was called when the current earleme
+was @var{lex_start}.
+@item
+It created a lexeme of length @var{lex_len}.
+@item
+@var{lex_start+lex_len} is equal to
+@var{lex_end}.
+@end itemize
+
+Note that the above implies the ordinary case:
+If @code{marpa_r_alternative()} is called
+at current location @var{c},
+and the lexeme it creates has the default length of 1,
+then that lexeme will end at @var{c+1},
+the "next earleme".
 
 Suppose, in the generalized input model that,
 for a call
@@ -2678,7 +2700,7 @@ As mentioned,
 @code{marpa_r_earleme_complete()} always advances the current earleme,
 incrementing its value by 1.
 This means that value of the current earleme after the call
-will be the one plus the value of the earleme processed by the call
+will be one plus the value of the earleme processed by the call
 to @code{marpa_r_earleme_complete()}.
 If any token was accepted at the earleme being processed,
 @code{marpa_r_earleme_complete()} creates a new Earley set
