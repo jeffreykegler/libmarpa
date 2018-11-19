@@ -69,7 +69,9 @@ tar_clean:
 tag:
 	git tag -a v$(version) -m "Version $(version)"
 
-timestamp/cm_debug.stamp: timestamp/cm_dist.stamp
+cm_dist: timestamp/cm_dist.stamp
+
+timestamp/cm_debug.stamp: cm_dist
 	rm -rf cm_build
 	mkdir cm_build
 	cd cm_build && cmake -DCMAKE_BUILD_TYPE:STRING=Debug ../cm_dist && make VERBOSE=1

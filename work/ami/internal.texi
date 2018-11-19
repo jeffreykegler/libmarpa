@@ -10,7 +10,7 @@
 This manual (@value{UPDATED})
 covers some of the internals of Libmarpa @value{VERSION}.
 
-Copyright @copyright{} 2015 Jeffrey Kegler.
+Copyright @copyright{} 2018 Jeffrey Kegler.
 
 @quotation
 Permission is hereby granted, free of charge, to any person obtaining a

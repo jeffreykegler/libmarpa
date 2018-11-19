@@ -1,4 +1,4 @@
-Copyright \copyright\ 2015 Jeffrey Kegler
+Copyright \copyright\ 2018 Jeffrey Kegler
 \bigskip\noindent
 Permission is hereby granted, free of charge, to any person obtaining a
 copy of this software and associated documentation files (the "Software"),
