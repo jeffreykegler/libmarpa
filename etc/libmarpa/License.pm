@@ -1,4 +1,4 @@
-# Copyright 2015 Jeffrey Kegler
+# Copyright 2018 Jeffrey Kegler
 # Permission is hereby granted, free of charge, to any person obtaining a
 # copy of this software and associated documentation files (the "Software"),
 # to deal in the Software without restriction, including without limitation
@@ -28,7 +28,7 @@ use Fatal qw(open close read);
 use File::Spec;
 use Text::Diff ();
 
-my $copyright_line = q{Copyright 2015 Jeffrey Kegler};
+my $copyright_line = q{Copyright 2018 Jeffrey Kegler};
 ( my $copyright_line_in_tex = $copyright_line )
     =~ s/ ^ Copyright \s /Copyright \\copyright\\ /xms;
 
@@ -70,7 +70,7 @@ $license_in_tex =~ s/^$/\\smallskip\\noindent/gxms;
 my $license_file = $license;
 
 my $texi_copyright = <<'END_OF_TEXI_COPYRIGHT';
-Copyright @copyright{} 2015 Jeffrey Kegler.
+Copyright @copyright{} 2018 Jeffrey Kegler.
 END_OF_TEXI_COPYRIGHT
 
 my $texi_license = <<'END_OF_TEXI_LICENSE';
@@ -264,6 +264,7 @@ my %files_by_type = (
     'COPYING.LESSER' => \&ignored,    # GNU license text, leave it alone
     'cm_dist/COPYING.LESSER' => \&ignored,    # GNU license text, leave it alone
     'cm_dist/COPYING' => \&ignored,    # MIT license text, leave it alone
+    'dist/compile' => \&ignored,    # GNU file, leave it alone
     'dist/COPYING' => \&ignored,    # MIT license text, leave it alone
     'doc_dist/COPYING' => \&ignored,    # MIT license text, leave it alone
     'doc1_dist/COPYING' => \&ignored,    # MIT license text, leave it alone
