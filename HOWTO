@@ -1,3 +1,5 @@
+=== Bumping version number
+
 To bump version number, currently you must change the following files:
 
 LIB_VERSION
@@ -6,3 +8,17 @@ work/ac_doc/configure.ac
 work/ac_doc1/configure.ac
 work/public/marpa.h-version
 cmake/CMakeLists.txt
+
+=== Building under cmake
+
+Do something like the following:
+
+cd libmarpa_repo
+make clean
+make dists
+cd ..
+mkdir build
+cd build
+cmake ../libmarpa_repo/cm_dist
+cmake --build .
+
