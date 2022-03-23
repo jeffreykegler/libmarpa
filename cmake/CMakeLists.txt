@@ -19,7 +19,19 @@
 
 CMAKE_MINIMUM_REQUIRED(VERSION 3.0.2)
 
-PROJECT(libmarpa C)
+# Version bumping utility relies on the exact
+# format of those next 3 lines
+SET(MARPA_LIB_MAJOR_VERSION 8)
+SET(MARPA_LIB_MINOR_VERSION 6)
+SET(MARPA_LIB_PATCH_VERSION 2)
+
+SET(MARPA_LIB_VERSION
+    ${MARPA_LIB_MAJOR_VERSION}.${MARPA_LIB_MINOR_VERSION}.${MARPA_LIB_PATCH_VERSION})
+
+PROJECT(libmarpa LANGUAGES C
+  HOMEPAGE_URL https://jeffreykegler.github.io/Marpa-web-site/libmarpa.html
+  DESCRIPTION "C language library that implements the parse engine at the core of Marpa"
+  VERSION ${MARPA_LIB_VERSION})
 
 # ------------------
 # Module search path
@@ -30,15 +42,6 @@ ENABLE_TESTING()
 if("${PROJECT_SOURCE_DIR}" STREQUAL "${PROJECT_BINARY_DIR}")
    message(SEND_ERROR "In-source builds are not allowed.")
    endif("${PROJECT_SOURCE_DIR}" STREQUAL "${PROJECT_BINARY_DIR}")
-
-# Version bumping utility relies on the exact
-# format of those next 3 lines
-SET(MARPA_LIB_MAJOR_VERSION 8)
-SET(MARPA_LIB_MINOR_VERSION 6)
-SET(MARPA_LIB_PATCH_VERSION 2)
-
-SET(MARPA_LIB_VERSION
-    ${MARPA_LIB_MAJOR_VERSION}.${MARPA_LIB_MINOR_VERSION}.${MARPA_LIB_PATCH_VERSION})
 
 # ----------------------------------------------------------------------------
 # Enable all warnings depending on compiler
@@ -101,5 +104,8 @@ install(TARGETS marpa marpa_s
 )
 
 install(FILES "${PROJECT_SOURCE_DIR}/include/marpa.h" DESTINATION inc)
+
+configure_file(libmarpa.pc.in ${PROJECT_BINARY_DIR}/libmarpa.pc @ONLY) 
+install(FILES "${PROJECT_BINARY_DIR}/libmarpa.pc" DESTINATION "lib/pkgconfig/")
 
 # vim: expandtab shiftwidth=4:
