@@ -2757,9 +2757,8 @@ successful parse cannot be extended.
 
 An exhausted parse may cause a failure,
 in which case
-@code{marpa_r_earleme_complete()} returns an
-error
-whose error code is @code{MARPA_ERR_PARSE_EXHAUSTED}.
+@code{marpa_r_earleme_complete()} returns failure
+and sets the error code to @code{MARPA_ERR_PARSE_EXHAUSTED}.
 For a parse to fail at an earleme due to exhaustion,
 it must be the case that no alternatives were
 accepted at that earleme.
