@@ -103,7 +103,7 @@ install(TARGETS marpa marpa_s
     ARCHIVE DESTINATION lib
 )
 
-install(FILES "${PROJECT_SOURCE_DIR}/include/marpa.h" DESTINATION inc)
+install(FILES "${PROJECT_SOURCE_DIR}/include/marpa.h" DESTINATION include)
 
 configure_file(libmarpa.pc.in ${PROJECT_BINARY_DIR}/libmarpa.pc @ONLY) 
 install(FILES "${PROJECT_BINARY_DIR}/libmarpa.pc" DESTINATION "lib/pkgconfig/")

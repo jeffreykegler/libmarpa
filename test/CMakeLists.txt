@@ -10,7 +10,7 @@ set(CMAKE_DISABLE_SOURCE_CHANGES  ON)
 
 SET(LIBMARPA_SHARED "${CMAKE_SOURCE_DIR}/usr/local/lib/libmarpa.so")
 SET(LIBMARPA_STATIC "${CMAKE_SOURCE_DIR}/usr/local/lib/libmarpa_s.a")
-SET(LIBMARPA_INCLUDE "${CMAKE_SOURCE_DIR}/usr/local/inc/")
+SET(LIBMARPA_INCLUDE "${CMAKE_SOURCE_DIR}/usr/local/include/")
 
 if ("${CMAKE_SOURCE_DIR}" STREQUAL "${CMAKE_BINARY_DIR}")
   message(SEND_ERROR "${CMAKE_SOURCE_DIR} vs. ${CMAKE_BINARY_DIR}: In-source builds are not allowed.")
