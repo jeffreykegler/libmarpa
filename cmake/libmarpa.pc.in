@@ -5,7 +5,7 @@
 # Good tutoral for understanding .pc files: 
 # https://people.freedesktop.org/~dbn/pkg-config-guide.html
 
-prefix="@CMAKE_INSTALL_PREFIX@"
+prefix="."
 exec_prefix="${prefix}"
 libdir="${prefix}/lib"
 includedir="${prefix}/include"
