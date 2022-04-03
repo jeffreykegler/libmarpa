@@ -196,7 +196,7 @@ main (int argc, char *argv[])
   API_test_data defaults;
   API_test_data this_test;
 
-  plan(338);
+  plan(334);
 
   marpa_c_init (&marpa_configuration);
   g = marpa_g_trivial_new(&marpa_configuration);
@@ -930,46 +930,10 @@ main (int argc, char *argv[])
       else
         ok(1, "marpa_v_new() at earleme 0");
 
-      int step_inactive_count = 0;
-      int step_initial_count = 0;
-      int step_token_count = 0;
-      int step_rule_count = 0;
-      int step_nulling_symbol_count = 0;
-      while (1)
       {
         Marpa_Step_Type step_type = marpa_v_step (v);
-        Marpa_Symbol_ID token;
-
-        if (step_type < 0)
-            fail("marpa_v_step", g);
-
-        if (step_type == MARPA_STEP_INACTIVE)
-        {
-            step_inactive_count++;
-            break;
-        }
-
-        switch (step_type)
-        {
-          case MARPA_STEP_INITIAL:
-            step_initial_count++;
-            break;
-          case MARPA_STEP_TOKEN:
-            step_token_count++;
-            break;
-          case MARPA_STEP_RULE:
-            step_rule_count++;
-            break;
-          case MARPA_STEP_NULLING_SYMBOL:
-            step_nulling_symbol_count++;
-            break;
-         }
+	is_int(MARPA_STEP_INACTIVE, step_type, "MARPA_STEP_INACTIVE step.");
       }
-      is_int(1, step_inactive_count, "MARPA_STEP_INACTIVE seen once.");
-      is_int(0, step_initial_count, "MARPA_STEP_INITIAL not seen.");
-      is_int(0, step_token_count, "MARPA_STEP_TOKEN not seen.");
-      is_int(0, step_rule_count, "MARPA_STEP_RULE not seen.");
-      is_int(0, step_nulling_symbol_count, "MARPA_STEP_NULLING_SYMBOL not seen.");
 
       API_STD_TEST0(defaults, 1, MARPA_ERR_NONE, marpa_t_parse_count, t);
       API_STD_TEST0(defaults, -2, MARPA_ERR_TREE_PAUSED, marpa_t_next, t);
