@@ -162,6 +162,14 @@ marpa_g_trivial_precompute(Marpa_Grammar g, Marpa_Symbol_ID S_start)
   return rc;
 }
 
+static void defaults_reset(API_test_data* defaults, Marpa_Grammar g)
+{
+  defaults->g = g;
+  defaults->expected_errcode = MARPA_ERR_NONE;
+  defaults->msg = "";
+  defaults->rv_seen.int_rv = -86;
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -192,12 +200,7 @@ main (int argc, char *argv[])
 
   marpa_c_init (&marpa_configuration);
   g = marpa_g_trivial_new(&marpa_configuration);
-
-  defaults.g = g;
-  defaults.expected_errcode = MARPA_ERR_NONE;
-  defaults.msg = "";
-  defaults.rv_seen.int_rv = -86;
-
+  defaults_reset(&defaults, g);
   this_test = defaults;
 
   /* Grammar Methods per sections of api.texi: Symbols, Rules, Sequences, Ranks, Events ... */
@@ -269,6 +272,8 @@ main (int argc, char *argv[])
   /* terminals are locked after setting, so we recreate the grammar */
   marpa_g_unref(g);
   g = marpa_g_trivial_new(&marpa_configuration);
+  defaults_reset(&defaults, g);
+  this_test = defaults;
 
   API_STD_TEST0(defaults, -2, MARPA_ERR_NO_START_SYMBOL, marpa_g_precompute, g);
 
@@ -340,6 +345,8 @@ main (int argc, char *argv[])
   /* recreate the grammar */
   marpa_g_unref(g);
   g = marpa_g_trivial_new(&marpa_configuration);
+  defaults_reset(&defaults, g);
+  this_test = defaults;
 
   /* try to add a nulling sequence */
   API_STD_TEST5(defaults, -2, MARPA_ERR_SEQUENCE_LHS_NOT_UNIQUE,
@@ -439,6 +446,8 @@ main (int argc, char *argv[])
   /* recreate the grammar to test event methods except nulled */
   marpa_g_unref(g);
   g = marpa_g_trivial_new(&marpa_configuration);
+  defaults_reset(&defaults, g);
+  this_test = defaults;
 
   /* Events */
   /* test that attempts to create events, other than nulled events,
