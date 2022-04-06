@@ -196,7 +196,7 @@ main (int argc, char *argv[])
   API_test_data defaults;
   API_test_data this_test;
 
-  plan(334);
+  plan(335);
 
   marpa_c_init (&marpa_configuration);
   g = marpa_g_trivial_new(&marpa_configuration);
@@ -933,6 +933,8 @@ main (int argc, char *argv[])
       {
         Marpa_Step_Type step_type = marpa_v_step (v);
 	is_int(MARPA_STEP_INACTIVE, step_type, "MARPA_STEP_INACTIVE step.");
+        step_type = marpa_v_step (v);
+	is_int(MARPA_STEP_INACTIVE, step_type, "MARPA_STEP_INACTIVE step on retry of marpa_v_step().");
       }
 
       API_STD_TEST0(defaults, 1, MARPA_ERR_NONE, marpa_t_parse_count, t);
