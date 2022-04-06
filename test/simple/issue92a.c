@@ -196,7 +196,7 @@ main (int argc, char *argv[])
   API_test_data defaults;
   API_test_data this_test;
 
-  plan(334);
+  plan(120);
 
   marpa_c_init (&marpa_configuration);
   g = marpa_g_trivial_new(&marpa_configuration);
@@ -207,7 +207,7 @@ main (int argc, char *argv[])
   marpa_g_trivial_precompute(g, S_top);
   ok(1, "precomputation succeeded");
 
-  API_STD_TEST0(defaults, -1, MARPA_ERR_NONE, marpa_g_force_valued, g);
+  API_STD_TEST0(defaults, 0, MARPA_ERR_NONE, marpa_g_force_valued, g);
 
   /* Recognizer Methods */
   {
@@ -547,6 +547,13 @@ main (int argc, char *argv[])
       {
         Marpa_Step_Type step_type = marpa_v_step (v);
 	is_int(MARPA_STEP_NULLING_SYMBOL, step_type, "MARPA_STEP_NULLING_SYMBOL step.");
+
+	is_int(0, marpa_v_result(v), "marpa_v_result(v)");
+	is_int(MARPA_STEP_NULLING_SYMBOL, marpa_v_step_type(v), "marpa_v_step_type(v)");
+	is_int(0, marpa_v_symbol(v), "marpa_v_symbol(v)");
+	is_int(-1, marpa_v_es_id(v), "marpa_v_es_id(v)");
+	is_int(-1, marpa_v_token_start_es_id(v), "marpa_v_token_start_es_id(v)");
+
         step_type = marpa_v_step (v);
 	is_int(MARPA_STEP_INACTIVE, step_type, "MARPA_STEP_INACTIVE step.");
       }
