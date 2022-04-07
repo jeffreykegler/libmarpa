@@ -30,7 +30,9 @@
 static int
 warn (const char *s, Marpa_Grammar g)
 {
-  printf ("%s returned %d\n", s, marpa_g_error (g, NULL));
+  int errcode = marpa_g_error (g, NULL);
+  printf ("%s returned error_code %d: %s\n", s, errcode,
+     marpa_m_error_message(errcode));
 }
 
 static int
@@ -102,7 +104,7 @@ main (int argc, char *argv[])
   API_test_data defaults;
   API_test_data this_test;
 
-  plan(33);
+  plan(57);
 
   marpa_c_init (&marpa_configuration);
   g = marpa_g_new (&marpa_configuration);
@@ -158,8 +160,13 @@ main (int argc, char *argv[])
 
     this_test = defaults;
 
+    API_STD_TEST3(defaults, MARPA_ERR_NONE, MARPA_ERR_NONE, marpa_r_alternative, r, S_tok, 42, 1);
+    API_STD_TEST0(defaults, 0, MARPA_ERR_NONE, marpa_r_earleme_complete, r);
+    API_STD_TEST3(defaults, MARPA_ERR_NONE, MARPA_ERR_NONE, marpa_r_alternative, r, S_tok, 43, 1);
+    API_STD_TEST0(defaults, 0, MARPA_ERR_NONE, marpa_r_earleme_complete, r);
+
     this_test.msg = "at earleme 0";
-    API_STD_TEST0(this_test, 0, MARPA_ERR_NONE, marpa_r_is_exhausted, r);
+    API_STD_TEST0(this_test, 1, MARPA_ERR_NONE, marpa_r_is_exhausted, r);
 
     /* Bocage, Order, Tree, Value */
     {
@@ -171,7 +178,7 @@ main (int argc, char *argv[])
 
       API_STD_TEST0(defaults, 1, MARPA_ERR_NONE,
 	  marpa_b_ambiguity_metric, b);
-      API_STD_TEST0(defaults, 1, MARPA_ERR_NONE,
+      API_STD_TEST0(defaults, 0, MARPA_ERR_NONE,
 	  marpa_b_is_null, b);
 
       /* Order */
@@ -180,23 +187,12 @@ main (int argc, char *argv[])
       if (!o)
         fail("marpa_o_new", g);
       else
-        ok(1, "marpa_o_new() at earleme 0");
-
-      int flag = 1;
-      API_STD_TEST1(defaults, flag, MARPA_ERR_NONE,
-	  marpa_o_high_rank_only_set, o, flag);
-      API_STD_TEST0(defaults, flag, MARPA_ERR_NONE,
-	  marpa_o_high_rank_only, o);
+        ok(1, "marpa_o_new()");
 
       API_STD_TEST0(defaults, 1, MARPA_ERR_NONE,
 	  marpa_o_ambiguity_metric, o);
-      API_STD_TEST0(defaults, 1, MARPA_ERR_NONE,
+      API_STD_TEST0(defaults, 0, MARPA_ERR_NONE,
 	  marpa_o_is_null, o);
-
-      API_STD_TEST1(defaults, -2, MARPA_ERR_ORDER_FROZEN,
-	  marpa_o_high_rank_only_set, o, flag);
-      API_STD_TEST0(defaults, flag, MARPA_ERR_NONE,
-	  marpa_o_high_rank_only, o);
 
       /* Tree */
       Marpa_Tree t;
@@ -205,33 +201,38 @@ main (int argc, char *argv[])
       if (!t)
         fail("marpa_t_new", g);
       else
-        ok(1, "marpa_t_new() at earleme 0");
+        ok(1, "marpa_t_new()");
 
       this_test.msg = "before the first parse tree";
       API_STD_TEST0(this_test, 0, MARPA_ERR_NONE, marpa_t_parse_count, t);
-      API_STD_TEST0(defaults, 0, MARPA_ERR_NONE, marpa_t_next, t);
+
+      rc = marpa_t_next (t);
+      if (rc < 0)
+        fail("marpa_t_next", g);
+      else
+        ok(1, "marpa_t_next()");
 
       /* Value */
       Marpa_Value v = marpa_v_new(t);
-      if (!t)
+      if (!v)
         fail("marpa_v_new", g);
       else
-        ok(1, "marpa_v_new() at earleme 0");
+        ok(1, "marpa_v_new()");
 
       {
         Marpa_Step_Type step_type = marpa_v_step (v);
 	is_int(MARPA_STEP_NULLING_SYMBOL, step_type, "0: MARPA_STEP_NULLING_SYMBOL step returned.");
 	is_int(0, marpa_v_result(v), "0: marpa_v_result(v)");
 	is_int(MARPA_STEP_NULLING_SYMBOL, marpa_v_step_type(v), "0: marpa_v_step_type(v)");
-	is_int(0, marpa_v_symbol(v), "0: marpa_v_symbol(v)");
+	is_int(S_null, marpa_v_symbol(v), "0: marpa_v_symbol(v)");
 	is_int(-1, marpa_v_es_id(v), "0: marpa_v_es_id(v)");
 	is_int(-1, marpa_v_token_start_es_id(v), "0: marpa_v_token_start_es_id(v)");
 
         step_type = marpa_v_step (v);
-	is_int(MARPA_STEP_NULLING_SYMBOL, step_type, "1: MARPA_STEP_NULLING_SYMBOL step returned.");
+	is_int(MARPA_STEP_TOKEN, step_type, "1: MARPA_STEP_TOKEN step returned.");
 	is_int(0, marpa_v_result(v), "1: marpa_v_result(v)");
-	is_int(MARPA_STEP_NULLING_SYMBOL, marpa_v_step_type(v), "1: marpa_v_step_type(v)");
-	is_int(0, marpa_v_symbol(v), "1: marpa_v_symbol(v)");
+	is_int(MARPA_STEP_TOKEN, marpa_v_step_type(v), "1: marpa_v_step_type(v)");
+	is_int(S_tok, marpa_v_symbol(v), "1: marpa_v_symbol(v)");
 	is_int(-1, marpa_v_es_id(v), "1: marpa_v_es_id(v)");
 	is_int(-1, marpa_v_token_start_es_id(v), "1: marpa_v_token_start_es_id(v)");
 
@@ -239,15 +240,15 @@ main (int argc, char *argv[])
 	is_int(MARPA_STEP_NULLING_SYMBOL, step_type, "2: MARPA_STEP_NULLING_SYMBOL step returned.");
 	is_int(0, marpa_v_result(v), "2: marpa_v_result(v)");
 	is_int(MARPA_STEP_NULLING_SYMBOL, marpa_v_step_type(v), "2: marpa_v_step_type(v)");
-	is_int(0, marpa_v_symbol(v), "2: marpa_v_symbol(v)");
+	is_int(S_null, marpa_v_symbol(v), "2: marpa_v_symbol(v)");
 	is_int(-1, marpa_v_es_id(v), "2: marpa_v_es_id(v)");
 	is_int(-1, marpa_v_token_start_es_id(v), "2: marpa_v_token_start_es_id(v)");
 
         step_type = marpa_v_step (v);
-	is_int(MARPA_STEP_NULLING_SYMBOL, step_type, "3: MARPA_STEP_NULLING_SYMBOL step returned.");
+	is_int(MARPA_STEP_TOKEN, step_type, "3: MARPA_STEP_TOKEN step returned.");
 	is_int(0, marpa_v_result(v), "3: marpa_v_result(v)");
-	is_int(MARPA_STEP_NULLING_SYMBOL, marpa_v_step_type(v), "3: marpa_v_step_type(v)");
-	is_int(0, marpa_v_symbol(v), "3: marpa_v_symbol(v)");
+	is_int(MARPA_STEP_TOKEN, marpa_v_step_type(v), "3: marpa_v_step_type(v)");
+	is_int(S_tok, marpa_v_symbol(v), "3: marpa_v_symbol(v)");
 	is_int(-1, marpa_v_es_id(v), "3: marpa_v_es_id(v)");
 	is_int(-1, marpa_v_token_start_es_id(v), "3: marpa_v_token_start_es_id(v)");
 
@@ -255,7 +256,7 @@ main (int argc, char *argv[])
 	is_int(MARPA_STEP_NULLING_SYMBOL, step_type, "4: MARPA_STEP_NULLING_SYMBOL step returned.");
 	is_int(0, marpa_v_result(v), "4: marpa_v_result(v)");
 	is_int(MARPA_STEP_NULLING_SYMBOL, marpa_v_step_type(v), "4: marpa_v_step_type(v)");
-	is_int(0, marpa_v_symbol(v), "4: marpa_v_symbol(v)");
+	is_int(S_null, marpa_v_symbol(v), "4: marpa_v_symbol(v)");
 	is_int(-1, marpa_v_es_id(v), "4: marpa_v_es_id(v)");
 	is_int(-1, marpa_v_token_start_es_id(v), "4: marpa_v_token_start_es_id(v)");
 
@@ -263,7 +264,7 @@ main (int argc, char *argv[])
 	is_int(MARPA_STEP_RULE, step_type, "5: MARPA_STEP_RULE step returned.");
 	is_int(0, marpa_v_result(v), "5: marpa_v_result(v)");
 	is_int(MARPA_STEP_RULE, marpa_v_step_type(v), "5: marpa_v_step_type(v)");
-	is_int(0, marpa_v_symbol(v), "5: marpa_v_symbol(v)");
+	is_int(0, marpa_v_rule(v), "5: marpa_v_symbol(v)");
 	is_int(-1, marpa_v_es_id(v), "5: marpa_v_es_id(v)");
 	is_int(-1, marpa_v_token_start_es_id(v), "5: marpa_v_token_start_es_id(v)");
 
@@ -274,13 +275,8 @@ main (int argc, char *argv[])
 	is_int(MARPA_STEP_INACTIVE, step_type, "7: MARPA_STEP_INACTIVE step after retry of marpa_v_step().");
       }
 
-      API_STD_TEST0(defaults, 1, MARPA_ERR_NONE, marpa_t_parse_count, t);
-      API_STD_TEST0(defaults, -2, MARPA_ERR_TREE_PAUSED, marpa_t_next, t);
-
       marpa_v_unref(v);
 
-      API_STD_TEST0(defaults, 1, MARPA_ERR_NONE, marpa_t_parse_count, t);
-      API_STD_TEST0(defaults, -1, MARPA_ERR_TREE_EXHAUSTED, marpa_t_next, t);
 
     } /* Bocage, Order, Tree, Value */
 
