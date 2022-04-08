@@ -104,7 +104,7 @@ main (int argc, char *argv[])
   API_test_data defaults;
   API_test_data this_test;
 
-  plan(75);
+  plan(77);
 
   marpa_c_init (&marpa_configuration);
   g = marpa_g_new (&marpa_configuration);
@@ -229,74 +229,77 @@ main (int argc, char *argv[])
 	is_int(0, marpa_v_token_start_es_id(v), "0: marpa_v_token_start_es_id(v)");
 
         step_type = marpa_v_step (v);
-	is_int(MARPA_STEP_NULLING_SYMBOL, step_type, "0: MARPA_STEP_NULLING_SYMBOL step returned.");
-	is_int(1, marpa_v_result(v), "0: marpa_v_result(v)");
-	is_int(MARPA_STEP_NULLING_SYMBOL, marpa_v_step_type(v), "0: marpa_v_step_type(v)");
-	is_int(S_null, marpa_v_symbol(v), "0: marpa_v_symbol(v)");
-	is_int(0, marpa_v_es_id(v), "0: marpa_v_es_id(v)");
-	is_int(0, marpa_v_token_start_es_id(v), "0: marpa_v_token_start_es_id(v)");
-
-        step_type = marpa_v_step (v);
-	is_int(MARPA_STEP_TOKEN, step_type, "1: MARPA_STEP_TOKEN step returned.");
-	is_int(2, marpa_v_result(v), "1: marpa_v_result(v)");
-	is_int(MARPA_STEP_TOKEN, marpa_v_step_type(v), "1: marpa_v_step_type(v)");
-	is_int(S_tok, marpa_v_symbol(v), "1: marpa_v_symbol(v)");
+	is_int(MARPA_STEP_NULLING_SYMBOL, step_type, "1: MARPA_STEP_NULLING_SYMBOL step returned.");
+	is_int(1, marpa_v_result(v), "1: marpa_v_result(v)");
+	is_int(MARPA_STEP_NULLING_SYMBOL, marpa_v_step_type(v), "1: marpa_v_step_type(v)");
+	is_int(S_null, marpa_v_symbol(v), "1: marpa_v_symbol(v)");
+	is_int(0, marpa_v_es_id(v), "1: marpa_v_es_id(v)");
 	is_int(0, marpa_v_token_start_es_id(v), "1: marpa_v_token_start_es_id(v)");
-	is_int(1, marpa_v_es_id(v), "1: marpa_v_es_id(v)");
 
         step_type = marpa_v_step (v);
-	is_int(MARPA_STEP_NULLING_SYMBOL, step_type, "2: MARPA_STEP_NULLING_SYMBOL step returned.");
-	is_int(3, marpa_v_result(v), "2: marpa_v_result(v)");
-	is_int(MARPA_STEP_NULLING_SYMBOL, marpa_v_step_type(v), "2: marpa_v_step_type(v)");
-	is_int(S_null, marpa_v_symbol(v), "2: marpa_v_symbol(v)");
-	is_int(1, marpa_v_token_start_es_id(v), "2: marpa_v_token_start_es_id(v)");
+	is_int(MARPA_STEP_TOKEN, step_type, "2: MARPA_STEP_TOKEN step returned.");
+	is_int(2, marpa_v_result(v), "2: marpa_v_result(v)");
+	is_int(MARPA_STEP_TOKEN, marpa_v_step_type(v), "2: marpa_v_step_type(v)");
+	is_int(S_tok, marpa_v_symbol(v), "2: marpa_v_symbol(v)");
+	is_int(0, marpa_v_token_start_es_id(v), "2: marpa_v_token_start_es_id(v)");
 	is_int(1, marpa_v_es_id(v), "2: marpa_v_es_id(v)");
 
         step_type = marpa_v_step (v);
-	is_int(MARPA_STEP_NULLING_SYMBOL, step_type, "2: MARPA_STEP_NULLING_SYMBOL step returned.");
-	is_int(4, marpa_v_result(v), "2: marpa_v_result(v)");
-	is_int(MARPA_STEP_NULLING_SYMBOL, marpa_v_step_type(v), "2: marpa_v_step_type(v)");
-	is_int(S_null, marpa_v_symbol(v), "2: marpa_v_symbol(v)");
-	is_int(1, marpa_v_token_start_es_id(v), "2: marpa_v_token_start_es_id(v)");
-	is_int(1, marpa_v_es_id(v), "2: marpa_v_es_id(v)");
-
-        step_type = marpa_v_step (v);
-	is_int(MARPA_STEP_TOKEN, step_type, "3: MARPA_STEP_TOKEN step returned.");
-	is_int(5, marpa_v_result(v), "3: marpa_v_result(v)");
-	is_int(MARPA_STEP_TOKEN, marpa_v_step_type(v), "3: marpa_v_step_type(v)");
-	is_int(S_tok, marpa_v_symbol(v), "3: marpa_v_symbol(v)");
+	is_int(MARPA_STEP_NULLING_SYMBOL, step_type, "3: MARPA_STEP_NULLING_SYMBOL step returned.");
+	is_int(3, marpa_v_result(v), "3: marpa_v_result(v)");
+	is_int(MARPA_STEP_NULLING_SYMBOL, marpa_v_step_type(v), "3: marpa_v_step_type(v)");
+	is_int(S_null, marpa_v_symbol(v), "3: marpa_v_symbol(v)");
 	is_int(1, marpa_v_token_start_es_id(v), "3: marpa_v_token_start_es_id(v)");
-	is_int(2, marpa_v_es_id(v), "3: marpa_v_es_id(v)");
+	is_int(1, marpa_v_es_id(v), "3: marpa_v_es_id(v)");
 
         step_type = marpa_v_step (v);
 	is_int(MARPA_STEP_NULLING_SYMBOL, step_type, "4: MARPA_STEP_NULLING_SYMBOL step returned.");
-	is_int(6, marpa_v_result(v), "4: marpa_v_result(v)");
+	is_int(4, marpa_v_result(v), "4: marpa_v_result(v)");
 	is_int(MARPA_STEP_NULLING_SYMBOL, marpa_v_step_type(v), "4: marpa_v_step_type(v)");
 	is_int(S_null, marpa_v_symbol(v), "4: marpa_v_symbol(v)");
-	is_int(2, marpa_v_token_start_es_id(v), "4: marpa_v_token_start_es_id(v)");
-	is_int(2, marpa_v_es_id(v), "4: marpa_v_es_id(v)");
+	is_int(1, marpa_v_token_start_es_id(v), "4: marpa_v_token_start_es_id(v)");
+	is_int(1, marpa_v_es_id(v), "4: marpa_v_es_id(v)");
 
         step_type = marpa_v_step (v);
-	is_int(MARPA_STEP_NULLING_SYMBOL, step_type, "4: MARPA_STEP_NULLING_SYMBOL step returned.");
-	is_int(7, marpa_v_result(v), "4: marpa_v_result(v)");
-	is_int(MARPA_STEP_NULLING_SYMBOL, marpa_v_step_type(v), "4: marpa_v_step_type(v)");
-	is_int(S_null, marpa_v_symbol(v), "4: marpa_v_symbol(v)");
-	is_int(2, marpa_v_token_start_es_id(v), "4: marpa_v_token_start_es_id(v)");
-	is_int(2, marpa_v_es_id(v), "4: marpa_v_es_id(v)");
-
-        step_type = marpa_v_step (v);
-	is_int(MARPA_STEP_RULE, step_type, "5: MARPA_STEP_RULE step returned.");
-	is_int(0, marpa_v_result(v), "5: marpa_v_result(v)");
-	is_int(MARPA_STEP_RULE, marpa_v_step_type(v), "5: marpa_v_step_type(v)");
-	is_int(R_top, marpa_v_rule(v), "5: marpa_v_rule(v)");
-	is_int(0, marpa_v_rule_start_es_id(v), "5: marpa_v_rule_start_es_id(v)");
+	is_int(MARPA_STEP_TOKEN, step_type, "5: MARPA_STEP_TOKEN step returned.");
+	is_int(5, marpa_v_result(v), "5: marpa_v_result(v)");
+	is_int(MARPA_STEP_TOKEN, marpa_v_step_type(v), "5: marpa_v_step_type(v)");
+	is_int(S_tok, marpa_v_symbol(v), "5: marpa_v_symbol(v)");
+	is_int(1, marpa_v_token_start_es_id(v), "5: marpa_v_token_start_es_id(v)");
 	is_int(2, marpa_v_es_id(v), "5: marpa_v_es_id(v)");
 
         step_type = marpa_v_step (v);
-	is_int(MARPA_STEP_INACTIVE, step_type, "6: MARPA_STEP_INACTIVE step.");
+	is_int(MARPA_STEP_NULLING_SYMBOL, step_type, "6: MARPA_STEP_NULLING_SYMBOL step returned.");
+	is_int(6, marpa_v_result(v), "6: marpa_v_result(v)");
+	is_int(MARPA_STEP_NULLING_SYMBOL, marpa_v_step_type(v), "6: marpa_v_step_type(v)");
+	is_int(S_null, marpa_v_symbol(v), "6: marpa_v_symbol(v)");
+	is_int(2, marpa_v_token_start_es_id(v), "6: marpa_v_token_start_es_id(v)");
+	is_int(2, marpa_v_es_id(v), "6: marpa_v_es_id(v)");
 
         step_type = marpa_v_step (v);
-	is_int(MARPA_STEP_INACTIVE, step_type, "7: MARPA_STEP_INACTIVE step after retry of marpa_v_step().");
+	is_int(MARPA_STEP_NULLING_SYMBOL, step_type, "7: MARPA_STEP_NULLING_SYMBOL step returned.");
+	is_int(7, marpa_v_result(v), "7: marpa_v_result(v)");
+	is_int(MARPA_STEP_NULLING_SYMBOL, marpa_v_step_type(v), "7: marpa_v_step_type(v)");
+	is_int(S_null, marpa_v_symbol(v), "7: marpa_v_symbol(v)");
+	is_int(2, marpa_v_token_start_es_id(v), "7: marpa_v_token_start_es_id(v)");
+	is_int(2, marpa_v_es_id(v), "7: marpa_v_es_id(v)");
+
+        step_type = marpa_v_step (v);
+	is_int(MARPA_STEP_RULE, step_type, "8: MARPA_STEP_RULE step returned.");
+	is_int(0, marpa_v_result(v), "8: marpa_v_result(v)");
+	is_int(0, marpa_v_arg_0(v), "8: marpa_v_arg_0(v)");
+	is_int(7, marpa_v_arg_n(v), "8: marpa_v_arg_n(v)");
+	is_int(MARPA_STEP_RULE, marpa_v_step_type(v), "8: marpa_v_step_type(v)");
+	is_int(R_top, marpa_v_rule(v), "8: marpa_v_rule(v)");
+	is_int(0, marpa_v_rule_start_es_id(v), "8: marpa_v_rule_start_es_id(v)");
+	is_int(2, marpa_v_es_id(v), "8: marpa_v_es_id(v)");
+
+        step_type = marpa_v_step (v);
+	is_int(MARPA_STEP_INACTIVE, step_type, "9: MARPA_STEP_INACTIVE step.");
+
+        step_type = marpa_v_step (v);
+	is_int(MARPA_STEP_INACTIVE, step_type,
+	  "10: MARPA_STEP_INACTIVE step after retry of marpa_v_step().");
       }
 
       marpa_v_unref(v);

@@ -104,7 +104,7 @@ main (int argc, char *argv[])
   API_test_data defaults;
   API_test_data this_test;
 
-  plan(57);
+  plan(59);
 
   marpa_c_init (&marpa_configuration);
   g = marpa_g_new (&marpa_configuration);
@@ -263,6 +263,8 @@ main (int argc, char *argv[])
         step_type = marpa_v_step (v);
 	is_int(MARPA_STEP_RULE, step_type, "5: MARPA_STEP_RULE step returned.");
 	is_int(0, marpa_v_result(v), "5: marpa_v_result(v)");
+	is_int(0, marpa_v_arg_0(v), "5: marpa_v_arg_0(v)");
+	is_int(4, marpa_v_arg_n(v), "5: marpa_v_arg_n(v)");
 	is_int(MARPA_STEP_RULE, marpa_v_step_type(v), "5: marpa_v_step_type(v)");
 	is_int(R_top, marpa_v_rule(v), "5: marpa_v_rule(v)");
 	is_int(0, marpa_v_rule_start_es_id(v), "5: marpa_v_rule_start_es_id(v)");
