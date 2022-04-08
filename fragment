@@ -1,0 +1,17 @@
+17.10 Other step accessors
+
+This section contains the step accessors that are not basic to stack manipulation, but which provide other useful information about the parse. These step accessors are implemented as macros.
+
+All of these accessors always succeed, but if called when they are irrelevant they return an unspecified value. In this context, an “unspecified value” is a value that is either -1 or the ID of a valid Earley set, but which is otherwise unpredictable.
+
+Macro: Marpa_Earley_Set_ID marpa_v_es_id (Marpa_Value v)
+
+    Return value: If the current step type is MARPA_STEP_RULE, the Earley Set ordinal where the rule ends. If the current step type is MARPA_STEP_TOKEN or MARPA_STEP_NULLING_SYMBOL, the Earley Set ordinal where the symbol ends. If the current step type is anything else, an unspecified value. 
+
+Macro: Marpa_Earley_Set_ID marpa_v_rule_start_es_id (Marpa_Value v)
+
+    Return value: If the current step type is MARPA_STEP_RULE, the Earley Set ordinal where the rule begins. If the current step type is anything else, an unspecified value. 
+
+Macro: Marpa_Earley_Set_ID marpa_v_token_start_es_id (Marpa_Value v)
+
+    Return value: If the current step type is MARPA_STEP_TOKEN or MARPA_STEP_NULLING_SYMBOL, the Earley Set ordinal where the token begins. If the current step type is anything else, an unspecified value. 

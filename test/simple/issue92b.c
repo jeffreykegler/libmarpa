@@ -104,7 +104,7 @@ main (int argc, char *argv[])
   API_test_data defaults;
   API_test_data this_test;
 
-  plan(59);
+  plan(62);
 
   marpa_c_init (&marpa_configuration);
   g = marpa_g_new (&marpa_configuration);
@@ -157,13 +157,18 @@ main (int argc, char *argv[])
     rc = marpa_r_start_input (r);
     if (!rc)
       fail("marpa_r_start_input", g);
+    API_STD_TEST0(defaults, 0, MARPA_ERR_NONE, marpa_r_latest_earley_set, r);
 
     this_test = defaults;
 
     API_STD_TEST3(defaults, MARPA_ERR_NONE, MARPA_ERR_NONE, marpa_r_alternative, r, S_tok, 42, 1);
     API_STD_TEST0(defaults, 0, MARPA_ERR_NONE, marpa_r_earleme_complete, r);
+    API_STD_TEST0(defaults, 1, MARPA_ERR_NONE, marpa_r_latest_earley_set, r);
+
     API_STD_TEST3(defaults, MARPA_ERR_NONE, MARPA_ERR_NONE, marpa_r_alternative, r, S_tok, 43, 1);
     API_STD_TEST0(defaults, 1, MARPA_ERR_NONE, marpa_r_earleme_complete, r);
+    API_STD_TEST0(defaults, 2, MARPA_ERR_NONE, marpa_r_latest_earley_set, r);
+
 
     this_test.msg = "at earleme 0";
     API_STD_TEST0(this_test, 1, MARPA_ERR_NONE, marpa_r_is_exhausted, r);
