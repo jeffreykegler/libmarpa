@@ -79,4 +79,5 @@ Another example is
 In this second example note that when a nulled leaf immediately follows another
 nulled leaf, both leaves has the same start ES location and the same end ES location.
 This makes sense, because nulled symbol instances do not advance the current ES location,
-but it also implies that the ES locations cannot be used to uniquely identify a parse node.
+but it also implies that the ES locations and LHS symbol
+cannot be used to uniquely identify a parse node.
