@@ -1,8 +1,44 @@
-17.10 Other step accessors
+17.10 Step location accessors
 
-This section contains the step accessors that are not basic to stack manipulation, but which provide other useful information about the parse. These step accessors are implemented as macros.
+This section contains step accessors which are not basic to stack manipulation
+Instead they provide other useful information about the parse.
+Specifically, the accessors in this section return data about
+the step's location in terms of Earley sets.
+A step's location in terms of Earley sets is called its ES location.
+Every ES location is the ID of an Earley set.
 
-All of these accessors always succeed, but if called when they are irrelevant they return an unspecified value. In this context, an “unspecified value” is a value that is either -1 or the ID of a valid Earley set, but which is otherwise unpredictable.
+These step accessors are implemented as macros.
+All of these accessors always succeed, but if called when they are
+irrelevant they return an unspecified value. In this context, an
+“unspecified value” is a value that is either -1 or the ID of a
+valid Earley set, but which is otherwise unpredictable.
+
+ES location is only relevant for parse nodes.
+A parse node is either a leaf node or a non-leaf node.
+The step type for a non-leaf node is MARPA_STEP_RULE.
+A leaf node is either a nulling symbol node,
+or a token node.
+The step type for a nulling symbol node is MARPA_STEP_NULLING_SYMBOL.
+The step type for a token node is MARPA_STEP_TOKEN.
+
+Every parse node has both a start ES location
+and an end ES location.
+The start ES location is the first ES location of
+that parse node.
+
+The end ES location of a leaf is the ES location where
+the next leaf symbol in the fringe of the current parse would start.
+Often, there is an actual next leaf symbol in the current parse tree,
+but toward the end of a parse, there may not be.
+
+The start ES location of a MARPA_RULE_STEP is the start ES location
+of its first RHS symbol instance in the current parse tree.
+The end ES location of a MARPA_RULE_STEP is the end ES location
+of its last RHS symbol instance in the current parse tree.
+
+For every parse node of the current parse tree,
+the length of the node is the end ES location,
+less the start ES location.
 
 Macro: Marpa_Earley_Set_ID marpa_v_es_id (Marpa_Value v)
 
