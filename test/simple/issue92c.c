@@ -27,7 +27,7 @@
 
 #include "marpa_m_test.h"
 
-static int
+static void
 warn (const char *s, Marpa_Grammar g)
 {
   int errcode = marpa_g_error (g, NULL);
@@ -35,14 +35,14 @@ warn (const char *s, Marpa_Grammar g)
      marpa_m_error_message(errcode));
 }
 
-static int
+static void
 fail (const char *s, Marpa_Grammar g)
 {
   warn (s, g);
   exit (1);
 }
 
-static int
+static void
 err (const char *s, Marpa_Grammar g)
 {
   Marpa_Error_Code errcode = marpa_g_error (g, NULL);
@@ -84,22 +84,13 @@ main (int argc, char *argv[])
   int rc;
   int ix;
 
-  /* For the test of marpa_r_earley_set_values() */
-  const int orig_int_value = 1729;
-  int int_value = orig_int_value;
-
   Marpa_Config marpa_configuration;
-
   Marpa_Grammar g;
   Marpa_Recognizer r;
-
-  Marpa_Rank negative_rank, positive_rank;
-  int flag;
-
-  int whatever;
-
-  char *value2_base = NULL;
-  void *value2 = value2_base;
+  Marpa_Bocage b;
+  Marpa_Order o;
+  Marpa_Tree t;
+  Marpa_Value v;
 
   API_test_data defaults;
   API_test_data this_test;
@@ -116,31 +107,37 @@ main (int argc, char *argv[])
       exit (1);
     }
   
-  // symbols
-  ((S_top = marpa_g_symbol_new (g)) >= 0) || err ("marpa_g_symbol_new", g);
-  ((S_null = marpa_g_symbol_new (g)) >= 0) || err ("marpa_g_symbol_new", g);
-  ((S_tok = marpa_g_symbol_new (g)) >= 0) || err ("marpa_g_symbol_new", g);
+  /* Symbols */
+  if ((S_top = marpa_g_symbol_new (g)) < 0) { err ("marpa_g_symbol_new", g); }
+  if ((S_null = marpa_g_symbol_new (g)) < 0) { err ("marpa_g_symbol_new", g); }
+  if ((S_tok = marpa_g_symbol_new (g)) < 0) { err ("marpa_g_symbol_new", g); }
   
   {
-    // rules
-    Marpa_Symbol_ID rhs[8] = { S_null, S_null, S_tok, S_null, S_null, S_tok, S_null, S_null};
+    /* Rules */
+    Marpa_Symbol_ID rhs[8];
+    rhs[0] = S_null;
+    rhs[1] = S_null;
+    rhs[2] = S_tok;
+    rhs[3] = S_null;
+    rhs[4] = S_null;
+    rhs[5] = S_tok;
+    rhs[6] = S_null;
+    rhs[7] = S_null;
 
-    (((R_top = marpa_g_rule_new (g, S_top, rhs, 8)) >= 0)
-      || err ("marpa_g_rule_new", g));
+    if ((R_top = marpa_g_rule_new (g, S_top, rhs, 8)) < 0) { err ("marpa_g_rule_new", g); }
     ok (1,"marpa_g_rule_new returns 0");
     
-    (((R_nulling = marpa_g_rule_new (g, S_null, rhs, 0)) >= 0)
-      || err ("marpa_g_rule_new", g));
+    if ((R_nulling = marpa_g_rule_new (g, S_null, rhs, 0)) < 0) { err ("marpa_g_rule_new", g); }
     ok (1,"marpa_g_rule_new returns 0");
   }
   
-  // precompute
+  /* Precompute */
   rc = marpa_g_start_symbol_set(g, S_top);
-  ((rc >= 0) || err("marpa_g_start_symbol_set", g));
+  if (rc < 0) { err("marpa_g_start_symbol_set", g); }
 
   rc = marpa_g_precompute(g);
   ok ((rc == 0), "marpa_g_precompute returned 0");
-  ((rc >= 0) || err("marpa_g_sequence_separator", g));
+  if (rc < 0) { err("marpa_g_sequence_separator", g); }
   
   defaults_reset(&defaults, g);
   this_test = defaults;
@@ -175,7 +172,7 @@ main (int argc, char *argv[])
     /* Bocage, Order, Tree, Value */
     {
       /* Bocage */
-      Marpa_Bocage b = marpa_b_new(r, -1);
+      b = marpa_b_new(r, -1);
 
       if (!b) { fail("marpa_b_new", g); }
       else ok(1, "marpa_b_new(): parse at current earleme");
@@ -186,7 +183,7 @@ main (int argc, char *argv[])
 	  marpa_b_is_null, b);
 
       /* Order */
-      Marpa_Order o = marpa_o_new (b);
+      o = marpa_o_new (b);
 
       if (!o)
         fail("marpa_o_new", g);
@@ -199,8 +196,6 @@ main (int argc, char *argv[])
 	  marpa_o_is_null, o);
 
       /* Tree */
-      Marpa_Tree t;
-
       t = marpa_t_new (o);
       if (!t)
         fail("marpa_t_new", g);
@@ -217,7 +212,7 @@ main (int argc, char *argv[])
         ok(1, "marpa_t_next()");
 
       /* Value */
-      Marpa_Value v = marpa_v_new(t);
+      v = marpa_v_new(t);
       if (!v)
         fail("marpa_v_new", g);
       else
