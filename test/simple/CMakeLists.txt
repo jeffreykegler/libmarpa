@@ -15,6 +15,11 @@ ENDIF (CMAKE_COMPILER_IS_GNUCC)
 add_executable(issue92a issue92a.c marpa_m_test.c)
 target_link_libraries(issue92a ${LIBMARPA_STATIC} ${LIBTAP})
 
+IF (CMAKE_COMPILER_IS_GNUCC)
+    set_source_files_properties(issue92b.c PROPERTIES COMPILE_OPTIONS
+        "-g;-O2;-Wall;-Wpointer-arith;-Wstrict-prototypes;-Wwrite-strings;-Wshadow;-Wmissing-declarations;\
+-Wconversion;-ansi;-pedantic;-Wundef;-Wendif-labels")
+ENDIF (CMAKE_COMPILER_IS_GNUCC)
 add_executable(issue92b issue92b.c marpa_m_test.c)
 target_link_libraries(issue92b ${LIBMARPA_STATIC} ${LIBTAP})
 
