@@ -27,7 +27,7 @@
 
 #include "marpa_m_test.h"
 
-static int
+static void
 warn (const char *s, Marpa_Grammar g)
 {
   printf ("%s returned %d\n", s, marpa_g_error (g, NULL));
@@ -38,6 +38,7 @@ fail (const char *s, Marpa_Grammar g)
 {
   warn (s, g);
   exit (1);
+  return 1; /* to silence warnings */
 }
 
 Marpa_Symbol_ID S_top;
@@ -53,26 +54,26 @@ Marpa_Symbol_ID rhs[4];
 
 Marpa_Rule_ID R_top_1;
 Marpa_Rule_ID R_top_2;
-Marpa_Rule_ID R_C2_3; // highest rule id
+Marpa_Rule_ID R_C2_3; /* highest rule id */
 
 /* For (error) messages */
 char msgbuf[80];
 
-char *
+static char *
 symbol_name (Marpa_Symbol_ID id)
 {
-  if (id == S_top) return "top";
-  if (id == S_A1) return "A1";
-  if (id == S_A2) return "A2";
-  if (id == S_B1) return "B1";
-  if (id == S_B2) return "B2";
-  if (id == S_C1) return "C1";
-  if (id == S_C2) return "C2";
+  if (id == S_top) return (char *)"top";
+  if (id == S_A1) return (char *)"A1";
+  if (id == S_A2) return (char *)"A2";
+  if (id == S_B1) return (char *)"B1";
+  if (id == S_B2) return (char *)"B2";
+  if (id == S_C1) return (char *)"C1";
+  if (id == S_C2) return (char *)"C2";
   sprintf (msgbuf, "no such symbol: %d", id);
   return msgbuf;
 }
 
-int
+static int
 is_nullable (Marpa_Symbol_ID id)
 {
   if (id == S_top) return 1;
@@ -174,24 +175,16 @@ int
 main (int argc, char *argv[])
 {
   int rc;
-  int ix;
 
   /* For the test of marpa_r_earley_set_values() */
   const int orig_int_value = 1729;
-  int int_value = orig_int_value;
 
   Marpa_Config marpa_configuration;
 
   Marpa_Grammar g;
   Marpa_Recognizer r;
 
-  Marpa_Rank negative_rank, positive_rank;
-  int flag;
-
-  int whatever;
-
   char *value2_base = NULL;
-  void *value2 = value2_base;
 
   API_test_data defaults;
   API_test_data this_test;

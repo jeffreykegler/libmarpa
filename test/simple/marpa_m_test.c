@@ -168,7 +168,7 @@ char *sep_msg(char *msg) {
  * "Normal" means negative is failure,
  * non-negative is success
  */
-void rv_std_report(API_test_data* td, char *name, int rv_wanted, Marpa_Error_Code err_wanted)
+void rv_std_report(API_test_data* td, const char *name, int rv_wanted, Marpa_Error_Code err_wanted)
 {
    int rv_seen = td->rv_seen.int_rv;
    int err_seen = marpa_g_error(td->g, NULL);
