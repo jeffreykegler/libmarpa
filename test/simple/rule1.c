@@ -37,17 +37,17 @@ main (int argc, char *argv[])
       exit (1);
     }
   
-  // symbols
+  /* Symbols */
   ((S_lhs = marpa_g_symbol_new (g)) >= 0) || err ("marpa_g_symbol_new", g);
   ((S_rhs = marpa_g_symbol_new (g)) >= 0) || err ("marpa_g_symbol_new", g);
   
-  // rule
+  /* Rule */
   rhs[0] = S_rhs;
   (((R_new = marpa_g_rule_new (g, S_lhs, rhs, 1)) >= 0)
     || err ("marpa_g_rule_new", g));
   ok ((R_new == 0),"marpa_g_rule_new returns 0");
   
-  // precompute
+  /* Precompute */
   rc = marpa_g_start_symbol_set(g, S_lhs);
   ((rc >= 0) || err("marpa_g_start_symbol_set", g));
 
@@ -59,7 +59,7 @@ main (int argc, char *argv[])
   ok ((rc == 1), "marpa_g_is_precomputed returned 1");
   ((rc >= 0) || err("marpa_g_is_precomputed", g));
 
-  // rule accessors
+  /* Rule accessors */
   rc = marpa_g_rule_lhs (g, R_new); 
   ok ((rc == 0), "marpa_g_rule_lhs(%d) returned 0", R_new);
   ((rc >= 0) || err("marpa_g_rule_lhs", g));
