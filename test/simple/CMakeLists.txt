@@ -11,6 +11,9 @@ IF (CMAKE_COMPILER_IS_GNUCC)
     # MARPA_DEBUG_FLAG ?
     # -Wextra ?
     # -Wdeclaration-after-statement ?
+    set_source_files_properties(marpa_m_test.c PROPERTIES COMPILE_OPTIONS
+        "-g;-O2;-Wall;-Wpointer-arith;-Wstrict-prototypes;-Wwrite-strings;-Wshadow;-Wmissing-declarations;\
+-Wconversion;-ansi;-pedantic;-Wundef;-Wendif-labels")
 ENDIF (CMAKE_COMPILER_IS_GNUCC)
 add_executable(issue92a issue92a.c marpa_m_test.c)
 target_link_libraries(issue92a ${LIBMARPA_STATIC} ${LIBTAP})
