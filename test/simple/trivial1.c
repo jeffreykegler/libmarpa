@@ -58,7 +58,7 @@ Marpa_Rule_ID R_C2_3;           /* Highest rule ID */
 /* For (error) messages */
 char msgbuf[80];
 
-static char *
+UNUSED static char *
 symbol_name (Marpa_Symbol_ID id)
 {
     if (id == S_top)
@@ -188,14 +188,17 @@ main (int argc, char *argv[])
     int int_value = orig_int_value;
 
     Marpa_Config marpa_configuration;
-
     Marpa_Grammar g;
     Marpa_Recognizer r;
+    Marpa_Bocage b;
+    Marpa_Order o;
+    Marpa_Tree t;
+    Marpa_Value v;
 
     Marpa_Rank negative_rank, positive_rank;
     int flag;
 
-    int whatever;
+    int whatever = 42;
 
     char *value2_base = NULL;
     void *value2 = value2_base;
@@ -745,7 +748,7 @@ main (int argc, char *argv[])
 
     /* Location accessors */
     /* the below 2 always succeed */
-    current_earleme = 0;
+    current_earleme = furthest_earleme = 0;
     API_STD_TEST0 (defaults, current_earleme, MARPA_ERR_NONE,
         marpa_r_current_earleme, r);
 
@@ -806,37 +809,37 @@ main (int argc, char *argv[])
             ix <
             sizeof (tests) / sizeof (Marpa_R_Earley_Set_Value_Test);
             ix++) {
-            const Marpa_R_Earley_Set_Value_Test t = tests[ix];
+            const Marpa_R_Earley_Set_Value_Test test = tests[ix];
             diag ("marpa_r_earley_set_value_*() methods, earley_set: %d",
-                t.earley_set);
+                test.earley_set);
 
-            if (t.earley_set == -1 || t.earley_set == 1
-                || t.earley_set == 2) {
-                API_STD_TEST1 (defaults, t.rv_marpa_r_earleme,
-                    t.errcode, marpa_r_earleme, r, t.earley_set);
+            if (test.earley_set == -1 || test.earley_set == 1
+                || test.earley_set == 2) {
+                API_STD_TEST1 (defaults, test.rv_marpa_r_earleme,
+                    test.errcode, marpa_r_earleme, r, test.earley_set);
             } else {
-                API_STD_TEST1 (defaults, t.rv_marpa_r_earleme,
-                    MARPA_ERR_NONE, marpa_r_earleme, r, t.earley_set);
+                API_STD_TEST1 (defaults, test.rv_marpa_r_earleme,
+                    MARPA_ERR_NONE, marpa_r_earleme, r, test.earley_set);
             }
 
             API_STD_TEST1 (defaults,
-                t.rv_marpa_r_latest_earley_set_value_set,
+                test.rv_marpa_r_latest_earley_set_value_set,
                 MARPA_ERR_NONE, marpa_r_latest_earley_set_value_set, r,
-                t.rv_marpa_r_latest_earley_set_value_set);
+                test.rv_marpa_r_latest_earley_set_value_set);
 
-            if (t.earley_set == -1 || t.earley_set == 1
-                || t.earley_set == 2) {
-                API_STD_TEST1 (defaults, t.rv_marpa_r_earley_set_value,
-                    t.errcode, marpa_r_earley_set_value, r, t.earley_set);
+            if (test.earley_set == -1 || test.earley_set == 1
+                || test.earley_set == 2) {
+                API_STD_TEST1 (defaults, test.rv_marpa_r_earley_set_value,
+                    test.errcode, marpa_r_earley_set_value, r, test.earley_set);
             } else {
-                API_STD_TEST1 (defaults, t.rv_marpa_r_earley_set_value,
+                API_STD_TEST1 (defaults, test.rv_marpa_r_earley_set_value,
                     MARPA_ERR_NONE, marpa_r_earley_set_value, r,
-                    t.earley_set);
+                    test.earley_set);
             }
 
             {
                 API_STD_TEST2 (defaults,
-                    t.rv_marpa_r_latest_earley_set_values_set,
+                    test.rv_marpa_r_latest_earley_set_values_set,
                     MARPA_ERR_NONE,
                     marpa_r_latest_earley_set_values_set, r, 42, value2);
             }
@@ -850,11 +853,11 @@ main (int argc, char *argv[])
                 void *value3 = orig_value3;
 
                 API_STD_TEST3 (defaults,
-                    t.rv_marpa_r_earley_set_values,
-                    t.errcode,
+                    test.rv_marpa_r_earley_set_values,
+                    test.errcode,
                     marpa_r_earley_set_values,
-                    r, t.earley_set, (&int_value), &value3);
-                is_int (t.int_p_value_rv_marpa_r_earley_set_values,
+                    r, test.earley_set, (&int_value), &value3);
+                is_int (test.int_p_value_rv_marpa_r_earley_set_values,
                     int_value, "marpa_r_earley_set_values() int* value");
 
             }
@@ -994,12 +997,14 @@ main (int argc, char *argv[])
         marpa_b_new, r, ys_non_existing);
     }
 
+    {
     Marpa_Earley_Set_ID ys_at_current_earleme = -1;
-    Marpa_Bocage b = marpa_b_new (r, ys_at_current_earleme);
+    b = marpa_b_new (r, ys_at_current_earleme);
     if (!b)
         fail ("marpa_b_new", g);
     else
         ok (1, "marpa_b_new(): parse at current earleme of trivial parse");
+    }
 
     marpa_b_unref (b);
 
@@ -1015,7 +1020,7 @@ main (int argc, char *argv[])
     API_STD_TEST0 (defaults, 1, MARPA_ERR_NONE, marpa_b_is_null, b);
 
     /* Order */
-    Marpa_Order o = marpa_o_new (b);
+    o = marpa_o_new (b);
 
     if (!o)
         fail ("marpa_o_new", g);
@@ -1038,20 +1043,18 @@ main (int argc, char *argv[])
         marpa_o_high_rank_only, o);
 
     /* Tree */
-    Marpa_Tree t;
-
     t = marpa_t_new (o);
     if (!t)
         fail ("marpa_t_new", g);
     else
         ok (1, "marpa_t_new() at earleme 0");
 
-    this_test.msg = "before the first parse tree";
+    this_test.msg = (char *)"before the first parse tree";
     API_STD_TEST0 (this_test, 0, MARPA_ERR_NONE, marpa_t_parse_count, t);
     API_STD_TEST0 (defaults, 0, MARPA_ERR_NONE, marpa_t_next, t);
 
     /* Value */
-    Marpa_Value v = marpa_v_new (t);
+    v = marpa_v_new (t);
     if (!t)
         fail ("marpa_v_new", g);
     else
