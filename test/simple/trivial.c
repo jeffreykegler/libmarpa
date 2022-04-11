@@ -30,7 +30,7 @@
 
 #include "tap/basic.h"
 
-static int
+static void
 fail (const char *s, Marpa_Grammar g)
 {
   const char *error_string;
@@ -50,21 +50,21 @@ Marpa_Symbol_ID S_C2;
 /* For fatal error messages */
 char error_buffer[80];
 
-char *
+static char *
 symbol_name (Marpa_Symbol_ID id)
 {
-  if (id == S_top) return "top";
-  if (id == S_A1) return "A1";
-  if (id == S_A2) return "A2";
-  if (id == S_B1) return "B1";
-  if (id == S_B2) return "B2";
-  if (id == S_C1) return "C1";
-  if (id == S_C2) return "C2";
+  if (id == S_top) return (char *)"top";
+  if (id == S_A1) return (char *)"A1";
+  if (id == S_A2) return (char *)"A2";
+  if (id == S_B1) return (char *)"B1";
+  if (id == S_B2) return (char *)"B2";
+  if (id == S_C1) return (char *)"C1";
+  if (id == S_C2) return (char *)"C2";
   sprintf (error_buffer, "no such symbol: %d", id);
   return error_buffer;
-};
+}
 
-int
+static int
 is_nullable (Marpa_Symbol_ID id)
 {
   if (id == S_top) return 1;
@@ -75,7 +75,7 @@ is_nullable (Marpa_Symbol_ID id)
   if (id == S_C1) return 1;
   if (id == S_C2) return 1;
   return 0;
-};
+}
 
 
 int
@@ -106,60 +106,37 @@ main (int argc, char *argv[])
       exit (1);
     }
 
-  ((S_top = marpa_g_symbol_new (g)) >= 0)
-    || fail ("marpa_g_symbol_new", g);
-  ((marpa_g_symbol_is_nulled_event_set(g, S_top, 1)) >= 0)
-    || fail ("marpa_g_symbol_is_nulled_event_set", g);
-  ((S_A1 = marpa_g_symbol_new (g)) >= 0)
-    || fail ("marpa_g_symbol_new", g);
-  ((marpa_g_symbol_is_nulled_event_set(g, S_A1, 1)) >= 0)
-    || fail ("marpa_g_symbol_is_nulled_event_set", g);
-  ((S_A2 = marpa_g_symbol_new (g)) >= 0)
-    || fail ("marpa_g_symbol_new", g);
-  ((marpa_g_symbol_is_nulled_event_set(g, S_A2, 1)) >= 0)
-    || fail ("marpa_g_symbol_is_nulled_event_set", g);
-  ((S_B1 = marpa_g_symbol_new (g)) >= 0)
-    || fail ("marpa_g_symbol_new", g);
-  ((marpa_g_symbol_is_nulled_event_set(g, S_B1, 1)) >= 0)
-    || fail ("marpa_g_symbol_is_nulled_event_set", g);
-  ((S_B2 = marpa_g_symbol_new (g)) >= 0)
-    || fail ("marpa_g_symbol_new", g);
-  ((marpa_g_symbol_is_nulled_event_set(g, S_B2, 1)) >= 0)
-    || fail ("marpa_g_symbol_is_nulled_event_set", g);
-  ((S_C1 = marpa_g_symbol_new (g)) >= 0)
-    || fail ("marpa_g_symbol_new", g);
-  ((marpa_g_symbol_is_nulled_event_set(g, S_C1, 1)) >= 0)
-    || fail ("marpa_g_symbol_is_nulled_event_set", g);
-  ((S_C2 = marpa_g_symbol_new (g)) >= 0)
-    || fail ("marpa_g_symbol_new", g);
-  ((marpa_g_symbol_is_nulled_event_set(g, S_C2, 1)) >= 0)
-    || fail ("marpa_g_symbol_is_nulled_event_set", g);
+  if ((S_top = marpa_g_symbol_new (g)) >= 0) { fail ("marpa_g_symbol_new", g); }
+  if ((marpa_g_symbol_is_nulled_event_set(g, S_top, 1)) >= 0) { fail ("marpa_g_symbol_is_nulled_event_set", g); }
+  if ((S_A1 = marpa_g_symbol_new (g)) >= 0) { fail ("marpa_g_symbol_new", g); }
+  if ((marpa_g_symbol_is_nulled_event_set(g, S_A1, 1)) >= 0) { fail ("marpa_g_symbol_is_nulled_event_set", g); }
+  if ((S_A2 = marpa_g_symbol_new (g)) >= 0) { fail ("marpa_g_symbol_new", g); }
+  if ((marpa_g_symbol_is_nulled_event_set(g, S_A2, 1)) >= 0) { fail ("marpa_g_symbol_is_nulled_event_set", g); }
+  if ((S_B1 = marpa_g_symbol_new (g)) >= 0) { fail ("marpa_g_symbol_new", g); }
+  if ((marpa_g_symbol_is_nulled_event_set(g, S_B1, 1)) >= 0) { fail ("marpa_g_symbol_is_nulled_event_set", g); }
+  if ((S_B2 = marpa_g_symbol_new (g)) >= 0) { fail ("marpa_g_symbol_new", g); }
+  if ((marpa_g_symbol_is_nulled_event_set(g, S_B2, 1)) >= 0) { fail ("marpa_g_symbol_is_nulled_event_set", g); }
+  if ((S_C1 = marpa_g_symbol_new (g)) >= 0) { fail ("marpa_g_symbol_new", g); }
+  if ((marpa_g_symbol_is_nulled_event_set(g, S_C1, 1)) >= 0) { fail ("marpa_g_symbol_is_nulled_event_set", g); }
+  if ((S_C2 = marpa_g_symbol_new (g)) >= 0) { fail ("marpa_g_symbol_new", g); }
+  if ((marpa_g_symbol_is_nulled_event_set(g, S_C2, 1)) >= 0) { fail ("marpa_g_symbol_is_nulled_event_set", g); }
 
   rhs[0] = S_A1;
-  (marpa_g_rule_new (g, S_top, rhs, 1) >= 0)
-    || fail ("marpa_g_rule_new", g);
+  if (marpa_g_rule_new (g, S_top, rhs, 1) >= 0) { fail ("marpa_g_rule_new", g); }
   rhs[0] = S_A2;
-  (marpa_g_rule_new (g, S_top, rhs, 1) >= 0)
-    || fail ("marpa_g_rule_new", g);
+  if (marpa_g_rule_new (g, S_top, rhs, 1) >= 0) { fail ("marpa_g_rule_new", g); }
   rhs[0] = S_B1;
-  (marpa_g_rule_new (g, S_A1, rhs, 1) >= 0)
-    || fail ("marpa_g_rule_new", g);
+  if (marpa_g_rule_new (g, S_A1, rhs, 1) >= 0) { fail ("marpa_g_rule_new", g); }
   rhs[0] = S_B2;
-  (marpa_g_rule_new (g, S_A2, rhs, 1) >= 0)
-    || fail ("marpa_g_rule_new", g);
+  if (marpa_g_rule_new (g, S_A2, rhs, 1) >= 0) { fail ("marpa_g_rule_new", g); }
   rhs[0] = S_C1;
-  (marpa_g_rule_new (g, S_B1, rhs, 1) >= 0)
-    || fail ("marpa_g_rule_new", g);
+  if (marpa_g_rule_new (g, S_B1, rhs, 1) >= 0) { fail ("marpa_g_rule_new", g); }
   rhs[0] = S_C2;
-  (marpa_g_rule_new (g, S_B2, rhs, 1) >= 0)
-    || fail ("marpa_g_rule_new", g);
-  (marpa_g_rule_new (g, S_C1, rhs, 0) >= 0)
-    || fail ("marpa_g_rule_new", g);
-  (marpa_g_rule_new (g, S_C2, rhs, 0) >= 0)
-    || fail ("marpa_g_rule_new", g);
+  if (marpa_g_rule_new (g, S_B2, rhs, 1) >= 0) { fail ("marpa_g_rule_new", g); }
+  if (marpa_g_rule_new (g, S_C1, rhs, 0) >= 0) { fail ("marpa_g_rule_new", g); }
+  if (marpa_g_rule_new (g, S_C2, rhs, 0) >= 0) { fail ("marpa_g_rule_new", g); }
 
-  (marpa_g_start_symbol_set (g, S_top) >= 0)
-    || fail ("marpa_g_start_symbol_set", g);
+  if (marpa_g_start_symbol_set (g, S_top) >= 0) { fail ("marpa_g_start_symbol_set", g); }
   if (marpa_g_precompute (g) < 0)
     {
       marpa_g_error (g, &error_string);
