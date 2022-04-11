@@ -52,7 +52,7 @@ Marpa_Symbol_ID rhs[4];
 
 Marpa_Rule_ID R_top_1;
 Marpa_Rule_ID R_top_2;
-Marpa_Rule_ID R_C2_3; // highest rule id
+Marpa_Rule_ID R_C2_3; /* Highest rule id */
 
 /* For (error) messages */
 char msgbuf[80];
@@ -60,13 +60,13 @@ char msgbuf[80];
 char *
 symbol_name (Marpa_Symbol_ID id)
 {
-  if (id == S_top) return "top";
-  if (id == S_A1) return "A1";
-  if (id == S_A2) return "A2";
-  if (id == S_B1) return "B1";
-  if (id == S_B2) return "B2";
-  if (id == S_C1) return "C1";
-  if (id == S_C2) return "C2";
+  if (id == S_top) return (char *)"top";
+  if (id == S_A1) return (char *)"A1";
+  if (id == S_A2) return (char *)"A2";
+  if (id == S_B1) return (char *)"B1";
+  if (id == S_B2) return (char *)"B2";
+  if (id == S_C1) return (char *)"C1";
+  if (id == S_C2) return (char *)"C2";
   sprintf (msgbuf, "no such symbol: %d", id);
   return msgbuf;
 }
@@ -134,10 +134,11 @@ main (int argc, char *argv[])
 {
   int rc;
 
-  Marpa_Config marpa_configuration;
-
-  Marpa_Grammar g;
-  Marpa_Recognizer r;
+    Marpa_Config marpa_configuration;
+    Marpa_Grammar g;
+    Marpa_Recognizer r;
+    Marpa_Bocage b;
+    Marpa_Order o;
 
   API_test_data defaults;
   API_test_data this_test;
@@ -149,7 +150,7 @@ main (int argc, char *argv[])
 
   defaults.g = g;
   defaults.expected_errcode = MARPA_ERR_NONE;
-  defaults.msg = "";
+  defaults.msg = (char *)"";
   defaults.rv_seen.int_rv = -86;
 
   this_test = defaults;
@@ -162,7 +163,7 @@ main (int argc, char *argv[])
     fail("marpa_r_new", g);
 
   Marpa_Symbol_ID S_token = S_A2;
-  this_test.msg = "before marpa_r_start_input()";
+  this_test.msg = (char *)"before marpa_r_start_input()";
   API_CODE_TEST3(this_test, MARPA_ERR_RECCE_NOT_ACCEPTING_INPUT,
     marpa_r_alternative, r, S_token, 0, 0);
 
@@ -177,10 +178,10 @@ main (int argc, char *argv[])
 
   /* recognizer reading methods on invalid and missing symbols */
 
-  this_test.msg = "invalid token symbol is checked before no-such";
+  this_test.msg = (char *)"invalid token symbol is checked before no-such";
   API_CODE_TEST3(this_test, MARPA_ERR_INVALID_SYMBOL_ID,
     marpa_r_alternative, r, S_invalid, 0, 0);
-  this_test.msg = "no such token symbol";
+  this_test.msg = (char *)"no such token symbol";
   API_CODE_TEST3(this_test, MARPA_ERR_NO_SUCH_SYMBOL_ID,
     marpa_r_alternative, r, S_no_such, 0, 0);
   this_test.msg = (char *)marpa_m_error_message(MARPA_ERR_TOKEN_LENGTH_LE_ZERO);
@@ -208,7 +209,7 @@ main (int argc, char *argv[])
       marpa_r_earleme_complete, r);
 
   /* marpa_o_high_rank_only_* */
-  Marpa_Bocage b = marpa_b_new(r, marpa_r_current_earleme(r));
+  b = marpa_b_new(r, marpa_r_current_earleme(r));
   if(!b)
     fail("marpa_b_new", g);
 
@@ -217,7 +218,7 @@ main (int argc, char *argv[])
   API_STD_TEST0(defaults, 0, MARPA_ERR_NONE,
       marpa_b_is_null, b);
 
-  Marpa_Order o = marpa_o_new (b);
+  o = marpa_o_new (b);
   ok(o != NULL, "marpa_o_new(): ordering at earleme 0");
 
   int flag = 1;
