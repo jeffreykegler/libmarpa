@@ -881,26 +881,32 @@ main (int argc, char *argv[])
         API_STD_TEST2 (defaults, -1, MARPA_ERR_NO_SUCH_SYMBOL_ID,
             marpa_r_completion_symbol_activate, r, S_no_such, reactivate);
 
-        boolean = 1;
-        Marpa_Symbol_ID S_nulled = S_C1;
-        API_STD_TEST2 (defaults, boolean, MARPA_ERR_NONE,
-            marpa_r_nulled_symbol_activate, r, S_nulled, boolean);
-        API_STD_TEST2 (defaults, -2, MARPA_ERR_INVALID_SYMBOL_ID,
-            marpa_r_nulled_symbol_activate, r, S_invalid, boolean);
-        API_STD_TEST2 (defaults, -1, MARPA_ERR_NO_SUCH_SYMBOL_ID,
-            marpa_r_nulled_symbol_activate, r, S_no_such, boolean);
+        {
+            Marpa_Symbol_ID S_nulled = S_C1;
+            boolean = 1;
+            API_STD_TEST2 (defaults, boolean, MARPA_ERR_NONE,
+                marpa_r_nulled_symbol_activate, r, S_nulled, boolean);
+            API_STD_TEST2 (defaults, -2, MARPA_ERR_INVALID_SYMBOL_ID,
+                marpa_r_nulled_symbol_activate, r, S_invalid, boolean);
+            API_STD_TEST2 (defaults, -1, MARPA_ERR_NO_SUCH_SYMBOL_ID,
+                marpa_r_nulled_symbol_activate, r, S_no_such, boolean);
+        }
 
-        int threshold = 1;
-        API_STD_TEST1 (defaults, threshold, MARPA_ERR_NONE,
-            marpa_r_earley_item_warning_threshold_set, r, threshold);
+        {
+            int threshold = 1;
+            API_STD_TEST1 (defaults, threshold, MARPA_ERR_NONE,
+                marpa_r_earley_item_warning_threshold_set, r, threshold);
 
-        API_STD_TEST0 (defaults, threshold, MARPA_ERR_NONE,
-            marpa_r_earley_item_warning_threshold, r);
+            API_STD_TEST0 (defaults, threshold, MARPA_ERR_NONE,
+                marpa_r_earley_item_warning_threshold, r);
+        }
 
-        Marpa_Symbol_ID S_expected = S_C1;
-        value = 1;
-        API_STD_TEST2 (defaults, -2, MARPA_ERR_SYMBOL_IS_NULLING,
-            marpa_r_expected_symbol_event_set, r, S_B1, value);
+        {
+            Marpa_Symbol_ID S_expected = S_C1;
+            value = 1;
+            API_STD_TEST2 (defaults, -2, MARPA_ERR_SYMBOL_IS_NULLING,
+                marpa_r_expected_symbol_event_set, r, S_B1, value);
+        }
 
         {
             Marpa_Symbol_ID buffer[42];
@@ -937,14 +943,18 @@ main (int argc, char *argv[])
 
 
         /* start report at bad locations */
-        Marpa_Earley_Set_ID ys_id_negative = -1;
-        API_STD_TEST1 (defaults, -2, MARPA_ERR_INVALID_LOCATION,
-            marpa_r_progress_report_start, r, ys_id_negative);
+        {
+            Marpa_Earley_Set_ID ys_id_negative = -1;
+            API_STD_TEST1 (defaults, -2, MARPA_ERR_INVALID_LOCATION,
+                marpa_r_progress_report_start, r, ys_id_negative);
+        }
 
-        Marpa_Earley_Set_ID ys_id_not_existing = 1;
-        API_STD_TEST1 (defaults, -2,
-            MARPA_ERR_NO_EARLEY_SET_AT_LOCATION,
-            marpa_r_progress_report_start, r, ys_id_not_existing);
+        {
+            Marpa_Earley_Set_ID ys_id_not_existing = 1;
+            API_STD_TEST1 (defaults, -2,
+                MARPA_ERR_NO_EARLEY_SET_AT_LOCATION,
+                marpa_r_progress_report_start, r, ys_id_not_existing);
+        }
 
         /* start report at earleme 0 */
         Marpa_Earley_Set_ID earleme_0 = 0;
