@@ -26,13 +26,13 @@
 
 #include "marpa_m_test.h"
 
-static int
+static void
 warn (const char *s, Marpa_Grammar g)
 {
   printf ("%s returned %d\n", s, marpa_g_error (g, NULL));
 }
 
-static int
+static void
 fail (const char *s, Marpa_Grammar g)
 {
   warn (s, g);
@@ -83,20 +83,13 @@ marpa_g_simple_new(Marpa_Config *config)
       exit (1);
     }
 
-  ((S_top = marpa_g_symbol_new (g)) >= 0)
-    || fail ("marpa_g_symbol_new", g);
-  ((S_A1 = marpa_g_symbol_new (g)) >= 0)
-    || fail ("marpa_g_symbol_new", g);
-  ((S_A2 = marpa_g_symbol_new (g)) >= 0)
-    || fail ("marpa_g_symbol_new", g);
-  ((S_B1 = marpa_g_symbol_new (g)) >= 0)
-    || fail ("marpa_g_symbol_new", g);
-  ((S_B2 = marpa_g_symbol_new (g)) >= 0)
-    || fail ("marpa_g_symbol_new", g);
-  ((S_C1 = marpa_g_symbol_new (g)) >= 0)
-    || fail ("marpa_g_symbol_new", g);
-  ((S_C2 = marpa_g_symbol_new (g)) >= 0)
-    || fail ("marpa_g_symbol_new", g);
+  if ((S_top = marpa_g_symbol_new (g)) < 0) { fail ("marpa_g_symbol_new", g); }
+  if ((S_A1 = marpa_g_symbol_new (g)) < 0) { fail ("marpa_g_symbol_new", g); }
+  if ((S_A2 = marpa_g_symbol_new (g)) < 0) { fail ("marpa_g_symbol_new", g); }
+  if ((S_B1 = marpa_g_symbol_new (g)) < 0) { fail ("marpa_g_symbol_new", g); }
+  if ((S_B2 = marpa_g_symbol_new (g)) < 0) { fail ("marpa_g_symbol_new", g); }
+  if ((S_C1 = marpa_g_symbol_new (g)) < 0) { fail ("marpa_g_symbol_new", g); }
+  if ((S_C2 = marpa_g_symbol_new (g)) < 0) { fail ("marpa_g_symbol_new", g); }
 
   /* 
    * top ::= A1
@@ -107,23 +100,17 @@ marpa_g_simple_new(Marpa_Config *config)
    * B2  ::= C2
    */
   rhs[0] = S_A1;
-  ((R_top_1 = marpa_g_rule_new (g, S_top, rhs, 1)) >= 0)
-    || fail ("marpa_g_rule_new", g);
+  if ((R_top_1 = marpa_g_rule_new (g, S_top, rhs, 1)) < 0) { fail ("marpa_g_rule_new", g); }
   rhs[0] = S_A2;
-  ((R_top_2 = marpa_g_rule_new (g, S_top, rhs, 1)) >= 0)
-    || fail ("marpa_g_rule_new", g);
+  if ((R_top_2 = marpa_g_rule_new (g, S_top, rhs, 1)) < 0) { fail ("marpa_g_rule_new", g); }
   rhs[0] = S_B1;
-  (marpa_g_rule_new (g, S_A1, rhs, 1) >= 0)
-    || fail ("marpa_g_rule_new", g);
+  if (marpa_g_rule_new (g, S_A1, rhs, 1) < 0) { fail ("marpa_g_rule_new", g); }
   rhs[0] = S_B2;
-  (marpa_g_rule_new (g, S_A2, rhs, 1) >= 0)
-    || fail ("marpa_g_rule_new", g);
+  if (marpa_g_rule_new (g, S_A2, rhs, 1) < 0) { fail ("marpa_g_rule_new", g); }
   rhs[0] = S_C1;
-  (marpa_g_rule_new (g, S_B1, rhs, 1) >= 0)
-    || fail ("marpa_g_rule_new", g);
+  if (marpa_g_rule_new (g, S_B1, rhs, 1) < 0) { fail ("marpa_g_rule_new", g); }
   rhs[0] = S_C2;
-  (marpa_g_rule_new (g, S_B2, rhs, 1) >= 0)
-    || fail ("marpa_g_rule_new", g);
+  if (marpa_g_rule_new (g, S_B2, rhs, 1) < 0) { fail ("marpa_g_rule_new", g); }
 
   return g;
 }
@@ -133,8 +120,7 @@ marpa_g_simple_precompute(Marpa_Grammar g, Marpa_Symbol_ID S_start)
 {
   Marpa_Error_Code rc;
 
-  (marpa_g_start_symbol_set (g, S_start) >= 0)
-    || fail ("marpa_g_start_symbol_set", g);
+  if (marpa_g_start_symbol_set (g, S_start) < 0) { fail ("marpa_g_start_symbol_set", g); }
 
   rc = marpa_g_precompute (g);
   if (rc < 0)
