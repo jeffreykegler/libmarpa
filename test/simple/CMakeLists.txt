@@ -40,6 +40,11 @@ target_link_libraries(rule1 ${LIBMARPA_STATIC} ${LIBTAP})
 add_executable(trivial trivial.c)
 target_link_libraries(trivial ${LIBMARPA_STATIC} ${LIBTAP})
 
+IF (CMAKE_COMPILER_IS_GNUCC)
+    set_source_files_properties(trivial1.c PROPERTIES COMPILE_OPTIONS
+        "-g;-O2;-Wall;-Wpointer-arith;-Wstrict-prototypes;-Wwrite-strings;-Wshadow;-Wmissing-declarations;\
+-Wconversion;-ansi;-pedantic;-Wundef;-Wendif-labels")
+ENDIF (CMAKE_COMPILER_IS_GNUCC)
 add_executable(trivial1 trivial1.c marpa_m_test.c)
 target_link_libraries(trivial1 ${LIBMARPA_STATIC} ${LIBTAP})
 

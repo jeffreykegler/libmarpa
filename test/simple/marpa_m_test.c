@@ -213,7 +213,7 @@ void rv_std_report(API_test_data* td, const char *name, int rv_wanted, Marpa_Err
  * unambiguously indicate an error, and the error
  * code must always be consulted as well.
  */
-void rv_hidden_report(API_test_data* td, char *name, int rv_wanted, Marpa_Error_Code err_wanted)
+void rv_hidden_report(API_test_data* td, const char *name, int rv_wanted, Marpa_Error_Code err_wanted)
 {
    int rv_seen = td->rv_seen.int_rv;
    int err_seen = marpa_g_error(td->g, NULL);
@@ -260,7 +260,7 @@ void rv_hidden_report(API_test_data* td, char *name, int rv_wanted, Marpa_Error_
 /* Report success/failure when the return value is
  * an error code.
  */
-void rv_code_report(API_test_data* td, char *name,
+void rv_code_report(API_test_data* td, const char *name,
   Marpa_Error_Code err_seen, Marpa_Error_Code err_wanted)
 {
    const char* err_msg  = marpa_m_error_message(err_seen);
@@ -293,7 +293,7 @@ void rv_code_report(API_test_data* td, char *name,
 /* Report success/failure on pointer return value.
  * NULL pointer indicates an error.
  */
-void rv_ptr_report(API_test_data* td, char *name, Marpa_Error_Code err_wanted)
+void rv_ptr_report(API_test_data* td, const char *name, Marpa_Error_Code err_wanted)
 {
    void* rv_seen = td->rv_seen.ptr_rv;
    int err_seen = marpa_g_error(td->g, NULL);

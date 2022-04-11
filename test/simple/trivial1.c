@@ -27,13 +27,13 @@
 
 #include "marpa_m_test.h"
 
-static int
+static void
 warn (const char *s, Marpa_Grammar g)
 {
   printf ("%s returned %d\n", s, marpa_g_error (g, NULL));
 }
 
-static int
+static void
 fail (const char *s, Marpa_Grammar g)
 {
   warn (s, g);
@@ -53,44 +53,23 @@ Marpa_Symbol_ID rhs[4];
 
 Marpa_Rule_ID R_top_1;
 Marpa_Rule_ID R_top_2;
-Marpa_Rule_ID R_C2_3; // highest rule id
+Marpa_Rule_ID R_C2_3; /* Highest rule ID */
 
 /* For (error) messages */
 char msgbuf[80];
 
-char *
+static char *
 symbol_name (Marpa_Symbol_ID id)
 {
-  if (id == S_top) return "top";
-  if (id == S_A1) return "A1";
-  if (id == S_A2) return "A2";
-  if (id == S_B1) return "B1";
-  if (id == S_B2) return "B2";
-  if (id == S_C1) return "C1";
-  if (id == S_C2) return "C2";
+  if (id == S_top) return (char *)"top";
+  if (id == S_A1) return (char *)"A1";
+  if (id == S_A2) return (char *)"A2";
+  if (id == S_B1) return (char *)"B1";
+  if (id == S_B2) return (char *)"B2";
+  if (id == S_C1) return (char *)"C1";
+  if (id == S_C2) return (char *)"C2";
   sprintf (msgbuf, "no such symbol: %d", id);
   return msgbuf;
-}
-
-int
-is_nullable (Marpa_Symbol_ID id)
-{
-  if (id == S_top) return 1;
-  if (id == S_A1) return 1;
-  if (id == S_A2) return 1;
-  if (id == S_B1) return 1;
-  if (id == S_B2) return 1;
-  if (id == S_C1) return 1;
-  if (id == S_C2) return 1;
-  return 0;
-}
-
-int
-is_nulling (Marpa_Symbol_ID id)
-{
-  if (id == S_C1) return 1;
-  if (id == S_C2) return 1;
-  return 0;
 }
 
 static Marpa_Grammar
@@ -105,44 +84,29 @@ marpa_g_trivial_new(Marpa_Config *config)
       exit (1);
     }
 
-  ((S_top = marpa_g_symbol_new (g)) >= 0)
-    || fail ("marpa_g_symbol_new", g);
-  ((S_A1 = marpa_g_symbol_new (g)) >= 0)
-    || fail ("marpa_g_symbol_new", g);
-  ((S_A2 = marpa_g_symbol_new (g)) >= 0)
-    || fail ("marpa_g_symbol_new", g);
-  ((S_B1 = marpa_g_symbol_new (g)) >= 0)
-    || fail ("marpa_g_symbol_new", g);
-  ((S_B2 = marpa_g_symbol_new (g)) >= 0)
-    || fail ("marpa_g_symbol_new", g);
-  ((S_C1 = marpa_g_symbol_new (g)) >= 0)
-    || fail ("marpa_g_symbol_new", g);
-  ((S_C2 = marpa_g_symbol_new (g)) >= 0)
-    || fail ("marpa_g_symbol_new", g);
+  if ((S_top = marpa_g_symbol_new (g)) < 0) { fail ("marpa_g_symbol_new", g); }
+  if ((S_A1 = marpa_g_symbol_new (g)) < 0) { fail ("marpa_g_symbol_new", g); }
+  if ((S_A2 = marpa_g_symbol_new (g)) < 0) { fail ("marpa_g_symbol_new", g); }
+  if ((S_B1 = marpa_g_symbol_new (g)) < 0) { fail ("marpa_g_symbol_new", g); }
+  if ((S_B2 = marpa_g_symbol_new (g)) < 0) { fail ("marpa_g_symbol_new", g); }
+  if ((S_C1 = marpa_g_symbol_new (g)) < 0) { fail ("marpa_g_symbol_new", g); }
+  if ((S_C2 = marpa_g_symbol_new (g)) < 0) { fail ("marpa_g_symbol_new", g); }
 
   rhs[0] = S_A1;
-  ((R_top_1 = marpa_g_rule_new (g, S_top, rhs, 1)) >= 0)
-    || fail ("marpa_g_rule_new", g);
+  if ((R_top_1 = marpa_g_rule_new (g, S_top, rhs, 1)) < 0) { fail ("marpa_g_rule_new", g); }
   rhs[0] = S_A2;
-  ((R_top_2 = marpa_g_rule_new (g, S_top, rhs, 1)) >= 0)
-    || fail ("marpa_g_rule_new", g);
+  if ((R_top_2 = marpa_g_rule_new (g, S_top, rhs, 1)) < 0) { fail ("marpa_g_rule_new", g); }
   rhs[0] = S_B1;
-  (marpa_g_rule_new (g, S_A1, rhs, 1) >= 0)
-    || fail ("marpa_g_rule_new", g);
+  if (marpa_g_rule_new (g, S_A1, rhs, 1) < 0) { fail ("marpa_g_rule_new", g); }
   rhs[0] = S_B2;
-  (marpa_g_rule_new (g, S_A2, rhs, 1) >= 0)
-    || fail ("marpa_g_rule_new", g);
+  if (marpa_g_rule_new (g, S_A2, rhs, 1) < 0) { fail ("marpa_g_rule_new", g); }
   rhs[0] = S_C1;
-  (marpa_g_rule_new (g, S_B1, rhs, 1) >= 0)
-    || fail ("marpa_g_rule_new", g);
+  if (marpa_g_rule_new (g, S_B1, rhs, 1) < 0) { fail ("marpa_g_rule_new", g); }
   rhs[0] = S_C2;
-  (marpa_g_rule_new (g, S_B2, rhs, 1) >= 0)
-    || fail ("marpa_g_rule_new", g);
-  (marpa_g_rule_new (g, S_C1, rhs, 0) >= 0)
-    || fail ("marpa_g_rule_new", g);
+  if (marpa_g_rule_new (g, S_B2, rhs, 1) < 0) { fail ("marpa_g_rule_new", g); }
+  if (marpa_g_rule_new (g, S_C1, rhs, 0) < 0) { fail ("marpa_g_rule_new", g); }
 
-  ((R_C2_3 = marpa_g_rule_new (g, S_C2, rhs, 0)) >= 0)
-    || fail ("marpa_g_rule_new", g);
+  if ((R_C2_3 = marpa_g_rule_new (g, S_C2, rhs, 0)) < 0) { fail ("marpa_g_rule_new", g); }
 
   return g;
 }
@@ -152,8 +116,7 @@ marpa_g_trivial_precompute(Marpa_Grammar g, Marpa_Symbol_ID S_start)
 {
   Marpa_Error_Code rc;
 
-  (marpa_g_start_symbol_set (g, S_start) >= 0)
-    || fail ("marpa_g_start_symbol_set", g);
+  if (marpa_g_start_symbol_set (g, S_start) < 0) { fail ("marpa_g_start_symbol_set", g); }
 
   rc = marpa_g_precompute (g);
   if (rc < 0)
@@ -166,7 +129,7 @@ static void defaults_reset(API_test_data* defaults, Marpa_Grammar g)
 {
   defaults->g = g;
   defaults->expected_errcode = MARPA_ERR_NONE;
-  defaults->msg = "";
+  defaults->msg = (char *)"";
   defaults->rv_seen.int_rv = -86;
 }
 
@@ -174,7 +137,12 @@ int
 main (int argc, char *argv[])
 {
   int rc;
+  int current_earleme;
+  int furthest_earleme;
+  int reactivate;
   int ix;
+  int value;
+  Marpa_Symbol_ID S_predicted, S_completed;
 
   /* For the test of marpa_r_earley_set_values() */
   const int orig_int_value = 1729;
@@ -218,8 +186,7 @@ main (int argc, char *argv[])
 
   API_STD_TEST0(defaults, -1, MARPA_ERR_NO_START_SYMBOL, marpa_g_start_symbol, g);
 
-  (marpa_g_start_symbol_set (g, S_top) >= 0)
-    || fail ("marpa_g_start_symbol_set", g);
+  if (marpa_g_start_symbol_set (g, S_top) < 0) { fail ("marpa_g_start_symbol_set", g); }
 
   /* these must succeed after the start symbol is set */
   API_STD_TEST1(defaults, 1, MARPA_ERR_NONE,
@@ -254,7 +221,7 @@ main (int argc, char *argv[])
   API_STD_TEST2(defaults, -1, MARPA_ERR_NO_SUCH_SYMBOL_ID, marpa_g_symbol_is_terminal_set, g, S_no_such, 1);
 
   /* Rules */
-  this_test.msg = "before precomputation";
+  this_test.msg = (char *)"before precomputation";
   API_STD_TEST0(this_test, R_C2_3, MARPA_ERR_NONE, marpa_g_highest_rule_id, g);
   API_STD_TEST1(this_test, 1, MARPA_ERR_NONE, marpa_g_rule_length, g, R_top_1);
   API_STD_TEST1(this_test, 0, MARPA_ERR_NONE, marpa_g_rule_length, g, R_C2_3);
@@ -312,11 +279,9 @@ main (int argc, char *argv[])
     API_STD_TEST2(defaults, S_A1, MARPA_ERR_NONE, marpa_g_rule_rhs, g, R_top_1, 0);
     API_STD_TEST2(defaults, S_A2, MARPA_ERR_NONE, marpa_g_rule_rhs, g, R_top_2, 0);
 
-    int ix_out_of_bounds = 25;
-    API_STD_TEST2(defaults, -2, MARPA_ERR_RHS_IX_OOB, marpa_g_rule_rhs, g, R_top_2, ix_out_of_bounds);
+    API_STD_TEST2(defaults, -2, MARPA_ERR_RHS_IX_OOB, marpa_g_rule_rhs, g, R_top_2, 25);
 
-    int ix_negative = -1;
-    API_STD_TEST2(defaults, -2, MARPA_ERR_RHS_IX_NEGATIVE, marpa_g_rule_rhs, g, R_top_2, ix_negative);
+    API_STD_TEST2(defaults, -2, MARPA_ERR_RHS_IX_NEGATIVE, marpa_g_rule_rhs, g, R_top_2, -1);
   }
 
   /* invalid/no such rule id error handling */
@@ -452,9 +417,6 @@ main (int argc, char *argv[])
   /* Events */
   /* test that attempts to create events, other than nulled events,
      results in a reasonable error -- http://irclog.perlgeek.de/marpa/2015-02-13#i_10111838 */
-  int reactivate;
-  int value;
-  Marpa_Symbol_ID S_predicted, S_completed;
 
   /* completion */
   S_completed = S_B1;
@@ -635,34 +597,31 @@ main (int argc, char *argv[])
     } /* event loop */
 
     /* recognizer reading methods */
-    Marpa_Symbol_ID S_token = S_A2;
-    this_test.msg = "not accepting input is checked before invalid symbol";
+    this_test.msg = (char *)"not accepting input is checked before invalid symbol";
     API_CODE_TEST3(this_test, MARPA_ERR_RECCE_NOT_ACCEPTING_INPUT,
         marpa_r_alternative, r, S_invalid, 0, 0);
 
-    this_test.msg = "not accepting input is checked before no such symbol";
+    this_test.msg = (char *)"not accepting input is checked before no such symbol";
     API_CODE_TEST3(this_test, MARPA_ERR_RECCE_NOT_ACCEPTING_INPUT,
         marpa_r_alternative, r, S_no_such, 0, 0);
 
-    this_test.msg = "not accepting input";
+    this_test.msg = (char *)"not accepting input";
     API_CODE_TEST3(this_test, MARPA_ERR_RECCE_NOT_ACCEPTING_INPUT,
-        marpa_r_alternative, r, S_token, 0, 0);
+        marpa_r_alternative, r, S_A2, 0, 0);
 
     this_test = defaults;
 
     API_STD_TEST0(defaults, -2, MARPA_ERR_RECCE_NOT_ACCEPTING_INPUT,
 	marpa_r_earleme_complete, r);
 
-    this_test.msg = "at earleme 0";
+    this_test.msg = (char *)"at earleme 0";
     API_STD_TEST0(this_test, 1, MARPA_ERR_NONE, marpa_r_is_exhausted, r);
 
     /* Location accessors */
-    {
       /* the below 2 always succeed */
-      unsigned int current_earleme = 0;
+      current_earleme = 0;
       API_STD_TEST0(defaults, current_earleme, MARPA_ERR_NONE, marpa_r_current_earleme, r);
 
-      unsigned int furthest_earleme = current_earleme;
       API_STD_TEST0(defaults, furthest_earleme, MARPA_ERR_NONE, marpa_r_furthest_earleme, r);
 
       API_STD_TEST0(defaults, furthest_earleme, MARPA_ERR_NONE, marpa_r_latest_earley_set, r);
@@ -673,10 +632,9 @@ main (int argc, char *argv[])
       API_STD_TEST1(defaults, -1, MARPA_ERR_RECCE_NOT_ACCEPTING_INPUT,
 	marpa_r_earley_set_value, r, current_earleme);
 
+    {
       /* marpa_r_earley_set_value_*() methods */
-      int taxicab = 1729;
-
-      int earley_set;
+      const int taxicab = 1729;
 
       struct marpa_r_earley_set_value_test {
         int earley_set;
@@ -689,17 +647,21 @@ main (int argc, char *argv[])
         int   rv_marpa_r_earley_set_values;
         int   int_p_value_rv_marpa_r_earley_set_values;
         void* void_p_value_rv_marpa_r_earley_set_values;
-
         Marpa_Error_Code errcode;
       };
       typedef struct marpa_r_earley_set_value_test Marpa_R_Earley_Set_Value_Test;
 
-      const Marpa_R_Earley_Set_Value_Test tests[] = {
-        { -1, -2, taxicab,      -2, 1, -2, taxicab, value2, MARPA_ERR_INVALID_LOCATION },
-        {  0,  0, taxicab, taxicab, 1,  1,      42, value2, MARPA_ERR_INVALID_LOCATION },
-        {  1, -2,      42,      -2, 1, -2,      42, value2, MARPA_ERR_NO_EARLEY_SET_AT_LOCATION },
-        {  2, -2,      42,      -2, 1, -2,      42, value2, MARPA_ERR_NO_EARLEY_SET_AT_LOCATION },
+      Marpa_R_Earley_Set_Value_Test tests[4] = {
+        { -1, -2, taxicab,      -2, 1, -2, taxicab, NULL, MARPA_ERR_INVALID_LOCATION },
+        {  0,  0, taxicab, taxicab, 1,  1,      42, NULL, MARPA_ERR_INVALID_LOCATION },
+        {  1, -2,      42,      -2, 1, -2,      42, NULL, MARPA_ERR_NO_EARLEY_SET_AT_LOCATION },
+        {  2, -2,      42,      -2, 1, -2,      42, NULL, MARPA_ERR_NO_EARLEY_SET_AT_LOCATION },
       };
+      /* We change these at runtime to silence a "not computable at load time" warning */
+      tests[0].void_p_value_rv_marpa_r_earley_set_values = (void *)value2;
+      tests[1].void_p_value_rv_marpa_r_earley_set_values = (void *)value2;
+      tests[2].void_p_value_rv_marpa_r_earley_set_values = (void *)value2;
+      tests[3].void_p_value_rv_marpa_r_earley_set_values = (void *)value2;
 
       for (ix = 0; ix < sizeof(tests) / sizeof(Marpa_R_Earley_Set_Value_Test); ix++)
         {
@@ -739,14 +701,14 @@ main (int argc, char *argv[])
 	     * With ifdef's we could cover 99.999% of cases, but for now
 	     * we do not bother.
 	     */
-	    void *orig_value2 = NULL;
-	    void *value2 = orig_value2;
+	    void *orig_value3 = NULL;
+	    void *value3 = orig_value3;
 
 	    API_STD_TEST3 (defaults,
 			   t.rv_marpa_r_earley_set_values,
 			   t.errcode,
 			   marpa_r_earley_set_values,
-			   r, t.earley_set, (&int_value), &value2);
+			   r, t.earley_set, (&int_value), &value3);
 	    is_int (t.int_p_value_rv_marpa_r_earley_set_values,
 		    int_value, "marpa_r_earley_set_values() int* value");
 
