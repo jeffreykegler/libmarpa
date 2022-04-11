@@ -901,12 +901,9 @@ main (int argc, char *argv[])
                 marpa_r_earley_item_warning_threshold, r);
         }
 
-        {
-            Marpa_Symbol_ID S_expected = S_C1;
             value = 1;
             API_STD_TEST2 (defaults, -2, MARPA_ERR_SYMBOL_IS_NULLING,
                 marpa_r_expected_symbol_event_set, r, S_B1, value);
-        }
 
         {
             Marpa_Symbol_ID buffer[42];
@@ -957,10 +954,12 @@ main (int argc, char *argv[])
         }
 
         /* start report at earleme 0 */
+	{
         Marpa_Earley_Set_ID earleme_0 = 0;
-        this_test.msg = "no items at earleme 0";
+        this_test.msg = (char *)"no items at earleme 0";
         API_STD_TEST1 (this_test, 0, MARPA_ERR_NONE,
             marpa_r_progress_report_start, r, earleme_0);
+	}
 
         {
             int set_id;
@@ -971,13 +970,15 @@ main (int argc, char *argv[])
         }
 
 
+	{
         int non_negative_value = 1;
         API_STD_TEST0 (this_test, non_negative_value, MARPA_ERR_NONE,
             marpa_r_progress_report_reset, r);
 
-        this_test.msg = "at earleme 0";
+        this_test.msg =(char *)"at earleme 0";
         API_STD_TEST0 (this_test, non_negative_value, MARPA_ERR_NONE,
             marpa_r_progress_report_finish, r);
+	}
     }
 
     /* Bocage */
@@ -987,9 +988,11 @@ main (int argc, char *argv[])
             marpa_b_new, r, ys_invalid);
     }
 
+    {
     Marpa_Earley_Set_ID ys_non_existing = 1;
     API_PTR_TEST1 (defaults, MARPA_ERR_NO_PARSE,
         marpa_b_new, r, ys_non_existing);
+    }
 
     Marpa_Earley_Set_ID ys_at_current_earleme = -1;
     Marpa_Bocage b = marpa_b_new (r, ys_at_current_earleme);
