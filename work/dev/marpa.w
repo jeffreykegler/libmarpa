@@ -13014,6 +13014,7 @@ for the rule.
 @<Step through a nulling valuator@> =
 {
     XSYID_of_V (v) = g->t_start_xsy_id;
+    Token_Start_of_V (v) = YS_ID_of_V (v) = 0;
     Result_of_V (v) = Arg_0_of_V (v) = Arg_N_of_V (v) = 0;
     Step_Type_of_V (v) = MARPA_STEP_INACTIVE;
     if (Next_Value_Type_of_V (v) == MARPA_STEP_INITIAL &&
