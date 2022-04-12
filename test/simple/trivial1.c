@@ -1080,5 +1080,12 @@ main (int argc, char *argv[])
     API_STD_TEST0 (defaults, -1, MARPA_ERR_TREE_EXHAUSTED,
         marpa_t_next, t);
 
+    /* Needed for ASan test */
+    marpa_t_unref(t);
+    marpa_o_unref(o);
+    marpa_b_unref(b);
+    marpa_r_unref(r);
+    marpa_g_unref(g);
+
     return 0;
 }

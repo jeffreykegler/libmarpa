@@ -233,6 +233,7 @@ main (int argc, char *argv[])
         marpa_r_earleme_complete, r);
 
     /* re-create the recce and try some input */
+    marpa_r_unref(r);
     r = marpa_r_new (g);
     if (!r)
         fail ("marpa_r_new", g);
@@ -274,6 +275,13 @@ main (int argc, char *argv[])
         marpa_o_high_rank_only_set, o, flag);
     API_STD_TEST0 (defaults, flag, MARPA_ERR_NONE,
         marpa_o_high_rank_only, o);
+
+
+    /* Needed for ASan test */
+    marpa_o_unref(o);
+    marpa_b_unref(b);
+    marpa_r_unref(r);
+    marpa_g_unref(g);
 
     return 0;
 }

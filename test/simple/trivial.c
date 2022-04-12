@@ -259,5 +259,9 @@ main (int argc, char *argv[])
         free (nulled_symbols);
     }
 
+    /* Needed for ASan test */
+    marpa_r_unref(r);
+    marpa_g_unref(g);
+
     return 0;
 }

@@ -83,5 +83,7 @@ main (int argc, char *argv[])
         code_fail ("marpa_g_rule_lhs", g);
     }
 
+    marpa_g_unref(g);
+
     return 0;
 }

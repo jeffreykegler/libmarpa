@@ -348,7 +348,13 @@ main (int argc, char *argv[])
             "10: MARPA_STEP_INACTIVE step after retry of marpa_v_step().");
     }
 
-    marpa_v_unref (v);
+    /* Needed for ASan test */
+    marpa_v_unref(v);
+    marpa_t_unref(t);
+    marpa_o_unref(o);
+    marpa_b_unref(b);
+    marpa_r_unref(r);
+    marpa_g_unref(g);
 
     return 0;
 }

@@ -79,12 +79,22 @@ timestamp/cm_debug.stamp: cm_dist
 	test -d timestamp || mkdir timestamp
 	date > timestamp/cm_debug.stamp
 
+timestamp/do_asan.stamp: timestamp/cm_debug.stamp
+	rm -rf do_test
+	mkdir do_test
+	cd do_test && cmake -DCMAKE_BUILD_TYPE:STRING=Asan ../test && make VERBOSE=1
+	test -d timestamp || mkdir timestamp
+	date > timestamp/do_asan.stamp
+
 timestamp/do_test.stamp: timestamp/cm_debug.stamp
 	rm -rf do_test
 	mkdir do_test
 	cd do_test && cmake ../test && make VERBOSE=1
 	test -d timestamp || mkdir timestamp
 	date > timestamp/do_test.stamp
+
+asan: work_install timestamp/do_asan.stamp
+	cd do_test && make && ./tap/runtests -l ../test/TESTS
 
 test: work_install timestamp/do_test.stamp
 	cd do_test && make && ./tap/runtests -l ../test/TESTS

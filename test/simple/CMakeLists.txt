@@ -13,6 +13,13 @@ IF (MSVC)
     ADD_DEFINITIONS(/W3)
 ENDIF (MSVC)
 
+include(CMakePrintHelpers)
+cmake_print_variables(CMAKE_BUILD_TYPE)
+if (CMAKE_BUILD_TYPE MATCHES Asan)
+    add_compile_options( -fsanitize=leak -fsanitize=address )
+    add_link_options( -fsanitize=leak -fsanitize=address -static-libasan )
+ENDIF()
+
 include_directories(${LIBMARPA_INCLUDE} "${CMAKE_SOURCE_DIR}/tap")
 
 add_executable(issue92a issue92a.c marpa_m_test.c)
