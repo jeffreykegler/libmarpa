@@ -318,8 +318,8 @@ main (int argc, char *argv[])
         is_int (MARPA_STEP_NULLING_SYMBOL, marpa_v_step_type (v),
             "marpa_v_step_type(v)");
         is_int (0, marpa_v_symbol (v), "marpa_v_symbol(v)");
-        is_int (-1, marpa_v_es_id (v), "marpa_v_es_id(v)");
-        is_int (-1, marpa_v_token_start_es_id (v),
+        is_int (0, marpa_v_es_id (v), "marpa_v_es_id(v)");
+        is_int (0, marpa_v_token_start_es_id (v),
             "marpa_v_token_start_es_id(v)");
 
         step_type = marpa_v_step (v);
@@ -341,11 +341,11 @@ main (int argc, char *argv[])
         t);
 
     /* Needed for ASan test */
-    marpa_t_unref(t);
-    marpa_o_unref(o);
-    marpa_b_unref(b);
-    marpa_r_unref(r);
-    marpa_g_unref(g);
+    marpa_t_unref (t);
+    marpa_o_unref (o);
+    marpa_b_unref (b);
+    marpa_r_unref (r);
+    marpa_g_unref (g);
 
     return 0;
 }
