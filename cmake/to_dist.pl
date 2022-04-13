@@ -50,27 +50,27 @@ FILE: while ( my $copy = <DATA> ) {
     say "Copied $from -> $to" if $verbose;
 } ## end FILE: while ( my $copy = <DATA> )
 
-# Note that order DOES matter here -- the configure.ac files
+# Note that order DOES matter here -- any configure.ac files
 # MUST be FIRST
 
 __DATA__
-cm_dist/marpa.c: work/dev/marpa.c
-cm_dist/include/marpa.h: work/public/marpa.h
-cm_dist/libmarpa.pc.in: work/etc/libmarpa.pc.in
-cm_dist/marpa_obs.c: work/obs/marpa_obs.c
-cm_dist/marpa_obs.h: work/obs/marpa_obs.h
-cm_dist/marpa_ami.c: work/ami/marpa_ami.c
-cm_dist/marpa_ami.h: work/ami/marpa_ami.h
-cm_dist/marpa_avl.c: work/avl/marpa_avl.c
-cm_dist/marpa_avl.h: work/avl/marpa_avl.h
-cm_dist/marpa_tavl.h: work/tavl/marpa_tavl.h
-cm_dist/marpa_tavl.c: work/tavl/marpa_tavl.c
-cm_dist/error_codes.table: work/public/error_codes.table
-cm_dist/steps.table: work/public/steps.table
-cm_dist/events.table: work/public/events.table
-cm_dist/COPYING.LESSER: work/obs/COPYING.LESSER
-cm_dist/COPYING: work/shared/COPYING
-cm_dist/README: work/ac/README
+cm_dist/marpa.c: work/stage/marpa.c
+cm_dist/include/marpa.h: work/stage/marpa.h
+cm_dist/libmarpa.pc.in: work/stage/libmarpa.pc.in
+cm_dist/marpa_obs.c: work/stage/marpa_obs.c
+cm_dist/marpa_obs.h: work/stage/marpa_obs.h
+cm_dist/marpa_ami.c: work/stage/marpa_ami.c
+cm_dist/marpa_ami.h: work/stage/marpa_ami.h
+cm_dist/marpa_avl.c: work/stage/marpa_avl.c
+cm_dist/marpa_avl.h: work/stage/marpa_avl.h
+cm_dist/marpa_tavl.h: work/stage/marpa_tavl.h
+cm_dist/marpa_tavl.c: work/stage/marpa_tavl.c
+cm_dist/error_codes.table: work/stage/error_codes.table
+cm_dist/steps.table: work/stage/steps.table
+cm_dist/events.table: work/stage/events.table
+cm_dist/COPYING.LESSER: work/stage/COPYING.LESSER
+cm_dist/COPYING: work/stage/COPYING
+cm_dist/README: work/stage/README
 cm_dist/CMakeLists.txt: cmake/CMakeLists.txt
 cm_dist/config.h.cmake: cmake/config.h.cmake
 cm_dist/modules/FindInline.cmake: cmake/modules/FindInline.cmake
