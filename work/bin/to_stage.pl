@@ -43,7 +43,8 @@ FILE: while ( my $copy = <DATA> ) {
     chomp $copy;
     my ( $to, $from ) = $copy =~ m/\A (.*) [:] \s+ (.*) \z/xms;
     die "Bad copy spec: $copy" if not defined $to;
-    next FILE if -e $to and ( -M $to <= -M $from );
+    # Don't skip copying even if timestamps suggest it is unnecessary
+    # next FILE if -e $to and ( -M $to <= -M $from );
     my ( undef, $to_dirs, $to_file ) = File::Spec->splitpath($to);
     my @to_dirs = File::Spec->splitdir($to_dirs);
     my @dir_found_so_far = ();

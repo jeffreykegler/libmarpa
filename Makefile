@@ -54,7 +54,7 @@ doc1_dist: doc1_tar
 	sh etc/work_to_doc1_dist.sh
 
 timestamp/cm_dist.stamp: timestamp/tar.stamp
-	perl cmake/to_dist.pl
+	perl cmake/to_dist.pl --verbose
 	test -d timestamp || mkdir timestamp
 	date > timestamp/cm_dist.stamp
 

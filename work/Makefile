@@ -48,7 +48,7 @@ CLEANABLE_DIR = $(MAKEABLE_DIR)
 
 sources:
 	for d in $(MAKEABLE_DIR); do (cd $$d; make); done
-	perl bin/to_stage.pl --stamp stage_copy.stamp
+	perl bin/to_stage.pl --verbose --stamp stage_copy.stamp
 
 clean:
 	for d in $(CLEANABLE_DIR); do (cd $$d; make clean); done
