@@ -12931,7 +12931,7 @@ Marpa_Step_Type marpa_v_step(Marpa_Value public_v)
     if (V_is_Nulling(v)) {
       @<Unpack value objects@>@;
       @<Step through a nulling valuator@>@;
-      return Step_Type_of_V(v) = MARPA_STEP_INACTIVE;
+      return Step_Type_of_V(v);
     }
 
     while (V_is_Active(v)) {
@@ -13010,29 +13010,18 @@ for the rule.
   }
 }
 
-@ @<Step through a nulling valuator@> =
+@ We do no tracing of nulling valuators, at least at this point.
+@<Step through a nulling valuator@> =
 {
-  while (V_is_Active (v))
-    {
-      Marpa_Step_Type current_value_type = Next_Value_Type_of_V (v);
-      switch (current_value_type)
-        {
-        case MARPA_STEP_INITIAL:
-        case STEP_GET_DATA:
-          {
-            Next_Value_Type_of_V (v) = MARPA_STEP_INACTIVE;
-            XSYID_of_V (v) = g->t_start_xsy_id;
-            Result_of_V(v) = Arg_0_of_V (v) = Arg_N_of_V (v) = 0;
-            if (lbv_bit_test (XSY_is_Valued_BV_of_V (v), XSYID_of_V (v)))
-              return Step_Type_of_V (v) = MARPA_STEP_NULLING_SYMBOL;
-          }
-
-    @t}\comment{@>
-          /* No tracing of nulling valuators, at least at this point */
-    @t}\comment{@>
-          /* Fall through */
-        }
+    XSYID_of_V (v) = g->t_start_xsy_id;
+    Token_Start_of_V (v) = YS_ID_of_V (v) = 0;
+    Result_of_V (v) = Arg_0_of_V (v) = Arg_N_of_V (v) = 0;
+    Step_Type_of_V (v) = MARPA_STEP_INACTIVE;
+    if (Next_Value_Type_of_V (v) == MARPA_STEP_INITIAL &&
+        lbv_bit_test (XSY_is_Valued_BV_of_V (v), XSYID_of_V (v))) {
+        Step_Type_of_V (v) = MARPA_STEP_NULLING_SYMBOL;
     }
+    Next_Value_Type_of_V (v) = MARPA_STEP_INACTIVE;
 }
 
 @ @<Perform evaluation steps@> =

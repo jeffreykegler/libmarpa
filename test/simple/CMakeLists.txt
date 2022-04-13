@@ -2,7 +2,37 @@ CMAKE_MINIMUM_REQUIRED(VERSION 3.0.2)
 
 project(simple C CXX)
 
+IF (CMAKE_COMPILER_IS_GNUCC)
+    # MARPA_DEBUG_FLAG ?
+    # -Wextra ?
+    # -Wdeclaration-after-statement ?
+    ADD_COMPILE_OPTIONS(-g -O2 -Wall -Wpointer-arith -Wstrict-prototypes -Wwrite-strings -Wshadow -Wmissing-declarations -Wconversion -ansi -pedantic)
+    ADD_DEFINITIONS(-Wundef -Wendif-labels)
+ENDIF (CMAKE_COMPILER_IS_GNUCC)
+IF (MSVC)
+    ADD_DEFINITIONS(/W3)
+ENDIF (MSVC)
+
+include(CMakePrintHelpers)
+cmake_print_variables(CMAKE_BUILD_TYPE)
+if (CMAKE_BUILD_TYPE MATCHES Asan)
+    add_compile_options( -fsanitize=leak -fsanitize=address )
+    add_link_options( -fsanitize=leak -fsanitize=address -static-libasan )
+ENDIF()
+
 include_directories(${LIBMARPA_INCLUDE} "${CMAKE_SOURCE_DIR}/tap")
+
+add_executable(issue92a issue92a.c marpa_m_test.c)
+target_link_libraries(issue92a ${LIBMARPA_STATIC} ${LIBTAP})
+
+add_executable(issue92b issue92b.c marpa_m_test.c)
+target_link_libraries(issue92b ${LIBMARPA_STATIC} ${LIBTAP})
+
+add_executable(issue92c issue92c.c marpa_m_test.c)
+target_link_libraries(issue92c ${LIBMARPA_STATIC} ${LIBTAP})
+
+add_executable(nits nits.c marpa_m_test.c)
+target_link_libraries(nits ${LIBMARPA_STATIC} ${LIBTAP})
 
 add_executable(rule1 rule1.c)
 target_link_libraries(rule1 ${LIBMARPA_STATIC} ${LIBTAP})
@@ -13,12 +43,12 @@ target_link_libraries(trivial ${LIBMARPA_STATIC} ${LIBTAP})
 add_executable(trivial1 trivial1.c marpa_m_test.c)
 target_link_libraries(trivial1 ${LIBMARPA_STATIC} ${LIBTAP})
 
-add_executable(nits nits.c marpa_m_test.c)
-target_link_libraries(nits ${LIBMARPA_STATIC} ${LIBTAP})
-
+add_test(issue92a issue92a)
+add_test(issue92b issue92b)
+add_test(issue92c issue92c)
+add_test(nits nits)
 add_test(rule1 rule1)
 add_test(trivial trivial)
 add_test(trivial1 trivial1)
-add_test(nits nits)
 
 # vim: expandtab shiftwidth=4:

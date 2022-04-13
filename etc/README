@@ -1,0 +1,5 @@
+This directory holds files which do not fit conveniently elsewhere.
+
+indent.pro is the indent profile used in the C code in this repo.
+Since most of the C code is formatted automatically by Web, this profile
+is mainly used the C programs which act as CMake test scripts.

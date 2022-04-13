@@ -19,9 +19,10 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-/* Tests of Libmarpa methods on trivial grammar that is not merely nulling */
+/* Tests of Libmarpa methods on trivial grammar */
 
 #include <stdio.h>
+#include <string.h>
 #include "marpa.h"
 
 #include "marpa_m_test.h"
@@ -52,7 +53,7 @@ Marpa_Symbol_ID rhs[4];
 
 Marpa_Rule_ID R_top_1;
 Marpa_Rule_ID R_top_2;
-Marpa_Rule_ID R_C2_3;           /* Highest rule id */
+Marpa_Rule_ID R_C2_3;           /* highest rule id */
 
 /* For (error) messages */
 char msgbuf[80];
@@ -78,8 +79,38 @@ symbol_name (Marpa_Symbol_ID id)
     return msgbuf;
 }
 
+UNUSED static int
+is_nullable (Marpa_Symbol_ID id)
+{
+    if (id == S_top)
+        return 1;
+    if (id == S_A1)
+        return 1;
+    if (id == S_A2)
+        return 1;
+    if (id == S_B1)
+        return 1;
+    if (id == S_B2)
+        return 1;
+    if (id == S_C1)
+        return 1;
+    if (id == S_C2)
+        return 1;
+    return 0;
+}
+
+UNUSED static int
+is_nulling (Marpa_Symbol_ID id)
+{
+    if (id == S_C1)
+        return 1;
+    if (id == S_C2)
+        return 1;
+    return 0;
+}
+
 static Marpa_Grammar
-marpa_g_simple_new (Marpa_Config * config)
+marpa_g_trivial_new (Marpa_Config * config)
 {
     Marpa_Grammar g;
     g = marpa_g_new (config);
@@ -111,14 +142,6 @@ marpa_g_simple_new (Marpa_Config * config)
         fail ("marpa_g_symbol_new", g);
     }
 
-    /*
-     * top ::= A1
-     * top ::= A2
-     * A1  ::= B1
-     * A2  ::= B2
-     * B1  ::= C1
-     * B2  ::= C2
-     */
     rhs[0] = S_A1;
     if ((R_top_1 = marpa_g_rule_new (g, S_top, rhs, 1)) < 0) {
         fail ("marpa_g_rule_new", g);
@@ -143,12 +166,19 @@ marpa_g_simple_new (Marpa_Config * config)
     if (marpa_g_rule_new (g, S_B2, rhs, 1) < 0) {
         fail ("marpa_g_rule_new", g);
     }
+    if (marpa_g_rule_new (g, S_C1, rhs, 0) < 0) {
+        fail ("marpa_g_rule_new", g);
+    }
+
+    if ((R_C2_3 = marpa_g_rule_new (g, S_C2, rhs, 0)) < 0) {
+        fail ("marpa_g_rule_new", g);
+    }
 
     return g;
 }
 
 static Marpa_Error_Code
-marpa_g_simple_precompute (Marpa_Grammar g, Marpa_Symbol_ID S_start)
+marpa_g_trivial_precompute (Marpa_Grammar g, Marpa_Symbol_ID S_start)
 {
     Marpa_Error_Code rc;
 
@@ -163,125 +193,159 @@ marpa_g_simple_precompute (Marpa_Grammar g, Marpa_Symbol_ID S_start)
     return rc;
 }
 
+static void
+defaults_reset (API_test_data * defaults, Marpa_Grammar g)
+{
+    defaults->g = g;
+    defaults->expected_errcode = MARPA_ERR_NONE;
+    defaults->msg = (char *) "";
+    defaults->rv_seen.int_rv = -86;
+}
+
 int
 main (int argc, char *argv[])
 {
     int rc;
-    int flag;
 
     Marpa_Config marpa_configuration;
     Marpa_Grammar g;
     Marpa_Recognizer r;
     Marpa_Bocage b;
     Marpa_Order o;
-
-    Marpa_Symbol_ID S_token = S_A2;
+    Marpa_Tree t;
+    Marpa_Value v;
 
     API_test_data defaults;
     API_test_data this_test;
 
-    plan (20);
+    plan (34);
 
     marpa_c_init (&marpa_configuration);
-    g = marpa_g_simple_new (&marpa_configuration);
-
-    defaults.g = g;
-    defaults.expected_errcode = MARPA_ERR_NONE;
-    defaults.msg = (char *) "";
-    defaults.rv_seen.int_rv = -86;
-
+    g = marpa_g_trivial_new (&marpa_configuration);
+    defaults_reset (&defaults, g);
     this_test = defaults;
 
-    marpa_g_simple_precompute (g, S_top);
+    /* precomputation */
+    marpa_g_trivial_precompute (g, S_top);
     ok (1, "precomputation succeeded");
 
+    API_STD_TEST0 (defaults, 0, MARPA_ERR_NONE, marpa_g_force_valued, g);
+
+    /* Recognizer Methods */
     r = marpa_r_new (g);
     if (!r)
         fail ("marpa_r_new", g);
 
-    this_test.msg = (char *) "before marpa_r_start_input()";
-    API_CODE_TEST3 (this_test, MARPA_ERR_RECCE_NOT_ACCEPTING_INPUT,
-        marpa_r_alternative, r, S_token, 0, 0);
-
+    /* start the recce */
     rc = marpa_r_start_input (r);
     if (!rc)
         fail ("marpa_r_start_input", g);
 
-    {
-        Marpa_Symbol_ID S_expected = S_A2;
-        int value = 1;
-        API_STD_TEST2 (this_test, value, MARPA_ERR_NONE,
-            marpa_r_expected_symbol_event_set, r, S_expected, value);
-    }
-
-    /* recognizer reading methods on invalid and missing symbols */
-
-    this_test.msg =
-        (char *) "invalid token symbol is checked before no-such";
-    API_CODE_TEST3 (this_test, MARPA_ERR_INVALID_SYMBOL_ID,
-        marpa_r_alternative, r, S_invalid, 0, 0);
-    this_test.msg = (char *) "no such token symbol";
-    API_CODE_TEST3 (this_test, MARPA_ERR_NO_SUCH_SYMBOL_ID,
-        marpa_r_alternative, r, S_no_such, 0, 0);
-    this_test.msg =
-        (char *) marpa_m_error_message (MARPA_ERR_TOKEN_LENGTH_LE_ZERO);
-    API_CODE_TEST3 (this_test, MARPA_ERR_TOKEN_LENGTH_LE_ZERO,
-        marpa_r_alternative, r, S_token, 0, 0);
-
-
-    API_STD_TEST0 (defaults, -2, MARPA_ERR_PARSE_EXHAUSTED,
-        marpa_r_earleme_complete, r);
-
-    /* re-create the recce and try some input */
-    marpa_r_unref(r);
-    r = marpa_r_new (g);
-    if (!r)
-        fail ("marpa_r_new", g);
-
-    rc = marpa_r_start_input (r);
-    if (!rc)
-        fail ("marpa_r_start_input", g);
+    diag ("The below recce tests are at earleme 0");
 
     this_test = defaults;
-    API_CODE_TEST3 (this_test, MARPA_ERR_NONE,
-        marpa_r_alternative, r, S_C1, 1, 1);
 
-    API_STD_TEST0 (defaults, 1, MARPA_ERR_NONE,
-        marpa_r_earleme_complete, r);
+    API_STD_TEST0 (defaults, 0, MARPA_ERR_NONE, marpa_r_latest_earley_set,
+        r);
 
-    /* marpa_o_high_rank_only_* */
-    b = marpa_b_new (r, marpa_r_current_earleme (r));
+    this_test.msg = (char *) "at earleme 0";
+    API_STD_TEST0 (this_test, 1, MARPA_ERR_NONE, marpa_r_is_exhausted, r);
+
+    /* Bocage */
+    b = marpa_b_new (r, -1);
     if (!b)
         fail ("marpa_b_new", g);
+    else
+        ok (1, "marpa_b_new(): parse at current earleme of trivial parse");
+
+    marpa_b_unref (b);
+
+    b = marpa_b_new (r, 0);
+
+    if (!b)
+        fail ("marpa_b_new", g);
+    else
+        ok (1, "marpa_b_new(): null parse at earleme 0");
 
     API_STD_TEST0 (defaults, 1, MARPA_ERR_NONE,
         marpa_b_ambiguity_metric, b);
-    API_STD_TEST0 (defaults, 0, MARPA_ERR_NONE, marpa_b_is_null, b);
+    API_STD_TEST0 (defaults, 1, MARPA_ERR_NONE, marpa_b_is_null, b);
 
+    /* Order */
     o = marpa_o_new (b);
-    ok (o != NULL, "marpa_o_new(): ordering at earleme 0");
 
-    flag = 1;
-    API_STD_TEST1 (defaults, flag, MARPA_ERR_NONE,
-        marpa_o_high_rank_only_set, o, flag);
-    API_STD_TEST0 (defaults, flag, MARPA_ERR_NONE,
-        marpa_o_high_rank_only, o);
+    if (!o)
+        fail ("marpa_o_new", g);
+    else
+        ok (1, "marpa_o_new() at earleme 0");
+
+    API_STD_TEST1 (defaults, 1, MARPA_ERR_NONE,
+        marpa_o_high_rank_only_set, o, 1);
+    API_STD_TEST0 (defaults, 1, MARPA_ERR_NONE, marpa_o_high_rank_only, o);
 
     API_STD_TEST0 (defaults, 1, MARPA_ERR_NONE,
         marpa_o_ambiguity_metric, o);
-    API_STD_TEST0 (defaults, 0, MARPA_ERR_NONE, marpa_o_is_null, o);
+    API_STD_TEST0 (defaults, 1, MARPA_ERR_NONE, marpa_o_is_null, o);
 
     API_STD_TEST1 (defaults, -2, MARPA_ERR_ORDER_FROZEN,
-        marpa_o_high_rank_only_set, o, flag);
-    API_STD_TEST0 (defaults, flag, MARPA_ERR_NONE,
-        marpa_o_high_rank_only, o);
+        marpa_o_high_rank_only_set, o, 1);
+    API_STD_TEST0 (defaults, 1, MARPA_ERR_NONE, marpa_o_high_rank_only, o);
 
+    /* Tree */
+    t = marpa_t_new (o);
+    if (!t)
+        fail ("marpa_t_new", g);
+    else
+        ok (1, "marpa_t_new() at earleme 0");
+
+    this_test.msg = (char *) "before the first parse tree";
+    API_STD_TEST0 (this_test, 0, MARPA_ERR_NONE, marpa_t_parse_count, t);
+    API_STD_TEST0 (defaults, 0, MARPA_ERR_NONE, marpa_t_next, t);
+
+    /* Value */
+    v = marpa_v_new (t);
+    if (!t)
+        fail ("marpa_v_new", g);
+    else
+        ok (1, "marpa_v_new() at earleme 0");
+
+    {
+        Marpa_Step_Type step_type = marpa_v_step (v);
+        is_int (MARPA_STEP_NULLING_SYMBOL, step_type,
+            "MARPA_STEP_NULLING_SYMBOL step.");
+
+        is_int (0, marpa_v_result (v), "marpa_v_result(v)");
+        is_int (MARPA_STEP_NULLING_SYMBOL, marpa_v_step_type (v),
+            "marpa_v_step_type(v)");
+        is_int (0, marpa_v_symbol (v), "marpa_v_symbol(v)");
+        is_int (0, marpa_v_es_id (v), "marpa_v_es_id(v)");
+        is_int (0, marpa_v_token_start_es_id (v),
+            "marpa_v_token_start_es_id(v)");
+
+        step_type = marpa_v_step (v);
+        is_int (MARPA_STEP_INACTIVE, step_type,
+            "MARPA_STEP_INACTIVE step.");
+
+        step_type = marpa_v_step (v);
+        is_int (MARPA_STEP_INACTIVE, step_type,
+            "MARPA_STEP_INACTIVE step after retry of marpa_v_step().");
+    }
+
+    API_STD_TEST0 (defaults, 1, MARPA_ERR_NONE, marpa_t_parse_count, t);
+    API_STD_TEST0 (defaults, -2, MARPA_ERR_TREE_PAUSED, marpa_t_next, t);
+
+    marpa_v_unref (v);
+
+    API_STD_TEST0 (defaults, 1, MARPA_ERR_NONE, marpa_t_parse_count, t);
+    API_STD_TEST0 (defaults, -1, MARPA_ERR_TREE_EXHAUSTED, marpa_t_next,
+        t);
 
     /* Needed for ASan test */
-    marpa_o_unref(o);
-    marpa_b_unref(b);
-    marpa_r_unref(r);
-    marpa_g_unref(g);
+    marpa_t_unref (t);
+    marpa_o_unref (o);
+    marpa_b_unref (b);
+    marpa_r_unref (r);
+    marpa_g_unref (g);
 
     return 0;
 }
