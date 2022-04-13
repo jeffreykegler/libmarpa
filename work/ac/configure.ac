@@ -143,7 +143,7 @@ fi
 # The following were suggested by autoscan
 AC_CHECK_FUNCS([memset])
 
-AC_CONFIG_FILES( [Makefile LIB_VERSION])
+AC_CONFIG_FILES( [Makefile LIB_VERSION libmarpa.pc])
 AC_OUTPUT
 
 # vim: expandtab shiftwidth=4:

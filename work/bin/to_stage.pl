@@ -101,6 +101,8 @@ stage/ChangeLog: ac/ChangeLog
 stage/NEWS: ac/NEWS
 stage/README: ac/README
 stage/LIB_VERSION.in: public/LIB_VERSION.in
+stage/README.INSTALL: notes/README.INSTALL
+stage/libmarpa.pc.in: etc/libmarpa.pc.in
 doc/README: ac_doc/README
 doc/NEWS: ac_doc/NEWS
 doc/AUTHORS: ac_doc/AUTHORS
@@ -113,4 +115,3 @@ doc1/AUTHORS: ac_doc1/AUTHORS
 doc1/ChangeLog: ac_doc1/ChangeLog
 doc1/api.texi: dev/api.texi
 doc1/internal.texi: dev/internal.texi
-stage/README.INSTALL: notes/README.INSTALL

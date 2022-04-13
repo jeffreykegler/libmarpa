@@ -18,7 +18,7 @@
 # ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 # OTHER DEALINGS IN THE SOFTWARE.
 
-# Copy things into stage/
+# Copy things into cm_dist/
 # It makes more sense to do this in Perl than in the Makefile
 
 use 5.010;
@@ -56,7 +56,7 @@ FILE: while ( my $copy = <DATA> ) {
 __DATA__
 cm_dist/marpa.c: work/dev/marpa.c
 cm_dist/include/marpa.h: work/public/marpa.h
-cm_dist/libmarpa.pc.in: cmake/libmarpa.pc.in
+cm_dist/libmarpa.pc.in: work/etc/libmarpa.pc.in
 cm_dist/marpa_obs.c: work/obs/marpa_obs.c
 cm_dist/marpa_obs.h: work/obs/marpa_obs.h
 cm_dist/marpa_ami.c: work/ami/marpa_ami.c
