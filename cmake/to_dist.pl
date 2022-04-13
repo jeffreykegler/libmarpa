@@ -71,7 +71,6 @@ cm_dist/events.table: work/public/events.table
 cm_dist/COPYING.LESSER: work/obs/COPYING.LESSER
 cm_dist/COPYING: work/shared/COPYING
 cm_dist/README: work/ac/README
-cm_dist/LIB_VERSION.cmake: cmake/LIB_VERSION.cmake
 cm_dist/CMakeLists.txt: cmake/CMakeLists.txt
 cm_dist/config.h.cmake: cmake/config.h.cmake
 cm_dist/modules/FindInline.cmake: cmake/modules/FindInline.cmake

@@ -73,8 +73,6 @@ CHECK_INCLUDE_FILE("inttypes.h" HAVE_INTTYPES_H)
 ADD_DEFINITIONS(-DHAVE_CONFIG_H=1)
 CONFIGURE_FILE(config.h.cmake config.h)
 
-CONFIGURE_FILE(LIB_VERSION.cmake LIB_VERSION)
-
 SET(libmarpa_src
     marpa.c marpa_tavl.c
     marpa_ami.c marpa_obs.c marpa_avl.c )
