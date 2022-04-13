@@ -100,8 +100,8 @@ stage/COPYING.LESSER: obs/COPYING.LESSER
 stage/ChangeLog: ac/ChangeLog
 stage/NEWS: ac/NEWS
 stage/README: ac/README
-stage/LIB_VERSION.in: public/LIB_VERSION.in
-stage/README.INSTALL: notes/README.INSTALL
+stage/LIB_VERSION.in: etc/LIB_VERSION.in
+stage/README.INSTALL: etc/README.INSTALL
 stage/libmarpa.pc.in: etc/libmarpa.pc.in
 doc/README: ac_doc/README
 doc/NEWS: ac_doc/NEWS
