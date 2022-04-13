@@ -104,6 +104,9 @@ stage/README: ac/README
 stage/LIB_VERSION.in: etc/LIB_VERSION.in
 stage/README.INSTALL: etc/README.INSTALL
 stage/libmarpa.pc.in: etc/libmarpa.pc.in
+stage/error_codes.table: public/error_codes.table
+stage/events.table: public/events.table
+stage/steps.table: public/steps.table
 doc/README: ac_doc/README
 doc/NEWS: ac_doc/NEWS
 doc/AUTHORS: ac_doc/AUTHORS
