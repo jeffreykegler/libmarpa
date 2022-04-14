@@ -95,7 +95,6 @@ is_nullable (Marpa_Symbol_ID id)
 int
 main (int argc, char *argv[])
 {
-    int i;
     int rc;
     const char *error_string;
 
@@ -106,7 +105,7 @@ main (int argc, char *argv[])
     /* Longest rule is <= 4 symbols */
     Marpa_Symbol_ID rhs[4];
 
-    plan (13);
+    plan (20);
 
     marpa_c_init (&marpa_configuration);
     g = marpa_g_new (&marpa_configuration);
@@ -217,15 +216,29 @@ main (int argc, char *argv[])
     {
         Marpa_Event event;
         const int highest_symbol_id = marpa_g_highest_symbol_id (g);
-        int exhausted_event_triggered = 0;
-        int spurious_events = 0;
-        int spurious_nulled_events = 0;
+        int exhausted_events_triggered = 0;
+        int spurious_events_triggered = 0;
+        int symbol_nulled_events_triggered = 0;
         int event_ix;
         const int event_count = marpa_g_event_count (g);
-        int *nulled_symbols =
-            calloc ((size_t) (highest_symbol_id + 1), sizeof (int));
+        struct sym_data
+        {
+            int expected;
+            int seen;
+        };
+
+        struct sym_data *nulled_symbols =
+            calloc ((size_t) (highest_symbol_id + 1),
+            sizeof (struct sym_data));
         if (!nulled_symbols)
             abort ();
+	nulled_symbols[S_top].expected = 1;
+	nulled_symbols[S_A1].expected = 1;
+	nulled_symbols[S_A2].expected = 1;
+	nulled_symbols[S_B1].expected = 1;
+	nulled_symbols[S_B2].expected = 1;
+	nulled_symbols[S_C1].expected = 1;
+	nulled_symbols[S_C2].expected = 1;
         ok ((event_count == 8), "event count at earleme 0 is %ld",
             (long) event_count);
         for (event_ix = 0; event_ix < event_count; event_ix++) {
@@ -233,35 +246,58 @@ main (int argc, char *argv[])
             if (event_type == MARPA_EVENT_SYMBOL_NULLED) {
                 const Marpa_Symbol_ID event_symbol_id =
                     marpa_g_event_value (&event);
-                nulled_symbols[event_symbol_id]++;
+                const char *event_symbol_name =
+                    symbol_name (event_symbol_id);
+                if (is_nullable (event_symbol_id)) {
+                    ok (1, "nulled event for nullable symbol %s",
+                        event_symbol_name);
+                } else {
+                    ok (0, "nulled event for non-nullable symbol %s",
+                        event_symbol_name);
+                }
+                nulled_symbols[event_symbol_id].seen++;
+                if (!nulled_symbols[event_symbol_id].expected) {
+                    diag ("Unexpected nulled symbol event for symbol %s",
+                        event_symbol_name);
+                }
+                symbol_nulled_events_triggered++;
                 continue;
             }
             if (event_type == MARPA_EVENT_EXHAUSTED) {
-                exhausted_event_triggered++;
+                exhausted_events_triggered++;
                 continue;
             }
             printf ("event type is %ld\n", (long) event_type);
-            spurious_events++;
+            spurious_events_triggered++;
         }
-        ok ((spurious_events == 0),
-            "spurious events triggered: %ld", (long) spurious_events);
-        ok (exhausted_event_triggered, "exhausted event triggered");
-        for (i = 0; i <= highest_symbol_id; i++) {
-            if (is_nullable (i)) {
-                ok (1, "nulled event triggered for %s", symbol_name (i));
-                continue;
+        is_int (0, spurious_events_triggered,
+            "spurious events triggered: %ld",
+            (long) spurious_events_triggered);
+        if (exhausted_events_triggered == 1) {
+            ok (1, "exhausted event triggered");
+        } else {
+            ok (0, "%ld exhausted events triggered",
+                (long) exhausted_events_triggered);
+        }
+        {
+            int i;
+            for (i = 0; i <= highest_symbol_id; i++) {
+                if (nulled_symbols[i].expected == 0
+                    || nulled_symbols[i].seen == 0)
+                    continue;
+                is_int (nulled_symbols[i].expected, nulled_symbols[i].seen,
+                    "nulled events count for symbol %s", symbol_name (i));
             }
-            spurious_nulled_events++;
         }
-        ok ((spurious_nulled_events == 0),
-            "spurious nulled events triggered = %ld",
-            (long) spurious_nulled_events);
+        is_int (7, symbol_nulled_events_triggered,
+            "symbol nulled events triggered = %ld",
+            (long) symbol_nulled_events_triggered);
         free (nulled_symbols);
     }
 
     /* Needed for ASan test */
-    marpa_r_unref(r);
-    marpa_g_unref(g);
+    marpa_r_unref (r);
+    marpa_g_unref (g);
 
     return 0;
 }

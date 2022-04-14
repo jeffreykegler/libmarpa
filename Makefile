@@ -64,7 +64,7 @@ doc1_dist: doc1_tar
 	sh etc/work_to_doc1_dist.sh
 
 timestamp/cm_dist.stamp: timestamp/tars.stamp
-	@echo cm_dist Out of date wrt tar
+	@echo cm_dist Out of date wrt tars
 	@echo tars time stamp: `cat timestamp/tars.stamp`
 	@echo cm_dist time stamp: `cat timestamp/cm_dist.stamp`
 	perl cmake/to_dist.pl --verbose
@@ -84,10 +84,10 @@ tag:
 
 cm_dist: timestamp/cm_dist.stamp
 
-timestamp/cm_debug.stamp: cm_dist
+timestamp/cm_debug.stamp: timestamp/cm_dist.stamp
 	@echo cm_debug Out of date wrt cm_dist
 	@echo cm_dist time stamp: `cat timestamp/cm_dist.stamp`
-	@echo cm_debug time stamp: `cat timestamp/cm_dist.stamp`
+	@echo cm_debug time stamp: `cat timestamp/cm_debug.stamp`
 	rm -rf cm_build
 	mkdir cm_build
 	cd cm_build && cmake -DCMAKE_BUILD_TYPE:STRING=Debug ../cm_dist && make VERBOSE=1
@@ -97,25 +97,24 @@ timestamp/cm_debug.stamp: cm_dist
 	date > timestamp/cm_debug.stamp
 	@echo Updating cm_debug time stamp: `cat timestamp/cm_debug.stamp`
 
-timestamp/do_asan.stamp: timestamp/cm_debug.stamp
+asan: timestamp/cm_debug.stamp
 	rm -rf do_test
 	mkdir do_test
 	cd do_test && cmake -DCMAKE_BUILD_TYPE:STRING=Asan ../test && make VERBOSE=1
-	date > timestamp/do_asan.stamp
-	# Share the do_test time stamp
-	@echo Updating do_test time stamp: `cat timestamp/do_test.stamp`
+	cd do_test && make && ./tap/runtests -l ../test/TESTS
 
-timestamp/do_test.stamp: timestamp/cm_debug.stamp
+timestamp/test.stamp: timestamp/cm_debug.stamp
+	@echo test Out of date wrt cm_debug
+	@echo cm_debug time stamp: `cat timestamp/cm_debug.stamp`
+	@echo test time stamp: `cat timestamp/test.stamp`
 	rm -rf do_test
 	mkdir do_test
 	cd do_test && cmake ../test && make VERBOSE=1
-	date > timestamp/do_test.stamp
-	@echo Updating do_test time stamp: `cat timestamp/do_test.stamp`
+	-rm timestamp/asan_test.stamp
+	date > timestamp/test.stamp
+	@echo Updating test time stamp: `cat timestamp/test.stamp`
 
-asan: timestamp/do_asan.stamp
-	cd do_test && make && ./tap/runtests -l ../test/TESTS
-
-test: timestamp/do_test.stamp
+test: timestamp/test.stamp
 	cd do_test && make && ./tap/runtests -l ../test/TESTS
 
 test_clean:
