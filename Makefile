@@ -19,32 +19,42 @@
 
 version=`cat LIB_VERSION`
 
-.PHONY: dummy dist doc_dist doc1_dist cm_dist test tar work_install
+.PHONY: dummy dist doc_dist doc1_dist cm_dist test tars
 
 dummy:
 	@echo The target to make the distributions is '"dists"'
 
 dists: dist doc_dist doc1_dist cm_dist
 
-work_install:
+timestamp/stage.stamp:
 	(cd work; make install)
+	date > timestamp/stage.stamp
+	@echo Updating stage time stamp: `cat timestamp/stage.stamp`
 
-tar: work_install timestamp/tar.stamp
+tars: timestamp/tars.stamp timestamp/doc.stamp timestamp/doc1.stamp
 
-timestamp/tar.stamp: work/doc/doc.stamp \
-  work/doc1/doc1.stamp \
-  work/stage/stage.stamp
+timestamp/tars.stamp: timestamp/doc.stamp \
+  timestamp/doc1.stamp \
+  timestamp/stage.stamp
 	cp work/stage/libmarpa-$(version).tar.gz .
-	test -d timestamp || mkdir timestamp
-	date > timestamp/tar.stamp
+	date > timestamp/tars.stamp
+	@echo Updating tars time stamp: `cat timestamp/tars.stamp`
 
-doc_tar: work_install
+doc_tar: timestamp/doc.stamp
+
+timestamp/doc.stamp:
 	cp work/doc/libmarpa-doc-$(version).tar.gz .
+	date > timestamp/doc.stamp
+	@echo Updating doc time stamp: `cat timestamp/doc.stamp`
 
-doc1_tar: work_install
+doc1_tar: timestamp/doc1.stamp
+
+timestamp/doc1.stamp:
 	cp work/doc1/libmarpa-doc1-$(version).tar.gz .
+	date > timestamp/doc1.stamp
+	@echo Updating doc1 time stamp: `cat timestamp/doc1.stamp`
 
-dist: tar
+dist: tars
 	sh etc/work_to_dist.sh
 
 doc_dist: doc_tar
@@ -53,10 +63,13 @@ doc_dist: doc_tar
 doc1_dist: doc1_tar
 	sh etc/work_to_doc1_dist.sh
 
-timestamp/cm_dist.stamp: timestamp/tar.stamp
+timestamp/cm_dist.stamp: timestamp/tars.stamp
+	@echo cm_dist Out of date wrt tar
+	@echo tars time stamp: `cat timestamp/tars.stamp`
+	@echo cm_dist time stamp: `cat timestamp/cm_dist.stamp`
 	perl cmake/to_dist.pl --verbose
-	test -d timestamp || mkdir timestamp
 	date > timestamp/cm_dist.stamp
+	@echo Updating cm_dist time stamp: `cat timestamp/cm_dist.stamp`
 
 distcheck:
 	perl etc/license_check.pl  --verbose=0 `find Makefile cm_dist dist doc_dist doc1_dist -type f`
@@ -72,31 +85,37 @@ tag:
 cm_dist: timestamp/cm_dist.stamp
 
 timestamp/cm_debug.stamp: cm_dist
+	@echo cm_debug Out of date wrt cm_dist
+	@echo cm_dist time stamp: `cat timestamp/cm_dist.stamp`
+	@echo cm_debug time stamp: `cat timestamp/cm_dist.stamp`
 	rm -rf cm_build
 	mkdir cm_build
 	cd cm_build && cmake -DCMAKE_BUILD_TYPE:STRING=Debug ../cm_dist && make VERBOSE=1
 	cd cm_build && make DESTDIR=../test install
-	test -d timestamp || mkdir timestamp
+	# Shares a directory with the cm_build time stamp
+	-rm timestamp/cm_build.stamp
 	date > timestamp/cm_debug.stamp
+	@echo Updating cm_debug time stamp: `cat timestamp/cm_debug.stamp`
 
 timestamp/do_asan.stamp: timestamp/cm_debug.stamp
 	rm -rf do_test
 	mkdir do_test
 	cd do_test && cmake -DCMAKE_BUILD_TYPE:STRING=Asan ../test && make VERBOSE=1
-	test -d timestamp || mkdir timestamp
 	date > timestamp/do_asan.stamp
+	# Share the do_test time stamp
+	@echo Updating do_test time stamp: `cat timestamp/do_test.stamp`
 
 timestamp/do_test.stamp: timestamp/cm_debug.stamp
 	rm -rf do_test
 	mkdir do_test
 	cd do_test && cmake ../test && make VERBOSE=1
-	test -d timestamp || mkdir timestamp
 	date > timestamp/do_test.stamp
+	@echo Updating do_test time stamp: `cat timestamp/do_test.stamp`
 
-asan: work_install timestamp/do_asan.stamp
+asan: timestamp/do_asan.stamp
 	cd do_test && make && ./tap/runtests -l ../test/TESTS
 
-test: work_install timestamp/do_test.stamp
+test: timestamp/do_test.stamp
 	cd do_test && make && ./tap/runtests -l ../test/TESTS
 
 test_clean:
@@ -116,5 +135,6 @@ clean:
 	rm -rf cm_dist
 	rm -rf do_test
 	rm -rf timestamp
+	mkdir timestamp # leave an empty directory
 
 realclean: dist_clean test_clean tar_clean
