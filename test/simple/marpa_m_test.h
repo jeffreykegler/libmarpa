@@ -38,7 +38,8 @@ const char *marpa_m_error_message (Marpa_Error_Code error_code);
 
 typedef union {
     void *ptr_rv;
-    int int_rv;
+    long long_rv;
+    long ulong_rv;
 } API_RV;
 
 typedef struct api_test_data {
@@ -60,32 +61,38 @@ void rv_ptr_report (API_test_data * td, const char *name,
 
 #define API_STD_TEST0(test_data, rv_wanted, err_wanted, method, object) \
 { \
-   test_data.rv_seen.int_rv = (int)method(object); \
+   test_data.rv_seen.long_rv = method(object); \
+   rv_std_report(&test_data, #method , rv_wanted, err_wanted); \
+}
+
+#define API_STD_TEST0U(test_data, rv_wanted, err_wanted, method, object) \
+{ \
+   test_data.rv_seen.ulong_rv = method(object); \
    rv_std_report(&test_data, #method , rv_wanted, err_wanted); \
 }
 
 #define API_STD_TEST1(test_data, rv_wanted, err_wanted, method, object, arg1) \
 { \
-   test_data.rv_seen.int_rv = (int)method(object, arg1); \
+   test_data.rv_seen.long_rv = method(object, arg1); \
    rv_std_report(&test_data, #method , rv_wanted, err_wanted); \
 }
 
 #define API_STD_TEST2(test_data, rv_wanted, err_wanted, method, object, arg1, arg2) \
 { \
-   test_data.rv_seen.int_rv = (int)method(object, arg1, arg2); \
+   test_data.rv_seen.long_rv = method(object, arg1, arg2); \
    rv_std_report(&test_data, #method , rv_wanted, err_wanted); \
 }
 
 #define API_STD_TEST3(test_data, rv_wanted, err_wanted, method, object, arg1, arg2, arg3) \
 { \
-   test_data.rv_seen.int_rv = (int)method(object, arg1, arg2, arg3); \
+   test_data.rv_seen.long_rv = method(object, arg1, arg2, arg3); \
    rv_std_report(&test_data, #method , rv_wanted, err_wanted); \
 }
 
 #define API_STD_TEST5(test_data, rv_wanted, err_wanted, method, object, \
   arg1, arg2, arg3, arg4, arg5) \
 { \
-   test_data.rv_seen.int_rv = (int)method(object, arg1, arg2, arg3, arg4, arg5); \
+   test_data.rv_seen.long_rv = method(object, arg1, arg2, arg3, arg4, arg5); \
    rv_std_report(&test_data, #method , rv_wanted, err_wanted); \
 }
 
@@ -97,13 +104,13 @@ void rv_ptr_report (API_test_data * td, const char *name,
 
 #define API_HIDDEN_TEST1(test_data, rv_wanted, err_wanted, method, object, arg1 ) \
 { \
-   test_data.rv_seen.int_rv = (int)method(object, arg1 ); \
+   test_data.rv_seen.long_rv = method(object, arg1 ); \
    rv_hidden_report(&test_data, #method , rv_wanted, err_wanted); \
 }
 
 #define API_HIDDEN_TEST2(test_data, rv_wanted, err_wanted, method, object, arg1, arg2 ) \
 { \
-   test_data.rv_seen.int_rv = (int)method(object, arg1, arg2 ); \
+   test_data.rv_seen.long_rv = method(object, arg1, arg2 ); \
    rv_hidden_report(&test_data, #method , rv_wanted, err_wanted); \
 }
 

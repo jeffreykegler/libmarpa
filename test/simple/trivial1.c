@@ -169,7 +169,7 @@ defaults_reset (API_test_data * defaults, Marpa_Grammar g)
     defaults->g = g;
     defaults->expected_errcode = MARPA_ERR_NONE;
     defaults->msg = (char *) "";
-    defaults->rv_seen.int_rv = -86;
+    defaults->rv_seen.long_rv = -86;
 }
 
 int
@@ -752,7 +752,7 @@ main (int argc, char *argv[])
     API_STD_TEST0 (defaults, current_earleme, MARPA_ERR_NONE,
         marpa_r_current_earleme, r);
 
-    API_STD_TEST0 (defaults, furthest_earleme, MARPA_ERR_NONE,
+    API_STD_TEST0U (defaults, furthest_earleme, MARPA_ERR_NONE,
         marpa_r_furthest_earleme, r);
 
     API_STD_TEST0 (defaults, furthest_earleme, MARPA_ERR_NONE,

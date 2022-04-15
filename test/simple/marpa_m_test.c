@@ -216,7 +216,7 @@ void
 rv_std_report (API_test_data * td, const char *name, int rv_wanted,
     Marpa_Error_Code err_wanted)
 {
-    int rv_seen = td->rv_seen.int_rv;
+    long rv_seen = td->rv_seen.long_rv;
     int err_seen = marpa_g_error (td->g, NULL);
     const char *err_msg = marpa_m_error_message (err_seen);
     char *msg = sep_msg (td->msg);
@@ -227,37 +227,37 @@ rv_std_report (API_test_data * td, const char *name, int rv_wanted,
                 ok (1, "%s() success as expected%s", name, msg);
             } else {
                 ok (0,
-                    "%s() success as expected but wrong value, wanted = %d, got %d%s",
-                    name, rv_wanted, rv_seen, msg);
+                    "%s() success as expected but wrong value, wanted = %ld, got %ld; %s",
+                    name, (long)rv_wanted, rv_seen, msg);
             }
             return;
         }
-        ok (0, "%s() unexpected success; value wanted = %d, got %d%s",
-            name, rv_wanted, rv_seen, msg);
+        ok (0, "%s() unexpected success; value wanted = %ld, got %ld; %s",
+            name, (long)rv_wanted, rv_seen, msg);
         return;
     }
     /* If here, the call failed */
     if (rv_wanted >= 0) {
         ok (0,
-            "%s() unexpected failure; got return %d, expected %d; error = %s%s",
-            name, rv_seen, rv_wanted, err_msg, msg);
+            "%s() unexpected failure; got return %ld, expected %ld; error = %s%s",
+            name, rv_seen, (long)rv_wanted, err_msg, msg);
         return;
     }
     /* If here, the call failed and was expected to fail */
     if (rv_wanted == rv_seen) {
-        ok (1, "%s() expected failure; value = %d as expected%s", name,
+        ok (1, "%s() expected failure; value = %ld as expected; %s", name,
             rv_seen, msg);
     } else {
-        ok (0, "%s() expected failure; value wanted = %d, but got %d%s",
-            name, rv_wanted, rv_seen, msg);
+        ok (0, "%s() expected failure; value wanted = %ld, but got %ld; %s",
+            name, (long)rv_wanted, rv_seen, msg);
     }
     if (err_wanted == err_seen) {
-        ok (1, "%s() expected failure; error as expected: '%s'%s", name,
+        ok (1, "%s() expected failure; error as expected: '%s'; %s", name,
             err_msg, msg);
     } else {
         const char *wanted_err_msg = marpa_m_error_message (err_wanted);
         ok (0,
-            "%s() expected failure but unexpected error code: got '%s', expected '%s'%s",
+            "%s() expected failure but unexpected error code: got '%s', expected '%s'; %s",
             name, err_msg, wanted_err_msg, msg);
     }
 }
@@ -271,7 +271,7 @@ void
 rv_hidden_report (API_test_data * td, const char *name, int rv_wanted,
     Marpa_Error_Code err_wanted)
 {
-    int rv_seen = td->rv_seen.int_rv;
+    long rv_seen = td->rv_seen.long_rv;
     int err_seen = marpa_g_error (td->g, NULL);
     const char *err_msg = marpa_m_error_message (err_seen);
     char *msg = sep_msg (td->msg);
@@ -284,31 +284,31 @@ rv_hidden_report (API_test_data * td, const char *name, int rv_wanted,
                 ok (1, "%s() success as expected%s", name, msg);
             } else {
                 ok (0,
-                    "%s() success as expected, but wrong value, wanted = %d, got %d%s",
-                    name, rv_wanted, rv_seen, msg);
+                    "%s() success as expected, but wrong value, wanted = %ld, got %ld; %s",
+                    name, (long)rv_wanted, rv_seen, msg);
             }
             return;
         }
-        ok (0, "%s() unexpected success; value wanted = %d, got %d%s",
-            name, rv_wanted, rv_seen, msg);
+        ok (0, "%s() unexpected success; value wanted = %ld, got %ld%s",
+            name, (long)rv_wanted, rv_seen, msg);
         return;
     }
     /* If here, the call failed */
     if (success_wanted) {
         ok (0,
-            "%s() unexpected failure; got return %d, expected %d; error = %s%s",
-            name, rv_seen, rv_wanted, err_msg, msg);
+            "%s() unexpected failure; got return %ld, expected %ld; error = %s%s",
+            name, rv_seen, (long)rv_wanted, err_msg, msg);
         ok (0, "%s() unexpected failure; error code: '%s'%s", name,
             err_msg, msg);
         return;
     }
     /* If here, the call failed and was expected to fail */
     if (rv_wanted == rv_seen) {
-        ok (1, "%s() expected failure; value = %d as expected%s", name,
+        ok (1, "%s() expected failure; value = %ld as expected%s", name,
             rv_seen, msg);
     } else {
-        ok (0, "%s() expected failure; value wanted = %d, but got %d%s",
-            name, rv_wanted, rv_seen, msg);
+        ok (0, "%s() expected failure; value wanted = %ld, but got %ld%s",
+            name, (long)rv_wanted, rv_seen, msg);
     }
     if (err_wanted == err_seen) {
         ok (1, "%s() expected failure; error as expected: '%s'%s", name,

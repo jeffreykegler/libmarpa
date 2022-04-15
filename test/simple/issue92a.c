@@ -199,7 +199,7 @@ defaults_reset (API_test_data * defaults, Marpa_Grammar g)
     defaults->g = g;
     defaults->expected_errcode = MARPA_ERR_NONE;
     defaults->msg = (char *) "";
-    defaults->rv_seen.int_rv = -86;
+    defaults->rv_seen.long_rv = -86;
 }
 
 int

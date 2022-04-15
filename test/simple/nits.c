@@ -188,7 +188,7 @@ main (int argc, char *argv[])
     defaults.g = g;
     defaults.expected_errcode = MARPA_ERR_NONE;
     defaults.msg = (char *) "";
-    defaults.rv_seen.int_rv = -86;
+    defaults.rv_seen.long_rv = -86;
 
     this_test = defaults;
 
