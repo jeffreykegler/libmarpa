@@ -17,9 +17,13 @@
 # ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 # OTHER DEALINGS IN THE SOFTWARE.
 
-version=`cat LIB_VERSION`
+MAJOR=8
+MINOR=6
+MICRO=2
+VERSION=$(MAJOR).$(MINOR).$(MICRO)
 
-.PHONY: dummy dist doc_dist doc1_dist cm_dist test tars
+.PHONY: dummy dist doc_dist doc1_dist cm_dist test tars \
+  version major minor micro
 
 dummy:
 	@echo The target to make the distributions is '"dists"'
@@ -36,21 +40,21 @@ tars: timestamp/tars.stamp timestamp/doc.stamp timestamp/doc1.stamp
 timestamp/tars.stamp: timestamp/stage.stamp \
   timestamp/doc.stamp \
   timestamp/doc1.stamp
-	cp work/stage/libmarpa-$(version).tar.gz .
+	cp work/stage/libmarpa-$(VERSION).tar.gz .
 	date > timestamp/tars.stamp
 	@echo Updating tars time stamp: `cat timestamp/tars.stamp`
 
 doc_tar: timestamp/doc.stamp
 
 timestamp/doc.stamp:
-	cp work/doc/libmarpa-doc-$(version).tar.gz .
+	cp work/doc/libmarpa-doc-$(VERSION).tar.gz .
 	date > timestamp/doc.stamp
 	@echo Updating doc time stamp: `cat timestamp/doc.stamp`
 
 doc1_tar: timestamp/doc1.stamp
 
 timestamp/doc1.stamp:
-	cp work/doc1/libmarpa-doc1-$(version).tar.gz .
+	cp work/doc1/libmarpa-doc1-$(VERSION).tar.gz .
 	date > timestamp/doc1.stamp
 	@echo Updating doc1 time stamp: `cat timestamp/doc1.stamp`
 
@@ -80,7 +84,7 @@ tar_clean:
 	rm -f work/stage/*.tar.gz
 
 tag:
-	git tag -a v$(version) -m "Version $(version)"
+	git tag -a v$(version) -m "Version $(VERSION)"
 
 cm_dist: timestamp/cm_dist.stamp
 
@@ -124,7 +128,7 @@ dist_clean: clean
 	rm -rf dist
 	rm -rf doc_dist
 	rm -rf doc1_dist
-	rm -f libmarpa-$(version).tar.gz libmarpa-doc-$(version).tar.gz libmarpa-doc1-$(version).tar.gz
+	rm -f libmarpa-$(VERSION).tar.gz libmarpa-doc-$(VERSION).tar.gz libmarpa-doc1-$(VERSION).tar.gz
 
 clean:
 	rm -rf work/doc
@@ -137,3 +141,17 @@ clean:
 	  mv timestamp.$$.temp/ABOUT_ME timestamp; rm -r timestamp.$$.temp
 
 realclean: dist_clean test_clean tar_clean
+
+# The following targets allow this Makefile to be used as
+# a utility for printing version numbers
+version:
+	@echo $(VERSION)
+
+major:
+	@echo $(MAJOR)
+
+minor:
+	@echo $(MINOR)
+
+micro:
+	@echo $(MICRO)
