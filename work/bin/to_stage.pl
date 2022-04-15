@@ -83,6 +83,7 @@ stage/Makefile.am: ac/Makefile.am
 stage/Makefile.win32: win32/Makefile.win32
 stage/win32/do_config_h.pl: win32/do_config_h.pl
 stage/marpa.c: dev/marpa.c
+stage/win32/README: dev/README
 stage/win32/marpa.def: dev/marpa.def
 stage/marpa.h: public/marpa.h
 stage/marpa_obs.c: obs/marpa_obs.c
@@ -101,7 +102,6 @@ stage/COPYING.LESSER: obs/COPYING.LESSER
 stage/ChangeLog: ac/ChangeLog
 stage/NEWS: ac/NEWS
 stage/README: ac/README
-stage/LIB_VERSION.in: etc/LIB_VERSION.in
 stage/README.INSTALL: etc/README.INSTALL
 stage/libmarpa.pc.in: etc/libmarpa.pc.in
 stage/error_codes.table: public/error_codes.table

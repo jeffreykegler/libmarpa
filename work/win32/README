@@ -1,0 +1,11 @@
+This directory contains files for adapting libmarpa to
+Win32.  The Win32 developer should note that testing on Win32 is
+*NOT* part of the test regime of libmarpa.
+These files are upstreamed to the libmarpa repo
+by Win32 users, and passed on in the hope that they will
+be useful.
+When changes
+are make to libmarpa, no tests are made to check if those
+changes break the install procedure suggested by these files.
+Nonetheless, it is hoped that the files in this directory will
+be better than nothing.
