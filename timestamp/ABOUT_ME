@@ -1,0 +1,3 @@
+This directory is dedicated to "timestamp" files.  The update times of
+these are "surrogates" for various processes whose time of occurrence
+cannot conveniently the identified with the update time of a single file.

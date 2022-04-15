@@ -33,9 +33,9 @@ timestamp/stage.stamp:
 
 tars: timestamp/tars.stamp timestamp/doc.stamp timestamp/doc1.stamp
 
-timestamp/tars.stamp: timestamp/doc.stamp \
-  timestamp/doc1.stamp \
-  timestamp/stage.stamp
+timestamp/tars.stamp: timestamp/stage.stamp \
+  timestamp/doc.stamp \
+  timestamp/doc1.stamp
 	cp work/stage/libmarpa-$(version).tar.gz .
 	date > timestamp/tars.stamp
 	@echo Updating tars time stamp: `cat timestamp/tars.stamp`
@@ -133,7 +133,7 @@ clean:
 	rm -rf cm_build
 	rm -rf cm_dist
 	rm -rf do_test
-	rm -rf timestamp
-	mkdir timestamp # leave an empty directory
+	mv timestamp timestamp.$$.temp; mkdir timestamp; \
+	  mv timestamp.$$.temp/ABOUT_ME timestamp; rm -r timestamp.$$.temp
 
 realclean: dist_clean test_clean tar_clean
