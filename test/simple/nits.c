@@ -88,7 +88,9 @@ marpa_g_simple_new (Marpa_Config * config)
         printf ("marpa_g_new returned %d", errcode);
         exit (1);
     }
-
+    if ( marpa_g_force_valued( g) < 0) {
+        fail ("marpa_g_force_valued", g);
+    }
     if ((S_top = marpa_g_symbol_new (g)) < 0) {
         fail ("marpa_g_symbol_new", g);
     }

@@ -39,7 +39,7 @@ const char *marpa_m_error_message (Marpa_Error_Code error_code);
 typedef union {
     void *ptr_rv;
     long long_rv;
-    long ulong_rv;
+    unsigned long ulong_rv;
 } API_RV;
 
 typedef struct api_test_data {

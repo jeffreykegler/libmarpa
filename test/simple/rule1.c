@@ -42,6 +42,9 @@ main (int argc, char *argv[])
         printf ("marpa_g_new: error %d", errcode);
         exit (1);
     }
+    if (marpa_g_force_valued( g) < 0) {
+        code_fail ("marpa_g_symbol_new", g);
+    }
 
     /* Symbols */
     if ((S_lhs = marpa_g_symbol_new (g)) < 0) {

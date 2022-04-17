@@ -115,6 +115,9 @@ main (int argc, char *argv[])
         printf ("marpa_g_new returned %d: %s", errcode, error_string);
         exit (1);
     }
+    if ( marpa_g_force_valued( g) < 0) {
+        fail ("marpa_g_force_valued", g);
+    }
 
     if ((S_top = marpa_g_symbol_new (g)) < 0) {
         fail ("marpa_g_symbol_new", g);

@@ -89,9 +89,7 @@ marpa_g_trivial_new (Marpa_Config * config)
         printf ("marpa_g_new returned %d", errcode);
         exit (1);
     }
-    if ( marpa_g_force_valued(g) < 0) {
-        fail ("marpa_g_force_valued", g);
-    }
+
     if ((S_top = marpa_g_symbol_new (g)) < 0) {
         fail ("marpa_g_symbol_new", g);
     }
@@ -208,7 +206,7 @@ main (int argc, char *argv[])
     API_test_data defaults;
     API_test_data this_test;
 
-    plan (341);
+    plan (335);
 
     marpa_c_init (&marpa_configuration);
     g = marpa_g_trivial_new (&marpa_configuration);
@@ -1066,25 +1064,13 @@ main (int argc, char *argv[])
 
     {
         Marpa_Step_Type step_type = marpa_v_step (v);
-        is_int (MARPA_STEP_NULLING_SYMBOL, step_type,
-            "MARPA_STEP_NULLING_SYMBOL step.");
-
-        is_int (0, marpa_v_result (v), "marpa_v_result(v)");
-        is_int (MARPA_STEP_NULLING_SYMBOL, marpa_v_step_type (v),
-            "marpa_v_step_type(v)");
-        is_int (0, marpa_v_symbol (v), "marpa_v_symbol(v)");
-        is_int (0, marpa_v_es_id (v), "marpa_v_es_id(v)");
-        is_int (0, marpa_v_token_start_es_id (v),
-            "marpa_v_token_start_es_id(v)");
-
-        step_type = marpa_v_step (v);
         is_int (MARPA_STEP_INACTIVE, step_type,
             "MARPA_STEP_INACTIVE step.");
-
         step_type = marpa_v_step (v);
         is_int (MARPA_STEP_INACTIVE, step_type,
-            "MARPA_STEP_INACTIVE step after retry of marpa_v_step().");
+            "MARPA_STEP_INACTIVE step on retry of marpa_v_step().");
     }
+
     API_STD_TEST0 (defaults, 1, MARPA_ERR_NONE, marpa_t_parse_count, t);
     API_STD_TEST0 (defaults, -2, MARPA_ERR_TREE_PAUSED, marpa_t_next, t);
 
