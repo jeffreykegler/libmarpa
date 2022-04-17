@@ -19,7 +19,9 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-/* Tests of Libmarpa methods on trivial grammar */
+/* Tests of Libmarpa methods with unvalued tokens in use.
+   Note that use of unvalued tokens is DEPRECATED.
+   These tests use a trivial grammar */
 
 #include <stdio.h>
 #include <string.h>
