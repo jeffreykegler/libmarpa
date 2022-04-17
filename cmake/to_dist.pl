@@ -57,6 +57,7 @@ __DATA__
 cm_dist/marpa.c: work/stage/marpa.c
 cm_dist/include/marpa.h: work/stage/marpa.h
 cm_dist/libmarpa.pc.in: work/stage/libmarpa.pc.in
+cm_dist/README.AIX: work/stage/README.AIX
 cm_dist/marpa_obs.c: work/stage/marpa_obs.c
 cm_dist/marpa_obs.h: work/stage/marpa_obs.h
 cm_dist/marpa_ami.c: work/stage/marpa_ami.c
