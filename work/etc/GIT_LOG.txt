@@ -1,0 +1,4 @@
+This file contains the output of a `git log -n 5`, performed when the
+distribution was created.  It is for convenience in identifying the commit
+for this distribution.
+

@@ -104,6 +104,7 @@ stage/NEWS: ac/NEWS
 stage/README: ac/README
 stage/README.INSTALL: etc/README.INSTALL
 stage/README.AIX: etc/README.AIX
+stage/GIT_LOG.txt: etc/GIT_LOG.txt
 stage/libmarpa.pc.in: etc/libmarpa.pc.in
 stage/error_codes.table: public/error_codes.table
 stage/events.table: public/events.table

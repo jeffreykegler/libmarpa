@@ -54,24 +54,25 @@ FILE: while ( my $copy = <DATA> ) {
 # MUST be FIRST
 
 __DATA__
-cm_dist/marpa.c: work/stage/marpa.c
-cm_dist/include/marpa.h: work/stage/marpa.h
-cm_dist/libmarpa.pc.in: work/stage/libmarpa.pc.in
-cm_dist/README.AIX: work/stage/README.AIX
-cm_dist/marpa_obs.c: work/stage/marpa_obs.c
-cm_dist/marpa_obs.h: work/stage/marpa_obs.h
-cm_dist/marpa_ami.c: work/stage/marpa_ami.c
-cm_dist/marpa_ami.h: work/stage/marpa_ami.h
-cm_dist/marpa_avl.c: work/stage/marpa_avl.c
-cm_dist/marpa_avl.h: work/stage/marpa_avl.h
-cm_dist/marpa_tavl.h: work/stage/marpa_tavl.h
-cm_dist/marpa_tavl.c: work/stage/marpa_tavl.c
-cm_dist/error_codes.table: work/stage/error_codes.table
-cm_dist/steps.table: work/stage/steps.table
-cm_dist/events.table: work/stage/events.table
-cm_dist/COPYING.LESSER: work/stage/COPYING.LESSER
-cm_dist/COPYING: work/stage/COPYING
-cm_dist/README: work/stage/README
+cm_dist/marpa.c: ac_dist/marpa.c
+cm_dist/include/marpa.h: ac_dist/marpa.h
+cm_dist/libmarpa.pc.in: ac_dist/libmarpa.pc.in
+cm_dist/README.AIX: ac_dist/README.AIX
+cm_dist/GIT_LOG.txt: ac_dist/GIT_LOG.txt
+cm_dist/marpa_obs.c: ac_dist/marpa_obs.c
+cm_dist/marpa_obs.h: ac_dist/marpa_obs.h
+cm_dist/marpa_ami.c: ac_dist/marpa_ami.c
+cm_dist/marpa_ami.h: ac_dist/marpa_ami.h
+cm_dist/marpa_avl.c: ac_dist/marpa_avl.c
+cm_dist/marpa_avl.h: ac_dist/marpa_avl.h
+cm_dist/marpa_tavl.h: ac_dist/marpa_tavl.h
+cm_dist/marpa_tavl.c: ac_dist/marpa_tavl.c
+cm_dist/error_codes.table: ac_dist/error_codes.table
+cm_dist/steps.table: ac_dist/steps.table
+cm_dist/events.table: ac_dist/events.table
+cm_dist/COPYING.LESSER: ac_dist/COPYING.LESSER
+cm_dist/COPYING: ac_dist/COPYING
+cm_dist/README: ac_dist/README
 cm_dist/CMakeLists.txt: cmake/CMakeLists.txt
 cm_dist/config.h.cmake: cmake/config.h.cmake
 cm_dist/modules/FindInline.cmake: cmake/modules/FindInline.cmake

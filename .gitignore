@@ -3,6 +3,7 @@
 .gdb_history
 /cm_build/
 /cm_dist/
+/ac_dist/
 /doc_dist/
 /doc1_dist/
 *.swp
