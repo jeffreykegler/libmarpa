@@ -131,6 +131,7 @@ dist_clean: clean
 	rm -f libmarpa-$(VERSION).tar.gz libmarpa-doc-$(VERSION).tar.gz libmarpa-doc1-$(VERSION).tar.gz
 
 clean:
+	(cd work; make clean)
 	rm -rf work/doc
 	rm -rf work/doc1
 	rm -rf work/stage
