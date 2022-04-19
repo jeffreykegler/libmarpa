@@ -127,13 +127,8 @@ test: timestamp/test.stamp
 test_clean:
 	rm -f timestamp/do_test.stamp
 
-dist_clean: clean
-	rm -rf dist
-	rm -rf doc_dist
-	rm -rf doc1_dist
-	rm -f libmarpa-$(VERSION).tar.gz libmarpa-doc-$(VERSION).tar.gz libmarpa-doc1-$(VERSION).tar.gz
-
 clean:
+	rm -f libmarpa-$(VERSION).tar.gz libmarpa-doc-$(VERSION).tar.gz libmarpa-doc1-$(VERSION).tar.gz
 	(cd work; make clean)
 	rm -rf work/doc
 	rm -rf work/doc1
@@ -145,7 +140,7 @@ clean:
 	mv timestamp timestamp.$$.temp; mkdir timestamp; \
 	  mv timestamp.$$.temp/ABOUT_ME timestamp; rm -r timestamp.$$.temp
 
-realclean: dist_clean test_clean tar_clean
+realclean: clean
 
 # The following targets allow this Makefile to be used as
 # a utility for printing version numbers
