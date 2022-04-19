@@ -23,6 +23,10 @@ LDFLAGS = -g
 all: tavl-test
 
 tavl-test: marpa_tavl.c tavl-test.c test.c marpa_tavl.h test.h 
+	@echo ====
+	@echo NOTE: We do not fix the warnings is this test code, preferring to stay
+	@echo '   ' as close to the Ben "Pfaff's" original code as possible.
+	@echo ====
 	$(CC) $(CFLAGS) -DTESTING_TAVL $(LDFLAGS) test.c tavl-test.c marpa_tavl.c -o $@
 
 pfaff_version = 2.0.3
