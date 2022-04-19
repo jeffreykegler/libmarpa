@@ -54,21 +54,22 @@ timestamp/doc.stamp:
 	date > timestamp/doc.stamp
 	@echo Updating doc time stamp: `cat timestamp/doc.stamp`
 
-doc1_tar: timestamp/doc1.stamp
-
-timestamp/doc1.stamp:
-	cp work/doc1/libmarpa-doc1-$(VERSION).tar.gz .
-	date > timestamp/doc1.stamp
-	@echo Updating doc1 time stamp: `cat timestamp/doc1.stamp`
-
 dist: tars
 	sh etc/work_to_dist.sh
 
-doc_dist: doc_tar
+doc_dist: timestamp/doc.stamp
+	cp work/doc/libmarpa-doc-$(VERSION).tar.gz .
 	sh etc/work_to_doc_dist.sh
+	date > timestamp/doc.stamp
+	@echo Updating doc time stamp: `cat timestamp/doc.stamp`
 
-doc1_dist: doc1_tar
+doc1_dist: timestamp/doc1_dist.stamp
+
+timestamp/doc1_dist.stamp:
+	cp work/doc1/libmarpa-doc1-$(VERSION).tar.gz .
 	sh etc/work_to_doc1_dist.sh
+	date > timestamp/doc1_dist.stamp
+	@echo Updating doc1_dist time stamp: `cat timestamp/doc1_dist.stamp`
 
 timestamp/cm_dist.stamp: timestamp/tars.stamp
 	@echo cm_dist Out of date wrt tars
@@ -88,6 +89,19 @@ tar_clean:
 
 tag:
 	git tag -a v$(version) -m "Version $(VERSION)"
+
+doc1_build: timestamp/doc1_build.stamp
+
+timestamp/doc1_build.stamp: timestamp/doc1_dist.stamp
+	@echo doc1_build Out of date wrt doc1_dist
+	@echo doc1_dist time stamp: `cat timestamp/doc1_dist.stamp`
+	@echo doc1_build time stamp: `cat timestamp/doc1_build.stamp`
+	rm -rf doc1_build
+	mkdir doc1_build
+	cd doc1_build && tar -xvzf ../libmarpa-doc1-$(VERSION).tar.gz
+	cd doc1_build/libmarpa-doc1-$(VERSION) && ./configure && make pdf
+	date > timestamp/doc1_build.stamp
+	@echo Updating doc1_build time stamp: `cat timestamp/doc1_build.stamp`
 
 cm_dist: timestamp/cm_dist.stamp
 
