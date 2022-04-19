@@ -116,13 +116,13 @@ timestamp/test.stamp: timestamp/cm_debug.stamp
 	@echo test time stamp: `cat timestamp/test.stamp`
 	rm -rf do_test
 	mkdir do_test
-	cd do_test && cmake ../test && make VERBOSE=1
+	cd do_test && cmake ../test
 	-rm timestamp/asan_test.stamp
 	date > timestamp/test.stamp
 	@echo Updating test time stamp: `cat timestamp/test.stamp`
 
 test: timestamp/test.stamp
-	cd do_test && make && ./tap/runtests -l ../test/TESTS
+	cd do_test && make VERBOSE=1 && ./tap/runtests -l ../test/TESTS
 
 test_clean:
 	rm -f timestamp/do_test.stamp
