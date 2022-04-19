@@ -90,7 +90,8 @@ tar_clean:
 tag:
 	git tag -a v$(version) -m "Version $(VERSION)"
 
-doc1_build: timestamp/doc1_build.stamp
+api.pdf: timestamp/doc1_build.stamp
+	cp doc1_build/libmarpa-doc1-$(VERSION)/api.pdf .
 
 timestamp/doc1_build.stamp: timestamp/doc1_dist.stamp
 	@echo doc1_build Out of date wrt doc1_dist

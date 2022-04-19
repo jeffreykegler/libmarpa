@@ -6,6 +6,7 @@
 /ac_dist/
 /doc_dist/
 /doc1_dist/
+/doc1_build/
 *.swp
 [.]DS_store
 errs
@@ -15,3 +16,4 @@ junk
 nogit*
 *.exe
 libmarpa-*.tar.gz
+api[.]pdf
