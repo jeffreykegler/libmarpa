@@ -22,70 +22,56 @@ MINOR=6
 MICRO=2
 VERSION=$(MAJOR).$(MINOR).$(MICRO)
 
-.PHONY: dummy dist doc_dist doc1_dist cm_dist test tars \
+.PHONY: dummy ac_dist doc_dist doc1_dist cm_dist test \
   version major minor micro
 
 dummy:
 	@echo The target to make the distributions is '"dists"'
-
-dists: dist doc_dist doc1_dist cm_dist
 
 timestamp/stage.stamp:
 	(cd work; make install)
 	date > timestamp/stage.stamp
 	@echo Updating stage time stamp: `cat timestamp/stage.stamp`
 
-tars: timestamp/tars.stamp timestamp/doc.stamp timestamp/doc1.stamp
+dists: timestamp/ac_dist.stamp \
+  timestamp/doc_dist.stamp \
+  timestamp/doc1_dist.stamp \
+  timestamp/cm_dist.stamp
 
-timestamp/tars.stamp: timestamp/stage.stamp \
-  timestamp/doc.stamp \
-  timestamp/doc1.stamp
+timestamp/ac_dist.stamp: timestamp/stage.stamp
 	cp work/stage/libmarpa-$(VERSION).tar.gz .
 	tar -xvzf work/stage/libmarpa-$(VERSION).tar.gz
 	rm -r ac_dist || true
 	mv libmarpa-$(VERSION) ac_dist
-	date > timestamp/tars.stamp
-	@echo Updating tars time stamp: `cat timestamp/tars.stamp`
+	date > timestamp/ac_dist.stamp
+	@echo Updating ac_dist time stamp: `cat timestamp/ac_dist.stamp`
 
-doc_tar: timestamp/doc.stamp
-
-timestamp/doc.stamp:
+timestamp/doc_dist.stamp: timestamp/stage.stamp
 	cp work/doc/libmarpa-doc-$(VERSION).tar.gz .
-	date > timestamp/doc.stamp
-	@echo Updating doc time stamp: `cat timestamp/doc.stamp`
-
-dist: tars
-	sh etc/work_to_dist.sh
-
-doc_dist: timestamp/doc.stamp
-	cp work/doc/libmarpa-doc-$(VERSION).tar.gz .
-	sh etc/work_to_doc_dist.sh
-	date > timestamp/doc.stamp
-	@echo Updating doc time stamp: `cat timestamp/doc.stamp`
-
-doc1_dist: timestamp/doc1_dist.stamp
+	tar -xvzf work/doc/libmarpa-doc-$(VERSION).tar.gz
+	rm -r doc_dist || true
+	mv libmarpa-doc-$(VERSION) doc_dist
+	date > timestamp/doc_dist.stamp
+	@echo Updating doc_dist time stamp: `cat timestamp/doc_dist.stamp`
 
 timestamp/doc1_dist.stamp:
 	cp work/doc1/libmarpa-doc1-$(VERSION).tar.gz .
-	sh etc/work_to_doc1_dist.sh
+	tar -xvzf work/doc1/libmarpa-doc1-$(VERSION).tar.gz
+	rm -r doc1_dist || true
+	mv libmarpa-doc1-$(VERSION) doc1_dist
 	date > timestamp/doc1_dist.stamp
 	@echo Updating doc1_dist time stamp: `cat timestamp/doc1_dist.stamp`
 
-timestamp/cm_dist.stamp: timestamp/tars.stamp
-	@echo cm_dist Out of date wrt tars
-	@echo tars time stamp: `cat timestamp/tars.stamp`
+timestamp/cm_dist.stamp: timestamp/ac_dist.stamp
+	@echo cm_dist Out of date wrt ac_dist
+	@echo ac_dist time stamp: `cat timestamp/ac_dist.stamp`
 	@echo cm_dist time stamp: `cat timestamp/cm_dist.stamp`
 	perl cmake/to_dist.pl --verbose
 	date > timestamp/cm_dist.stamp
 	@echo Updating cm_dist time stamp: `cat timestamp/cm_dist.stamp`
 
 distcheck:
-	perl etc/license_check.pl  --verbose=0 `find Makefile cm_dist dist doc_dist doc1_dist -type f`
-
-tar_clean:
-	rm -f work/doc/*.tar.gz
-	rm -f work/doc1/*.tar.gz
-	rm -f work/stage/*.tar.gz
+	perl etc/license_check.pl  --verbose=0 `find Makefile cm_dist ac_dist doc_dist doc1_dist -type f`
 
 tag:
 	git tag -a v$(version) -m "Version $(VERSION)"
