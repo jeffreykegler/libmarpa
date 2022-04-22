@@ -1,0 +1,5 @@
+This directory builds the configurations file for the libmarpa
+distribution.
+
+IMPORTANT NOTE:  configure.ac is a *target* in this directory,
+not a source file.
