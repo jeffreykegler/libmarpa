@@ -33,12 +33,12 @@ configure.ac: $(CONFIGURE_AC_PIECES)
 
 configure.ac-version: ../../Makefile
 	perl -e \
-	'printf "m4_define([marpa_major_version], [%d])\n", $$ARGV[0]; \
-	 printf "m4_define([marpa_minor_version], [%d])\n", $$ARGV[1]; \
-	 printf "m4_define([marpa_micro_version], [%d])\n", $$ARGV[2];' \
-	    `make -s -f ../../Makefile major` \
-	    `make -s -f ../../Makefile minor` \
-	    `make -s -f ../../Makefile micro` > $@
+	'printf "m4_define([marpa_major_version], [%d])\n", shift; \
+	 printf "m4_define([marpa_minor_version], [%d])\n", shift; \
+	 printf "m4_define([marpa_micro_version], [%d])\n", shift;' \
+	    `sh ../../libmarpa_version.sh  major` \
+	    `sh ../../libmarpa_version.sh  minor` \
+	    `sh ../../libmarpa_version.sh  micro` > $@
 
 CLEAN_FILES = configure.ac configure.ac-version
 

@@ -24,35 +24,35 @@ dummy:
 
 
 doc/api.pdf: stage_copy.stamp doc/Makefile doc/api.texi
-	cd doc && make pdf
+	cd doc && $(MAKE) pdf
 
 doc/api.html/index.html: stage_copy.stamp doc/Makefile doc/api.texi
-	cd doc && make html
+	cd doc && $(MAKE) html
 
 doc1/api.html/index.html: stage_copy.stamp doc1/Makefile doc1/api.texi
-	cd doc1 && make html
+	cd doc1 && $(MAKE) html
 
 doc/internal.pdf: stage_copy.stamp doc/Makefile doc/internal.texi
-	cd doc && make pdf
+	cd doc && $(MAKE) pdf
 
 doc/internal.html/index.html: stage_copy.stamp doc/Makefile doc/internal.texi
-	cd doc && make html
+	cd doc && $(MAKE) html
 
 doc1/internal.html/index.html: stage_copy.stamp doc1/Makefile doc1/internal.texi
-	cd doc1 && make html
+	cd doc1 && $(MAKE) html
 
 install: sources stage/stage.stamp doc/doc.stamp doc1/doc1.stamp
 
 # Order matters in MAKEABLE_DIR -- some directories depend on others
-MAKEABLE_DIR = ami dev tavl public
+MAKEABLE_DIR = ac ami dev tavl public
 CLEANABLE_DIR = $(MAKEABLE_DIR)
 
 sources:
-	for d in $(MAKEABLE_DIR); do (cd $$d; make); done
+	for d in $(MAKEABLE_DIR); do (cd $$d; $(MAKE)); done
 	perl bin/to_stage.pl --verbose --stamp stage_copy.stamp
 
 clean:
-	for d in $(CLEANABLE_DIR); do (cd $$d; make clean); done
+	for d in $(CLEANABLE_DIR); do (cd $$d; $(MAKE) clean); done
 	rm -rf stage
 
 stage/stage.stamp: stage_copy.stamp
@@ -60,21 +60,21 @@ stage/stage.stamp: stage_copy.stamp
 	test -d stage/m4 || mkdir stage/m4
 	cd stage && autoreconf -iv
 	cd stage && ./configure
-	(cd stage; make dist)
+	(cd stage; $(MAKE) dist)
 	date > $@
 
 doc/doc.stamp: stage_copy.stamp
 	test -d doc/m4 || mkdir doc/m4
 	cd doc && autoreconf -ivf
 	cd doc && ./configure
-	(cd doc; make dist)
+	(cd doc; $(MAKE) dist)
 	date > $@
 
 doc1/doc1.stamp: stage_copy.stamp
 	test -d doc1/m4 || mkdir doc1/m4
 	cd doc1 && autoreconf -ivf
 	cd doc1 && ./configure
-	(cd doc1; make dist)
+	(cd doc1; $(MAKE) dist)
 	date > $@
 
 docs: \
