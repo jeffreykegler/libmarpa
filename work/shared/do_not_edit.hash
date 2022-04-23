@@ -1,6 +1,7 @@
-#
-# DO NOT EDIT DIRECTLY
-# This file is written by the Marpa build process
-# It is not intended to be modified directly
-#
+# ============ DO NOT EDIT DIRECTLY =============
+# This file is written by the Libmarpa build process.
+# It is NOT INTENDED TO BE MODIFIED DIRECTLY.
+# Any changes will overwritten by the next full
+# build of Libmarpa.
+# ================================================
 

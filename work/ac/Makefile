@@ -24,7 +24,9 @@
 # IMPORTANT NOTE:  configure.ac is a *target* in this directory,
 #not a source file.
 
-CONFIGURE_AC_PIECES = configure.ac.p20 configure.ac-version configure.ac.p80
+HASH_PREAMBLE = ../shared/license.hash ../shared/do_not_edit.hash
+CONFIGURE_AC_PIECES = $(HASH_PREAMBLE) \
+  configure.ac.p20 configure.ac-version configure.ac.p80
 
 all: configure.ac
 
