@@ -17,28 +17,26 @@
 # ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 # OTHER DEALINGS IN THE SOFTWARE.
 
-dnl Process this file with autoconf to produce a configure script.
+.PHONY: all
 
-AC_PREREQ([2.68])
+# This directory builds the configuration files for the multi-page
+# HTML Libmarpa API doc.
 
-dnl ***********************************
-dnl *** include special marpa macros ***
-dnl ***********************************
+# IMPORTANT NOTES:  configure.ac is a *target* in this directory,
+# not a source file.  Also, the Makefile.am is *NOT* related to this
+# Makefile.  Makefile.am is not processed in this directory, either as
+# a source or a target -- it is for copying elsewhere.
 
-m4_define(marpa_configure_in)
+HASH_PREAMBLE = ../shared/license.hash ../shared/do_not_edit.hash
+CONFIGURE_AC_PIECES = $(HASH_PREAMBLE) \
+  configure.ac.p20 ../ac/configure.ac-version configure.ac.p80
 
-m4_define([marpa_major_version], [8])
-m4_define([marpa_minor_version], [6])
-m4_define([marpa_micro_version], [2])
-m4_define([marpa_version],
-          [marpa_major_version.marpa_minor_version.marpa_micro_version])
+all: configure.ac
 
-AC_INIT([libmarpa-doc],[marpa_version],[http://rt.cpan.org/NoAuth/Bugs.html?Dist=Marpa])
-AC_CONFIG_MACRO_DIR([m4])
+configure.ac: $(CONFIGURE_AC_PIECES)
+	cat $(CONFIGURE_AC_PIECES) > $@
 
-AM_INIT_AUTOMAKE([])
+CLEAN_FILES = configure.ac
 
-AC_CONFIG_FILES( [Makefile])
-AC_OUTPUT
-
-# vim: expandtab shiftwidth=4:
+clean:
+	rm -f $(CLEAN_FILES)

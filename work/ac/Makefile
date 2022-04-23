@@ -21,8 +21,10 @@
 
 # This directory builds the configuration files for libmarpa.
 
-# IMPORTANT NOTE:  configure.ac is a *target* in this directory,
-#not a source file.
+# IMPORTANT NOTES:  configure.ac is a *target* in this directory,
+# not a source file.  Also, the Makefile.am is *NOT* related to this
+# Makefile.  Makefile.am is not processed in this directory, either as
+# a source or a target -- it is for copying elsewhere.
 
 HASH_PREAMBLE = ../shared/license.hash ../shared/do_not_edit.hash
 CONFIGURE_AC_PIECES = $(HASH_PREAMBLE) \
