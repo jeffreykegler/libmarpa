@@ -19,7 +19,7 @@
 
 MAJOR=8
 MINOR=6
-MICRO=2
+MICRO=3
 VERSION=$(MAJOR).$(MINOR).$(MICRO)
 
 .PHONY: dummy ac_dist doc_dist doc1_dist cm_dist test \
