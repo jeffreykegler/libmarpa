@@ -137,6 +137,8 @@ clean:
 	rm -rf work/stage
 	rm -rf cm_build
 	rm -rf cm_dist
+	rm -rf doc_dist
+	rm -rf doc1_dist
 	rm -rf ac_dist
 	rm -rf do_test
 	mv timestamp timestamp.$$.temp; mkdir timestamp; \
