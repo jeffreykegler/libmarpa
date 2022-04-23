@@ -40,24 +40,24 @@ dists: timestamp/ac_dist.stamp \
   timestamp/cm_dist.stamp
 
 timestamp/ac_dist.stamp: timestamp/stage.stamp
-	cp work/stage/libmarpa-$(VERSION).tar.gz .
-	tar -xvzf work/stage/libmarpa-$(VERSION).tar.gz
+	cp work/stage/libmarpa-$(VERSION).tar.gz tars
+	tar -xvzf tars/libmarpa-$(VERSION).tar.gz
 	rm -r ac_dist || true
 	mv libmarpa-$(VERSION) ac_dist
 	date > timestamp/ac_dist.stamp
 	@echo Updating ac_dist time stamp: `cat timestamp/ac_dist.stamp`
 
 timestamp/doc_dist.stamp: timestamp/stage.stamp
-	cp work/doc/libmarpa-doc-$(VERSION).tar.gz .
-	tar -xvzf work/doc/libmarpa-doc-$(VERSION).tar.gz
+	cp work/doc/libmarpa-doc-$(VERSION).tar.gz tars
+	tar -xvzf tars/libmarpa-doc-$(VERSION).tar.gz
 	rm -r doc_dist || true
 	mv libmarpa-doc-$(VERSION) doc_dist
 	date > timestamp/doc_dist.stamp
 	@echo Updating doc_dist time stamp: `cat timestamp/doc_dist.stamp`
 
 timestamp/doc1_dist.stamp:
-	cp work/doc1/libmarpa-doc1-$(VERSION).tar.gz .
-	tar -xvzf work/doc1/libmarpa-doc1-$(VERSION).tar.gz
+	cp work/doc1/libmarpa-doc1-$(VERSION).tar.gz tars
+	tar -xvzf tars/libmarpa-doc1-$(VERSION).tar.gz
 	rm -r doc1_dist || true
 	mv libmarpa-doc1-$(VERSION) doc1_dist
 	date > timestamp/doc1_dist.stamp
@@ -86,7 +86,7 @@ timestamp/doc1_build.stamp: timestamp/doc1_dist.stamp
 	@echo doc1_build time stamp: `cat timestamp/doc1_build.stamp`
 	rm -rf doc1_build
 	mkdir doc1_build
-	cd doc1_build && tar -xvzf ../libmarpa-doc1-$(VERSION).tar.gz
+	cd doc1_build && tar -xvzf ../tars/libmarpa-doc1-$(VERSION).tar.gz
 	cd doc1_build/libmarpa-doc1-$(VERSION) && ./configure && $(MAKE) pdf
 	date > timestamp/doc1_build.stamp
 	@echo Updating doc1_build time stamp: `cat timestamp/doc1_build.stamp`
@@ -131,7 +131,6 @@ test_clean:
 
 clean:
 	-rm libmarpa_version.sh
-	rm -f libmarpa-$(VERSION).tar.gz libmarpa-doc-$(VERSION).tar.gz libmarpa-doc1-$(VERSION).tar.gz
 	(cd work; $(MAKE) clean)
 	rm -rf work/doc
 	rm -rf work/doc1
@@ -142,6 +141,8 @@ clean:
 	rm -rf do_test
 	mv timestamp timestamp.$$.temp; mkdir timestamp; \
 	  mv timestamp.$$.temp/ABOUT_ME timestamp; rm -r timestamp.$$.temp
+	mv tars tars.$$.temp; mkdir tars; \
+	  mv tars.$$.temp/ABOUT_ME tars; rm -r tars.$$.temp
 
 realclean: clean
 
