@@ -27,20 +27,20 @@
 # IMPORTANT NOTES: CMakeLists.txt is a *target* in this directory, not a
 # source file.
 
-HASH_PREAMBLE = ../shared/license.hash ../shared/do_not_edit.hash
+HASH_PREAMBLE = ../work/shared/license.hash ../work/shared/do_not_edit.hash
 CONFIGURE_AC_PIECES = $(HASH_PREAMBLE) \
   CMakeLists.txt.p20 CMakeLists.txt.p80
 
 all: CMakeLists.txt
 
 CMakeLists.txt: $(CONFIGURE_AC_PIECES)
-	cat ../shared/license.hash > $@
-	cat ../shared/do_not_edit.hash > $@
+	cat ../work/shared/license.hash > $@
+	cat ../work/shared/do_not_edit.hash >> $@
 	cat CMakeLists.txt.p20 >> $@
 	perl -e \
 	'printf "SET(MARPA_LIB_MAJOR_VERSION %d)\n", shift; \
 	 printf "SET(MARPA_LIB_MINOR_VERSION %d)\n", shift; \
-	 printf "SET(MARPA_LIB_MICRO_VERSION %d)\n", shift;' \
+	 printf "SET(MARPA_LIB_PATCH_VERSION %d)\n", shift;' \
 	    `sh ../libmarpa_version.sh  major` \
 	    `sh ../libmarpa_version.sh  minor` \
 	    `sh ../libmarpa_version.sh  micro` >> $@
