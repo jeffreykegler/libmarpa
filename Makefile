@@ -146,20 +146,6 @@ clean:
 
 realclean: clean
 
-# The following targets allow this Makefile to be used as
-# a (very poor) utility for printing version numbers
-version:
-	@echo $(VERSION)
-
-major:
-	@echo $(MAJOR)
-
-minor:
-	@echo $(MINOR)
-
-micro:
-	@echo $(MICRO)
-
 libmarpa_version.sh:
 	@echo 'for arg;do' > $@
 	@echo '  if test "$$arg" = major; then echo '$(MAJOR)'; continue; fi' >> $@

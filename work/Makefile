@@ -44,7 +44,7 @@ doc1/internal.html/index.html: stage_copy.stamp doc1/Makefile doc1/internal.texi
 install: sources stage/stage.stamp doc/doc.stamp doc1/doc1.stamp
 
 # Order matters in MAKEABLE_DIR -- some directories depend on others
-MAKEABLE_DIR = ac ami dev tavl public
+MAKEABLE_DIR = ac ac_doc ac_doc1 ami dev tavl public
 CLEANABLE_DIR = $(MAKEABLE_DIR)
 
 sources:
