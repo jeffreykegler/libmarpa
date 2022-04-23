@@ -29,6 +29,7 @@ dummy:
 	@echo The target to make the distributions is '"dists"'
 
 timestamp/stage.stamp:
+	$(MAKE) libmarpa_version.sh
 	(cd work; $(MAKE) install)
 	date > timestamp/stage.stamp
 	@echo Updating stage time stamp: `cat timestamp/stage.stamp`
@@ -129,6 +130,7 @@ test_clean:
 	rm -f timestamp/do_test.stamp
 
 clean:
+	-rm libmarpa_version.sh
 	rm -f libmarpa-$(VERSION).tar.gz libmarpa-doc-$(VERSION).tar.gz libmarpa-doc1-$(VERSION).tar.gz
 	(cd work; $(MAKE) clean)
 	rm -rf work/doc
