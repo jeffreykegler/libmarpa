@@ -99,8 +99,8 @@ timestamp/cm_debug.stamp: timestamp/cm_dist.stamp
 	@echo cm_debug time stamp: `cat timestamp/cm_debug.stamp`
 	rm -rf cm_build
 	mkdir cm_build
-	cd cm_build && cmake -DCMAKE_BUILD_TYPE:STRING=Debug ../cm_dist && $(MAKE) VERBOSE=1
-	cd cm_build && $(MAKE) DESTDIR=../test install
+	cd cm_build && cmake -DCMAKE_BUILD_TYPE:STRING=Debug ../cm_dist
+	cd cm_build && $(MAKE) VERBOSE=1 DESTDIR=../test install
 	# Shares a directory with the cm_build time stamp
 	-rm timestamp/cm_build.stamp
 	date > timestamp/cm_debug.stamp
@@ -109,8 +109,8 @@ timestamp/cm_debug.stamp: timestamp/cm_dist.stamp
 asan: timestamp/cm_debug.stamp
 	rm -rf do_test
 	mkdir do_test
-	cd do_test && cmake -DCMAKE_BUILD_TYPE:STRING=Asan ../test && $(MAKE) VERBOSE=1
-	cd do_test && $(MAKE) && ./tap/runtests -l ../test/TESTS
+	cd do_test && cmake -DCMAKE_BUILD_TYPE:STRING=Asan ../test
+	cd do_test && $(MAKE) VERBOSE=1 && ./tap/runtests -l ../test/TESTS
 
 timestamp/test.stamp: timestamp/cm_debug.stamp
 	@echo test Out of date wrt cm_debug

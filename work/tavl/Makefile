@@ -20,7 +20,12 @@
 CFLAGS = -g -W -Wall -ansi -pedantic # enable many GCC warnings
 LDFLAGS = -g
 
-all: tavl-test
+# Do nothing for "all"
+all:
+	@true
+
+# full is "all" plus the unit test
+full: tavl-test
 
 tavl-test: marpa_tavl.c tavl-test.c test.c marpa_tavl.h test.h 
 	@echo ====
