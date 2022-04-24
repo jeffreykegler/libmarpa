@@ -18,24 +18,32 @@
 # ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 # OTHER DEALINGS IN THE SOFTWARE.
 
-# Copy things into cm_dist/
-# It makes more sense to do this in Perl than in the Makefile
+# Copy things according to instructions in the input
 
 use 5.010;
+use strict;
+use warnings;
+
 use File::Spec;
 use File::Copy;
 use Getopt::Long;
 use autodie;    # Portability not essential in this script
 
 my $verbose;
-GetOptions( "verbose|v" => \$verbose )
+my $stampfile;
+GetOptions( "verbose|v" => \$verbose,
+  "stamp=s" => \$stampfile
+)
     or die("Error in command line arguments\n");
 
-FILE: while ( my $copy = <DATA> ) {
+my $copy_count = 0;
+
+FILE: while ( my $copy = <STDIN> ) {
     chomp $copy;
     my ( $to, $from ) = $copy =~ m/\A (.*) [:] \s+ (.*) \z/xms;
     die "Bad copy spec: $copy" if not defined $to;
-    next FILE if -e $to and ( -M $to <= -M $from );
+    # Don't skip copying even if timestamps suggest it is unnecessary
+    # next FILE if -e $to and ( -M $to <= -M $from );
     my ( undef, $to_dirs, $to_file ) = File::Spec->splitpath($to);
     my @to_dirs = File::Spec->splitdir($to_dirs);
     my @dir_found_so_far = ();
@@ -47,38 +55,16 @@ FILE: while ( my $copy = <DATA> ) {
 	mkdir $dir_so_far;
     }
     File::Copy::copy($from, $to) or die "Cannot copy $from -> $to";
+    $copy_count++;
     say "Copied $from -> $to" if $verbose;
-} ## end FILE: while ( my $copy = <DATA> )
+} ## end FILE: while ( my $copy = <STDIN> )
 
-# Note that order DOES matter here -- any configure.ac files
-# MUST be FIRST
+say "Files copied: $copy_count";
 
-__DATA__
-cm_dist/marpa.c: ac_dist/marpa.c
-cm_dist/include/marpa.h: ac_dist/marpa.h
-cm_dist/libmarpa.pc.in: ac_dist/libmarpa.pc.in
-cm_dist/README.AIX: ac_dist/README.AIX
-cm_dist/GIT_LOG.txt: ac_dist/GIT_LOG.txt
-cm_dist/marpa_obs.c: ac_dist/marpa_obs.c
-cm_dist/marpa_obs.h: ac_dist/marpa_obs.h
-cm_dist/marpa_ami.c: ac_dist/marpa_ami.c
-cm_dist/marpa_ami.h: ac_dist/marpa_ami.h
-cm_dist/marpa_avl.c: ac_dist/marpa_avl.c
-cm_dist/marpa_avl.h: ac_dist/marpa_avl.h
-cm_dist/marpa_tavl.h: ac_dist/marpa_tavl.h
-cm_dist/marpa_tavl.c: ac_dist/marpa_tavl.c
-cm_dist/error_codes.table: ac_dist/error_codes.table
-cm_dist/steps.table: ac_dist/steps.table
-cm_dist/events.table: ac_dist/events.table
-cm_dist/COPYING.LESSER: ac_dist/COPYING.LESSER
-cm_dist/COPYING: ac_dist/COPYING
-cm_dist/README: ac_dist/README
-cm_dist/CMakeLists.txt: cmake/CMakeLists.txt
-cm_dist/config.h.cmake: cmake/config.h.cmake
-cm_dist/modules/FindInline.cmake: cmake/modules/FindInline.cmake
-cm_dist/modules/FindNullIsZeroes.cmake: cmake/modules/FindNullIsZeroes.cmake
-cm_dist/modules/inline.c: cmake/modules/inline.c
-cm_dist/internals/libmarpa_core.pdf: ac_dist/internals/libmarpa_core.pdf
-cm_dist/internals/libmarpa_ami.pdf: ac_dist/internals/libmarpa_ami.pdf
-cm_dist/api_docs/libmarpa_api.pdf: ac_dist/api_docs/libmarpa_api.pdf
-cm_dist/api_docs/libmarpa_api.html: ac_dist/api_docs/libmarpa_api.html
+# If we have defined a stamp file, and we copied files
+# or there is no stamp file, update it.
+if ($stampfile and ($copy_count or not -e $stampfile)) {
+   open my $stamp_fh, q{>}, $stampfile;
+   say {$stamp_fh} "" . localtime;
+   close $stamp_fh;
+}

@@ -22,7 +22,7 @@ MINOR=6
 MICRO=3
 VERSION=$(MAJOR).$(MINOR).$(MICRO)
 
-.PHONY: dummy ac_dist doc_dist doc1_dist cm_dist test \
+.PHONY: dummy ac_dist doc_dist cm_dist test \
   version major minor micro
 
 dummy:
@@ -36,7 +36,6 @@ timestamp/stage.stamp:
 
 dists: timestamp/ac_dist.stamp \
   timestamp/doc_dist.stamp \
-  timestamp/doc1_dist.stamp \
   timestamp/cm_dist.stamp
 
 timestamp/ac_dist.stamp: timestamp/stage.stamp
@@ -55,14 +54,6 @@ timestamp/doc_dist.stamp: timestamp/stage.stamp
 	date > timestamp/doc_dist.stamp
 	@echo Updating doc_dist time stamp: `cat timestamp/doc_dist.stamp`
 
-timestamp/doc1_dist.stamp:
-	cp work/doc1/libmarpa-doc1-$(VERSION).tar.gz tars
-	tar -xvzf tars/libmarpa-doc1-$(VERSION).tar.gz
-	rm -r doc1_dist || true
-	mv libmarpa-doc1-$(VERSION) doc1_dist
-	date > timestamp/doc1_dist.stamp
-	@echo Updating doc1_dist time stamp: `cat timestamp/doc1_dist.stamp`
-
 timestamp/cm_dist.stamp: timestamp/ac_dist.stamp
 	@echo cm_dist Out of date wrt ac_dist
 	@echo ac_dist time stamp: `cat timestamp/ac_dist.stamp`
@@ -72,24 +63,10 @@ timestamp/cm_dist.stamp: timestamp/ac_dist.stamp
 	@echo Updating cm_dist time stamp: `cat timestamp/cm_dist.stamp`
 
 distcheck:
-	perl etc/license_check.pl  --verbose=0 `find Makefile cm_dist ac_dist doc_dist doc1_dist -type f`
+	perl etc/license_check.pl  --verbose=0 `find Makefile cm_dist ac_dist doc_dist -type f`
 
 tag:
 	git tag -a v$(version) -m "Version $(VERSION)"
-
-api.pdf: timestamp/doc1_build.stamp
-	cp doc1_build/libmarpa-doc1-$(VERSION)/api.pdf .
-
-timestamp/doc1_build.stamp: timestamp/doc1_dist.stamp
-	@echo doc1_build Out of date wrt doc1_dist
-	@echo doc1_dist time stamp: `cat timestamp/doc1_dist.stamp`
-	@echo doc1_build time stamp: `cat timestamp/doc1_build.stamp`
-	rm -rf doc1_build
-	mkdir doc1_build
-	cd doc1_build && tar -xvzf ../tars/libmarpa-doc1-$(VERSION).tar.gz
-	cd doc1_build/libmarpa-doc1-$(VERSION) && ./configure && $(MAKE) pdf
-	date > timestamp/doc1_build.stamp
-	@echo Updating doc1_build time stamp: `cat timestamp/doc1_build.stamp`
 
 cm_dist: timestamp/cm_dist.stamp
 
@@ -138,7 +115,6 @@ clean:
 	rm -rf cm_build
 	rm -rf cm_dist
 	rm -rf doc_dist
-	rm -rf doc1_dist
 	rm -rf ac_dist
 	rm -rf do_test
 	mv timestamp timestamp.$$.temp; mkdir timestamp; \

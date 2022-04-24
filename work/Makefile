@@ -22,26 +22,7 @@
 dummy:
 	@echo install is the main target
 
-
-doc/api.pdf: stage_copy.stamp doc/Makefile doc/api.texi
-	cd doc && $(MAKE) pdf
-
-doc/api.html/index.html: stage_copy.stamp doc/Makefile doc/api.texi
-	cd doc && $(MAKE) html
-
-doc1/api.html/index.html: stage_copy.stamp doc1/Makefile doc1/api.texi
-	cd doc1 && $(MAKE) html
-
-doc/internal.pdf: stage_copy.stamp doc/Makefile doc/internal.texi
-	cd doc && $(MAKE) pdf
-
-doc/internal.html/index.html: stage_copy.stamp doc/Makefile doc/internal.texi
-	cd doc && $(MAKE) html
-
-doc1/internal.html/index.html: stage_copy.stamp doc1/Makefile doc1/internal.texi
-	cd doc1 && $(MAKE) html
-
-install: sources stage/stage.stamp doc/doc.stamp doc1/doc1.stamp
+install: sources doc/doc_build.stamp doc1/doc1_build.stamp stage/stage_build.stamp
 
 # Order matters in MAKEABLE_DIR -- some directories depend on others
 MAKEABLE_DIR = ac ac_doc ac_doc1 ami dev tavl public
@@ -49,40 +30,86 @@ CLEANABLE_DIR = $(MAKEABLE_DIR)
 
 sources:
 	for d in $(MAKEABLE_DIR); do (cd $$d; $(MAKE)); done
-	perl bin/to_stage.pl --verbose --stamp stage_copy.stamp
 
 clean:
 	for d in $(CLEANABLE_DIR); do (cd $$d; $(MAKE) clean); done
 	rm -rf stage
 
-stage/stage.stamp: stage_copy.stamp
+stage/stage_build.stamp:
 	test -d stage || mkdir stage
 	test -d stage/m4 || mkdir stage/m4
+	@( \
+          echo stage/configure.ac: ac/configure.ac; \
+          echo stage/Makefile.am: ac/Makefile.am; \
+          echo stage/Makefile.win32: win32/Makefile.win32; \
+          echo stage/win32/do_config_h.pl: win32/do_config_h.pl; \
+          echo stage/marpa.c: dev/marpa.c; \
+          echo stage/win32/README: dev/README; \
+          echo stage/win32/marpa.def: dev/marpa.def; \
+          echo stage/marpa.h: public/marpa.h; \
+          echo stage/marpa_obs.c: obs/marpa_obs.c; \
+          echo stage/marpa_obs.h: obs/marpa_obs.h; \
+          echo stage/marpa_ami.c: ami/marpa_ami.c; \
+          echo stage/marpa_codes.c: public/marpa_codes.c; \
+          echo stage/marpa_codes.h: public/marpa_codes.h; \
+          echo stage/marpa_ami.h: ami/marpa_ami.h; \
+          echo stage/marpa_avl.c: avl/marpa_avl.c; \
+          echo stage/marpa_avl.h: avl/marpa_avl.h; \
+          echo stage/marpa_tavl.h: tavl/marpa_tavl.h; \
+          echo stage/marpa_tavl.c: tavl/marpa_tavl.c; \
+          echo stage/AUTHORS: ac/AUTHORS; \
+          echo stage/COPYING: shared/COPYING; \
+          echo stage/COPYING.LESSER: obs/COPYING.LESSER; \
+          echo stage/ChangeLog: ac/ChangeLog; \
+          echo stage/NEWS: ac/NEWS; \
+          echo stage/README: ac/README; \
+          echo stage/README.INSTALL: etc/README.INSTALL; \
+          echo stage/README.AIX: etc/README.AIX; \
+          echo stage/GIT_LOG.txt: etc/GIT_LOG.txt; \
+          echo stage/libmarpa.pc.in: etc/libmarpa.pc.in; \
+          echo stage/error_codes.table: public/error_codes.table; \
+          echo stage/events.table: public/events.table; \
+          echo stage/steps.table: public/steps.table; \
+          echo stage/internals/libmarpa_core.pdf: dev/marpa.pdf; \
+          echo stage/internals/libmarpa_ami.pdf: ami/marpa_ami.pdf; \
+          echo stage/api_docs/libmarpa_api.pdf: doc1/api.pdf; \
+          echo stage/api_docs/libmarpa_api.html: doc1/api.html; \
+        ) | perl ../etc/copier.pl --verbose
 	cd stage && autoreconf -iv
 	cd stage && ./configure
 	(cd stage; $(MAKE) dist)
 	date > $@
 
-doc/doc.stamp: stage_copy.stamp
+doc/doc_build.stamp:
+	@( \
+	  echo doc/configure.ac: ac_doc/configure.ac; \
+	  echo doc/Makefile.am: ac_doc/Makefile.am; \
+	  echo doc/README: ac_doc/README; \
+	  echo doc/NEWS: ac/NEWS; \
+	  echo doc/AUTHORS: ac/AUTHORS; \
+	  echo doc/ChangeLog: ac/ChangeLog; \
+	  echo doc/api.texi: dev/api.texi; \
+	  echo doc/internal.texi: dev/internal.texi; \
+	) | perl ../etc/copier.pl --verbose
 	test -d doc/m4 || mkdir doc/m4
 	cd doc && autoreconf -ivf
 	cd doc && ./configure
 	(cd doc; $(MAKE) dist)
 	date > $@
 
-doc1/doc1.stamp: stage_copy.stamp
+doc1/doc1_build.stamp:
+	@( \
+	  echo doc1/configure.ac: ac_doc1/configure.ac; \
+	  echo doc1/Makefile.am: ac_doc1/Makefile.am; \
+	  echo doc1/README: ac_doc1/README; \
+	  echo doc1/NEWS: ac/NEWS; \
+	  echo doc1/AUTHORS: ac/AUTHORS; \
+	  echo doc1/ChangeLog: ac/ChangeLog; \
+	  echo doc1/api.texi: dev/api.texi; \
+	  echo doc1/internal.texi: dev/internal.texi; \
+	) | perl ../etc/copier.pl --verbose
 	test -d doc1/m4 || mkdir doc1/m4
 	cd doc1 && autoreconf -ivf
 	cd doc1 && ./configure
-	(cd doc1; $(MAKE) dist)
+	(cd doc1; $(MAKE) html pdf)
 	date > $@
-
-docs: \
-  doc/Makefile \
-  doc/api.pdf doc/api.html/index.html \
-  doc/internal.pdf doc/internal.html/index.html \
-
-docs1: \
-  doc1/Makefile doc1/api.html/index.html \
-  doc1/internal.html/index.html
-
