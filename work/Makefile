@@ -22,7 +22,7 @@
 dummy:
 	@echo install is the main target
 
-install: sources doc/doc_build.stamp doc1/doc1_build.stamp stage/stage_build.stamp
+install: sources timestamp/doc_build.stamp timestamp/doc1_build.stamp timestamp/stage_build.stamp
 
 # Order matters in MAKEABLE_DIR -- some directories depend on others
 MAKEABLE_DIR = ac ac_doc ac_doc1 ami dev tavl public
@@ -33,9 +33,11 @@ sources:
 
 clean:
 	for d in $(CLEANABLE_DIR); do (cd $$d; $(MAKE) clean); done
+	mv timestamp timestamp.$$.temp; mkdir timestamp; \
+	  mv timestamp.$$.temp/ABOUT_ME timestamp; rm -r timestamp.$$.temp
 	rm -rf stage
 
-stage/stage_build.stamp:
+timestamp/stage_build.stamp:
 	test -d stage || mkdir stage
 	test -d stage/m4 || mkdir stage/m4
 	@( \
@@ -80,7 +82,7 @@ stage/stage_build.stamp:
 	(cd stage; $(MAKE) dist)
 	date > $@
 
-doc/doc_build.stamp:
+timestamp/doc_build.stamp:
 	@( \
 	  echo doc/configure.ac: ac_doc/configure.ac; \
 	  echo doc/Makefile.am: ac_doc/Makefile.am; \
@@ -97,7 +99,7 @@ doc/doc_build.stamp:
 	(cd doc; $(MAKE) dist)
 	date > $@
 
-doc1/doc1_build.stamp:
+timestamp/doc1_build.stamp:
 	@( \
 	  echo doc1/configure.ac: ac_doc1/configure.ac; \
 	  echo doc1/Makefile.am: ac_doc1/Makefile.am; \
