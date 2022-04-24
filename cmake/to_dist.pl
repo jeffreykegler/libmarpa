@@ -78,3 +78,5 @@ cm_dist/config.h.cmake: cmake/config.h.cmake
 cm_dist/modules/FindInline.cmake: cmake/modules/FindInline.cmake
 cm_dist/modules/FindNullIsZeroes.cmake: cmake/modules/FindNullIsZeroes.cmake
 cm_dist/modules/inline.c: cmake/modules/inline.c
+cm_dist/internals/libmarpa_core.pdf: ac_dist/internals/libmarpa_core.pdf
+cm_dist/internals/libmarpa_ami.pdf: ac_dist/internals/libmarpa_ami.pdf

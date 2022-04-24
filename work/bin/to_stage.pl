@@ -109,6 +109,8 @@ stage/libmarpa.pc.in: etc/libmarpa.pc.in
 stage/error_codes.table: public/error_codes.table
 stage/events.table: public/events.table
 stage/steps.table: public/steps.table
+stage/internals/libmarpa_core.pdf: dev/marpa.pdf
+stage/internals/libmarpa_ami.pdf: ami/marpa_ami.pdf
 doc/README: ac_doc/README
 doc/NEWS: ac/NEWS
 doc/AUTHORS: ac/AUTHORS
