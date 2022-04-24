@@ -22,7 +22,7 @@ MINOR=6
 MICRO=3
 VERSION=$(MAJOR).$(MINOR).$(MICRO)
 
-.PHONY: dummy ac_dist doc_dist cm_dist test \
+.PHONY: dummy ac_dist cm_dist test \
   version major minor micro
 
 dummy:
@@ -35,7 +35,6 @@ timestamp/stage.stamp:
 	@echo Updating stage time stamp: `cat timestamp/stage.stamp`
 
 dists: timestamp/ac_dist.stamp \
-  timestamp/doc_dist.stamp \
   timestamp/cm_dist.stamp
 
 timestamp/ac_dist.stamp: timestamp/stage.stamp
@@ -46,24 +45,44 @@ timestamp/ac_dist.stamp: timestamp/stage.stamp
 	date > timestamp/ac_dist.stamp
 	@echo Updating ac_dist time stamp: `cat timestamp/ac_dist.stamp`
 
-timestamp/doc_dist.stamp: timestamp/stage.stamp
-	cp work/doc/libmarpa-doc-$(VERSION).tar.gz tars
-	tar -xvzf tars/libmarpa-doc-$(VERSION).tar.gz
-	rm -r doc_dist || true
-	mv libmarpa-doc-$(VERSION) doc_dist
-	date > timestamp/doc_dist.stamp
-	@echo Updating doc_dist time stamp: `cat timestamp/doc_dist.stamp`
-
 timestamp/cm_dist.stamp: timestamp/ac_dist.stamp
 	@echo cm_dist Out of date wrt ac_dist
-	@echo ac_dist time stamp: `cat timestamp/ac_dist.stamp`
-	@echo cm_dist time stamp: `cat timestamp/cm_dist.stamp`
-	perl cmake/to_dist.pl --verbose
+	@( \
+	  echo cm_dist/marpa.c: ac_dist/marpa.c; \
+	  echo cm_dist/include/marpa.h: ac_dist/marpa.h; \
+	  echo cm_dist/libmarpa.pc.in: ac_dist/libmarpa.pc.in; \
+	  echo cm_dist/README.AIX: ac_dist/README.AIX; \
+	  echo cm_dist/GIT_LOG.txt: ac_dist/GIT_LOG.txt; \
+	  echo cm_dist/marpa_obs.c: ac_dist/marpa_obs.c; \
+	  echo cm_dist/marpa_obs.h: ac_dist/marpa_obs.h; \
+	  echo cm_dist/marpa_ami.c: ac_dist/marpa_ami.c; \
+	  echo cm_dist/marpa_ami.h: ac_dist/marpa_ami.h; \
+	  echo cm_dist/marpa_avl.c: ac_dist/marpa_avl.c; \
+	  echo cm_dist/marpa_avl.h: ac_dist/marpa_avl.h; \
+	  echo cm_dist/marpa_tavl.h: ac_dist/marpa_tavl.h; \
+	  echo cm_dist/marpa_tavl.c: ac_dist/marpa_tavl.c; \
+	  echo cm_dist/error_codes.table: ac_dist/error_codes.table; \
+	  echo cm_dist/steps.table: ac_dist/steps.table; \
+	  echo cm_dist/events.table: ac_dist/events.table; \
+	  echo cm_dist/COPYING.LESSER: ac_dist/COPYING.LESSER; \
+	  echo cm_dist/COPYING: ac_dist/COPYING; \
+	  echo cm_dist/README: ac_dist/README; \
+	  echo cm_dist/CMakeLists.txt: cmake/CMakeLists.txt; \
+	  echo cm_dist/config.h.cmake: cmake/config.h.cmake; \
+	  echo cm_dist/modules/FindInline.cmake: cmake/modules/FindInline.cmake; \
+	  echo cm_dist/modules/FindNullIsZeroes.cmake: cmake/modules/FindNullIsZeroes.cmake; \
+	  echo cm_dist/modules/inline.c: cmake/modules/inline.c; \
+	  echo cm_dist/internals/libmarpa_core.pdf: ac_dist/internals/libmarpa_core.pdf; \
+	  echo cm_dist/internals/libmarpa_ami.pdf: ac_dist/internals/libmarpa_ami.pdf; \
+	  echo cm_dist/api_docs/libmarpa_api.pdf: ac_dist/api_docs/libmarpa_api.pdf; \
+	  echo cm_dist/api_docs/libmarpa_api.html: ac_dist/api_docs/libmarpa_api.html; \
+          echo cm_dist/api_docs/api_html.tar: ac_dist/api_docs/api_html.tar; \
+	) | perl ./etc/copier.pl --verbose
 	date > timestamp/cm_dist.stamp
 	@echo Updating cm_dist time stamp: `cat timestamp/cm_dist.stamp`
 
 distcheck:
-	perl etc/license_check.pl  --verbose=0 `find Makefile cm_dist ac_dist doc_dist -type f`
+	perl etc/license_check.pl  --verbose=0 `find Makefile cm_dist ac_dist -type f`
 
 tag:
 	git tag -a v$(version) -m "Version $(VERSION)"
@@ -72,8 +91,6 @@ cm_dist: timestamp/cm_dist.stamp
 
 timestamp/cm_debug.stamp: timestamp/cm_dist.stamp
 	@echo cm_debug Out of date wrt cm_dist
-	@echo cm_dist time stamp: `cat timestamp/cm_dist.stamp`
-	@echo cm_debug time stamp: `cat timestamp/cm_debug.stamp`
 	rm -rf cm_build
 	mkdir cm_build
 	cd cm_build && cmake -DCMAKE_BUILD_TYPE:STRING=Debug ../cm_dist
@@ -91,8 +108,6 @@ asan: timestamp/cm_debug.stamp
 
 timestamp/test.stamp: timestamp/cm_debug.stamp
 	@echo test Out of date wrt cm_debug
-	@echo cm_debug time stamp: `cat timestamp/cm_debug.stamp`
-	@echo test time stamp: `cat timestamp/test.stamp`
 	rm -rf do_test
 	mkdir do_test
 	cd do_test && cmake ../test
@@ -109,12 +124,8 @@ test_clean:
 clean:
 	-rm libmarpa_version.sh
 	(cd work; $(MAKE) clean)
-	rm -rf work/doc
-	rm -rf work/doc1
-	rm -rf work/stage
 	rm -rf cm_build
 	rm -rf cm_dist
-	rm -rf doc_dist
 	rm -rf ac_dist
 	rm -rf do_test
 	mv timestamp timestamp.$$.temp; mkdir timestamp; \

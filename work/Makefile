@@ -35,7 +35,7 @@ clean:
 	for d in $(CLEANABLE_DIR); do (cd $$d; $(MAKE) clean); done
 	mv timestamp timestamp.$$.temp; mkdir timestamp; \
 	  mv timestamp.$$.temp/ABOUT_ME timestamp; rm -r timestamp.$$.temp
-	rm -rf stage
+	-rm -r stage doc doc1
 
 timestamp/stage_build.stamp:
 	test -d stage || mkdir stage
@@ -76,6 +76,7 @@ timestamp/stage_build.stamp:
           echo stage/internals/libmarpa_ami.pdf: ami/marpa_ami.pdf; \
           echo stage/api_docs/libmarpa_api.pdf: doc1/api.pdf; \
           echo stage/api_docs/libmarpa_api.html: doc1/api.html; \
+          echo stage/api_docs/api_html.tar: doc/api_html.tar; \
         ) | perl ../etc/copier.pl --verbose
 	cd stage && autoreconf -iv
 	cd stage && ./configure
@@ -96,7 +97,8 @@ timestamp/doc_build.stamp:
 	test -d doc/m4 || mkdir doc/m4
 	cd doc && autoreconf -ivf
 	cd doc && ./configure
-	(cd doc; $(MAKE) dist)
+	(cd doc; $(MAKE) html)
+	(cd doc/api.html; tar cf - .) > doc/api_html.tar
 	date > $@
 
 timestamp/doc1_build.stamp:
