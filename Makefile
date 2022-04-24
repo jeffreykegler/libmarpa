@@ -22,11 +22,11 @@ MINOR=6
 MICRO=3
 VERSION=$(MAJOR).$(MINOR).$(MICRO)
 
-.PHONY: dummy ac_dist cm_dist test \
-  version major minor micro
+.PHONY: ac_dist asan clean cm_dist dist distcheck dummy \
+    realclean tag test test_clean
 
 dummy:
-	@echo The target to make the distributions is '"dists"'
+	@echo The target to make the distribution is '"dist"'
 
 timestamp/stage.stamp:
 	$(MAKE) libmarpa_version.sh
@@ -34,7 +34,7 @@ timestamp/stage.stamp:
 	date > timestamp/stage.stamp
 	@echo Updating stage time stamp: `cat timestamp/stage.stamp`
 
-dists: timestamp/ac_dist.stamp \
+dist: timestamp/ac_dist.stamp \
   timestamp/cm_dist.stamp
 
 timestamp/ac_dist.stamp: timestamp/stage.stamp
