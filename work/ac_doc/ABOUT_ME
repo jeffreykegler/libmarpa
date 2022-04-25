@@ -1,7 +1,2 @@
-This directory builds the configurations file for the libmarpa multi-page
+This directory builds the configuration files for the libmarpa multi-page
 HTML API doc distribution.
-
-IMPORTANT NOTES:  configure.ac is a *target* in this directory, not a
-source file.  Also, the Makefile.am is *NOT* related to this Makefile.
-Makefile.am is not processed in this directory, either as a source or
-a target -- it is for copying elsewhere.
