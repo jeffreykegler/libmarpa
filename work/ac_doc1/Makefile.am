@@ -21,5 +21,5 @@
 
 ACLOCAL_AMFLAGS = -I m4
 info_TEXINFOS = api.texi internal.texi
-AM_MAKEINFOHTMLFLAGS = --no-headers --no-split
+AM_MAKEINFOHTMLFLAGS = --no-split
 
