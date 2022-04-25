@@ -1421,8 +1421,8 @@ of gaining efficiencies at evaluation time.
 Current thinking is that the gains do not repay the extra
 complexity.
 
-Return value: On success, a non-negative integer.
-On failure, a negative integer.
+Return value: On success, returns a non-negative integer.
+On failure, returns -2 and sets the error code to MARPA_ERR_VALUED_IS_LOCKED.
 @end deftypefun
 
 @node Grammar reference counting, Symbols, Grammar constructor, Grammar methods
