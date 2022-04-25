@@ -21,21 +21,9 @@
 
 # This directory builds the configuration files for libmarpa.
 
-# IMPORTANT NOTES:  configure.ac is a *target* in this directory,
-# not a source file.  Also, the Makefile.am is *NOT* related to this
-# Makefile.  Makefile.am is not processed in this directory, either as
-# a source or a target -- it is for copying elsewhere.
+all: version.m4
 
-HASH_PREAMBLE = ../shared/license.hash ../shared/do_not_edit.hash
-CONFIGURE_AC_PIECES = $(HASH_PREAMBLE) \
-  configure.ac.p20 configure.ac-version configure.ac.p80
-
-all: configure.ac
-
-configure.ac: $(CONFIGURE_AC_PIECES)
-	cat $(CONFIGURE_AC_PIECES) > $@
-
-configure.ac-version: ../../Makefile
+version.m4: ../../Makefile
 	perl -e \
 	'printf "m4_define([marpa_major_version], [%d])\n", shift; \
 	 printf "m4_define([marpa_minor_version], [%d])\n", shift; \
@@ -44,7 +32,7 @@ configure.ac-version: ../../Makefile
 	    `sh ../../libmarpa_version.sh  minor` \
 	    `sh ../../libmarpa_version.sh  micro` > $@
 
-CLEAN_FILES = configure.ac configure.ac-version
+CLEAN_FILES = version.m4
 
 clean:
 	rm -f $(CLEAN_FILES)

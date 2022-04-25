@@ -25,7 +25,7 @@ dummy:
 install: sources timestamp/doc_build.stamp timestamp/doc1_build.stamp timestamp/stage_build.stamp
 
 # Order matters in MAKEABLE_DIR -- some directories depend on others
-MAKEABLE_DIR = ac ac_doc ac_doc1 ami dev tavl public
+MAKEABLE_DIR = ac ami dev tavl public
 CLEANABLE_DIR = $(MAKEABLE_DIR)
 
 sources:
@@ -42,6 +42,7 @@ timestamp/stage_build.stamp:
 	test -d stage/m4 || mkdir stage/m4
 	@( \
           echo stage/configure.ac: ac/configure.ac; \
+          echo stage/version.m4: ac/version.m4; \
           echo stage/Makefile.am: ac/Makefile.am; \
           echo stage/Makefile.win32: win32/Makefile.win32; \
           echo stage/win32/do_config_h.pl: win32/do_config_h.pl; \
