@@ -2,6 +2,3 @@ This directory builds the configuration files for the CMake version of
 the libmarpa distribution.  It is *NOT* either a cmake build directory,
 or a CMake distribution directory.  Instead it contains or (as necessary)
 builds the components needed by the cmake distribution directory.
-
-IMPORTANT NOTES: CMakeLists.txt is a *target* in this directory, not a
-source file.

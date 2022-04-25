@@ -19,34 +19,18 @@
 
 .PHONY: all
 
-# This directory builds the configuration files for the CMake version of
-# the libmarpa distribution.  It is *NOT* either a cmake build directory,
-# or a CMake distribution directory.  Instead it contains or (as necessary)
-# builds the components needed by the cmake distribution directory.
+all: version.cmake
 
-# IMPORTANT NOTES: CMakeLists.txt is a *target* in this directory, not a
-# source file.
-
-HASH_PREAMBLE = ../work/shared/license.hash ../work/shared/do_not_edit.hash
-CONFIGURE_AC_PIECES = $(HASH_PREAMBLE) \
-  CMakeLists.txt.p20 CMakeLists.txt.p80
-
-all: CMakeLists.txt
-
-CMakeLists.txt: $(CONFIGURE_AC_PIECES)
-	cat ../work/shared/license.hash > $@
-	cat ../work/shared/do_not_edit.hash >> $@
-	cat CMakeLists.txt.p20 >> $@
+version.cmake:
 	perl -e \
 	'printf "SET(MARPA_LIB_MAJOR_VERSION %d)\n", shift; \
 	 printf "SET(MARPA_LIB_MINOR_VERSION %d)\n", shift; \
 	 printf "SET(MARPA_LIB_PATCH_VERSION %d)\n", shift;' \
 	    `sh ../libmarpa_version.sh  major` \
 	    `sh ../libmarpa_version.sh  minor` \
-	    `sh ../libmarpa_version.sh  micro` >> $@
-	cat CMakeLists.txt.p80 >> $@
+	    `sh ../libmarpa_version.sh  micro` > $@
 
-CLEAN_FILES = CMakeLists.txt
+CLEAN_FILES = version.cmake
 
 clean:
 	rm -f $(CLEAN_FILES)

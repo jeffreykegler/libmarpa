@@ -68,6 +68,7 @@ timestamp/cm_dist.stamp: timestamp/ac_dist.stamp
 	  echo cm_dist/COPYING: ac_dist/COPYING; \
 	  echo cm_dist/README: ac_dist/README; \
 	  echo cm_dist/CMakeLists.txt: cmake/CMakeLists.txt; \
+	  echo cm_dist/version.cmake: cmake/version.cmake; \
 	  echo cm_dist/config.h.cmake: cmake/config.h.cmake; \
 	  echo cm_dist/modules/FindInline.cmake: cmake/modules/FindInline.cmake; \
 	  echo cm_dist/modules/FindNullIsZeroes.cmake: cmake/modules/FindNullIsZeroes.cmake; \
