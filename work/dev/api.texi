@@ -62,167 +62,167 @@ Published @value{UPDATED} by Jeffrey Kegler
 @end ifnottex
 
 @menu
-* About this document::         
-* About Libmarpa::              
-* Architecture::                
-* Input::                       
-* Semantics::                   
-* Threads::                     
-* Fatal Errors::                
-* Introduction to the external interface::  
-* Static methods::              
-* Configuration methods::       
-* Grammar methods::             
-* Recognizer methods::          
-* Progress reports::            
-* Bocage methods::              
-* Ordering methods::            
-* Tree methods::                
-* Value methods::               
-* Events::                      
-* Error methods macros and codes::  
-* Design notes::                
-* Work in Progress::            
-* Deprecated techniques and methods::  
+* About this document::
+* About Libmarpa::
+* Architecture::
+* Input::
+* Semantics::
+* Threads::
+* Fatal Errors::
+* Introduction to the external interface::
+* Static methods::
+* Configuration methods::
+* Grammar methods::
+* Recognizer methods::
+* Progress reports::
+* Bocage methods::
+* Ordering methods::
+* Tree methods::
+* Value methods::
+* Events::
+* Error methods macros and codes::
+* Technical notes::
+* Work in Progress::
+* Deprecated techniques and methods::
 
 @detailmenu
  --- The Detailed Node Listing ---
 
 About this document
 
-* How to read this document::   
-* Prerequisites::               
-* Parsing theory::              
+* How to read this document::
+* Prerequisites::
+* Parsing theory::
 
 Architecture
 
-* Major objects::               
-* Time objects::                
-* Reference counting::          
-* Numbered objects::            
+* Major objects::
+* Time objects::
+* Reference counting::
+* Numbered objects::
 
 Input
 
-* Earlemes::                    
-* Terminals::                   
+* Earlemes::
+* Terminals::
 
 Earlemes
 
-* The traditional model::       
-* The earleme variables::       
-* The significances of the earleme variables::  
-* The initial earleme settings::  
-* The standard model of input::  
-* Ambiguous input::             
-* Variable length tokens::      
-* The generalized model::       
-* General rules for the earleme variables::  
+* The traditional model::
+* The earleme variables::
+* The significances of the earleme variables::
+* The initial earleme settings::
+* The standard model of input::
+* Ambiguous input::
+* Variable length tokens::
+* The generalized model::
+* General rules for the earleme variables::
 
 Introduction to the external interface
 
-* About the overviews::         
-* Return values::               
-* Naming conventions::          
+* About the overviews::
+* Return values::
+* Naming conventions::
 
 Grammar methods
 
-* Grammar overview::            
-* Grammar constructor::         
-* Grammar reference counting::  
-* Symbols::                     
-* Rules::                       
-* Sequences::                   
-* Ranks::                       
-* Events::                      
-* Grammar precomputation::      
+* Grammar overview::
+* Grammar constructor::
+* Grammar reference counting::
+* Symbols::
+* Rules::
+* Sequences::
+* Ranks::
+* Grammar precomputation::
 
 Recognizer methods
 
-* Recognizer overview::         
-* Recognizer constructor::      
-* Recognizer reference counting::  
-* Recognizer life cycle mutators::  
-* Location accessors::          
-* Other parse status methods::  
+* Recognizer overview::
+* Recognizer constructor::
+* Recognizer reference counting::
+* Recognizer life cycle mutators::
+* Location accessors::
+* Other parse status methods::
 
 Bocage methods
 
-* Bocage overview::             
-* Bocage constructor::          
-* Bocage reference counting::   
-* Bocage accessor::             
+* Bocage overview::
+* Bocage constructor::
+* Bocage reference counting::
+* Bocage accessor::
 
 Ordering methods
 
-* Ordering overview::           
-* Ordering constructor::        
-* Ordering reference counting::  
-* Order accessor::              
-* Non-default ordering::        
+* Ordering overview::
+* Ordering constructor::
+* Ordering reference counting::
+* Order accessor::
+* Non-default ordering::
 
 Tree methods
 
-* Tree overview::               
-* Tree constructor::            
-* Tree reference counting::     
-* Tree iteration::              
+* Tree overview::
+* Tree constructor::
+* Tree reference counting::
+* Tree iteration::
 
 Value methods
 
-* Value overview::              
-* How to use the valuator::     
-* Advantages of step-driven valuation::  
-* Maintaining the stack::       
-* Valuator constructor::        
-* Valuator reference counting::  
-* Stepping through the valuator::  
-* Valuator steps by type::      
-* Basic step accessors::        
-* Other step accessors::        
+* Value overview::
+* How to use the valuator::
+* Advantages of step-driven valuation::
+* Maintaining the stack::
+* Valuator constructor::
+* Valuator reference counting::
+* Stepping through the valuator::
+* Valuator steps by type::
+* Basic step accessors::
+* Other step accessors::
 
 Maintaining the stack
 
-* Sizing the stack::            
-* Initializing locations in the stack::  
+* Sizing the stack::
+* Initializing locations in the stack::
 
 Events
 
-* Events overview::             
-* Event methods::               
-* Event codes::                 
+* Events overview::
+* Event methods::
+* Event codes::
 
 Error methods, macros and codes
 
-* Error methods::               
-* Error Macros::                
-* External error codes::        
-* Internal error codes::        
+* Error methods::
+* Error Macros::
+* External error codes::
+* Internal error codes::
 
-Design notes
+Technical notes
 
-* Why so many time objects::    
-* Design of numbered objects::  
-* LHS Terminals::               
+* Data types used by Libmarpa::
+* Why so many time objects::
+* Design of numbered objects::
+* LHS Terminals::
 
 Work in Progress
 
-* Untested methods::            
+* Untested methods::
 
 Untested methods
 
-* Ranking methods::             
-* Zero-width assertion methods::  
-* Methods for revising parses::  
+* Ranking methods::
+* Zero-width assertion methods::
+* Methods for revising parses::
 
 Deprecated techniques and methods
 
-* Valued and unvalued symbols::  
+* Valued and unvalued symbols::
 
 Valued and unvalued symbols
 
-* What unvalued symbols were::  
-* Grammar methods dealing with unvalued symbols::  
-* Registering semantics in the valuator::  
+* What unvalued symbols were::
+* Grammar methods dealing with unvalued symbols::
+* Registering semantics in the valuator::
 
 @end detailmenu
 @end menu
@@ -231,9 +231,9 @@ Valued and unvalued symbols
 @chapter About this document
 
 @menu
-* How to read this document::   
-* Prerequisites::               
-* Parsing theory::              
+* How to read this document::
+* Prerequisites::
+* Parsing theory::
 @end menu
 
 @node How to read this document, Prerequisites, About this document, About this document
@@ -356,10 +356,10 @@ to successfully debug the logic.
 @chapter Architecture
 
 @menu
-* Major objects::               
-* Time objects::                
-* Reference counting::          
-* Numbered objects::            
+* Major objects::
+* Time objects::
+* Reference counting::
+* Numbered objects::
 @end menu
 
 @node Major objects, Time objects, Architecture, Architecture
@@ -548,23 +548,23 @@ objects.
 @chapter Input
 
 @menu
-* Earlemes::                    
-* Terminals::                   
+* Earlemes::
+* Terminals::
 @end menu
 
 @node Earlemes, Terminals, Input, Input
 @section Earlemes
 
 @menu
-* The traditional model::       
-* The earleme variables::       
-* The significances of the earleme variables::  
-* The initial earleme settings::  
-* The standard model of input::  
-* Ambiguous input::             
-* Variable length tokens::      
-* The generalized model::       
-* General rules for the earleme variables::  
+* The traditional model::
+* The earleme variables::
+* The significances of the earleme variables::
+* The initial earleme settings::
+* The standard model of input::
+* Ambiguous input::
+* Variable length tokens::
+* The generalized model::
+* General rules for the earleme variables::
 @end menu
 
 @node The traditional model, The earleme variables, Earlemes, Earlemes
@@ -1102,9 +1102,9 @@ The following chapters describe Libmarpa's external
 interface in detail.
 
 @menu
-* About the overviews::         
-* Return values::               
-* Naming conventions::          
+* About the overviews::
+* Return values::
+* Naming conventions::
 @end menu
 
 @node About the overviews, Return values, Introduction to the external interface, Introduction to the external interface
@@ -1330,14 +1330,14 @@ Always succeeds.
 @cindex grammars
 
 @menu
-* Grammar overview::            
-* Grammar constructor::         
-* Grammar reference counting::  
-* Symbols::                     
-* Rules::                       
-* Sequences::                   
-* Ranks::                       
-* Grammar precomputation::      
+* Grammar overview::
+* Grammar constructor::
+* Grammar reference counting::
+* Symbols::
+* Rules::
+* Sequences::
+* Ranks::
+* Grammar precomputation::
 @end menu
 
 @node Grammar overview, Grammar constructor, Grammar methods, Grammar methods
@@ -2526,12 +2526,12 @@ On failure, @minus{}2.
 @chapter Recognizer methods
 
 @menu
-* Recognizer overview::         
-* Recognizer constructor::      
-* Recognizer reference counting::  
-* Recognizer life cycle mutators::  
-* Location accessors::          
-* Other parse status methods::  
+* Recognizer overview::
+* Recognizer constructor::
+* Recognizer reference counting::
+* Recognizer life cycle mutators::
+* Location accessors::
+* Other parse status methods::
 @end menu
 
 @node Recognizer overview, Recognizer constructor, Recognizer methods, Recognizer methods
@@ -3260,10 +3260,10 @@ or on other failure, @minus{}2.
 @chapter Bocage methods
 
 @menu
-* Bocage overview::             
-* Bocage constructor::          
-* Bocage reference counting::   
-* Bocage accessor::             
+* Bocage overview::
+* Bocage constructor::
+* Bocage reference counting::
+* Bocage accessor::
 @end menu
 
 @node Bocage overview, Bocage constructor, Bocage methods, Bocage methods
@@ -3365,11 +3365,11 @@ Failures: On failure, @minus{}2.
 @chapter Ordering methods
 
 @menu
-* Ordering overview::           
-* Ordering constructor::        
-* Ordering reference counting::  
-* Order accessor::              
-* Non-default ordering::        
+* Ordering overview::
+* Ordering constructor::
+* Ordering reference counting::
+* Order accessor::
+* Non-default ordering::
 @end menu
 
 @node Ordering overview, Ordering constructor, Ordering methods, Ordering methods
@@ -3521,10 +3521,10 @@ On failure, @minus{}2.
 @chapter Tree methods
 
 @menu
-* Tree overview::               
-* Tree constructor::            
-* Tree reference counting::     
-* Tree iteration::              
+* Tree overview::
+* Tree constructor::
+* Tree reference counting::
+* Tree iteration::
 @end menu
 
 @node Tree overview, Tree constructor, Tree methods, Tree methods
@@ -3639,16 +3639,16 @@ Always succeeds.
 @chapter Value methods
 
 @menu
-* Value overview::              
-* How to use the valuator::     
-* Advantages of step-driven valuation::  
-* Maintaining the stack::       
-* Valuator constructor::        
-* Valuator reference counting::  
-* Stepping through the valuator::  
-* Valuator steps by type::      
-* Basic step accessors::        
-* Other step accessors::        
+* Value overview::
+* How to use the valuator::
+* Advantages of step-driven valuation::
+* Maintaining the stack::
+* Valuator constructor::
+* Valuator reference counting::
+* Stepping through the valuator::
+* Valuator steps by type::
+* Basic step accessors::
+* Other step accessors::
 @end menu
 
 @node Value overview, How to use the valuator, Value methods, Value methods
@@ -3883,8 +3883,8 @@ a stack location @var{Y} is later (earlier)
 than stack location @var{X}.
 
 @menu
-* Sizing the stack::            
-* Initializing locations in the stack::  
+* Sizing the stack::
+* Initializing locations in the stack::
 @end menu
 
 @node Sizing the stack, Initializing locations in the stack, Maintaining the stack, Maintaining the stack
@@ -4241,9 +4241,9 @@ If the current step type is anything else, an unspecified value.
 @chapter Events
 
 @menu
-* Events overview::             
-* Event methods::               
-* Event codes::                 
+* Events overview::
+* Event methods::
+* Event codes::
 @end menu
 
 @node Events overview, Event methods, Events, Events
@@ -4424,14 +4424,14 @@ Event value: The ID of the predicted symbol.
 Suggested message: "Symbol was predicted".
 @end deftypevr
 
-@node Error methods macros and codes, Design notes, Events, Top
+@node Error methods macros and codes, Technical notes, Events, Top
 @chapter Error methods, macros and codes
 
 @menu
-* Error methods::               
-* Error Macros::                
-* External error codes::        
-* Internal error codes::        
+* Error methods::
+* Error Macros::
+* External error codes::
+* Internal error codes::
 @end menu
 
 @node Error methods, Error Macros, Error methods macros and codes, Error methods macros and codes
@@ -5357,23 +5357,29 @@ Numeric value: 67.
 Numeric value: 72.
 @end deftypevr
 
-@node Design notes, Work in Progress, Error methods macros and codes, Top
-@chapter Design notes
+@node Technical notes, Work in Progress, Error methods macros and codes, Top
+@chapter Technical notes
 
-Design apologetics are
-throughout this document,
-dispersed among sections where it is
-hoped that they motivate the description or discussion.
-The notes in this section 
-did not find a home elsewhere.
+This section contains technical notes that are
+not necessary for the main presentation,
+but which may be useful or interesting.
 
 @menu
-* Why so many time objects::    
-* Design of numbered objects::  
-* LHS Terminals::               
+* Data types used by Libmarpa::
+* Why so many time objects::
+* Design of numbered objects::
+* LHS Terminals::
 @end menu
 
-@node Why so many time objects, Design of numbered objects, Design notes, Design notes
+@node Data types used by Libmarpa, Why so many time objects, Technical notes, Technical notes
+@section Data types used by Libmarpa
+
+Libmarpa does not use any floating point data.
+The only string used is the error message
+of the ``out of memory'' failure.
+All other data are integers or pointers.
+
+@node Why so many time objects, Design of numbered objects, Data types used by Libmarpa, Technical notes
 @section Why so many time objects?
 
 Marpa is an aggressively multi-pass algorithm.
@@ -5421,7 +5427,7 @@ In the current implement, the valuation time object
 needs only to step through a sequence already determined
 in the tree iterator.
 
-@node Design of numbered objects, LHS Terminals, Why so many time objects, Design notes
+@node Design of numbered objects, LHS Terminals, Why so many time objects, Technical notes
 @section Numbered objects
 
 As the name suggests,
@@ -5460,7 +5466,7 @@ that the lack of safe validity checking
 is far too high a price to pay
 for the difference in speed.
 
-@node LHS Terminals,  , Design of numbered objects, Design notes
+@node LHS Terminals,  , Design of numbered objects, Technical notes
 @section LHS terminals
 
 Marpa's idea
@@ -5483,11 +5489,11 @@ For this reason,
 the traditional behavior is the default
 in Libmarpa.
 
-@node Work in Progress, Deprecated techniques and methods, Design notes, Top
+@node Work in Progress, Deprecated techniques and methods, Technical notes, Top
 @chapter Work in Progress
 
 @menu
-* Untested methods::            
+* Untested methods::
 @end menu
 
 @node Untested methods,  , Work in Progress, Work in Progress
@@ -5500,9 +5506,9 @@ Users should regard these methods
 as unsupported.
 
 @menu
-* Ranking methods::             
-* Zero-width assertion methods::  
-* Methods for revising parses::  
+* Ranking methods::
+* Zero-width assertion methods::
+* Methods for revising parses::
 @end menu
 
 @node Ranking methods, Zero-width assertion methods, Untested methods, Untested methods
@@ -5628,16 +5634,16 @@ The methods in this section provide that capability.
 @chapter Deprecated techniques and methods
 
 @menu
-* Valued and unvalued symbols::  
+* Valued and unvalued symbols::
 @end menu
 
 @node Valued and unvalued symbols,  , Deprecated techniques and methods, Deprecated techniques and methods
 @section Valued and unvalued symbols
 
 @menu
-* What unvalued symbols were::  
-* Grammar methods dealing with unvalued symbols::  
-* Registering semantics in the valuator::  
+* What unvalued symbols were::
+* Grammar methods dealing with unvalued symbols::
+* Registering semantics in the valuator::
 @end menu
 
 @node What unvalued symbols were, Grammar methods dealing with unvalued symbols, Valued and unvalued symbols, Valued and unvalued symbols
