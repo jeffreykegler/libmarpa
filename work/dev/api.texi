@@ -56,19 +56,20 @@ Published @value{UPDATED} by Jeffrey Kegler
 @contents
 
 @ifnottex
-@node Top, About this document, (dir), (dir)
+@node Top, No warranty, (dir), (dir)
 @top Libmarpa: The Marpa low-level library
 @insertcopying
 @end ifnottex
 
 @menu
+* No warranty::
 * About this document::
 * About Libmarpa::
 * Architecture::
 * Input::
 * Semantics::
 * Threads::
-* Fatal Errors::
+* Failures in libmarpa::
 * Introduction to the external interface::
 * Static methods::
 * Configuration methods::
@@ -117,6 +118,12 @@ Earlemes
 * Variable length tokens::
 * The generalized model::
 * General rules for the earleme variables::
+
+Failures in libmarpa
+
+* No warranty reminder::
+* Definition of Libmarpa failure::
+* Memory allocation failure::
 
 Introduction to the external interface
 
@@ -227,7 +234,17 @@ Valued and unvalued symbols
 @end detailmenu
 @end menu
 
-@node About this document, About Libmarpa, Top, Top
+@node No warranty, About this document, Top, Top
+@chapter No warranty
+
+The Libmarpa license takes precedence over the
+statements in this document.
+In particular, the license states
+that Libmarpa is free software and has no warranty.
+No statement in this document should be construed
+as providing any kind of warranty.
+
+@node About this document, About Libmarpa, No warranty, Top
 @chapter About this document
 
 @menu
@@ -1038,7 +1055,7 @@ The most extensive discussion of the semantics
 is in the section that deals with the methods of the value time class.
 @xref{Value methods}.
 
-@node Threads, Fatal Errors, Semantics, Top
+@node Threads, Failures in libmarpa, Semantics, Top
 @chapter Threads
 
 Libmarpa is thread-safe,
@@ -1080,8 +1097,52 @@ Libmarpa could allow thread-safe
 cloning of grammars and other
 time objects.
 
-@node Fatal Errors, Introduction to the external interface, Threads, Top
-@chapter Fatal Errors
+@node Failures in libmarpa, Introduction to the external interface, Threads, Top
+@chapter Failures in libmarpa
+
+@menu
+* No warranty reminder::
+* Definition of Libmarpa failure::
+* Memory allocation failure::
+@end menu
+
+@node No warranty reminder, Definition of Libmarpa failure, Failures in libmarpa, Failures in libmarpa
+@section No warranty
+
+As a reminder,
+no language in this section or,
+for that matter, in this document
+should be read as providing,
+or suggesting the existence of,
+a warranty.
+See the license for Libmarpa,
+and chapter @ref{No warranty}.
+
+@node Definition of Libmarpa failure, Memory allocation failure, No warranty reminder, Failures in libmarpa
+@section Definition of Libmarpa failure
+
+A ``Libmarpa failure'', for the purposes of this document,
+is a anomaly introduced by the Libmarpa user.
+Libmarpa failures are often what are typically termed ``bugs'',
+but not all bugs are Libmarpa failures.
+Also not all Libmarpa failures are what are usually considered
+bugs,
+Libmarpa failures may be ``soft'' anomalies,
+more in the nature of an exception to normal processing
+than a bug.
+
+Bugs in other libraries, the compiler and problems with the
+hardware are not Libmarpa failures,
+by our definition, because they are not
+introduced by the Libmarpa user.
+Also, it is possible that the Libmarpa library itself contains
+bugs and,
+since these were not introduced by the Libmarpa user,
+they would not be Libmarpa failures in our special sense
+of that term.
+
+@node Memory allocation failure,  , Definition of Libmarpa failure, Failures in libmarpa
+@section Memory allocation failure
 
 Libmarpa avoids fatal errors,
 leaving that decision up to the application,
@@ -1095,7 +1156,7 @@ an alternative memory allocator to be specified,
 and to allow the user to specifier a handler to
 be called when an out-of-memory condition occurs.
 
-@node Introduction to the external interface, Static methods, Fatal Errors, Top
+@node Introduction to the external interface, Static methods, Failures in libmarpa, Top
 @chapter Introduction to the external interface
 
 The following chapters describe Libmarpa's external
@@ -1853,7 +1914,7 @@ discard separators in the semantics,
 and in fact will do this by default.
 At the Libmarpa level, sequences always ``keep
 separators''.
-It is up to the programmer to arrange
+It is up to the Libmarpa user to arrange
 to discard separators,
 if that is what is desired.
 
@@ -2434,7 +2495,7 @@ rule --- a ``counted'' symbol.
 The presence of one or more of these will cause failure
 to be reported,
 and will prevent the grammar from being precomputed.
-So that the programmer can fix several at once,
+So that the Libmarpa user can fix several at once,
 these failures are delayed until events are created
 for all of the counted nullables.
 
@@ -2445,7 +2506,7 @@ impossibility.
 The presence of one or more of these will cause failure
 to be reported,
 and will prevent the grammar from being precomputed.
-So that the programmer can fix several at once,
+So that the Libmarpa user can fix several at once,
 the failure is delayed until events are created
 for all of the counted nullables.
 
@@ -3782,7 +3843,7 @@ by the time a return value is finally consumed,
 a language boundary will have been crossed four times.
 
 How do
-programmers deal with difficulties like this?
+Libmarpa users deal with difficulties like this?
 Usually, by
 doing the absolute minimum possible in the callbacks.
 A horrific debugging enviroment can become a manageable
@@ -3815,7 +3876,7 @@ are strictly in
 the context of a low-level interface.
 The author is under no illusion
 that direct use of Libmarpa's valuator will be found
-satisfactory by most application programmers,
+satisfactory by most Libmarpa users,
 even those using the C language.
 The author certainly avoids using step-driven valuation directly.
 Libmarpa's valuator is intended
@@ -5701,7 +5762,7 @@ consistent with the recognizer's marking.
 
 Marpa reports an error when a symbol's use
 conflicts with its locked valued status.
-Doing so usually saves the programmer
+Doing so usually saves the Libmarpa user
 some tricky debugging further down the road.
 
 @node Grammar methods dealing with unvalued symbols, Registering semantics in the valuator, What unvalued symbols were, Valued and unvalued symbols
