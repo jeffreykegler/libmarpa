@@ -69,7 +69,7 @@ Published @value{UPDATED} by Jeffrey Kegler
 * Input::
 * Semantics::
 * Threads::
-* Failures in libmarpa::
+* Libmarpa user non-conformities::
 * Introduction to the external interface::
 * Static methods::
 * Configuration methods::
@@ -119,10 +119,10 @@ Earlemes
 * The generalized model::
 * General rules for the earleme variables::
 
-Failures in libmarpa
+Libmarpa user non-conformities
 
 * No warranty reminder::
-* Definition of Libmarpa failure::
+* Definition of user non-conformity::
 * Memory allocation failure::
 
 Introduction to the external interface
@@ -422,7 +422,7 @@ Iteration of tree using a value object
 produces ``steps''.
 These ``steps'' are
 instructions to
-the application on how 
+the application on how
 to evaluate the semantics,
 and how to manipulate the stack.
 @end itemize
@@ -596,7 +596,7 @@ Every location after the start location has exactly one input token
 associated with it.
 
 Some applications
-do not fit this traditional input model --- 
+do not fit this traditional input model ---
 natural language processing requires ambiguous tokens,
 for example.
 Libmarpa allows a wide variety of alternative input models.
@@ -656,7 +656,7 @@ There is never an Earley set after the current earleme.
 
 After every call to the @code{marpa_r_earleme_complete()} method
 that adds a token,
-the value of the latest earleme is 
+the value of the latest earleme is
 same as the value of the current earleme.
 After every call to the @code{marpa_r_earleme_complete()} method
 that does @strong{not} add a token,
@@ -676,7 +676,7 @@ After initialization,
 the only way to manipulate the value of the current earleme.
 
 The furthest earleme tracks how ``far out'' tokens can be found.
-In the standard input model, calling 
+In the standard input model, calling
 @code{marpa_r_earleme_complete()} after each
 @code{marpa_r_alternative()} call is sufficient to process
 all inputs,
@@ -722,7 +722,7 @@ In the standard model of input,
 calls to @code{marpa_r_alternative()}
 and @code{marpa_r_earleme_complete()} are
 made in pairs.
-There is, first, exactly one call 
+There is, first, exactly one call
 to @code{marpa_r_alternative()},
 and it is for a token with length 1.
 Following it must be a call
@@ -744,7 +744,7 @@ this means that we also know that
 @item The furthest earleme before the call was @var{c}.
 @end itemize
 In that case,
-after the call to 
+after the call to
 @code{marpa_r_alternative()},
 the following will be true:
 @itemize
@@ -795,7 +795,7 @@ We still require that there be at least one call
 to @code{marpa_r_alternative()}
 before each call to
 @code{marpa_r_earleme_complete()},
-and we still require that all tokens have 
+and we still require that all tokens have
 a length of 1.
 
 In the ambiguous input model, the behavior of the current,
@@ -830,7 +830,7 @@ the latest earleme before the call is also @var{c}.
 @item The length of the token is @var{length}.
 @end itemize
 In that case,
-after the call to 
+after the call to
 @code{marpa_r_alternative()},
 the following will be true:
 @itemize
@@ -986,7 +986,7 @@ the following will always be true,
 no matter which of the input models is in use.
 
 @itemize
-@item 
+@item
 The furthest earleme is greater than
 or equal to the current earleme.
 @end itemize
@@ -995,7 +995,7 @@ In an exhausted parser, the following will always be true,
 no matter which of the input models is in use.
 
 @itemize
-@item 
+@item
 The furthest earleme is less than
 or equal to the current earleme.
 @end itemize
@@ -1055,7 +1055,7 @@ The most extensive discussion of the semantics
 is in the section that deals with the methods of the value time class.
 @xref{Value methods}.
 
-@node Threads, Failures in libmarpa, Semantics, Top
+@node Threads, Libmarpa user non-conformities, Semantics, Top
 @chapter Threads
 
 Libmarpa is thread-safe,
@@ -1097,16 +1097,16 @@ Libmarpa could allow thread-safe
 cloning of grammars and other
 time objects.
 
-@node Failures in libmarpa, Introduction to the external interface, Threads, Top
-@chapter Failures in libmarpa
+@node Libmarpa user non-conformities, Introduction to the external interface, Threads, Top
+@chapter Libmarpa user non-conformities
 
 @menu
 * No warranty reminder::
-* Definition of Libmarpa failure::
+* Definition of user non-conformity::
 * Memory allocation failure::
 @end menu
 
-@node No warranty reminder, Definition of Libmarpa failure, Failures in libmarpa, Failures in libmarpa
+@node No warranty reminder, Definition of user non-conformity, Libmarpa user non-conformities, Libmarpa user non-conformities
 @section No warranty
 
 As a reminder,
@@ -1118,30 +1118,60 @@ a warranty.
 See the license for Libmarpa,
 and chapter @ref{No warranty}.
 
-@node Definition of Libmarpa failure, Memory allocation failure, No warranty reminder, Failures in libmarpa
-@section Definition of Libmarpa failure
+@node Definition of user non-conformity, Memory allocation failure, No warranty reminder, Libmarpa user non-conformities
+@section Definition of user non-conformity
 
-A ``Libmarpa failure'', for the purposes of this document,
-is a anomaly introduced by the Libmarpa user.
-Libmarpa failures are often what are typically termed ``bugs'',
-but not all bugs are Libmarpa failures.
-Also not all Libmarpa failures are what are usually considered
-bugs,
-Libmarpa failures may be ``soft'' anomalies,
-more in the nature of an exception to normal processing
-than a bug.
+For the purposes of this document,
+a Libmarpa user non-conformity is a behavior,
+introduced by the user of the Libmarpa library,
+that does not conform to a requirement in this
+document,
+or to other restrictions,
+such as those imposed by the C language.
+Unintentional user non-conformites are often called ``bugs'',
+especially when they are irrecoverable.
+Recoverable user non-conformities, on the other hand,
+may be employed deliberately by the Libmarpa user,
+as a programming technique.
 
-Bugs in other libraries, the compiler and problems with the
-hardware are not Libmarpa failures,
-by our definition, because they are not
-introduced by the Libmarpa user.
-Also, it is possible that the Libmarpa library itself contains
-bugs and,
-since these were not introduced by the Libmarpa user,
-they would not be Libmarpa failures in our special sense
-of that term.
+For better or for worse,
+and in the name of power and efficiency,
+C language, and its libraries,
+place the burden of avoiding irrecoverable failures,
+and of handling recoverable failures,
+largely on the user.
+Progress has changed our views on this trade-off,
+and modern hardware makes many simple checks essentially cost-free,
+so that Libmarpa's efforts to protect the user go beyond what
+would have considered best practice in the past.
 
-@node Memory allocation failure,  , Definition of Libmarpa failure, Failures in libmarpa
+But, on the whole, the Libmarpa user must be prepared to exercise
+with Libmarpa,
+the same severe care required by its C language environment.
+Non-conformities, unless specified otherwise,
+are irrecoverable failures.
+Once an irrecoverable failure has occurred,
+the further behavior of the program in undefined.
+Despite this,
+many sections of this document specify a failure handling
+behavior for Libmarpa
+in the face of specific irrecoverable failures.
+These behaviors must be understood as being
+provided on a ``best effort'' basis.
+The failure handling of irrecoverable failures is intended
+only to aid in debugging and testing.
+
+The situation is difference for recoverable failures.
+It is expected that Libmarpa applications will be designed around the
+failure handling specified for recoverable failures.
+As one example, the ``Ruby Slippers'' parsing technique
+(@ref{Ruby Slippers})
+is based
+on Libmarpa's ability to recover from
+a @code{MARPA_ERR_UNEXPECTED_TOKEN_ID} error
+successfully and efficiently.
+
+@node Memory allocation failure,  , Definition of user non-conformity, Libmarpa user non-conformities
 @section Memory allocation failure
 
 Libmarpa avoids fatal errors,
@@ -1156,7 +1186,7 @@ an alternative memory allocator to be specified,
 and to allow the user to specifier a handler to
 be called when an out-of-memory condition occurs.
 
-@node Introduction to the external interface, Static methods, Failures in libmarpa, Top
+@node Introduction to the external interface, Static methods, Libmarpa user non-conformities, Top
 @chapter Introduction to the external interface
 
 The following chapters describe Libmarpa's external
@@ -1225,7 +1255,7 @@ unless stated in the description of the method
 in this document.
 If a method sets an informational error code on
 success, that will always be stated in
-its description, and the description will 
+its description, and the description will
 specify,
 for each informational error code,
 the specific error code value,
@@ -1254,7 +1284,7 @@ All methods have a name beginning with @code{marpa_},
 if they are part of the
 external interface.
 If an external method is not a static method,
-its name is prefixed with one of 
+its name is prefixed with one of
 @code{marpa_c_},
 @code{marpa_g_},
 @code{marpa_r_},
@@ -1407,7 +1437,7 @@ Always succeeds.
 An archetypal application has a grammar.
 To create a grammar, use the @code{marpa_g_new()} method.
 When a grammar is no longer in use, its memory can be freed
-using the 
+using the
 @code{marpa_g_unref()} method.
 
 To be precomputed,
@@ -1627,7 +1657,7 @@ or flags it as a non-terminal if @var{value} is 0.
 Once set to a value with the
 @code{marpa_g_symbol_is_terminal_set()} method,
 the terminal status of a symbol is ``locked'' at that value.
-A subsequent call to 
+A subsequent call to
 @code{marpa_g_symbol_is_terminal_set()} that attempts
 to change the terminal status
 of @var{sym_id} to a value different from its current one
@@ -1844,7 +1874,7 @@ If rule @var{rule_id}
 is a sequence rule where the proper separation flag
 is set, returns 1.
 On other success,
-including the case 
+including the case
 where rule @var{rule_id}
 is not a sequence rule, returns 0.
 
@@ -1855,7 +1885,7 @@ is not defined, because they are not
 sequence rules.
 Applications for which this distinction is
 important should use
-the 
+the
 @code{marpa_g_sequence_min()} method.
 
 Failure returns:
@@ -2226,7 +2256,7 @@ On failure, @minus{}2 is returned.
     Marpa_Symbol_ID @var{sym_id}, @
  int @var{value})
 
-Libmarpa can be set up to generate an 
+Libmarpa can be set up to generate an
 @code{MARPA_EVENT_SYMBOL_COMPLETED}
 event whenever the symbol is completed.
 A symbol is said to be @strong{completed}
@@ -2536,7 +2566,7 @@ description of the appropriate code.
 @code{marpa_g_precompute()} is unusual in that it
 is possible to treat one of its failures as ``advisory'',
 and to proceed with parsing.
-If 
+If
 @code{marpa_g_precompute()} fails with an error code
 of @code{MARPA_ERR_GRAMMAR_HAS_CYCLE},
 parsing can proceed, just as it typically would for
@@ -2601,7 +2631,7 @@ On failure, @minus{}2.
 An archetypal application uses a recognizer to read input.
 To create a recognizer, use the @code{marpa_r_new()} method.
 When a recognizer is no longer in use, its memory can be freed
-using the 
+using the
 @code{marpa_r_unref()} method.
 
 To make a recognizer ready for input,
@@ -2718,6 +2748,7 @@ The values of the current and latest earlemes
 are unchanged by
 calls to @code{marpa_r_alternative()}.
 
+@anchor{Ruby Slippers}
 Several error codes leave the recognizer in a fully
 recoverable state, allowing the application to
 retry the @code{marpa_r_alternative()} method.
@@ -2840,7 +2871,7 @@ as it is possible that a token
 ending at some future
 earleme will continue the parse.
 More precisely,
-a call to 
+a call to
 @code{marpa_r_earleme_complete()} fails
 due to parse exhaustion
 if and only if, first,
@@ -2941,7 +2972,7 @@ the pointer could point to the start of the string,
 and the integer could indicate its length.
 
 The Earley set value and pointer can be set using
-the 
+the
 @code{marpa_r_latest_earley_set_values_set()} method.
 The Earley set integer value defaults to @minus{}1,
 and the pointer value defaults to @code{NULL}.
@@ -2971,7 +3002,7 @@ Always succeeds.
   int value)
 Sets the integer value of the latest Earley set.
 For more details, see
-the description of 
+the description of
 @code{marpa_r_latest_earley_set_values_set()}.
 
 Return value: On success, the new value of @var{earley_set}.
@@ -3061,7 +3092,7 @@ Always succeeds.
   Marpa_Symbol_ID @var{symbol_id}, @
   int @var{value})
 Sets the ``expected symbol event bit'' for @var{symbol_id} to @var{value}.
-A recognizer event is created whenever 
+A recognizer event is created whenever
 symbol @var{symbol_id} is expected at the current earleme.
 if and only if the expected symbol event bit
 for @var{symbol_id} is 1.
@@ -3234,7 +3265,7 @@ Resets the progress report.
 Assumes a report of the progress has already been initialized
 at some Earley set
 for recognizer @var{r},
-with 
+with
 @code{marpa_r_progress_report_start()}.
 The reset progress report will
 be positioned before its first item.
@@ -3338,7 +3369,7 @@ in purpose to the more familar parse forests.
 To create a bocage, use the @code{marpa_b_new()} method.
 
 When a bocage is no longer in use, its memory can be freed
-using the 
+using the
 @code{marpa_b_unref()} method.
 
 @node Bocage constructor, Bocage reference counting, Bocage overview, Bocage methods
@@ -3440,7 +3471,7 @@ Before iterating the parses in the bocage,
 they must be ordered.
 To create an ordering, use the @code{marpa_o_new()} method.
 When an ordering is no longer in use, its memory can be freed
-using the 
+using the
 @code{marpa_o_unref()} method.
 
 An ordering is @dfn{frozen} once the first
@@ -3600,7 +3631,7 @@ In Libmarpa,
 To create a tree, use the @code{marpa_t_new()} method.
 A newly created tree iterator is positioned before the first parse tree.
 When a tree iterator is no longer in use, its memory can be freed
-using the 
+using the
 @code{marpa_t_unref()} method.
 
 To position a newly created tree iterator at the first parse tree,
@@ -3675,7 +3706,7 @@ A tree iterator for a bocage with no parse trees
 is considered to be ``exhausted'' when initialized.
 If the tree iterator is exhausted, @code{marpa_t_next()}
 returns @minus{}1 as a termination indicator,
-and sets the error code to 
+and sets the error code to
 @code{MARPA_ERR_TREE_EXHAUSTED}.
 
 Return value: On success, a non-negative value.
@@ -3720,7 +3751,7 @@ a value object (or @dfn{valuator}) to produce
 the value of the parse.
 To create a valuator, use the @code{marpa_v_new()} method.
 When a valuator is no longer in use, its memory can be freed
-using the 
+using the
 @code{marpa_v_unref()} method.
 
 The application is required to maintain the stack,
@@ -3931,7 +3962,7 @@ stack locations are non-negative integers.
 The bottom of the stack is location 0.
 In moving from the bottom of the stack to the top,
 the numbers increase.
-Stack location @var{Y} is said to be ``greater'' 
+Stack location @var{Y} is said to be ``greater''
 than stack location @var{X} if stack location
 @var{Y} is closer to the top of stack than location @var{X},
 and therefore stack locations are considered greater or
@@ -4324,7 +4355,7 @@ will be those generated by that method.
 Events are volatile,
 and it is expected that events will be queried
 immediately after the method that generated them.
-Note especially 
+Note especially
 that multiple recognizers using the same base grammar
 overwrite each other's events.
 
@@ -4427,7 +4458,7 @@ Suggested message: "This symbol is a nulling terminal".
 @end deftypevr
 
 @deftypevr Macro int MARPA_EVENT_SYMBOL_COMPLETED
-The recognizer can be set to generate an event 
+The recognizer can be set to generate an event
 a symbol is completed
 using its @code{marpa_g_symbol_is_completion_event_set()}
 method.
@@ -4474,7 +4505,7 @@ symbol is predicted.
 To set an predicted symbol event,
 use the recognizer's @code{marpa_g_symbol_is_prediction_event_set()}
 method.
-Unlike the 
+Unlike the
 @code{MARPA_EVENT_SYMBOL_EXPECTED} event,
 the @code{MARPA_EVENT_SYMBOL_PREDICTED} event
 triggers for predictions of both
@@ -4945,7 +4976,7 @@ input models.
 Most often this messsage will occur because
 of a request to add a single extremely long token,
 perhaps as a result of an application error.
-But it is also possible this error condition will 
+But it is also possible this error condition will
 occur after the input of a large number
 of long tokens.
 
@@ -5014,7 +5045,7 @@ Suggested message: "Rule or symbol rank too high".
 The recognizer is ``inconsistent'',
 usually because the user has rejected one or
 more rules or terminals,
-and has not yet called 
+and has not yet called
 the  @code{marpa_r_consistent()} method.
 Numeric value: 95.
 Suggested message: "The recognizer is inconsistent.
@@ -5137,7 +5168,7 @@ Suggested message: "Symbol is not set up for prediction events".
 
 @deftypevr Macro int MARPA_ERR_SYMBOL_VALUED_CONFLICT
 Unvalued symbols are a deprecated Marpa feature,
-which may be avoided with 
+which may be avoided with
 the @code{marpa_g_force_valued} method.
 An unvalued symbol may take on any value,
 and therefore a symbol which is unvalued at some points
@@ -5231,11 +5262,11 @@ Suggested message: "Valuator inactive".
 
 @deftypevr Macro int MARPA_ERR_VALUED_IS_LOCKED
 Unvalued symbols are a deprecated Marpa feature,
-which may be avoided with 
+which may be avoided with
 the @code{marpa_g_force_valued} method.
 This error code
 indicates that the valued status of a symbol is locked,
-and an attempt was made 
+and an attempt was made
 to change it to a status different from the
 current one.
 Numeric value: 84.
@@ -5312,7 +5343,7 @@ Libmarpa's development,
 when it was not yet clear how precisely
 to classify every error condition.
 Unless they are using a developer's version,
-users of the external interface 
+users of the external interface
 should never
 see development errors.
 
@@ -5588,7 +5619,7 @@ When rules and symbols are created, their rank is
 the default rank of the grammar.
 
 Changing the grammar's default rank does not affect
-those 
+those
 rules and symbols already created,
 only those that will be created.
 This means that
@@ -5733,7 +5764,7 @@ are unvalued.
 When rules and symbols are unvalued,
 Libmarpa optimizes their evaluation.
 
-It is in principle unsafe to check the value 
+It is in principle unsafe to check the value
 of a symbol if it can be unvalued.
 For this reason,
 once a symbol has been treated as valued,
@@ -5782,7 +5813,7 @@ Once set to a value with the
 @code{marpa_g_symbol_is_valued_set()} method,
 the valued status of a symbol is ``locked'' at that value.
 It cannot thereafter be changed.
-Subsequent calls to 
+Subsequent calls to
 @code{marpa_g_symbol_is_valued_set()}
 for the same @var{sym_id} will fail,
 leaving @var{sym_id}'s valued status unchanged,
@@ -5883,7 +5914,7 @@ or on other failure, @minus{}2.
 This methods locks the valued status of all symbols
 to 1, indicated that the symbol is valued.
 If this is not possible, for example because one of
-the grammar's symbols already is locked at a valued 
+the grammar's symbols already is locked at a valued
 status of 0,
 failure is returned.
 
