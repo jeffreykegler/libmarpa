@@ -122,8 +122,8 @@ Earlemes
 Failure
 
 * No warranty reminder::
-* Non-conformity to requirements::
-* Recoverable and irrecoverable failures::
+* User non-conformity to specifed behavior::
+* Classifying failure::
 * Memory allocation failure::
 * Irrecoverable hard failure::
 * Recoverable hard failure::
@@ -132,6 +132,7 @@ Failure
 Introduction to the external interface
 
 * About the overviews::
+* Error codes::
 * Return values::
 * Naming conventions::
 
@@ -1106,15 +1107,15 @@ time objects.
 
 @menu
 * No warranty reminder::
-* Non-conformity to requirements::
-* Recoverable and irrecoverable failures::
+* User non-conformity to specifed behavior::
+* Classifying failure::
 * Memory allocation failure::
 * Irrecoverable hard failure::
 * Recoverable hard failure::
 * Soft failure::
 @end menu
 
-@node No warranty reminder, Non-conformity to requirements, Failure, Failure
+@node No warranty reminder, User non-conformity to specifed behavior, Failure, Failure
 @section No warranty
 
 As a reminder,
@@ -1126,33 +1127,40 @@ a warranty.
 See the license for Libmarpa,
 and chapter @ref{No warranty}.
 
-@node Non-conformity to requirements, Recoverable and irrecoverable failures, No warranty reminder, Failure
-@section Non-conformity to requirements
+@node User non-conformity to specifed behavior, Classifying failure, No warranty reminder, Failure
+@section User non-conformity to specifed behavior
 
 This document specifies many behaviors that
-are required of a user program,
+for user programs to folow.
 such as the nature of the arguments to each method.
-The C language environment imposes
-many more requirements.
-The most careful Libmarpa library user will sometimes
-fail to meet one of these requirements.
-When the conformity is unintentional, it is frequently
-called a ``bug''.
-But, as we shall see, some non-conformities are efficiently recoverable,
-and these non-conformities can be used deliberately,
-as one form of an exception mechanism.
-This chapters describes how these non-conformities
-are handled by Libmarpa.
+The C language environment specifies
+many more behaviors,
+such as the need to manage memory correctly.
+Even the most careful Libmarpa library user may sometimes
+fail to follow a least one of these behaviors.
+When the non-conformity to specified behavior is unintentional,
+it is frequently called a ``bug''.
+But, as we shall see,
+some behaviors are specified as ``normal'',
+instead of mandated,
+and non-conformities to these behaviors are efficiently recoverable,
+so that these non-conformities can be used deliberately,
+as a kind of exception mechanism.
 
-A Libmarpa user non-conformity to a requirements
-is also called, for the purposes of this
-introduced by the user of the Libmarpa library,
-a Libmarpa programming failure or,
-in contexts where no ambiguity arises,
-a ``failure''.
+This chapter describes how
+a non-conformity to specified behavior
+of a Libmarpa application
+is handled by Libmarpa.
+Non-conformity to specified behavior
+by a Libmarpa application
+is also called, for the purposes of this document,
+a Libmarpa application programming failure.
+In contexts where no ambiguity arises,
+``Libmarpa application programming failure'' will
+usually be abbreviated to ``failure''.
 
-@node Recoverable and irrecoverable failures, Memory allocation failure, Non-conformity to requirements, Failure
-@section Recoverable and irrecoverable failures
+@node Classifying failure, Memory allocation failure, User non-conformity to specifed behavior, Failure
+@section Classifying failure
 
 For better or for worse,
 and in the name of power and efficiency,
@@ -1168,20 +1176,65 @@ would have considered best practice in the past.
 But, on the whole, the Libmarpa user must be prepared to exercise
 with Libmarpa,
 the same severe care required by its C language environment.
-Non-conformities, unless specified otherwise,
-are irrecoverable failures.
+A Libmarpa application programming failure,
+unless specified otherwise,
+is an irrecoverable failure.
 Once an irrecoverable failure has occurred,
-the further behavior of the program in undefined.
-Despite this,
-many sections of this document specify a failure handling
-behavior for Libmarpa
-in the face of specific irrecoverable failures.
-These behaviors must be understood as being
-provided on a ``best effort'' basis.
-The failure handling of irrecoverable failures is intended
-only to aid in debugging and testing.
+the further behavior of the program is undefined.
+Nonetheless, for testing and debugging purposes,
+even imperfectly predictable failure handling can be valuable,
+and Libmarpa makes an effort to handle irrecoverable failures smoothly.
+For more on handling irrecoverable failures,
+see below (@ref{Irrecoverable hard failure}).
 
-The situation is different for recoverable failures.
+A Libmarpa application programming failure
+is recoverable if and only if it is specified as such.
+For more on handling recoverable failures,
+see below
+(@ref{Recoverable hard failure} and @ref{Soft failure}).
+
+A failure is called a ``hard failure'' is it has an error code
+associated with it.
+A recoverable failure is called a ``soft failure''
+if it has no associated error code.
+(For more on error codes, see @ref{Error codes}.)
+
+All failures fall into one of four types.
+In order of severity, these are
+memory allocation failures,
+irrecoverable hard failures,
+recoverable hard failures,
+and soft failures.
+
+@node Memory allocation failure, Irrecoverable hard failure, Classifying failure, Failure
+@section Memory allocation failure
+
+Failure to allocate memory is the most irrecoverable of irrecoverable
+errors.
+Even effective error handling assumes the ability to allocate memory,
+so that the practice has been, in the event of a memory allocation failure,
+to take Draconian action.
+On memory allocation failure, as with all irrecoverable failures,
+Libmarpa's behavior in undefined,
+but Libmarpa attempts to terminate the current program abnormally by calling @code{abort()}.
+
+Memory allocation failure is the only case in which Libmarpa
+terminates the program.
+In all other cases,
+Libmarpa leaves the decision to terminate the program,
+whether normally or abnormally,
+up to the application programmer.
+
+Memory allocation failure does not have an error code.
+As a pedantic matter, memory allocation failure is neither a hard
+or a soft failure.
+
+@node Irrecoverable hard failure, Recoverable hard failure, Memory allocation failure, Failure
+@section Irrecoverable hard failure
+
+@node Recoverable hard failure, Soft failure, Irrecoverable hard failure, Failure
+@section Recoverable hard failure
+
 It is expected that Libmarpa applications will be designed around the
 failure handling specified for recoverable failures.
 As one example, the ``Ruby Slippers'' parsing technique
@@ -1190,39 +1243,6 @@ is based
 on Libmarpa's ability to recover from
 a @code{MARPA_ERR_UNEXPECTED_TOKEN_ID} error
 successfully and efficiently.
-
-All failures fall into one of four types.
-These are, in order of severity,
-memory allocation failures,
-irrecoverable hard failures,
-recoverable hard failures,
-and soft failures.
-
-@node Memory allocation failure, Irrecoverable hard failure, Recoverable and irrecoverable failures, Failure
-@section Memory allocation failure
-
-Failure to allocate memory is the most irrecoverable of irrecoverable
-errors.
-Even effective error handling assumes the ability to allocate memory,
-so that the practice has been, in the event of a memory allocation failure,
-to take Draconian action.
-Libmarpa, when it fails to allocate memory,
-calls @code{abort()} in order to terminate the current program
-abnormally.
-
-Memory allocation failure is the only case in which Libmarpa
-terminates the program.
-In all other cases,
-Libmarpa leaves the decision to terminate the program up to the user.
-with one exception.
-Future versions of Libmarpa may allow the user to specifier a handler to
-be called when a memory allocation failure condition occurs.
-
-@node Irrecoverable hard failure, Recoverable hard failure, Memory allocation failure, Failure
-@section Irrecoverable hard failure
-
-@node Recoverable hard failure, Soft failure, Irrecoverable hard failure, Failure
-@section Recoverable hard failure
 
 @node Soft failure,  , Recoverable hard failure, Failure
 @section Soft failure
@@ -1235,11 +1255,12 @@ interface in detail.
 
 @menu
 * About the overviews::
+* Error codes::
 * Return values::
 * Naming conventions::
 @end menu
 
-@node About the overviews, Return values, Introduction to the external interface, Introduction to the external interface
+@node About the overviews, Error codes, Introduction to the external interface, Introduction to the external interface
 @section  About the overviews
 
 The reference sections for each major class begin with an overview.
@@ -1260,7 +1281,10 @@ In the archetypal Libmarpa application,
 the grammar, input and semantics are
 all small but non-trivial.
 
-@node Return values, Naming conventions, About the overviews, Introduction to the external interface
+@node Error codes, Return values, About the overviews, Introduction to the external interface
+@section Error codes
+
+@node Return values, Naming conventions, Error codes, Introduction to the external interface
 @section Return values
 
 Return values are discussed method by method,
