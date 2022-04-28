@@ -69,7 +69,7 @@ Published @value{UPDATED} by Jeffrey Kegler
 * Input::
 * Semantics::
 * Threads::
-* Libmarpa user non-conformities::
+* Failure::
 * Introduction to the external interface::
 * Static methods::
 * Configuration methods::
@@ -119,11 +119,15 @@ Earlemes
 * The generalized model::
 * General rules for the earleme variables::
 
-Libmarpa user non-conformities
+Failure
 
 * No warranty reminder::
-* Definition of user non-conformity::
+* Non-conformity to requirements::
+* Recoverable and irrecoverable failures::
 * Memory allocation failure::
+* Irrecoverable hard failure::
+* Recoverable hard failure::
+* Soft failure::
 
 Introduction to the external interface
 
@@ -1055,7 +1059,7 @@ The most extensive discussion of the semantics
 is in the section that deals with the methods of the value time class.
 @xref{Value methods}.
 
-@node Threads, Libmarpa user non-conformities, Semantics, Top
+@node Threads, Failure, Semantics, Top
 @chapter Threads
 
 Libmarpa is thread-safe,
@@ -1097,16 +1101,20 @@ Libmarpa could allow thread-safe
 cloning of grammars and other
 time objects.
 
-@node Libmarpa user non-conformities, Introduction to the external interface, Threads, Top
-@chapter Libmarpa user non-conformities
+@node Failure, Introduction to the external interface, Threads, Top
+@chapter Failure
 
 @menu
 * No warranty reminder::
-* Definition of user non-conformity::
+* Non-conformity to requirements::
+* Recoverable and irrecoverable failures::
 * Memory allocation failure::
+* Irrecoverable hard failure::
+* Recoverable hard failure::
+* Soft failure::
 @end menu
 
-@node No warranty reminder, Definition of user non-conformity, Libmarpa user non-conformities, Libmarpa user non-conformities
+@node No warranty reminder, Non-conformity to requirements, Failure, Failure
 @section No warranty
 
 As a reminder,
@@ -1118,21 +1126,33 @@ a warranty.
 See the license for Libmarpa,
 and chapter @ref{No warranty}.
 
-@node Definition of user non-conformity, Memory allocation failure, No warranty reminder, Libmarpa user non-conformities
-@section Definition of user non-conformity
+@node Non-conformity to requirements, Recoverable and irrecoverable failures, No warranty reminder, Failure
+@section Non-conformity to requirements
 
-For the purposes of this document,
-a Libmarpa user non-conformity is a behavior,
+This document specifies many behaviors that
+are required of a user program,
+such as the nature of the arguments to each method.
+The C language environment imposes
+many more requirements.
+The most careful Libmarpa library user will sometimes
+fail to meet one of these requirements.
+When the conformity is unintentional, it is frequently
+called a ``bug''.
+But, as we shall see, some non-conformities are efficiently recoverable,
+and these non-conformities can be used deliberately,
+as one form of an exception mechanism.
+This chapters describes how these non-conformities
+are handled by Libmarpa.
+
+A Libmarpa user non-conformity to a requirements
+is also called, for the purposes of this
 introduced by the user of the Libmarpa library,
-that does not conform to a requirement in this
-document,
-or to other restrictions,
-such as those imposed by the C language.
-Unintentional user non-conformites are often called ``bugs'',
-especially when they are irrecoverable.
-Recoverable user non-conformities, on the other hand,
-may be employed deliberately by the Libmarpa user,
-as a programming technique.
+a Libmarpa programming failure or,
+in contexts where no ambiguity arises,
+a ``failure''.
+
+@node Recoverable and irrecoverable failures, Memory allocation failure, Non-conformity to requirements, Failure
+@section Recoverable and irrecoverable failures
 
 For better or for worse,
 and in the name of power and efficiency,
@@ -1161,7 +1181,7 @@ provided on a ``best effort'' basis.
 The failure handling of irrecoverable failures is intended
 only to aid in debugging and testing.
 
-The situation is difference for recoverable failures.
+The situation is different for recoverable failures.
 It is expected that Libmarpa applications will be designed around the
 failure handling specified for recoverable failures.
 As one example, the ``Ruby Slippers'' parsing technique
@@ -1171,22 +1191,43 @@ on Libmarpa's ability to recover from
 a @code{MARPA_ERR_UNEXPECTED_TOKEN_ID} error
 successfully and efficiently.
 
-@node Memory allocation failure,  , Definition of user non-conformity, Libmarpa user non-conformities
+All failures fall into one of four types.
+These are, in order of severity,
+memory allocation failures,
+irrecoverable hard failures,
+recoverable hard failures,
+and soft failures.
+
+@node Memory allocation failure, Irrecoverable hard failure, Recoverable and irrecoverable failures, Failure
 @section Memory allocation failure
 
-Libmarpa avoids fatal errors,
-leaving that decision up to the application,
+Failure to allocate memory is the most irrecoverable of irrecoverable
+errors.
+Even effective error handling assumes the ability to allocate memory,
+so that the practice has been, in the event of a memory allocation failure,
+to take Draconian action.
+Libmarpa, when it fails to allocate memory,
+calls @code{abort()} in order to terminate the current program
+abnormally.
+
+Memory allocation failure is the only case in which Libmarpa
+terminates the program.
+In all other cases,
+Libmarpa leaves the decision to terminate the program up to the user.
 with one exception.
-Currently, if @code{malloc} fails to allocate memory,
-Libmarpa terminates the program with a fatal error.
+Future versions of Libmarpa may allow the user to specifier a handler to
+be called when a memory allocation failure condition occurs.
 
-While this is in keeping with current practice,
-future versions of Libmarpa are likely to both allow
-an alternative memory allocator to be specified,
-and to allow the user to specifier a handler to
-be called when an out-of-memory condition occurs.
+@node Irrecoverable hard failure, Recoverable hard failure, Memory allocation failure, Failure
+@section Irrecoverable hard failure
 
-@node Introduction to the external interface, Static methods, Libmarpa user non-conformities, Top
+@node Recoverable hard failure, Soft failure, Irrecoverable hard failure, Failure
+@section Recoverable hard failure
+
+@node Soft failure,  , Recoverable hard failure, Failure
+@section Soft failure
+
+@node Introduction to the external interface, Static methods, Failure, Top
 @chapter Introduction to the external interface
 
 The following chapters describe Libmarpa's external
