@@ -70,7 +70,7 @@ Published @value{UPDATED} by Jeffrey Kegler
 * Semantics::
 * Threads::
 * Failure::
-* Introduction to the external interface::
+* Introduction to the method descriptions::
 * Static methods::
 * Configuration methods::
 * Grammar methods::
@@ -127,13 +127,13 @@ Failure
 * Irrecoverable hard failure::
 * Recoverable hard failure::
 * Soft failure::
+* Error codes::
 
-Introduction to the external interface
+Introduction to the method descriptions
 
 * About the overviews::
-* Error codes::
-* Return values::
 * Naming conventions::
+* Return values::
 
 Grammar methods
 
@@ -265,7 +265,7 @@ but its early chapters lay out concepts
 essential to the others.
 Readers will usually want to read the
 chapters up and including
-@ref{Introduction to the external interface}
+@ref{Introduction to the method descriptions}
 in order.
 Otherwise, they should follow their interests.
 
@@ -1101,7 +1101,7 @@ Libmarpa could allow thread-safe
 cloning of grammars and other
 time objects.
 
-@node Failure, Introduction to the external interface, Threads, Top
+@node Failure, Introduction to the method descriptions, Threads, Top
 @chapter Failure
 
 @menu
@@ -1111,25 +1111,26 @@ time objects.
 * Irrecoverable hard failure::
 * Recoverable hard failure::
 * Soft failure::
+* Error codes::
 @end menu
 
 @node User non-conformity to specified behavior, Classifying failure, Failure, Failure
 @section User non-conformity to specified behavior
 
-This document specifies many behaviors that
+This document specifies many behaviors
 for Libmarpa application programs to follow,
 such as the nature of the arguments to each method.
 The C language environment specifies
 many more behaviors,
 such as proper memory management.
-Even the most careful Libmarpa library user may sometimes
-fail to follow a least one of these behaviors.
-When the non-conformity to specified behavior is unintentional,
+When the non-conformity to specified behavior is unintentional
+and problematic,
 it is frequently called a ``bug''.
-But, as we shall see,
-some behaviors are specified as ``normal'',
-instead of mandated,
-and non-conformities to these behaviors are efficiently recoverable.
+Even the most carefully programmed Libmarpa application may sometimes
+contain a ``bug''.
+On the other hand, some non-conformities are unproblematic and
+not mandatory,
+and non-conformities to these behaviors can be efficiently recoverable.
 
 This chapter describes how
 non-conformity to specified behavior
@@ -1148,7 +1149,7 @@ occurs when there has been no irrecoverable failure,
 and every recoverable failure has been successfully
 handled.
 In contexts where no ambiguity arises,
-@dfn{Libmarpa application programming failure} is almost
+@dfn{Libmarpa application programming success} is almost
 always abbreviated to @dfn{success}.
 
 As a reminder,
@@ -1158,7 +1159,7 @@ should be read as providing,
 or suggesting the existence of,
 a warranty.
 See the license for Libmarpa,
-and chapter @ref{No warranty}.
+and the chapter @ref{No warranty}.
 
 @node Classifying failure, Memory allocation failure, User non-conformity to specified behavior, Failure
 @section Classifying failure
@@ -1202,10 +1203,12 @@ if it has no associated error code.
 
 All failures fall into one of four types.
 In order of severity, these are
-memory allocation failures,
-irrecoverable hard failures,
-recoverable hard failures,
-and soft failures.
+@itemize
+@item @dfn{memory allocation failures},
+@item @dfn{irrecoverable hard failures},
+@item @dfn{recoverable hard failures}, and
+@item @dfn{soft failures}.
+@end itemize
 
 @node Memory allocation failure, Irrecoverable hard failure, Classifying failure, Failure
 @section Memory allocation failure
@@ -1215,7 +1218,7 @@ errors.
 Even effective error handling assumes the ability to allocate memory,
 so that the practice has been, in the event of a memory allocation failure,
 to take Draconian action.
-On memory allocation failure, as with all irrecoverable failures,
+On @dfn{memory allocation failure}, as with all irrecoverable failures,
 Libmarpa's behavior in undefined,
 but Libmarpa attempts to terminate the current program abnormally by calling @code{abort()}.
 
@@ -1235,18 +1238,19 @@ or a soft failure.
 
 An @dfn{irrecoverable hard failure} is
 an irrecoverable Libmarpa application programming failure that has an
-error code associated with it
+error code associated with it.
 Once an irrecoverable failure occurs,
 the behavior of a Libmarpa application is undefined.
 
 In spite of this undefinedness,
-Libmarpa attempts to behave as predictably as possible.
+Libmarpa attempts to behave as predictably as possible
+in the face of a hard failure.
 For every hard failure,
 even irrecoverable ones,
 a failure handling is specified.
 For the purpose of application level failure handling, debugging, and testing,
 Libmarpa applications can proceed in the hope that the irrecoverable hard failure
-in handled as specified.
+is handled as specified.
 Libmarpa applications should not be designed so that their successful execution
 is based on the handling specified for an irrecoverable failure.
 
@@ -1267,13 +1271,13 @@ a @code{MARPA_ERR_UNEXPECTED_TOKEN_ID} error
 successfully and efficiently,
 has seen extensive usage.
 
-@node Soft failure,  , Recoverable hard failure, Failure
+@node Soft failure, Error codes, Recoverable hard failure, Failure
 @section Soft failure
 
 An @dfn{soft failure} is
 an recoverable Libmarpa application programming failure that has no
 error code associated with it.
-Hard errors are assigned error codes in order to tel them apart.
+Hard errors are assigned error codes in order to tell them apart.
 Error codes are not necessary or useful for soft errors,
 because there is at most one soft error per Libmarpa method.
 
@@ -1288,40 +1292,43 @@ in the same sense that its cognate ``fail'' is used
 when we say that a loop terminates when it ``fails'' its
 loop condition.
 That ''failure'' is of a condition necessary to continue on
-a main branch of processing, and a signal to proceed on anoher branch.
+a main branch of processing, and a signal to proceed on another branch.
 
 It is expected that Libmarpa applications will be designed
 such that successful execution
 is based on the handling specified for soft failures.
-In fact, few Libmarpa applications can be designed
+In fact, a non-trival Libmarpa application can hardly be designed
 except on that basis.
 
-@node Introduction to the external interface, Static methods, Failure, Top
-@chapter Introduction to the external interface
+@node Error codes,  , Soft failure, Failure
+@section Error codes
 
-The following chapters describe Libmarpa's external
-interface in detail.
+@node Introduction to the method descriptions, Static methods, Failure, Top
+@chapter Introduction to the method descriptions
+
+The following chapters describe Libmarpa's methods
+in detail.
 
 @menu
 * About the overviews::
-* Error codes::
-* Return values::
 * Naming conventions::
+* Return values::
 @end menu
 
-@node About the overviews, Error codes, Introduction to the external interface, Introduction to the external interface
+@node About the overviews, Naming conventions, Introduction to the method descriptions, Introduction to the method descriptions
 @section  About the overviews
 
-The reference sections for each major class begin with an overview.
-These sections name the
-most important Libmarpa methods
+The method descriptions are grouped into chapters,
+and each chapter begins, optionally, with an overview.
+These overviews name the
+most important Libmarpa methods in that chapter
 in the order in which they are typically used,
 and very briefly describe their purpose.
 The overviews are intended as ``cheat sheets''.
 
-The overview sections often speak of
+The overviews sometimes speak of
 an ``archetypal'' application.
-The archetypal Libmarpa application
+The @dfn{archetypal Libmarpa application}
 implements a complete logic flow,
 starting with the creation of a grammar,
 and proceeding all the way
@@ -1330,67 +1337,7 @@ In the archetypal Libmarpa application,
 the grammar, input and semantics are
 all small but non-trivial.
 
-@node Error codes, Return values, About the overviews, Introduction to the external interface
-@section Error codes
-
-@node Return values, Naming conventions, Error codes, Introduction to the external interface
-@section Return values
-
-Return values are discussed method by method,
-but some general practices are worth
-mentioning.
-For methods that return an integer,
-Libmarpa usually reserves @minus{}1 for special purposes,
-such as indicating loop termination in an iterator.
-In Libmarpa, methods usually indicate failure
-by returning @minus{}2.
-Any result greater than @minus{}2 usually indicates success.
-
-If a method returns an pointer value,
-@code{NULL} usually indicates failure.
-Any other result usually indicates success.
-
-On failure, a Libmarpa method always sets
-the error code.
-On success, a Libmarpa method may take
-one of three actions:
-@itemize
-@item Set
-an informational error code.
-@item Leave
-the error code as it is.
-@item Reset the error code to @code{MARPA_ERROR_NONE}.
-@end itemize
-
-Which of the three actions the method
-takes on success
-should be regarded as unspecified,
-unless stated in the description of the method
-in this document.
-If a method sets an informational error code on
-success, that will always be stated in
-its description, and the description will
-specify,
-for each informational error code,
-the specific error code value,
-the circumstances under which it is set,
-and what return values will accompany it.
-
-Informational error codes are set
-because some applications may find them convenient.
-Typically, informational error codes are redundant information,
-which may be ignored.
-
-A method can have many reasons for
-failing, and many of the reasons
-for failure are common to
-large number of methods.
-Full descriptions of the error codes
-that are returned by the external methods
-are given in their own section.
-@xref{External error codes}.
-
-@node Naming conventions,  , Return values, Introduction to the external interface
+@node Naming conventions, Return values, About the overviews, Introduction to the method descriptions
 @section Naming conventions
 
 Methods in Libmarpa follow a strict naming convention.
@@ -1427,7 +1374,68 @@ All Libmarpa names visible outside the package
 will begin with a capitalization variant
 of one of these two prefixes.
 
-@node Static methods, Configuration methods, Introduction to the external interface, Top
+@node Return values,  , Naming conventions, Introduction to the method descriptions
+@section Return values
+
+Every method description has a paragraph summarizing the method's
+return values.
+Some general conventions are worth
+mentioning:
+@itemize
+@item Methods that return an integer, in case of a soft failure,
+usually return @minus{}1.
+@item Methods that return an integer, in case of a hard failure,
+usually return @minus{}2.
+@item For methods that return an integer,
+a return value greater of zero or more usually indicates success.
+@item If a method returns an pointer value,
+@code{NULL} usually indicates failure.
+Any other result usually indicates success.
+@end itemize
+
+The Libmarpa programmer should not overly rely on the general
+conventions for return values.
+In particular, @minus{}2 may be both a valid return value
+for success, and indicate hard failure.
+In this case, the programmer must distinguish the two case
+based on the error code,
+and a programmer who is relying on the general
+conventions will fall into a trap.
+(See the description of return values for @code{marpa_g_rule_rank_set}
+in @ref{Ranks}.)
+
+On hard failure, a Libmarpa method always sets
+the error code.
+
+On soft failure or success, a Libmarpa method may
+leave
+the error code as it is, or
+reset the error code to @code{MARPA_ERR_NONE}.
+Which of the three actions the method
+takes on success
+should be regarded as unspecified,
+unless stated in the description of the method
+in this document.
+
+If a method has a recoverable failure,
+that will always be stated in
+its description, and the description will
+specify,
+the specific error code value (if the failure is hard),
+the circumstances under which it is set,
+what return values will accompany it,
+and how the application can recover.
+
+A method can have many reasons for
+failing, and many of the reasons
+for failure are common to
+large number of methods.
+Full descriptions of the error codes
+that are returned by the external methods
+are given in their own section.
+@xref{External error codes}.
+
+@node Static methods, Configuration methods, Introduction to the method descriptions, Top
 @chapter Static methods
 
 @deftypefun Marpa_Error_Code marpa_check_version @
