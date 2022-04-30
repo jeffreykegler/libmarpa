@@ -121,8 +121,7 @@ Earlemes
 
 Failure
 
-* No warranty reminder::
-* User non-conformity to specifed behavior::
+* User non-conformity to specified behavior::
 * Classifying failure::
 * Memory allocation failure::
 * Irrecoverable hard failure::
@@ -1106,8 +1105,7 @@ time objects.
 @chapter Failure
 
 @menu
-* No warranty reminder::
-* User non-conformity to specifed behavior::
+* User non-conformity to specified behavior::
 * Classifying failure::
 * Memory allocation failure::
 * Irrecoverable hard failure::
@@ -1115,8 +1113,43 @@ time objects.
 * Soft failure::
 @end menu
 
-@node No warranty reminder, User non-conformity to specifed behavior, Failure, Failure
-@section No warranty
+@node User non-conformity to specified behavior, Classifying failure, Failure, Failure
+@section User non-conformity to specified behavior
+
+This document specifies many behaviors that
+for Libmarpa application programs to follow,
+such as the nature of the arguments to each method.
+The C language environment specifies
+many more behaviors,
+such as proper memory management.
+Even the most careful Libmarpa library user may sometimes
+fail to follow a least one of these behaviors.
+When the non-conformity to specified behavior is unintentional,
+it is frequently called a ``bug''.
+But, as we shall see,
+some behaviors are specified as ``normal'',
+instead of mandated,
+and non-conformities to these behaviors are efficiently recoverable.
+
+This chapter describes how
+non-conformity to specified behavior
+by a Libmarpa application
+is handled by Libmarpa.
+Non-conformity to specified behavior
+by a Libmarpa application
+is also called, for the purposes of this document,
+a @dfn{Libmarpa application programming failure}.
+In contexts where no ambiguity arises,
+@dfn{Libmarpa application programming failure} will
+usually be abbreviated to @dfn{failure}.
+
+@dfn{Libmarpa application programming success}
+occurs when there has been no irrecoverable failure,
+and every recoverable failure has been successfully
+handled.
+In contexts where no ambiguity arises,
+@dfn{Libmarpa application programming failure} is almost
+always abbreviated to @dfn{success}.
 
 As a reminder,
 no language in this section or,
@@ -1127,39 +1160,7 @@ a warranty.
 See the license for Libmarpa,
 and chapter @ref{No warranty}.
 
-@node User non-conformity to specifed behavior, Classifying failure, No warranty reminder, Failure
-@section User non-conformity to specifed behavior
-
-This document specifies many behaviors that
-for user programs to folow.
-such as the nature of the arguments to each method.
-The C language environment specifies
-many more behaviors,
-such as the need to manage memory correctly.
-Even the most careful Libmarpa library user may sometimes
-fail to follow a least one of these behaviors.
-When the non-conformity to specified behavior is unintentional,
-it is frequently called a ``bug''.
-But, as we shall see,
-some behaviors are specified as ``normal'',
-instead of mandated,
-and non-conformities to these behaviors are efficiently recoverable,
-so that these non-conformities can be used deliberately,
-as a kind of exception mechanism.
-
-This chapter describes how
-a non-conformity to specified behavior
-of a Libmarpa application
-is handled by Libmarpa.
-Non-conformity to specified behavior
-by a Libmarpa application
-is also called, for the purposes of this document,
-a Libmarpa application programming failure.
-In contexts where no ambiguity arises,
-``Libmarpa application programming failure'' will
-usually be abbreviated to ``failure''.
-
-@node Classifying failure, Memory allocation failure, User non-conformity to specifed behavior, Failure
+@node Classifying failure, Memory allocation failure, User non-conformity to specified behavior, Failure
 @section Classifying failure
 
 For better or for worse,
@@ -1171,16 +1172,16 @@ largely on the user.
 Progress has changed our views on this trade-off,
 and modern hardware makes many simple checks essentially cost-free,
 so that Libmarpa's efforts to protect the user go beyond what
-would have considered best practice in the past.
+would have been considered best practice in the past.
 
 But, on the whole, the Libmarpa user must be prepared to exercise
-with Libmarpa,
-the same severe care required by its C language environment.
+the high degree of carefulness traditionally required by its C language environment.
 A Libmarpa application programming failure,
 unless specified otherwise,
 is an irrecoverable failure.
 Once an irrecoverable failure has occurred,
 the further behavior of the program is undefined.
+
 Nonetheless, for testing and debugging purposes,
 even imperfectly predictable failure handling can be valuable,
 and Libmarpa makes an effort to handle irrecoverable failures smoothly.
@@ -1193,9 +1194,9 @@ For more on handling recoverable failures,
 see below
 (@ref{Recoverable hard failure} and @ref{Soft failure}).
 
-A failure is called a ``hard failure'' is it has an error code
+A failure is called a @dfn{hard failure} is it has an error code
 associated with it.
-A recoverable failure is called a ``soft failure''
+A recoverable failure is called a @dfn{soft failure}
 if it has no associated error code.
 (For more on error codes, see @ref{Error codes}.)
 
@@ -1232,20 +1233,68 @@ or a soft failure.
 @node Irrecoverable hard failure, Recoverable hard failure, Memory allocation failure, Failure
 @section Irrecoverable hard failure
 
+An @dfn{irrecoverable hard failure} is
+an irrecoverable Libmarpa application programming failure that has an
+error code associated with it
+Once an irrecoverable failure occurs,
+the behavior of a Libmarpa application is undefined.
+
+In spite of this undefinedness,
+Libmarpa attempts to behave as predictably as possible.
+For every hard failure,
+even irrecoverable ones,
+a failure handling is specified.
+For the purpose of application level failure handling, debugging, and testing,
+Libmarpa applications can proceed in the hope that the irrecoverable hard failure
+in handled as specified.
+Libmarpa applications should not be designed so that their successful execution
+is based on the handling specified for an irrecoverable failure.
+
 @node Recoverable hard failure, Soft failure, Irrecoverable hard failure, Failure
 @section Recoverable hard failure
 
-It is expected that Libmarpa applications will be designed around the
-failure handling specified for recoverable failures.
+An @dfn{recoverable hard failure} is
+an recoverable Libmarpa application programming failure that has an
+error code associated with it.
+It is expected that Libmarpa applications will be designed
+such that successful execution
+is based on the handling specified for an recoverable failure.
 As one example, the ``Ruby Slippers'' parsing technique
-(@ref{Ruby Slippers})
-is based
+(@ref{Ruby Slippers}),
+which is based
 on Libmarpa's ability to recover from
 a @code{MARPA_ERR_UNEXPECTED_TOKEN_ID} error
-successfully and efficiently.
+successfully and efficiently,
+has seen extensive usage.
 
 @node Soft failure,  , Recoverable hard failure, Failure
 @section Soft failure
+
+An @dfn{soft failure} is
+an recoverable Libmarpa application programming failure that has no
+error code associated with it.
+Hard errors are assigned error codes in order to tel them apart.
+Error codes are not necessary or useful for soft errors,
+because there is at most one soft error per Libmarpa method.
+
+@dfn{Soft failures} are so called,
+because they are the least severe kind of failure.
+The severest failures are almost always ``bugs'' ---
+unintended, and a symptom of a problem.
+Soft failures, on the other hand, are a frequent occurrence
+in normal, successful, processing.
+In the phrase ``soft failure'', the word ``failure'' is used
+in the same sense that its cognate ``fail'' is used
+when we say that a loop terminates when it ``fails'' its
+loop condition.
+That ''failure'' is of a condition necessary to continue on
+a main branch of processing, and a signal to proceed on anoher branch.
+
+It is expected that Libmarpa applications will be designed
+such that successful execution
+is based on the handling specified for soft failures.
+In fact, few Libmarpa applications can be designed
+except on that basis.
 
 @node Introduction to the external interface, Static methods, Failure, Top
 @chapter Introduction to the external interface
@@ -5531,10 +5580,8 @@ but which may be useful or interesting.
 @node Data types used by Libmarpa, Why so many time objects, Technical notes, Technical notes
 @section Data types used by Libmarpa
 
-Libmarpa does not use any floating point data.
-The only string used is the error message
-of the ``out of memory'' failure.
-All other data are integers or pointers.
+Libmarpa does not use any floating point data or strings.
+All data are either integers or pointers.
 
 @node Why so many time objects, Design of numbered objects, Data types used by Libmarpa, Technical notes
 @section Why so many time objects?
