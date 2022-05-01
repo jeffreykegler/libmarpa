@@ -286,8 +286,8 @@ As of this writing, the only such layer is @code{Marpa::R2}
 or @code{Marpa::R3},
 in Perl.
 @item
-The reader knows some parsing theory.
-@xref{Parsing theory}.
+The reader knows some parsing theory
+(@ref{Parsing theory}).
 @end itemize
 
 @node Parsing theory,  , Prerequisites, About this document
@@ -1056,8 +1056,8 @@ Libmarpa's handling of semantics is in the reference chapters
 of this document,
 under the appropriate methods and classes.
 The most extensive discussion of the semantics
-is in the section that deals with the methods of the value time class.
-@xref{Value methods}.
+is in the section that deals with the methods of the value time class
+(@ref{Value methods}).
 
 @node Threads, Failure, Semantics, Top
 @chapter Threads
@@ -1303,6 +1303,35 @@ except on that basis.
 @node Error codes,  , Soft failure, Failure
 @section Error codes
 
+As stated, every hard failure has an associated error code.
+Full descriptions of the error codes
+that are returned by the external methods
+are given in their own section
+(@ref{External error codes}).
+
+How the error code is accessed depends on the method
+which detects the hard failure associated with that error code.
+Methods on time objects always set the error code in the base grammar,
+from which it may be accessed using the error methods described
+in @ref{Error methods}.
+If a method has no base grammar,
+the way in which the error code for the hard failures that it detects
+can be accessed is stated in the
+description of that method.
+
+Since the error of a time object is set in the base grammar,
+it follows that every object with the same base grammar
+has the same error code.
+Objects with different base grammars may have different error codes.
+
+While error codes are properties of a base grammar,
+irrecoverability is application-wide.
+That is, whenever any irrecoverable failure occurs, the entire
+application is irrecoverable.
+Once an application becomes irrecoverable,
+those Libmarpa objects with error codes for recoverable errors
+are still subject to the general irrecoverability.
+
 @node Introduction to the method descriptions, Static methods, Failure, Top
 @chapter Introduction to the method descriptions
 
@@ -1377,9 +1406,10 @@ of one of these two prefixes.
 @node Return values,  , Naming conventions, Introduction to the method descriptions
 @section Return values
 
-Every method description has a paragraph summarizing the method's
+Every method description has a Return Value Summary ---
+paragraph summarizing the method's
 return values.
-Some general conventions are worth
+Some general conventions for return values are worth
 mentioning:
 @itemize
 @item Methods that return an integer, in case of a soft failure,
@@ -1399,41 +1429,39 @@ In particular, @minus{}2 may be both a valid return value
 for success, and indicate hard failure.
 In this case, the programmer must distinguish the two case
 based on the error code,
-and a programmer who is relying on the general
+and a programmer who is relying too heavily on the general
 conventions will fall into a trap.
 (See the description of return values for @code{marpa_g_rule_rank_set}
 in @ref{Ranks}.)
 
-On hard failure, a Libmarpa method always sets
-the error code.
+The following are always the case,
+and should be kept in mind when reading the return
+value summaries:
 
-On soft failure or success, a Libmarpa method may
-leave
-the error code as it is, or
-reset the error code to @code{MARPA_ERR_NONE}.
-Which of the three actions the method
-takes on success
-should be regarded as unspecified,
-unless stated in the description of the method
-in this document.
-
-If a method has a recoverable failure,
-that will always be stated in
-its description, and the description will
-specify,
-the specific error code value (if the failure is hard),
-the circumstances under which it is set,
-what return values will accompany it,
-and how the application can recover.
-
-A method can have many reasons for
-failing, and many of the reasons
-for failure are common to
-large number of methods.
-Full descriptions of the error codes
-that are returned by the external methods
-are given in their own section.
-@xref{External error codes}.
+@itemize
+@item Every method returns in exactly one of three
+statuses: success, hard failure, or soft failure.
+@item If a method allows soft failure, this is explicitly stated
+in its return value summary,
+and the method description will state
+the circumstances under which the soft failure occurs,
+and what the application must do to recover.
+@item If a method allows a recoverable hard failure, this is explicitly stated
+in its return value summary,
+along with the associated error code,
+the circumstances under which the hard failure occurs,
+and what the application must do to recover.
+@item If a method call succeeds, the value of the error code is
+indeterminate.
+@item If a method call soft fails, the value of the error code is
+indeterminate.
+@item If a method call hard fails,
+its error code is that associated with the hard failure.
+Unless stated otherwise in the return value summary,
+the error code is set in the base
+grammar of the method call, and may be accessed
+with the methods described in @ref{Error methods}.
+@end itemize
 
 @node Static methods, Configuration methods, Introduction to the method descriptions, Top
 @chapter Static methods
@@ -2682,8 +2710,8 @@ Libmarpa does not allow this.
 @end itemize
 
 More details of these can be found under the
-description of the appropriate code.
-@xref{External error codes}.
+description of the appropriate code
+(@ref{External error codes}).
 
 @code{marpa_g_precompute()} is unusual in that it
 is possible to treat one of its failures as ``advisory'',
@@ -4273,8 +4301,8 @@ This method ``steps through'' the valuator.
 The return value is a @code{Marpa_Step_Type},
 an integer which indicates the type of step.
 How the application is expected to act on
-each step is described below.
-@xref{Valuator steps by type}.
+each step is described below
+(@ref{Valuator steps by type}).
 When the iteration through the steps is finished,
 @code{marpa_v_step} returns @code{MARPA_STEP_INACTIVE}.
 
@@ -4525,8 +4553,7 @@ On failure, @minus{}2.
 This macro provides access to the ``value'' of the event.
 The semantics of the value varies according to the type
 of the event, and is described in the section on event
-codes.
-@xref{Event codes}.
+codes (@ref{Event codes}).
 @end deftypefn
 
 @node Event codes,  , Event methods, Events
@@ -4694,8 +4721,8 @@ strictly less than @code{MARPA_ERRCODE_COUNT}.
 This section lists the external error codes.
 These are the only error codes that users
 of the Libmarpa external interface should ever see.
-Internal error codes are in their own section.
-@xref{Internal error codes}.
+Internal error codes are in their own section
+(@ref{Internal error codes}).
 
 @deftypevr Macro int MARPA_ERR_NONE
 No error condition.
