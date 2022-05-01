@@ -1485,32 +1485,23 @@ with the methods described below
     )
 
 Checks that the Marpa library in use is compatible with the
-given version. Generally you will pass in the constants
+given version. Generally, the application programmer will pass in the constants
 @code{MARPA_MAJOR_VERSION},
-@code{MARPA_MINOR_VERSION},
+@code{MARPA_MINOR_VERSION}, and
 @code{MARPA_MICRO_VERSION}
-as the three arguments to this function; that produces
-a check that the library in use is compatible with
-the version of Libmarpa the application or module was compiled
-against.
-Compatibility is defined by two things:
-first the version
-of the running library is newer than the version
-@var{required_major}.@var{required_minor}.@var{required_micro}.
-Second
-the running library must be binary compatible with the
-version
-@var{required_major}.@var{required_minor}.@var{required_micro}
-(same major version.)
+as the three arguments,
+to check that their application was compiled with headers
+the match the version of Libmarpa that they
+are using.
 
-Return value: @code{MARPA_ERR_NONE} if the Marpa library is compatible with the
-requested version.  If the library is not compatible,
-one of the following is returned, indicating the nature of the mismatch:
-@itemize
-@item @code{MARPA_ERR_MAJOR_VERSION_MISMATCH},
-@item @code{MARPA_ERR_MINOR_VERSION_MISMATCH}
-@item @code{MARPA_ERR_MICRO_VERSION_MISMATCH}
-@end itemize
+If @var{required_major}.@var{required_minor}.@var{required_micro}
+is an exact match with @value{VERSION},
+the method succeeds.
+Otherwise the return status is an irrecoverable
+hard failure.
+
+@strong{Return value}: On success, @code{MARPA_ERR_NONE}.
+On hard failure, the error code.
 
 @end deftypefun
 
@@ -1519,8 +1510,9 @@ one of the following is returned, indicating the nature of the mismatch:
 Returns the version number in @var{version},
 which must have room for three @code{int}'s.
 
-Return value: A non-negative number on success,
-@minus{}2 on failure.
+@strong{Return value}: Always succeeds.
+The return value should be ignored.
+
 @end deftypefun
 
 @node Configuration methods, Grammar methods, Static methods, Top
@@ -1554,11 +1546,12 @@ For example, they could be put on the stack.
 
 Initialize the @var{config} information to ``safe'' default
 values.
-Unspecified behavior will result
-if an initialized
+An irrecoverable error will result
+if an uninitialized
 configuration is used to create a grammar.
 
-Return value: A non-negative value.  Always succeeds.
+@strong{Return value}: Always succeeds.  The return value should be ignored.
+
 @end deftypefun
 
 @deftypefun Marpa_Error_Code marpa_c_error ( @
@@ -1573,9 +1566,10 @@ the @code{Marpa_Config} class provide such a place.
 the internals.
 Applications should set it to @code{NULL}.
 
-Return value:
-The error code in @var{config}.
-Always succeeds.
+@strong{Return value}: The error code in @var{config}.
+Always succeeds, so that @code{marpa_c_error()} never requires an error code
+for itself.
+
 @end deftypefun
 
 @node Grammar methods, Recognizer methods, Configuration methods, Top
@@ -1651,9 +1645,12 @@ but if it is,
 there will be no way to determine
 the error code on failure.
 
-Return value: On success, the grammar object.
-On failure, @code{NULL},
-and the error code is set in @var{configuration}.
+@strong{Return value}: On success, the grammar object.
+On hard failure, @code{NULL}.
+Also on hard failure,
+if the @var{configuration} argument is not @code{NULL},
+the error code is set in @var{configuration}.
+The error code may be accessed using @code{marpa_c_error}.
 
 @end deftypefun
 
@@ -1674,8 +1671,8 @@ of gaining efficiencies at evaluation time.
 Current thinking is that the gains do not repay the extra
 complexity.
 
-Return value: On success, returns a non-negative integer.
-On failure, returns -2 and sets the error code to MARPA_ERR_VALUED_IS_LOCKED.
+@strong{Return value}: On success, a non-negative integer, whose exact value should be ignored.
+On failure, -2.
 @end deftypefun
 
 @node Grammar reference counting, Symbols, Grammar constructor, Grammar methods
