@@ -1123,14 +1123,16 @@ such as the nature of the arguments to each method.
 The C language environment specifies
 many more behaviors,
 such as proper memory management.
-When the non-conformity to specified behavior is unintentional
+When a non-conformity to specified behavior is unintentional
 and problematic,
 it is frequently called a ``bug''.
 Even the most carefully programmed Libmarpa application may sometimes
 contain a ``bug''.
-On the other hand, some non-conformities are unproblematic and
-not mandatory,
-and non-conformities to these behaviors can be efficiently recoverable.
+In addition, some specified behaviors are explicitly stated as characterizing
+a primary branch of the processing,
+rather than made mandatory for all successful processing.
+Non-conformities to non-mandatory behaviors can be efficiently recoverable,
+and is often intentional.
 
 This chapter describes how
 non-conformity to specified behavior
@@ -1153,8 +1155,8 @@ In contexts where no ambiguity arises,
 always abbreviated to @dfn{success}.
 
 As a reminder,
-no language in this section or,
-for that matter, in this document
+no language in this chapter
+(or, for that matter, in this document)
 should be read as providing,
 or suggesting the existence of,
 a warranty.
@@ -1169,13 +1171,13 @@ and in the name of power and efficiency,
 C language, and its libraries,
 place the burden of avoiding irrecoverable failures,
 and of handling recoverable failures,
-largely on the user.
+largely on the application programmer.
 Progress has changed our views on this trade-off,
 and modern hardware makes many simple checks essentially cost-free,
-so that Libmarpa's efforts to protect the user go beyond what
+so that Libmarpa's efforts to protect the application programmer go beyond what
 would have been considered best practice in the past.
 
-But, on the whole, the Libmarpa user must be prepared to exercise
+But, on the whole, the Libmarpa application programmer must be prepared to exercise
 the high degree of carefulness traditionally required by its C language environment.
 A Libmarpa application programming failure,
 unless specified otherwise,
@@ -1204,10 +1206,10 @@ if it has no associated error code.
 All failures fall into one of four types.
 In order of severity, these are
 @itemize
-@item @dfn{memory allocation failures},
-@item @dfn{irrecoverable hard failures},
-@item @dfn{recoverable hard failures}, and
-@item @dfn{soft failures}.
+@item @strong{memory allocation failures},
+@item @strong{irrecoverable hard failures},
+@item @strong{recoverable hard failures}, and
+@item @strong{soft failures}.
 @end itemize
 
 @node Memory allocation failure, Irrecoverable hard failure, Classifying failure, Failure
@@ -1251,13 +1253,13 @@ a failure handling is specified.
 For the purpose of application level failure handling, debugging, and testing,
 Libmarpa applications can proceed in the hope that the irrecoverable hard failure
 is handled as specified.
-Libmarpa applications should not be designed so that their successful execution
+Libmarpa applications should @strong{not} be designed so that successful execution
 is based on the handling specified for an irrecoverable failure.
 
 @node Recoverable hard failure, Soft failure, Irrecoverable hard failure, Failure
 @section Recoverable hard failure
 
-An @dfn{recoverable hard failure} is
+A @dfn{recoverable hard failure} is
 an recoverable Libmarpa application programming failure that has an
 error code associated with it.
 It is expected that Libmarpa applications will be designed
@@ -1279,11 +1281,11 @@ an recoverable Libmarpa application programming failure that has no
 error code associated with it.
 Hard errors are assigned error codes in order to tell them apart.
 Error codes are not necessary or useful for soft errors,
-because there is at most one soft error per Libmarpa method.
+because there is at most one type of soft failure per Libmarpa method.
 
 @dfn{Soft failures} are so called,
 because they are the least severe kind of failure.
-The severest failures are almost always ``bugs'' ---
+The most severe failures are ``bugs'' ---
 unintended, and a symptom of a problem.
 Soft failures, on the other hand, are a frequent occurrence
 in normal, successful, processing.
@@ -1311,12 +1313,12 @@ are given in their own section
 
 How the error code is accessed depends on the method
 which detects the hard failure associated with that error code.
-Methods on time objects always set the error code in the base grammar,
-from which it may be accessed using the error methods described
-in @ref{Error methods}.
+Methods for time objects always set the error code in the base grammar,
+from which it may be accessed using the error methods described below
+(@ref{Error methods}).
 If a method has no base grammar,
 the way in which the error code for the hard failures that it detects
-can be accessed is stated in the
+can be accessed will be stated in the
 description of that method.
 
 Since the error of a time object is set in the base grammar,
@@ -1353,7 +1355,7 @@ These overviews name the
 most important Libmarpa methods in that chapter
 in the order in which they are typically used,
 and very briefly describe their purpose.
-The overviews are intended as ``cheat sheets''.
+These parts of the overviews are intended as ``cheat sheets''.
 
 The overviews sometimes speak of
 an ``archetypal'' application.
@@ -1407,15 +1409,17 @@ of one of these two prefixes.
 @section Return values
 
 Every method description has a Return Value Summary ---
-paragraph summarizing the method's
+a paragraph summarizing the method's
 return values.
 Some general conventions for return values are worth
 mentioning:
 @itemize
-@item Methods that return an integer, in case of a soft failure,
-usually return @minus{}1.
-@item Methods that return an integer, in case of a hard failure,
-usually return @minus{}2.
+@item For methods that return an integer,
+a return value of @minus{}1
+usually indicates soft failure.
+@item For methods that return an integer,
+a return value of @minus{}2
+usually indicates hard failure.
 @item For methods that return an integer,
 a return value greater of zero or more usually indicates success.
 @item If a method returns an pointer value,
@@ -1425,13 +1429,14 @@ Any other result usually indicates success.
 
 The Libmarpa programmer should not overly rely on the general
 conventions for return values.
-In particular, @minus{}2 may be both a valid return value
-for success, and indicate hard failure.
-In this case, the programmer must distinguish the two case
+In particular, @minus{}2 may sometimes be ambiguous ---
+both a valid return value
+for success, and a potential indication of hard failure.
+In this case, the programmer must distinguish the two return statuses
 based on the error code,
 and a programmer who is relying too heavily on the general
 conventions will fall into a trap.
-(See the description of return values for @code{marpa_g_rule_rank_set}
+(See the description of the return values of @code{marpa_g_rule_rank_set}
 in @ref{Ranks}.)
 
 The following are always the case,
@@ -1441,13 +1446,19 @@ value summaries:
 @itemize
 @item Every method returns in exactly one of three
 statuses: success, hard failure, or soft failure.
+@item A return status of hard failure indicates that the method detected
+a hard failure.
+@item A return status of soft failure indicates that the method detected
+a soft failure.
+@item A return status of success indicates that the method did not detect
+any failures.
 @item If a method allows soft failure, this is explicitly stated
-in its return value summary,
+in its Return Value Summary,
 and the method description will state
 the circumstances under which the soft failure occurs,
 and what the application must do to recover.
 @item If a method allows a recoverable hard failure, this is explicitly stated
-in its return value summary,
+in its Return Value Summary,
 along with the associated error code,
 the circumstances under which the hard failure occurs,
 and what the application must do to recover.
@@ -1457,10 +1468,11 @@ indeterminate.
 indeterminate.
 @item If a method call hard fails,
 its error code is that associated with the hard failure.
-Unless stated otherwise in the return value summary,
+Unless stated otherwise in the Return Value Summary,
 the error code is set in the base
 grammar of the method call, and may be accessed
-with the methods described in @ref{Error methods}.
+with the methods described below
+(@ref{Error methods}).
 @end itemize
 
 @node Static methods, Configuration methods, Introduction to the method descriptions, Top
