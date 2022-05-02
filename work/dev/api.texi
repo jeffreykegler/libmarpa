@@ -470,8 +470,10 @@ and so on.
 
 When one time object is used to create a second
 time object,
-the first time object is the @dfn{parent object}
-and the second time object is the @dfn{child object}.
+the first time object is the
+@dfn{parent object}
+and the second time object is the
+@dfn{child object}.
 For example, when a bocage is created from a
 recognizer,
 the recognizer is the parent object,
@@ -484,7 +486,8 @@ All other time objects can have any number of children,
 from zero up to a number determined by memory or
 some other machine-determined limit.
 
-Every time object has a @dfn{base grammar}.
+Every time object has a
+@dfn{base grammar}.
 A grammar object is its own base grammar.
 The base grammar of a recognizer is the grammar
 that it was created with.
@@ -616,9 +619,12 @@ or from Marpa's
 @uref{https://arxiv.org/abs/1910.08129, theory document}.
 
 As a reminder,
-in Libmarpa a location is called a @dfn{earleme}.
-The number of an Earley set is the @dfn{ID of the Earley set},
-or its @dfn{ordinal}.
+in Libmarpa a location is called a
+@dfn{earleme}.
+The number of an Earley set is the
+@dfn{ID of the Earley set},
+or its
+@dfn{ordinal}.
 In the traditional model, the ordinal of an Earley set and
 its earleme are always exactly the same, but in Libmarpa
 they will be different.
@@ -628,7 +634,9 @@ they will be different.
 
 The important earleme variables are the current earleme, the furthest earleme
 and the latest earleme.
-The @dfn{current earleme} is the earleme that Libmarpa is currently working on.
+The
+@dfn{current earleme}
+is the earleme that Libmarpa is currently working on.
 More specifically, it is the one at which new tokens will @strong{start}.
 Since tokens are never zero length, a new token will always end after the
 current earleme.
@@ -636,7 +644,9 @@ The current earleme is initially earleme 0.
 Every call to @code{marpa_r_earleme_complete()} advances the
 current earleme by 1.
 
-The @dfn{furthest earleme} is the highest numbered (and therefore ``furthest'')
+The
+@dfn{furthest earleme}
+is the highest numbered (and therefore ``furthest'')
 earleme at which a token ends.
 The furthest earleme is initially earleme 0.
 With every call to @code{marpa_r_alternative()}, the end of the token
@@ -649,9 +659,13 @@ the furthest earleme is its value before the call,
 or @var{current}+@var{length},
 whichever is greater.
 
-The @dfn{latest earleme} is the earleme of the latest
+The
+@dfn{latest earleme}
+is the earleme of the latest
 Earley set.
-The @dfn{latest Earley set} is the last Earley set completed.
+The
+@dfn{latest Earley set}
+is the last Earley set completed.
 This is always the highest numbered Earley set.
 If there is an Earley set at the current earleme,
 it is the latest Earley set and the latest earleme
@@ -1141,18 +1155,23 @@ is handled by Libmarpa.
 Non-conformity to specified behavior
 by a Libmarpa application
 is also called, for the purposes of this document,
-a @dfn{Libmarpa application programming failure}.
+a
+@dfn{Libmarpa application programming failure}.
 In contexts where no ambiguity arises,
-@dfn{Libmarpa application programming failure} will
-usually be abbreviated to @dfn{failure}.
+@dfn{Libmarpa application programming failure}
+will
+usually be abbreviated to
+@dfn{failure}.
 
 @dfn{Libmarpa application programming success}
 occurs when there has been no irrecoverable failure,
 and every recoverable failure has been successfully
 handled.
 In contexts where no ambiguity arises,
-@dfn{Libmarpa application programming success} is almost
-always abbreviated to @dfn{success}.
+@dfn{Libmarpa application programming success}
+is almost
+always abbreviated to
+@dfn{success}.
 
 As a reminder,
 no language in this chapter
@@ -1193,7 +1212,8 @@ see below (@ref{Irrecoverable hard failure}).
 
 A Libmarpa application programming failure
 is recoverable if and only if it is specified as such.
-Every recoverable failure has @dfn{recovery handling}
+Every recoverable failure has
+@dfn{recovery handling}
 associated with it.
 The recovery handling is the processing necessary
 for the application to recover from a recoverable failure.
@@ -1201,22 +1221,28 @@ For more on handling recoverable failures,
 see below
 (@ref{Recoverable hard failure} and @ref{Soft failure}).
 
-The recovery handling is @dfn{trivial} if
+The recovery handling is
+@dfn{trivial}
+if
 the application does not have to do anything
 in order to recover from the recoverable failure.
 If the recovery handling of a recoverable failure is trivial,
 we say that the failure is
 trivially recoverable.
 A
-@dfn{trivially recoverable failure} is recovered from
+@dfn{trivially recoverable failure}
+is recovered from
 the immediately after it occurs.
 Put another way, the application programmer
 may consider a recoverable error as an advisory,
 and proceed immediately with normal processing.
 
-A failure is called a @dfn{hard failure} is it has an error code
+A failure is called a
+@dfn{hard failure}
+is it has an error code
 associated with it.
-A recoverable failure is called a @dfn{soft failure}
+A recoverable failure is called a
+@dfn{soft failure}
 if it has no associated error code.
 (For more on error codes, see @ref{Error codes}.)
 
@@ -1237,7 +1263,8 @@ errors.
 Even effective error handling assumes the ability to allocate memory,
 so that the practice has been, in the event of a memory allocation failure,
 to take Draconian action.
-On @dfn{memory allocation failure}, as with all irrecoverable failures,
+On
+@dfn{memory allocation failure}, as with all irrecoverable failures,
 Libmarpa's behavior in undefined,
 but Libmarpa attempts to terminate the current program abnormally by calling @code{abort()}.
 
@@ -1255,7 +1282,9 @@ or a soft failure.
 @node Irrecoverable hard failure, Recoverable hard failure, Memory allocation failure, Failure
 @section Irrecoverable hard failure
 
-An @dfn{irrecoverable hard failure} is
+An
+@dfn{irrecoverable hard failure}
+is
 an irrecoverable Libmarpa application programming failure that has an
 error code associated with it.
 Once an irrecoverable failure occurs,
@@ -1276,7 +1305,9 @@ is based on the handling specified for an irrecoverable failure.
 @node Recoverable hard failure, Soft failure, Irrecoverable hard failure, Failure
 @section Recoverable hard failure
 
-A @dfn{recoverable hard failure} is
+A
+@dfn{recoverable hard failure}
+is
 an recoverable Libmarpa application programming failure that has an
 error code associated with it.
 It is expected that Libmarpa applications will be designed
@@ -1293,14 +1324,17 @@ has seen extensive usage.
 @node Soft failure, Error codes, Recoverable hard failure, Failure
 @section Soft failure
 
-An @dfn{soft failure} is
+An
+@dfn{soft failure}
+is
 an recoverable Libmarpa application programming failure that has no
 error code associated with it.
 Hard errors are assigned error codes in order to tell them apart.
 Error codes are not necessary or useful for soft errors,
 because there is at most one type of soft failure per Libmarpa method.
 
-@dfn{Soft failures} are so called,
+@dfn{Soft failures}
+are so called,
 because they are the least severe kind of failure.
 The most severe failures are ``bugs'' ---
 unintended, and a symptom of a problem.
@@ -1376,7 +1410,8 @@ These parts of the overviews are intended as ``cheat sheets''.
 
 The overviews sometimes speak of
 an ``archetypal'' application.
-The @dfn{archetypal Libmarpa application}
+The
+@dfn{archetypal Libmarpa application}
 implements a complete logic flow,
 starting with the creation of a grammar,
 and proceeding all the way
@@ -1752,7 +1787,9 @@ On failure, @minus{}2.
 
 @deftypefun int marpa_g_symbol_is_accessible (Marpa_Grammar @var{g}, @
     Marpa_Symbol_ID @var{sym_id})
-A symbol is @dfn{accessible} if it can be reached from the start symbol.
+A symbol is
+@dfn{accessible}
+if it can be reached from the start symbol.
 
 Return value: On success, 1 if symbol @var{sym_id} is accessible, 0 if not.
 If @var{sym_id} is well-formed, but there is no
@@ -1762,7 +1799,9 @@ If the grammar is not precomputed, or on other failure, @minus{}2.
 
 @deftypefun int marpa_g_symbol_is_nullable ( @
   Marpa_Grammar g, Marpa_Symbol_ID sym_id)
-A symbol is @dfn{nullable} if it sometimes produces the empty string.
+A symbol is
+@dfn{nullable}
+if it sometimes produces the empty string.
 A @strong{nulling} symbol is always a @strong{nullable} symbol,
 but not all @strong{nullable} symbols are @strong{nulling} symbols.
 
@@ -1774,7 +1813,9 @@ If the grammar is not precomputed, or on other failure, @minus{}2.
 
 @deftypefun int marpa_g_symbol_is_nulling (Marpa_Grammar @var{g}, @
     Marpa_Symbol_ID @var{sym_id})
-A symbol is @dfn{nulling} if it always produces the empty string.
+A symbol is
+@dfn{nulling}
+if it always produces the empty string.
 
 Return value: On success, 1 if symbol @var{sym_id} is nulling, 0 if not.
 If @var{sym_id} is well-formed, but there is no
@@ -1784,7 +1825,9 @@ If the grammar is not precomputed, or on other failure, @minus{}2.
 
 @deftypefun int marpa_g_symbol_is_productive (Marpa_Grammar @var{g}, @
     Marpa_Symbol_ID @var{sym_id})
-A symbol is @dfn{productive} if it can produce a string of terminals.
+A symbol is
+@dfn{productive}
+if it can produce a string of terminals.
 All nullable symbols are considered productive.
 
 Return value: On success, 1 if symbol @var{sym_id} is productive, 0 if not.
@@ -1887,7 +1930,9 @@ On failure, @minus{}2.
 
 @deftypefun int marpa_g_rule_is_accessible (Marpa_Grammar @var{g}, @
     Marpa_Rule_ID @var{rule_id})
-A rule is @dfn{accessible} if it can be reached from the start symbol.
+A rule is
+@dfn{accessible}
+if it can be reached from the start symbol.
 A rule is accessible if and only if its LHS symbol is accessible.
 The start rule is always an accessible rule.
 
@@ -1901,7 +1946,9 @@ is not precomputed, or on other failure, @minus{}2.
 
 @deftypefun int marpa_g_rule_is_nullable ( @
   Marpa_Grammar @var{g}, Marpa_Rule_ID @var{ruleid})
-A rule is @dfn{nullable} if it sometimes produces the empty string.
+A rule is
+@dfn{nullable}
+if it sometimes produces the empty string.
 A @strong{nulling} rule is always a @strong{nullable} rule,
 but not all @strong{nullable} rules are @strong{nulling} rules.
 
@@ -1914,7 +1961,9 @@ If the grammar is not precomputed, or on other failure, @minus{}2.
 
 @deftypefun int marpa_g_rule_is_nulling (Marpa_Grammar @var{g}, @
     Marpa_Rule_ID @var{ruleid})
-A rule is @dfn{nulling} if it always produces the empty string.
+A rule is
+@dfn{nulling}
+if it always produces the empty string.
 
 Return value: On success,
 1 if rule @var{ruleid} is nulling, 0 if not.
@@ -1949,7 +1998,9 @@ is not precomputed, or on other failure, @minus{}2.
 
 @deftypefun int marpa_g_rule_is_productive (Marpa_Grammar @var{g}, @
     Marpa_Rule_ID @var{rule_id})
-A rule is @dfn{productive} if it can produce a string of terminals.
+A rule is
+@dfn{productive}
+if it can produce a string of terminals.
 A rule is productive if and only if all the symbols on
 its RHS are productive.
 The empty string counts as a string of terminals,
@@ -2112,7 +2163,9 @@ it is a separator symbol.
 If @code{flags & MARPA_PROPER_SEPARATION} is non-zero,
 separation is ``proper'', that is,
 a trailing separator is not allowed.
-The term @dfn{proper} is based on the idea that
+The term
+@dfn{proper}
+is based on the idea that
 properly-speaking, separators should actually separate items.
 
 Some higher-level Marpa interfaces offer the ability to
@@ -2181,7 +2234,8 @@ or on other failure, @minus{}2.
 
 @deftypefun int marpa_g_symbol_is_counted (Marpa_Grammar @var{g}, @
     Marpa_Symbol_ID @var{sym_id})
-A symbol is @dfn{counted}
+A symbol is
+@dfn{counted}
 if it appears on the RHS of a sequence rule,
 or if it is used as
 the separator symbol of a sequence rule.
@@ -3241,7 +3295,8 @@ On failure, @minus{}2 is returned.
 
 These methods, respectively, set and query
 the Earley item warning threshold.
-The @dfn{Earley item warning threshold}
+The
+@dfn{Earley item warning threshold}
 is a number that is compared with
 the count of Earley items in each Earley set.
 When it is matched or exceeded,
@@ -3650,7 +3705,9 @@ When an ordering is no longer in use, its memory can be freed
 using the
 @code{marpa_o_unref()} method.
 
-An ordering is @dfn{frozen} once the first
+An ordering is
+@dfn{frozen}
+once the first
 tree iterator is created
 using it.
 A frozen ordering cannot be changed.
@@ -3799,10 +3856,13 @@ On failure, @minus{}2.
 @section Overview
 
 Once the bocage has an ordering, the parses trees can be iterated.
-Marpa's @dfn{parse tree iterators} iterate the parse trees contained
+Marpa's
+@dfn{parse tree iterators}
+iterate the parse trees contained
 in a bocage object.
 In Libmarpa,
-``parse tree iterators'' are usually just called @dfn{trees}.
+``parse tree iterators'' are usually just called
+@dfn{trees}.
 
 To create a tree, use the @code{marpa_t_new()} method.
 A newly created tree iterator is positioned before the first parse tree.
@@ -3923,7 +3983,8 @@ Always succeeds.
 @section Overview
 
 The archetypal application needs
-a value object (or @dfn{valuator}) to produce
+a value object (or
+@dfn{valuator}) to produce
 the value of the parse.
 To create a valuator, use the @code{marpa_v_new()} method.
 When a valuator is no longer in use, its memory can be freed
@@ -5917,7 +5978,9 @@ The methods in this section provide that capability.
 Libmarpa symbols can have values,
 which is the traditional way of doing semantics.
 Libmarpa also allows symbols to be unvalued.
-An @dfn{unvalued} symbol is one whose value
+An
+@dfn{unvalued}
+symbol is one whose value
 is unpredictable from instance to instance.
 If a symbol is unvalued, we sometimes say that it
 has ``whatever'' semantics.
@@ -5946,7 +6009,8 @@ Similarly,
 once a symbol has been treated as unvalued,
 Libmarpa marks it as unvalued.
 Once marked, a symbol's valued status is
-@dfn{locked} and cannot be changed later.
+@dfn{locked}
+and cannot be changed later.
 
 The valued status of terminals is marked the first
 time they are read.
