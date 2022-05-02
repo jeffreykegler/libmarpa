@@ -1859,6 +1859,8 @@ If the grammar is not precomputed, or on other failure, @minus{}2.
 @deftypefun int marpa_g_symbol_is_nulling (Marpa_Grammar @var{g}, @
     Marpa_Symbol_ID @var{sym_id})
 A symbol is
+@dfindex nulling symbol
+@dfindex symbol, nulling
 @dfn{nulling}
 if it always produces the empty string.
 
@@ -1871,6 +1873,8 @@ If the grammar is not precomputed, or on other failure, @minus{}2.
 @deftypefun int marpa_g_symbol_is_productive (Marpa_Grammar @var{g}, @
     Marpa_Symbol_ID @var{sym_id})
 A symbol is
+@dfindex productive symbol
+@dfindex symbol, productive
 @dfn{productive}
 if it can produce a string of terminals.
 All nullable symbols are considered productive.
@@ -3764,6 +3768,8 @@ using the
 @code{marpa_o_unref()} method.
 
 An ordering is
+@dfindex frozen ordering
+@dfindex ordering, frozen
 @dfn{frozen}
 once the first
 tree iterator is created
@@ -3915,6 +3921,10 @@ On failure, @minus{}2.
 
 Once the bocage has an ordering, the parses trees can be iterated.
 Marpa's
+@dfindex parse tree iterator
+@dfindex iterator, parse tree
+@dfindex parse tree
+@dfindex tree
 @dfn{parse tree iterators}
 iterate the parse trees contained
 in a bocage object.
@@ -4042,6 +4052,7 @@ Always succeeds.
 
 The archetypal application needs
 a value object (or
+@dfindex valuator
 @dfn{valuator}) to produce
 the value of the parse.
 To create a valuator, use the @code{marpa_v_new()} method.
@@ -6037,6 +6048,8 @@ Libmarpa symbols can have values,
 which is the traditional way of doing semantics.
 Libmarpa also allows symbols to be unvalued.
 An
+@dfindex unvalued symbol
+@dfindex symbol, unvalued
 @dfn{unvalued}
 symbol is one whose value
 is unpredictable from instance to instance.
@@ -6067,6 +6080,8 @@ Similarly,
 once a symbol has been treated as unvalued,
 Libmarpa marks it as unvalued.
 Once marked, a symbol's valued status is
+@dfindex locked value status (of a symbol)
+@dfindex value status, locked (of a symbol)
 @dfn{locked}
 and cannot be changed later.
 
@@ -6226,7 +6241,7 @@ value, which will never be
 
 This index is of terms that are used in a special sense in
 this document.
-Not every use of these terms are indexed ---
+Not every use of these terms is indexed ---
 only those uses which are in some way defining.
 
 @printindex df
