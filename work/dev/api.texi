@@ -1193,9 +1193,26 @@ see below (@ref{Irrecoverable hard failure}).
 
 A Libmarpa application programming failure
 is recoverable if and only if it is specified as such.
+Every recoverable failure has @dfn{recovery handling}
+associated with it.
+The recovery handling is the processing necessary
+for the application to recover from a recoverable failure.
 For more on handling recoverable failures,
 see below
 (@ref{Recoverable hard failure} and @ref{Soft failure}).
+
+The recovery handling is @dfn{trivial} if
+the application does not have to do anything
+in order to recover from the recoverable failure.
+If the recovery handling of a recoverable failure is trivial,
+we say that the failure is
+trivially recoverable.
+A
+@dfn{trivially recoverable failure} is recovered from
+the immediately after it occurs.
+Put another way, the application programmer
+may consider a recoverable error as an advisory,
+and proceed immediately with normal processing.
 
 A failure is called a @dfn{hard failure} is it has an error code
 associated with it.
@@ -1511,7 +1528,7 @@ Returns the version number in @var{version},
 which must have room for three @code{int}'s.
 
 @strong{Return value}: Always succeeds.
-The return value should be ignored.
+The return value is indeterminate.
 
 @end deftypefun
 
@@ -1550,7 +1567,7 @@ An irrecoverable error will result
 if an uninitialized
 configuration is used to create a grammar.
 
-@strong{Return value}: Always succeeds.  The return value should be ignored.
+@strong{Return value}: Always succeeds.  The return value is indeterminate.
 
 @end deftypefun
 
@@ -1671,7 +1688,7 @@ of gaining efficiencies at evaluation time.
 Current thinking is that the gains do not repay the extra
 complexity.
 
-@strong{Return value}: On success, a non-negative integer, whose exact value should be ignored.
+@strong{Return value}: On success, a non-negative integer, whose value is otherwise indeterminate.
 On failure, -2.
 @end deftypefun
 
