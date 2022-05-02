@@ -492,6 +492,7 @@ from zero up to a number determined by memory or
 some other machine-determined limit.
 
 Every time object has a
+@dfindex @sortas{base grammar} base grammar (of a time object)
 @dfn{base grammar}.
 A grammar object is its own base grammar.
 The base grammar of a recognizer is the grammar
@@ -625,10 +626,13 @@ or from Marpa's
 
 As a reminder,
 in Libmarpa a location is called a
+@dfindex earleme
 @dfn{earleme}.
 The number of an Earley set is the
+@dfindex ID (of an Earley set)
 @dfn{ID of the Earley set},
 or its
+@dfindex ordinal (of an Earley set)
 @dfn{ordinal}.
 In the traditional model, the ordinal of an Earley set and
 its earleme are always exactly the same, but in Libmarpa
@@ -640,6 +644,7 @@ they will be different.
 The important earleme variables are the current earleme, the furthest earleme
 and the latest earleme.
 The
+@dfindex earleme, current
 @dfn{current earleme}
 is the earleme that Libmarpa is currently working on.
 More specifically, it is the one at which new tokens will @strong{start}.
@@ -650,6 +655,7 @@ Every call to @code{marpa_r_earleme_complete()} advances the
 current earleme by 1.
 
 The
+@dfindex earleme, furthest
 @dfn{furthest earleme}
 is the highest numbered (and therefore ``furthest'')
 earleme at which a token ends.
@@ -665,10 +671,12 @@ or @var{current}+@var{length},
 whichever is greater.
 
 The
+@dfindex earleme, latest
 @dfn{latest earleme}
 is the earleme of the latest
 Earley set.
 The
+@dfindex Earley set, latest
 @dfn{latest Earley set}
 is the last Earley set completed.
 This is always the highest numbered Earley set.
@@ -1161,6 +1169,9 @@ Non-conformity to specified behavior
 by a Libmarpa application
 is also called, for the purposes of this document,
 a
+@dfindex Libmarpa application programming failure
+@dfindex failure, Libmarpa application programming
+@dfindex failure
 @dfn{Libmarpa application programming failure}.
 In contexts where no ambiguity arises,
 @dfn{Libmarpa application programming failure}
@@ -1168,6 +1179,9 @@ will
 usually be abbreviated to
 @dfn{failure}.
 
+@dfindex Libmarpa application programming success
+@dfindex success, Libmarpa application programming
+@dfindex success
 @dfn{Libmarpa application programming success}
 occurs when there has been no irrecoverable failure,
 and every recoverable failure has been successfully
@@ -1218,6 +1232,7 @@ see below (@ref{Irrecoverable hard failure}).
 A Libmarpa application programming failure
 is recoverable if and only if it is specified as such.
 Every recoverable failure has
+@dfindex recovery handling
 @dfn{recovery handling}
 associated with it.
 The recovery handling is the processing necessary
@@ -1227,6 +1242,8 @@ see below
 (@ref{Recoverable hard failure} and @ref{Soft failure}).
 
 The recovery handling is
+@dfindex recovery handling, trivial
+@dfindex trivial recovery handling
 @dfn{trivial}
 if
 the application does not have to do anything
@@ -1235,6 +1252,8 @@ If the recovery handling of a recoverable failure is trivial,
 we say that the failure is
 trivially recoverable.
 A
+@dfindex trivially recoverable failure
+@dfindex failure, trivially recoverable
 @dfn{trivially recoverable failure}
 is recovered from
 the immediately after it occurs.
@@ -1243,10 +1262,14 @@ may consider a recoverable error as an advisory,
 and proceed immediately with normal processing.
 
 A failure is called a
+@dfindex hard failure
+@dfindex failure, hard
 @dfn{hard failure}
 is it has an error code
 associated with it.
 A recoverable failure is called a
+@dfindex soft failure
+@dfindex failure, soft
 @dfn{soft failure}
 if it has no associated error code.
 (For more on error codes, see @ref{Error codes}.)
@@ -1269,7 +1292,10 @@ Even effective error handling assumes the ability to allocate memory,
 so that the practice has been, in the event of a memory allocation failure,
 to take Draconian action.
 On
-@dfn{memory allocation failure}, as with all irrecoverable failures,
+@dfindex memory allocation failure
+@dfindex failure, memory allocation
+@dfn{memory allocation failure},
+as with all irrecoverable failures,
 Libmarpa's behavior in undefined,
 but Libmarpa attempts to terminate the current program abnormally by calling @code{abort()}.
 
@@ -1288,6 +1314,9 @@ or a soft failure.
 @section Irrecoverable hard failure
 
 An
+@dfindex irrecoverable hard failure
+@dfindex hard failure, irrecoverable
+@dfindex failure, irrecoverable hard
 @dfn{irrecoverable hard failure}
 is
 an irrecoverable Libmarpa application programming failure that has an
@@ -1311,6 +1340,9 @@ is based on the handling specified for an irrecoverable failure.
 @section Recoverable hard failure
 
 A
+@dfindex recoverable hard failure
+@dfindex hard failure, recoverable
+@dfindex failure, recoverable hard
 @dfn{recoverable hard failure}
 is
 an recoverable Libmarpa application programming failure that has an
@@ -1330,6 +1362,8 @@ has seen extensive usage.
 @section Soft failure
 
 An
+@dfindex soft failure
+@dfindex failure, soft
 @dfn{soft failure}
 is
 an recoverable Libmarpa application programming failure that has no
@@ -1416,6 +1450,8 @@ These parts of the overviews are intended as ``cheat sheets''.
 The overviews sometimes speak of
 an ``archetypal'' application.
 The
+@dfindex archetypal Libmarpa application
+@dfindex Libmarpa application, archetypal
 @dfn{archetypal Libmarpa application}
 implements a complete logic flow,
 starting with the creation of a grammar,
@@ -1793,6 +1829,8 @@ On failure, @minus{}2.
 @deftypefun int marpa_g_symbol_is_accessible (Marpa_Grammar @var{g}, @
     Marpa_Symbol_ID @var{sym_id})
 A symbol is
+@dfindex accessible symbol
+@dfindex symbol, accessible
 @dfn{accessible}
 if it can be reached from the start symbol.
 
@@ -1805,6 +1843,8 @@ If the grammar is not precomputed, or on other failure, @minus{}2.
 @deftypefun int marpa_g_symbol_is_nullable ( @
   Marpa_Grammar g, Marpa_Symbol_ID sym_id)
 A symbol is
+@dfindex nullable symbol
+@dfindex symbol, nullable
 @dfn{nullable}
 if it sometimes produces the empty string.
 A @strong{nulling} symbol is always a @strong{nullable} symbol,
@@ -1936,6 +1976,8 @@ On failure, @minus{}2.
 @deftypefun int marpa_g_rule_is_accessible (Marpa_Grammar @var{g}, @
     Marpa_Rule_ID @var{rule_id})
 A rule is
+@dfindex accessible rule
+@dfindex rule, accessible
 @dfn{accessible}
 if it can be reached from the start symbol.
 A rule is accessible if and only if its LHS symbol is accessible.
@@ -1952,6 +1994,8 @@ is not precomputed, or on other failure, @minus{}2.
 @deftypefun int marpa_g_rule_is_nullable ( @
   Marpa_Grammar @var{g}, Marpa_Rule_ID @var{ruleid})
 A rule is
+@dfindex nullable rule
+@dfindex rule, nullable
 @dfn{nullable}
 if it sometimes produces the empty string.
 A @strong{nulling} rule is always a @strong{nullable} rule,
@@ -1967,6 +2011,8 @@ If the grammar is not precomputed, or on other failure, @minus{}2.
 @deftypefun int marpa_g_rule_is_nulling (Marpa_Grammar @var{g}, @
     Marpa_Rule_ID @var{ruleid})
 A rule is
+@dfindex nulling rule
+@dfindex rule, nulling
 @dfn{nulling}
 if it always produces the empty string.
 
@@ -2004,6 +2050,8 @@ is not precomputed, or on other failure, @minus{}2.
 @deftypefun int marpa_g_rule_is_productive (Marpa_Grammar @var{g}, @
     Marpa_Rule_ID @var{rule_id})
 A rule is
+@dfindex productive rule
+@dfindex rule, productive
 @dfn{productive}
 if it can produce a string of terminals.
 A rule is productive if and only if all the symbols on
@@ -2169,6 +2217,8 @@ If @code{flags & MARPA_PROPER_SEPARATION} is non-zero,
 separation is ``proper'', that is,
 a trailing separator is not allowed.
 The term
+@dfindex proper separation
+@dfindex separation, proper
 @dfn{proper}
 is based on the idea that
 properly-speaking, separators should actually separate items.
@@ -2240,6 +2290,8 @@ or on other failure, @minus{}2.
 @deftypefun int marpa_g_symbol_is_counted (Marpa_Grammar @var{g}, @
     Marpa_Symbol_ID @var{sym_id})
 A symbol is
+@dfindex counted symbol
+@dfindex symbol, counted
 @dfn{counted}
 if it appears on the RHS of a sequence rule,
 or if it is used as
@@ -3301,6 +3353,7 @@ On failure, @minus{}2 is returned.
 These methods, respectively, set and query
 the Earley item warning threshold.
 The
+@dfindex Earley item warning threshold
 @dfn{Earley item warning threshold}
 is a number that is compared with
 the count of Earley items in each Earley set.
@@ -6171,9 +6224,9 @@ value, which will never be
 @node Index of terms,  , Deprecated techniques and methods, Top
 @unnumbered Index of terms
 
-This index is of terms used in a special sense in
+This index is of terms that are used in a special sense in
 this document.
-Not all use of these terms are indexed ---
+Not every use of these terms are indexed ---
 only those uses which are in some way defining.
 
 @printindex df
