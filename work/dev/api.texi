@@ -33,6 +33,8 @@ OTHER DEALINGS IN THE SOFTWARE.
 @end quotation
 @end copying
 
+@defindex df
+
 @dircategory Development
 @direntry
   * Marpa R2: (marpa-r2).                Marpa R2 parser library
@@ -85,6 +87,7 @@ Published @value{UPDATED} by Jeffrey Kegler
 * Technical notes::
 * Work in Progress::
 * Deprecated techniques and methods::
+* Index of terms::
 
 @detailmenu
  --- The Detailed Node Listing ---
@@ -471,8 +474,10 @@ and so on.
 When one time object is used to create a second
 time object,
 the first time object is the
+@dfindex @sortas{parent object} parent object (of a time object)
 @dfn{parent object}
 and the second time object is the
+@dfindex @sortas{child object} child object (of a time object)
 @dfn{child object}.
 For example, when a bocage is created from a
 recognizer,
@@ -5956,7 +5961,7 @@ The methods in this section provide that capability.
 
 @end deftypefun
 
-@node Deprecated techniques and methods,  , Work in Progress, Top
+@node Deprecated techniques and methods, Index of terms, Work in Progress, Top
 @chapter Deprecated techniques and methods
 
 @menu
@@ -6162,6 +6167,16 @@ value, which will never be
 @code{MARPA_ERR_NONE}.
 
 @end deftypefun
+
+@node Index of terms,  , Deprecated techniques and methods, Top
+@unnumbered Index of terms
+
+This index is of terms used in a special sense in
+this document.
+Not all use of these terms are indexed ---
+only those uses which are in some way defining.
+
+@printindex df
 
 @bye
 @c vim: expandtab shiftwidth=4:
