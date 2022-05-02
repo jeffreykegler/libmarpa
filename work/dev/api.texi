@@ -651,7 +651,9 @@ More specifically, it is the one at which new tokens will @strong{start}.
 Since tokens are never zero length, a new token will always end after the
 current earleme.
 The current earleme is initially earleme 0.
-Every call to @code{marpa_r_earleme_complete()} advances the
+Every call to
+@code{marpa_r_earleme_complete()}
+advances the
 current earleme by 1.
 
 The
@@ -660,12 +662,14 @@ The
 is the highest numbered (and therefore ``furthest'')
 earleme at which a token ends.
 The furthest earleme is initially earleme 0.
-With every call to @code{marpa_r_alternative()}, the end of the token
+With every call to
+@code{marpa_r_alternative()}, the end of the token
 it adds is calculated.
 A token ends at the earleme location @var{current}+@var{length},
 where @var{current} is the current earleme,
 and @var{length} is the length of the newly added token.
-After a call to @code{marpa_r_alternative()},
+After a call to
+@code{marpa_r_alternative()},
 the furthest earleme is its value before the call,
 or @var{current}+@var{length},
 whichever is greater.
@@ -685,11 +689,15 @@ it is the latest Earley set and the latest earleme
 is equal to the current earleme.
 There is never an Earley set after the current earleme.
 
-After every call to the @code{marpa_r_earleme_complete()} method
+After every call to the
+@code{marpa_r_earleme_complete()}
+method
 that adds a token,
 the value of the latest earleme is
 same as the value of the current earleme.
-After every call to the @code{marpa_r_earleme_complete()} method
+After every call to the
+@code{marpa_r_earleme_complete()}
+method
 that does @strong{not} add a token,
 the value of the latest earleme is unchanged
 from its value before the call.
@@ -700,26 +708,32 @@ from its value before the call.
 The current earleme tracks the advance of the recognizer through the input.
 Input tokens always start at the current earleme.
 An application can advance past the current earleme,
-by calling @code{marpa_r_earleme_complete()}, which
+by calling
+@code{marpa_r_earleme_complete()}, which
 increments the current earleme by 1.
 After initialization,
-@code{marpa_r_earleme_complete()} is
+@code{marpa_r_earleme_complete()}
+is
 the only way to manipulate the value of the current earleme.
 
 The furthest earleme tracks how ``far out'' tokens can be found.
 In the standard input model, calling
-@code{marpa_r_earleme_complete()} after each
-@code{marpa_r_alternative()} call is sufficient to process
+@code{marpa_r_earleme_complete()}
+after each
+@code{marpa_r_alternative()}
+call is sufficient to process
 all inputs,
 and the furthest earleme's value
 can be typically be ignored.
 In alternative input models, if tokens have lengths greater than
 1, calling
-@code{marpa_r_earleme_complete()} once after the last token
+@code{marpa_r_earleme_complete()}
+once after the last token
 is read may not be enough to ensure that all tokens have been processed.
 To ensure that all tokens have been processed,
 an application must advance the current earleme
-by calling @code{marpa_r_earleme_complete()},
+by calling
+@code{marpa_r_earleme_complete()},
 until the current earleme is equal to the furthest earleme.
 
 The lastest earleme is the earleme of the last Earley set.
@@ -750,20 +764,26 @@ It will proceed to less restrictive models.
 @subsection The standard model of input
 
 In the standard model of input,
-calls to @code{marpa_r_alternative()}
-and @code{marpa_r_earleme_complete()} are
+calls to
+@code{marpa_r_alternative()}
+and
+@code{marpa_r_earleme_complete()}
+are
 made in pairs.
 There is, first, exactly one call
-to @code{marpa_r_alternative()},
+to
+@code{marpa_r_alternative()},
 and it is for a token with length 1.
 Following it must be a call
-to @code{marpa_r_earleme_complete()}.
+to
+@code{marpa_r_earleme_complete()}.
 For an input of length @var{n}, there will be
 exactly @var{n} such paired calls.
 
 Suppose, in the standard model that,
 for a call
-to @code{marpa_r_alternative()},
+to
+@code{marpa_r_alternative()},
 the following is true:
 @itemize
 @item The current earleme before the call was @var{c}.
@@ -786,7 +806,8 @@ the following will be true:
 
 Suppose, in the standard model that,
 for a call
-to @code{marpa_r_earleme_complete()},
+to
+@code{marpa_r_earleme_complete()},
 the following is true:
 @itemize
 @item The current earleme before the call is @var{c}.
@@ -799,7 +820,8 @@ this means that we also know that
 @end itemize
 In that case,
 after the call
-to @code{marpa_r_earleme_complete()},
+to
+@code{marpa_r_earleme_complete()},
 the current, latest and furthest earlemes will
 be the same.
 Specifically,
@@ -814,16 +836,19 @@ the following will be true:
 @subsection Ambiguous input
 
 As a first loosening of the standard model,
-we no longer require calls to @code{marpa_r_alternative()}
+we no longer require calls to
+@code{marpa_r_alternative()}
 to be paired with calls to
 @code{marpa_r_earleme_complete()}.
 Instead,
 we allow a series of one or more calls
-to @code{marpa_r_alternative()}
+to
+@code{marpa_r_alternative()}
 before each call to
 @code{marpa_r_earleme_complete()}.
 We still require that there be at least one call
-to @code{marpa_r_alternative()}
+to
+@code{marpa_r_alternative()}
 before each call to
 @code{marpa_r_earleme_complete()},
 and we still require that all tokens have
@@ -834,7 +859,9 @@ latest and furthest earlemes are exactly
 as described for the standard model, with one minor
 exception:
 Where the current earleme is @var{c},
-and a call to @code{marpa_r_alternative()} is not the first
+and a call to
+@code{marpa_r_alternative()}
+is not the first
 of a series,
 the value of the furthest earleme before the call will be
 @var{c}+1.
@@ -851,7 +878,8 @@ This does change the behavior of the earleme variables.
 
 Suppose, in the variable length token model that,
 for a call
-to @code{marpa_r_alternative()},
+to
+@code{marpa_r_alternative()},
 the following is true:
 @itemize
 @item The current earleme before the call was @var{c}.
@@ -867,14 +895,16 @@ the following will be true:
 @itemize
 @item The current and latest earlemes will still be @var{c}.
 The current and latest earlemes are never changed by a call
-to @code{marpa_r_alternative()}.
+to
+@code{marpa_r_alternative()}.
 @item The furthest earleme will be either @var{old_f} or
  @var{c}+@var{length}, whichever was greater.
 @end itemize
 
 Suppose, in the variable length token model that,
 for a call
-to @code{marpa_r_earleme_complete()},
+to
+@code{marpa_r_earleme_complete()},
 the following is true:
 @itemize
 @item The current earleme before the call is @var{c}.
@@ -884,14 +914,16 @@ the latest earleme before the call is also @var{c}.
 @end itemize
 In that case,
 after the call
-to @code{marpa_r_earleme_complete()},
+to
+@code{marpa_r_earleme_complete()},
 the following will be true:
 @itemize
 @item The current earleme will be advanced to @var{c+1}.
 @item The latest earleme will also be @var{c+1}.
 @item The furthest earleme will still be @var{old_f}.
 The furthest earleme is never changed by a call
-to @code{marpa_r_earleme_complete()}.
+to
+@code{marpa_r_earleme_complete()}.
 @end itemize
 
 @node The generalized model, General rules for the earleme variables, Variable length tokens, Earlemes
@@ -904,29 +936,39 @@ no tokens and no Earley set.
 For the generalized input model,
 the effect on the earleme variables of
 a call
-to @code{marpa_r_alternative()} is exactly
+to
+@code{marpa_r_alternative()}
+is exactly
 the same as it is for the variable length input model.
 The effect on the earleme variables of a call to
-to @code{marpa_r_earleme_complete()} depends on
+to
+@code{marpa_r_earleme_complete()}
+depends on
 whether or not that call creates an empty earleme.
 A call
-to @code{marpa_r_earleme_complete()}
+to
+@code{marpa_r_earleme_complete()}
 creates an empty earleme if and only if
 it falls into one of these two cases:
 @itemize
 @item
 There has been no call
-to @code{marpa_r_alternative()} since
+to
+@code{marpa_r_alternative()}
+since
 recognizer initialization.
 @item
-No previous call to @code{marpa_r_alternative()} created
+No previous call to
+@code{marpa_r_alternative()}
+created
 a lexeme which ends at the next earleme.
 The "next earleme" is @var{c+1},
 where @var{c} is the current earleme.
 @end itemize
 
 A previous call to
-@code{marpa_r_alternative()} created
+@code{marpa_r_alternative()}
+created
 an earleme which ends at @var{lex_end},
 if
 @itemize
@@ -941,7 +983,9 @@ It created a lexeme of length @var{lex_len}.
 @end itemize
 
 Note that the above implies the ordinary case:
-If @code{marpa_r_alternative()} is called
+If
+@code{marpa_r_alternative()}
+is called
 at current location @var{c},
 and the lexeme it creates has the default length of 1,
 then that lexeme will end at @var{c+1},
@@ -949,7 +993,8 @@ the "next earleme".
 
 Suppose, in the generalized input model that,
 for a call
-to @code{marpa_r_earleme_complete()}
+to
+@code{marpa_r_earleme_complete()}
 that creates an empty earleme,
 the following is true:
 @itemize
@@ -959,7 +1004,8 @@ the following is true:
 @end itemize
 In that case,
 after the call
-to @code{marpa_r_earleme_complete()},
+to
+@code{marpa_r_earleme_complete()},
 the following will be true:
 @itemize
 @item The current earleme will be advanced to @var{c+1}.
@@ -968,12 +1014,14 @@ This means that the latest earleme will be less than
 the current earleme.
 @item The furthest earleme will remain at @var{old_f}.
 The furthest earleme is never changed by a call
-to @code{marpa_r_earleme_complete()}.
+to
+@code{marpa_r_earleme_complete()}.
 @end itemize
 
 Suppose, in the generalized input model that,
 for a call
-to @code{marpa_r_earleme_complete()}
+to
+@code{marpa_r_earleme_complete()}
 that does not create an empty earleme,
 the following is true:
 @itemize
@@ -983,14 +1031,16 @@ the following is true:
 @end itemize
 In that case,
 after the call
-to @code{marpa_r_earleme_complete()},
+to
+@code{marpa_r_earleme_complete()},
 the following will be true:
 @itemize
 @item The current earleme will be advanced to @var{c+1}.
 @item The latest earleme will be advanced to @var{c+1}.
 @item The furthest earleme will remain at @var{old_f}.
 The furthest earleme is never changed by a call
-to @code{marpa_r_earleme_complete()}.
+to
+@code{marpa_r_earleme_complete()}.
 @end itemize
 
 @node General rules for the earleme variables,  , The generalized model, Earlemes
@@ -1465,7 +1515,8 @@ all small but non-trivial.
 @section Naming conventions
 
 Methods in Libmarpa follow a strict naming convention.
-All methods have a name beginning with @code{marpa_},
+All methods have a name beginning with
+@code{marpa_},
 if they are part of the
 external interface.
 If an external method is not a static method,
@@ -1491,7 +1542,8 @@ Methods that are part of the internal interface
 are subject to change and are intended for use
 only by Libmarpa's developers.
 
-Libmarpa reserves the @code{marpa_}
+Libmarpa reserves the
+@code{marpa_}
 and @code{_marpa_} prefixes for itself,
 with all their capitalization variants.
 All Libmarpa names visible outside the package
@@ -1529,7 +1581,8 @@ In this case, the programmer must distinguish the two return statuses
 based on the error code,
 and a programmer who is relying too heavily on the general
 conventions will fall into a trap.
-(See the description of the return values of @code{marpa_g_rule_rank_set}
+(See the description of the return values of
+@code{marpa_g_rule_rank_set}
 in @ref{Ranks}.)
 
 The following are always the case,
@@ -1617,7 +1670,8 @@ allow the application to override Libmarpa's memory allocation
 and fatal error handling without resorting to global
 variables, and therefore in a thread-safe way.
 Currently, the only function of the @code{Marpa_Config}
-class is to give @code{marpa_g_new()}
+class is to give
+@code{marpa_g_new()}
 a place to put its error code.
 
 @code{Marpa_Config} is Libmarpa's only ``major''
@@ -1626,12 +1680,15 @@ There is no constructor or destructor, although
 @code{Marpa_Config} objects @strong{do} need to be initialized
 before use.
 Aside from its own accessor,
-@code{Marpa_Config} objects are only used by @code{marpa_g_new}
+@code{Marpa_Config} objects are only used by
+@code{marpa_g_new}
 and no reference to their location is not kept
 in any of Libmarpa's time objects.
 The intent is to that it be convenient
 to have them in memory that might be deallocated
-soon after @code{marpa_g_new} returns.
+soon after
+@code{marpa_g_new}
+returns.
 For example, they could be put on the stack.
 
 @deftypefun int marpa_c_init ( @
@@ -1651,7 +1708,9 @@ configuration is used to create a grammar.
   Marpa_Config* @var{config}, const char** @var{p_error_string} )
 
 Error codes are usually kept in the base grammar,
-which leaves @code{marpa_g_new()} no place to put
+which leaves
+@code{marpa_g_new()}
+no place to put
 its error code on failure.
 Objects of
 the @code{Marpa_Config} class provide such a place.
@@ -1660,7 +1719,9 @@ the internals.
 Applications should set it to @code{NULL}.
 
 @strong{Return value}: The error code in @var{config}.
-Always succeeds, so that @code{marpa_c_error()} never requires an error code
+Always succeeds, so that
+@code{marpa_c_error()}
+never requires an error code
 for itself.
 
 @end deftypefun
@@ -1684,38 +1745,47 @@ for itself.
 @section Overview
 
 An archetypal application has a grammar.
-To create a grammar, use the @code{marpa_g_new()} method.
+To create a grammar, use the
+@code{marpa_g_new()}
+method.
 When a grammar is no longer in use, its memory can be freed
 using the
-@code{marpa_g_unref()} method.
+@code{marpa_g_unref()}
+method.
 
 To be precomputed,
 a grammar must have one or more symbols.
 To create symbols, use the
-@code{marpa_g_symbol_new()} method.
+@code{marpa_g_symbol_new()}
+method.
 
 To be precomputed,
 a grammar must have one or more rules.
 To create rules, use the
-@code{marpa_g_rule_new()} and
-@code{marpa_g_sequence_new()} methods.
+@code{marpa_g_rule_new()}
+and
+@code{marpa_g_sequence_new()}
+methods.
 
 For non-trivial parsing,
 one or more of the symbols must be terminals.
 To mark a symbol as a terminal,
 use the
-@code{marpa_g_symbol_is_terminal_set()} method.
+@code{marpa_g_symbol_is_terminal_set()}
+method.
 
 To be precomputed,
 a grammar must have exactly one start symbol.
 To mark a symbol as the start symbol,
 use the
-@code{marpa_g_start_symbol_set()} method.
+@code{marpa_g_start_symbol_set()}
+method.
 
 Before parsing with a grammar, it must be precomputed.
 To precompute a grammar,
 use the
-@code{marpa_g_precompute()} method.
+@code{marpa_g_precompute()}
+method.
 
 @node Grammar constructor, Grammar reference counting, Grammar overview, Grammar methods
 @section Creating a new grammar
@@ -1729,10 +1799,13 @@ The returned grammar object is not yet precomputed,
 and will have no symbols and rules.
 Its reference count will be 1.
 
-Unless the application calls @code{marpa_c_error},
+Unless the application calls
+@code{marpa_c_error},
 Libmarpa will not reference the location
 pointed to by the @var{configuration}
-argument after @code{marpa_g_new} returns.
+argument after
+@code{marpa_g_new}
+returns.
 The @var{configuration} argument may be @code{NULL},
 but if it is,
 there will be no way to determine
@@ -1743,7 +1816,8 @@ On hard failure, @code{NULL}.
 Also on hard failure,
 if the @var{configuration} argument is not @code{NULL},
 the error code is set in @var{configuration}.
-The error code may be accessed using @code{marpa_c_error}.
+The error code may be accessed using
+@code{marpa_c_error}.
 
 @end deftypefun
 
@@ -1755,7 +1829,9 @@ this call be made immediately after the
 grammar constructor.
 It turns off a deprecated feature.
 
-The @code{marpa_g_force_valued} forces all the
+The
+@code{marpa_g_force_valued}
+forces all the
 symbols in a grammar to be ``valued''.
 The opposite of a valued symbol is one about whose value
 you do not care.
@@ -1798,7 +1874,9 @@ zero.
 
 Returns current value of the start symbol of grammar @var{g}.
 The value is that
-specified in the @code{marpa_g_start_symbol_set()} call,
+specified in the
+@code{marpa_g_start_symbol_set()}
+call,
 if there has been one.
 
 Return value:
@@ -1916,17 +1994,21 @@ On other failure, @minus{}2.
 These methods, respectively, set
 and query the ``terminal status'' of a symbol.
 To be used as an input symbol
-in the @code{marpa_r_alternative()} method,
+in the
+@code{marpa_r_alternative()}
+method,
 a symbol must be a terminal.
 This function flags symbol @var{sym_id} as a terminal if
 @var{value} is 1,
 or flags it as a non-terminal if @var{value} is 0.
 
 Once set to a value with the
-@code{marpa_g_symbol_is_terminal_set()} method,
+@code{marpa_g_symbol_is_terminal_set()}
+method,
 the terminal status of a symbol is ``locked'' at that value.
 A subsequent call to
-@code{marpa_g_symbol_is_terminal_set()} that attempts
+@code{marpa_g_symbol_is_terminal_set()}
+that attempts
 to change the terminal status
 of @var{sym_id} to a value different from its current one
 will fail.
@@ -1954,7 +2036,8 @@ when @var{value} is not 0 or 1;
 when the terminal status is locked and @var{value}
 is different from its current value;
 and,
-in the case of @code{marpa_g_symbol_is_terminal_set()},
+in the case of
+@code{marpa_g_symbol_is_terminal_set()},
 when the grammar @var{g} is precomputed.
 @end deftypefun
 
@@ -2162,7 +2245,8 @@ including the case
 where rule @var{rule_id}
 is not a sequence rule, returns 0.
 
-The @code{marpa_g_rule_is_proper_separation()}
+The
+@code{marpa_g_rule_is_proper_separation()}
 does not distinguish rules without proper
 separation from rules for which separation
 is not defined, because they are not
@@ -2170,7 +2254,8 @@ sequence rules.
 Applications for which this distinction is
 important should use
 the
-@code{marpa_g_sequence_min()} method.
+@code{marpa_g_sequence_min()}
+method.
 
 Failure returns:
 If @var{rule_id} is well-formed, but there is no
@@ -2259,7 +2344,8 @@ The LHS symbol cannot be the LHS of any other rule,
 whether a BNF rule or a sequence rule.
 On an attempt to create an sequence rule with a duplicate
 LHS,
-@code{marpa_g_sequence_new()} fails,
+@code{marpa_g_sequence_new()}
+fails,
 setting the error code to
 @code{MARPA_ERR_SEQUENCE_LHS_NOT_UNIQUE}.
 
@@ -2267,7 +2353,9 @@ Sequence rules do not add to the classes of grammar parsed
 by Libmarpa ---
 a sequence can always be written as BNF rules.
 When a rule is created
-with the @code{marpa_g_sequence_new()} method,
+with the
+@code{marpa_g_sequence_new()}
+method,
 Libmarpa will understand that it is a sequence,
 and will optimize accordingly.
 The speedup is often considerable.
@@ -2344,7 +2432,8 @@ Note that when the rank is @minus{}2,
 the error code is the only way to distinguish
 success from failure.
 The error code can be determined by using the
-@code{marpa_g_error()} call.
+@code{marpa_g_error()}
+call.
 
 @end deftypefun
 
@@ -2375,11 +2464,15 @@ If the ``null ranks high'' setting is 1,
 nulled symbols rank high.
 Ranking of a null variants is done from left-to-right.
 
-The @code{marpa_g_rule_null_high_set()} method will
+The
+@code{marpa_g_rule_null_high_set()}
+method will
 return failure
 after the grammar has been precomputed.
 If there is no other cause of failure,
-the @code{marpa_g_rule_null_high()} method succeeds
+the
+@code{marpa_g_rule_null_high()}
+method succeeds
 on both precomputed and unprecomputed grammars.
 
 Success return value:
@@ -2556,12 +2649,16 @@ that symbol on its LHS is completed.
 
 For completion events to occur, the symbol must be marked
 as a completion event symbol.
-The @code{marpa_g_symbol_is_completion_event_set()} function
+The
+@code{marpa_g_symbol_is_completion_event_set()}
+function
 marks symbol @var{sym_id} as a completion event symbol
 if @var{value} is 1,
 and unmarks it
 it as a completion event symbol if @var{value} is 0.
-The @code{marpa_g_symbol_is_completion_event()} method
+The
+@code{marpa_g_symbol_is_completion_event()}
+method
 returns the current value of the completion event marking
 for symbol @var{sym_id}.
 
@@ -2572,7 +2669,8 @@ the grammar is precomputed.
 
 If a completion event is marked,
 its activation status can be changed using the
-@code{marpa_g_completion_symbol_activate()} method.
+@code{marpa_g_completion_symbol_activate()}
+method.
 Note that, if a symbol is marked as a completion event symbol
 in the recognizer,
 its completion event can be deactivated
@@ -2619,12 +2717,16 @@ is recognized.
 
 For nulled events to occur, the symbol must be marked
 as a nulled event symbol.
-The @code{marpa_g_symbol_is_nulled_event_set()} function
+The
+@code{marpa_g_symbol_is_nulled_event_set()}
+function
 marks symbol @var{sym_id} as a nulled event symbol
 if @var{value} is 1,
 and unmarks it
 it as a nulled event symbol if @var{value} is 0.
-The @code{marpa_g_symbol_is_nulled_event()} method
+The
+@code{marpa_g_symbol_is_nulled_event()}
+method
 returns the current value of the nulled event marking
 for symbol @var{sym_id}.
 
@@ -2635,7 +2737,8 @@ the grammar is precomputed.
 
 If a nulled event is marked,
 its activation status can be changed using the
-@code{marpa_g_nulled_symbol_activate()} method.
+@code{marpa_g_nulled_symbol_activate()}
+method.
 Note that, if a symbol is marked as a nulled event symbol
 in the recognizer,
 its nulled event can be deactivated
@@ -2703,7 +2806,9 @@ When a zero length symbol is recognized,
 all of its zero-length derivations are also considered to be
 recognized.
 
-The @code{marpa_g_symbol_is_nulled_event_set()} method will
+The
+@code{marpa_g_symbol_is_nulled_event_set()}
+method will
 mark a symbol as a nulled event symbol,
 even if the symbol is non-nullable.
 This is convenient, for example,
@@ -2714,7 +2819,8 @@ attempt to
 mark a non-nullable symbol
 as a nulled event symbol,
 can check for this case using
-the @code{marpa_g_symbol_is_nullable()}
+the
+@code{marpa_g_symbol_is_nullable()}
 method.
 
 Success: On success, 1 if symbol @var{sym_id}
@@ -2748,12 +2854,16 @@ Nulled symbols do not generate predictions.
 
 For predicted events to occur, the symbol must be marked
 as a predicted event symbol.
-The @code{marpa_g_symbol_is_predicted_event_set()} function
+The
+@code{marpa_g_symbol_is_predicted_event_set()}
+function
 marks symbol @var{sym_id} as a predicted event symbol
 if @var{value} is 1,
 and unmarks it
 it as a predicted event symbol if @var{value} is 0.
-The @code{marpa_g_symbol_is_predicted_event()} method
+The
+@code{marpa_g_symbol_is_predicted_event()}
+method
 returns the current value of the predicted event marking
 for symbol @var{sym_id}.
 
@@ -2764,7 +2874,8 @@ the grammar is precomputed.
 
 If a prediction event is marked,
 its activation status can be changed using the
-@code{marpa_g_prediction_symbol_activate()} method.
+@code{marpa_g_prediction_symbol_activate()}
+method.
 Note that, if a symbol is marked as a prediction event symbol
 in the recognizer,
 its prediction event can be deactivated
@@ -2789,14 +2900,19 @@ or on other failure, @minus{}2.
 @anchor{marpa_g_precompute}
 Precomputation is necessary for a recognizer to be generated
 from a grammar.
-On success, @code{marpa_g_precompute} returns a non-negative
+On success,
+@code{marpa_g_precompute}
+returns a non-negative
 number to indicate that it precomputed the grammar without
 issues.
-On failure, @code{marpa_g_precompute} returns @minus{}2.
+On failure,
+@code{marpa_g_precompute}
+returns @minus{}2.
 
 Precomputation may return one or more events,
 which may be queried using the
-@code{marpa_g_event()} method.
+@code{marpa_g_event()}
+method.
 At this point events only occur when failure is reported,
 and events always report issues.
 But application writers should expect future versions
@@ -2854,16 +2970,20 @@ More details of these can be found under the
 description of the appropriate code
 (@ref{External error codes}).
 
-@code{marpa_g_precompute()} is unusual in that it
+@code{marpa_g_precompute()}
+is unusual in that it
 is possible to treat one of its failures as ``advisory'',
 and to proceed with parsing.
 If
-@code{marpa_g_precompute()} fails with an error code
+@code{marpa_g_precompute()}
+fails with an error code
 of @code{MARPA_ERR_GRAMMAR_HAS_CYCLE},
 parsing can proceed, just as it typically would for
 success.
 The grammar will have been precomputed, as
-calling the @code{marpa_g_is_precomputed()} method
+calling the
+@code{marpa_g_is_precomputed()}
+method
 will confirm.
 
 Most applications, however,
@@ -2897,7 +3017,8 @@ This function allows the application to determine if grammar
 As mentioned, most applications will want to treat these
 as fatal errors.
 To determine which rules are in the cycle,
-@code{marpa_g_rule_is_loop()} can be used.
+@code{marpa_g_rule_is_loop()}
+can be used.
 
 Return value: On success, 1 if the grammar has a cycle,
 0 otherwise.
@@ -2920,22 +3041,31 @@ On failure, @minus{}2.
 @section Overview
 
 An archetypal application uses a recognizer to read input.
-To create a recognizer, use the @code{marpa_r_new()} method.
+To create a recognizer, use the
+@code{marpa_r_new()}
+method.
 When a recognizer is no longer in use, its memory can be freed
 using the
-@code{marpa_r_unref()} method.
+@code{marpa_r_unref()}
+method.
 
 To make a recognizer ready for input,
-use the @code{marpa_r_start_input()} method.
+use the
+@code{marpa_r_start_input()}
+method.
 
 The recognizer starts with its current earleme
 at location 0.
 To read a token at the current earleme,
-use the @code{marpa_r_alternative()} call.
+use the
+@code{marpa_r_alternative()}
+call.
 
 To complete the processing of the current earleme,
 and move forward to a new one,
-use the @code{marpa_r_earleme_complete()} call.
+use the
+@code{marpa_r_earleme_complete()}
+call.
 
 @node Recognizer constructor, Recognizer reference counting, Recognizer overview, Recognizer methods
 @section Creating a new recognizer
@@ -2983,14 +3113,16 @@ The first Earley set,
 the one at earleme 0,
 will be completed during this call.
 
-Because the call to @code{marpa_r_start_input()}
+Because the call to
+@code{marpa_r_start_input()}
 completes an Earley set,
 it may generate events.
 For details about
 the events that may be generated during
 Earley set completion,
 see the description of the
-@code{marpa_r_earleme_complete()} method.
+@code{marpa_r_earleme_complete()}
+method.
 
 Return value:  On success, a non-negative value.
 On failure, @minus{}2.
@@ -3029,7 +3161,8 @@ Do not use it.
 For more details on that feature, see the
 section @ref{Valued and unvalued symbols}.
 
-When @code{marpa_r_alternative()}
+When
+@code{marpa_r_alternative()}
 is successful,
 the value of the furthest earleme is set to
 the greater of its value before the call,
@@ -3037,12 +3170,15 @@ and @var{current}+@var{length},
 where @var{current} is the value of the current earleme.
 The values of the current and latest earlemes
 are unchanged by
-calls to @code{marpa_r_alternative()}.
+calls to
+@code{marpa_r_alternative()}.
 
 @anchor{Ruby Slippers}
 Several error codes leave the recognizer in a fully
 recoverable state, allowing the application to
-retry the @code{marpa_r_alternative()} method.
+retry the
+@code{marpa_r_alternative()}
+method.
 Retry is efficient, and quite useable as a parsing
 technique.
 The error code
@@ -3073,20 +3209,25 @@ On failure, some other error code.
 @deftypefun int marpa_r_earleme_complete (Marpa_Recognizer @var{r})
 This method does the final processing for the current earleme.
 It then advances the current earleme by one.
-Note that @code{marpa_r_earleme_complete()} may be called
+Note that
+@code{marpa_r_earleme_complete()}
+may be called
 even when no tokens have been read at the current earleme ---
 in the character-per-earleme input model, for example, tokens
 can span many characters and, if the input is unambiguous over that
 span, there will be no other tokens that start inside it.
 
 As mentioned,
-@code{marpa_r_earleme_complete()} always advances the current earleme,
+@code{marpa_r_earleme_complete()}
+always advances the current earleme,
 incrementing its value by 1.
 This means that value of the current earleme after the call
 will be one plus the value of the earleme processed by the call
-to @code{marpa_r_earleme_complete()}.
+to
+@code{marpa_r_earleme_complete()}.
 If any token was accepted at the earleme being processed,
-@code{marpa_r_earleme_complete()} creates a new Earley set
+@code{marpa_r_earleme_complete()}
+creates a new Earley set
 which will be the latest Earley set
 and, after the call, the latest
 earleme will be equal to the new current earleme.
@@ -3095,7 +3236,8 @@ earleme being processed,
 no Earley set is created,
 and the value of the latest earleme remains unchanged.
 The value of the furthest earleme is never changed by
-a call to @code{marpa_r_earleme_complete()}.
+a call to
+@code{marpa_r_earleme_complete()}.
 
 During this method, one or more events may occur.
 On success, this function returns the number of events
@@ -3103,7 +3245,8 @@ generated,
 but it is important to note that events may be
 created whether earleme completion fails or succeeds.
 When this method fails,
-the application must call @code{marpa_g_event()}
+the application must call
+@code{marpa_g_event()}
 if it wants to determine if any events occurred.
 Since the reason for failure to complete an earleme is often
 detailed in the events, applications that fail will often
@@ -3140,7 +3283,8 @@ successful parse cannot be extended.
 
 An exhausted parse may cause a failure,
 in which case
-@code{marpa_r_earleme_complete()} returns failure
+@code{marpa_r_earleme_complete()}
+returns failure
 and sets the error code to @code{MARPA_ERR_PARSE_EXHAUSTED}.
 For a parse to fail at an earleme due to exhaustion,
 it must be the case that no alternatives were
@@ -3163,7 +3307,8 @@ ending at some future
 earleme will continue the parse.
 More precisely,
 a call to
-@code{marpa_r_earleme_complete()} fails
+@code{marpa_r_earleme_complete()}
+fails
 due to parse exhaustion
 if and only if, first,
 no alternatives were added at the current earleme
@@ -3194,7 +3339,8 @@ models.
 (The ID of an Earley set ID is also called its ordinal.)
 If there is no Earley set whose ID is
 @var{set_id},
-@code{marpa_r_earleme()} fails.
+@code{marpa_r_earleme()}
+fails.
 If @var{set_id} was negative,
 the error code is set to
 @code{MARPA_ERR_INVALID_LOCATION}.
@@ -3216,7 +3362,9 @@ ID is always exactly equal to the earleme in that model.
 For other applications
 that want an earleme-to-ID mapping,
 the most general method is create an ID-to-earleme
-array using the @code{marpa_r_earleme()} method
+array using the
+@code{marpa_r_earleme()}
+method
 and invert it.
 
 Return value:
@@ -3231,7 +3379,8 @@ On failure, @minus{}2.
   Marpa_Earley_Set_ID earley_set)
 Returns the integer value of @var{earley_set}.
 For more details, see
-the description of @code{marpa_r_earley_set_values()}.
+the description of
+@code{marpa_r_earley_set_values()}.
 
 Return value: On success, the value of @var{earley_set}.
 On failure, @minus{}2.
@@ -3264,7 +3413,8 @@ and the integer could indicate its length.
 
 The Earley set value and pointer can be set using
 the
-@code{marpa_r_latest_earley_set_values_set()} method.
+@code{marpa_r_latest_earley_set_values_set()}
+method.
 The Earley set integer value defaults to @minus{}1,
 and the pointer value defaults to @code{NULL}.
 
@@ -3282,7 +3432,9 @@ This method returns the Earley set ID (ordinal) of the latest Earley set.
 Applications that want the
 value of the latest earleme can convert
 this value using
-the @code{marpa_r_earleme()} method.
+the
+@code{marpa_r_earleme()}
+method.
 
 Return value: On success, the ID of the latest Earley set.
 Always succeeds.
@@ -3308,7 +3460,8 @@ Sets the integer and pointer value of the latest Earley set.
 For more about the ``integer value'' and ``pointer value''
 of an Earley set,
 see the description of the
-@code{marpa_r_earley_set_values()} method.
+@code{marpa_r_earley_set_values()}
+method.
 
 Return value: On success, returns a non-negative integer.
 On failure, returns @minus{}2.
@@ -3538,7 +3691,9 @@ An important advantage of the Marpa algorithm is the ability
 to easily get full information about the state of the parse.
 
 To start a progress report,
-use the @code{marpa_r_progress_report_start()} command.
+use the
+@code{marpa_r_progress_report_start()}
+command.
 Only one progress report can be in use at any one time.
 
 To get the information in a progress report,
@@ -3546,11 +3701,15 @@ it is necessary to step through the progress report
 items.
 To get the data for the current progress report item,
 and advance to the next one,
-use the @code{marpa_r_progress_item()} method.
+use the
+@code{marpa_r_progress_item()}
+method.
 
 To destroy a progress report,
 freeing the memory it uses,
-call the @code{marpa_r_progress_report_finish()} method.
+call the
+@code{marpa_r_progress_report_finish()}
+method.
 
 @deftypefun int marpa_r_progress_report_reset ( @
   Marpa_Recognizer @var{r})
@@ -3579,7 +3738,8 @@ the progress report is positioned before its first item.
 
 If no Earley set with ID
 @var{set_id} exists,
-@code{marpa_r_progress_report_start()} fails.
+@code{marpa_r_progress_report_start()}
+fails.
 The error code is @code{MARPA_ERR_INVALID_LOCATION} if @var{set_id}
 is negative.
 The error code is @code{MARPA_ERR_NO_EARLEY_SET_AT_LOCATION}
@@ -3659,11 +3819,14 @@ by processing the input according to the grammar.
 The bocage structure is new with Libmarpa, but is very similar
 in purpose to the more familar parse forests.
 
-To create a bocage, use the @code{marpa_b_new()} method.
+To create a bocage, use the
+@code{marpa_b_new()}
+method.
 
 When a bocage is no longer in use, its memory can be freed
 using the
-@code{marpa_b_unref()} method.
+@code{marpa_b_unref()}
+method.
 
 @node Bocage constructor, Bocage reference counting, Bocage overview, Bocage methods
 @section Creating a new bocage
@@ -3682,7 +3845,8 @@ If @var{earley_set_ID} is @minus{}1
 and there is no Earley set at the current earleme;
 or if @var{earley_set_ID} is @minus{}1
 and there is no parse ending at Earley set @var{earley_set_ID},
-@code{marpa_b_new()} fails
+@code{marpa_b_new()}
+fails
 and the error code is set to
 @code{MARPA_ERR_NO_PARSE}.
 
@@ -3762,10 +3926,13 @@ Failures: On failure, @minus{}2.
 
 Before iterating the parses in the bocage,
 they must be ordered.
-To create an ordering, use the @code{marpa_o_new()} method.
+To create an ordering, use the
+@code{marpa_o_new()}
+method.
 When an ordering is no longer in use, its memory can be freed
 using the
-@code{marpa_o_unref()} method.
+@code{marpa_o_unref()}
+method.
 
 An ordering is
 @dfindex frozen ordering
@@ -3845,7 +4012,8 @@ it will be frozen on return from
 @code{marpa_o_ambiguity_metric()}
 is considered an ``accessor'',
 because it is assumed that the ordering is frozen
-when @code{marpa_o_ambiguity_metric()}
+when
+@code{marpa_o_ambiguity_metric()}
 is called.
 
 Return value on success:
@@ -3885,7 +4053,8 @@ basis of their rank.
 A value of 1 is the default.
 The value of the ``high rank only'' flag has no effect
 unless ranking has been turned on using the
-@code{marpa_o_rank()} method.
+@code{marpa_o_rank()}
+method.
 
 Return value:  On success, the  value of the
 ``high rank only'' flag @strong{after}
@@ -3932,16 +4101,23 @@ In Libmarpa,
 ``parse tree iterators'' are usually just called
 @dfn{trees}.
 
-To create a tree, use the @code{marpa_t_new()} method.
+To create a tree, use the
+@code{marpa_t_new()}
+method.
 A newly created tree iterator is positioned before the first parse tree.
 When a tree iterator is no longer in use, its memory can be freed
 using the
-@code{marpa_t_unref()} method.
+@code{marpa_t_unref()}
+method.
 
 To position a newly created tree iterator at the first parse tree,
-use the @code{marpa_t_next()} method.
+use the
+@code{marpa_t_next()}
+method.
 Once the tree iterator is positioned at a parse tree,
-the same @code{marpa_t_next()} method is used
+the same
+@code{marpa_t_next()}
+method is used
 to position it to the next parse tree.
 
 @node Tree constructor, Tree reference counting, Tree overview, Tree methods
@@ -3955,7 +4131,8 @@ is increased by 1.
 When initialized, a tree iterator is positioned
 before the first parse tree.
 To position the tree iterator to the first parse,
-the application must call @code{marpa_t_next()}.
+the application must call
+@code{marpa_t_next()}.
 
 Return value:  On success, a newly created tree.
 On failure, @code{NULL}.
@@ -4008,7 +4185,8 @@ If a tree iterator is positioned after the last parse,
 the tree is said to be ``exhausted''.
 A tree iterator for a bocage with no parse trees
 is considered to be ``exhausted'' when initialized.
-If the tree iterator is exhausted, @code{marpa_t_next()}
+If the tree iterator is exhausted,
+@code{marpa_t_next()}
 returns @minus{}1 as a termination indicator,
 and sets the error code to
 @code{MARPA_ERR_TREE_EXHAUSTED}.
@@ -4055,10 +4233,13 @@ a value object (or
 @dfindex valuator
 @dfn{valuator}) to produce
 the value of the parse.
-To create a valuator, use the @code{marpa_v_new()} method.
+To create a valuator, use the
+@code{marpa_v_new()}
+method.
 When a valuator is no longer in use, its memory can be freed
 using the
-@code{marpa_v_unref()} method.
+@code{marpa_v_unref()}
+method.
 
 The application is required to maintain the stack,
 and the application is also required to implement
@@ -4067,9 +4248,12 @@ of rules.
 Libmarpa's valuator provides instructions to
 the application on how to manipulate the stack.
 To iterate through this series of instructions,
-use the @code{marpa_v_step()} method.
+use the
+@code{marpa_v_step()}
+method.
 
-@code{marpa_v_step()} returns the type
+@code{marpa_v_step()}
+returns the type
 of step.
 Most step types have values associated with them.
 To access these values use the methods
@@ -4297,14 +4481,19 @@ Specifically, the application must do the following
 @item Ensure location 0 exists --- in other
 words that the stack is at least length 1.
 @item For @code{MARPA_STEP_TOKEN} steps,
-ensure that location @code{marpa_v_result(v)}
+ensure that location
+@code{marpa_v_result(v)}
 exists.
 @item For @code{MARPA_STEP_NULLING_SYMBOL} steps,
-ensure that location @code{marpa_v_result(v)}
+ensure that location
+@code{marpa_v_result(v)}
 exists.
 @item For @code{MARPA_STEP_RULE} steps,
-ensure that stack locations from @code{marpa_v_arg_0(v)}
-to @code{marpa_v_arg_n(v)} exist.
+ensure that stack locations from
+@code{marpa_v_arg_0(v)}
+to
+@code{marpa_v_arg_n(v)}
+exist.
 @end itemize
 
 Three aspects of these requirements deserve special mention.
@@ -4460,7 +4649,8 @@ How the application is expected to act on
 each step is described below
 (@ref{Valuator steps by type}).
 When the iteration through the steps is finished,
-@code{marpa_v_step} returns @code{MARPA_STEP_INACTIVE}.
+@code{marpa_v_step}
+returns @code{MARPA_STEP_INACTIVE}.
 
 Return value:  On success, the type of the step
 to be performed.
@@ -4476,24 +4666,30 @@ The semantics of a rule should be performed.
 The application can find the value of the rule's
 children in the stack locations from
 @code{marpa_v_arg_0(v)}
-to @code{marpa_v_arg_n(v)}.
+to
+@code{marpa_v_arg_n(v)}.
 The semantics for the rule whose ID is
-@code{marpa_v_rule(v)} should be executed
+@code{marpa_v_rule(v)}
+should be executed
 on these child values,
 and the result placed in
 @code{marpa_v_result(v)}.
 In the case of a @code{MARPA_STEP_RULE} step,
 the stack location of
-@code{marpa_v_result(v)} is guaranteed to
-be equal to @code{marpa_v_arg_0(v)}.
+@code{marpa_v_result(v)}
+is guaranteed to
+be equal to
+@code{marpa_v_arg_0(v)}.
 @end deftypevr
 
 @deftypevr Macro Marpa_Step_Type MARPA_STEP_TOKEN
 The semantics of a non-null token should be performed.
 The application's value for the token whose ID is
-@code{marpa_v_token(v)} should be
+@code{marpa_v_token(v)}
+should be
 placed in
-stack location @code{marpa_v_result(v)}.
+stack location
+@code{marpa_v_result(v)}.
 Its value according to Libmarpa will be in
 @code{marpa_v_token_value(v)}.
 @end deftypevr
@@ -4501,9 +4697,11 @@ Its value according to Libmarpa will be in
 @deftypevr Macro Marpa_Step_Type MARPA_STEP_NULLING_SYMBOL
 The semantics for a nulling symbol should be performed.
 The ID of the symbol is
-@code{marpa_v_symbol(v)} and its value should
+@code{marpa_v_symbol(v)}
+and its value should
 be placed in
-stack location @code{marpa_v_result(v)}.
+stack location
+@code{marpa_v_result(v)}.
 @end deftypevr
 
 @deftypevr Macro Marpa_Step_Type MARPA_STEP_INACTIVE
@@ -4575,7 +4773,8 @@ Usually not needed since this is also the return value of
 For the @code{MARPA_STEP_NULLING_SYMBOL} step,
 returns the ID of the symbol.
 The value returned is the same as that
-returned by the @code{marpa_v_token()}
+returned by the
+@code{marpa_v_token()}
 macro.
 @end deftypefn
 
@@ -4583,7 +4782,8 @@ macro.
 For the @code{MARPA_STEP_TOKEN} step,
 returns the ID of the token.
 The value returned is the same as that
-returned by the @code{marpa_v_symbol()}
+returned by the
+@code{marpa_v_symbol()}
 macro.
 @end deftypefn
 
@@ -4651,7 +4851,8 @@ Events are generated by the
 @code{marpa_g_precompute()},
 @code{marpa_r_earleme_complete()},
 and
-@code{marpa_r_start_input()} methods.
+@code{marpa_r_start_input()}
+methods.
 The methods are called event-active.
 Event-active methods always clear all previous events,
 so that after an event-active method the only events
@@ -4667,11 +4868,16 @@ overwrite each other's events.
 
 To find out how many events were generated by the last
 event-active method,
-use the @code{marpa_g_event_count} method.
+use the
+@code{marpa_g_event_count}
+method.
 
 To query a specific event,
-use the @code{marpa_g_event} and
-@code{marpa_g_event_value} methods.
+use the
+@code{marpa_g_event}
+and
+@code{marpa_g_event_value}
+methods.
 
 @node Event methods, Event codes, Events overview, Events
 @section Methods
@@ -4688,7 +4894,8 @@ Event indexes are in sequence.
 Valid events will be in the range from 0 to @var{n},
 where @var{n} is one less than the event count.
 The event count
-can be queried using the @code{marpa_g_event_count()}
+can be queried using the
+@code{marpa_g_event_count()}
 method.
 
 Return value:  On success, the type of event @var{ix}.
@@ -4765,7 +4972,8 @@ Suggested message: "This symbol is a nulling terminal".
 @deftypevr Macro int MARPA_EVENT_SYMBOL_COMPLETED
 The recognizer can be set to generate an event
 a symbol is completed
-using its @code{marpa_g_symbol_is_completion_event_set()}
+using its
+@code{marpa_g_symbol_is_completion_event_set()}
 method.
 (A symbol is "completed" if and only if any rule with that symbol
 as its LHS is completed.)
@@ -4778,7 +4986,8 @@ Suggested message: "Completed symbol".
 @deftypevr Macro int MARPA_EVENT_SYMBOL_EXPECTED
 The recognizer can be set to generate an event when a
 symbol is expected as a terminal,
-using its @code{marpa_r_expected_symbol_event_set()}
+using its
+@code{marpa_r_expected_symbol_event_set()}
 method.
 Note that this event only triggers if the symbol is
 expected as a terminal.
@@ -4796,7 +5005,8 @@ The recognizer can be set to generate an event when a
 symbol is nulled -- that is, recognized as a
 zero-length symbol.
 To set an nulled symbol event,
-use the recognizer's @code{marpa_r_nulled_symbol_event_set()}
+use the recognizer's
+@code{marpa_r_nulled_symbol_event_set()}
 method.
 This event code indicates that a nulled symbol event
 occurred.
@@ -4808,7 +5018,8 @@ Suggested message: "Symbol was nulled".
 The recognizer can be set to generate an event when a
 symbol is predicted.
 To set an predicted symbol event,
-use the recognizer's @code{marpa_g_symbol_is_prediction_event_set()}
+use the recognizer's
+@code{marpa_g_symbol_is_prediction_event_set()}
 method.
 Unlike the
 @code{MARPA_EVENT_SYMBOL_EXPECTED} event,
@@ -4904,7 +5115,9 @@ allowed.
 A newly created tree is positioned before the first
 tree.
 To position a newly created tree iterator to the first tree
-use the @code{marpa_t_next()} method.
+use the
+@code{marpa_t_next()}
+method.
 Numeric value: 91.
 Suggested message: "Tree iterator is before first tree".
 @end deftypevr
@@ -5293,7 +5506,8 @@ Suggested message: "This input would make the parse too long".
 In a method which takes pointers as arguments,
 one of the pointer arguments is @code{NULL},
 in a case where that is not allowed.
-One such method is@ @code{marpa_r_progress_item()}.
+One such method is@
+@code{marpa_r_progress_item()}.
 Numeric value: 56.
 Suggested message: "An argument is null when it should not be".
 @end deftypevr
@@ -5314,7 +5528,8 @@ No recognizer progress report is currently active,
 and an action has been attempted which
 is inconsistent with that.
 One such action would be a
-@code{marpa_r_progress_item()} call.
+@code{marpa_r_progress_item()}
+call.
 Numeric value: 59.
 Suggested message: "No progress report has been started".
 @end deftypevr
@@ -5351,7 +5566,9 @@ The recognizer is ``inconsistent'',
 usually because the user has rejected one or
 more rules or terminals,
 and has not yet called
-the  @code{marpa_r_consistent()} method.
+the 
+@code{marpa_r_consistent()}
+method.
 Numeric value: 95.
 Suggested message: "The recognizer is inconsistent.
 @end deftypevr
@@ -5474,7 +5691,9 @@ Suggested message: "Symbol is not set up for prediction events".
 @deftypevr Macro int MARPA_ERR_SYMBOL_VALUED_CONFLICT
 Unvalued symbols are a deprecated Marpa feature,
 which may be avoided with
-the @code{marpa_g_force_valued} method.
+the
+@code{marpa_g_force_valued}
+method.
 An unvalued symbol may take on any value,
 and therefore a symbol which is unvalued at some points
 cannot safely to be used to contain a value at
@@ -5533,7 +5752,9 @@ A Libmarpa tree is ``paused''
 and an operation was attempted which
 is inconsistent with that fact.
 Typically, this operation will be
-a call of the @code{marpa_t_next()} method.
+a call of the
+@code{marpa_t_next()}
+method.
 Numeric value: 80.
 Suggested message: "Tree iterator is paused".
 @end deftypevr
@@ -5568,7 +5789,9 @@ Suggested message: "Valuator inactive".
 @deftypevr Macro int MARPA_ERR_VALUED_IS_LOCKED
 Unvalued symbols are a deprecated Marpa feature,
 which may be avoided with
-the @code{marpa_g_force_valued} method.
+the
+@code{marpa_g_force_valued}
+method.
 This error code
 indicates that the valued status of a symbol is locked,
 and an attempt was made
@@ -5583,7 +5806,9 @@ An attempt was made to do something with a nulling
 symbol that is not allowed.
 For example,
 the ID of a nulling symbol cannot be an argument
-to @code{marpa_r_expected_symbol_event_set} ---
+to
+@code{marpa_r_expected_symbol_event_set}
+---
 because it is not possible to create an ``expected symbol'' event
 for a nulling symbol.
 Numeric value: 87.
@@ -5595,7 +5820,9 @@ An attempt was made to do something with an unused symbol that is not allowed.
 An ``unused'' symbol is a inaccessible or unproductive symbol.
 For example,
 the ID of a unused symbol cannot be an argument
-to @code{marpa_r_expected_symbol_event_set} ---
+to
+@code{marpa_r_expected_symbol_event_set}
+---
 because it is not possible to create an ``expected symbol'' event
 for an unused symbol.
 Numeric value: 88.
@@ -5943,7 +6170,8 @@ Note that when the rank is @minus{}2,
 the error code is the only way to distinguish
 success from failure.
 The error code can be determined by using the
-@code{marpa_g_error()} call.
+@code{marpa_g_error()}
+call.
 
 @end deftypefun
 
@@ -5973,7 +6201,8 @@ Note that when the rank is @minus{}2,
 the error code is the only way to distinguish
 success from failure.
 The error code can be determined by using the
-@code{marpa_g_error()} call.
+@code{marpa_g_error()}
+call.
 
 @end deftypefun
 
@@ -6120,7 +6349,8 @@ some tricky debugging further down the road.
 These methods, respectively, set
 and query the ``valued status'' of a symbol.
 Once set to a value with the
-@code{marpa_g_symbol_is_valued_set()} method,
+@code{marpa_g_symbol_is_valued_set()}
+method,
 the valued status of a symbol is ``locked'' at that value.
 It cannot thereafter be changed.
 Subsequent calls to
@@ -6151,7 +6381,9 @@ The primary method for doing this is
 @code{marpa_v_symbol_is_valued()}.
 Applications will typically register semantics by rule,
 and these applications will find
-the @code{marpa_v_rule_is_valued()} method more convenient.
+the
+@code{marpa_v_rule_is_valued()}
+method more convenient.
 
 @deftypefun int marpa_v_symbol_is_valued_set ( @
     Marpa_Value @var{v}, @
@@ -6164,7 +6396,8 @@ the @code{marpa_v_rule_is_valued()} method more convenient.
 These methods, respectively,
 set and query
 the valued status of symbol @var{sym_id}.
-@code{marpa_v_symbol_is_valued_set()} will set
+@code{marpa_v_symbol_is_valued_set()}
+will set
 the valued status to
 the value of
 its @var{status} argument.
@@ -6193,7 +6426,8 @@ These methods, respectively,
 set and query
 the valued status
 for the LHS symbol of rule @var{rule_id}.
-@code{marpa_v_rule_is_valued_set()} sets
+@code{marpa_v_rule_is_valued_set()}
+sets
 the valued status to the value
 of its @var{status} argument.
 
