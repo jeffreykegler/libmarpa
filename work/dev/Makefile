@@ -20,7 +20,7 @@
 CWEAVE = cweave -p
 CTANGLE = ctangle -p
 
-.PHONY: docs
+.PHONY: all clean docs sources
 
 .SUFFIXES: .dvi .tex .w .pdf
 
@@ -45,7 +45,7 @@ CTANGLE = ctangle -p
 	make $*.tex
 	pdftex -interaction=batchmode -halt-on-error $* || cat $*.log
 
-all: legacy.pdf marpa.pdf sources
+all: legacy.pdf marpa.pdf sources api.texi internal.texi
 
 sources: marpa.c marpa.h.p50 marpa.h.p80 marpa.h.p80
 
@@ -58,8 +58,8 @@ marpa.c: $(MARPA_C_PIECES)
 marpa.h.p50 marpa.c.p10 marpa.c.p50: ../shared/copyright_page_license.w marpa.w
 	$(CTANGLE) marpa.w
 
-marpa.h.p80 marpa.def: api.texi internal.texi
-	cat api.texi internal.texi | \
+marpa.h.p80 marpa.def: api.premenu internal.premenu
+	cat api.premenu internal.premenu | \
 	  perl ../bin/texi2proto.pl marpa.def > marpa.h.p80
 
 CPPWRAP = perl ../bin/cppwrap.pl
@@ -76,10 +76,14 @@ legacy.pdf: legacy.tex cwebmac.tex
 
 docs: marpa.pdf legacy.pdf
 
-update_texi:
+api.texi: api.premenu
+	cp api.premenu api.texi
 	emacs -batch api.texi \
 	    -eval '(texinfo-master-menu 1)' \
 	    -f save-buffer -kill
+
+internal.texi: internal.premenu
+	cp internal.premenu internal.texi
 	emacs -batch internal.texi \
 	    -eval '(texinfo-master-menu 1)' \
 	    -f save-buffer -kill
@@ -87,7 +91,8 @@ update_texi:
 CLEAN_FILES = marpa.c marpa.c.p10 marpa.c.p40 marpa.c.p50 \
   marpa.h.p50 marpa.h.p80 \
   marpa.idx marpa.log marpa.pdf marpa.scn marpa.tex marpa.toc \
-  legacy.idx legacy.log legacy.pdf legacy.scn legacy.tex legacy.toc
+  legacy.idx legacy.log legacy.pdf legacy.scn legacy.tex legacy.toc \
+  api.texi internal.texi
 
 clean:
 	rm -f $(CLEAN_FILES)
