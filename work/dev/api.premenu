@@ -1329,9 +1329,6 @@ of one of these two prefixes.
 @node Return values
 @section Return values
 
-Every method description has a Return Value Summary ---
-a paragraph summarizing the method's
-return values.
 Some general conventions for return values are worth
 mentioning:
 @itemize
@@ -1392,12 +1389,12 @@ a soft failure.
 @item A return status of success indicates that the method did not detect
 any failures.
 @item If a method allows soft failure, this is explicitly stated
-in its Return Value Summary,
+in its return value summary,
 and the method description will state
 the circumstances under which the soft failure occurs,
 and what the application must do to recover.
 @item If a method allows a recoverable hard failure, this is explicitly stated
-in its Return Value Summary,
+in its return value summary,
 along with the associated error code,
 the circumstances under which the hard failure occurs,
 and what the application must do to recover.
@@ -1407,7 +1404,7 @@ indeterminate.
 indeterminate.
 @item If a method call hard fails,
 its error code is that associated with the hard failure.
-Unless stated otherwise in the Return Value Summary,
+Unless stated otherwise in the return value summary,
 the error code is set in the base
 grammar of the method call, and may be accessed
 with the methods described below
@@ -1446,8 +1443,9 @@ On hard failure, the error code.
 
 @deftypefun Marpa_Error_Code marpa_version (int* version)
 
-Returns the version number in @var{version},
-which must have room for three @code{int}'s.
+Writes the version number in @var{version}.
+It is an undetected irrecoverable hard failure
+if @var{version} does not have room for three @code{int}'s.
 
 @strong{Return value}: Always succeeds.
 The return value is indeterminate.
@@ -1635,12 +1633,12 @@ On failure, -2.
 @cindex grammar reference count
 
 @deftypefun Marpa_Grammar marpa_g_ref (Marpa_Grammar @var{g})
-Increases the reference count by 1.
+Increases the reference count of @var{g} by 1.
 Not needed by most applications.
 
-Return value:
-On success, the grammar object it was called with;
-@code{NULL} on failure.
+@strong{Return value}:
+On success, @var{g}.
+On hard failure, @code{NULL}.
 
 @end deftypefun
 
@@ -1656,36 +1654,41 @@ zero.
 
 @deftypefun Marpa_Symbol_ID marpa_g_start_symbol (Marpa_Grammar @var{g})
 
-Returns current value of the start symbol of grammar @var{g}.
-The value is that
-specified in the
+When successful, returns the ID of the start symbol.
+Soft fails, if there is no start symbol.
+The soft failure is trivially recoverable.
+The start symbol is set by the
 @code{marpa_g_start_symbol_set()}
-call,
-if there has been one.
+call.
 
-Return value:
-On failure, @minus{}2;
-@minus{}1 if there is no start symbol yet;
-otherwise the ID of the new start symbol.
+@strong{Return value}:
+On success, the ID of the start symbol,
+which is always a non-negative number.
+On soft failure, @minus{}1.
+On hard failure, @minus{}2.
 @end deftypefun
 
 @deftypefun Marpa_Symbol_ID marpa_g_start_symbol_set ( @
     Marpa_Grammar @var{g}, @
     Marpa_Symbol_ID @var{sym_id})
 
-Sets the start symbol of grammar @var{g} to symbol @var{id}.
+When successful,
+sets the start symbol of grammar @var{g} to symbol @var{sym_id}.
+Soft fails if @var{sym_id} is well-formed (a non-negative integer),
+but a symbol with that ID does not exist.
+The soft failure is trivially recoverable.
 
-Return value: On success, the ID of the new start symbol.
-If @var{sym_id} is well-formed, but there is no
-such symbol, @minus{}1.
-On failure, @minus{}2.
+@strong{Return value}: On success, @var{sym_id},
+which will always be a non-negative number.
+On soft failure, @minus{}1.
+On hard failure, @minus{}2.
 
 @end deftypefun
 
 @deftypefun int marpa_g_highest_symbol_id (Marpa_Grammar @var{g})
-Return value: On success, the numerically largest symbol ID
+@strong{Return value}: On success, the numerically largest symbol ID
 of @var{g}.
-On failure, @minus{}2.
+On hard failure, @minus{}2.
 @end deftypefun
 
 @deftypefun int marpa_g_symbol_is_accessible (Marpa_Grammar @var{g}, @
@@ -1695,11 +1698,16 @@ A symbol is
 @dfindex symbol, accessible
 @dfn{accessible}
 if it can be reached from the start symbol.
+Soft fails if @var{sym_id} is well-formed (a non-negative integer),
+but a symbol with that ID does not exist.
+The soft failure is trivially recoverable.
+A common hard failure is calling this method with
+a grammar that is not precomputed.
 
-Return value: On success, 1 if symbol @var{sym_id} is accessible, 0 if not.
-If @var{sym_id} is well-formed, but there is no
-such symbol, @minus{}1.
-If the grammar is not precomputed, or on other failure, @minus{}2.
+@strong{Return value}: On success, 1 if symbol @var{sym_id} is accessible, 0 if not.
+On soft failure, @minus{}1.
+On hard failure, @minus{}2.
+
 @end deftypefun
 
 @deftypefun int marpa_g_symbol_is_nullable ( @
@@ -1711,11 +1719,16 @@ A symbol is
 if it sometimes produces the empty string.
 A @strong{nulling} symbol is always a @strong{nullable} symbol,
 but not all @strong{nullable} symbols are @strong{nulling} symbols.
+Soft fails if @var{sym_id} is well-formed (a non-negative integer),
+but a symbol with that ID does not exist.
+The soft failure is trivially recoverable.
+A common hard failure is calling this method with
+a grammar that is not precomputed.
 
-Return value: On success, 1 if symbol @var{sym_id} is nullable, 0 if not.
-If @var{sym_id} is well-formed, but there is no
-such symbol, @minus{}1.
-If the grammar is not precomputed, or on other failure, @minus{}2.
+@strong{Return value}: On success, 1 if symbol @var{sym_id} is nullable, 0 if not.
+On soft failure, @minus{}1.
+On hard failure, @minus{}2.
+
 @end deftypefun
 
 @deftypefun int marpa_g_symbol_is_nulling (Marpa_Grammar @var{g}, @
@@ -1725,11 +1738,16 @@ A symbol is
 @dfindex symbol, nulling
 @dfn{nulling}
 if it always produces the empty string.
+Soft fails if @var{sym_id} is well-formed (a non-negative integer),
+but a symbol with that ID does not exist.
+The soft failure is trivially recoverable.
+A common hard failure is calling this method with
+a grammar that is not precomputed.
 
-Return value: On success, 1 if symbol @var{sym_id} is nulling, 0 if not.
-If @var{sym_id} is well-formed, but there is no
-such symbol, @minus{}1.
-If the grammar is not precomputed, or on other failure, @minus{}2.
+@strong{Return value}: On success, 1 if symbol @var{sym_id} is nulling, 0 if not.
+On soft failure, @minus{}1.
+On hard failure, @minus{}2.
+
 @end deftypefun
 
 @deftypefun int marpa_g_symbol_is_productive (Marpa_Grammar @var{g}, @
@@ -1740,63 +1758,96 @@ A symbol is
 @dfn{productive}
 if it can produce a string of terminals.
 All nullable symbols are considered productive.
+Soft fails if @var{sym_id} is well-formed (a non-negative integer),
+but a symbol with that ID does not exist.
+The soft failure is trivially recoverable.
+A common hard failure is calling this method with
+a grammar that is not precomputed.
 
-Return value: On success, 1 if symbol @var{sym_id} is productive, 0 if not.
-If @var{sym_id} is well-formed, but there is no
-such symbol, @minus{}1.
-If the grammar is not precomputed, or on other failure, @minus{}2.
+@strong{Return value}: On success, 1 if symbol @var{sym_id} is productive, 0 if not.
+On soft failure, @minus{}1.
+On hard failure, @minus{}2.
+
 @end deftypefun
 
 @deftypefun int marpa_g_symbol_is_start ( Marpa_Grammar @var{g}, @
     Marpa_Symbol_ID @var{sym_id})
 
-This return value of this call indicates whether @var{sym_id}
+On success, if @var{sym_id} is the start symbol, returns 1.
+On success, if @var{sym_id} is not the start symbol, returns 0.
+On success, if no start symbol has been set, returns 0.
 is the start symbol.
 
-Success value:
-Returns 1 if @var{sym_id} is the start symbol.
-Returns 0 if @var{sym_id} is not the start symbol,
-either because the start symbol is different from
-@var{sym_id},
-or because the start symbol has not been set yet.
+Soft fails if @var{sym_id} is well-formed (a non-negative integer),
+but a symbol with that ID does not exist.
+The soft failure is trivially recoverable.
 
-Failure values:
-If @var{sym_id} is well-formed, but there is no
-such symbol, @minus{}1.
-On other failure, @minus{}2.
+@strong{Return value}:
+On success, 1 or 0.
+On soft failure, @minus{}1.
+On hard failure, @minus{}2.
 
 @end deftypefun
 
-@deftypefun int marpa_g_symbol_is_terminal_set ( @
-    Marpa_Grammar @var{g}, @
-    Marpa_Symbol_ID @var{sym_id}, @
- int @var{value})
-@deftypefunx int marpa_g_symbol_is_terminal ( @
+@deftypefun int marpa_g_symbol_is_terminal ( @
     Marpa_Grammar @var{g}, @
     Marpa_Symbol_ID @var{sym_id})
 
-These methods, respectively, set
-and query the ``terminal status'' of a symbol.
+On succcess, returns the ``terminal status'' of a @var{sym_id}.
+The terminal status is 1 if @var{sym_id} is a terminal,
+0 otherwise.
 To be used as an input symbol
 in the
 @code{marpa_r_alternative()}
 method,
 a symbol must be a terminal.
+
+By default, a symbol is a terminal if and only if it
+does not appear on the LHS of any rule.
+The terminal status can be set explicitly with the
+@code{marpa_g_symbol_is_terminal_set()} method.
+@xref{marpa_g_symbol_is_terminal_set, marpa_g_symbol_is_terminal_set()}.
+
+Soft fails if @var{sym_id} is well-formed (a non-negative integer),
+but a symbol with that ID does not exist.
+The soft failure is trivially recoverable.
+
+@strong{Return value}:
+On success, 1 or 0.
+On soft failure, @minus{}1.
+On hard failure, @minus{}2.
+
+@end deftypefun
+
+@anchor{marpa_g_symbol_is_terminal_set}
+@deftypefun int marpa_g_symbol_is_terminal_set ( @
+    Marpa_Grammar @var{g}, @
+    Marpa_Symbol_ID @var{sym_id}, @
+ int @var{value})
+
+Sets the ``terminal status'' of a symbol.
 This function flags symbol @var{sym_id} as a terminal if
 @var{value} is 1,
 or flags it as a non-terminal if @var{value} is 0.
-
-Once set to a value with the
-@code{marpa_g_symbol_is_terminal_set()}
+To be used as an input symbol
+in the
+@code{marpa_r_alternative()}
 method,
+a symbol must be a terminal.
+On success, this method returns @var{value}.
+
+Once set to a value with this method,
 the terminal status of a symbol is ``locked'' at that value.
-A subsequent call to
-@code{marpa_g_symbol_is_terminal_set()}
+A subsequent call to this method
 that attempts
 to change the terminal status
 of @var{sym_id} to a value different from its current one
-will fail.
-The error code will be @code{MARPA_ERR_TERMINAL_IS_LOCKED}.
+will hard fail
+with error code @code{MARPA_ERR_TERMINAL_IS_LOCKED}.
+Other hard failures include
+when @var{value} is not 0 or 1;
+and
+when the grammar @var{g} is precomputed.
 
 By default, a symbol is a terminal if and only if it
 does not appear on the LHS of any rule.
@@ -1804,25 +1855,11 @@ An attempt to flag a nulling symbol
 as a terminal will cause a failure,
 but this is not necessarily detected before precomputation.
 
-Success returns:
-When successful,
-these methods return
-1 if symbol @var{sym_id}
-is a terminal symbol after the
-call, 0 otherwise.
+@strong{Return value}:
+On success, @var{value}, which will be 1 or 0.
+On soft failure, @minus{}1.
+On hard failure, @minus{}2.
 
-Failure returns:
-If @var{sym_id} is well-formed, but there is no
-such symbol, @minus{}1.
-On all other failures, @minus{}2.
-Other failures include
-when @var{value} is not 0 or 1;
-when the terminal status is locked and @var{value}
-is different from its current value;
-and,
-in the case of
-@code{marpa_g_symbol_is_terminal_set()},
-when the grammar @var{g} is precomputed.
 @end deftypefun
 
 @deftypefun Marpa_Symbol_ID marpa_g_symbol_new (Marpa_Grammar @var{g})
@@ -5826,8 +5863,13 @@ For this reason,
 the traditional behavior is the default
 in Libmarpa.
 
-@node Work in Progress
-@chapter Work in Progress
+@node Futures
+@chapter Futures
+
+This chapter discusses features that are @strong{not}
+in the external interface,
+but that might be added
+to the external interface in the future.
 
 @node Untested methods
 @section Untested methods

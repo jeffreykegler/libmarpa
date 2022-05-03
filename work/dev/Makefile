@@ -22,7 +22,7 @@ CTANGLE = ctangle -p
 
 .PHONY: all clean docs sources
 
-.SUFFIXES: .dvi .tex .w .pdf
+.SUFFIXES: .dvi .tex .w .pdf .premenu .texi
 
 .w.tex:
 	$(CWEAVE) $*
@@ -74,19 +74,27 @@ marpa.pdf: marpa.tex cwebmac.tex
 
 legacy.pdf: legacy.tex cwebmac.tex
 
-docs: marpa.pdf legacy.pdf
-
 api.texi: api.premenu
-	cp api.premenu api.texi
-	emacs -batch api.texi \
+	perl -pe 'exit if /^[@]copying/' $? > $@
+	echo '@c DO NOT EDIT -- This file was created from $? using make' >>$@
+	echo '@c The next full make will overwrite any changes made to this file' >>$@
+	echo >>$@
+	perl -ne '$$flag = 1 if /^[@]copying/; print if $$flag' $? >> $@
+	emacs -batch $@ \
 	    -eval '(texinfo-master-menu 1)' \
 	    -f save-buffer -kill
 
 internal.texi: internal.premenu
-	cp internal.premenu internal.texi
-	emacs -batch internal.texi \
+	perl -pe 'exit if /^[@]copying/' $? > $@
+	echo '@c DO NOT EDIT -- This file was created from $? using make' >>$@
+	echo '@c The next full make will overwrite any changes made to this file' >>$@
+	echo >>$@
+	perl -ne '$$flag = 1 if /^[@]copying/; print if $$flag' $? >> $@
+	emacs -batch $@ \
 	    -eval '(texinfo-master-menu 1)' \
 	    -f save-buffer -kill
+
+docs: marpa.pdf legacy.pdf
 
 CLEAN_FILES = marpa.c marpa.c.p10 marpa.c.p40 marpa.c.p50 \
   marpa.h.p50 marpa.h.p80 \
