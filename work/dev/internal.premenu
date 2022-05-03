@@ -50,12 +50,12 @@ Published @value{UPDATED} by Jeffrey Kegler
 @contents
 
 @ifnottex
-@node Top, About this document, (dir), (dir)
+@node Top
 @top Libmarpa internals
 @insertcopying
 @end ifnottex
 
-@node About this document, Internal Interface, Top, Top
+@node About this document
 @chapter About this document
 
 This manual is a tool
@@ -63,7 +63,7 @@ for is those working on the Libmarpa internals.
 Unless you are thoroughly familiar with Libmarpa already,
 it is not of interest to you.
 
-@node Internal Interface,  , About this document, Top
+@node Internal Interface
 @chapter Internal Interface
 
 Internal methods are only for testing and development of libmarpa.
@@ -77,7 +77,7 @@ it may be included below,
 but all applications
 should treat these methods as ``undocumented''.
 
-@node Symbol internal methods, Rule internals, Internal Interface, Internal Interface
+@node Symbol internal methods
 @section Symbol internal methods
 
 @deftypefun int _marpa_g_nsy_is_start ( Marpa_Grammar @var{g}, @
@@ -116,7 +116,7 @@ should treat these methods as ``undocumented''.
   Marpa_NSY_ID @var{nsy_id} )
 @end deftypefun
 
-@node Rule internals, Grammar internals, Symbol internal methods, Internal Interface
+@node Rule internals
 @section Rule internals
 
 @deftypefun int _marpa_g_rule_is_keep_separation ( @
@@ -208,7 +208,7 @@ On other failures, -2.
     Marpa_IRL_ID @var{nsy_id})
 @end deftypefun
 
-@node Grammar internals, Recognizer internals, Rule internals, Internal Interface
+@node Grammar internals
 @section Grammar internal methods
 
 The methods in this section are accessors for Libmarpa's AHMs.
@@ -228,7 +228,7 @@ Marpa's internals, as described in
     Marpa_AHM_ID @var{item_id})
 @end deftypefun
 
-@node Recognizer internals, Bocage internals, Grammar internals, Internal Interface
+@node Recognizer internals
 @section Recognizer internals
 
 
@@ -309,7 +309,7 @@ and development.
 @deftypefun Marpa_Earley_Set_ID _marpa_r_source_middle (Marpa_Recognizer @var{r})
 @end deftypefun
 
-@node Bocage internals, Ordering internals, Recognizer internals, Internal Interface
+@node Bocage internals
 @section Bocage internals
 
 @deftypefun int _marpa_b_and_node_count ( @
@@ -401,7 +401,7 @@ the or-node.
     Marpa_Or_Node_ID @var{or_node_id})
 @end deftypefun
 
-@node Ordering internals, Tree internals, Bocage internals, Internal Interface
+@node Ordering internals
 @section Ordering internals
 
 @deftypefun Marpa_And_Node_ID _marpa_o_and_order_get ( @
@@ -421,7 +421,7 @@ the or-node.
   int @var{ix})
 @end deftypefun
 
-@node Tree internals, Valuator internals, Ordering internals, Internal Interface
+@node Tree internals
 @section Tree internals
 
 In Marpa, a nook is any node of a parse tree.
@@ -505,7 +505,7 @@ Return the is-cause bit for @var{nook_id}.
 Return the is-predecessor bit for @var{nook_id}.
 @end deftypefun
 
-@node Valuator internals, Debugging methods, Tree internals, Internal Interface
+@node Valuator internals
 @section Valuator internals
 
 @deftypefun int _marpa_v_trace ( @
@@ -517,7 +517,7 @@ Return the is-predecessor bit for @var{nook_id}.
     Marpa_Value @var{v})
 @end deftypefun
 
-@node Debugging methods,  , Valuator internals, Internal Interface
+@node Debugging methods
 @section Debugging methods
 
 @deftypefun const char* _marpa_tag(void)

@@ -58,12 +58,12 @@ Published @value{UPDATED} by Jeffrey Kegler
 @contents
 
 @ifnottex
-@node Top, No warranty, (dir), (dir)
+@node Top
 @top Libmarpa: The Marpa low-level library
 @insertcopying
 @end ifnottex
 
-@node No warranty, About this document, Top, Top
+@node No warranty
 @chapter No warranty
 
 The Libmarpa license takes precedence over the
@@ -73,10 +73,10 @@ that Libmarpa is free software and has no warranty.
 No statement in this document should be construed
 as providing any kind of warranty.
 
-@node About this document, About Libmarpa, No warranty, Top
+@node About this document
 @chapter About this document
 
-@node How to read this document, Prerequisites, About this document, About this document
+@node How to read this document
 @section How to read this document
 
 This is essentially a reference document,
@@ -88,7 +88,7 @@ chapters up and including
 in order.
 Otherwise, they should follow their interests.
 
-@node Prerequisites, Parsing theory, How to read this document, About this document
+@node Prerequisites
 @section Prerequisites
 
 This document is very far from self-contained.
@@ -109,7 +109,7 @@ The reader knows some parsing theory
 (@ref{Parsing theory}).
 @end itemize
 
-@node Parsing theory,  , Prerequisites, About this document
+@node Parsing theory
 @section Parsing theory
 
 This document assumes some acquaintance
@@ -137,7 +137,7 @@ What does the sequence look like when rewritten
 in BNF as a right-recursion?
 @end itemize
 
-@node About Libmarpa, Architecture, About this document, Top
+@node About Libmarpa
 @chapter About Libmarpa
 
 Libmarpa implements the Marpa parsing algorithm.
@@ -192,10 +192,10 @@ to catch errors at runtime or,
 failing all else,
 to successfully debug the logic.
 
-@node Architecture, Input, About Libmarpa, Top
+@node Architecture
 @chapter Architecture
 
-@node Major objects, Time objects, Architecture, Architecture
+@node Major objects
 @section Major objects
 
 The classes of
@@ -265,7 +265,7 @@ Tree: T
 Value: V
 @end itemize
 
-@node Time objects, Reference counting, Major objects, Architecture
+@node Time objects
 @section Time objects
 
 All of Libmarpa's major classes,
@@ -314,7 +314,7 @@ grammar of the recognizer that it was created
 with.
 
 
-@node Reference counting, Numbered objects, Time objects, Architecture
+@node Reference counting
 @section Reference counting
 
 Every object in a ``time'' class
@@ -371,7 +371,7 @@ These more complex situations
 are the only cases in which the ``ref'' methods
 will be needed.
 
-@node Numbered objects,  , Reference counting, Architecture
+@node Numbered objects
 @section Numbered objects
 
 In addition to its major, ``time'' objects, Libmarpa also has
@@ -383,13 +383,13 @@ Rules and symbols are numbered objects.
 Tokens values are another class of numbered
 objects.
 
-@node Input, Semantics, Architecture, Top
+@node Input
 @chapter Input
 
-@node Earlemes, Terminals, Input, Input
+@node Earlemes
 @section Earlemes
 
-@node The traditional model, The earleme variables, Earlemes, Earlemes
+@node The traditional model
 @subsection The traditional model
 
 In traditional Earley parsers, the concept of location is very simple.
@@ -430,7 +430,7 @@ In the traditional model, the ordinal of an Earley set and
 its earleme are always exactly the same, but in Libmarpa
 they will be different.
 
-@node The earleme variables, The significances of the earleme variables, The traditional model, Earlemes
+@node The earleme variables
 @subsection The earleme variables
 
 The important earleme variables are the current earleme, the furthest earleme
@@ -494,7 +494,7 @@ that does @strong{not} add a token,
 the value of the latest earleme is unchanged
 from its value before the call.
 
-@node The significances of the earleme variables, The initial earleme settings, The earleme variables, Earlemes
+@node The significances of the earleme variables
 @subsection The significances of the earleme variables
 
 The current earleme tracks the advance of the recognizer through the input.
@@ -536,7 +536,7 @@ but by default, parsing is of the input
 in the range
 from earleme 0 to the latest earleme.
 
-@node The initial earleme settings, The standard model of input, The significances of the earleme variables, Earlemes
+@node The initial earleme settings
 @subsection The initial earleme settings
 
 All input models have the same initial values.
@@ -552,7 +552,7 @@ The presentation will start with the most traditional
 and restrictive models.
 It will proceed to less restrictive models.
 
-@node The standard model of input, Ambiguous input, The initial earleme settings, Earlemes
+@node The standard model of input
 @subsection The standard model of input
 
 In the standard model of input,
@@ -624,7 +624,7 @@ the following will be true:
 @item The furthest earleme will remain at @var{c+1}.
 @end itemize
 
-@node Ambiguous input, Variable length tokens, The standard model of input, Earlemes
+@node Ambiguous input
 @subsection Ambiguous input
 
 As a first loosening of the standard model,
@@ -658,7 +658,7 @@ of a series,
 the value of the furthest earleme before the call will be
 @var{c}+1.
 
-@node Variable length tokens, The generalized model, Ambiguous input, Earlemes
+@node Variable length tokens
 @subsection Variable length tokens
 
 Our next loosening of the restrictions is to allow
@@ -718,7 +718,7 @@ to
 @code{marpa_r_earleme_complete()}.
 @end itemize
 
-@node The generalized model, General rules for the earleme variables, Variable length tokens, Earlemes
+@node The generalized model
 @subsection The generalized model
 
 To fully generalize the input model,
@@ -835,7 +835,7 @@ to
 @code{marpa_r_earleme_complete()}.
 @end itemize
 
-@node General rules for the earleme variables,  , The generalized model, Earlemes
+@node General rules for the earleme variables
 @subsection General rules for the earleme variables
 
 At this point, the most generalized input model has been
@@ -873,7 +873,7 @@ The furthest earleme is less than
 or equal to the current earleme.
 @end itemize
 
-@node Terminals,  , Earlemes, Input
+@node Terminals
 @section Terminals
 
 A terminal symbol is a symbol which
@@ -902,7 +902,7 @@ Libmarpa does nothing with token values except accept
 them from the application and return them during
 parse evaluation.
 
-@node Semantics, Threads, Input, Top
+@node Semantics
 @chapter Semantics
 
 Libmarpa handling of semantics is unusual.
@@ -928,7 +928,7 @@ The most extensive discussion of the semantics
 is in the section that deals with the methods of the value time class
 (@ref{Value methods}).
 
-@node Threads, Failure, Semantics, Top
+@node Threads
 @chapter Threads
 
 Libmarpa is thread-safe,
@@ -970,10 +970,10 @@ Libmarpa could allow thread-safe
 cloning of grammars and other
 time objects.
 
-@node Failure, Introduction to the method descriptions, Threads, Top
+@node Failure
 @chapter Failure
 
-@node User non-conformity to specified behavior, Classifying failure, Failure, Failure
+@node User non-conformity to specified behavior
 @section User non-conformity to specified behavior
 
 This document specifies many behaviors
@@ -1033,7 +1033,7 @@ a warranty.
 See the license for Libmarpa,
 and the chapter @ref{No warranty}.
 
-@node Classifying failure, Memory allocation failure, User non-conformity to specified behavior, Failure
+@node Classifying failure
 @section Classifying failure
 
 For better or for worse,
@@ -1115,7 +1115,7 @@ In order of severity, these are
 @item @strong{soft failures}.
 @end itemize
 
-@node Memory allocation failure, Irrecoverable hard failure, Classifying failure, Failure
+@node Memory allocation failure
 @section Memory allocation failure
 
 Failure to allocate memory is the most irrecoverable of irrecoverable
@@ -1142,7 +1142,7 @@ Memory allocation failure does not have an error code.
 As a pedantic matter, memory allocation failure is neither a hard
 or a soft failure.
 
-@node Irrecoverable hard failure, Recoverable hard failure, Memory allocation failure, Failure
+@node Irrecoverable hard failure
 @section Irrecoverable hard failure
 
 An
@@ -1168,7 +1168,7 @@ is handled as specified.
 Libmarpa applications should @strong{not} be designed so that successful execution
 is based on the handling specified for an irrecoverable failure.
 
-@node Recoverable hard failure, Soft failure, Irrecoverable hard failure, Failure
+@node Recoverable hard failure
 @section Recoverable hard failure
 
 A
@@ -1190,7 +1190,7 @@ a @code{MARPA_ERR_UNEXPECTED_TOKEN_ID} error
 successfully and efficiently,
 has seen extensive usage.
 
-@node Soft failure, Error codes, Recoverable hard failure, Failure
+@node Soft failure
 @section Soft failure
 
 An
@@ -1224,7 +1224,7 @@ is based on the handling specified for soft failures.
 In fact, a non-trival Libmarpa application can hardly be designed
 except on that basis.
 
-@node Error codes,  , Soft failure, Failure
+@node Error codes
 @section Error codes
 
 As stated, every hard failure has an associated error code.
@@ -1256,13 +1256,13 @@ Once an application becomes irrecoverable,
 those Libmarpa objects with error codes for recoverable errors
 are still subject to the general irrecoverability.
 
-@node Introduction to the method descriptions, Static methods, Failure, Top
+@node Introduction to the method descriptions
 @chapter Introduction to the method descriptions
 
 The following chapters describe Libmarpa's methods
 in detail.
 
-@node About the overviews, Naming conventions, Introduction to the method descriptions, Introduction to the method descriptions
+@node About the overviews
 @section  About the overviews
 
 The method descriptions are grouped into chapters,
@@ -1287,7 +1287,7 @@ In the archetypal Libmarpa application,
 the grammar, input and semantics are
 all small but non-trivial.
 
-@node Naming conventions, Return values, About the overviews, Introduction to the method descriptions
+@node Naming conventions
 @section Naming conventions
 
 Methods in Libmarpa follow a strict naming convention.
@@ -1326,7 +1326,7 @@ All Libmarpa names visible outside the package
 will begin with a capitalization variant
 of one of these two prefixes.
 
-@node Return values, How to read the method descriptions, Naming conventions, Introduction to the method descriptions
+@node Return values
 @section Return values
 
 Every method description has a Return Value Summary ---
@@ -1361,7 +1361,7 @@ conventions will fall into a trap.
 @code{marpa_g_rule_rank_set()}
 in @ref{Ranks}.)
 
-@node How to read the method descriptions,  , Return values, Introduction to the method descriptions
+@node How to read the method descriptions
 @section How to read the method descriptions
 
 The following are always the case,
@@ -1414,7 +1414,7 @@ with the methods described below
 (@ref{Error methods}).
 @end itemize
 
-@node Static methods, Configuration methods, Introduction to the method descriptions, Top
+@node Static methods
 @chapter Static methods
 
 @deftypefun Marpa_Error_Code marpa_check_version @
@@ -1454,7 +1454,7 @@ The return value is indeterminate.
 
 @end deftypefun
 
-@node Configuration methods, Grammar methods, Static methods, Top
+@node Configuration methods
 @chapter Configuration methods
 
 The configuration object is intended for future extensions.
@@ -1520,11 +1520,11 @@ for itself.
 
 @end deftypefun
 
-@node Grammar methods, Recognizer methods, Configuration methods, Top
+@node Grammar methods
 @chapter Grammar methods
 @cindex grammars
 
-@node Grammar overview, Grammar constructor, Grammar methods, Grammar methods
+@node Grammar overview
 @section Overview
 
 An archetypal application has a grammar.
@@ -1570,7 +1570,7 @@ use the
 @code{marpa_g_precompute()}
 method.
 
-@node Grammar constructor, Grammar reference counting, Grammar overview, Grammar methods
+@node Grammar constructor
 @section Creating a new grammar
 @cindex grammar constructor
 
@@ -1628,7 +1628,7 @@ complexity.
 On failure, -2.
 @end deftypefun
 
-@node Grammar reference counting, Symbols, Grammar constructor, Grammar methods
+@node Grammar reference counting
 @section Tracking the reference count of the grammar
 @cindex grammar destructor
 @cindex grammar reference
@@ -1651,7 +1651,7 @@ zero.
 
 @end deftypefun
 
-@node Symbols, Rules, Grammar reference counting, Grammar methods
+@node Symbols
 @section Symbols
 
 @deftypefun Marpa_Symbol_ID marpa_g_start_symbol (Marpa_Grammar @var{g})
@@ -1835,7 +1835,7 @@ On failure, @minus{}2.
 
 @end deftypefun
 
-@node Rules, Sequences, Symbols, Grammar methods
+@node Rules
 @section Rules
 
 @deftypefun int marpa_g_highest_rule_id (Marpa_Grammar @var{g})
@@ -2011,7 +2011,7 @@ the rule,
 or on other failure, @minus{}2.
 @end deftypefun
 
-@node Sequences, Ranks, Rules, Grammar methods
+@node Sequences
 @section Sequences
 
 @deftypefun int marpa_g_rule_is_proper_separation ( @
@@ -2183,7 +2183,7 @@ If @var{sym_id} is not well-formed,
 and on other failure, @minus{}2.
 @end deftypefun
 
-@node Ranks, Grammar precomputation, Sequences, Grammar methods
+@node Ranks
 @section Ranks
 
 @deftypefun Marpa_Rank marpa_g_rule_rank_set ( @
@@ -2676,7 +2676,7 @@ If the grammar @var{g} is precomputed;
 or on other failure, @minus{}2.
 @end deftypefun
 
-@node Grammar precomputation,  , Ranks, Grammar methods
+@node Grammar precomputation
 @section Precomputing the Grammar
 
 @deftypefun int marpa_g_precompute (Marpa_Grammar @var{g})
@@ -2809,10 +2809,10 @@ Return value: On success, 1 if the grammar has a cycle,
 On failure, @minus{}2.
 @end deftypefun
 
-@node Recognizer methods, Progress reports, Grammar methods, Top
+@node Recognizer methods
 @chapter Recognizer methods
 
-@node Recognizer overview, Recognizer constructor, Recognizer methods, Recognizer methods
+@node Recognizer overview
 @section Overview
 
 An archetypal application uses a recognizer to read input.
@@ -2842,7 +2842,7 @@ use the
 @code{marpa_r_earleme_complete()}
 call.
 
-@node Recognizer constructor, Recognizer reference counting, Recognizer overview, Recognizer methods
+@node Recognizer constructor
 @section Creating a new recognizer
 
 @deftypefun Marpa_Recognizer marpa_r_new ( Marpa_Grammar @var{g} )
@@ -2856,7 +2856,7 @@ Return value:  On success, the newly created recognizer.
 If @var{g} is not precomputed, or on other failure, @code{NULL}.
 @end deftypefun
 
-@node Recognizer reference counting, Recognizer life cycle mutators, Recognizer constructor, Recognizer methods
+@node Recognizer reference counting
 @section Keeping the reference count of a recognizer
 
 @deftypefun Marpa_Recognizer marpa_r_ref (Marpa_Recognizer @var{r})
@@ -2879,7 +2879,7 @@ to zero, it too is destroyed.
 
 @end deftypefun
 
-@node Recognizer life cycle mutators, Location accessors, Recognizer reference counting, Recognizer methods
+@node Recognizer life cycle mutators
 @section Life cycle mutators
 
 @deftypefun int marpa_r_start_input (Marpa_Recognizer @var{r})
@@ -3095,7 +3095,7 @@ Return value:  On success, the number of events generated.
 On failure, @minus{}2.
 @end deftypefun
 
-@node Location accessors, Other parse status methods, Recognizer life cycle mutators, Recognizer methods
+@node Location accessors
 @section Location accessors
 
 @deftypefun @code{Marpa_Earleme} marpa_r_current_earleme (Marpa_Recognizer @var{r})
@@ -3242,7 +3242,7 @@ Return value: On success, returns a non-negative integer.
 On failure, returns @minus{}2.
 @end deftypefun
 
-@node Other parse status methods,  , Location accessors, Recognizer methods
+@node Other parse status methods
 @section Other parse status methods
 
 @deftypefun int marpa_r_completion_symbol_activate ( @
@@ -3459,7 +3459,7 @@ if @var{symbol_id} is not the ID of a valid
 symbol.
 @end deftypefun
 
-@node Progress reports, Bocage methods, Recognizer methods, Top
+@node Progress reports
 @chapter Progress reports
 
 An important advantage of the Marpa algorithm is the ability
@@ -3576,10 +3576,10 @@ argument is @code{NULL},
 or on other failure, @minus{}2.
 @end deftypefun
 
-@node Bocage methods, Ordering methods, Progress reports, Top
+@node Bocage methods
 @chapter Bocage methods
 
-@node Bocage overview, Bocage constructor, Bocage methods, Bocage methods
+@node Bocage overview
 @section Overview
 
 A bocage is structure containing the full set of parses found
@@ -3596,7 +3596,7 @@ using the
 @code{marpa_b_unref()}
 method.
 
-@node Bocage constructor, Bocage reference counting, Bocage overview, Bocage methods
+@node Bocage constructor
 @section Creating a new bocage
 
 @deftypefun Marpa_Bocage marpa_b_new (Marpa_Recognizer @var{r}, @
@@ -3622,7 +3622,7 @@ Success return value: On success, the new bocage object.
 On failure, @code{NULL}.
 @end deftypefun
 
-@node Bocage reference counting, Bocage accessor, Bocage constructor, Bocage methods
+@node Bocage reference counting
 @section  Reference counting
 @deftypefun Marpa_Bocage marpa_b_ref (Marpa_Bocage @var{b})
 Increases the reference count by 1.
@@ -3648,7 +3648,7 @@ to zero, it too is destroyed.
 
 @end deftypefun
 
-@node Bocage accessor,  , Bocage reference counting, Bocage methods
+@node Bocage accessor
 @section  Accessors
 @deftypefun int marpa_b_ambiguity_metric (Marpa_Bocage @var{b})
 Returns an ambiguity metric.
@@ -3678,10 +3678,10 @@ Failures: On failure, @minus{}2.
 
 @end deftypefun
 
-@node Ordering methods, Tree methods, Bocage methods, Top
+@node Ordering methods
 @chapter Ordering methods
 
-@node Ordering overview, Ordering constructor, Ordering methods, Ordering methods
+@node Ordering overview
 @section Overview
 
 Before iterating the parses in the bocage,
@@ -3707,7 +3707,7 @@ As of this writing, the only methods to order parses
 are internal and undocumented.
 This is expected to change.
 
-@node Ordering constructor, Ordering reference counting, Ordering overview, Ordering methods
+@node Ordering constructor
 @section Creating an ordering
 
 @deftypefun Marpa_Order marpa_o_new ( @
@@ -3720,7 +3720,7 @@ Return value: On success, the new ordering object.
 On failure, @code{NULL}.
 @end deftypefun
 
-@node Ordering reference counting, Order accessor, Ordering constructor, Ordering methods
+@node Ordering reference counting
 @section Reference counting
 
 @deftypefun Marpa_Order marpa_o_ref ( @
@@ -3753,7 +3753,7 @@ base grammar, if necessary.
 
 @end deftypefun
 
-@node Order accessor, Non-default ordering, Ordering reference counting, Ordering methods
+@node Order accessor
 @section  Accessors
 @deftypefun int marpa_o_ambiguity_metric (Marpa_Order @var{o})
 Returns an ambiguity metric.
@@ -3793,7 +3793,7 @@ Failures: On failure, @minus{}2.
 
 @end deftypefun
 
-@node Non-default ordering,  , Order accessor, Ordering methods
+@node Non-default ordering
 @section Non-default ordering
 
 @deftypefun int marpa_o_high_rank_only_set ( @
@@ -3835,10 +3835,10 @@ On failure, @minus{}2.
 
 @end deftypefun
 
-@node Tree methods, Value methods, Ordering methods, Top
+@node Tree methods
 @chapter Tree methods
 
-@node Tree overview, Tree constructor, Tree methods, Tree methods
+@node Tree overview
 @section Overview
 
 Once the bocage has an ordering, the parses trees can be iterated.
@@ -3873,7 +3873,7 @@ the same
 method is used
 to position it to the next parse tree.
 
-@node Tree constructor, Tree reference counting, Tree overview, Tree methods
+@node Tree constructor
 @section Creating a new tree iterator
 
 @deftypefun Marpa_Tree marpa_t_new (Marpa_Order @var{o})
@@ -3891,7 +3891,7 @@ Return value:  On success, a newly created tree.
 On failure, @code{NULL}.
 @end deftypefun
 
-@node Tree reference counting, Tree iteration, Tree constructor, Tree methods
+@node Tree reference counting
 @section Reference counting
 
 @deftypefun Marpa_Tree marpa_t_ref (Marpa_Tree @var{t})
@@ -3922,7 +3922,7 @@ base grammar, if necessary.
 
 @end deftypefun
 
-@node Tree iteration,  , Tree reference counting, Tree methods
+@node Tree iteration
 @section Iterating through the trees
 
 @deftypefun int marpa_t_next ( @
@@ -3962,10 +3962,10 @@ Return value: The number of parses traversed so far.
 Always succeeds.
 @end deftypefun
 
-@node Value methods, Events, Tree methods, Top
+@node Value methods
 @chapter Value methods
 
-@node Value overview, How to use the valuator, Value methods, Value methods
+@node Value overview
 @section Overview
 
 The archetypal application needs
@@ -4003,7 +4003,7 @@ the sections
 @ref{How to use the valuator}
 and @ref{Stepping through the valuator}.
 
-@node How to use the valuator, Advantages of step-driven valuation, Value overview, Value methods
+@node How to use the valuator
 @section How to use the valuator
 Libmarpa's valuator provides the application with
 ``steps'', which are
@@ -4051,7 +4051,7 @@ to the application whether the stack contains integers,
 strings, complex numbers, or polymorphic objects which are
 capable of being any of these things and more.
 
-@node Advantages of step-driven valuation, Maintaining the stack, How to use the valuator, Value methods
+@node Advantages of step-driven valuation
 @section Advantages of step-driven valuation
 
 Step-driven valuation
@@ -4144,7 +4144,7 @@ Libmarpa's valuator is intended
 to be used via an upper layer,
 one which @strong{does} know about semantics.
 
-@node Maintaining the stack, Valuator constructor, Advantages of step-driven valuation, Value methods
+@node Maintaining the stack
 @section Maintaining the stack
 
 This section discusses in detail the requirements
@@ -4204,7 +4204,7 @@ than stack location @var{X} is to say that
 a stack location @var{Y} is later (earlier)
 than stack location @var{X}.
 
-@node Sizing the stack, Initializing locations in the stack, Maintaining the stack, Maintaining the stack
+@node Sizing the stack
 @subsection Sizing the stack
 
 If an implementation applies Libmarpa's step
@@ -4264,7 +4264,7 @@ an application cannot assume that it
 will receive a Libmarpa step instruction that
 either reads from or writes to location 0.
 
-@node Initializing locations in the stack,  , Sizing the stack, Maintaining the stack
+@node Initializing locations in the stack
 @subsection Initializing locations in the stack
 
 Write optimizations also creates issues for implementations
@@ -4315,7 +4315,7 @@ Libmarpa steps often revisit earlier sections of the stack,
 and these revisits may include reads of previously
 unvisited stack locations.
 
-@node Valuator constructor, Valuator reference counting, Maintaining the stack, Value methods
+@node Valuator constructor
 @section Creating a new valuator
 
 @deftypefun Marpa_Value marpa_v_new ( @
@@ -4340,7 +4340,7 @@ Return value:  On success, the newly created valuator.
 On failure, @code{NULL}.
 @end deftypefun
 
-@node Valuator reference counting, Stepping through the valuator, Valuator constructor, Value methods
+@node Valuator reference counting
 @section Reference counting
 
 @deftypefun Marpa_Value marpa_v_ref (Marpa_Value @var{v})
@@ -4372,7 +4372,7 @@ base grammar, if necessary.
 
 @end deftypefun
 
-@node Stepping through the valuator, Valuator steps by type, Valuator reference counting, Value methods
+@node Stepping through the valuator
 @section Stepping through the valuator
 
 @deftypefun Marpa_Step_Type marpa_v_step ( @
@@ -4393,7 +4393,7 @@ This will always be a non-negative number.
 On failure, @minus{}2.
 @end deftypefun
 
-@node Valuator steps by type, Basic step accessors, Stepping through the valuator, Value methods
+@node Valuator steps by type
 @section Valuator steps by type
 
 @deftypevr Macro Marpa_Step_Type MARPA_STEP_RULE
@@ -4461,7 +4461,7 @@ yet to go through any steps.
 These step types are reserved for internal purposes.
 @end deftypevr
 
-@node Basic step accessors, Other step accessors, Valuator steps by type, Value methods
+@node Basic step accessors
 @section Basic step accessors
 
 The basic step accessors are so called because their information
@@ -4529,7 +4529,7 @@ returns the integer which is
 the value of the token.
 @end deftypefn
 
-@node Other step accessors,  , Basic step accessors, Value methods
+@node Other step accessors
 @section Other step accessors
 
 This section contains the step accessors that
@@ -4570,10 +4570,10 @@ the Earley Set ordinal where the token begins.
 If the current step type is anything else, an unspecified value.
 @end deftypefn
 
-@node Events, Error methods macros and codes, Value methods, Top
+@node Events
 @chapter Events
 
-@node Events overview, Event methods, Events, Events
+@node Events overview
 @section Overview
 
 Events are generated by the
@@ -4608,7 +4608,7 @@ and
 @code{marpa_g_event_value()}
 methods.
 
-@node Event methods, Event codes, Events overview, Events
+@node Event methods
 @section Methods
 
 @deftypefun Marpa_Event_Type marpa_g_event (Marpa_Grammar @var{g}, @
@@ -4648,7 +4648,7 @@ of the event, and is described in the section on event
 codes (@ref{Event codes}).
 @end deftypefn
 
-@node Event codes,  , Event methods, Events
+@node Event codes
 @section Event codes
 
 @deftypevr Macro int MARPA_EVENT_NONE
@@ -4761,10 +4761,10 @@ Event value: The ID of the predicted symbol.
 Suggested message: "Symbol was predicted".
 @end deftypevr
 
-@node Error methods macros and codes, Technical notes, Events, Top
+@node Error methods macros and codes
 @chapter Error methods, macros and codes
 
-@node Error methods, Error Macros, Error methods macros and codes, Error methods macros and codes
+@node Error methods
 @section Error methods
 
 @deftypefun Marpa_Error_Code marpa_g_error @
@@ -4794,7 +4794,7 @@ Return value: @code{MARPA_ERR_NONE}.
 Always succeeds.
 @end deftypefun
 
-@node Error Macros, External error codes, Error methods, Error methods macros and codes
+@node Error Macros
 @section Error Macros
 
 @deftypevr Macro int MARPA_ERRCODE_COUNT
@@ -4804,7 +4804,7 @@ will be integers, non-negative but
 strictly less than @code{MARPA_ERRCODE_COUNT}.
 @end deftypevr
 
-@node External error codes, Internal error codes, Error Macros, Error methods macros and codes
+@node External error codes
 @section External error codes
 
 This section lists the external error codes.
@@ -5551,7 +5551,7 @@ Numeric value: 88.
 Suggested message: "Symbol is not used".
 @end deftypevr
 
-@node Internal error codes,  , External error codes, Error methods macros and codes
+@node Internal error codes
 @section Internal error codes
 
 An internal error code may be one of two things:
@@ -5703,20 +5703,20 @@ Numeric value: 67.
 Numeric value: 72.
 @end deftypevr
 
-@node Technical notes, Work in Progress, Error methods macros and codes, Top
+@node Technical notes
 @chapter Technical notes
 
 This section contains technical notes that are
 not necessary for the main presentation,
 but which may be useful or interesting.
 
-@node Data types used by Libmarpa, Why so many time objects, Technical notes, Technical notes
+@node Data types used by Libmarpa
 @section Data types used by Libmarpa
 
 Libmarpa does not use any floating point data or strings.
 All data are either integers or pointers.
 
-@node Why so many time objects, Design of numbered objects, Data types used by Libmarpa, Technical notes
+@node Why so many time objects
 @section Why so many time objects?
 
 Marpa is an aggressively multi-pass algorithm.
@@ -5764,7 +5764,7 @@ In the current implement, the valuation time object
 needs only to step through a sequence already determined
 in the tree iterator.
 
-@node Design of numbered objects, LHS Terminals, Why so many time objects, Technical notes
+@node Design of numbered objects
 @section Numbered objects
 
 As the name suggests,
@@ -5803,7 +5803,7 @@ that the lack of safe validity checking
 is far too high a price to pay
 for the difference in speed.
 
-@node LHS Terminals,  , Design of numbered objects, Technical notes
+@node LHS Terminals
 @section LHS terminals
 
 Marpa's idea
@@ -5826,10 +5826,10 @@ For this reason,
 the traditional behavior is the default
 in Libmarpa.
 
-@node Work in Progress, Deprecated techniques and methods, Technical notes, Top
+@node Work in Progress
 @chapter Work in Progress
 
-@node Untested methods,  , Work in Progress, Work in Progress
+@node Untested methods
 @section Untested methods
 
 The methods of this section are not in the external interface,
@@ -5838,7 +5838,7 @@ Their fate is uncertain.
 Users should regard these methods
 as unsupported.
 
-@node Ranking methods, Zero-width assertion methods, Untested methods, Untested methods
+@node Ranking methods
 @subsection Ranking methods
 
 @deftypefun Marpa_Rank marpa_g_default_rank_set ( @
@@ -5911,7 +5911,7 @@ call.
 
 @end deftypefun
 
-@node Zero-width assertion methods, Methods for revising parses, Ranking methods, Untested methods
+@node Zero-width assertion methods
 @subsection Zero-width assertion methods
 
 @deftypefun Marpa_Assertion_ID marpa_g_zwa_new ( @
@@ -5946,7 +5946,7 @@ On success, returns previous default value of the assertion.
     Marpa_Grammar @var{g} )
 @end deftypefun
 
-@node Methods for revising parses,  , Zero-width assertion methods, Untested methods
+@node Methods for revising parses
 @subsection Methods for revising parses
 
 Marpa allows an application to ``change its mind'' about a parse,
@@ -5959,13 +5959,13 @@ The methods in this section provide that capability.
 
 @end deftypefun
 
-@node Deprecated techniques and methods, Index of terms, Work in Progress, Top
+@node Deprecated techniques and methods
 @chapter Deprecated techniques and methods
 
-@node Valued and unvalued symbols,  , Deprecated techniques and methods, Deprecated techniques and methods
+@node Valued and unvalued symbols
 @section Valued and unvalued symbols
 
-@node What unvalued symbols were, Grammar methods dealing with unvalued symbols, Valued and unvalued symbols, Valued and unvalued symbols
+@node What unvalued symbols were
 @subsection What unvalued symbols were
 
 Libmarpa symbols can have values,
@@ -6030,7 +6030,7 @@ conflicts with its locked valued status.
 Doing so usually saves the Libmarpa user
 some tricky debugging further down the road.
 
-@node Grammar methods dealing with unvalued symbols, Registering semantics in the valuator, What unvalued symbols were, Valued and unvalued symbols
+@node Grammar methods dealing with unvalued symbols
 @subsection Grammar methods dealing with unvalued symbols
 
 @deftypefun int marpa_g_symbol_is_valued_set ( @
@@ -6063,7 +6063,7 @@ or on other failure, @minus{}2.
 
 @end deftypefun
 
-@node Registering semantics in the valuator,  , Grammar methods dealing with unvalued symbols, Valued and unvalued symbols
+@node Registering semantics in the valuator
 @subsection Registering semantics in the valuator
 
 By default, Libmarpa's valuator objects
@@ -6165,7 +6165,7 @@ value, which will never be
 
 @end deftypefun
 
-@node Index of terms,  , Deprecated techniques and methods, Top
+@node Index of terms
 @unnumbered Index of terms
 
 This index is of terms that are used in a special sense in
