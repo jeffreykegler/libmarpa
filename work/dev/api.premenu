@@ -1826,7 +1826,7 @@ pointed to by the @var{configuration}
 argument after
 @code{marpa_g_new()}
 returns.
-(@xref{marpa_c_error,marpa_c_error()}.)
+(xref @xref{marpa_c_error,marpa_c_error()}.)
 The @var{configuration} argument may be @code{NULL},
 but if it is,
 there will be no way to determine
