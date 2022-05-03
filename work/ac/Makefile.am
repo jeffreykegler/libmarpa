@@ -34,6 +34,7 @@ EXTRA_DIST = README.INSTALL README.AIX libmarpa.pc GIT_LOG.txt \
   win32/marpa.def Makefile.win32 win32/do_config_h.pl \
   internals/libmarpa_ami.pdf internals/libmarpa_core.pdf \
   api_docs/libmarpa_api.pdf api_docs/libmarpa_api.html api_docs/api_html.tar \
+  api_docs/libmarpa_api.info \
   error_codes.table events.table steps.table \
   version.m4
 

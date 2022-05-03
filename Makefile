@@ -76,6 +76,7 @@ timestamp/cm_dist.stamp: timestamp/ac_dist.stamp
 	  echo cm_dist/internals/libmarpa_core.pdf: ac_dist/internals/libmarpa_core.pdf; \
 	  echo cm_dist/internals/libmarpa_ami.pdf: ac_dist/internals/libmarpa_ami.pdf; \
 	  echo cm_dist/api_docs/libmarpa_api.pdf: ac_dist/api_docs/libmarpa_api.pdf; \
+	  echo cm_dist/api_docs/libmarpa_api.info: ac_dist/api_docs/libmarpa_api.info; \
 	  echo cm_dist/api_docs/libmarpa_api.html: ac_dist/api_docs/libmarpa_api.html; \
           echo cm_dist/api_docs/api_html.tar: ac_dist/api_docs/api_html.tar; \
 	) | perl ./etc/copier.pl --verbose

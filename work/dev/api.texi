@@ -137,6 +137,7 @@ Introduction to the method descriptions
 * About the overviews::
 * Naming conventions::
 * Return values::
+* How to read the method descriptions::
 
 Grammar methods
 
@@ -1484,6 +1485,7 @@ in detail.
 * About the overviews::
 * Naming conventions::
 * Return values::
+* How to read the method descriptions::
 @end menu
 
 @node About the overviews, Naming conventions, Introduction to the method descriptions, Introduction to the method descriptions
@@ -1550,7 +1552,7 @@ All Libmarpa names visible outside the package
 will begin with a capitalization variant
 of one of these two prefixes.
 
-@node Return values,  , Naming conventions, Introduction to the method descriptions
+@node Return values, How to read the method descriptions, Naming conventions, Introduction to the method descriptions
 @section Return values
 
 Every method description has a Return Value Summary ---
@@ -1585,11 +1587,28 @@ conventions will fall into a trap.
 @code{marpa_g_rule_rank_set()}
 in @ref{Ranks}.)
 
+@node How to read the method descriptions,  , Return values, Introduction to the method descriptions
+@section How to read the method descriptions
+
 The following are always the case,
 and should be kept in mind when reading the return
 value summaries:
 
 @itemize
+@item Each method description begins with the signature
+of its ``topic method''.
+@item In the method description, the phrase "this method"
+always refers to the topic method.
+@item Whenever "this method" is the subject of a sentence
+in the method description, it may be elided,
+so that, for example,
+"This method returns 42" becomes
+"Returns 42".
+@item If the return type of a method is not @code{void},
+the last paragraph of its method description is a
+``return value summary''.
+The return value summary
+starts with the label ``@strong{Return Value}''.
 @item Every method returns in exactly one of three
 statuses: success, hard failure, or soft failure.
 @item A return status of hard failure indicates that the method detected
@@ -1704,6 +1723,7 @@ configuration is used to create a grammar.
 
 @end deftypefun
 
+@anchor{marpa_c_error}
 @deftypefun Marpa_Error_Code marpa_c_error ( @
   Marpa_Config* @var{config}, const char** @var{p_error_string} )
 
@@ -1800,12 +1820,13 @@ and will have no symbols and rules.
 Its reference count will be 1.
 
 Unless the application calls
-@code{marpa_c_error()},
+@code{marpa_c_error()}
 Libmarpa will not reference the location
 pointed to by the @var{configuration}
 argument after
 @code{marpa_g_new()}
 returns.
+(xref @xref{marpa_c_error,marpa_c_error()}.)
 The @var{configuration} argument may be @code{NULL},
 but if it is,
 there will be no way to determine

@@ -76,6 +76,7 @@ timestamp/stage_build.stamp:
           echo stage/internals/libmarpa_core.pdf: dev/marpa.pdf; \
           echo stage/internals/libmarpa_ami.pdf: ami/marpa_ami.pdf; \
           echo stage/api_docs/libmarpa_api.pdf: doc1/api.pdf; \
+          echo stage/api_docs/libmarpa_api.info: doc1/api.info; \
           echo stage/api_docs/libmarpa_api.html: doc1/api.html; \
           echo stage/api_docs/api_html.tar: doc/api_html.tar; \
         ) | perl ../etc/copier.pl --verbose
@@ -116,5 +117,5 @@ timestamp/doc1_build.stamp:
 	test -d doc1/m4 || mkdir doc1/m4
 	cd doc1 && autoreconf -ivf
 	cd doc1 && ./configure
-	(cd doc1; $(MAKE) html pdf)
+	(cd doc1; $(MAKE) html pdf info)
 	date > $@
