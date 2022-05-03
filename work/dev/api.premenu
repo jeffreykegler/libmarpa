@@ -63,185 +63,6 @@ Published @value{UPDATED} by Jeffrey Kegler
 @insertcopying
 @end ifnottex
 
-@menu
-* No warranty::
-* About this document::
-* About Libmarpa::
-* Architecture::
-* Input::
-* Semantics::
-* Threads::
-* Failure::
-* Introduction to the method descriptions::
-* Static methods::
-* Configuration methods::
-* Grammar methods::
-* Recognizer methods::
-* Progress reports::
-* Bocage methods::
-* Ordering methods::
-* Tree methods::
-* Value methods::
-* Events::
-* Error methods macros and codes::
-* Technical notes::
-* Work in Progress::
-* Deprecated techniques and methods::
-* Index of terms::
-
-@detailmenu
- --- The Detailed Node Listing ---
-
-About this document
-
-* How to read this document::
-* Prerequisites::
-* Parsing theory::
-
-Architecture
-
-* Major objects::
-* Time objects::
-* Reference counting::
-* Numbered objects::
-
-Input
-
-* Earlemes::
-* Terminals::
-
-Earlemes
-
-* The traditional model::
-* The earleme variables::
-* The significances of the earleme variables::
-* The initial earleme settings::
-* The standard model of input::
-* Ambiguous input::
-* Variable length tokens::
-* The generalized model::
-* General rules for the earleme variables::
-
-Failure
-
-* User non-conformity to specified behavior::
-* Classifying failure::
-* Memory allocation failure::
-* Irrecoverable hard failure::
-* Recoverable hard failure::
-* Soft failure::
-* Error codes::
-
-Introduction to the method descriptions
-
-* About the overviews::
-* Naming conventions::
-* Return values::
-* How to read the method descriptions::
-
-Grammar methods
-
-* Grammar overview::
-* Grammar constructor::
-* Grammar reference counting::
-* Symbols::
-* Rules::
-* Sequences::
-* Ranks::
-* Grammar precomputation::
-
-Recognizer methods
-
-* Recognizer overview::
-* Recognizer constructor::
-* Recognizer reference counting::
-* Recognizer life cycle mutators::
-* Location accessors::
-* Other parse status methods::
-
-Bocage methods
-
-* Bocage overview::
-* Bocage constructor::
-* Bocage reference counting::
-* Bocage accessor::
-
-Ordering methods
-
-* Ordering overview::
-* Ordering constructor::
-* Ordering reference counting::
-* Order accessor::
-* Non-default ordering::
-
-Tree methods
-
-* Tree overview::
-* Tree constructor::
-* Tree reference counting::
-* Tree iteration::
-
-Value methods
-
-* Value overview::
-* How to use the valuator::
-* Advantages of step-driven valuation::
-* Maintaining the stack::
-* Valuator constructor::
-* Valuator reference counting::
-* Stepping through the valuator::
-* Valuator steps by type::
-* Basic step accessors::
-* Other step accessors::
-
-Maintaining the stack
-
-* Sizing the stack::
-* Initializing locations in the stack::
-
-Events
-
-* Events overview::
-* Event methods::
-* Event codes::
-
-Error methods, macros and codes
-
-* Error methods::
-* Error Macros::
-* External error codes::
-* Internal error codes::
-
-Technical notes
-
-* Data types used by Libmarpa::
-* Why so many time objects::
-* Design of numbered objects::
-* LHS Terminals::
-
-Work in Progress
-
-* Untested methods::
-
-Untested methods
-
-* Ranking methods::
-* Zero-width assertion methods::
-* Methods for revising parses::
-
-Deprecated techniques and methods
-
-* Valued and unvalued symbols::
-
-Valued and unvalued symbols
-
-* What unvalued symbols were::
-* Grammar methods dealing with unvalued symbols::
-* Registering semantics in the valuator::
-
-@end detailmenu
-@end menu
-
 @node No warranty, About this document, Top, Top
 @chapter No warranty
 
@@ -254,12 +75,6 @@ as providing any kind of warranty.
 
 @node About this document, About Libmarpa, No warranty, Top
 @chapter About this document
-
-@menu
-* How to read this document::
-* Prerequisites::
-* Parsing theory::
-@end menu
 
 @node How to read this document, Prerequisites, About this document, About this document
 @section How to read this document
@@ -379,13 +194,6 @@ to successfully debug the logic.
 
 @node Architecture, Input, About Libmarpa, Top
 @chapter Architecture
-
-@menu
-* Major objects::
-* Time objects::
-* Reference counting::
-* Numbered objects::
-@end menu
 
 @node Major objects, Time objects, Architecture, Architecture
 @section Major objects
@@ -578,25 +386,8 @@ objects.
 @node Input, Semantics, Architecture, Top
 @chapter Input
 
-@menu
-* Earlemes::
-* Terminals::
-@end menu
-
 @node Earlemes, Terminals, Input, Input
 @section Earlemes
-
-@menu
-* The traditional model::
-* The earleme variables::
-* The significances of the earleme variables::
-* The initial earleme settings::
-* The standard model of input::
-* Ambiguous input::
-* Variable length tokens::
-* The generalized model::
-* General rules for the earleme variables::
-@end menu
 
 @node The traditional model, The earleme variables, Earlemes, Earlemes
 @subsection The traditional model
@@ -1182,16 +973,6 @@ time objects.
 @node Failure, Introduction to the method descriptions, Threads, Top
 @chapter Failure
 
-@menu
-* User non-conformity to specified behavior::
-* Classifying failure::
-* Memory allocation failure::
-* Irrecoverable hard failure::
-* Recoverable hard failure::
-* Soft failure::
-* Error codes::
-@end menu
-
 @node User non-conformity to specified behavior, Classifying failure, Failure, Failure
 @section User non-conformity to specified behavior
 
@@ -1481,13 +1262,6 @@ are still subject to the general irrecoverability.
 The following chapters describe Libmarpa's methods
 in detail.
 
-@menu
-* About the overviews::
-* Naming conventions::
-* Return values::
-* How to read the method descriptions::
-@end menu
-
 @node About the overviews, Naming conventions, Introduction to the method descriptions, Introduction to the method descriptions
 @section  About the overviews
 
@@ -1749,17 +1523,6 @@ for itself.
 @node Grammar methods, Recognizer methods, Configuration methods, Top
 @chapter Grammar methods
 @cindex grammars
-
-@menu
-* Grammar overview::
-* Grammar constructor::
-* Grammar reference counting::
-* Symbols::
-* Rules::
-* Sequences::
-* Ranks::
-* Grammar precomputation::
-@end menu
 
 @node Grammar overview, Grammar constructor, Grammar methods, Grammar methods
 @section Overview
@@ -3049,15 +2812,6 @@ On failure, @minus{}2.
 @node Recognizer methods, Progress reports, Grammar methods, Top
 @chapter Recognizer methods
 
-@menu
-* Recognizer overview::
-* Recognizer constructor::
-* Recognizer reference counting::
-* Recognizer life cycle mutators::
-* Location accessors::
-* Other parse status methods::
-@end menu
-
 @node Recognizer overview, Recognizer constructor, Recognizer methods, Recognizer methods
 @section Overview
 
@@ -3825,13 +3579,6 @@ or on other failure, @minus{}2.
 @node Bocage methods, Ordering methods, Progress reports, Top
 @chapter Bocage methods
 
-@menu
-* Bocage overview::
-* Bocage constructor::
-* Bocage reference counting::
-* Bocage accessor::
-@end menu
-
 @node Bocage overview, Bocage constructor, Bocage methods, Bocage methods
 @section Overview
 
@@ -3933,14 +3680,6 @@ Failures: On failure, @minus{}2.
 
 @node Ordering methods, Tree methods, Bocage methods, Top
 @chapter Ordering methods
-
-@menu
-* Ordering overview::
-* Ordering constructor::
-* Ordering reference counting::
-* Order accessor::
-* Non-default ordering::
-@end menu
 
 @node Ordering overview, Ordering constructor, Ordering methods, Ordering methods
 @section Overview
@@ -4099,13 +3838,6 @@ On failure, @minus{}2.
 @node Tree methods, Value methods, Ordering methods, Top
 @chapter Tree methods
 
-@menu
-* Tree overview::
-* Tree constructor::
-* Tree reference counting::
-* Tree iteration::
-@end menu
-
 @node Tree overview, Tree constructor, Tree methods, Tree methods
 @section Overview
 
@@ -4232,19 +3964,6 @@ Always succeeds.
 
 @node Value methods, Events, Tree methods, Top
 @chapter Value methods
-
-@menu
-* Value overview::
-* How to use the valuator::
-* Advantages of step-driven valuation::
-* Maintaining the stack::
-* Valuator constructor::
-* Valuator reference counting::
-* Stepping through the valuator::
-* Valuator steps by type::
-* Basic step accessors::
-* Other step accessors::
-@end menu
 
 @node Value overview, How to use the valuator, Value methods, Value methods
 @section Overview
@@ -4484,11 +4203,6 @@ a stack location @var{Y} is greater (lesser)
 than stack location @var{X} is to say that
 a stack location @var{Y} is later (earlier)
 than stack location @var{X}.
-
-@menu
-* Sizing the stack::
-* Initializing locations in the stack::
-@end menu
 
 @node Sizing the stack, Initializing locations in the stack, Maintaining the stack, Maintaining the stack
 @subsection Sizing the stack
@@ -4859,12 +4573,6 @@ If the current step type is anything else, an unspecified value.
 @node Events, Error methods macros and codes, Value methods, Top
 @chapter Events
 
-@menu
-* Events overview::
-* Event methods::
-* Event codes::
-@end menu
-
 @node Events overview, Event methods, Events, Events
 @section Overview
 
@@ -5055,13 +4763,6 @@ Suggested message: "Symbol was predicted".
 
 @node Error methods macros and codes, Technical notes, Events, Top
 @chapter Error methods, macros and codes
-
-@menu
-* Error methods::
-* Error Macros::
-* External error codes::
-* Internal error codes::
-@end menu
 
 @node Error methods, Error Macros, Error methods macros and codes, Error methods macros and codes
 @section Error methods
@@ -6009,13 +5710,6 @@ This section contains technical notes that are
 not necessary for the main presentation,
 but which may be useful or interesting.
 
-@menu
-* Data types used by Libmarpa::
-* Why so many time objects::
-* Design of numbered objects::
-* LHS Terminals::
-@end menu
-
 @node Data types used by Libmarpa, Why so many time objects, Technical notes, Technical notes
 @section Data types used by Libmarpa
 
@@ -6135,10 +5829,6 @@ in Libmarpa.
 @node Work in Progress, Deprecated techniques and methods, Technical notes, Top
 @chapter Work in Progress
 
-@menu
-* Untested methods::
-@end menu
-
 @node Untested methods,  , Work in Progress, Work in Progress
 @section Untested methods
 
@@ -6147,12 +5837,6 @@ because they have not been adequately tested.
 Their fate is uncertain.
 Users should regard these methods
 as unsupported.
-
-@menu
-* Ranking methods::
-* Zero-width assertion methods::
-* Methods for revising parses::
-@end menu
 
 @node Ranking methods, Zero-width assertion methods, Untested methods, Untested methods
 @subsection Ranking methods
@@ -6278,18 +5962,8 @@ The methods in this section provide that capability.
 @node Deprecated techniques and methods, Index of terms, Work in Progress, Top
 @chapter Deprecated techniques and methods
 
-@menu
-* Valued and unvalued symbols::
-@end menu
-
 @node Valued and unvalued symbols,  , Deprecated techniques and methods, Deprecated techniques and methods
 @section Valued and unvalued symbols
-
-@menu
-* What unvalued symbols were::
-* Grammar methods dealing with unvalued symbols::
-* Registering semantics in the valuator::
-@end menu
 
 @node What unvalued symbols were, Grammar methods dealing with unvalued symbols, Valued and unvalued symbols, Valued and unvalued symbols
 @subsection What unvalued symbols were

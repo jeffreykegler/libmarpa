@@ -55,28 +55,6 @@ Published @value{UPDATED} by Jeffrey Kegler
 @insertcopying
 @end ifnottex
 
-@menu
-* About this document::
-* Internal Interface::
-
-@detailmenu
- --- The Detailed Node Listing ---
-
-Internal Interface
-
-* Symbol internal methods::
-* Rule internals::
-* Grammar internals::
-* Recognizer internals::
-* Bocage internals::
-* Ordering internals::
-* Tree internals::
-* Valuator internals::
-* Debugging methods::
-
-@end detailmenu
-@end menu
-
 @node About this document, Internal Interface, Top, Top
 @chapter About this document
 
@@ -98,18 +76,6 @@ If a description exists and might be helpful,
 it may be included below,
 but all applications
 should treat these methods as ``undocumented''.
-
-@menu
-* Symbol internal methods::
-* Rule internals::
-* Grammar internals::
-* Recognizer internals::
-* Bocage internals::
-* Ordering internals::
-* Tree internals::
-* Valuator internals::
-* Debugging methods::
-@end menu
 
 @node Symbol internal methods, Rule internals, Internal Interface, Internal Interface
 @section Symbol internal methods
