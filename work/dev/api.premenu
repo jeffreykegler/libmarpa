@@ -1484,8 +1484,9 @@ with the methods described below
 @node Static methods
 @chapter Static methods
 
-@deftypefun Marpa_Error_Code marpa_check_version @
-    (int @var{required_major}, @
+@anchor{marpa_check_version}
+@deftypefun Marpa_Error_Code marpa_check_version ( @
+    int @var{required_major}, @
     int @var{required_minor}, @
     int @var{required_micro} @
     )
@@ -1511,7 +1512,9 @@ On hard failure, the error code.
 
 @end deftypefun
 
-@deftypefun Marpa_Error_Code marpa_version (int* version)
+@anchor{marpa_version}
+@deftypefun Marpa_Error_Code marpa_version ( @
+    int* version)
 
 Writes the version number in @var{version}.
 It is an undetected irrecoverable hard failure
@@ -1552,6 +1555,7 @@ soon after
 returns.
 For example, they could be put on the stack.
 
+@anchor{marpa_c_init}
 @deftypefun int marpa_c_init ( @
   Marpa_Config* @var{config})
 
@@ -1642,6 +1646,7 @@ method.
 @section Creating a new grammar
 @cindex grammar constructor
 
+@anchor{marpa_g_new}
 @deftypefun Marpa_Grammar marpa_g_new ( @
     Marpa_Config* @var{configuration} )
 
@@ -1673,6 +1678,7 @@ The error code may be accessed using
 
 @end deftypefun
 
+@anchor{marpa_g_force_valued}
 @deftypefun int marpa_g_force_valued ( @
     Marpa_Grammar @var{g} )
 
@@ -1702,6 +1708,7 @@ On failure, -2.
 @cindex grammar reference
 @cindex grammar reference count
 
+@anchor{marpa_g_ref}
 @deftypefun Marpa_Grammar marpa_g_ref (Marpa_Grammar @var{g})
 Increases the reference count of @var{g} by 1.
 Not needed by most applications.
@@ -1712,6 +1719,7 @@ On hard failure, @code{NULL}.
 
 @end deftypefun
 
+@anchor{marpa_g_unref}
 @deftypefun void marpa_g_unref (Marpa_Grammar @var{g})
 Decreases the reference count by 1,
 destroying @var{g} once the reference count reaches
@@ -1722,6 +1730,7 @@ zero.
 @node Symbols
 @section Symbols
 
+@anchor{marpa_g_start_symbol}
 @deftypefun Marpa_Symbol_ID marpa_g_start_symbol (Marpa_Grammar @var{g})
 
 When successful, returns the ID of the start symbol.
@@ -1738,6 +1747,7 @@ On soft failure, @minus{}1.
 On hard failure, @minus{}2.
 @end deftypefun
 
+@anchor{marpa_g_start_symbol_set}
 @deftypefun Marpa_Symbol_ID marpa_g_start_symbol_set ( @
     Marpa_Grammar @var{g}, @
     Marpa_Symbol_ID @var{sym_id})
@@ -1755,12 +1765,14 @@ On hard failure, @minus{}2.
 
 @end deftypefun
 
+@anchor{marpa_g_highest_symbol_id}
 @deftypefun int marpa_g_highest_symbol_id (Marpa_Grammar @var{g})
 @strong{Return value}: On success, the numerically largest symbol ID
 of @var{g}.
 On hard failure, @minus{}2.
 @end deftypefun
 
+@anchor{marpa_g_symbol_is_accessible}
 @deftypefun int marpa_g_symbol_is_accessible (Marpa_Grammar @var{g}, @
     Marpa_Symbol_ID @var{sym_id})
 A symbol is
@@ -1780,6 +1792,7 @@ On hard failure, @minus{}2.
 
 @end deftypefun
 
+@anchor{marpa_g_symbol_is_nullable}
 @deftypefun int marpa_g_symbol_is_nullable ( @
   Marpa_Grammar g, Marpa_Symbol_ID sym_id)
 A symbol is
@@ -1801,6 +1814,7 @@ On hard failure, @minus{}2.
 
 @end deftypefun
 
+@anchor{marpa_g_symbol_is_nulling}
 @deftypefun int marpa_g_symbol_is_nulling (Marpa_Grammar @var{g}, @
     Marpa_Symbol_ID @var{sym_id})
 A symbol is
@@ -1820,6 +1834,7 @@ On hard failure, @minus{}2.
 
 @end deftypefun
 
+@anchor{marpa_g_symbol_is_productive}
 @deftypefun int marpa_g_symbol_is_productive (Marpa_Grammar @var{g}, @
     Marpa_Symbol_ID @var{sym_id})
 A symbol is
@@ -1840,6 +1855,7 @@ On hard failure, @minus{}2.
 
 @end deftypefun
 
+@anchor{marpa_g_symbol_is_start}
 @deftypefun int marpa_g_symbol_is_start ( Marpa_Grammar @var{g}, @
     Marpa_Symbol_ID @var{sym_id})
 
@@ -1859,6 +1875,7 @@ On hard failure, @minus{}2.
 
 @end deftypefun
 
+@anchor{marpa_g_symbol_is_terminal}
 @deftypefun int marpa_g_symbol_is_terminal ( @
     Marpa_Grammar @var{g}, @
     Marpa_Symbol_ID @var{sym_id})
@@ -1932,6 +1949,7 @@ On hard failure, @minus{}2.
 
 @end deftypefun
 
+@anchor{marpa_g_symbol_new}
 @deftypefun Marpa_Symbol_ID marpa_g_symbol_new (Marpa_Grammar @var{g})
 
 Creates a new symbol.
@@ -1945,12 +1963,14 @@ On failure, @minus{}2.
 @node Rules
 @section Rules
 
+@anchor{marpa_g_highest_rule_id}
 @deftypefun int marpa_g_highest_rule_id (Marpa_Grammar @var{g})
 Return value: On success, the numerically largest rule ID
 of @var{g}.
 On failure, @minus{}2.
 @end deftypefun
 
+@anchor{marpa_g_rule_is_accessible}
 @deftypefun int marpa_g_rule_is_accessible (Marpa_Grammar @var{g}, @
     Marpa_Rule_ID @var{rule_id})
 A rule is
@@ -1969,6 +1989,7 @@ If the grammar
 is not precomputed, or on other failure, @minus{}2.
 @end deftypefun
 
+@anchor{marpa_g_rule_is_nullable}
 @deftypefun int marpa_g_rule_is_nullable ( @
   Marpa_Grammar @var{g}, Marpa_Rule_ID @var{ruleid})
 A rule is
@@ -1986,6 +2007,7 @@ such rule, @minus{}1.
 If the grammar is not precomputed, or on other failure, @minus{}2.
 @end deftypefun
 
+@anchor{marpa_g_rule_is_nulling}
 @deftypefun int marpa_g_rule_is_nulling (Marpa_Grammar @var{g}, @
     Marpa_Rule_ID @var{ruleid})
 A rule is
@@ -2001,6 +2023,7 @@ such rule, @minus{}1.
 If the grammar is not precomputed, or on other failure, @minus{}2.
 @end deftypefun
 
+@anchor{marpa_g_rule_is_loop}
 @deftypefun int marpa_g_rule_is_loop (Marpa_Grammar @var{g}, @
     Marpa_Rule_ID @var{rule_id})
 A rule is a loop rule if it non-trivially
@@ -2025,6 +2048,7 @@ If the grammar
 is not precomputed, or on other failure, @minus{}2.
 @end deftypefun
 
+@anchor{marpa_g_rule_is_productive}
 @deftypefun int marpa_g_rule_is_productive (Marpa_Grammar @var{g}, @
     Marpa_Rule_ID @var{rule_id})
 A rule is
@@ -2046,6 +2070,7 @@ such rule, @minus{}1.
 If the grammar is not precomputed, or on other failure, @minus{}2.
 @end deftypefun
 
+@anchor{marpa_g_rule_length}
 @deftypefun int marpa_g_rule_length ( @
     Marpa_Grammar @var{g}, @
     Marpa_Rule_ID @var{rule_id})
@@ -2055,6 +2080,7 @@ Return value: On success, the length of rule @var{rule_id}.
 On failure, @minus{}2.
 @end deftypefun
 
+@anchor{marpa_g_rule_lhs}
 @deftypefun Marpa_Symbol_ID marpa_g_rule_lhs ( @
     Marpa_Grammar @var{g}, @
     Marpa_Rule_ID @var{rule_id})
@@ -2064,6 +2090,7 @@ such rule, @minus{}1.
 On other failure, @minus{}2.
 @end deftypefun
 
+@anchor{marpa_g_rule_new}
 @deftypefun Marpa_Rule_ID marpa_g_rule_new (Marpa_Grammar @var{g}, @
     Marpa_Symbol_ID @var{lhs_id}, @
  Marpa_Symbol_ID *@var{rhs_ids}, @
@@ -2100,6 +2127,7 @@ Return value:  On success, the ID of new external rule.
 On failure, @minus{}2.
 @end deftypefun
 
+@anchor{marpa_g_rule_rhs}
 @deftypefun Marpa_Symbol_ID marpa_g_rule_rhs ( @
     Marpa_Grammar @var{g}, @
     Marpa_Rule_ID @var{rule_id}, @
@@ -2121,6 +2149,7 @@ or on other failure, @minus{}2.
 @node Sequences
 @section Sequences
 
+@anchor{marpa_g_rule_is_proper_separation}
 @deftypefun int marpa_g_rule_is_proper_separation ( @
     Marpa_Grammar @var{g}, @
     Marpa_Rule_ID @var{rule_id})
@@ -2154,6 +2183,7 @@ such rule, returns @minus{}1.
 On other failure, @minus{}2.
 @end deftypefun
 
+@anchor{marpa_g_sequence_min}
 @deftypefun int marpa_g_sequence_min ( @
     Marpa_Grammar @var{g}, @
     Marpa_Rule_ID @var{rule_id})
@@ -2173,6 +2203,7 @@ such rule,
 or on other failure, @minus{}2.
 @end deftypefun
 
+@anchor{marpa_g_sequence_new}
 @deftypefun Marpa_Rule_ID marpa_g_sequence_new (Marpa_Grammar @var{g}, @
     Marpa_Symbol_ID @var{lhs_id}, @
  Marpa_Symbol_ID @var{rhs_id}, @
@@ -2255,6 +2286,7 @@ Return value:  On success, the ID of the external rule.
 On failure, @minus{}2.
 @end deftypefun
 
+@anchor{marpa_g_sequence_separator}
 @deftypefun int marpa_g_sequence_separator ( @
     Marpa_Grammar @var{g}, @
     Marpa_Rule_ID @var{rule_id})
@@ -2270,6 +2302,7 @@ or is not well-formed;
 or on other failure, @minus{}2.
 @end deftypefun
 
+@anchor{marpa_g_symbol_is_counted}
 @deftypefun int marpa_g_symbol_is_counted (Marpa_Grammar @var{g}, @
     Marpa_Symbol_ID @var{sym_id})
 A symbol is
@@ -2293,10 +2326,12 @@ and on other failure, @minus{}2.
 @node Ranks
 @section Ranks
 
+@anchor{marpa_g_rule_rank_set}
 @deftypefun Marpa_Rank marpa_g_rule_rank_set ( @
     Marpa_Grammar @var{g}, @
     Marpa_Rule_ID @var{rule_id}, @
     Marpa_Rank @var{rank})
+@anchor{marpa_g_rule_rank}
 @deftypefunx Marpa_Rank marpa_g_rule_rank ( @
     Marpa_Grammar @var{g}, @
     Marpa_Rule_ID rule_id)
@@ -2328,10 +2363,12 @@ call.
 
 @end deftypefun
 
+@anchor{marpa_g_rule_null_high_set}
 @deftypefun int marpa_g_rule_null_high_set ( @
     Marpa_Grammar @var{g}, @
     Marpa_Rule_ID @var{rule_id}, @
     int @var{flag})
+@anchor{marpa_g_rule_null_high}
 @deftypefunx int marpa_g_rule_null_high ( @
     Marpa_Grammar @var{g}, @
     Marpa_Rule_ID rule_id)
@@ -2379,6 +2416,7 @@ On all other failures, @minus{}2.
 
 @section Events
 
+@anchor{marpa_g_completion_symbol_activate}
 @deftypefun int marpa_g_completion_symbol_activate ( @
   Marpa_Grammar @var{g}, @
   Marpa_Symbol_ID @var{sym_id}, @
@@ -2427,6 +2465,7 @@ the method fails.
 On failure, @minus{}2 is returned.
 @end deftypefun
 
+@anchor{marpa_g_nulled_symbol_activate}
 @deftypefun int marpa_g_nulled_symbol_activate ( @
   Marpa_Grammar @var{g}, @
   Marpa_Symbol_ID @var{sym_id}, @
@@ -2475,6 +2514,7 @@ the method fails.
 On failure, @minus{}2 is returned.
 @end deftypefun
 
+@anchor{marpa_g_prediction_symbol_activate}
 @deftypefun int marpa_g_prediction_symbol_activate ( @
   Marpa_Grammar @var{g}, @
   Marpa_Symbol_ID @var{sym_id}, @
@@ -2523,9 +2563,11 @@ the method fails.
 On failure, @minus{}2 is returned.
 @end deftypefun
 
+@anchor{marpa_g_symbol_is_completion_event}
 @deftypefun int marpa_g_symbol_is_completion_event ( @
     Marpa_Grammar @var{g}, @
     Marpa_Symbol_ID @var{sym_id})
+@anchor{marpa_g_symbol_is_completion_event_set}
 @deftypefunx int marpa_g_symbol_is_completion_event_set ( @
     Marpa_Grammar @var{g}, @
     Marpa_Symbol_ID @var{sym_id}, @
@@ -2591,9 +2633,11 @@ If the grammar @var{g} is precomputed;
 or on other failure, @minus{}2.
 @end deftypefun
 
+@anchor{marpa_g_symbol_is_nulled_event}
 @deftypefun int marpa_g_symbol_is_nulled_event ( @
     Marpa_Grammar @var{g}, @
     Marpa_Symbol_ID @var{sym_id})
+@anchor{marpa_g_symbol_is_nulled_event_set}
 @deftypefunx int marpa_g_symbol_is_nulled_event_set ( @
     Marpa_Grammar @var{g}, @
     Marpa_Symbol_ID @var{sym_id}, @
@@ -2725,9 +2769,11 @@ If the grammar @var{g} is precomputed;
 or on other failure, @minus{}2.
 @end deftypefun
 
+@anchor{marpa_g_symbol_is_prediction_event}
 @deftypefun int marpa_g_symbol_is_prediction_event ( @
     Marpa_Grammar @var{g}, @
     Marpa_Symbol_ID @var{sym_id})
+@anchor{marpa_g_symbol_is_prediction_event_set}
 @deftypefunx int marpa_g_symbol_is_prediction_event_set ( @
     Marpa_Grammar @var{g}, @
     Marpa_Symbol_ID @var{sym_id}, @
@@ -2786,9 +2832,9 @@ or on other failure, @minus{}2.
 @node Grammar precomputation
 @section Precomputing the Grammar
 
+@anchor{marpa_g_precompute}
 @deftypefun int marpa_g_precompute (Marpa_Grammar @var{g})
 
-@anchor{marpa_g_precompute}
 Precomputation is necessary for a recognizer to be generated
 from a grammar.
 On success,
@@ -2895,6 +2941,7 @@ Return value: On success, a non-negative number.
 On failure, @minus{}2.
 @end deftypefun
 
+@anchor{marpa_g_is_precomputed}
 @deftypefun int marpa_g_is_precomputed (Marpa_Grammar @var{g})
 Return value: On success, 1
 if grammar @var{g} is already precomputed,
@@ -2902,6 +2949,7 @@ if grammar @var{g} is already precomputed,
 On failure, @minus{}2.
 @end deftypefun
 
+@anchor{marpa_g_has_cycle}
 @deftypefun int marpa_g_has_cycle (Marpa_Grammar @var{g})
 This function allows the application to determine if grammar
 @var{g} has a cycle.
@@ -2952,6 +3000,7 @@ call.
 @node Recognizer constructor
 @section Creating a new recognizer
 
+@anchor{marpa_r_new}
 @deftypefun Marpa_Recognizer marpa_r_new ( Marpa_Grammar @var{g} )
 Creates a new recognizer.
 The reference count of the recognizer will be 1.
@@ -2966,6 +3015,7 @@ If @var{g} is not precomputed, or on other failure, @code{NULL}.
 @node Recognizer reference counting
 @section Keeping the reference count of a recognizer
 
+@anchor{marpa_r_ref}
 @deftypefun Marpa_Recognizer marpa_r_ref (Marpa_Recognizer @var{r})
 Increases the reference count by 1.
 Not needed by most applications.
@@ -2975,6 +3025,7 @@ On success, the recognizer object, @var{r}.
 On failure, @code{NULL}.
 @end deftypefun
 
+@anchor{marpa_r_unref}
 @deftypefun void marpa_r_unref (Marpa_Recognizer @var{r})
 Decreases the reference count by 1,
 destroying @var{r} once the reference count reaches
@@ -2989,6 +3040,7 @@ to zero, it too is destroyed.
 @node Recognizer life cycle mutators
 @section Life cycle mutators
 
+@anchor{marpa_r_start_input}
 @deftypefun int marpa_r_start_input (Marpa_Recognizer @var{r})
 Makes @var{r} ready to accept input.
 The first Earley set,
@@ -3010,6 +3062,7 @@ Return value:  On success, a non-negative value.
 On failure, @minus{}2.
 @end deftypefun
 
+@anchor{marpa_r_alternative}
 @deftypefun int marpa_r_alternative (Marpa_Recognizer @var{r}, @
     Marpa_Symbol_ID @var{token_id}, @
     int @var{value}, @
@@ -3088,6 +3141,7 @@ On failure, some other error code.
 
 @end deftypefun
 
+@anchor{marpa_r_earleme_complete}
 @deftypefun int marpa_r_earleme_complete (Marpa_Recognizer @var{r})
 This method does the final processing for the current earleme.
 It then advances the current earleme by one.
@@ -3205,12 +3259,14 @@ On failure, @minus{}2.
 @node Location accessors
 @section Location accessors
 
+@anchor{marpa_r_current_earleme}
 @deftypefun @code{Marpa_Earleme} marpa_r_current_earleme (Marpa_Recognizer @var{r})
 Return value: If input has started, the current earleme.
 If input has not started, @minus{}1.
 Always succeeds.
 @end deftypefun
 
+@anchor{marpa_r_earleme}
 @deftypefun Marpa_Earleme marpa_r_earleme ( @
     Marpa_Recognizer @var{r}, @
     Marpa_Earley_Set_ID @var{set_id})
@@ -3256,6 +3312,7 @@ set @var{set_id}.
 On failure, @minus{}2.
 @end deftypefun
 
+@anchor{marpa_r_earley_set_value}
 @deftypefun int marpa_r_earley_set_value (@
   Marpa_Recognizer @var{r}, @
   Marpa_Earley_Set_ID earley_set)
@@ -3268,6 +3325,7 @@ Return value: On success, the value of @var{earley_set}.
 On failure, @minus{}2.
 @end deftypefun
 
+@anchor{marpa_r_earley_set_values}
 @deftypefun int marpa_r_earley_set_values (@
   Marpa_Recognizer @var{r}, @
   Marpa_Earley_Set_ID earley_set, @
@@ -3304,11 +3362,13 @@ Return value: On success, returns a non-negative integer.
 On failure, returns @minus{}2.
 @end deftypefun
 
+@anchor{marpa_r_furthest_earleme}
 @deftypefun @code{unsigned int} marpa_r_furthest_earleme (Marpa_Recognizer @var{r})
 Return value: On success, the furthest earleme.
 Always succeeds.
 @end deftypefun
 
+@anchor{marpa_r_latest_earley_set}
 @deftypefun Marpa_Earley_Set_ID marpa_r_latest_earley_set (Marpa_Recognizer @var{r})
 This method returns the Earley set ID (ordinal) of the latest Earley set.
 Applications that want the
@@ -3322,6 +3382,7 @@ Return value: On success, the ID of the latest Earley set.
 Always succeeds.
 @end deftypefun
 
+@anchor{marpa_r_latest_earley_set_value_set}
 @deftypefun int marpa_r_latest_earley_set_value_set (@
   Marpa_Recognizer @var{r}, @
   int value)
@@ -3334,6 +3395,7 @@ Return value: On success, the new value of @var{earley_set}.
 On failure, @minus{}2.
 @end deftypefun
 
+@anchor{marpa_r_latest_earley_set_values_set}
 @deftypefun int marpa_r_latest_earley_set_values_set (@
   Marpa_Recognizer @var{r}, @
   int value, @
@@ -3352,6 +3414,7 @@ On failure, returns @minus{}2.
 @node Other parse status methods
 @section Other parse status methods
 
+@anchor{marpa_r_completion_symbol_activate}
 @deftypefun int marpa_r_completion_symbol_activate ( @
   Marpa_Recognizer @var{r}, @
   Marpa_Symbol_ID @var{sym_id}, @
@@ -3385,8 +3448,10 @@ the method fails.
 On failure, @minus{}2 is returned.
 @end deftypefun
 
+@anchor{marpa_r_earley_item_warning_threshold_set}
 @deftypefun int marpa_r_earley_item_warning_threshold_set (Marpa_Recognizer @var{r}, @
     int @var{threshold})
+@anchor{marpa_r_earley_item_warning_threshold}
 @deftypefunx int marpa_r_earley_item_warning_threshold (Marpa_Recognizer @var{r})
 
 These methods, respectively, set and query
@@ -3415,6 +3480,7 @@ after the method call is finished.
 Always succeeds.
 @end deftypefun
 
+@anchor{marpa_r_expected_symbol_event_set}
 @deftypefun int marpa_r_expected_symbol_event_set ( @
   Marpa_Recognizer @var{r}, @
   Marpa_Symbol_ID @var{symbol_id}, @
@@ -3445,6 +3511,7 @@ if it is the ID of an nulling, inaccessible for unproductive symbol;
 or on other failure.
 @end deftypefun
 
+@anchor{marpa_r_is_exhausted}
 @deftypefun int marpa_r_is_exhausted (Marpa_Recognizer @var{r})
 A parser is ``exhausted'' if it cannot accept any more input.
 Both successful and failed parses can be exhausted.
@@ -3458,6 +3525,7 @@ Return value:
 Always succeeds.
 @end deftypefun
 
+@anchor{marpa_r_nulled_symbol_activate}
 @deftypefun int marpa_r_nulled_symbol_activate ( @
   Marpa_Recognizer @var{r}, @
   Marpa_Symbol_ID @var{sym_id}, @
@@ -3491,6 +3559,7 @@ the method fails.
 On failure, @minus{}2 is returned.
 @end deftypefun
 
+@anchor{marpa_r_prediction_symbol_activate}
 @deftypefun int marpa_r_prediction_symbol_activate ( @
   Marpa_Recognizer @var{r}, @
   Marpa_Symbol_ID @var{sym_id}, @
@@ -3524,6 +3593,7 @@ the method fails.
 On failure, @minus{}2 is returned.
 @end deftypefun
 
+@anchor{marpa_r_terminals_expected}
 @deftypefun int marpa_r_terminals_expected ( @
     Marpa_Recognizer @var{r}, @
     Marpa_Symbol_ID* @var{buffer})
@@ -3543,6 +3613,7 @@ in @var{buffer}.
 On failure, @minus{}2.
 @end deftypefun
 
+@anchor{marpa_r_terminal_is_expected}
 @deftypefun int marpa_r_terminal_is_expected ( @
     Marpa_Recognizer @var{r}, @
     Marpa_Symbol_ID @var{symbol_id})
@@ -3593,6 +3664,7 @@ call the
 @code{marpa_r_progress_report_finish()}
 method.
 
+@anchor{marpa_r_progress_report_reset}
 @deftypefun int marpa_r_progress_report_reset ( @
   Marpa_Recognizer @var{r})
 Resets the progress report.
@@ -3608,6 +3680,7 @@ Return value: On success, a non-negative value.
 On failure, @minus{}2.
 @end deftypefun
 
+@anchor{marpa_r_progress_report_start}
 @deftypefun int marpa_r_progress_report_start ( @
   Marpa_Recognizer @var{r}, @
   Marpa_Earley_Set_ID @var{set_id})
@@ -3634,6 +3707,7 @@ if @var{set_id} does not exist;
 or on other failure, @minus{}2.
 @end deftypefun
 
+@anchor{marpa_r_progress_report_finish}
 @deftypefun int marpa_r_progress_report_finish ( @
   Marpa_Recognizer @var{r} )
 Destroys the report of the progress at Earley set @var{set_id}
@@ -3650,6 +3724,7 @@ or on other failure.
 On success, a non-negative value.
 @end deftypefun
 
+@anchor{marpa_r_progress_item}
 @deftypefun Marpa_Rule_ID marpa_r_progress_item ( @
   Marpa_Recognizer @var{r}, @
   int* @var{position}, @
@@ -3706,6 +3781,7 @@ method.
 @node Bocage constructor
 @section Creating a new bocage
 
+@anchor{marpa_b_new}
 @deftypefun Marpa_Bocage marpa_b_new (Marpa_Recognizer @var{r}, @
     Marpa_Earley_Set_ID @var{earley_set_ID})
 
@@ -3731,6 +3807,7 @@ On failure, @code{NULL}.
 
 @node Bocage reference counting
 @section  Reference counting
+@anchor{marpa_b_ref}
 @deftypefun Marpa_Bocage marpa_b_ref (Marpa_Bocage @var{b})
 Increases the reference count by 1.
 Not needed by most applications.
@@ -3740,6 +3817,7 @@ On success, @var{b}.
 On failure, @code{NULL}.
 @end deftypefun
 
+@anchor{marpa_b_unref}
 @deftypefun void marpa_b_unref (Marpa_Bocage @var{b})
 Decreases the reference count by 1,
 destroying @var{b} once the reference count reaches
@@ -3757,6 +3835,7 @@ to zero, it too is destroyed.
 
 @node Bocage accessor
 @section  Accessors
+@anchor{marpa_b_ambiguity_metric}
 @deftypefun int marpa_b_ambiguity_metric (Marpa_Bocage @var{b})
 Returns an ambiguity metric.
 The metric is 1 is the parse is unambiguous.
@@ -3776,6 +3855,7 @@ Failures: On failure, @minus{}2.
 
 @end deftypefun
 
+@anchor{marpa_b_is_null}
 @deftypefun int marpa_b_is_null (Marpa_Bocage @var{b})
 Return value on success:
 A number greater than or equal to 1 if the bocage is for a null parse;
@@ -3817,6 +3897,7 @@ This is expected to change.
 @node Ordering constructor
 @section Creating an ordering
 
+@anchor{marpa_o_new}
 @deftypefun Marpa_Order marpa_o_new ( @
     Marpa_Bocage @var{b})
 Creates a new ordering object, with a reference count of 1.
@@ -3830,6 +3911,7 @@ On failure, @code{NULL}.
 @node Ordering reference counting
 @section Reference counting
 
+@anchor{marpa_o_ref}
 @deftypefun Marpa_Order marpa_o_ref ( @
     Marpa_Order @var{o})
 Increases the reference count by 1.
@@ -3840,6 +3922,7 @@ On success, @var{o}.
 On failure, @code{NULL}.
 @end deftypefun
 
+@anchor{marpa_o_unref}
 @deftypefun void marpa_o_unref ( @
     Marpa_Order @var{o})
 Decreases the reference count by 1,
@@ -3862,6 +3945,7 @@ base grammar, if necessary.
 
 @node Order accessor
 @section  Accessors
+@anchor{marpa_o_ambiguity_metric}
 @deftypefun int marpa_o_ambiguity_metric (Marpa_Order @var{o})
 Returns an ambiguity metric.
 The metric is 1 is the parse is unambiguous.
@@ -3891,6 +3975,7 @@ Failures: On failure, @minus{}2.
 
 @end deftypefun
 
+@anchor{marpa_o_is_null}
 @deftypefun int marpa_o_is_null (Marpa_Order @var{o})
 Return value on success:
 A number greater than or equal to 1 if the ordering is for a null parse;
@@ -3903,9 +3988,11 @@ Failures: On failure, @minus{}2.
 @node Non-default ordering
 @section Non-default ordering
 
+@anchor{marpa_o_high_rank_only_set}
 @deftypefun int marpa_o_high_rank_only_set ( @
     Marpa_Order @var{o}, @
     int @var{flag})
+@anchor{marpa_o_high_rank_only}
 @deftypefunx int marpa_o_high_rank_only ( @
     Marpa_Order @var{o})
 These methods, respectively, set and query
@@ -3929,6 +4016,7 @@ the call.
 On failure, @minus{}2.
 @end deftypefun
 
+@anchor{marpa_o_rank}
 @deftypefun int marpa_o_rank ( Marpa_Order @var{o} )
 By default, the ordering of parse trees is arbitrary.
 This method causes the ordering to be ranked
@@ -3983,6 +4071,7 @@ to position it to the next parse tree.
 @node Tree constructor
 @section Creating a new tree iterator
 
+@anchor{marpa_t_new}
 @deftypefun Marpa_Tree marpa_t_new (Marpa_Order @var{o})
 Creates a new tree iterator, with a reference count of 1.
 The reference count of its parent ordering object, @var{o},
@@ -4001,6 +4090,7 @@ On failure, @code{NULL}.
 @node Tree reference counting
 @section Reference counting
 
+@anchor{marpa_t_ref}
 @deftypefun Marpa_Tree marpa_t_ref (Marpa_Tree @var{t})
 Increases the reference count by 1.
 Not needed by most applications.
@@ -4010,6 +4100,7 @@ On success, @var{t}.
 On failure, @code{NULL}.
 @end deftypefun
 
+@anchor{marpa_t_unref}
 @deftypefun void marpa_t_unref (Marpa_Tree @var{t})
 Decreases the reference count by 1,
 destroying @var{t} once the reference count reaches
@@ -4032,6 +4123,7 @@ base grammar, if necessary.
 @node Tree iteration
 @section Iterating through the trees
 
+@anchor{marpa_t_next}
 @deftypefun int marpa_t_next ( @
         Marpa_Tree @var{t})
 Positions @var{t} at the next parse tree
@@ -4056,6 +4148,7 @@ If the tree iterator is exhausted, @minus{}1.
 On failure, @minus{}2.
 @end deftypefun
 
+@anchor{marpa_t_parse_count}
 @deftypefun int marpa_t_parse_count ( @
         Marpa_Tree @var{t})
 The parse counter counts the number of parse trees
@@ -4425,6 +4518,7 @@ unvisited stack locations.
 @node Valuator constructor
 @section Creating a new valuator
 
+@anchor{marpa_v_new}
 @deftypefun Marpa_Value marpa_v_new ( @
     Marpa_Tree @var{t} @
 )
@@ -4450,6 +4544,7 @@ On failure, @code{NULL}.
 @node Valuator reference counting
 @section Reference counting
 
+@anchor{marpa_v_ref}
 @deftypefun Marpa_Value marpa_v_ref (Marpa_Value @var{v})
 Increases the reference count by 1.
 Not needed by most applications.
@@ -4459,6 +4554,7 @@ On success, @var{v}.
 On failure, @code{NULL}.
 @end deftypefun
 
+@anchor{marpa_v_unref}
 @deftypefun void marpa_v_unref ( @
     Marpa_Value @var{v})
 Decreases the reference count by 1,
@@ -4482,6 +4578,7 @@ base grammar, if necessary.
 @node Stepping through the valuator
 @section Stepping through the valuator
 
+@anchor{marpa_v_step}
 @deftypefun Marpa_Step_Type marpa_v_step ( @
     Marpa_Value @var{v})
 This method ``steps through'' the valuator.
@@ -4718,6 +4815,7 @@ methods.
 @node Event methods
 @section Methods
 
+@anchor{marpa_g_event}
 @deftypefun Marpa_Event_Type marpa_g_event (Marpa_Grammar @var{g}, @
     Marpa_Event* @var{event}, @
                int @var{ix})
@@ -4743,6 +4841,7 @@ the locations pointed to by @var{event}
 are not changed.
 @end deftypefun
 
+@anchor{marpa_g_event_count}
 @deftypefun int marpa_g_event_count ( Marpa_Grammar g )
 Return value:  On success, the number of events.
 On failure, @minus{}2.
@@ -4874,8 +4973,9 @@ Suggested message: "Symbol was predicted".
 @node Error methods
 @section Error methods
 
-@deftypefun Marpa_Error_Code marpa_g_error @
-    ( Marpa_Grammar @var{g}, @
+@anchor{marpa_g_error}
+@deftypefun Marpa_Error_Code marpa_g_error ( @
+    Marpa_Grammar @var{g}, @
     const char** @var{p_error_string})
 When a method fails,
 this method allows the application to read
@@ -4888,8 +4988,9 @@ Return value: The last error code from a Libmarpa method.
 Always succeeds.
 @end deftypefun
 
-@deftypefun Marpa_Error_Code marpa_g_error_clear @
-    ( Marpa_Grammar @var{g} )
+@anchor{marpa_g_error_clear}
+@deftypefun Marpa_Error_Code marpa_g_error_clear ( @
+    Marpa_Grammar @var{g} )
 
 Sets the error code
 to @code{MARPA_ERR_NONE}.
@@ -5953,9 +6054,11 @@ as unsupported.
 @node Ranking methods
 @subsection Ranking methods
 
+@anchor{marpa_g_default_rank_set}
 @deftypefun Marpa_Rank marpa_g_default_rank_set ( @
     Marpa_Grammar @var{g}, @
     Marpa_Rank @var{rank})
+@anchor{marpa_g_default_rank}
 @deftypefunx Marpa_Rank marpa_g_default_rank ( @
     Marpa_Grammar @var{g})
 
@@ -5992,10 +6095,12 @@ call.
 
 @end deftypefun
 
+@anchor{marpa_g_symbol_rank_set}
 @deftypefun Marpa_Rank marpa_g_symbol_rank_set ( @
     Marpa_Grammar @var{g}, @
     Marpa_Symbol_ID @var{sym_id}, @
     Marpa_Rank @var{rank})
+@anchor{marpa_g_symbol_rank}
 @deftypefunx Marpa_Rank marpa_g_symbol_rank ( @
     Marpa_Grammar @var{g}, @
     Marpa_Symbol_ID sym_id)
@@ -6026,11 +6131,13 @@ call.
 @node Zero-width assertion methods
 @subsection Zero-width assertion methods
 
+@anchor{marpa_g_zwa_new}
 @deftypefun Marpa_Assertion_ID marpa_g_zwa_new ( @
     Marpa_Grammar @var{g}, @
     int @var{default_value})
 @end deftypefun
 
+@anchor{marpa_g_zwa_place}
 @deftypefun int marpa_g_zwa_place ( @
     Marpa_Grammar @var{g}, @
     Marpa_Assertion_ID @var{zwaid}, @
@@ -6038,6 +6145,7 @@ call.
     int @var{rhs_ix})
 @end deftypefun
 
+@anchor{marpa_r_zwa_default}
 @deftypefun int marpa_r_zwa_default ( @
     Marpa_Recognizer @var{r}, @
     Marpa_Assertion_ID @var{zwaid})
@@ -6045,6 +6153,7 @@ call.
 On success, returns previous default value of the assertion.
 @end deftypefun
 
+@anchor{marpa_r_zwa_default_set}
 @deftypefun int marpa_r_zwa_default_set ( @
     Marpa_Recognizer @var{r}, @
     Marpa_Assertion_ID @var{zwaid}, @
@@ -6054,6 +6163,7 @@ Changes default value to @var{default_value}.
 On success, returns previous default value of the assertion.
 @end deftypefun
 
+@anchor{marpa_g_highest_zwa_id}
 @deftypefun Marpa_Assertion_ID marpa_g_highest_zwa_id ( @
     Marpa_Grammar @var{g} )
 @end deftypefun
@@ -6066,6 +6176,7 @@ rejected rule previously recognized or predicted,
 and terminals previously scanned.
 The methods in this section provide that capability.
 
+@anchor{marpa_r_clean}
 @deftypefun Marpa_Earleme marpa_r_clean ( @
     Marpa_Recognizer @var{r})
 
@@ -6145,10 +6256,12 @@ some tricky debugging further down the road.
 @node Grammar methods dealing with unvalued symbols
 @subsection Grammar methods dealing with unvalued symbols
 
+@anchor{marpa_g_symbol_is_valued_set}
 @deftypefun int marpa_g_symbol_is_valued_set ( @
     Marpa_Grammar @var{g}, @
     Marpa_Symbol_ID @var{symbol_id}, @
     int value)
+@anchor{marpa_g_symbol_is_valued}
 @deftypefunx int marpa_g_symbol_is_valued ( @
     Marpa_Grammar @var{g}, @
     Marpa_Symbol_ID @var{symbol_id})
@@ -6192,10 +6305,12 @@ the
 @code{marpa_v_rule_is_valued()}
 method more convenient.
 
+@anchor{marpa_v_symbol_is_valued_set}
 @deftypefun int marpa_v_symbol_is_valued_set ( @
     Marpa_Value @var{v}, @
     Marpa_Symbol_ID @var{sym_id}, @
     int @var{status} )
+@anchor{marpa_v_symbol_is_valued}
 @deftypefunx int marpa_v_symbol_is_valued ( @
     Marpa_Value @var{v}, @
     Marpa_Symbol_ID @var{sym_id} )
@@ -6221,10 +6336,12 @@ If @var{value} is not either 0 or 1,
 or on other failure, @minus{}2.
 @end deftypefun
 
+@anchor{marpa_v_rule_is_valued_set}
 @deftypefun int marpa_v_rule_is_valued_set ( @
     Marpa_Value @var{v}, @
     Marpa_Rule_ID @var{rule_id}, @
     int @var{status} )
+@anchor{marpa_v_rule_is_valued}
 @deftypefunx int marpa_v_rule_is_valued ( @
     Marpa_Value @var{v}, @
     Marpa_Rule_ID @var{rule_id} )
@@ -6259,6 +6376,7 @@ If @var{value} is not either 0 or 1,
 or on other failure, @minus{}2.
 @end deftypefun
 
+@anchor{marpa_v_valued_force}
 @deftypefun int marpa_v_valued_force ( @
     Marpa_Value @var{v})
 
