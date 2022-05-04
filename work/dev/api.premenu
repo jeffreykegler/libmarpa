@@ -12,6 +12,7 @@ is for Libmarpa @value{VERSION}.
 
 Copyright @copyright{} 2018 Jeffrey Kegler.
 
+@anchor{license}
 @quotation
 Permission is hereby granted, free of charge, to any person obtaining a
 copy of this software and associated documentation files (the ``Software''),
@@ -973,6 +974,60 @@ time objects.
 @node Failure
 @chapter Failure
 
+As a reminder,
+no language in this chapter
+(or, for that matter, in this document)
+should be read as providing,
+or suggesting the existence of,
+a warranty.
+@xref{license}.
+Also, @pxref{No warranty}.
+
+@node Libmarpa's approach to failure
+@section Libmarpa's approach to failure
+
+Libmarpa is a C language library,
+and inherits the traditional C language approach to
+avoiding and handling user programming errors.
+This approach will strike readers unfamiliar with this
+tradition as putting an appallingly large
+portion of the burden of avoiding application
+programmer error
+on the application programmer themself.
+
+But in the early 1970's, when the C language first stabilized,
+the alternative,
+and the consensus choice for its target applications
+was assembly language.
+In that context, C was radical in its willingness to
+incur a price in efficiency in order to protect the programmer
+from themself.
+C was considered to take a excessively "hand holding"
+approach which very much flew in the face of consensus.
+
+The decades have made a large difference in the trade-offs,
+and the consensus about the degree to which even a
+low-level language should protect the user has changed.
+It seems inevitable that C will be replaced as the low-level
+language of choice, by a language which places
+fewer burdens on the programmer,
+and more on the machine.
+The question seems to be not whether C will be dethroned
+as the ``go to'' language for low-level progamming,
+but when, and by which alternative.
+
+Modern hardware makes many simple checks essentially cost-free,
+and Libmarpa's efforts to protect the application programmer go well
+beyond what
+would have been considered best practice in the past.
+But it remains a C language library.
+But, on the whole, the Libmarpa application programmer must be prepared to exercise
+the high degree of carefulness traditionally required by its C language environment.
+Libmarpa
+places the burden of avoiding irrecoverable failures,
+and of handling recoverable failures,
+largely on the application programmer.
+
 @node User non-conformity to specified behavior
 @section User non-conformity to specified behavior
 
@@ -990,7 +1045,7 @@ contain a ``bug''.
 In addition, some specified behaviors are explicitly stated as characterizing
 a primary branch of the processing,
 rather than made mandatory for all successful processing.
-Non-conformities to non-mandatory behaviors can be efficiently recoverable,
+Non-conformity to non-mandatory behaviors can be efficiently recoverable,
 and is often intentional.
 
 This chapter describes how
@@ -1015,40 +1070,20 @@ usually be abbreviated to
 @dfindex success, Libmarpa application programming
 @dfindex success
 @dfn{Libmarpa application programming success}
-occurs when there has been no irrecoverable failure,
-and every recoverable failure has been successfully
-handled.
-In contexts where no ambiguity arises,
+in a context
+is defined as the absence of unrecovered failure in that context.
+When no ambiguity arises,
 @dfn{Libmarpa application programming success}
 is almost
 always abbreviated to
 @dfn{success}.
-
-As a reminder,
-no language in this chapter
-(or, for that matter, in this document)
-should be read as providing,
-or suggesting the existence of,
-a warranty.
-See the license for Libmarpa,
-and the chapter @ref{No warranty}.
+For example, the success of an application means the application
+ran without any irrecoverable failures,
+and that it recovered from all the recoverable failures that were detected.
 
 @node Classifying failure
 @section Classifying failure
 
-For better or for worse,
-and in the name of power and efficiency,
-C language, and its libraries,
-place the burden of avoiding irrecoverable failures,
-and of handling recoverable failures,
-largely on the application programmer.
-Progress has changed our views on this trade-off,
-and modern hardware makes many simple checks essentially cost-free,
-so that Libmarpa's efforts to protect the application programmer go beyond what
-would have been considered best practice in the past.
-
-But, on the whole, the Libmarpa application programmer must be prepared to exercise
-the high degree of carefulness traditionally required by its C language environment.
 A Libmarpa application programming failure,
 unless specified otherwise,
 is an irrecoverable failure.
@@ -1088,7 +1123,7 @@ A
 @dfindex failure, trivially recoverable
 @dfn{trivially recoverable failure}
 is recovered from
-the immediately after it occurs.
+immediately after it occurs.
 Put another way, the application programmer
 may consider a recoverable error as an advisory,
 and proceed immediately with normal processing.
@@ -1106,10 +1141,11 @@ A recoverable failure is called a
 if it has no associated error code.
 (For more on error codes, see @ref{Error codes}.)
 
-All failures fall into one of four types.
+All failures fall into one of five types.
 In order of severity, these are
 @itemize
 @item @strong{memory allocation failures},
+@item @strong{undetected failures},
 @item @strong{irrecoverable hard failures},
 @item @strong{recoverable hard failures}, and
 @item @strong{soft failures}.
@@ -1124,7 +1160,7 @@ Even effective error handling assumes the ability to allocate memory,
 so that the practice has been, in the event of a memory allocation failure,
 to take Draconian action.
 On
-@dfindex memory allocation failure
+@dfindex memory allocation failur
 @dfindex failure, memory allocation
 @dfn{memory allocation failure},
 as with all irrecoverable failures,
@@ -1139,8 +1175,42 @@ whether normally or abnormally,
 up to the application programmer.
 
 Memory allocation failure does not have an error code.
-As a pedantic matter, memory allocation failure is neither a hard
-or a soft failure.
+As a pedantic matter, memory allocation failure
+is neither a hard or a soft failure.
+
+@node Undetected failure
+@section Undetected failure
+
+An
+@dfindex undetected failure
+@dfindex failure, undetected
+@dfn{undetected failure} is a failure that the Libmarpa
+library does not detect.
+Many failures are impossible or impractical
+for a C library to detect.
+Two examples of failure that the Libmarpa methods do not detect
+are writes outside the bounds of allocated memory,
+and use of memory after it has been freed.
+C is not strongly typed, and arguments
+of Libmarpa routines undergo only a few simple tests,
+tests which are inadequate to detect many of the potential problems.
+
+By undetected failure we emphasize that we mean failures undetected
+@strong{by the Libmarpa methods}.
+In the examples just given,
+there exist tools that can help the programmer
+detect memory errors
+and other tools exist
+to check the sanity of method arguments.
+
+This document points out some of the potentially undetected problems,
+when doing so seems more helpful than tedious.
+But any attempt to list all the undetected problems would be too large
+and unwieldy to be useful.
+
+Undetected failure is always irrecoverable.
+An undetected failure 
+is neither a hard or a soft failure.
 
 @node Irrecoverable hard failure
 @section Irrecoverable hard failure
@@ -5325,7 +5395,7 @@ The recognizer is ``inconsistent'',
 usually because the user has rejected one or
 more rules or terminals,
 and has not yet called
-the 
+the
 @code{marpa_r_consistent()}
 method.
 Numeric value: 95.
