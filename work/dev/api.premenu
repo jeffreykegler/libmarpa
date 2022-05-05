@@ -2150,7 +2150,7 @@ In addition to BNF rules, Marpa also allows sequence rules,
 which are created by
 the
 @code{marpa_g_sequence_new()} method.
-@xref{marpa_g_sequence_new.  marpa_g_sequence_new()}.
+@xref{marpa_g_sequence_new,marpa_g_sequence_new()}.
 
 Sequence rules and BNF rules are both rules:
 They share the same series of rule IDs,
@@ -2177,7 +2177,7 @@ in the array of symbols @var{rhs_ids}.
 @end itemize
 
 @strong{Return value}:  On success, the ID of the new external rule.
-On failure, @minus{}2.
+On hard failure, @minus{}2.
 
 @end deftypefun
 
