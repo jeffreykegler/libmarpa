@@ -1454,24 +1454,10 @@ starts with the label ``@strong{Return Value}''.
 statuses: success, hard failure, or soft failure.
 @item A return status of hard failure indicates that the method detected
 a hard failure.
-@item A return status of soft failure indicates that the method detected
-a soft failure.
-@item A return status of success indicates that the method did not detect
-any failures.
-@item If a method allows soft failure, this is explicitly stated
-in its return value summary,
-and the method description will state
-the circumstances under which the soft failure occurs,
-and what the application must do to recover.
-@item If a method allows a recoverable hard failure, this is explicitly stated
-in its return value summary,
-along with the associated error code,
-the circumstances under which the hard failure occurs,
-and what the application must do to recover.
-@item If a method call succeeds, the value of the error code is
-indeterminate.
-@item If a method call soft fails, the value of the error code is
-indeterminate.
+@item A method may have several kinds of hard failure,
+including several kinds of irrecoverable hard failure
+and several kinds of recoverable hard failure.
+On return, these can be distinguished by their error codes.
 @item If a method call hard fails,
 its error code is that associated with the hard failure.
 Unless stated otherwise in the return value summary,
@@ -1479,6 +1465,26 @@ the error code is set in the base
 grammar of the method call, and may be accessed
 with the methods described below
 (@ref{Error methods}).
+@item If a method allows a recoverable hard failure, this is explicitly stated
+in its return value summary,
+along with the associated error code.
+The method description with state
+the circumstances under which the recoverable hard failure occurs,
+and what the application must do to recover.
+@item A return status of soft failure indicates that the method detected
+a soft failure.
+@item Every method has at most one kind of soft failure.
+@item If a method allows a soft failure, this is explicitly stated
+in its return value summary,
+and the method description will state
+the circumstances under which the soft failure occurs,
+and what the application must do to recover.
+@item If a method call soft fails, the value of the error code is
+indeterminate.
+@item A return status of success indicates that the method did not detect
+any failures.
+@item If a method call succeeds, the value of the error code is
+indeterminate.
 @end itemize
 
 @node Static methods
@@ -1952,11 +1958,11 @@ On hard failure, @minus{}2.
 @anchor{marpa_g_symbol_new}
 @deftypefun Marpa_Symbol_ID marpa_g_symbol_new (Marpa_Grammar @var{g})
 
-Creates a new symbol.
-The symbol ID will be a non-negative integer.
+When successful, creates a new symbol in grammar @var{g}.
 
-Return value: On success, the ID of a new symbol;
-On failure, @minus{}2.
+@strong{Return value}: On success, the ID of the new symbol;
+which will be a non-negative integer.
+On hard failure, @minus{}2.
 
 @end deftypefun
 
@@ -1965,9 +1971,9 @@ On failure, @minus{}2.
 
 @anchor{marpa_g_highest_rule_id}
 @deftypefun int marpa_g_highest_rule_id (Marpa_Grammar @var{g})
-Return value: On success, the numerically largest rule ID
+@strong{Return value}: On success, the numerically largest rule ID
 of @var{g}.
-On failure, @minus{}2.
+On hard failure, @minus{}2.
 @end deftypefun
 
 @anchor{marpa_g_rule_is_accessible}
@@ -1981,12 +1987,17 @@ if it can be reached from the start symbol.
 A rule is accessible if and only if its LHS symbol is accessible.
 The start rule is always an accessible rule.
 
-Return value: On success, 1 if rule @var{rule_id}
-is accessible, 0 if not.
-If @var{rule_id} is well-formed, but there is no
-such rule, @minus{}1.
-If the grammar
-is not precomputed, or on other failure, @minus{}2.
+Soft fails if @var{rule_id} is well-formed (a non-negative integer),
+but a rule with that ID does not exist.
+The soft failure is trivially recoverable.
+A common hard failure is calling this method with
+a grammar that is not precomputed.
+
+@strong{Return value}: On success 1 or 0:
+1 if rule with ID @var{rule_id} is accessible, 0 if not.
+On soft failure, @minus{}1.
+On hard failure, @minus{}2.
+
 @end deftypefun
 
 @anchor{marpa_g_rule_is_nullable}
@@ -2000,11 +2011,17 @@ if it sometimes produces the empty string.
 A @strong{nulling} rule is always a @strong{nullable} rule,
 but not all @strong{nullable} rules are @strong{nulling} rules.
 
-Return value: On success,
-1 if rule @var{ruleid} is nullable, 0 if not.
-If @var{rule_id} is well-formed, but there is no
-such rule, @minus{}1.
-If the grammar is not precomputed, or on other failure, @minus{}2.
+Soft fails if @var{rule_id} is well-formed (a non-negative integer),
+but a rule with that ID does not exist.
+The soft failure is trivially recoverable.
+A common hard failure is calling this method with
+a grammar that is not precomputed.
+
+@strong{Return value}: On success 1 or 0:
+1 if the rule with ID @var{rule_id} is nullable, 0 if not.
+On soft failure, @minus{}1.
+On hard failure, @minus{}2.
+
 @end deftypefun
 
 @anchor{marpa_g_rule_is_nulling}
@@ -2016,11 +2033,17 @@ A rule is
 @dfn{nulling}
 if it always produces the empty string.
 
-Return value: On success,
-1 if rule @var{ruleid} is nulling, 0 if not.
-If @var{rule_id} is well-formed, but there is no
-such rule, @minus{}1.
-If the grammar is not precomputed, or on other failure, @minus{}2.
+Soft fails if @var{rule_id} is well-formed (a non-negative integer),
+but a rule with that ID does not exist.
+The soft failure is trivially recoverable.
+A common hard failure is calling this method with
+a grammar that is not precomputed.
+
+@strong{Return value}: On success 1 or 0:
+1 if the rule with ID @var{rule_id} is nulling, 0 if not.
+On soft failure, @minus{}1.
+On hard failure, @minus{}2.
+
 @end deftypefun
 
 @anchor{marpa_g_rule_is_loop}
@@ -2040,12 +2063,17 @@ But nothing forces an application to do this,
 and Marpa will successfully parse and evaluate grammars with
 loop rules.
 
-Return value: On success,
-1 if rule @var{rule_id} is a loop rule, 0 if not.
-If @var{rule_id} is well-formed, but there is no
-such rule, @minus{}1.
-If the grammar
-is not precomputed, or on other failure, @minus{}2.
+Soft fails if @var{rule_id} is well-formed (a non-negative integer),
+but a rule with that ID does not exist.
+The soft failure is trivially recoverable.
+A common hard failure is calling this method with
+a grammar that is not precomputed.
+
+@strong{Return value}: On success 1 or 0:
+1 if the rule with ID @var{rule_id} is a loop rule, 0 if not.
+On soft failure, @minus{}1.
+On hard failure, @minus{}2.
+
 @end deftypefun
 
 @anchor{marpa_g_rule_is_productive}
@@ -2063,11 +2091,17 @@ so that a nullable rule is always a productive rule.
 For that same reason,
 an empty rule is considered productive.
 
-Return value: On success,
-1 if rule @var{rule_id} is productive, 0 if not.
-If @var{rule_id} is well-formed, but there is no
-such rule, @minus{}1.
-If the grammar is not precomputed, or on other failure, @minus{}2.
+Soft fails if @var{rule_id} is well-formed (a non-negative integer),
+but a rule with that ID does not exist.
+The soft failure is trivially recoverable.
+A common hard failure is calling this method with
+a grammar that is not precomputed.
+
+@strong{Return value}: On success 1 or 0:
+1 if the rule with ID @var{rule_id} is productive, 0 if not.
+On soft failure, @minus{}1.
+On hard failure, @minus{}2.
+
 @end deftypefun
 
 @anchor{marpa_g_rule_length}
@@ -2076,18 +2110,31 @@ If the grammar is not precomputed, or on other failure, @minus{}2.
     Marpa_Rule_ID @var{rule_id})
 The length of a rule is the number of symbols on its RHS.
 
-Return value: On success, the length of rule @var{rule_id}.
-On failure, @minus{}2.
+Soft fails if @var{rule_id} is well-formed (a non-negative integer),
+but a rule with that ID does not exist.
+The soft failure is trivially recoverable.
+
+@strong{Return value}: On success,
+the length of the rule with ID @var{rule_id}.
+On soft failure, @minus{}1.
+On hard failure, @minus{}2.
+
 @end deftypefun
 
 @anchor{marpa_g_rule_lhs}
 @deftypefun Marpa_Symbol_ID marpa_g_rule_lhs ( @
     Marpa_Grammar @var{g}, @
     Marpa_Rule_ID @var{rule_id})
-Return value: On success, the LHS symbol of rule @var{rule_id}.
-If @var{rule_id} is well-formed, but there is no
-such rule, @minus{}1.
-On other failure, @minus{}2.
+
+Soft fails if @var{rule_id} is well-formed (a non-negative integer),
+but a rule with that ID does not exist.
+The soft failure is trivially recoverable.
+
+@strong{Return value}: On success, the ID of the LHS
+symbol of the rule with ID @var{rule_id}.
+On soft failure, @minus{}1.
+On hard failure, @minus{}2.
+
 @end deftypefun
 
 @anchor{marpa_g_rule_new}
@@ -2095,22 +2142,28 @@ On other failure, @minus{}2.
     Marpa_Symbol_ID @var{lhs_id}, @
  Marpa_Symbol_ID *@var{rhs_ids}, @
      int @var{length})
-Creates a new external BNF rule in grammar @var{g}.
+
+On success, creates a new external BNF rule in grammar @var{g}.
 The ID of the new rule will be a non-negative integer,
 which will be unique to that rule.
 In addition to BNF rules, Marpa also allows sequence rules,
-which are created by another method:
-@code{marpa_g_sequence_new()}.
-Sequence rules and BNF rules are numbered in the same series,
-so that a BNF rule will never have the same rule ID as a sequence
-rule, and vice versa.
+which are created by
+the
+@code{marpa_g_sequence_new()} method.
+@xref{marpa_g_sequence_new.  marpa_g_sequence_new()}.
+
+Sequence rules and BNF rules are both rules:
+They share the same series of rule IDs,
+and are accessed and manipulated by the same methods,
+with the only differences being as noted
+in the descriptions of those methods.
 
 The LHS symbol is @var{lhs_id},
 and there are @var{length} symbols on the RHS.
 The RHS symbols are in an array
 pointed to by @var{rhs_ids}.
 
-Possible failures, with their error codes, include:
+Possible hard failures, with their error codes, include:
 @itemize
 @item @code{MARPA_ERR_SEQUENCE_LHS_NOT_UNIQUE}: The LHS symbol is the same
 as that of a sequence rule.
@@ -2123,8 +2176,9 @@ and if its RHS symbols match one for one those
 in the array of symbols @var{rhs_ids}.
 @end itemize
 
-Return value:  On success, the ID of new external rule.
+@strong{Return value}:  On success, the ID of the new external rule.
 On failure, @minus{}2.
+
 @end deftypefun
 
 @anchor{marpa_g_rule_rhs}
@@ -2132,18 +2186,27 @@ On failure, @minus{}2.
     Marpa_Grammar @var{g}, @
     Marpa_Rule_ID @var{rule_id}, @
     int @var{ix})
-Returns the ID of the symbol in position @var{ix}
-in the RHS of rule @var{rule_id}.
-The RHS position, @var{ix}, is zero-based.
 
-Return value: On success,
-the ID of the symbol in position @var{ix}
-on the rules RHS.
-If @var{rule_id} is well-formed, but there is no
-such rule, @minus{}1.
-If @var{ix} is greater than or equal to the length of
-the rule,
-or on other failure, @minus{}2.
+When successful, returns the ID of the symbol at index @var{ix}
+in the RHS of the rule with ID @var{rule_id}.
+The indexing of RHS symbols is zero-based.
+
+Soft fails if @var{rule_id} is well-formed (a non-negative integer),
+but a rule with that ID does not exist.
+The soft failure is trivially recoverable.
+
+A common hard failure is for @var{ix}
+not to be a valid index of the RHS.
+This happens if @var{ix}
+is less than zero,
+or or if @var{ix}  is greater than or equal to the length of
+the rule.
+
+@strong{Return value}: On success, a symbol ID,
+which is always non-negative.
+On soft failure, @minus{}1.
+On hard failure, @minus{}2.
+
 @end deftypefun
 
 @node Sequences
