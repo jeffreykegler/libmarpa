@@ -2217,33 +2217,37 @@ On hard failure, @minus{}2.
     Marpa_Grammar @var{g}, @
     Marpa_Rule_ID @var{rule_id})
 
-Success returns:
-@code{marpa_g_rule_is_proper_separation()}
-succeeds if and only if @var{rule_id} is valid.
-If rule @var{rule_id}
-is a sequence rule where the proper separation flag
-is set, returns 1.
-On other success,
-including the case
-where rule @var{rule_id}
-is not a sequence rule, returns 0.
+When successful, returns
+@itemize
+@item 1 if @var{rule_id} is the ID of a sequence rule whose
+proper separation flag is set,
+@item 0 if @var{rule_id} is the ID of a sequence rule whose
+proper separation flag is not set,
+@item 0 if @var{rule_id} is the ID of a rule that is not
+a sequence rule.
+@end itemize
+Does not distinguish sequence rules without proper
+separation from non-sequence rules.
+That is,
+does not distinguish an unset proper separation flag
+from a
+proper separation flag which value is undefined
+because @var{rule_id} is the ID of a BNF rule.
+Applications which want to determine whether
+or not a rule is a sequence rule
+can use
+@code{marpa_g_sequence_min()} to do this.
+@xref{marpa_g_sequence_min,marpa_g_sequence_min()}.
 
-The
-@code{marpa_g_rule_is_proper_separation()}
-does not distinguish rules without proper
-separation from rules for which separation
-is not defined, because they are not
-sequence rules.
-Applications for which this distinction is
-important should use
-the
-@code{marpa_g_sequence_min()}
-method.
+Soft fails if @var{rule_id} is well-formed (a non-negative integer),
+but a rule with that ID does not exist.
+The soft failure is trivially recoverable.
 
-Failure returns:
-If @var{rule_id} is well-formed, but there is no
-such rule, returns @minus{}1.
-On other failure, @minus{}2.
+@strong{Return value}:
+On success, 1 or 0.
+On soft failure, @minus{}1.
+On hard failure, @minus{}2.
+
 @end deftypefun
 
 @anchor{marpa_g_sequence_min}
@@ -2251,19 +2255,32 @@ On other failure, @minus{}2.
     Marpa_Grammar @var{g}, @
     Marpa_Rule_ID @var{rule_id})
 
-Returns the mininum length of a sequence rule.
-This accessor can be also be used to test whether
+On successs, returns the mininum length of a sequence rule.
+Soft fails if a rule with ID @var{rule_id} exists,
+but is not a sequence rule.
+This soft failure is trivially recoverable
+and can used to test whether
 or not a rule is a sequence rule.
-@minus{}1 is returned if and only if the rule is valid
-but not a sequence rule.
 
-Return value:
-If rule @var{rule_id} is a sequence rule, its minimum length.
-If rule @var{rule_id} is valid, but is
-not the rule ID of sequence rule, @minus{}1.
-If @var{rule_id} is well-formed, but there is no
-such rule,
-or on other failure, @minus{}2.
+Hard fails irrecoverably if 
+@var{rule_id} is not well-formed (a non-negative number).
+Also, hard fails irrecoverably if no rule with ID @var{rule_id} exists,
+even when @var{rule_id} is well formed.
+Note that,
+in its handling of the non-existence of a rule for its rule
+argument, this method differs from many of the other grammar
+methods.
+Grammar methods which take a rule ID argument
+more often treat the
+non-existence of rule for a well-formed
+rule ID as a soft, recoverable, failure.
+
+@strong{Return value}:
+On success, the minimum length of the sequence rule
+with ID @var{rule_id}, which is always non-negative.
+On soft failure, @minus{}1.
+On hard failure, @minus{}2.
+
 @end deftypefun
 
 @anchor{marpa_g_sequence_new}
