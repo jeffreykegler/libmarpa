@@ -1440,9 +1440,9 @@ In this case, the programmer must distinguish the two return statuses
 based on the error code,
 and a programmer who is relying too heavily on the general
 conventions will fall into a trap.
-(See the description of the return values of
-@code{marpa_g_rule_rank_set()}
-in @ref{Ranks}.)
+For a the description of the return values of
+@code{marpa_g_rule_rank_set()},
+@pxref{Rank methods}.
 
 @node How to read the method descriptions
 @section How to read the method descriptions
@@ -1753,8 +1753,8 @@ zero.
 
 @end deftypefun
 
-@node Symbols
-@section Symbols
+@node Symbol methods
+@section Symbol methods
 
 @anchor{marpa_g_start_symbol}
 @deftypefun Marpa_Symbol_ID marpa_g_start_symbol (Marpa_Grammar @var{g})
@@ -1986,8 +1986,8 @@ On hard failure, @minus{}2.
 
 @end deftypefun
 
-@node Rules
-@section Rules
+@node Rule methods
+@section Rule methods
 
 @anchor{marpa_g_highest_rule_id}
 @deftypefun int marpa_g_highest_rule_id (Marpa_Grammar @var{g})
@@ -2229,8 +2229,8 @@ On hard failure, @minus{}2.
 
 @end deftypefun
 
-@node Sequences
-@section Sequences
+@node Sequence methods
+@section Sequence methods
 
 @anchor{marpa_g_rule_is_proper_separation}
 @deftypefun int marpa_g_rule_is_proper_separation ( @
@@ -2433,8 +2433,8 @@ On hard failure, @minus{}2.
 
 @end deftypefun
 
-@node Ranks
-@section Ranks
+@node Rank methods
+@section Rank methods
 
 @anchor{marpa_g_rule_rank}
 @deftypefun Marpa_Rank marpa_g_rule_rank ( @
@@ -2496,21 +2496,45 @@ The error code can be determined using
 
 @end deftypefun
 
+@anchor{marpa_g_rule_null_high}
+@deftypefun int marpa_g_rule_null_high ( @
+    Marpa_Grammar @var{g}, @
+    Marpa_Rule_ID rule_id)
+
+On success, returns a boolean whose value is 1
+iff ``null ranks high'' is set in the rule with ID @var{rule_id}.
+When a rule is created, it has ``null ranks high'' set.
+
+For more on the 
+``null ranks high'' setting, read the description of
+@code{marpa_g_rule_null_high_set()}.
+@xref{marpa_g_rule_null_high_set,marpa_g_rule_null_high_set()}.
+
+Soft fails iff @var{rule_id} is well-formed (a non-negative integer),
+but a rule with that ID does not exist.
+The soft failure is trivially recoverable.
+
+@strong{Return value}:
+On success, a boolean.
+On soft failure, @minus{}1.
+On hard failure, @minus{}2.
+
+@end deftypefun
+
 @anchor{marpa_g_rule_null_high_set}
 @deftypefun int marpa_g_rule_null_high_set ( @
     Marpa_Grammar @var{g}, @
     Marpa_Rule_ID @var{rule_id}, @
     int @var{flag})
-@anchor{marpa_g_rule_null_high}
-@deftypefunx int marpa_g_rule_null_high ( @
-    Marpa_Grammar @var{g}, @
-    Marpa_Rule_ID rule_id)
 
-These methods, respectively, set
-and query the ``null ranks high'' setting of the rule @var{rule_id}.
-The ``null ranks high'' setting is either 0 or 1.
-When @var{rule_id} is created, its ``null ranks high''
-setting is initialized to 0.
+On success,
+@itemize
+@item sets ``null ranks high'' in the rule with ID @var{rule_id} if the value
+of the boolean @var{flag} is 1;
+@item unsets ``null ranks high'' in the rule with ID @var{rule_id} if the value
+of the boolean @var{flag} is 0; and
+@item returns @var{flag}.
+@end itemize
 
 The ``null ranks high'' setting affects the ranking of rules
 with properly nullable symbols on their right hand side.
@@ -2519,447 +2543,24 @@ each instance in which it appears in a parse will have a pattern
 of nulled and non-nulled symbols.
 Such a pattern is called a ``null variant''.
 
-If the ``null ranks high'' setting is 0 (the default),
-nulled symbols rank low.
-If the ``null ranks high'' setting is 1,
+If the ``null ranks high'' is set,
 nulled symbols rank high.
+If the ``null ranks high'' is unset is the default),
+nulled symbols rank low.
 Ranking of a null variants is done from left-to-right.
 
-The
-@code{marpa_g_rule_null_high_set()}
-method will
-return failure
-after the grammar has been precomputed.
-If there is no other cause of failure,
-the
-@code{marpa_g_rule_null_high()}
-method succeeds
-on both precomputed and unprecomputed grammars.
+Soft fails iff @var{rule_id} is well-formed (a non-negative integer),
+but a rule with that ID does not exist.
+The soft failure is trivially recoverable.
 
-Success return value:
-The value
-of the ``null ranks high'' flag @strong{after}
-the call.
+Hard fails if
+the grammar has been precomputed.
 
-Failure return value:
-If rule_id is well-formed, but there is no such rule, @minus{}1.
-On all other failures, @minus{}2.
+@strong{Return value}:
+On success, a boolean.
+On soft failure, @minus{}1.
+On hard failure, @minus{}2.
 
-@end deftypefun
-
-@section Events
-
-@anchor{marpa_g_completion_symbol_activate}
-@deftypefun int marpa_g_completion_symbol_activate ( @
-  Marpa_Grammar @var{g}, @
-  Marpa_Symbol_ID @var{sym_id}, @
-  int @var{reactivate} )
-
-Allows the user to deactivate and reactivate symbol completion
-events in the grammar.
-When a recognizer is created,
-the activation status of each of its events is initialized
-to the activation status of that event in the base grammar.
-If @var{reactivate} is zero, the event is deactivated
-in the grammar.
-If @var{reactivate} is one, the event is activated
-in the grammar.
-
-Symbol completion events are active by default if
-the symbol was set up for completion events in the
-grammar.
-If a symbol was not set up for completion events in
-the grammar, symbol completion events are inactive
-by default and any attempt to change that is a fatal error.
-
-The activation status of a completion event in the grammar
-can only be changed if the symbol is marked as a completion event symbol
-in the grammar,
-and before
-the grammar is precomputed.
-However, if a symbol is marked as a completion event symbol in
-the recognizer,
-the completion event can be deactivated
-and reactivated in the recognizer.
-
-Success cases:
-On success,
-the method returns the value of @var{reactivate}.
-The method succeeds trivially
-if the symbol is already set as indicated by
-@var{reactivate}.
-
-Failure cases:
-If the active status
-of the
-completion event for @var{sym_id}
-cannot be set as indicated by @var{reactivate},
-the method fails.
-On failure, @minus{}2 is returned.
-@end deftypefun
-
-@anchor{marpa_g_nulled_symbol_activate}
-@deftypefun int marpa_g_nulled_symbol_activate ( @
-  Marpa_Grammar @var{g}, @
-  Marpa_Symbol_ID @var{sym_id}, @
-  int @var{reactivate} )
-
-Allows the user to deactivate and reactivate symbol nulled
-events in the grammar.
-When a recognizer is created,
-the activation status of each of its events is initialized
-to the activation status of that event in the base grammar.
-If @var{reactivate} is zero, the event is deactivated
-in the grammar.
-If @var{reactivate} is one, the event is activated
-in the grammar.
-
-Symbol nulled events are active by default if
-the symbol was set up for nulled events in the
-grammar.
-If a symbol was not set up for nulled events in
-the grammar, symbol nulled events are inactive
-by default and any attempt to change that is a fatal error.
-
-The activation status of a nulled event in the grammar
-can only be changed if the symbol is marked as a nulled event symbol
-in the grammar,
-and before
-the grammar is precomputed.
-However, if a symbol is marked as a nulled event symbol in
-the recognizer,
-the nulled event can be deactivated
-and reactivated in the recognizer.
-
-Success cases:
-On success,
-the method returns the value of @var{reactivate}.
-The method succeeds trivially
-if the symbol is already set as indicated by
-@var{reactivate}.
-
-Failure cases:
-If the active status
-of the
-nulled event for @var{sym_id}
-cannot be set as indicated by @var{reactivate},
-the method fails.
-On failure, @minus{}2 is returned.
-@end deftypefun
-
-@anchor{marpa_g_prediction_symbol_activate}
-@deftypefun int marpa_g_prediction_symbol_activate ( @
-  Marpa_Grammar @var{g}, @
-  Marpa_Symbol_ID @var{sym_id}, @
-  int @var{reactivate} )
-
-Allows the user to deactivate and reactivate symbol prediction
-events in the grammar.
-When a recognizer is created,
-the activation status of each of its events is initialized
-to the activation status of that event in the base grammar.
-If @var{reactivate} is zero, the event is deactivated
-in the grammar.
-If @var{reactivate} is one, the event is activated
-in the grammar.
-
-Symbol prediction events are active by default if
-the symbol was set up for prediction events in the
-grammar.
-If a symbol was not set up for prediction events in
-the grammar, symbol prediction events are inactive
-by default and any attempt to change that is a fatal error.
-
-The activation status of a prediction event in the grammar
-can only be changed if the symbol is marked as a prediction event symbol
-in the grammar,
-and before
-the grammar is precomputed.
-However, if a symbol is marked as a prediction event symbol in
-the recognizer,
-the prediction event can be deactivated
-and reactivated in the recognizer.
-
-Success cases:
-On success,
-the method returns the value of @var{reactivate}.
-The method succeeds trivially
-if the symbol is already set as indicated by
-@var{reactivate}.
-
-Failure cases:
-If the active status
-of the
-prediction event for @var{sym_id}
-cannot be set as indicated by @var{reactivate},
-the method fails.
-On failure, @minus{}2 is returned.
-@end deftypefun
-
-@anchor{marpa_g_symbol_is_completion_event}
-@deftypefun int marpa_g_symbol_is_completion_event ( @
-    Marpa_Grammar @var{g}, @
-    Marpa_Symbol_ID @var{sym_id})
-@anchor{marpa_g_symbol_is_completion_event_set}
-@deftypefunx int marpa_g_symbol_is_completion_event_set ( @
-    Marpa_Grammar @var{g}, @
-    Marpa_Symbol_ID @var{sym_id}, @
- int @var{value})
-
-Libmarpa can be set up to generate an
-@code{MARPA_EVENT_SYMBOL_COMPLETED}
-event whenever the symbol is completed.
-A symbol is said to be @strong{completed}
-when a non-nulling rule with
-that symbol on its LHS is completed.
-
-For completion events to occur, the symbol must be marked
-as a completion event symbol.
-The
-@code{marpa_g_symbol_is_completion_event_set()}
-function
-marks symbol @var{sym_id} as a completion event symbol
-if @var{value} is 1,
-and unmarks it
-it as a completion event symbol if @var{value} is 0.
-The
-@code{marpa_g_symbol_is_completion_event()}
-method
-returns the current value of the completion event marking
-for symbol @var{sym_id}.
-
-Marking a completion event sets its activation status to on.
-Unmarking a completion event sets its activation status to off.
-The completion event marking cannot be changed once
-the grammar is precomputed.
-
-If a completion event is marked,
-its activation status can be changed using the
-@code{marpa_g_completion_symbol_activate()}
-method.
-Note that, if a symbol is marked as a completion event symbol
-in the recognizer,
-its completion event can be deactivated
-and reactivated in the recognizer.
-
-Nulled rules and symbols will never cause completion events.
-Nullable symbols
-may be marked as completion event symbols,
-but this will have an effect only when the symbol
-is not nulled.
-Nulling symbols
-may be marked as completion event symbols,
-but no completion events will ever be generated
-for a nulling symbol.
-Note that this implies at no completion event will
-ever be generated at earleme 0,
-the start of parsing.
-
-Success: On success, 1 if symbol @var{sym_id}
-is a completion event symbol after the
-call, 0 otherwise.
-
-Failures:
-If @var{sym_id} is well-formed, but there is no
-such symbol, @minus{}1.
-If the grammar @var{g} is precomputed;
-or on other failure, @minus{}2.
-@end deftypefun
-
-@anchor{marpa_g_symbol_is_nulled_event}
-@deftypefun int marpa_g_symbol_is_nulled_event ( @
-    Marpa_Grammar @var{g}, @
-    Marpa_Symbol_ID @var{sym_id})
-@anchor{marpa_g_symbol_is_nulled_event_set}
-@deftypefunx int marpa_g_symbol_is_nulled_event_set ( @
-    Marpa_Grammar @var{g}, @
-    Marpa_Symbol_ID @var{sym_id}, @
- int @var{value})
-
-Libmarpa can set up to generate
-an @code{MARPA_EVENT_SYMBOL_NULLED}
-event whenever the symbol is nulled.
-A symbol is said to be @strong{nulled}
-when a zero length instance of that symbol
-is recognized.
-
-For nulled events to occur, the symbol must be marked
-as a nulled event symbol.
-The
-@code{marpa_g_symbol_is_nulled_event_set()}
-function
-marks symbol @var{sym_id} as a nulled event symbol
-if @var{value} is 1,
-and unmarks it
-it as a nulled event symbol if @var{value} is 0.
-The
-@code{marpa_g_symbol_is_nulled_event()}
-method
-returns the current value of the nulled event marking
-for symbol @var{sym_id}.
-
-Marking a nulled event sets its activation status to on.
-Unmarking a nulled event sets its activation status to off.
-The nulled event marking cannot be changed once
-the grammar is precomputed.
-
-If a nulled event is marked,
-its activation status can be changed using the
-@code{marpa_g_nulled_symbol_activate()}
-method.
-Note that, if a symbol is marked as a nulled event symbol
-in the recognizer,
-its nulled event can be deactivated
-and reactivated in the recognizer.
-
-As a reminder, a symbol instance is a symbol
-at a specific location in the input,
-and with a specific length.
-Also, whenever a nulled symbol instance is
-recognized at a location, it is acceptable
-at that location,
-and vice versa.
-
-When a symbol instance is recognized at a location,
-it will generate a nulled event or a prediction event,
-but never both.
-A symbol instance of zero length,
-when recognized at a location,
-generates a nulled event at that location,
-and does not generate a completion event.
-A symbol instance of non-zero length,
-when acceptable at a location,
-generates a completion event at that location,
-and does not generate a nulled event.
-
-When a symbol instance is acceptable at a location,
-it will generate a nulled event or a prediction event,
-but never both.
-A symbol instance of zero length,
-when acceptable at a location,
-generates a nulled event at that location,
-and does not generate a prediction event.
-A symbol instance of non-zero length,
-when acceptable at a location,
-generates a prediction event at that location,
-and does not generate a nulled event.
-
-While it is not possible for
-a @strong{symbol instance}
-to generate both a nulled event and
-a completion event at a location,
-it is quite possible that
-a @strong{symbol} might generate
-both kinds of event at that location.
-This is because multiple instances
-of the same symbol may be recognized at
-a given location,
-and these instances will have
-different lengths.
-If one instance is recognized at a given location
-as zero length and
-a second, non-zero-length,
-instance is recognized at the same location,
-the first will generate only nulled events,
-while the second will generate only completion events.
-For similar reasons,
-while a @strong{symbol instance} will never
-generate both a null event and a prediction
-event at a location,
-multiple instances of the same symbol
-may do so.
-
-Zero length derivations can be ambiguous.
-When a zero length symbol is recognized,
-all of its zero-length derivations are also considered to be
-recognized.
-
-The
-@code{marpa_g_symbol_is_nulled_event_set()}
-method will
-mark a symbol as a nulled event symbol,
-even if the symbol is non-nullable.
-This is convenient, for example,
-for automatically generated grammars.
-Applications which wish to treat
-it as a failure if there is an
-attempt to
-mark a non-nullable symbol
-as a nulled event symbol,
-can check for this case using
-the
-@code{marpa_g_symbol_is_nullable()}
-method.
-
-Success: On success, 1 if symbol @var{sym_id}
-is a nulled event symbol after the
-call, 0 otherwise.
-
-Failures:
-If @var{sym_id} is well-formed, but there is no
-such symbol, @minus{}1.
-If the grammar @var{g} is precomputed;
-or on other failure, @minus{}2.
-@end deftypefun
-
-@anchor{marpa_g_symbol_is_prediction_event}
-@deftypefun int marpa_g_symbol_is_prediction_event ( @
-    Marpa_Grammar @var{g}, @
-    Marpa_Symbol_ID @var{sym_id})
-@anchor{marpa_g_symbol_is_prediction_event_set}
-@deftypefunx int marpa_g_symbol_is_prediction_event_set ( @
-    Marpa_Grammar @var{g}, @
-    Marpa_Symbol_ID @var{sym_id}, @
- int @var{value})
-
-Libmarpa can be set up
-to generate a
-@code{MARPA_EVENT_SYMBOL_PREDICTED}
-event when a non-nulled symbol is predicted.
-A non-nulled symbol is said to be @strong{predicted}
-when a instance of it
-is acceptable at the current
-earleme according to the grammar.
-Nulled symbols do not generate predictions.
-
-For predicted events to occur, the symbol must be marked
-as a predicted event symbol.
-The
-@code{marpa_g_symbol_is_predicted_event_set()}
-function
-marks symbol @var{sym_id} as a predicted event symbol
-if @var{value} is 1,
-and unmarks it
-it as a predicted event symbol if @var{value} is 0.
-The
-@code{marpa_g_symbol_is_predicted_event()}
-method
-returns the current value of the predicted event marking
-for symbol @var{sym_id}.
-
-Marking a prediction event sets its activation status to on.
-Unmarking a prediction event sets its activation status to off.
-The prediction event marking cannot be changed once
-the grammar is precomputed.
-
-If a prediction event is marked,
-its activation status can be changed using the
-@code{marpa_g_prediction_symbol_activate()}
-method.
-Note that, if a symbol is marked as a prediction event symbol
-in the recognizer,
-its prediction event can be deactivated
-and reactivated in the recognizer.
-
-Success: On success, 1 if symbol @var{sym_id}
-is a predicted event symbol after the
-call, 0 otherwise.
-
-Failures:
-If @var{sym_id} is well-formed, but there is no
-such symbol, @minus{}1.
-If the grammar @var{g} is precomputed;
-or on other failure, @minus{}2.
 @end deftypefun
 
 @node Grammar precomputation
@@ -3101,7 +2702,7 @@ On failure, @minus{}2.
 @chapter Recognizer methods
 
 @node Recognizer overview
-@section Overview
+@section Recognizer overview
 
 An archetypal application uses a recognizer to read input.
 To create a recognizer, use the
@@ -3130,7 +2731,7 @@ use the
 @code{marpa_r_earleme_complete()}
 call.
 
-@node Recognizer constructor
+@node Creating a new recognizer
 @section Creating a new recognizer
 
 @anchor{marpa_r_new}
@@ -4946,7 +4547,7 @@ and
 methods.
 
 @node Event methods
-@section Methods
+@section Event methods and macros
 
 @anchor{marpa_g_event}
 @deftypefun Marpa_Event_Type marpa_g_event (Marpa_Grammar @var{g}, @
@@ -4986,6 +4587,419 @@ The semantics of the value varies according to the type
 of the event, and is described in the section on event
 codes (@ref{Event codes}).
 @end deftypefn
+
+@anchor{marpa_g_completion_symbol_activate}
+@deftypefun int marpa_g_completion_symbol_activate ( @
+  Marpa_Grammar @var{g}, @
+  Marpa_Symbol_ID @var{sym_id}, @
+  int @var{reactivate} )
+
+Allows the user to deactivate and reactivate symbol completion
+events in the grammar.
+When a recognizer is created,
+the activation status of each of its events is initialized
+to the activation status of that event in the base grammar.
+If @var{reactivate} is zero, the event is deactivated
+in the grammar.
+If @var{reactivate} is one, the event is activated
+in the grammar.
+
+Symbol completion events are active by default if
+the symbol was set up for completion events in the
+grammar.
+If a symbol was not set up for completion events in
+the grammar, symbol completion events are inactive
+by default and any attempt to change that is a fatal error.
+
+The activation status of a completion event in the grammar
+can only be changed if the symbol is marked as a completion event symbol
+in the grammar,
+and before
+the grammar is precomputed.
+However, if a symbol is marked as a completion event symbol in
+the recognizer,
+the completion event can be deactivated
+and reactivated in the recognizer.
+
+Success cases:
+On success,
+the method returns the value of @var{reactivate}.
+The method succeeds trivially
+if the symbol is already set as indicated by
+@var{reactivate}.
+
+Failure cases:
+If the active status
+of the
+completion event for @var{sym_id}
+cannot be set as indicated by @var{reactivate},
+the method fails.
+On failure, @minus{}2 is returned.
+@end deftypefun
+
+@anchor{marpa_g_nulled_symbol_activate}
+@deftypefun int marpa_g_nulled_symbol_activate ( @
+  Marpa_Grammar @var{g}, @
+  Marpa_Symbol_ID @var{sym_id}, @
+  int @var{reactivate} )
+
+Allows the user to deactivate and reactivate symbol nulled
+events in the grammar.
+When a recognizer is created,
+the activation status of each of its events is initialized
+to the activation status of that event in the base grammar.
+If @var{reactivate} is zero, the event is deactivated
+in the grammar.
+If @var{reactivate} is one, the event is activated
+in the grammar.
+
+Symbol nulled events are active by default if
+the symbol was set up for nulled events in the
+grammar.
+If a symbol was not set up for nulled events in
+the grammar, symbol nulled events are inactive
+by default and any attempt to change that is a fatal error.
+
+The activation status of a nulled event in the grammar
+can only be changed if the symbol is marked as a nulled event symbol
+in the grammar,
+and before
+the grammar is precomputed.
+However, if a symbol is marked as a nulled event symbol in
+the recognizer,
+the nulled event can be deactivated
+and reactivated in the recognizer.
+
+Success cases:
+On success,
+the method returns the value of @var{reactivate}.
+The method succeeds trivially
+if the symbol is already set as indicated by
+@var{reactivate}.
+
+Failure cases:
+If the active status
+of the
+nulled event for @var{sym_id}
+cannot be set as indicated by @var{reactivate},
+the method fails.
+On failure, @minus{}2 is returned.
+@end deftypefun
+
+@anchor{marpa_g_prediction_symbol_activate}
+@deftypefun int marpa_g_prediction_symbol_activate ( @
+  Marpa_Grammar @var{g}, @
+  Marpa_Symbol_ID @var{sym_id}, @
+  int @var{reactivate} )
+
+Allows the user to deactivate and reactivate symbol prediction
+events in the grammar.
+When a recognizer is created,
+the activation status of each of its events is initialized
+to the activation status of that event in the base grammar.
+If @var{reactivate} is zero, the event is deactivated
+in the grammar.
+If @var{reactivate} is one, the event is activated
+in the grammar.
+
+Symbol prediction events are active by default if
+the symbol was set up for prediction events in the
+grammar.
+If a symbol was not set up for prediction events in
+the grammar, symbol prediction events are inactive
+by default and any attempt to change that is a fatal error.
+
+The activation status of a prediction event in the grammar
+can only be changed if the symbol is marked as a prediction event symbol
+in the grammar,
+and before
+the grammar is precomputed.
+However, if a symbol is marked as a prediction event symbol in
+the recognizer,
+the prediction event can be deactivated
+and reactivated in the recognizer.
+
+Success cases:
+On success,
+the method returns the value of @var{reactivate}.
+The method succeeds trivially
+if the symbol is already set as indicated by
+@var{reactivate}.
+
+Failure cases:
+If the active status
+of the
+prediction event for @var{sym_id}
+cannot be set as indicated by @var{reactivate},
+the method fails.
+On failure, @minus{}2 is returned.
+@end deftypefun
+
+@anchor{marpa_g_symbol_is_completion_event}
+@deftypefun int marpa_g_symbol_is_completion_event ( @
+    Marpa_Grammar @var{g}, @
+    Marpa_Symbol_ID @var{sym_id})
+@anchor{marpa_g_symbol_is_completion_event_set}
+@deftypefunx int marpa_g_symbol_is_completion_event_set ( @
+    Marpa_Grammar @var{g}, @
+    Marpa_Symbol_ID @var{sym_id}, @
+ int @var{value})
+
+Libmarpa can be set up to generate an
+@code{MARPA_EVENT_SYMBOL_COMPLETED}
+event whenever the symbol is completed.
+A symbol is said to be @strong{completed}
+when a non-nulling rule with
+that symbol on its LHS is completed.
+
+For completion events to occur, the symbol must be marked
+as a completion event symbol.
+The
+@code{marpa_g_symbol_is_completion_event_set()}
+function
+marks symbol @var{sym_id} as a completion event symbol
+if @var{value} is 1,
+and unmarks it
+it as a completion event symbol if @var{value} is 0.
+The
+@code{marpa_g_symbol_is_completion_event()}
+method
+returns the current value of the completion event marking
+for symbol @var{sym_id}.
+
+Marking a completion event sets its activation status to on.
+Unmarking a completion event sets its activation status to off.
+The completion event marking cannot be changed once
+the grammar is precomputed.
+
+If a completion event is marked,
+its activation status can be changed using the
+@code{marpa_g_completion_symbol_activate()}
+method.
+Note that, if a symbol is marked as a completion event symbol
+in the recognizer,
+its completion event can be deactivated
+and reactivated in the recognizer.
+
+Nulled rules and symbols will never cause completion events.
+Nullable symbols
+may be marked as completion event symbols,
+but this will have an effect only when the symbol
+is not nulled.
+Nulling symbols
+may be marked as completion event symbols,
+but no completion events will ever be generated
+for a nulling symbol.
+Note that this implies at no completion event will
+ever be generated at earleme 0,
+the start of parsing.
+
+Success: On success, 1 if symbol @var{sym_id}
+is a completion event symbol after the
+call, 0 otherwise.
+
+Failures:
+If @var{sym_id} is well-formed, but there is no
+such symbol, @minus{}1.
+If the grammar @var{g} is precomputed;
+or on other failure, @minus{}2.
+@end deftypefun
+
+@anchor{marpa_g_symbol_is_nulled_event}
+@deftypefun int marpa_g_symbol_is_nulled_event ( @
+    Marpa_Grammar @var{g}, @
+    Marpa_Symbol_ID @var{sym_id})
+@anchor{marpa_g_symbol_is_nulled_event_set}
+@deftypefunx int marpa_g_symbol_is_nulled_event_set ( @
+    Marpa_Grammar @var{g}, @
+    Marpa_Symbol_ID @var{sym_id}, @
+ int @var{value})
+
+Libmarpa can set up to generate
+an @code{MARPA_EVENT_SYMBOL_NULLED}
+event whenever the symbol is nulled.
+A symbol is said to be @strong{nulled}
+when a zero length instance of that symbol
+is recognized.
+
+For nulled events to occur, the symbol must be marked
+as a nulled event symbol.
+The
+@code{marpa_g_symbol_is_nulled_event_set()}
+function
+marks symbol @var{sym_id} as a nulled event symbol
+if @var{value} is 1,
+and unmarks it
+it as a nulled event symbol if @var{value} is 0.
+The
+@code{marpa_g_symbol_is_nulled_event()}
+method
+returns the current value of the nulled event marking
+for symbol @var{sym_id}.
+
+Marking a nulled event sets its activation status to on.
+Unmarking a nulled event sets its activation status to off.
+The nulled event marking cannot be changed once
+the grammar is precomputed.
+
+If a nulled event is marked,
+its activation status can be changed using the
+@code{marpa_g_nulled_symbol_activate()}
+method.
+Note that, if a symbol is marked as a nulled event symbol
+in the recognizer,
+its nulled event can be deactivated
+and reactivated in the recognizer.
+
+As a reminder, a symbol instance is a symbol
+at a specific location in the input,
+and with a specific length.
+Also, whenever a nulled symbol instance is
+recognized at a location, it is acceptable
+at that location,
+and vice versa.
+
+When a symbol instance is recognized at a location,
+it will generate a nulled event or a prediction event,
+but never both.
+A symbol instance of zero length,
+when recognized at a location,
+generates a nulled event at that location,
+and does not generate a completion event.
+A symbol instance of non-zero length,
+when acceptable at a location,
+generates a completion event at that location,
+and does not generate a nulled event.
+
+When a symbol instance is acceptable at a location,
+it will generate a nulled event or a prediction event,
+but never both.
+A symbol instance of zero length,
+when acceptable at a location,
+generates a nulled event at that location,
+and does not generate a prediction event.
+A symbol instance of non-zero length,
+when acceptable at a location,
+generates a prediction event at that location,
+and does not generate a nulled event.
+
+While it is not possible for
+a @strong{symbol instance}
+to generate both a nulled event and
+a completion event at a location,
+it is quite possible that
+a @strong{symbol} might generate
+both kinds of event at that location.
+This is because multiple instances
+of the same symbol may be recognized at
+a given location,
+and these instances will have
+different lengths.
+If one instance is recognized at a given location
+as zero length and
+a second, non-zero-length,
+instance is recognized at the same location,
+the first will generate only nulled events,
+while the second will generate only completion events.
+For similar reasons,
+while a @strong{symbol instance} will never
+generate both a null event and a prediction
+event at a location,
+multiple instances of the same symbol
+may do so.
+
+Zero length derivations can be ambiguous.
+When a zero length symbol is recognized,
+all of its zero-length derivations are also considered to be
+recognized.
+
+The
+@code{marpa_g_symbol_is_nulled_event_set()}
+method will
+mark a symbol as a nulled event symbol,
+even if the symbol is non-nullable.
+This is convenient, for example,
+for automatically generated grammars.
+Applications which wish to treat
+it as a failure if there is an
+attempt to
+mark a non-nullable symbol
+as a nulled event symbol,
+can check for this case using
+the
+@code{marpa_g_symbol_is_nullable()}
+method.
+
+Success: On success, 1 if symbol @var{sym_id}
+is a nulled event symbol after the
+call, 0 otherwise.
+
+Failures:
+If @var{sym_id} is well-formed, but there is no
+such symbol, @minus{}1.
+If the grammar @var{g} is precomputed;
+or on other failure, @minus{}2.
+@end deftypefun
+
+@anchor{marpa_g_symbol_is_prediction_event}
+@deftypefun int marpa_g_symbol_is_prediction_event ( @
+    Marpa_Grammar @var{g}, @
+    Marpa_Symbol_ID @var{sym_id})
+@anchor{marpa_g_symbol_is_prediction_event_set}
+@deftypefunx int marpa_g_symbol_is_prediction_event_set ( @
+    Marpa_Grammar @var{g}, @
+    Marpa_Symbol_ID @var{sym_id}, @
+ int @var{value})
+
+Libmarpa can be set up
+to generate a
+@code{MARPA_EVENT_SYMBOL_PREDICTED}
+event when a non-nulled symbol is predicted.
+A non-nulled symbol is said to be @strong{predicted}
+when a instance of it
+is acceptable at the current
+earleme according to the grammar.
+Nulled symbols do not generate predictions.
+
+For predicted events to occur, the symbol must be marked
+as a predicted event symbol.
+The
+@code{marpa_g_symbol_is_predicted_event_set()}
+function
+marks symbol @var{sym_id} as a predicted event symbol
+if @var{value} is 1,
+and unmarks it
+it as a predicted event symbol if @var{value} is 0.
+The
+@code{marpa_g_symbol_is_predicted_event()}
+method
+returns the current value of the predicted event marking
+for symbol @var{sym_id}.
+
+Marking a prediction event sets its activation status to on.
+Unmarking a prediction event sets its activation status to off.
+The prediction event marking cannot be changed once
+the grammar is precomputed.
+
+If a prediction event is marked,
+its activation status can be changed using the
+@code{marpa_g_prediction_symbol_activate()}
+method.
+Note that, if a symbol is marked as a prediction event symbol
+in the recognizer,
+its prediction event can be deactivated
+and reactivated in the recognizer.
+
+Success: On success, 1 if symbol @var{sym_id}
+is a predicted event symbol after the
+call, 0 otherwise.
+
+Failures:
+If @var{sym_id} is well-formed, but there is no
+such symbol, @minus{}1.
+If the grammar @var{g} is precomputed;
+or on other failure, @minus{}2.
+@end deftypefun
 
 @node Event codes
 @section Event codes
