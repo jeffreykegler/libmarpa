@@ -4546,8 +4546,8 @@ and
 @code{marpa_g_event_value()}
 methods.
 
-@node Event methods
-@section Event methods and macros
+@node Basic event accessors
+@section Basic event accessors
 
 @anchor{marpa_g_event}
 @deftypefun Marpa_Event_Type marpa_g_event (Marpa_Grammar @var{g}, @
@@ -4587,6 +4587,9 @@ The semantics of the value varies according to the type
 of the event, and is described in the section on event
 codes (@ref{Event codes}).
 @end deftypefn
+
+@node Completion events
+@section Completion events
 
 @anchor{marpa_g_completion_symbol_activate}
 @deftypefun int marpa_g_completion_symbol_activate ( @
@@ -4632,104 +4635,6 @@ Failure cases:
 If the active status
 of the
 completion event for @var{sym_id}
-cannot be set as indicated by @var{reactivate},
-the method fails.
-On failure, @minus{}2 is returned.
-@end deftypefun
-
-@anchor{marpa_g_nulled_symbol_activate}
-@deftypefun int marpa_g_nulled_symbol_activate ( @
-  Marpa_Grammar @var{g}, @
-  Marpa_Symbol_ID @var{sym_id}, @
-  int @var{reactivate} )
-
-Allows the user to deactivate and reactivate symbol nulled
-events in the grammar.
-When a recognizer is created,
-the activation status of each of its events is initialized
-to the activation status of that event in the base grammar.
-If @var{reactivate} is zero, the event is deactivated
-in the grammar.
-If @var{reactivate} is one, the event is activated
-in the grammar.
-
-Symbol nulled events are active by default if
-the symbol was set up for nulled events in the
-grammar.
-If a symbol was not set up for nulled events in
-the grammar, symbol nulled events are inactive
-by default and any attempt to change that is a fatal error.
-
-The activation status of a nulled event in the grammar
-can only be changed if the symbol is marked as a nulled event symbol
-in the grammar,
-and before
-the grammar is precomputed.
-However, if a symbol is marked as a nulled event symbol in
-the recognizer,
-the nulled event can be deactivated
-and reactivated in the recognizer.
-
-Success cases:
-On success,
-the method returns the value of @var{reactivate}.
-The method succeeds trivially
-if the symbol is already set as indicated by
-@var{reactivate}.
-
-Failure cases:
-If the active status
-of the
-nulled event for @var{sym_id}
-cannot be set as indicated by @var{reactivate},
-the method fails.
-On failure, @minus{}2 is returned.
-@end deftypefun
-
-@anchor{marpa_g_prediction_symbol_activate}
-@deftypefun int marpa_g_prediction_symbol_activate ( @
-  Marpa_Grammar @var{g}, @
-  Marpa_Symbol_ID @var{sym_id}, @
-  int @var{reactivate} )
-
-Allows the user to deactivate and reactivate symbol prediction
-events in the grammar.
-When a recognizer is created,
-the activation status of each of its events is initialized
-to the activation status of that event in the base grammar.
-If @var{reactivate} is zero, the event is deactivated
-in the grammar.
-If @var{reactivate} is one, the event is activated
-in the grammar.
-
-Symbol prediction events are active by default if
-the symbol was set up for prediction events in the
-grammar.
-If a symbol was not set up for prediction events in
-the grammar, symbol prediction events are inactive
-by default and any attempt to change that is a fatal error.
-
-The activation status of a prediction event in the grammar
-can only be changed if the symbol is marked as a prediction event symbol
-in the grammar,
-and before
-the grammar is precomputed.
-However, if a symbol is marked as a prediction event symbol in
-the recognizer,
-the prediction event can be deactivated
-and reactivated in the recognizer.
-
-Success cases:
-On success,
-the method returns the value of @var{reactivate}.
-The method succeeds trivially
-if the symbol is already set as indicated by
-@var{reactivate}.
-
-Failure cases:
-If the active status
-of the
-prediction event for @var{sym_id}
 cannot be set as indicated by @var{reactivate},
 the method fails.
 On failure, @minus{}2 is returned.
@@ -4803,6 +4708,58 @@ If @var{sym_id} is well-formed, but there is no
 such symbol, @minus{}1.
 If the grammar @var{g} is precomputed;
 or on other failure, @minus{}2.
+@end deftypefun
+
+@node Symbol nulled events
+@section Symbol nulled events
+
+@anchor{marpa_g_nulled_symbol_activate}
+@deftypefun int marpa_g_nulled_symbol_activate ( @
+  Marpa_Grammar @var{g}, @
+  Marpa_Symbol_ID @var{sym_id}, @
+  int @var{reactivate} )
+
+Allows the user to deactivate and reactivate symbol nulled
+events in the grammar.
+When a recognizer is created,
+the activation status of each of its events is initialized
+to the activation status of that event in the base grammar.
+If @var{reactivate} is zero, the event is deactivated
+in the grammar.
+If @var{reactivate} is one, the event is activated
+in the grammar.
+
+Symbol nulled events are active by default if
+the symbol was set up for nulled events in the
+grammar.
+If a symbol was not set up for nulled events in
+the grammar, symbol nulled events are inactive
+by default and any attempt to change that is a fatal error.
+
+The activation status of a nulled event in the grammar
+can only be changed if the symbol is marked as a nulled event symbol
+in the grammar,
+and before
+the grammar is precomputed.
+However, if a symbol is marked as a nulled event symbol in
+the recognizer,
+the nulled event can be deactivated
+and reactivated in the recognizer.
+
+Success cases:
+On success,
+the method returns the value of @var{reactivate}.
+The method succeeds trivially
+if the symbol is already set as indicated by
+@var{reactivate}.
+
+Failure cases:
+If the active status
+of the
+nulled event for @var{sym_id}
+cannot be set as indicated by @var{reactivate},
+the method fails.
+On failure, @minus{}2 is returned.
 @end deftypefun
 
 @anchor{marpa_g_symbol_is_nulled_event}
@@ -4939,6 +4896,58 @@ If @var{sym_id} is well-formed, but there is no
 such symbol, @minus{}1.
 If the grammar @var{g} is precomputed;
 or on other failure, @minus{}2.
+@end deftypefun
+
+@node Prediction events
+@section Prediction events
+
+@anchor{marpa_g_prediction_symbol_activate}
+@deftypefun int marpa_g_prediction_symbol_activate ( @
+  Marpa_Grammar @var{g}, @
+  Marpa_Symbol_ID @var{sym_id}, @
+  int @var{reactivate} )
+
+Allows the user to deactivate and reactivate symbol prediction
+events in the grammar.
+When a recognizer is created,
+the activation status of each of its events is initialized
+to the activation status of that event in the base grammar.
+If @var{reactivate} is zero, the event is deactivated
+in the grammar.
+If @var{reactivate} is one, the event is activated
+in the grammar.
+
+Symbol prediction events are active by default if
+the symbol was set up for prediction events in the
+grammar.
+If a symbol was not set up for prediction events in
+the grammar, symbol prediction events are inactive
+by default and any attempt to change that is a fatal error.
+
+The activation status of a prediction event in the grammar
+can only be changed if the symbol is marked as a prediction event symbol
+in the grammar,
+and before
+the grammar is precomputed.
+However, if a symbol is marked as a prediction event symbol in
+the recognizer,
+the prediction event can be deactivated
+and reactivated in the recognizer.
+
+Success cases:
+On success,
+the method returns the value of @var{reactivate}.
+The method succeeds trivially
+if the symbol is already set as indicated by
+@var{reactivate}.
+
+Failure cases:
+If the active status
+of the
+prediction event for @var{sym_id}
+cannot be set as indicated by @var{reactivate},
+the method fails.
+On failure, @minus{}2 is returned.
 @end deftypefun
 
 @anchor{marpa_g_symbol_is_prediction_event}
