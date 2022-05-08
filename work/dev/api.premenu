@@ -1351,13 +1351,14 @@ in detail.
 @node About the overviews
 @section  About the overviews
 
-The method descriptions are grouped into chapters,
-and each chapter begins, optionally, with an overview.
-These overviews name the
+The method descriptions are grouped into chapters and sections.
+Each such group of methods descriptions begins, optionally, with an overview.
+These overviews, again optionally, end with a ``cheat sheet''.
+The ``cheat sheets'' name the
 most important Libmarpa methods in that chapter
+or section,
 in the order in which they are typically used,
 and very briefly describe their purpose.
-These parts of the overviews are intended as ``cheat sheets''.
 
 The overviews sometimes speak of
 an ``archetypal'' application.
@@ -2566,6 +2567,29 @@ On hard failure, @minus{}2.
 @node Grammar precomputation
 @section Precomputing the Grammar
 
+@anchor{marpa_g_has_cycle}
+@deftypefun int marpa_g_has_cycle (Marpa_Grammar @var{g})
+This function allows the application to determine if grammar
+@var{g} has a cycle.
+As mentioned, most applications will want to treat these
+as fatal errors.
+To determine which rules are in the cycle,
+@code{marpa_g_rule_is_loop()}
+can be used.
+
+Return value: On success, 1 if the grammar has a cycle,
+0 otherwise.
+On failure, @minus{}2.
+@end deftypefun
+
+@anchor{marpa_g_is_precomputed}
+@deftypefun int marpa_g_is_precomputed (Marpa_Grammar @var{g})
+Return value: On success, 1
+if grammar @var{g} is already precomputed,
+0 otherwise.
+On failure, @minus{}2.
+@end deftypefun
+
 @anchor{marpa_g_precompute}
 @deftypefun int marpa_g_precompute (Marpa_Grammar @var{g})
 
@@ -2675,30 +2699,9 @@ Return value: On success, a non-negative number.
 On failure, @minus{}2.
 @end deftypefun
 
-@anchor{marpa_g_is_precomputed}
-@deftypefun int marpa_g_is_precomputed (Marpa_Grammar @var{g})
-Return value: On success, 1
-if grammar @var{g} is already precomputed,
-0 otherwise.
-On failure, @minus{}2.
-@end deftypefun
-
-@anchor{marpa_g_has_cycle}
-@deftypefun int marpa_g_has_cycle (Marpa_Grammar @var{g})
-This function allows the application to determine if grammar
-@var{g} has a cycle.
-As mentioned, most applications will want to treat these
-as fatal errors.
-To determine which rules are in the cycle,
-@code{marpa_g_rule_is_loop()}
-can be used.
-
-Return value: On success, 1 if the grammar has a cycle,
-0 otherwise.
-On failure, @minus{}2.
-@end deftypefun
-
 @node Recognizer methods
+@section Recognizer methods
+
 @chapter Recognizer methods
 
 @node Recognizer overview
