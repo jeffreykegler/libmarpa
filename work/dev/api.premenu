@@ -1225,7 +1225,7 @@ But any attempt to list all the undetected problems would be too large
 and unwieldy to be useful.
 
 Undetected failure is always irrecoverable.
-An undetected failure 
+An undetected failure
 is neither a hard or a soft failure.
 
 @node Irrecoverable hard failure
@@ -2283,7 +2283,7 @@ This soft failure is trivially recoverable
 and can used to test whether
 or not a rule is a sequence rule.
 
-Hard fails irrecoverably if 
+Hard fails irrecoverably if
 @var{rule_id} is not well-formed (a non-negative number).
 Also, hard fails irrecoverably if no rule with ID @var{rule_id} exists,
 even when @var{rule_id} is well formed.
@@ -2506,7 +2506,7 @@ On success, returns a boolean whose value is 1
 iff ``null ranks high'' is set in the rule with ID @var{rule_id}.
 When a rule is created, it has ``null ranks high'' set.
 
-For more on the 
+For more on the
 ``null ranks high'' setting, read the description of
 @code{marpa_g_rule_null_high_set()}.
 @xref{marpa_g_rule_null_high_set,marpa_g_rule_null_high_set()}.
@@ -2569,50 +2569,58 @@ On hard failure, @minus{}2.
 
 @anchor{marpa_g_has_cycle}
 @deftypefun int marpa_g_has_cycle (Marpa_Grammar @var{g})
-This function allows the application to determine if grammar
+
+On success, returns a boolean which is 1 iff
 @var{g} has a cycle.
-As mentioned, most applications will want to treat these
-as fatal errors.
+Cycles make a grammar infinitely ambiguous,
+and are considered useless in current
+practice.
+Cycles make processing the grammar less
+efficient, sometimes considerably so.
+Applications will almost always want to treat cycles
+as mistakes on the part of the writer of the grammar.
 To determine which rules are in the cycle,
 @code{marpa_g_rule_is_loop()}
 can be used.
 
-Return value: On success, 1 if the grammar has a cycle,
-0 otherwise.
-On failure, @minus{}2.
+@strong{Return value}: On success, a boolean.
+On hard failure, @minus{}2.
+
 @end deftypefun
 
 @anchor{marpa_g_is_precomputed}
 @deftypefun int marpa_g_is_precomputed (Marpa_Grammar @var{g})
-Return value: On success, 1
-if grammar @var{g} is already precomputed,
-0 otherwise.
-On failure, @minus{}2.
+
+@strong{Return value}: On success, a boolean which is 1 iff
+grammar @var{g} is precomputed.
+On hard failure, @minus{}2.
+
 @end deftypefun
 
 @anchor{marpa_g_precompute}
 @deftypefun int marpa_g_precompute (Marpa_Grammar @var{g})
 
+On success, precomputes the grammar @var{g}.
+Precomputation involves running a series of grammar checks
+and ``precomputing'' some useful information which is kept
+internally to save repeated calculations.
+After precomputation, the grammar is ``frozen'' in many respects,
+and many grammar mutators which succeed before precomputation
+will cause hard failures after precomputation.
 Precomputation is necessary for a recognizer to be generated
 from a grammar.
-On success,
-@code{marpa_g_precompute()}
-returns a non-negative
-number to indicate that it precomputed the grammar without
-issues.
-On failure,
-@code{marpa_g_precompute()}
-returns @minus{}2.
 
 Precomputation may return one or more events,
 which may be queried using the
 @code{marpa_g_event()}
 method.
-At this point events only occur when failure is reported,
-and events always report issues.
-But application writers should expect future versions
-to have events which are reported on success,
-as well as events which do not represent issues.
+As of this writing,
+all events represent problems,
+and no events occur on success,
+but applications must not rely on these facts.
+Instead, applications should be prepared for events to occur
+whether the return status is success or failure,
+and for events which are purely informational.
 
 A @code{MARPA_EVENT_LOOP_RULES} event occurs
 when there are infinite loop rules (cycles)
@@ -2642,8 +2650,6 @@ So that the Libmarpa user can fix several at once,
 the failure is delayed until events are created
 for all of the counted nullables.
 
-Precomputation involves freezing
-and then thoroughly checking the grammar.
 Among the reasons for precomputation to fail
 are the following:
 
@@ -2665,43 +2671,32 @@ More details of these can be found under the
 description of the appropriate code
 (@ref{External error codes}).
 
-@code{marpa_g_precompute()}
-is unusual in that it
-is possible to treat one of its failures as ``advisory'',
-and to proceed with parsing.
-If
-@code{marpa_g_precompute()}
-fails with an error code
-of @code{MARPA_ERR_GRAMMAR_HAS_CYCLE},
-parsing can proceed, just as it typically would for
-success.
+If @var{g} contain a cycle,
+this method precomputes the grammar,
+but hard fails.
+This hard failure is trivially recoverable,
 The grammar will have been precomputed, as
-calling the
-@code{marpa_g_is_precomputed()}
-method
-will confirm.
+as the
+@code{marpa_g_is_precomputed()} method will
+confirm,
+and the application
+can proceed with parsing.
+Most appplications, however will want to treat
+a grammar with cycles as an error on the
+part of the grammar writer.
+For more details,
+@pxref{marpa_g_has_cycle,marpa_g_has_cycle()}.
 
-Most applications, however,
-will want to simply treat failure
-with @code{MARPA_ERR_GRAMMAR_HAS_CYCLE},
-as simply another failure,
-and fix the cycles before parsing.
-Cycles make a grammar infinitely ambiguous,
-and are considered useless in current
-practice.
-Cycles make processing the grammar less
-efficient, sometimes considerably so.
-Detection of cycles is returned as failure
-because that is by far the convenient thing to do
-for the vast majority of applications.
+@strong{Return value}: On success, a non-negative number,
+whose value is otherwise indeterminate.
+On hard failure, @minus{}2.
+A hard failure with error code
+@code{MARPA_ERR_GRAMMAR_HAS_CYCLE} is trivially
+recoverable.
 
-Return value: On success, a non-negative number.
-On failure, @minus{}2.
 @end deftypefun
 
 @node Recognizer methods
-@section Recognizer methods
-
 @chapter Recognizer methods
 
 @node Recognizer overview
