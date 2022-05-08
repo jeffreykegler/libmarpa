@@ -4325,10 +4325,10 @@ When the iteration through the steps is finished,
 @code{marpa_v_step()}
 returns @code{MARPA_STEP_INACTIVE}.
 
-Return value:  On success, the type of the step
-to be performed.
-This will always be a non-negative number.
+Return value:  On success, a @code{Marpa_Step_Type},
+which always be a non-negative integer.
 On failure, @minus{}2.
+
 @end deftypefun
 
 @node Valuator steps by type
