@@ -1808,7 +1808,6 @@ zero.
 
 When successful, returns the ID of the start symbol.
 Soft fails, if there is no start symbol.
-The soft failure is trivially recoverable.
 The start symbol is set by the
 @code{marpa_g_start_symbol_set()}
 call.
@@ -1829,7 +1828,6 @@ When successful,
 sets the start symbol of grammar @var{g} to symbol @var{sym_id}.
 Soft fails if @var{sym_id} is well-formed (a non-negative integer),
 but a symbol with that ID does not exist.
-The soft failure is trivially recoverable.
 
 @strong{Return value}: On success, @var{sym_id},
 which will always be a non-negative number.
@@ -1855,7 +1853,6 @@ A symbol is
 if it can be reached from the start symbol.
 Soft fails if @var{sym_id} is well-formed (a non-negative integer),
 but a symbol with that ID does not exist.
-The soft failure is trivially recoverable.
 A common hard failure is calling this method with
 a grammar that is not precomputed.
 
@@ -1877,7 +1874,6 @@ A @strong{nulling} symbol is always a @strong{nullable} symbol,
 but not all @strong{nullable} symbols are @strong{nulling} symbols.
 Soft fails if @var{sym_id} is well-formed (a non-negative integer),
 but a symbol with that ID does not exist.
-The soft failure is trivially recoverable.
 A common hard failure is calling this method with
 a grammar that is not precomputed.
 
@@ -1897,7 +1893,6 @@ A symbol is
 if it always produces the empty string.
 Soft fails if @var{sym_id} is well-formed (a non-negative integer),
 but a symbol with that ID does not exist.
-The soft failure is trivially recoverable.
 A common hard failure is calling this method with
 a grammar that is not precomputed.
 
@@ -1918,7 +1913,6 @@ if it can produce a string of terminals.
 All nullable symbols are considered productive.
 Soft fails if @var{sym_id} is well-formed (a non-negative integer),
 but a symbol with that ID does not exist.
-The soft failure is trivially recoverable.
 A common hard failure is calling this method with
 a grammar that is not precomputed.
 
@@ -1939,7 +1933,6 @@ is the start symbol.
 
 Soft fails if @var{sym_id} is well-formed (a non-negative integer),
 but a symbol with that ID does not exist.
-The soft failure is trivially recoverable.
 
 @strong{Return value}:
 On success, 1 or 0.
@@ -1970,7 +1963,6 @@ The terminal status can be set explicitly with the
 
 Soft fails if @var{sym_id} is well-formed (a non-negative integer),
 but a symbol with that ID does not exist.
-The soft failure is trivially recoverable.
 
 @strong{Return value}:
 On success, 1 or 0.
@@ -2056,7 +2048,6 @@ The start rule is always an accessible rule.
 
 Soft fails if @var{rule_id} is well-formed (a non-negative integer),
 but a rule with that ID does not exist.
-The soft failure is trivially recoverable.
 A common hard failure is calling this method with
 a grammar that is not precomputed.
 
@@ -2080,7 +2071,6 @@ but not all @strong{nullable} rules are @strong{nulling} rules.
 
 Soft fails if @var{rule_id} is well-formed (a non-negative integer),
 but a rule with that ID does not exist.
-The soft failure is trivially recoverable.
 A common hard failure is calling this method with
 a grammar that is not precomputed.
 
@@ -2102,7 +2092,6 @@ if it always produces the empty string.
 
 Soft fails if @var{rule_id} is well-formed (a non-negative integer),
 but a rule with that ID does not exist.
-The soft failure is trivially recoverable.
 A common hard failure is calling this method with
 a grammar that is not precomputed.
 
@@ -2132,7 +2121,6 @@ loop rules.
 
 Soft fails if @var{rule_id} is well-formed (a non-negative integer),
 but a rule with that ID does not exist.
-The soft failure is trivially recoverable.
 A common hard failure is calling this method with
 a grammar that is not precomputed.
 
@@ -2160,7 +2148,6 @@ an empty rule is considered productive.
 
 Soft fails if @var{rule_id} is well-formed (a non-negative integer),
 but a rule with that ID does not exist.
-The soft failure is trivially recoverable.
 A common hard failure is calling this method with
 a grammar that is not precomputed.
 
@@ -2179,7 +2166,6 @@ The length of a rule is the number of symbols on its RHS.
 
 Soft fails if @var{rule_id} is well-formed (a non-negative integer),
 but a rule with that ID does not exist.
-The soft failure is trivially recoverable.
 
 @strong{Return value}: On success,
 the length of the rule with ID @var{rule_id}.
@@ -2195,7 +2181,6 @@ On hard failure, @minus{}2.
 
 Soft fails if @var{rule_id} is well-formed (a non-negative integer),
 but a rule with that ID does not exist.
-The soft failure is trivially recoverable.
 
 @strong{Return value}: On success, the ID of the LHS
 symbol of the rule with ID @var{rule_id}.
@@ -2260,7 +2245,6 @@ The indexing of RHS symbols is zero-based.
 
 Soft fails if @var{rule_id} is well-formed (a non-negative integer),
 but a rule with that ID does not exist.
-The soft failure is trivially recoverable.
 
 A common hard failure is for @var{ix}
 not to be a valid index of the RHS.
@@ -2308,7 +2292,6 @@ can use
 
 Soft fails if @var{rule_id} is well-formed (a non-negative integer),
 but a rule with that ID does not exist.
-The soft failure is trivially recoverable.
 
 @strong{Return value}:
 On success, 1 or 0.
@@ -2325,8 +2308,7 @@ On hard failure, @minus{}2.
 On success, returns the mininum length of a sequence rule.
 Soft fails if a rule with ID @var{rule_id} exists,
 but is not a sequence rule.
-This soft failure is trivially recoverable
-and can used to test whether
+This soft failure can used to test whether
 or not a rule is a sequence rule.
 
 Hard fails irrecoverably if
@@ -2439,7 +2421,6 @@ On hard failure, @minus{}2.
 On success, returns the symbol ID of the separator
 of the sequence rule with ID @var{rule_id}.
 Soft fails if there is no separator.
-The soft failure is trivially recoverable.
 The causes of hard failure include
 @var{rule_id} not being well-formed;
 @var{rule_id} not being the ID of a rule which exists; and
@@ -2471,7 +2452,6 @@ iff
 
 Soft fails iff @var{sym_id} is well-formed (a non-negative integer),
 but a symbol with that ID does not exist.
-The soft failure is trivially recoverable.
 
 @strong{Return value}:
 On success, a boolean.
@@ -2559,7 +2539,6 @@ For more on the
 
 Soft fails iff @var{rule_id} is well-formed (a non-negative integer),
 but a rule with that ID does not exist.
-The soft failure is trivially recoverable.
 
 @strong{Return value}:
 On success, a boolean.
@@ -2598,7 +2577,6 @@ Ranking of a null variants is done from left-to-right.
 
 Soft fails iff @var{rule_id} is well-formed (a non-negative integer),
 but a rule with that ID does not exist.
-The soft failure is trivially recoverable.
 
 Hard fails if
 the grammar has been precomputed.
@@ -2720,7 +2698,6 @@ description of the appropriate code
 If @var{g} contain a cycle,
 this method precomputes the grammar,
 but hard fails.
-This hard failure is trivially recoverable,
 The grammar will have been precomputed, as
 as the
 @code{marpa_g_is_precomputed()} method will
@@ -2737,8 +2714,8 @@ For more details,
 whose value is otherwise indeterminate.
 On hard failure, @minus{}2.
 A hard failure with error code
-@code{MARPA_ERR_GRAMMAR_HAS_CYCLE} is trivially
-recoverable.
+@code{MARPA_ERR_GRAMMAR_HAS_CYCLE} is
+fully recoverable.
 
 @end deftypefun
 
