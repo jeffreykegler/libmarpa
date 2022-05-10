@@ -154,6 +154,9 @@ is an integer which is 0 or 1.
 @dfn{iff} abbreviates ``if and only if''.
 @end itemize
 
+@node Application and diagnostic behavior
+@subsection Application and diagnostic behavior
+
 An
 @dfindex application behavior
 @dfindex behavior, application
@@ -180,6 +183,8 @@ The behavior of Libmarpa after an irrecoverable
 failure is, in fact, undefined,
 and diagnostic behaviors are ``hoped for''
 rather than expected.
+(@xref{Failure}.)
+
 Applications should not be designed to rely
 on diagnostics behaviors.
 We sometimes say that ``diagnostics may attempt'' a certain behavior
