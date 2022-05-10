@@ -154,6 +154,40 @@ is an integer which is 0 or 1.
 @dfn{iff} abbreviates ``if and only if''.
 @end itemize
 
+An
+@dfindex application behavior
+@dfindex behavior, application
+@dfn{application behavior}
+is a behavior on which it is intended that
+the design of applications
+will be based.
+Most of the behaviors specified in this document are application
+behaviors.
+We sometimes say that ``applications may expect'' a certain behavior
+to emphasize that that behavior is an application behavior.
+
+A
+@dfindex diagnostic behavior
+@dfindex behavior, diagnostic
+@dfn{diagnostic behavior}
+is a behavior which
+should be used only for testing, diagnostics and debugging.
+Diagnostic behavior is specified for the case of
+irrecoverable failures,
+in order to allow the programmer to deal with these
+failures as smoothly as possible.
+The behavior of Libmarpa after an irrecoverable
+failure is, in fact, undefined,
+and diagnostic behaviors are ``hoped for''
+rather than expected.
+Applications should not be designed to rely
+on diagnostics behaviors.
+We sometimes say that ``diagnostics may attempt'' a certain behavior
+to emphasize that that behavior is a diagnostic behavior.
+In this document,
+a behavior is a diagnostic behavior only if that is specifically
+indicated.
+
 @node About Libmarpa
 @chapter About Libmarpa
 
