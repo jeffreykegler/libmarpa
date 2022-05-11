@@ -152,6 +152,13 @@ is an integer which is 0 or 1.
 @item
 @dfindex iff
 @dfn{iff} abbreviates ``if and only if''.
+@item
+@dfindex application
+@dfn{application} means an ``application'' of Libmarpa.
+In this document,
+a Libmarpa application is not necessarily an application program.
+For our purposes, an ``application''
+might be another library which uses Libmarpa.
 @end itemize
 
 @node Application and diagnostic behavior
@@ -169,29 +176,34 @@ behaviors.
 We sometimes say that ``applications may expect'' a certain behavior
 to emphasize that that behavior is an application behavior.
 
+After an irrecoverable failure, the behavior of a Libmarpa application
+is undefined,
+so that there are no behaviors which can be relied on for normal
+application processing,
+and therefore, there are no application behaviors.
+In this circumstance,
+some of the application behaviors become
+diagnostic behaviors.
 A
 @dfindex diagnostic behavior
 @dfindex behavior, diagnostic
 @dfn{diagnostic behavior}
-is a behavior which
-should be used only for testing, diagnostics and debugging.
-Diagnostic behavior is specified for the case of
-irrecoverable failures,
-in order to allow the programmer to deal with these
+is a behavior which it is suggested
+that the programmer may attempt in the face of an irrecoverable failure,
+for testing, diagnostics and debugging.
+They are hoped for, rather than expected,
+and intended
+to allow the programmer to deal with irrecoverable
 failures as smoothly as possible.
-The behavior of Libmarpa after an irrecoverable
-failure is, in fact, undefined,
-and diagnostic behaviors are ``hoped for''
-rather than expected.
 (@xref{Failure}.)
 
+In this document,
+a behavior is a diagnostic behavior only if that is specifically
+indicated.
 Applications should not be designed to rely
 on diagnostics behaviors.
 We sometimes say that ``diagnostics may attempt'' a certain behavior
 to emphasize that that behavior is a diagnostic behavior.
-In this document,
-a behavior is a diagnostic behavior only if that is specifically
-indicated.
 
 @node About Libmarpa
 @chapter About Libmarpa
