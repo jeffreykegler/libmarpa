@@ -1564,6 +1564,12 @@ the return status will be hard failure.
 @item If both a recoverable hard failure and
 an irrecoverable hard failure occur,
 the error code will be for an irrecoverable hard failure.
+@item The behaviors specified for success and soft failure
+are application behaviors.
+@item The behaviors specified for hard failures
+are diagnostic behaviors if an irrecoverable failure
+occurred,
+and application behaviors otherwise.
 @end itemize
 
 @node Static methods
