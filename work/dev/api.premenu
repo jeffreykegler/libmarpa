@@ -159,6 +159,16 @@ In this document,
 a Libmarpa application is not necessarily an application program.
 For our purposes, an ``application''
 might be another library which uses Libmarpa.
+@item
+@dfindex method
+@dfn{Libmarpa method}, or just @dfn{method} means a C function
+or a function-like macro of the Libmarpa library.
+@item
+@dfindex user
+@dfn{user} means a ``user'' of the Libmarpa library.
+A user of the library is also a programmer,
+so that in this documents, ``user''
+and ``programmer'' are essentially synonyms.
 @end itemize
 
 @node Application and diagnostic behavior
@@ -1312,7 +1322,74 @@ and setting the error code as specified for hard failure.
 @node Partially recoverable hard failure
 @section Partially recoverable hard failure
 
-@node Fully fecoverable hard failure
+A
+@dfindex partially recoverable hard failure
+@dfindex hard failure, partially recoverable
+@dfindex failure, partially recoverable hard
+@dfn{partially recoverable hard failure}
+is
+a recoverable Libmarpa application programming failure that
+@itemize
+@item has an error code associated with it; and
+@item after which some, but not all, of the
+    application behaviors remain availabe to the programmer.
+@end itemize
+For every partially recoverable hard failure,
+this document specifies the application behaviors that remain
+available after it occurs.
+The most common kind of
+partially recoverable hard failure is a
+library-recoverable hard failure.
+For an example of
+partially recoverable hard failure,
+@pxref{Library-recoverable hard failure}.
+
+@node Library-recoverable hard failure
+@section Library-recoverable hard failure
+
+A
+@dfindex library-recoverable hard failure
+@dfindex hard failure, library-recoverable
+@dfindex failure, library-recoverable hard
+@dfn{library-recoverable hard failure}
+is a type of partially recoverable hard failure.
+Loosely described, it is a hard failure which
+allows the programmer to continue to use many
+of the Libmarpa methods in the library,
+but which disallows certain methods on  some objects.
+
+To state the restrictions of application behaviors
+more precisely, let
+the ``failure grammar'' be the base grammar
+of the method which detected by library-recoverable hard failure.
+Let a ``failure object'' be anu object whose base grammar
+is the failure grammar.
+After a library-recoverable hard failure,
+the following behaviors are no longer applcation
+behaviors:
+@itemize
+@item Libmarpa mutator method calls where the base grammar is the
+  failure grammar.
+@end itemize
+Recall that any use of a behavior which is not an application
+behavior is an irrecoverable failure.
+
+The application behaviors
+remaining after a library-recoverable hard failure,
+are the following:
+@itemize
+@item All Libmarpa accessor methods calls, even those whose base
+grammar is the failure grammar.
+@item All Libmarpa destructor methods calls, even those whose base
+grammar is the failure grammar.
+An application will often want to destroy all Libmarpa objects
+whose base grammar is the failure grammar,
+in order to clear memory of unusable object.
+@end itemize
+
+[ Finish this ]
+
+@node Fully recoverable hard failure
 @section Fully recoverable hard failure
 
 A
@@ -1321,18 +1398,21 @@ A
 @dfindex failure, fully recoverable hard
 @dfn{fully recoverable hard failure}
 is
-an recoverable Libmarpa application programming failure that has an
-error code associated with it.
-It is expected that Libmarpa applications will be designed
-such that successful execution
-is based on the handling specified for an recoverable failure.
-As one example, the ``Ruby Slippers'' parsing technique
-(@ref{Ruby Slippers}),
-which is based
+a recoverable Libmarpa application programming failure that
+@itemize
+@item has an error code associated with it; and
+@item after which all of the
+    application behaviors remain availabe to the programmer.
+@end itemize
+One example of a fully recoverable hard failure is
+the error code @code{MARPA_ERR_UNEXPECTED_TOKEN_ID}.
+The ``Ruby Slippers'' parsing technique
+(@pxref{Ruby Slippers}),
+which has seen extensive usage,
+is based
 on Libmarpa's ability to recover from
 a @code{MARPA_ERR_UNEXPECTED_TOKEN_ID} error
-successfully and efficiently,
-has seen extensive usage.
+fully and efficiently,
 
 @node Soft failure
 @section Soft failure
