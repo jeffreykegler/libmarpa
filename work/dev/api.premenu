@@ -1361,9 +1361,7 @@ but which disallows certain methods on  some objects.
 To state the restrictions of application behaviors
 more precisely, let
 the ``failure grammar'' be the base grammar
-of the method which detected by library-recoverable hard failure.
-Let a ``failure object'' be anu object whose base grammar
-is the failure grammar.
+of the method which detected the library-recoverable hard failure.
 After a library-recoverable hard failure,
 the following behaviors are no longer applcation
 behaviors:
@@ -1375,19 +1373,27 @@ Recall that any use of a behavior which is not an application
 behavior is an irrecoverable failure.
 
 The application behaviors
-remaining after a library-recoverable hard failure,
+remaining after a library-recoverable hard failure
 are the following:
 @itemize
-@item All Libmarpa accessor methods calls, even those whose base
+@item All Libmarpa accessor method calls, even those whose base
 grammar is the failure grammar.
-@item All Libmarpa destructor methods calls, even those whose base
+@item All Libmarpa destructor method calls, even those whose base
 grammar is the failure grammar.
 An application will often want to destroy all Libmarpa objects
 whose base grammar is the failure grammar,
-in order to clear memory of unusable object.
+in order to clear memory of unusable objects.
+@item All Libmarpa mutator method calls, except those whose base
+grammar is the failure grammar.
+@item All Libmarpa static method calls.
+@item All use of non-Libmarpa interfaces, including other libraries
+and the C language environment.
 @end itemize
 
-[ Finish this ]
+An example of a library-recoverable hard failure is
+the @code{MARPA_ERR_COUNTED_NULLABLE} error
+in the @code{marpa_g_precompute} method.
+@xref{marpa_g_precompute,marpa_g_precompute()}.
 
 @node Fully recoverable hard failure
 @section Fully recoverable hard failure
