@@ -169,6 +169,15 @@ or a function-like macro of the Libmarpa library.
 A user of the library is also a programmer,
 so that in this documents, ``user''
 and ``programmer'' are essentially synonyms.
+@item
+@dfindex we
+@dfindex us
+@dfindex our
+@dfn{We} (and ``us'' and ''our'') refer to the authors.
+As of this writing, there is a primary author,
+but the plural is traditional and, by it, we intend to suggest
+a journey of discovery, on which our readers
+are embarked with us.
 @end itemize
 
 @node Application and diagnostic behavior
@@ -2900,7 +2909,7 @@ On hard failure, @code{NULL}.
 
 [Mutator]
 Increases the reference count by 1.
-Is not needed by most applications.
+This method is not needed by most applications.
 
 @strong{Return value}:
 On success, the recognizer object, @var{r}, which is never @code{NULL}.
@@ -2917,7 +2926,7 @@ zero.
 When @var{r} is destroyed, the reference count
 of its base grammar is decreased by one.
 If this takes the reference count of the base grammar
-to zero, it too is destroyed.
+to zero, the base grammar is also destroyed.
 
 @end deftypefun
 
@@ -2933,14 +2942,12 @@ the one at earleme 0,
 will be completed during this call.
 
 When called, clears any events already in the event queue.
-Completes an Earley set,
-and therefore may generate events.
-For details about
-the events that may be generated during
-Earley set completion,
-see the description of the
-@code{marpa_r_earleme_complete()}
-method.
+Since this method completes an Earley set,
+it may generate events.
+The events that may be generated during
+Earley set completion are the same of those described for
+@code{marpa_r_earleme_complete()}.
+@xref{marpa_r_earleme_complete,marpa_r_earleme_complete()}.
 
 @strong{Return value}:  On success, a non-negative value,
 whose value is otherwise indeterminate.
@@ -2953,13 +2960,13 @@ On hard failure, @minus{}2.
     Marpa_Symbol_ID @var{token_id}, @
     int @var{value}, @
     int @var{length})
-Reads a token into @var{r}.
-The token will start at the current earleme.
+
 Libmarpa allows tokens to be ambiguous, to be of
 variable length and to overlap.
 @var{token_id} is the symbol ID of the token,
 which must be a terminal.
-@var{length} is the length of the token.
+@var{length} is the length of the token, which must
+be greater than zero.
 
 @var{value} is an
 integer that represents the value of the
@@ -2977,53 +2984,47 @@ their own, perhaps based on
 the earleme location and @var{token_id},
 instead of using Libmarpa's token values.
 
-A @var{value} of 0 is reserved for a now-deprecated feature.
-Do not use it.
-For more details on that feature, see the
-section @ref{Valued and unvalued symbols}.
+Do not use a @var{value} of 0.
+A @var{value} of 0 is reserved for unvalued symbols,
+a now-deprecated feature.
+@xref{Valued and unvalued symbols}.
 
-When
-@code{marpa_r_alternative()}
-is successful,
-the value of the furthest earleme is set to
+On success, does the following:
+@itemize
+@item
+Reads a token into @var{r}.  The token will start at the current earleme.
+@item 
+Sets the value of the furthest earleme is set to
 the greater of its value before the call,
 and @var{current}+@var{length},
 where @var{current} is the value of the current earleme.
-The values of the current and latest earlemes
-are unchanged by
-calls to
-@code{marpa_r_alternative()}.
+@item
+Leaves unchanged
+the values of the current and latest earlemes.
+@end itemize
 
 @anchor{Ruby Slippers}
-Several error codes leave the recognizer in a fully
-recoverable state, allowing the application to
-retry the
-@code{marpa_r_alternative()}
-method.
-Retry is efficient, and quite useable as a parsing
-technique.
-The error code
-of primary interest from this point of view
-is @code{MARPA_ERR_UNEXPECTED_TOKEN_ID},
-which indicates that the token was not accepted
-because of its token ID.
-Retry after this condition is used in several
-applications,
-and is called ``the Ruby Slippers technique''.
+If a token was not accepted
+because of its token ID,
+hard fails with the @code{MARPA_ERR_UNEXPECTED_TOKEN_ID}.
+This hard failure is fully recoverable
+so that, for example,
+the application may
+retry this method with a different token IDs
+until it succeeds.
+These retries are efficient,
+and are quite useable as a parsing
+technique ---
+so much so we have given the technique a name:
+@dfindex Ruby Slippers
+@dfn{the Ruby Slippers}.
+The Ruby Slippers are used in several
+applications.
 
-The error codes
-@code{MARPA_ERR_DUPLICATE_TOKEN},
-@code{MARPA_ERR_NO_TOKEN_EXPECTED_HERE}
-and @code{MARPA_ERR_INACCESSIBLE_TOKEN}
-also leave the recognizer in a fully recoverable
-state, and may also be useable for the
-Ruby Slippers or similar techniques.
-At this writing,
-the author knows of no applications which
-attempt to recover from these errors.
-
-Return value:  On success, @code{MARPA_ERR_NONE}.
-On failure, some other error code.
+@strong{Return value}:  On success, @code{MARPA_ERR_NONE}.
+On failure, an error code other than @code{MARPA_ERR_NONE}.
+The hard failure for @code{MARPA_ERR_UNEXPECTED_TOKEN_ID}
+is fully recoverable.
 
 @end deftypefun
 
@@ -6350,6 +6351,29 @@ This chapter discusses features that are @strong{not}
 in the external interface,
 but that might be added
 to the external interface in the future.
+
+@node Additional recoverable failures in marpa_r_alternative()
+@section Additional recoverable failures in marpa_r_alternative()
+
+Among the hard failures that
+marpa_r_alternative() returns
+are the error codes
+@code{MARPA_ERR_DUPLICATE_TOKEN},
+@code{MARPA_ERR_NO_TOKEN_EXPECTED_HERE}
+and @code{MARPA_ERR_INACCESSIBLE_TOKEN}.
+These are currently irrecoverable.
+They may in fact be fully recoverable,
+but are not documented as such because this has not been
+tested.
+
+At this writing,
+we know of no applications which
+attempt to recover from these errors.
+It is possible that
+these error codes may also be useable for the
+techniques similar to the Ruby Slippers,
+as of this writing, we know of no proposals
+to use them in this way.
 
 @node Untested methods
 @section Untested methods
