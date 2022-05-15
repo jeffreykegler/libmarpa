@@ -476,8 +476,8 @@ objects.
 @node Earlemes
 @section Earlemes
 
-@node The traditional model
-@subsection The traditional model
+@node The traditional input model
+@subsection The traditional input model
 
 In traditional Earley parsers, the concept of location is very simple.
 Locations are numbered from 0 to @var{n}, where @var{n} is the length of
@@ -503,8 +503,7 @@ or @code{Marpa::R3},
 or from Marpa's
 @uref{https://arxiv.org/abs/1910.08129, theory document}.
 
-As a reminder,
-in Libmarpa a location is called a
+In Libmarpa a location is called a
 @dfindex earleme
 @dfn{earleme}.
 The number of an Earley set is the
@@ -514,14 +513,19 @@ or its
 @dfindex ordinal (of an Earley set)
 @dfn{ordinal}.
 In the traditional model, the ordinal of an Earley set and
-its earleme are always exactly the same, but in Libmarpa
-they will be different.
+its earleme are always exactly the same, but in Libmarpa's
+advanced input models
+the ordinal of an Earley set can be different from
+it location (earleme).
 
 @node The earleme variables
 @subsection The earleme variables
 
 The important earleme variables are the current earleme, the furthest earleme
 and the latest earleme.
+The initial values of the current, latest and furthest earleme
+are always earleme 0.
+
 The
 @dfindex earleme, current
 @dfn{current earleme}
@@ -623,24 +627,8 @@ but by default, parsing is of the input
 in the range
 from earleme 0 to the latest earleme.
 
-@node The initial earleme settings
-@subsection The initial earleme settings
-
-All input models have the same initial values.
-Initially the current, latest and furthest earleme
-are always earleme 0.
-
-Understanding the
-settings of current, latest and furthest earleme is
-crucial to working with advanced input models,
-and for this reason the next sections will go
-through the possibilities carefully.
-The presentation will start with the most traditional
-and restrictive models.
-It will proceed to less restrictive models.
-
 @node Parse exhaustion
-@subsection Parse exhaustion
+@section Parse exhaustion
 
 A parse is
 @dfindex exhausted parse
@@ -658,6 +646,38 @@ if more tokens can be read at the current earleme,
 then it is possible for
 the furthest earleme and the current earleme
 to be equal in an active parse.
+
+@node The basic models of input
+@section The basic models of input
+
+For the purposes of presentation,
+we (somewhat arbitrarily)
+divide Libmarpa's input models
+into two groups:
+basic and advanced.
+In the
+@dfindex basic models of input
+@dfindex models of input, basic
+@dfindex input, basic models of
+@dfn{basic input models of input},
+every token is exactly one earleme long.
+This implies that, in a basic model of input,
+@itemize
+@item that every token is the same length, and 
+@item that the ordinal of an Earley set
+is always be the same as its earleme location.
+@end itemize
+
+In the
+@dfindex advanced models of input
+@dfindex models of input, advanced
+@dfindex input, advanced models of
+@dfn{advanced models of input},
+tokens may have a length other than 1.
+Most applications use the basic input models.
+The details of the advanced models of input are
+presented in a later chapter.
+@xref{Advanced input models}.
 
 @node The standard model of input
 @subsection The standard model of input
