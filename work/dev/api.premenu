@@ -138,8 +138,8 @@ What does the sequence look like when rewritten
 in BNF as a right-recursion?
 @end itemize
 
-@node Terminology
-@section Terminology
+@node Terminology and notation
+@section Terminology and notation
 
 In this document,
 @itemize
@@ -160,6 +160,11 @@ a Libmarpa application is not necessarily an application program.
 For our purposes, an ``application''
 might be another library which uses Libmarpa.
 @item
+@dfindex max(x,y)
+@code{max(x,y)} is the maximum of
+@code{x} and @code{y},
+where @code{x} and @code{y} are two numbers.
+@item
 @dfindex method
 @dfn{Libmarpa method}, or just @dfn{method} means a C function
 or a function-like macro of the Libmarpa library.
@@ -175,9 +180,11 @@ and ``programmer'' are essentially synonyms.
 @dfindex our
 @dfn{We} (and ``us'' and ''our'') refer to the authors.
 As of this writing, there is a primary author,
-but the plural is traditional and, by it, we intend to suggest
-a journey of discovery, on which our readers
-are embarked with us.
+but the plural is traditional, and our ``we''
+is intended to include the reader
+and everyone
+we are joining on the millenia-old voyage of discovery
+into mathematics and language.
 @end itemize
 
 @node Application and diagnostic behavior
