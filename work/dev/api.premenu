@@ -639,6 +639,26 @@ The presentation will start with the most traditional
 and restrictive models.
 It will proceed to less restrictive models.
 
+@node Parse exhaustion
+@subsection Parse exhaustion
+
+A parse is
+@dfindex exhausted parse
+@dfindex parse, exhausted
+@dfn{exhausted} when it cannot accept any further input.
+A parse is
+@dfindex active parse
+@dfindex parse, active
+@dfn{active} if it cannot accept any further input.
+For a parse to be exhausted,
+the furthest earleme and the current earleme
+must be equal.
+However, the converse is not always the case:
+if more tokens can be read at the current earleme,
+then it is possible for
+the furthest earleme and the current earleme
+to be equal in an active parse.
+
 @node The standard model of input
 @subsection The standard model of input
 
