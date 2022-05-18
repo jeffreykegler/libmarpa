@@ -114,6 +114,7 @@
 @s MARPA_DSTACK int
 @s LBV int
 @s Marpa_Bocage int
+@s Marpa_Earleme int
 @s Marpa_IRL_ID int
 @s Marpa_Rule_ID int
 @s Marpa_Symbol_ID int
@@ -6168,10 +6169,11 @@ marpa_r_earley_item_warning_threshold_set (Marpa_Recognizer r, int threshold)
 
 @*0 Furthest earleme.
 The ``furthest'' or highest-numbered earleme.
-This is the earleme of the last Earley set that contains anything.
+This is the ``furthest out'' earleme that the recognizer
+make reference to.
 Marpa allows variable length tokens,
 so it needs to track how far out tokens might be found.
-No complete or predicted Earley item will be found after the current earleme.
+No token ends after the furthest earleme.
 @d Furthest_Earleme_of_R(r) ((r)->t_furthest_earleme)
 @<Int aligned recognizer elements@> = JEARLEME t_furthest_earleme;
 @ @<Initialize recognizer elements@> = r->t_furthest_earleme = 0;
