@@ -41,25 +41,16 @@ marpa.h.p80: ../dev/marpa.h.p80
 	$(CPPWRAP) $@ < $? > $@
 
 marpa.h: $(MARPA_H_PIECES) marpa.h.raw
-	perl -pe 'exit if m/^[\/][*] === THIS IS A SOURCE FILE /' marpa.h.raw >$@
+	sed -n -e '1,/^\/\* === THIS IS A SOURCE FILE /p' marpa.h.raw | sed -e '$$d' >$@
 	cat ../shared/do_not_edit.c >> $@
-	perl -ne \
-	'exit if m/^[\/][*] === VERSION NUMBERS GO HERE /; \
-	 print if $$flag; \
-	  { $$flag=1 } if m/^[\/][*] === DO NOT CHANGE ME /;' \
-	    marpa.h.raw >>$@
-	perl -e \
-	'printf "#define MARPA_MAJOR_VERSION %d\n", shift; \
-	 printf "#define MARPA_MINOR_VERSION %d\n", shift; \
-	 printf "#define MARPA_MICRO_VERSION %d\n", shift;' \
-	    `sh ../../libmarpa_version.sh  major` \
-	    `sh ../../libmarpa_version.sh  minor` \
-	    `sh ../../libmarpa_version.sh  micro` >> $@
+	cat marpa.h.raw | \
+	    sed -n -e '/^\/\* === DO NOT CHANGE ME /,/^\/\* === VERSION NUMBERS GO HERE /p' | \
+	    sed -e '$$d' -e '1d' >>$@
+	echo '#define MARPA_MAJOR_VERSION ' `sh ../../libmarpa_version.sh major` >> $@
+	echo '#define MARPA_MINOR_VERSION ' `sh ../../libmarpa_version.sh minor` >> $@
+	echo '#define MARPA_MICRO_VERSION ' `sh ../../libmarpa_version.sh micro` >> $@
 	cat marpa.h-err marpa.h-event marpa.h-step marpa.h.p50 marpa.h.p80 >> $@
-	perl -ne \
-	'print if $$flag; \
-	  { $$flag=1 } if m/^[\/][*] === DECLARATIONS GO HERE /;' \
-	    marpa.h.raw >>$@
+	sed -n -e '/^\/\* === DECLARATIONS GO HERE /,$$p' marpa.h.raw | sed -e '1d' >>$@
 
 CPPWRAP = perl ../bin/cppwrap.pl
 
