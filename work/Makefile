@@ -87,7 +87,7 @@ timestamp/stage_build.stamp:
 
 timestamp/doc_build.stamp:
 	@( \
-	  echo doc/configure.ac: ac_doc/configure.ac; \
+	  echo doc/configure.ac: ac_doc1/configure.ac; \
 	  echo doc/Makefile.am: ac_doc/Makefile.am; \
 	  echo doc/README: ac_doc/README; \
 	  echo doc/NEWS: ac/NEWS; \
