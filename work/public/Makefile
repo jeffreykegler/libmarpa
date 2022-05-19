@@ -27,9 +27,9 @@
 CPPWRAP = perl ../bin/cppwrap.pl
 C_LANGUAGE_PREAMBLE = ../shared/license.c ../shared/do_not_edit.c
 MARPA_H_PIECES = $(C_LANGUAGE_PREAMBLE) \
-  marpa.h.p10 marpa.h-err \
+  marpa.h-err \
   marpa.h-event marpa.h-step \
-  marpa.h.p50 marpa.h.p80 marpa.h.p90
+  marpa.h.p50 marpa.h.p80
 
 all: marpa.h marpa_codes.c \
     error_codes.table events.table steps.table
@@ -40,8 +40,26 @@ marpa.h.p50: ../dev/marpa.h.p50
 marpa.h.p80: ../dev/marpa.h.p80
 	$(CPPWRAP) $@ < $? > $@
 
-marpa.h: $(MARPA_H_PIECES)
-	cat $(MARPA_H_PIECES) > marpa.h
+marpa.h: $(MARPA_H_PIECES) marpa.h.raw
+	perl -pe 'exit if m/^[\/][*] === THIS IS A SOURCE FILE /' marpa.h.raw >$@
+	cat ../shared/do_not_edit.c >> $@
+	perl -ne \
+	'exit if m/^[\/][*] === VERSION NUMBERS GO HERE /; \
+	 print if $$flag; \
+	  { $$flag=1 } if m/^[\/][*] === DO NOT CHANGE ME /;' \
+	    marpa.h.raw >>$@
+	perl -e \
+	'printf "#define MARPA_MAJOR_VERSION %d\n", shift; \
+	 printf "#define MARPA_MINOR_VERSION %d\n", shift; \
+	 printf "#define MARPA_MICRO_VERSION %d\n", shift;' \
+	    `sh ../../libmarpa_version.sh  major` \
+	    `sh ../../libmarpa_version.sh  minor` \
+	    `sh ../../libmarpa_version.sh  micro` >> $@
+	cat marpa.h-err marpa.h-event marpa.h-step marpa.h.p50 marpa.h.p80 >> $@
+	perl -ne \
+	'print if $$flag; \
+	  { $$flag=1 } if m/^[\/][*] === DECLARATIONS GO HERE /;' \
+	    marpa.h.raw >>$@
 
 CPPWRAP = perl ../bin/cppwrap.pl
 

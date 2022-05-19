@@ -47,6 +47,7 @@ timestamp/ac_dist.stamp: timestamp/stage.stamp
 
 timestamp/cm_dist.stamp: timestamp/ac_dist.stamp
 	@echo cm_dist Out of date wrt ac_dist
+	cd cmake; make
 	@( \
 	  echo cm_dist/marpa.c: ac_dist/marpa.c; \
 	  echo cm_dist/include/marpa.h: ac_dist/marpa.h; \
@@ -126,6 +127,7 @@ test_clean:
 clean:
 	-rm libmarpa_version.sh
 	(cd work; $(MAKE) clean)
+	(cd cmake; $(MAKE) clean)
 	rm -rf cm_build
 	rm -rf cm_dist
 	rm -rf ac_dist
