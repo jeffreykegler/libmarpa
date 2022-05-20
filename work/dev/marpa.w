@@ -6123,7 +6123,9 @@ r->t_current_earleme = -1;
 @<Function definitions@> =
 Marpa_Earleme marpa_r_current_earleme(Marpa_Recognizer r)
 {
+  @<Return |-2| on failure@>@;
   @<Unpack recognizer objects@>@;
+  @<Fail if fatal error@>@;
   if (_MARPA_UNLIKELY(Input_Phase_of_R(r) == R_BEFORE_INPUT)) {
       MARPA_ERROR(MARPA_ERR_RECCE_NOT_STARTED);
       return -1;
@@ -6177,7 +6179,12 @@ No token ends after the furthest earleme.
 @d Furthest_Earleme_of_R(r) ((r)->t_furthest_earleme)
 @<Int aligned recognizer elements@> = JEARLEME t_furthest_earleme;
 @ @<Initialize recognizer elements@> = r->t_furthest_earleme = 0;
-@ @<Function definitions@> =
+@ Always succeeds to allow |unsigned int| to be used for
+the value.
+This makes the interface for the furthest earleme non-orthogonal with
+that for the current earleme,
+but allows more values for the furthest earleme.
+@<Function definitions@> =
 unsigned int marpa_r_furthest_earleme(Marpa_Recognizer r)
 { return (unsigned int)Furthest_Earleme_of_R(r); }
 
@@ -6814,8 +6821,7 @@ int marpa_r_latest_earley_set_value_set(Marpa_Recognizer r, int value)
   YS earley_set;
   @<Return |-2| on failure@>@;
   @<Unpack recognizer objects@>@;
-  @<Fail if fatal error@>@;
-  @<Fail if recognizer not started@>@;
+  @<Fail if not trace-safe@>@;
   earley_set = Latest_YS_of_R(r);
   return Value_of_YS(earley_set) = value;
 }
@@ -6827,8 +6833,7 @@ int marpa_r_latest_earley_set_values_set(Marpa_Recognizer r, int value,
   YS earley_set;
   @<Return |-2| on failure@>@;
   @<Unpack recognizer objects@>@;
-  @<Fail if fatal error@>@;
-  @<Fail if recognizer not started@>@;
+  @<Fail if not trace-safe@>@;
   earley_set = Latest_YS_of_R(r);
   Value_of_YS(earley_set) = value;
   PValue_of_YS(earley_set) = pvalue;

@@ -3122,8 +3122,12 @@ On failure, returns @minus{}2.
 
 @anchor{marpa_r_furthest_earleme}
 @deftypefun @code{unsigned int} marpa_r_furthest_earleme (Marpa_Recognizer @var{r})
-Return value: On success, the furthest earleme.
+
+Always returns the furthest earleme.
+
+@strong{Return value}: On success, the furthest earleme.
 Always succeeds.
+
 @end deftypefun
 
 @anchor{marpa_r_latest_earley_set}
@@ -6414,6 +6418,33 @@ This chapter discusses features that are @strong{not}
 in the external interface,
 but that might be added
 to the external interface in the future.
+
+@node Furthest earleme values
+@section Furthest earleme values
+
+@code{marpa_r_furthest_earleme} returns
+@code{unsigned int} which is non-orthogonal with
+@code{marpa_r_current_earleme}.
+This leaves no room for an failure return value,
+which we deal with by not checking for failures,
+of which the only important one is calling
+@code{marpa_r_furthest_earleme} before the start of input.
+To consider
+@code{marpa_r_furthest_earleme} we consider furthese earleme to have
+been initialized when the recognizer was created,
+which is another non-orthogonality with 
+@code{marpa_r_current_earleme}.
+
+All this might be fine, if something were gained, but in fact in the furthest
+earleme, unless there is a problem, always becomes the current earleme,
+and no use cases for extremely long variable-length tokens are envisioned,
+so that the two should never be far apart.
+Additionally, the additional values for the furthest earleme only come into
+play if the parse is to large for the computer memories as of this writing.
+Summarizing, @code{marpa_r_furthest_earleme},
+should return an @code{int},
+like @code{marpa_r_current_earleme},
+and the non-orthogonalities should be eliminated.
 
 @node Additional recoverable failures in marpa_r_alternative()
 @section Additional recoverable failures in marpa_r_alternative()
