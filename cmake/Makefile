@@ -22,13 +22,12 @@
 all: version.cmake
 
 version.cmake:
-	perl -e \
-	'printf "SET(MARPA_LIB_MAJOR_VERSION %d)\n", shift; \
-	 printf "SET(MARPA_LIB_MINOR_VERSION %d)\n", shift; \
-	 printf "SET(MARPA_LIB_PATCH_VERSION %d)\n", shift;' \
-	    `sh ../libmarpa_version.sh  major` \
-	    `sh ../libmarpa_version.sh  minor` \
-	    `sh ../libmarpa_version.sh  micro` > $@
+	major=`sh ../libmarpa_version.sh major`; \
+	  echo "SET(MARPA_LIB_MAJOR_VERSION $$major)" > $@
+	minor=`sh ../libmarpa_version.sh minor`; \
+	  echo "SET(MARPA_LIB_MINOR_VERSION $$minor)" >> $@
+	micro=`sh ../libmarpa_version.sh micro`; \
+	  echo "SET(MARPA_LIB_MICRO_VERSION $$micro)" >> $@
 
 CLEAN_FILES = version.cmake
 
