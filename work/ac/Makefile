@@ -23,14 +23,13 @@
 
 all: version.m4
 
-version.m4: ../../Makefile
-	perl -e \
-	'printf "m4_define([marpa_major_version], [%d])\n", shift; \
-	 printf "m4_define([marpa_minor_version], [%d])\n", shift; \
-	 printf "m4_define([marpa_micro_version], [%d])\n", shift;' \
-	    `sh ../../libmarpa_version.sh  major` \
-	    `sh ../../libmarpa_version.sh  minor` \
-	    `sh ../../libmarpa_version.sh  micro` > $@
+version.m4: ../etc/libmarpa_version.sh
+	major=`sh ../etc/libmarpa_version.sh major`; \
+	  echo "m4_define([marpa_major_version], [$$major])" > $@
+	minor=`sh ../etc/libmarpa_version.sh minor`; \
+	  echo "m4_define([marpa_minor_version], [$$minor])" >> $@
+	micro=`sh ../etc/libmarpa_version.sh micro`; \
+	  echo "m4_define([marpa_micro_version], [$$micro])" >> $@
 
 CLEAN_FILES = version.m4
 

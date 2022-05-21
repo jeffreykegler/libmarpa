@@ -46,9 +46,9 @@ marpa.h: $(MARPA_H_PIECES) marpa.h.raw
 	cat marpa.h.raw | \
 	    sed -n -e '/^\/\* === DO NOT CHANGE ME /,/^\/\* === VERSION NUMBERS GO HERE /p' | \
 	    sed -e '$$d' -e '1d' >>$@
-	echo '#define MARPA_MAJOR_VERSION ' `sh ../../libmarpa_version.sh major` >> $@
-	echo '#define MARPA_MINOR_VERSION ' `sh ../../libmarpa_version.sh minor` >> $@
-	echo '#define MARPA_MICRO_VERSION ' `sh ../../libmarpa_version.sh micro` >> $@
+	echo '#define MARPA_MAJOR_VERSION ' `sh ../etc/libmarpa_version.sh major` >> $@
+	echo '#define MARPA_MINOR_VERSION ' `sh ../etc/libmarpa_version.sh minor` >> $@
+	echo '#define MARPA_MICRO_VERSION ' `sh ../etc/libmarpa_version.sh micro` >> $@
 	cat marpa.h-err marpa.h-event marpa.h-step marpa.h.p50 marpa.h.p80 >> $@
 	sed -n -e '/^\/\* === DECLARATIONS GO HERE /,$$p' marpa.h.raw | sed -e '1d' >>$@
 

@@ -69,6 +69,7 @@ timestamp/stage_build.stamp:
           echo stage/README.INSTALL: etc/README.INSTALL; \
           echo stage/README.AIX: etc/README.AIX; \
           echo stage/GIT_LOG.txt: etc/GIT_LOG.txt; \
+          echo stage/libmarpa_version.sh: etc/libmarpa_version.sh; \
           echo stage/libmarpa.pc.in: etc/libmarpa.pc.in; \
           echo stage/error_codes.table: public/error_codes.table; \
           echo stage/events.table: public/events.table; \
