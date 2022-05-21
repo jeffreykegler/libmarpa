@@ -75,21 +75,21 @@ marpa.pdf: marpa.tex cwebmac.tex
 legacy.pdf: legacy.tex cwebmac.tex
 
 api.texi: api.premenu
-	perl -pe 'exit if /^[@]copying/' $? > $@
+	sed -ne '1,/^[@]copying/p' $? | sed -e '$$d' > $@
 	echo '@c DO NOT EDIT -- This file was created from $? using make' >>$@
 	echo '@c The next full make will overwrite any changes made to this file' >>$@
 	echo >>$@
-	perl -ne '$$flag = 1 if /^[@]copying/; print if $$flag' $? >> $@
+	sed -ne '/^[@]copying/,$$p' $? >> $@
 	emacs -batch $@ \
 	    -eval '(texinfo-master-menu 1)' \
 	    -f save-buffer -kill
 
 internal.texi: internal.premenu
-	perl -pe 'exit if /^[@]copying/' $? > $@
+	sed -ne '1,/^[@]copying/p' $? | sed -e '$$d' > $@
 	echo '@c DO NOT EDIT -- This file was created from $? using make' >>$@
 	echo '@c The next full make will overwrite any changes made to this file' >>$@
 	echo >>$@
-	perl -ne '$$flag = 1 if /^[@]copying/; print if $$flag' $? >> $@
+	sed -ne '/^[@]copying/,$$p' $? >> $@
 	emacs -batch $@ \
 	    -eval '(texinfo-master-menu 1)' \
 	    -f save-buffer -kill
