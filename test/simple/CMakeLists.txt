@@ -1,4 +1,4 @@
-CMAKE_MINIMUM_REQUIRED(VERSION 3.0.2)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.16.3)
 
 project(simple C CXX)
 
@@ -45,14 +45,5 @@ target_link_libraries(trivial1 ${LIBMARPA_STATIC} ${LIBTAP})
 
 add_executable(depr_unvalued depr_unvalued.c marpa_m_test.c)
 target_link_libraries(depr_unvalued ${LIBMARPA_STATIC} ${LIBTAP})
-
-add_test(issue92a issue92a)
-add_test(issue92b issue92b)
-add_test(issue92c issue92c)
-add_test(nits nits)
-add_test(rule1 rule1)
-add_test(trivial trivial)
-add_test(trivial1 trivial1)
-add_test(depr_unvalued depr_unvalued)
 
 # vim: expandtab shiftwidth=4:

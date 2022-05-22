@@ -1,6 +1,6 @@
-CMAKE_MINIMUM_REQUIRED(VERSION 3.0.2)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.16.3)
 
-enable_testing()
+PROJECT(test C CXX)
 
 # You can tweak some common (for all subprojects) stuff here. For example:
 

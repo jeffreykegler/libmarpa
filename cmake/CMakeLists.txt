@@ -17,14 +17,15 @@
 # ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 # OTHER DEALINGS IN THE SOFTWARE.
 
-CMAKE_MINIMUM_REQUIRED(VERSION 3.0.2)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.16.3)
 
 include(version.cmake)
 
 SET(MARPA_LIB_VERSION
     ${MARPA_LIB_MAJOR_VERSION}.${MARPA_LIB_MINOR_VERSION}.${MARPA_LIB_MICRO_VERSION})
 
-PROJECT(libmarpa LANGUAGES C
+PROJECT(libmarpa
+  LANGUAGES C
   HOMEPAGE_URL https://jeffreykegler.github.io/Marpa-web-site/libmarpa.html
   DESCRIPTION "C language library that implements the parse engine at the core of Marpa"
   VERSION ${MARPA_LIB_VERSION})
@@ -33,7 +34,6 @@ PROJECT(libmarpa LANGUAGES C
 # Module search path
 # ------------------
 SET (CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${PROJECT_SOURCE_DIR}/modules")
-ENABLE_TESTING()
 
 if("${PROJECT_SOURCE_DIR}" STREQUAL "${PROJECT_BINARY_DIR}")
    message(SEND_ERROR "In-source builds are not allowed.")
