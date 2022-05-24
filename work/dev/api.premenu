@@ -740,74 +740,27 @@ the latest earleme is always equal to the current earleme.
 @node Ambiguous input
 @subsection Ambiguous input
 
-As a first loosening of the standard model,
-we no longer require calls to
-@code{marpa_r_alternative()}
-to be paired with calls to
-@code{marpa_r_earleme_complete()}.
-Instead,
-we allow a series of one or more calls
-to
+We can loosen the standard model to
+allow more than one successful call to
 @code{marpa_r_alternative()}
 before each call to
 @code{marpa_r_earleme_complete()}.
-We still require that there be at least one call
-to
+This change will mean that multiple tokens become possible
+at each earleme ---
+in other words, that the input becomes ambiguous.
+We continue to require that there be
+at least one successful call to
 @code{marpa_r_alternative()}
 before each call to
-@code{marpa_r_earleme_complete()},
-and we still require that all tokens have
-a length of 1.
+@code{marpa_r_earleme_complete()}.
+And we recall that,
+since this is a basic input model,
+all tokens must have a length of 1.
 
 In the ambiguous input model, the behavior of the current,
 latest and furthest earlemes are exactly
-as described for the standard model, with one minor
-exception:
-Where the current earleme is @var{c},
-and a call to
-@code{marpa_r_alternative()}
-is not the first
-of a series,
-the value of the furthest earleme before the call will be
-@var{c}+1.
-
-@node General rules for the earleme variables
-@subsection General rules for the earleme variables
-
-At this point, the most generalized input model has been
-introduced.
-Here are some useful facts about the earleme variables that will always be the case,
-no matter which of the input models is in use.
-
-@itemize
-@item The current earleme is always greater than
-or equal to the latest earleme.
-@item The furthest earleme is always greater than
-or equal to the latest earleme.
-@item If the furthest earleme is greater than the current earleme,
-the parser is not exhausted.
-@item If the furthest earleme is less than the current earleme,
-the parser is exhausted.
-@end itemize
-
-If the parser is not exhausted,
-the following will always be true,
-no matter which of the input models is in use.
-
-@itemize
-@item
-The furthest earleme is greater than
-or equal to the current earleme.
-@end itemize
-
-In an exhausted parser, the following will always be true,
-no matter which of the input models is in use.
-
-@itemize
-@item
-The furthest earleme is less than
-or equal to the current earleme.
-@end itemize
+as described for the standard model.
+@xref{The standard model of input}.
 
 @node Terminals
 @section Terminals
