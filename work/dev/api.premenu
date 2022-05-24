@@ -667,9 +667,10 @@ In the
 every token is exactly one earleme long.
 This implies that, in a basic model of input,
 @itemize
-@item every token is the same length, and
+@item every token is the same length,
 @item the ordinal of an Earley set
-is always be the same as its earleme location.
+is always be the same as its earleme location, and
+@item the latest earleme and the current earleme are always equal.
 @end itemize
 
 In the
@@ -693,7 +694,7 @@ and
 @code{marpa_r_earleme_complete()}
 are
 made in pairs.
-There is, first, exactly one call
+In each pair there is, first, exactly one successful call
 to
 @code{marpa_r_alternative()},
 and it is for a token with length 1.
@@ -702,58 +703,39 @@ to
 @code{marpa_r_earleme_complete()}.
 For an input of length @var{n}, there will be
 exactly @var{n} such paired calls.
+In all the but last pair,
+the call to
+@code{marpa_r_earleme_complete()} must be
+successful and must not exhaust the parse.
 
-Suppose, in the standard model that,
-for a call
+In the standard model,
+after a successful call
 to
 @code{marpa_r_alternative()},
-the following is true:
+if @var{c} is the value  of the current earleme before the call,
 @itemize
-@item The current earleme before the call was @var{c}.
-@end itemize
-Because this is the standard model,
-this means that we also know that
-@itemize
-@item The latest earleme before the call was @var{c}.
-@item The furthest earleme before the call was @var{c}.
-@end itemize
-In that case,
-after the call to
-@code{marpa_r_alternative()},
-the following will be true:
-@itemize
-@item The current earleme will still be @var{c}.
-@item The latest earleme will still be @var{c}.
-@item The furthest earleme will be @var{c}+1.
+@item the current earleme will remain unchanged and therefore
+  will be @var{c}; and
+@item the furthest earleme be @var{c}+1.
 @end itemize
 
-Suppose, in the standard model that,
-for a call
-to
+In the standard model,
+a call to
+@code{marpa_r_earleme_complete()}
+follows a successful call of
+@code{marpa_r_alternative()},
+so that the value of the furthest earleme before the call to
+@code{marpa_r_earleme_complete()} will be @code{c+1},
+where @var{c} is the value of the current earleme.
+After a successful call to 
 @code{marpa_r_earleme_complete()},
-the following is true:
 @itemize
-@item The current earleme before the call is @var{c}.
+@item the current earleme will be advanced to @code{c+1}; and
+@item the furthest earleme will remain at @var{c+1}.
 @end itemize
-Because this is the standard model,
-this means that we also know that
-@itemize
-@item The latest earleme before the call was @var{c}.
-@item The furthest earleme before the call was @var{c+1}.
-@end itemize
-In that case,
-after the call
-to
-@code{marpa_r_earleme_complete()},
-the current, latest and furthest earlemes will
-be the same.
-Specifically,
-the following will be true:
-@itemize
-@item The current earleme will be advanced to @var{c+1}.
-@item The latest earleme will be advanced to @var{c+1}.
-@item The furthest earleme will remain at @var{c+1}.
-@end itemize
+
+Recall that, in the basic models of input,
+the latest earleme is always equal to the current earleme.
 
 @node Ambiguous input
 @subsection Ambiguous input
