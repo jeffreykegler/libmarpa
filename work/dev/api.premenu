@@ -500,16 +500,6 @@ natural language processing requires ambiguous tokens,
 for example.
 Libmarpa allows a wide variety of alternative input models.
 
-This document assumes that the reader knows the concepts
-behind Libmarpa's
-alternative input models, either from the documentation
-of a higher level interface, such as
-@code{Marpa::XS},
-@code{Marpa::R2},
-or @code{Marpa::R3},
-or from Marpa's
-@uref{https://arxiv.org/abs/1910.08129, theory document}.
-
 In Libmarpa a location is called a
 @dfindex earleme
 @dfn{earleme}.
@@ -523,15 +513,50 @@ In the traditional model, the ordinal of an Earley set and
 its earleme are always exactly the same, but in Libmarpa's
 advanced input models
 the ordinal of an Earley set can be different from
-it location (earleme).
+its location (earleme).
 
-@node The earleme variables
-@subsection The earleme variables
+The important earleme values are
+the latest earleme.
+the current earleme, and
+the furthest earleme.
+These are described in lexical order:
+That is, the latest earleme is always at or before the current earleme,
+and the current earleme is always at or before the furthest earleme.
 
-The important earleme variables are the current earleme, the furthest earleme
-and the latest earleme.
-The initial values of the current, latest and furthest earleme
-are always earleme 0.
+@node The latest earleme
+@subsection The latest earleme
+
+The
+@dfindex Earley set, latest
+@dfn{latest Earley set}
+is the Earley set completed most recently.
+This is initially the Earley set at location 0.
+The latest Earley set is always the Earley set with the highest ordinal,
+and the Earley set with the highest earleme location.
+The
+@dfindex earleme, latest
+@dfn{latest earleme} is the earleme of the latest Earley set.
+If there is an Earley set at the current earleme,
+it is the latest Earley set and the latest earleme
+is equal to the current earleme.
+There is never an Earley set after the current earleme,
+and therefore the latest Earley set is never after the
+current earleme.
+The @code{marpa_r_start input()} and
+@code{marpa_r_earleme_complete()} methods
+are only ones that change the latest earleme.
+@xref{marpa_r_start_input, marpa_r_start_input()} and
+@ref{marpa_r_earleme_complete, marpa_r_earleme_complete()}.
+
+The latest earleme is different from the current earleme if and only if
+there is no Earley set at the current earleme.
+A different end of parsing can be specified,
+but by default, parsing is of the input
+in the range
+from earleme 0 to the latest earleme.
+
+@node The current earleme
+@subsection The current earleme
 
 The
 @dfindex earleme, current
@@ -540,74 +565,52 @@ is the earleme that Libmarpa is currently working on.
 More specifically, it is the one at which new tokens will @strong{start}.
 Since tokens are never zero length, a new token will always end after the
 current earleme.
-The current earleme is initially earleme 0.
-Every call to
+@code{marpa_r_start_input()}
+initializes the current earleme to 0,
+and every call to
 @code{marpa_r_earleme_complete()}
 advances the
 current earleme by 1.
+The @code{marpa_r_start input()} and
+@code{marpa_r_earleme_complete()} methods
+are only ones that change the current earleme.
+@xref{marpa_r_start_input, marpa_r_start_input()} and
+@ref{marpa_r_earleme_complete, marpa_r_earleme_complete()}.
 
-The
+@node The furthest earleme
+@subsection The furthest earleme
+
+Loosely speaking,
+the
 @dfindex earleme, furthest
 @dfn{furthest earleme}
-is the highest numbered (and therefore ``furthest'')
-earleme at which a token ends.
-The furthest earleme is initially earleme 0.
+is the furthest earleme reached by the parse.
+More precisely,
+it is the highest numbered
+earleme at which a token ends
+and is 0 if there are no tokens.
+The furthest earleme is 0 when a recognizer is
+created.
 With every call to
 @code{marpa_r_alternative()}, the end of the token
 it adds is calculated.
 A token ends at the earleme location @var{current}+@var{length},
 where @var{current} is the current earleme,
 and @var{length} is the length of the newly added token.
-After a call to
+If @code{old_f} is the furthest earleme before
+a call to
 @code{marpa_r_alternative()},
-the furthest earleme is its value before the call,
-or @var{current}+@var{length},
-whichever is greater.
+the furthest earleme after the call
+is @code{max(old_f, current+length)}.
+The @code{marpa_r_new()} and
+@code{marpa_r_alternative()} methods
+are only ones that change the furthest earleme.
+@xref{marpa_r_new, marpa_r_new()} and
+@ref{marpa_r_alternative, marpa_r_alternative()}.
 
-The
-@dfindex earleme, latest
-@dfn{latest earleme}
-is the earleme of the latest
-Earley set.
-The
-@dfindex Earley set, latest
-@dfn{latest Earley set}
-is the last Earley set completed.
-This is always the highest numbered Earley set.
-If there is an Earley set at the current earleme,
-it is the latest Earley set and the latest earleme
-is equal to the current earleme.
-There is never an Earley set after the current earleme.
-
-After every call to the
-@code{marpa_r_earleme_complete()}
-method
-that adds a token,
-the value of the latest earleme is
-same as the value of the current earleme.
-After every call to the
-@code{marpa_r_earleme_complete()}
-method
-that does @strong{not} add a token,
-the value of the latest earleme is unchanged
-from its value before the call.
-
-@node The significances of the earleme variables
-@subsection The significances of the earleme variables
-
-The current earleme tracks the advance of the recognizer through the input.
-Input tokens always start at the current earleme.
-An application can advance past the current earleme,
-by calling
-@code{marpa_r_earleme_complete()}, which
-increments the current earleme by 1.
-After initialization,
-@code{marpa_r_earleme_complete()}
-is
-the only way to manipulate the value of the current earleme.
-
-The furthest earleme tracks how ``far out'' tokens can be found.
-In the standard input model, calling
+In the basic input models,
+where every token has length 1,
+calling
 @code{marpa_r_earleme_complete()}
 after each
 @code{marpa_r_alternative()}
@@ -615,9 +618,9 @@ call is sufficient to process
 all inputs,
 and the furthest earleme's value
 can be typically be ignored.
-In alternative input models, if tokens have lengths greater than
-1, calling
-@code{marpa_r_earleme_complete()}
+In alternative input models,
+where tokens have lengths greater than 1,
+calling @code{marpa_r_earleme_complete()}
 once after the last token
 is read may not be enough to ensure that all tokens have been processed.
 To ensure that all tokens have been processed,
@@ -625,14 +628,6 @@ an application must advance the current earleme
 by calling
 @code{marpa_r_earleme_complete()},
 until the current earleme is equal to the furthest earleme.
-
-The lastest earleme is the earleme of the last Earley set.
-The latest earleme is different from the current earleme if and only if
-there is no Earley set at the current earleme.
-A different end of parsing can be specified,
-but by default, parsing is of the input
-in the range
-from earleme 0 to the latest earleme.
 
 @node Parse exhaustion
 @section Parse exhaustion
@@ -670,7 +665,7 @@ In the
 every token is exactly one earleme long.
 This implies that, in a basic model of input,
 @itemize
-@item that every token is the same length, and 
+@item that every token is the same length, and
 @item that the ordinal of an Earley set
 is always be the same as its earleme location.
 @end itemize
@@ -2637,7 +2632,7 @@ from a grammar.
 When called, clears any events already in the event queue.
 May return one or more events.
 The types of event that this method may return
-are 
+are
 A @code{MARPA_EVENT_LOOP_RULES},
 @code{MARPA_EVENT_COUNTED_NULLABLE},
 @code{MARPA_EVENT_NULLING_TERMINAL}.
@@ -2657,7 +2652,7 @@ Most appplications, however, will want to treat
 a grammar with cycles as if it were
 a library-recoverable error.
 A @code{MARPA_ERR_GRAMMAR_HAS_CYCLE} error occurs
-iff 
+iff
 a @code{MARPA_EVENT_LOOP_RULES} event occurs.
 For more details on cycles,
 @pxref{marpa_g_has_cycle,marpa_g_has_cycle()}.
@@ -2863,7 +2858,7 @@ On success, does the following:
 @itemize
 @item
 Reads a token into @var{r}.  The token will start at the current earleme.
-@item 
+@item
 Sets the value of the furthest earleme is set to
 the greater of its value before the call,
 and @var{current}+@var{length},
@@ -6432,7 +6427,7 @@ of which the only important one is calling
 To consider
 @code{marpa_r_furthest_earleme} we consider furthese earleme to have
 been initialized when the recognizer was created,
-which is another non-orthogonality with 
+which is another non-orthogonality with
 @code{marpa_r_current_earleme}.
 
 All this might be fine, if something were gained, but in fact in the furthest
