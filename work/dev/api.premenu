@@ -519,8 +519,10 @@ The important earleme values are
 the latest earleme.
 the current earleme, and
 the furthest earleme.
-These are described in lexical order:
-That is, the latest earleme is always at or before the current earleme,
+Latest, current and furthest earleme,
+when they have determinate values,
+obey a lexical order in this sense:
+The latest earleme is always at or before the current earleme,
 and the current earleme is always at or before the furthest earleme.
 
 @node The latest earleme
@@ -639,7 +641,7 @@ A parse is
 A parse is
 @dfindex active parse
 @dfindex parse, active
-@dfn{active} if it cannot accept any further input.
+@dfn{active} iff it is not exhausted.
 For a parse to be exhausted,
 the furthest earleme and the current earleme
 must be equal.
@@ -665,8 +667,8 @@ In the
 every token is exactly one earleme long.
 This implies that, in a basic model of input,
 @itemize
-@item that every token is the same length, and
-@item that the ordinal of an Earley set
+@item every token is the same length, and
+@item the ordinal of an Earley set
 is always be the same as its earleme location.
 @end itemize
 
