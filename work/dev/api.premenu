@@ -669,7 +669,7 @@ This implies that, in a basic model of input,
 @itemize
 @item every token is the same length,
 @item the ordinal of an Earley set
-is always be the same as its earleme location, and
+will always be the same as its earleme location, and
 @item the latest earleme and the current earleme are always equal.
 @end itemize
 
@@ -703,7 +703,7 @@ to
 @code{marpa_r_earleme_complete()}.
 For an input of length @var{n}, there will be
 exactly @var{n} such paired calls.
-In all the but last pair,
+In all but the last pair,
 the call to
 @code{marpa_r_earleme_complete()} must be
 successful and must not exhaust the parse.
