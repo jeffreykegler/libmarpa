@@ -688,25 +688,31 @@ presented in a later chapter.
 @subsection The standard model of input
 
 In the standard model of input,
-calls to
-@code{marpa_r_alternative()}
-and
-@code{marpa_r_earleme_complete()}
-are
-made in pairs.
-In each pair there is, first, exactly one successful call
-to
-@code{marpa_r_alternative()},
-and it is for a token with length 1.
-Following it must be a call
-to
-@code{marpa_r_earleme_complete()}.
+there is exactly one successful
+@code{marpa_r_alternative()} call
+immediately previous
+to every
+@code{marpa_r_earleme_complete()} call.
+A @code{marpa_r_alternative()} call is
+@dfindex previous (to a @code{marpa_r_earleme_complete()} call), immediately
+@dfindex immediately previous (to a @code{marpa_r_earleme_complete()} call)
+@dfn{immediately previous} to a
+@code{marpa_r_earleme_complete()} call
+iff
+that @code{marpa_r_earleme_complete()} call is
+the first
+@code{marpa_r_earleme_complete()} call after
+the @code{marpa_r_alternative()} call.
+
+Recall that, since the standard model is
+a basic model,
+the token length in every successful call to @code{marpa_r_alternative()}
+will be one.
 For an input of length @var{n}, there will be
-exactly @var{n} such paired calls.
-In all but the last pair,
-the call to
-@code{marpa_r_earleme_complete()} must be
-successful and must not exhaust the parse.
+exactly @var{n} @code{marpa_r_earleme_complete()} calls,
+and all but the last call
+to @code{marpa_r_earleme_complete()}
+must be successful and must not exhaust the parse.
 
 In the standard model,
 after a successful call
@@ -727,7 +733,7 @@ follows a successful call of
 so that the value of the furthest earleme before the call to
 @code{marpa_r_earleme_complete()} will be @code{c+1},
 where @var{c} is the value of the current earleme.
-After a successful call to 
+After a successful call to
 @code{marpa_r_earleme_complete()},
 @itemize
 @item the current earleme will be advanced to @code{c+1}; and
@@ -743,7 +749,7 @@ the latest earleme is always equal to the current earleme.
 We can loosen the standard model to
 allow more than one successful call to
 @code{marpa_r_alternative()}
-before each call to
+immediately previous to each call to
 @code{marpa_r_earleme_complete()}.
 This change will mean that multiple tokens become possible
 at each earleme ---
@@ -6181,43 +6187,45 @@ In the
 @dfindex variable-length input model, dense
 @dfindex input model, dense variable-length
 @dfn{dense variable-length model of input},
-every call to
-@code{marpa_r_earleme_complete()}
-must be preceded by one or more successful
-calls of 
-@code{marpa_r_alternative()}.
+one or more successful
+calls of
+@code{marpa_r_alternative()}
+must be immediately previous
+to every call to
+@code{marpa_r_earleme_complete()}.
 Note that,
 for a variable-length input model to be ``dense'',
-at least one successfull call
+at least one successful call
 of @code{marpa_r_alternative()}
-must be made before each call to
+must be immediately previous to each call to
 @code{marpa_r_earleme_complete()}.
 
-The effect of the 
+With one exception,
+the effect of the
 @code{marpa_r_alternative()} and
 @code{marpa_r_earleme_complete()}
-mutators is the same as for the 
-standard model of input, with one exception.
-@xref{The standard model of input}
-
+mutators on the earleme variables
+is the same as for the
+standard model of input.
+(@xref{The standard model of input}.)
 The one exception is that,
-after a successful call of 
+after a successful call of
 @code{marpa_r_alternative()},
 the furthest earleme will be
-@code{max(f_before, current+length)},
-where @var{f_before} is the furthest earleme
+@code{max(@var{old_f}, @var{current}+@var{length})},
+where @var{old_f} is the furthest earleme
 before the call to @code{marpa_r_alternative()},
 @var{current} is the value of the current earleme
 before the call to @code{marpa_r_alternative()},
-and @var{length} is the length of the token.
+and @var{length} is the length of the token read.
 
 Note that, as is the case in the standard model of input,
 in the dense variable-length model of input,
 @itemize
 @item
-the current earleme after the call to 
+the current earleme after the call to
 @code{marpa_r_alternative()}
-will be the same as 
+will be the same as
 the current earleme before the call to
 @code{marpa_r_alternative()}; and
 @item
@@ -6237,19 +6245,19 @@ This is the
 dense variable-length model of input,
 with one final restriction lifted ---
 the sparse variable-length input model
-does not require that calls to 
+does not require that calls to
 @code{marpa_r_earleme_complete()}
 be preceded by calls to
 @code{marpa_r_alternative()}.
 
-This means that 
+This means that
 @dfindex empty earleme
 @dfindex earleme, empty
 @dfn{empty earlemes}
 are now possible.
 An empty earleme is an earleme
 with no tokens and no Earley set.
-An empty earleme occurs iff 
+An empty earleme occurs iff
 @code{marpa_r_earleme_complete()}
 is called when
 @itemize
