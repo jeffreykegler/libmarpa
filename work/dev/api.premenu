@@ -6153,143 +6153,119 @@ in Libmarpa.
 @node Advanced input models
 @chapter Advanced input models
 
-This chapter is, in a sense, a continuation of
-an earlier chapter on input.
-(@pxref{Input}).
-In that chapter we detailed the basic input
-models of Libmarpa,
-but left the advanced ones for later.
-These advanced input models have attracted interest,
-but so far have seen little actual use.
+In an earlier chapter, we introduced Libmarpa's concept of input,
+and described its basic input models.
+@xref{Input}.
+In this chapter we describe Libmarpa's advanced models of input.
+These advanced input models have attracted considerable interest.
+However, they have seen little actual use so far,
+and for that reason we delayed their consideration until now.
 
-@node Variable length tokens
-@section Variable length tokens
+A Libmarpa input model is
+@dfindex advanced input model
+@dfindex input model, advanced
+@dfn{advanced}
+if it allows token of length other than 1.
+The advanced input models are also called
+@dfindex variable-length token input model
+@dfindex input model, variable-length token
+@dfn{variable-length token models}
+because they allow the token
+length to vary from the ``normal'' length of 1.
 
-Recall that the basic input models
-required that all tokens
-be of length 1.
-In this section we extend the basic input models
-to allow
-variable length tokens.
-That is,
-we allow tokens to be of length 1 or longer.
+@node The dense variable-length token model
+@section The dense variable-length token model
 
-Suppose, in the variable length token model that,
-for a call
-to
-@code{marpa_r_alternative()},
-the following is true:
-@itemize
-@item The current earleme before the call was @var{c}.
-In this model, this means that
-the latest earleme before the call is also @var{c}.
-@item The furthest earleme before the call was @var{old_f}.
-@item The length of the token is @var{length}.
-@end itemize
-In that case,
-after the call to
-@code{marpa_r_alternative()},
-the following will be true:
-@itemize
-@item The current and latest earlemes will still be @var{c}.
-The current and latest earlemes are never changed by a call
-to
+In the
+@dfindex dense variable-length input model
+@dfindex variable-length input model, dense
+@dfindex input model, dense variable-length
+@dfn{dense variable-length model of input},
+every call to
+@code{marpa_r_earleme_complete()}
+must be preceded by one or more successful
+calls of 
 @code{marpa_r_alternative()}.
-@item The furthest earleme will be either @var{old_f} or
- @var{c}+@var{length}, whichever was greater.
-@end itemize
-
-Suppose, in the variable length token model that,
-for a call
-to
-@code{marpa_r_earleme_complete()},
-the following is true:
-@itemize
-@item The current earleme before the call is @var{c}.
-In this model, this means that
-the latest earleme before the call is also @var{c}.
-@item The furthest earleme before the call is @var{old_f}.
-@end itemize
-In that case,
-after the call
-to
-@code{marpa_r_earleme_complete()},
-the following will be true:
-@itemize
-@item The current earleme will be advanced to @var{c+1}.
-@item The latest earleme will also be @var{c+1}.
-@item The furthest earleme will still be @var{old_f}.
-The furthest earleme is never changed by a call
-to
+Note that,
+for a variable-length input model to be ``dense'',
+at least one successfull call
+of @code{marpa_r_alternative()}
+must be made before each call to
 @code{marpa_r_earleme_complete()}.
-@end itemize
 
-@node The generalized model
-@section The generalized model
+The effect of the 
+@code{marpa_r_alternative()} and
+@code{marpa_r_earleme_complete()}
+mutators is the same as for the 
+standard model of input, with one exception.
+@xref{The standard model of input}
 
-The fully generalized the input model,
-is the variable length token model
-(@pxref{Variable length tokens})
-with a final restriction lifted:
-We now allow empty earlemes --- earlemes with
-no tokens and no Earley set.
-For the generalized input model,
-the effect on the earleme variables of
-a call
-to
-@code{marpa_r_alternative()}
-is exactly
-the same as it is for the variable length input model.
-The effect on the earleme variables of a call to
-to
-@code{marpa_r_earleme_complete()}
-depends on
-whether or not that call creates an empty earleme.
-A call
-to
-@code{marpa_r_earleme_complete()}
-creates an empty earleme if and only if
-it falls into one of these two cases:
+The one exception is that,
+after a successful call of 
+@code{marpa_r_alternative()},
+the furthest earleme will be
+@code{max(f_before, current+length)},
+where @var{f_before} is the furthest earleme
+before the call to @code{marpa_r_alternative()},
+@var{current} is the value of the current earleme
+before the call to @code{marpa_r_alternative()},
+and @var{length} is the length of the token.
+
+Note that, as is the case in the standard model of input,
+in the dense variable-length model of input,
 @itemize
 @item
-There has been no call
-to
+the current earleme after the call to 
 @code{marpa_r_alternative()}
-since
-recognizer initialization.
+will be the same as 
+the current earleme before the call to
+@code{marpa_r_alternative()}; and
 @item
-No previous call to
-@code{marpa_r_alternative()}
-created
-a lexeme which ends at the next earleme.
-The "next earleme" is @var{c+1},
-where @var{c} is the current earleme.
+the latest earleme is always the same as
+the current earleme.
 @end itemize
 
-A previous call to
-@code{marpa_r_alternative()}
-created
-an earleme which ends at @var{lex_end},
-if
+@node The sparse variable-length input model
+@section The sparse variable-length input model
+
+The fully generalized Libmarpa input model is
+@dfindex sparse variable-length input model
+@dfindex variable-length input model, sparse
+@dfindex input model, sparse variable-length
+@dfn{sparse variable-length model of input}.
+This is the
+dense variable-length model of input,
+with one final restriction lifted ---
+the sparse variable-length input model
+does not require that calls to 
+@code{marpa_r_earleme_complete()}
+be preceded by calls to
+@code{marpa_r_alternative()}.
+
+This means that 
+@dfindex empty earleme
+@dfindex earleme, empty
+@dfn{empty earlemes}
+are now possible.
+An empty earleme is an earleme
+with no tokens and no Earley set.
+An empty earleme occurs iff 
+@code{marpa_r_earleme_complete()}
+is called when
 @itemize
 @item
-It was called when the current earleme
-was @var{lex_start}.
+there was a previous call to
+@code{marpa_r_earleme_complete()},
+and no successful call
+to @code{marpa_r_alternative()}
+has been made since a call to
+@code{marpa_r_earleme_complete()}; or
 @item
-It created a lexeme of length @var{lex_len}.
-@item
-@var{lex_start+lex_len} is equal to
-@var{lex_end}.
+no successful call
+to @code{marpa_r_alternative()}
+has been made since input started in the
+recognizer.
 @end itemize
-
-Note that the above implies the ordinary case:
-If
-@code{marpa_r_alternative()}
-is called
-at current location @var{c},
-and the lexeme it creates has the default length of 1,
-then that lexeme will end at @var{c+1},
-the "next earleme".
 
 Suppose, in the generalized input model that,
 for a call
@@ -6298,7 +6274,7 @@ to
 that creates an empty earleme,
 the following is true:
 @itemize
-@item The current earleme before the call is @var{c}.
+@item The current earleme before the call is @var{old_c}.
 @item The latest earleme before the call is @var{old_l}.
 @item The furthest earleme before the call is @var{old_f}.
 @end itemize
@@ -6308,7 +6284,7 @@ to
 @code{marpa_r_earleme_complete()},
 the following will be true:
 @itemize
-@item The current earleme will be advanced to @var{c+1}.
+@item The current earleme will be advanced to @var{old_c+1}.
 @item The latest earleme will remain at @var{old_l}.
 This means that the latest earleme will be less than
 the current earleme.
@@ -6318,30 +6294,11 @@ to
 @code{marpa_r_earleme_complete()}.
 @end itemize
 
-Suppose, in the generalized input model that,
-for a call
-to
-@code{marpa_r_earleme_complete()}
-that does not create an empty earleme,
-the following is true:
-@itemize
-@item The current earleme before the call is @var{c}.
-@item The latest earleme before the call is @var{old_l}.
-@item The furthest earleme before the call is @var{old_f}.
-@end itemize
-In that case,
-after the call
-to
-@code{marpa_r_earleme_complete()},
-the following will be true:
-@itemize
-@item The current earleme will be advanced to @var{c+1}.
-@item The latest earleme will be advanced to @var{c+1}.
-@item The furthest earleme will remain at @var{old_f}.
-The furthest earleme is never changed by a call
-to
-@code{marpa_r_earleme_complete()}.
-@end itemize
+A call to @code{marpa_r_earleme_complete()} for empty
+earlemes makes the lastest and current earlemes have
+different values.
+In a  parse that never calls @code{marpa_r_earleme_complete()} for empty
+earlemes, the lastest and current earlemes will always be the same.
 
 @node Futures
 @chapter Futures
