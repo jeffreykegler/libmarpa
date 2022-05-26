@@ -737,7 +737,8 @@ After a successful call to
 @code{marpa_r_earleme_complete()},
 @itemize
 @item the current earleme will be advanced to @code{c+1}; and
-@item the furthest earleme will remain at @var{c+1}.
+@item the furthest earleme will be @var{c+1}, and therefore equal
+to the current earleme.
 @end itemize
 
 Recall that, in the basic models of input,
@@ -6193,45 +6194,45 @@ calls of
 must be immediately previous
 to every call to
 @code{marpa_r_earleme_complete()}.
-Note that,
-for a variable-length input model to be ``dense'',
+It is important to note that,
+for a variable-length input model to be ``dense''
+according to this definition,
 at least one successful call
 of @code{marpa_r_alternative()}
 must be immediately previous to each call to
 @code{marpa_r_earleme_complete()}.
 
-With one exception,
+In the dense variable-length model of input,
 the effect of the
-@code{marpa_r_alternative()} and
 @code{marpa_r_earleme_complete()}
-mutators on the earleme variables
+mutator on the earleme variables
 is the same as for the
 standard model of input.
-(@xref{The standard model of input}.)
-The one exception is that,
+@xref{The standard model of input}.
+
+In the dense model of input,
 after a successful call of
 @code{marpa_r_alternative()},
-the furthest earleme will be
-@code{max(@var{old_f}, @var{current}+@var{length})},
-where @var{old_f} is the furthest earleme
-before the call to @code{marpa_r_alternative()},
-@var{current} is the value of the current earleme
-before the call to @code{marpa_r_alternative()},
-and @var{length} is the length of the token read.
-
-Note that, as is the case in the standard model of input,
-in the dense variable-length model of input,
+the earleme variables are as follows:
 @itemize
 @item
-the current earleme after the call to
-@code{marpa_r_alternative()}
-will be the same as
-the current earleme before the call to
-@code{marpa_r_alternative()}; and
-@item
+The furthest earleme will be
+@code{max(@var{old_f}, @var{old_c}+@var{length})},
+    @itemize
+    @item where @var{old_f} is the furthest earleme
+        before the call to @code{marpa_r_alternative()},
+    @item @var{old_c} is the value of the current earleme
+        before the call to @code{marpa_r_alternative()}, and
+    @item @var{length} is the length of the token read.
+    @end itemize
+@code{marpa_r_alternative()} never changes the
+latest or current earleme.
+@end itemize
+
+Note that, just as is the case in the basic models of input,
+in the dense model of input,
 the latest earleme is always the same as
 the current earleme.
-@end itemize
 
 @node The sparse variable-length input model
 @section The sparse variable-length input model
@@ -6254,8 +6255,14 @@ allows calls to
 @code{marpa_r_earleme_complete()}
 that are not immediately preceded by calls to
 @code{marpa_r_alternative()}.
+
 Since it is unrestricted, the sparse input model
 is Libmarpa's fully general input model.
+Because of this,
+it may be useful for us
+specify the effect of mutators
+on the earleme variables in detail,
+even at the expense of some repetition.
 
 In the sparse input model,
 @dfindex empty earleme
@@ -6274,30 +6281,47 @@ Earley set, that the sparse model takes its name ---
 in the sparse model, Earley sets are ``sparsely''
 distributed among the earlemes.
 
-In the sparse model, the following is true:
+In the dense model of input,
+the effect on the earleme variables of
+a successful call of the
+@code{marpa_r_alternative()} mutator
+is the same as for the sparse model of input:
 @itemize
-@item The effect of the
-@code{marpa_r_alternative()}
-mutator on the earleme variables
-is the same as described for the dense model.
-@xref{The dense variable-length token model}.
 @item
-Where the earleme is not empty,
-the effect of the
-@code{marpa_r_earleme_complete()}
-mutator on the earleme variables
-is the same as described for the dense model.
+The furthest earleme will be
+@code{max(@var{old_f}, @var{old_c}+@var{length})},
+    @itemize
+    @item where @var{old_f} is the furthest earleme
+        before the call to @code{marpa_r_alternative()},
+    @item @var{old_c} is the value of the current earleme
+        before the call to @code{marpa_r_alternative()}, and
+    @item @var{length} is the length of the token read.
+    @end itemize
 @item
-Where the earleme is empty,
-the effect of the
-@code{marpa_r_earleme_complete()}
-mutator on the earleme variables
-differs from the dense model.
-Recall that, in the dense input model,
-as a matter of definition,
-there are no empty earlemes.
+@code{marpa_r_alternative()} never changes the
+latest or current earleme.
 @end itemize
 
+In the sparse model,
+when the earleme is not empty,
+the effect of
+a call to
+@code{marpa_r_earleme_complete()}
+on the earleme variable is the same as
+in the dense and the basic models of input.
+Specifically, the following will be true:
+@itemize
+@item The current earleme will be advanced to @code{c+1}.
+@item The latest earleme will be @var{c+1}, and therefore
+will be equal to the current earleme.
+@item The value of the furthest earleme is never changed by
+a call to
+@code{marpa_r_earleme_complete()}.
+@end itemize
+
+Recall that, in the dense and basic input models,
+as a matter of definition,
+there are no empty earlemes.
 For the sparse input model,
 in the case of an empty earleme,
 the effect of the
