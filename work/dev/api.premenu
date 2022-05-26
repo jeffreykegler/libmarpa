@@ -6236,21 +6236,28 @@ the current earleme.
 @node The sparse variable-length input model
 @section The sparse variable-length input model
 
-The fully generalized Libmarpa input model is
+In the
 @dfindex sparse variable-length input model
 @dfindex variable-length input model, sparse
 @dfindex input model, sparse variable-length
-@dfn{sparse variable-length model of input}.
-This is the
-dense variable-length model of input,
-with one final restriction lifted ---
+@dfn{sparse variable-length model of input},
+zero or more successful
+calls of
+@code{marpa_r_alternative()}
+must be immediately previous
+to every call to
+@code{marpa_r_earleme_complete()}.
+The sparse model is the dense variable-length model,
+with its only restriction lifted ---
 the sparse variable-length input model
-does not require that calls to
+allows calls to
 @code{marpa_r_earleme_complete()}
-be preceded by calls to
+that are not immediately preceded by calls to
 @code{marpa_r_alternative()}.
+Since it is unrestricted, the sparse input model
+is Libmarpa's fully general input model.
 
-This means that
+In the sparse input model,
 @dfindex empty earleme
 @dfindex earleme, empty
 @dfn{empty earlemes}
@@ -6259,54 +6266,63 @@ An empty earleme is an earleme
 with no tokens and no Earley set.
 An empty earleme occurs iff
 @code{marpa_r_earleme_complete()}
-is called when
+is called when there is no immediately previous
+call to
+@code{marpa_r_alternative()}.
+It is from the fact that there may be earlemes with no
+Earley set, that the sparse model takes its name ---
+in the sparse model, Earley sets are ``sparsely''
+distributed among the earlemes.
+
+In the sparse model, the following is true:
 @itemize
+@item The effect of the
+@code{marpa_r_alternative()}
+mutator on the earleme variables
+is the same as described for the dense model.
+@xref{The dense variable-length token model}.
 @item
-there was a previous call to
-@code{marpa_r_earleme_complete()},
-and no successful call
-to @code{marpa_r_alternative()}
-has been made since a call to
-@code{marpa_r_earleme_complete()}; or
+Where the earleme is not empty,
+the effect of the
+@code{marpa_r_earleme_complete()}
+mutator on the earleme variables
+is the same as described for the dense model.
 @item
-no successful call
-to @code{marpa_r_alternative()}
-has been made since input started in the
-recognizer.
+Where the earleme is empty,
+the effect of the
+@code{marpa_r_earleme_complete()}
+mutator on the earleme variables
+differs from the dense model.
+Recall that, in the dense input model,
+as a matter of definition,
+there are no empty earlemes.
 @end itemize
 
-Suppose, in the generalized input model that,
-for a call
-to
+For the sparse input model,
+in the case of an empty earleme,
+the effect of the
 @code{marpa_r_earleme_complete()}
-that creates an empty earleme,
-the following is true:
+mutator on the earleme variables
+is the following:
 @itemize
-@item The current earleme before the call is @var{old_c}.
-@item The latest earleme before the call is @var{old_l}.
-@item The furthest earleme before the call is @var{old_f}.
-@end itemize
-In that case,
-after the call
-to
-@code{marpa_r_earleme_complete()},
-the following will be true:
-@itemize
-@item The current earleme will be advanced to @var{old_c+1}.
-@item The latest earleme will remain at @var{old_l}.
-This means that the latest earleme will be less than
+@item The current earleme will be advanced to @var{old_c+1},
+where @var{old_c} is the current earleme before the call.
+@item The latest earleme will remain at @var{old_l},
+where the latest earleme before the call is @var{old_l}.
+This implies that the latest earleme will be less than
 the current earleme.
-@item The furthest earleme will remain at @var{old_f}.
+@item
 The furthest earleme is never changed by a call
 to
 @code{marpa_r_earleme_complete()}.
 @end itemize
 
-A call to @code{marpa_r_earleme_complete()} for empty
-earlemes makes the lastest and current earlemes have
-different values.
-In a  parse that never calls @code{marpa_r_earleme_complete()} for empty
-earlemes, the lastest and current earlemes will always be the same.
+After a call to @code{marpa_r_earleme_complete()}
+for an empty earleme,
+the lastest and current earlemes will have different values.
+In a  parse that never calls @code{marpa_r_earleme_complete()}
+for an empty earleme,
+the lastest and current earlemes will always be the same.
 
 @node Futures
 @chapter Futures
