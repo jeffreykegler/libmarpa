@@ -2698,16 +2698,19 @@ call.
 @deftypefun Marpa_Recognizer marpa_r_new ( Marpa_Grammar @var{g} )
 
 [Constructor]
-Creates a new recognizer.
-The reference count of the recognizer will be 1.
-The reference count of @var{g},
-the base grammar,
-will be incremented by one.
-Hard fails if @var{g} is not precomputed.
+When successful, creates a new recognizer and
+increments the reference count of @var{g},
+the base grammar, by one.
+In the new recognizer,
+@itemize
+@item the reference count will be 1;
+@item the furthest earleme will be 0; and
+@item latest and current earleme will be undefined.
+@end itemize
 
 @strong{Return value}:
 On success, the newly created recognizer, which is never @code{NULL}.
-On hard failure, @code{NULL}.
+If @var{g} is not precomputed, or on other hard failure, @code{NULL}.
 @end deftypefun
 
 @node Recognizer reference counting
