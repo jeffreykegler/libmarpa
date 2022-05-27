@@ -1146,11 +1146,11 @@ A
 @dfindex failure, partially recoverable hard
 @dfn{partially recoverable hard failure}
 is
-a recoverable Libmarpa application programming failure that
+a recoverable Libmarpa application programming failure
 @itemize
-@item has an error code associated with it; and
+@item that has an error code associated with it; and
 @item after which some, but not all, of the
-    application behaviors remain availabe to the programmer.
+    application behaviors remain available to the programmer.
 @end itemize
 For every partially recoverable hard failure,
 this document specifies the application behaviors that remain
@@ -1222,11 +1222,11 @@ A
 @dfindex failure, fully recoverable hard
 @dfn{fully recoverable hard failure}
 is
-a recoverable Libmarpa application programming failure that
+a recoverable Libmarpa application programming failure
 @itemize
-@item has an error code associated with it; and
+@item that has an error code associated with it; and
 @item after which all of the
-    application behaviors remain availabe to the programmer.
+    application behaviors remain available to the programmer.
 @end itemize
 One example of a fully recoverable hard failure is
 the error code @code{MARPA_ERR_UNEXPECTED_TOKEN_ID}.
@@ -2698,7 +2698,7 @@ call.
 @deftypefun Marpa_Recognizer marpa_r_new ( Marpa_Grammar @var{g} )
 
 [Constructor]
-When successful, creates a new recognizer and
+On success, creates a new recognizer and
 increments the reference count of @var{g},
 the base grammar, by one.
 In the new recognizer,
@@ -2748,12 +2748,17 @@ to zero, the base grammar is also destroyed.
 @anchor{marpa_r_start_input}
 @deftypefun int marpa_r_start_input (Marpa_Recognizer @var{r})
 
-[Mutator] Readies @var{r} to accept input.
-The first Earley set,
-the one at earleme 0,
-will be completed during this call.
+[Mutator] When successful, does the following:
+@itemize
+@item Readies @var{r} to accept input.
+@item
+Completes the first Earley set,
+which is the Earley set whose ID is 0
+and which is located at earleme 0.
+@item Leaves the latest, current and furthest earlemes all at 0.
+@end itemize
 
-When called, clears any events already in the event queue.
+Clears any events already in the event queue.
 Since this method completes an Earley set,
 it may generate events.
 The events that may be generated during
@@ -2773,47 +2778,67 @@ On hard failure, @minus{}2.
     int @var{value}, @
     int @var{length})
 
-Libmarpa allows tokens to be ambiguous, to be of
-variable length and to overlap.
-@var{token_id} is the symbol ID of the token,
-which must be a terminal.
+@var{token_id} must be the symbol ID of a terminal.
 @var{length} is the length of the token, which must
 be greater than zero.
-
 @var{value} is an
-integer that represents the value of the
-token.
-In applications where the token's actual value is not an integer, it is
-expected that the application will use this value as
-a ``virtual'' value,
-perhaps finding the actual value by using @var{value}
-to index an array.
+integer that represents the ``value'' of the
+token, and which should not be zero.
+
+Let @var{current} be the value of the current earleme
+before the call and
+let @var{furthest} be the value of the furthest earleme
+before the call.
+
+On success, does the following,
+@itemize
+@item
+Reads a token into @var{r}.
+The symbol ID of the token will be
+@var{token_id}.
+The token will start at @var{current}
+and end at @code{@var{current}+@var{length}}.
+@item
+Sets the value of the furthest earleme to
+@code{max(@var{current}+@var{length},@var{furthest})}.
+@item
+@end itemize
+
+On success or recoverable failure, leaves
+the values of the current and latest earlemes unchanged.
+
+Libmarpa allows tokens to be ambiguous.
+Two tokens are ambiguous if they end at the same earleme location.
+If two tokens are ambiguous, Libmarpa will attempt to produce all the parses
+that include either of them.
+
+Libmarpa allows tokens to overlap.
+Let the notation
+@var{t}@@@var{s}-@var{e} indicate that token @var{t} starts
+at earleme @var{s} and ends at earleme @var{e}.
+Let @var{t1}@@@var{s1}-@var{e1}
+and @var{t2}@@@var{s2}-@var{e2}
+be two tokens such that @var{s1}<=@var{s2}.
+We say that @var{t1} and @var{t2} overlap iff
+@var{e1}>@var{s2}.
+
 @var{value} is not used inside Libmarpa --- it is simply
 stored to be returned by the valuator
 as a convenience for the application.
+In applications where the token's actual value is not an integer, it is
+expected that the application will use @var{value} as
+a ``virtual'' value,
+perhaps finding the actual value by using @var{value}
+to index an array.
 Some applications may prefer to track token values on
 their own, perhaps based on
 the earleme location and @var{token_id},
 instead of using Libmarpa's token values.
 
-Do not use a @var{value} of 0.
-A @var{value} of 0 is reserved for unvalued symbols,
+Using a @var{value} of 0 does not cause a failure,
+but it is reserved for unvalued symbols,
 a now-deprecated feature.
 @xref{Valued and unvalued symbols}.
-
-On success, does the following:
-@itemize
-@item
-Reads a token into @var{r}.  The token will start at the current earleme.
-@item
-Sets the value of the furthest earleme is set to
-the greater of its value before the call,
-and @var{current}+@var{length},
-where @var{current} is the value of the current earleme.
-@item
-Leaves unchanged
-the values of the current and latest earlemes.
-@end itemize
 
 @anchor{Ruby Slippers}
 If a token was not accepted
