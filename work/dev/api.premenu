@@ -2887,8 +2887,51 @@ is fully recoverable.
 
 @anchor{marpa_r_earleme_complete}
 @deftypefun int marpa_r_earleme_complete (Marpa_Recognizer @var{r})
-This method does the final processing for the current earleme.
-It then advances the current earleme by one.
+
+In this method description,
+let @var{current} be the current earleme before the call to
+@code{marpa_r_earleme_complete}, and
+let @var{latest} be the latest earleme before the call to
+@code{marpa_r_earleme_complete}.
+
+On success, does the final processing for the current earleme, including
+the following:
+@itemize
+@item
+Advances the current earleme,
+incrementing its value by 1.
+That is, sets the current earleme to @code{@var{current}+1}.
+@item
+If any token was accepted at @var{current},
+creates a new Earley set
+which will be the latest Earley set.
+After the call, the latest
+earleme will be equal to the new current earleme,
+@code{@var{current}+1}.
+@item
+If no token was accepted at @var{current},
+no Earley set is created.
+After the call,
+the value of the latest earleme will be unchanged ---
+that is it will remain at @var{latest}.
+@item
+The value of the furthest earleme is never changed by
+a call to
+@code{marpa_r_earleme_complete()}.
+@item Clears the event queue of any events which
+occured before the queue.
+@item May trigger one or more events.
+@item If the parse is exhausted
+triggers a
+@code{MARPA_EVENT_EXHAUSTED} event.
+Because the parse is exhausted,
+no input will be accepted at later earlemes.
+It is quite common for a parse to become exhausted
+when it succeeds.
+Many practical grammars are designed so that a
+successful parse cannot be extended.
+@end itemize
+
 Note that
 @code{marpa_r_earleme_complete()}
 may be called
@@ -2897,42 +2940,19 @@ in the character-per-earleme input model, for example, tokens
 can span many characters and, if the input is unambiguous over that
 span, there will be no other tokens that start inside it.
 
-As mentioned,
-@code{marpa_r_earleme_complete()}
-always advances the current earleme,
-incrementing its value by 1.
-This means that value of the current earleme after the call
-will be one plus the value of the earleme processed by the call
-to
-@code{marpa_r_earleme_complete()}.
-If any token was accepted at the earleme being processed,
-@code{marpa_r_earleme_complete()}
-creates a new Earley set
-which will be the latest Earley set
-and, after the call, the latest
-earleme will be equal to the new current earleme.
-If no token was accepted at the
-earleme being processed,
-no Earley set is created,
-and the value of the latest earleme remains unchanged.
-The value of the furthest earleme is never changed by
-a call to
-@code{marpa_r_earleme_complete()}.
-
-When called, clears any events already in the event queue.
-During this method, one or more events may occur.
-On success, this function returns the number of events
-generated,
-but it is important to note that events may be
-created whether earleme completion fails or succeeds.
-When this method fails,
-the application must call
+On failure,
+@itemize
+@item Clears the event queue of any events which
+occured before the queue.
+@item May trigger one or more events.
+The application must call
 @code{marpa_g_event()}
 if it wants to determine if any events occurred.
 Since the reason for failure to complete an earleme is often
 detailed in the events, applications that fail will often
 be at least as interested in the events as those
 that succeed.
+@end itemize
 
 The @code{MARPA_EVENT_EARLEY_ITEM_THRESHOLD} event
 indicates that an application-settable threshold
@@ -2942,25 +2962,21 @@ but when the default threshold is exceeded,
 it means that it is very likely
 that the time and space resources consumed by
 the parse will prove excessive.
+This is a sign of a bug in the grammar.
+Applications often will want to smoothly shut down
+the parse,
+in effect treating
+thee @code{MARPA_EVENT_EARLEY_ITEM_THRESHOLD} event
+as equivalent to library-recoverable hard failure.
 
 A parse is ``exhausted'' when it can accept no more
 input.
-This can happen both on success and on failure.
-Note that the failure due to parse exhaustion
-only means failure
-at the current earleme.
-There may be successful parses
-at earlier earlemes.
-
-If a parse is exhausted, but successful,
-an event with the event code
-@code{MARPA_EVENT_EXHAUSTED} occurs.
-Because the parse is exhausted,
-no input will be accepted at later earlemes.
-It is quite common for a parse to become exhausted
-when it succeeds.
-Many practical grammars are designed so that a
-successful parse cannot be extended.
+This can happen both when there is a parse at @var{current}
+and when there is not.
+Even when
+the parse is exhausted at @var{current}
+and there are no parses at @var{current},
+there may be parses at earlier earlemes.
 
 An exhausted parse may cause a failure,
 in which case
