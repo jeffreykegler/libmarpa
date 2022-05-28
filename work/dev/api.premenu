@@ -2778,19 +2778,19 @@ On hard failure, @minus{}2.
     int @var{value}, @
     int @var{length})
 
-@var{token_id} must be the symbol ID of a terminal.
-@var{length} is the length of the token, which must
-be greater than zero.
-@var{value} is an
+The @var{token_id} argument must be the symbol ID of a terminal.
+The @var{value} argument an
 integer that represents the ``value'' of the
-token, and which should not be zero.
+token. @var{value} which should not be zero.
+The @var{length} argument is the length of the token, which must
+be greater than zero.
 
 Let @var{current} be the value of the current earleme
 before the call and
 let @var{furthest} be the value of the furthest earleme
 before the call.
 
-On success, does the following,
+On success, does the following:
 @itemize
 @item
 Reads a token into @var{r}.
@@ -2802,10 +2802,21 @@ and end at @code{@var{current}+@var{length}}.
 Sets the value of the furthest earleme to
 @code{max(@var{current}+@var{length},@var{furthest})}.
 @item
+Leaves
+the values of the latest and current earlemes unchanged.
 @end itemize
 
-On success or recoverable failure, leaves
-the values of the current and latest earlemes unchanged.
+On recoverable failure, does the following:
+@itemize
+@item
+Does not reads a token into @var{r}.
+@item
+Sets the value of the furthest earleme to
+@code{max(@var{current}+@var{length},@var{furthest})}.
+@item
+Leaves
+the values of the latest, current and furthest earlemes unchanged.
+@end itemize
 
 Libmarpa allows tokens to be ambiguous.
 Two tokens are ambiguous if they end at the same earleme location.
