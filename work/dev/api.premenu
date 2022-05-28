@@ -2779,21 +2779,20 @@ On hard failure, @minus{}2.
     int @var{length})
 
 The @var{token_id} argument must be the symbol ID of a terminal.
-The @var{value} argument an
+The @var{value} argument is an
 integer that represents the ``value'' of the
-token. @var{value} which should not be zero.
+token, and which should not be zero.
 The @var{length} argument is the length of the token, which must
 be greater than zero.
 
-Let @var{current} be the value of the current earleme
+On success, does the following,
+where @var{current} is the value of the current earleme
 before the call and
-let @var{furthest} be the value of the furthest earleme
-before the call.
-
-On success, does the following:
+@var{furthest} is the value of the furthest earleme
+before the call:
 @itemize
 @item
-Reads a token into @var{r}.
+Reads a new token into @var{r}.
 The symbol ID of the token will be
 @var{token_id}.
 The token will start at @var{current}
@@ -2806,16 +2805,14 @@ Leaves
 the values of the latest and current earlemes unchanged.
 @end itemize
 
-On recoverable failure, does the following:
+After recoverable failure, the following are the case:
 @itemize
 @item
-Does not reads a token into @var{r}.
+The tokens read into @var{r} are unchanged.
+Specifically, no new token has been read into @var{r}.
 @item
-Sets the value of the furthest earleme to
-@code{max(@var{current}+@var{length},@var{furthest})}.
-@item
-Leaves
-the values of the latest, current and furthest earlemes unchanged.
+The values of the latest, current and furthest earlemes
+are unchanged.
 @end itemize
 
 Libmarpa allows tokens to be ambiguous.
@@ -2833,7 +2830,8 @@ be two tokens such that @var{s1}<=@var{s2}.
 We say that @var{t1} and @var{t2} overlap iff
 @var{e1}>@var{s2}.
 
-@var{value} is not used inside Libmarpa --- it is simply
+The @var{value} argument
+is not used inside Libmarpa --- it is simply
 stored to be returned by the valuator
 as a convenience for the application.
 In applications where the token's actual value is not an integer, it is
@@ -2851,6 +2849,17 @@ but it is reserved for unvalued symbols,
 a now-deprecated feature.
 @xref{Valued and unvalued symbols}.
 
+Hard fails irrecoverably with @code{MARPA_ERR_DUPLICATE_TOKEN}
+if the token added would be a duplicate.
+Two tokens are duplicates iff all of the following are true:
+@itemize
+@item They would have the same start earleme.
+In other words, if @code{marpa_r_alternative()} attempts
+to read them while at the same current earleme.
+@item They have the same @var{token_id}.
+@item They have the same @var{length}.
+@end itemize
+
 @anchor{Ruby Slippers}
 If a token was not accepted
 because of its token ID,
@@ -2858,7 +2867,7 @@ hard fails with the @code{MARPA_ERR_UNEXPECTED_TOKEN_ID}.
 This hard failure is fully recoverable
 so that, for example,
 the application may
-retry this method with a different token IDs
+retry this method with different token IDs
 until it succeeds.
 These retries are efficient,
 and are quite useable as a parsing
