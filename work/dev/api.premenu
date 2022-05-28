@@ -2844,7 +2844,7 @@ their own, perhaps based on
 the earleme location and @var{token_id},
 instead of using Libmarpa's token values.
 
-Using a @var{value} of 0 does not cause a failure,
+A @var{value} of 0 does not cause a failure,
 but it is reserved for unvalued symbols,
 a now-deprecated feature.
 @xref{Valued and unvalued symbols}.
