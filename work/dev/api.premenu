@@ -3957,7 +3957,7 @@ use the
 @code{marpa_v_step()}
 method.
 
-@code{marpa_v_step()}
+When successful, @code{marpa_v_step()}
 returns the type
 of step.
 Most step types have values associated with them.
