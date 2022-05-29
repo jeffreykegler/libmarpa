@@ -631,26 +631,6 @@ by calling
 @code{marpa_r_earleme_complete()},
 until the current earleme is equal to the furthest earleme.
 
-@node Parse exhaustion
-@section Parse exhaustion
-
-A parse is
-@dfindex exhausted parse
-@dfindex parse, exhausted
-@dfn{exhausted} when it cannot accept any further input.
-A parse is
-@dfindex active parse
-@dfindex parse, active
-@dfn{active} iff it is not exhausted.
-For a parse to be exhausted,
-the furthest earleme and the current earleme
-must be equal.
-However, the converse is not always the case:
-if more tokens can be read at the current earleme,
-then it is possible for
-the furthest earleme and the current earleme
-to be equal in an active parse.
-
 @node The basic models of input
 @section The basic models of input
 
@@ -712,7 +692,7 @@ For an input of length @var{n}, there will be
 exactly @var{n} @code{marpa_r_earleme_complete()} calls,
 and all but the last call
 to @code{marpa_r_earleme_complete()}
-must be successful and must not exhaust the parse.
+must be successful.
 
 In the standard model,
 after a successful call
@@ -797,6 +777,88 @@ Token values are @code{int}'s.
 Libmarpa does nothing with token values except accept
 them from the application and return them during
 parse evaluation.
+
+@node Exhaustion
+@chapter Exhaustion
+
+A parse is
+@dfindex exhausted parse
+@dfindex parse, exhausted
+@dfn{exhausted} when it cannot accept any further input.
+A parse is
+@dfindex active parse
+@dfindex parse, active
+@dfn{active} iff it is not exhausted.
+For a parse to be exhausted,
+the furthest earleme and the current earleme
+must be equal.
+However, the converse is not always the case:
+if more tokens can be read at the current earleme,
+then it is possible for
+the furthest earleme and the current earleme
+to be equal in an active parse.
+
+Users sometimes assume that parse exhaustion means parse failure.
+But other users sometimes assume that parse exhaustion means parse success.
+For many grammars,
+there are strong associations between parse exhaustion
+and parse success,
+but the strong association can go either way,
+Both exhaustion-loving and exhaustion-hating
+grammars are very common in
+practical application.
+
+In an 
+@dfindex exhaustion-hating applications
+@dfindex applications, exhaustion-hating
+@dfn{exhaustion-hating}
+application,
+parse exhaustion typically means parse failure.
+C programs, Perl scripts and most programming languages
+are exhaustion-hating applications.
+If a C program is well-formed,
+it is always possible to read more input.
+The same is true of a Perl program that does not have a @code{__DATA__} section.
+
+In an
+@dfindex exhaustion-loving applications
+@dfindex applications, exhaustion-loving
+@dfn{exhaustion-loving}
+application
+parse exhaustion means parse success.
+A toy example of an exhaustion-loving
+application is the language consisting of balanced parentheses.
+When the parentheses come into perfect balance the parse is exhausted,
+because any further input would unbalance the brackets.
+And the parse succeeds when the parentheses come into perfect balance.
+Exhaustion means success.
+Any language which balances start and end indicators will tend to
+be exhaustion-loving.
+HTML and XML, with their start and end tags, can be seen
+as exhaustion-loving languages.
+
+One common form of exhaustion-loving parsing
+occurs in lexers which look for longest matches.
+Exhaustion will indicate that the longest match has been found.
+
+It is possible for a language to be
+exhaustion-loving at some points
+and exhaustion-hating at others.
+We mentioned Perl's @code{__DATA__} as a complication in a
+basically exhaustion-hating language.
+
+@code{marpa_r_earleme_complete()} and
+@code{marpa_r_start_input} are the only methods
+that may encounter parse exhaustion.
+@xref{marpa_r_earleme_complete,marpa_r_earleme_complete()} and
+@ref{marpa_r_start_input,marpa_r_start_input()}.
+Those applications that want to know whether
+a parse is exhausted or not
+can directly query
+parse exhaustion status
+with
+@code{marpa_r_is_exhausted()}.
+@xref{marpa_r_is_exhausted,marpa_r_is_exhausted()}.
 
 @node Semantics
 @chapter Semantics
