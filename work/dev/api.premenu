@@ -798,6 +798,26 @@ then it is possible for
 the furthest earleme and the current earleme
 to be equal in an active parse.
 
+Parse exhaustion always has a location.
+That is, if a parse is exhausted it is exhausted at some earleme location @code{X}.
+If a parse is exhausted at location @code{X}, then
+@itemize
+@item There may be valid parses at @code{X}.
+@item The parse was active at all locations earlier than @code{X}.
+@item There may be valid parses at locations before @code{X}.
+@item There will be no valid parses at locations after @code{X}.
+@item No tokens can start at location @code{X}.
+@item No tokens can end at a location after @code{X}.
+@item No tokens can start at any location after @code{X}.
+@item No tokens will be accepted by an exhausted parser.
+    It is an irrecoverable hard failure to call @code{marpa_r_alternative()}
+    after a parser has become exhausted.
+@item No Earley sets will be at any location after @code{X}.
+@item No earlemes are completed by, and no Earley sets are created by, an exhausted parser.
+    It is an irrecoverable hard failure to call @code{marpa_r_earleme_complete()}
+    after a parser has become exhausted.
+@end itemize
+
 Users sometimes assume that parse exhaustion means parse failure.
 But other users sometimes assume that parse exhaustion means parse success.
 For many grammars,
