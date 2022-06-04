@@ -6305,6 +6305,9 @@ predicted non-terminals are not ``expected'' symbols.
 @ @<Initialize recognizer elements@> =
   r->t_nsy_expected_is_event = lbv_obs_new0(r->t_obs, nsy_count);
 @ Returns |-2| if there was a failure.
+Does not check if |xsy_id| is a terminal,
+because this is not decided until precomputation,
+which may not have been performed yet.
 @<Function definitions@> =
 int
 marpa_r_expected_symbol_event_set (Marpa_Recognizer r, Marpa_Symbol_ID xsy_id,

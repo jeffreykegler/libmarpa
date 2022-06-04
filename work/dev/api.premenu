@@ -872,12 +872,15 @@ basically exhaustion-hating language.
 that may encounter parse exhaustion.
 @xref{marpa_r_earleme_complete,marpa_r_earleme_complete()} and
 @ref{marpa_r_start_input,marpa_r_start_input()}.
-Those applications that want to know whether
-a parse is exhausted or not
-can directly query
-parse exhaustion status
-with
-@code{marpa_r_is_exhausted()}.
+When the @code{marpa_r_start_input} or
+@code{marpa_r_earleme_complete()} methods
+exhaust the parse,
+they generate a @code{MARPA_EVENT_EXHAUSTED} event.
+Applications 
+can also query
+parse exhaustion status directly
+with the
+@code{marpa_r_is_exhausted()} method.
 @xref{marpa_r_is_exhausted,marpa_r_is_exhausted()}.
 
 @node Semantics
@@ -2838,15 +2841,13 @@ Completes the first Earley set,
 which is the Earley set whose ID is 0
 and which is located at earleme 0.
 @item Leaves the latest, current and furthest earlemes all at 0.
+@item Clears any events in the event queue before this method was called.
+@item May generate a @code{MARPA_EVENT_EXHAUSTED} event.  @xref{Exhaustion}.
+@item May generate one or more @code{MARPA_EVENT_SYMBOL_NULLED},
+@code{MARPA_EVENT_SYMBOL_PREDICTED},
+or @code{MARPA_EVENT_SYMBOL_EXPECTED} events.
+@xref{Events}.
 @end itemize
-
-Clears any events already in the event queue.
-Since this method completes an Earley set,
-it may generate events.
-The events that may be generated during
-Earley set completion are the same of those described for
-@code{marpa_r_earleme_complete()}.
-@xref{marpa_r_earleme_complete,marpa_r_earleme_complete()}.
 
 @strong{Return value}:  On success, a non-negative value,
 whose value is otherwise indeterminate.
