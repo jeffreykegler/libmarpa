@@ -828,7 +828,7 @@ Both exhaustion-loving and exhaustion-hating
 grammars are very common in
 practical application.
 
-In an 
+In an
 @dfindex exhaustion-hating applications
 @dfindex applications, exhaustion-hating
 @dfn{exhaustion-hating}
@@ -876,7 +876,7 @@ When the @code{marpa_r_start_input} or
 @code{marpa_r_earleme_complete()} methods
 exhaust the parse,
 they generate a @code{MARPA_EVENT_EXHAUSTED} event.
-Applications 
+Applications
 can also query
 parse exhaustion status directly
 with the
@@ -5160,7 +5160,7 @@ Suggested message: "This symbol is a counted nullable".
 
 @anchor{MARPA_EVENT_EARLEY_ITEM_THRESHOLD}
 @deftypevr Macro int MARPA_EVENT_EARLEY_ITEM_THRESHOLD
-This event 
+This event
 indicates that an application-settable threshold
 on the number of Earley items has been reached or exceeded.
 @xref{marpa_r_earley_item_warning_threshold_set,
