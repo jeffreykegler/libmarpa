@@ -6539,6 +6539,22 @@ in the external interface,
 but that might be added
 to the external interface in the future.
 
+@node Orthogonal treatment of exhaustion
+@section Orthogonal treatment of exhaustion
+
+The treatment of parse exhaustion is very awkward.
+@code{marpa_r_start_input()} returns success on exhaustion,
+while
+@code{marpa_r_earleme_complete()} either returns success or
+a hard failure, depending on circumstances.
+@xref{marpa_r_earleme_complete,marpa_r_earleme_complete()} and
+@ref{marpa_r_start_input,marpa_r_start_input()}.
+
+Ideally the treatment should be simpler, more intuitive
+and more orthogonal.
+Better, perhaps, would be to always treat parse exhaustion
+as a soft failure.
+
 @node Furthest earleme values
 @section Furthest earleme values
 
