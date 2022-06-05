@@ -2841,12 +2841,12 @@ Completes the first Earley set,
 which is the Earley set whose ID is 0
 and which is located at earleme 0.
 @item Leaves the latest, current and furthest earlemes all at 0.
-@item Clears any events in the event queue before this method was called.
-@item May generate a @code{MARPA_EVENT_EXHAUSTED} event.  @xref{Exhaustion}.
+@item Clears any events that were in the event queue before this method was called.
+@item If this method exhausts the parse, generates a @code{MARPA_EVENT_EXHAUSTED} event.
+    @xref{Exhaustion}.
 @item May generate one or more @code{MARPA_EVENT_SYMBOL_NULLED},
-@code{MARPA_EVENT_SYMBOL_PREDICTED},
-or @code{MARPA_EVENT_SYMBOL_EXPECTED} events.
-@xref{Events}.
+    @code{MARPA_EVENT_SYMBOL_PREDICTED}, or @code{MARPA_EVENT_SYMBOL_EXPECTED} events.
+    @xref{Events}.
 @end itemize
 
 @strong{Return value}:  On success, a non-negative value,
@@ -3004,6 +3004,15 @@ a call to
 @item Clears the event queue of any events which
 occured before the queue.
 @item May trigger one or more events.
+@item
+If an application-settable threshold
+on the number of Earley items has been reached or exceeded.
+generates a @code{MARPA_EVENT_EARLEY_ITEM_THRESHOLD} event.
+Often, the application will want to treat this event
+as if it were a library-recoverable
+failure.
+@xref{marpa_r_earley_item_warning_threshold_set,
+marpa_r_earley_item_warning_threshold_set()}.
 @item If the parse is exhausted
 triggers a
 @code{MARPA_EVENT_EXHAUSTED} event.
@@ -3036,21 +3045,6 @@ detailed in the events, applications that fail will often
 be at least as interested in the events as those
 that succeed.
 @end itemize
-
-The @code{MARPA_EVENT_EARLEY_ITEM_THRESHOLD} event
-indicates that an application-settable threshold
-on the number of Earley items has been reached or exceeded.
-What this means depends on the application,
-but when the default threshold is exceeded,
-it means that it is very likely
-that the time and space resources consumed by
-the parse will prove excessive.
-This is a sign of a bug in the grammar.
-Applications often will want to smoothly shut down
-the parse,
-in effect treating
-thee @code{MARPA_EVENT_EARLEY_ITEM_THRESHOLD} event
-as equivalent to library-recoverable hard failure.
 
 A parse is ``exhausted'' when it can accept no more
 input.
@@ -3296,13 +3290,22 @@ the method fails.
 On failure, @minus{}2 is returned.
 @end deftypefun
 
+@anchor{marpa_r_earley_item_warning_threshold}
+@deftypefun int marpa_r_earley_item_warning_threshold (Marpa_Recognizer @var{r})
+
+Returns the Earley item warning threshold.
+@xref{marpa_r_earley_item_warning_threshold_set,marpa_r_earley_item_warning_threshold_set()}.
+
+@strong{Return value}:
+The Earley item warning threshold.
+Always succeeds.
+@end deftypefun
+
 @anchor{marpa_r_earley_item_warning_threshold_set}
 @deftypefun int marpa_r_earley_item_warning_threshold_set (Marpa_Recognizer @var{r}, @
     int @var{threshold})
-@anchor{marpa_r_earley_item_warning_threshold}
-@deftypefunx int marpa_r_earley_item_warning_threshold (Marpa_Recognizer @var{r})
 
-These methods, respectively, set and query
+[Mutator] On success, sets
 the Earley item warning threshold.
 The
 @dfindex Earley item warning threshold
@@ -3311,6 +3314,7 @@ is a number that is compared with
 the count of Earley items in each Earley set.
 When it is matched or exceeded,
 a @code{MARPA_EVENT_EARLEY_ITEM_THRESHOLD} event is created.
+@xref{MARPA_EVENT_EARLEY_ITEM_THRESHOLD}.
 
 If @var{threshold} is zero or less,
 an unlimited number of Earley items
@@ -3322,41 +3326,21 @@ The formula Libmarpa uses is the result of some experience,
 and most applications will
 be happy with it.
 
+What should be done when the threshold is exceeded, depends on the application,
+but exceeding the threshold means that it is very likely
+that the time and space resources consumed by
+the parse will prove excessive.
+This is often a sign of a bug in the grammar.
+Applications often will want to smoothly shut down
+the parse,
+in effect treating
+the @code{MARPA_EVENT_EARLEY_ITEM_THRESHOLD} event
+as equivalent to library-recoverable hard failure.
+
 Return value:
 The value that the Earley item warning threshold has
 after the method call is finished.
 Always succeeds.
-@end deftypefun
-
-@anchor{marpa_r_expected_symbol_event_set}
-@deftypefun int marpa_r_expected_symbol_event_set ( @
-  Marpa_Recognizer @var{r}, @
-  Marpa_Symbol_ID @var{symbol_id}, @
-  int @var{value})
-Sets the ``expected symbol event bit'' for @var{symbol_id} to @var{value}.
-A recognizer event is created whenever
-symbol @var{symbol_id} is expected at the current earleme.
-if and only if the expected symbol event bit
-for @var{symbol_id} is 1.
-The ``expected symbol event bit'' must be 1 or 0.
-
-In this context, ``expected'' means ``expected as a terminal''.
-Even if a symbol is predicted at the current earleme,
-if it is not acceptable as a terminal,
-it does not trigger an
-``expected symbol event''.
-
-By default, the ``expected symbol event bit'' is 0.
-It is an error to attempt to set the
-``expected symbol event bit'' to 1 for a nulling symbol,
-an inaccessible symbol,
-or an unproductive symbol.
-
-Return value:
-The value of the event bit after the method call is finished.
--2 if @var{symbol_id} is not the ID of a valid symbol;
-if it is the ID of an nulling, inaccessible for unproductive symbol;
-or on other failure.
 @end deftypefun
 
 @anchor{marpa_r_is_exhausted}
@@ -5124,6 +5108,40 @@ If the grammar @var{g} is precomputed;
 or on other failure, @minus{}2.
 @end deftypefun
 
+@node Symbol expected events
+@section Symbol expected events
+
+@anchor{marpa_r_expected_symbol_event_set}
+@deftypefun int marpa_r_expected_symbol_event_set ( @
+  Marpa_Recognizer @var{r}, @
+  Marpa_Symbol_ID @var{symbol_id}, @
+  int @var{value})
+Sets the ``expected symbol event bit'' for @var{symbol_id} to @var{value}.
+A recognizer event is created whenever
+symbol @var{symbol_id} is expected at the current earleme.
+if and only if the expected symbol event bit
+for @var{symbol_id} is 1.
+The ``expected symbol event bit'' must be 1 or 0.
+
+In this context, ``expected'' means ``expected as a terminal''.
+Even if a symbol is predicted at the current earleme,
+if it is not acceptable as a terminal,
+it does not trigger an
+``expected symbol event''.
+
+By default, the ``expected symbol event bit'' is 0.
+It is an error to attempt to set the
+``expected symbol event bit'' to 1 for a nulling symbol,
+an inaccessible symbol,
+or an unproductive symbol.
+
+Return value:
+The value of the event bit after the method call is finished.
+-2 if @var{symbol_id} is not the ID of a valid symbol;
+if it is the ID of an nulling, inaccessible for unproductive symbol;
+or on other failure.
+@end deftypefun
+
 @node Event codes
 @section Event codes
 
@@ -5140,10 +5158,14 @@ Event value: The ID of the symbol.
 Suggested message: "This symbol is a counted nullable".
 @end deftypevr
 
+@anchor{MARPA_EVENT_EARLEY_ITEM_THRESHOLD}
 @deftypevr Macro int MARPA_EVENT_EARLEY_ITEM_THRESHOLD
-This event indicates the current Earley item count
-exceeded a
-user-settable threshold.
+This event 
+indicates that an application-settable threshold
+on the number of Earley items has been reached or exceeded.
+@xref{marpa_r_earley_item_warning_threshold_set,
+marpa_r_earley_item_warning_threshold_set()}.
+
 Event value: The current Earley item count.
 Suggested message: "Too many Earley items".
 @end deftypevr
