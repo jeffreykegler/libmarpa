@@ -12265,6 +12265,7 @@ PRIVATE void tree_or_node_release(TREE tree, ORID or_node_id)
 @*0 Iterating the tree.
 @<Initialize the tree iterator@> =
 {
+    (void)MARPA_DEBUG1("Initialize tree");
   ORID root_or_id = Top_ORID_of_B (b);
   OR root_or_node = OR_of_B_by_ID (b, root_or_id);
   NOOK nook;
@@ -12289,6 +12290,7 @@ PRIVATE void tree_or_node_release(TREE tree, ORID or_node_id)
 If there is one, set it to the next choice.
 Otherwise, the tree is exhausted.
 @<Start a new iteration of the tree@> = {
+    (void)MARPA_DEBUG1("Start new iteration of tree");
     while (1) {
         OR iteration_candidate_or_node;
         const NOOK iteration_candidate = FSTACK_TOP(t->t_nook_stack, NOOK_Object);
@@ -12333,6 +12335,7 @@ Otherwise, the tree is exhausted.
 @ @<Finish tree if possible@> = {
     {
         const int stack_length = Size_of_T(t);
+        MARPA_DEBUG2("Finishing tree, size = %ld", (long)stack_length);
         int i;
         /* Clear the worklist, then copy the entire remaining
            tree onto it. */
@@ -12384,9 +12387,14 @@ Otherwise, the tree is exhausted.
             goto NEXT_NOOK_ON_WORKLIST;
           }
         while (0);
+        (void)MARPA_DEBUG3("Before check for duplicate or node, node=%lx ID=%ld",
+          (long)child_or_node, (long)ID_of_OR(child_or_node));
         if (!tree_or_node_try(t, ID_of_OR(child_or_node))) goto NEXT_TREE;
+        (void)MARPA_DEBUG3("After check for duplicate or node, node=%lx ID=%ld",
+          (long)child_or_node, (long)ID_of_OR(child_or_node));
         choice = 0;
         if (!and_order_ix_is_valid(o, child_or_node, choice)) goto NEXT_TREE;
+        MARPA_DEBUG2("After check for valid and order ix, node=%lx", (long)child_or_node);
         @<Add new nook to tree@>;
         NEXT_NOOK_ON_WORKLIST: ;
     }
