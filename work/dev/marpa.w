@@ -12316,7 +12316,7 @@ PRIVATE void tree_or_node_release(TREE tree, ORID or_node_id)
 @*0 Iterating the tree.
 @<Initialize the tree iterator@> =
 {
-    (void)MARPA_DEBUG1("Initialize tree");
+    MARPA_DEBUG1("Initialize tree");
   ORID root_or_id = Top_ORID_of_B (b);
   OR root_or_node = OR_of_B_by_ID (b, root_or_id);
   NOOK nook;
@@ -12341,7 +12341,7 @@ PRIVATE void tree_or_node_release(TREE tree, ORID or_node_id)
 If there is one, set it to the next choice.
 Otherwise, the tree is exhausted.
 @<Start a new iteration of the tree@> = {
-    (void)MARPA_DEBUG1("Start new iteration of tree");
+    MARPA_DEBUG1("Start new iteration of tree");
     while (1) {
         OR iteration_candidate_or_node;
         const NOOK iteration_candidate = FSTACK_TOP(t->t_nook_stack, NOOK_Object);
@@ -12425,7 +12425,7 @@ pop it off the work list.
         work_nook = NOOK_of_TREE_by_IX(t, *p_work_nook_id);
         work_or_node = OR_of_NOOK(work_nook);
         work_and_node_id = and_order_get(o, work_or_node, Choice_of_NOOK(work_nook));
-        (void)MARPA_DEBUG5("Work node is %ld, OR=%ld, choice=%ld, AND=%ld\n",
+        MARPA_DEBUG5("Work node is %ld, OR=%ld, choice=%ld, AND=%ld\n",
           (long)*p_work_nook_id, 
           (long)ID_of_OR(work_or_node), (long)Choice_of_NOOK(work_nook),
           (long)work_and_node_id);
@@ -12439,7 +12439,7 @@ pop it off the work list.
                   {
                     child_or_node = cause_or_node;
                     child_is_cause = 1;
-                    (void)MARPA_DEBUG3("Work node is %ld, child OR %ld is cause",
+                    MARPA_DEBUG3("Work node is %ld, child OR %ld is cause",
                       (long)*p_work_nook_id, ID_of_OR(child_or_node));
                     break;
                   }
@@ -12451,7 +12451,7 @@ pop it off the work list.
                 if (child_or_node)
                   {
                     child_is_predecessor = 1;
-                    (void)MARPA_DEBUG3("Work node is %ld, child OR %ld is predecessor",
+                    MARPA_DEBUG3("Work node is %ld, child OR %ld is predecessor",
                       (long)*p_work_nook_id, ID_of_OR(child_or_node));
                     break;
                   }
@@ -12461,16 +12461,7 @@ pop it off the work list.
             goto NEXT_NOOK_ON_WORKLIST;
           }
         while (0);
-        (void)MARPA_DEBUG3("Before check for duplicate or node, node=%lx ID=%ld",
-          (long)child_or_node, (long)ID_of_OR(child_or_node));
-        /* If the child or-node is not of zero length, try to claim it.
-            Otherwise, reject the tree.
-            */
-        if ( Length_of_OR(child_or_node)
-          && !tree_or_node_try(t, ID_of_OR(child_or_node))
-        ) goto NEXT_TREE;
-        (void)MARPA_DEBUG3("After check for duplicate or node, node=%lx ID=%ld",
-          (long)child_or_node, (long)ID_of_OR(child_or_node));
+        @<If tree has cycle, |goto NEXT_TREE|@>
         choice = 0;
         if (!and_order_ix_is_valid(o, child_or_node, choice)) goto NEXT_TREE;
         MARPA_DEBUG2("After check for valid and order ix, node=%lx", (long)child_or_node);
@@ -12478,6 +12469,20 @@ pop it off the work list.
         NEXT_NOOK_ON_WORKLIST: ;
     }
     NEXT_TREE: ;
+}
+
+@ @<If tree has cycle, |goto NEXT_TREE|@> =
+{
+        MARPA_DEBUG3("Before check for duplicate or node, node=%lx ID=%ld",
+          (long)child_or_node, (long)ID_of_OR(child_or_node));
+        /* If the child or-node is not of zero length, try to claim it.
+            Otherwise, reject the tree.
+            */
+        if ( Length_of_OR(child_or_node)
+          && !tree_or_node_try(t, ID_of_OR(child_or_node))
+        ) goto NEXT_TREE;
+        MARPA_DEBUG3("After check for duplicate or node, node=%lx ID=%ld",
+          (long)child_or_node, (long)ID_of_OR(child_or_node));
 }
 
 @ @<Add new nook to tree@> =
@@ -12488,7 +12493,7 @@ pop it off the work list.
   Parent_of_NOOK (new_nook) = *p_work_nook_id;
   Choice_of_NOOK (new_nook) = choice;
   OR_of_NOOK (new_nook) = child_or_node;
-  (void)MARPA_DEBUG5("New node is %ld, OR=%ld, choice=%ld, AND=%ld\n",
+  MARPA_DEBUG5("New node is %ld, OR=%ld, choice=%ld, AND=%ld\n",
     (long)new_nook_id, (long)ID_of_OR(child_or_node), (long)choice,
         (long)and_order_get(o, child_or_node, choice));
   NOOK_Cause_is_Expanded (new_nook) = 0;
