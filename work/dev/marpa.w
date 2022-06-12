@@ -11981,6 +11981,49 @@ Marpa_And_Node_ID _marpa_o_and_order_get(Marpa_Order o,
     return and_order_get(o, or_node, ix);
 }
 
+@** Nook (NOOK) code.
+@ In Marpa, a nook is any node of a parse tree. The usual term is "node", but within Marpa,
+the word "node" is already heavily overloaded. So what most texts call "tree nodes" are
+here called "nooks". "Nook" can be thought of as a pun on both "node" and "fork".
+@ For valuation, we need an and-node.
+The and-node is not kept explicitly.
+Instead, so we can iterate the trees more readily,
+we keep an or-node and a choice,
+and these imply the and-node.
+@ Also, for the purposes of iterating the tree which contains the nooks,
+we track the parent nook of each nook,
+whether the current nook is the predecessor or cause of its parent,
+whether the predecessor of the current nook has been expanded,
+and whether the cause of the current nook has been expanded.
+@ @<Public typedefs@> =
+typedef int Marpa_Nook_ID;
+@ @<Private typedefs@> =
+typedef Marpa_Nook_ID NOOKID;
+@ @s NOOK int
+@s NOOKID int
+@<Private incomplete structures@> =
+struct s_nook;
+typedef struct s_nook* NOOK;
+@ @d OR_of_NOOK(nook) ((nook)->t_or_node)
+@d Choice_of_NOOK(nook) ((nook)->t_choice)
+@d Parent_of_NOOK(nook) ((nook)->t_parent)
+@d NOOK_Cause_is_Expanded(nook) ((nook)->t_is_cause_ready)
+@d NOOK_is_Cause(nook) ((nook)->t_is_cause_of_parent)
+@d NOOK_Predecessor_is_Expanded(nook) ((nook)->t_is_predecessor_ready)
+@d NOOK_is_Predecessor(nook) ((nook)->t_is_predecessor_of_parent)
+@s NOOK_Object int
+@<NOOK structure@> =
+struct s_nook {
+    OR t_or_node;
+    int t_choice;
+    NOOKID t_parent;
+    BITFIELD t_is_cause_ready:1;
+    BITFIELD t_is_predecessor_ready:1;
+    BITFIELD t_is_cause_of_parent:1;
+    BITFIELD t_is_predecessor_of_parent:1;
+};
+typedef struct s_nook NOOK_Object;
+
 @** Parse tree (T, TREE) code.
 In this document,
 when it makes sense in context,
@@ -11989,11 +12032,14 @@ Trees are, of course, a very common data structure,
 and are used for all sorts of things.
 But the most important trees in Marpa's universe
 are its parse trees.
-\par
-Marpa's parse trees are produced by iterating
+@ Marpa's parse trees are produced by iterating
 the Marpa bocage.
 Therefore, Marpa parse trees are also bocage iterators.
-@<Public incomplete structures@> =
+@ A tree is a stack whose bottom is the top of the tree.
+The tree is in depth-first, cause-then-predecessor order.
+Because it is in cause-then-predecessor order,
+it is lexically in right-to-left order.
+@ @<Public incomplete structures@> =
 struct marpa_tree;
 typedef struct marpa_tree* Marpa_Tree;
 @ @<Private incomplete structures@> =
@@ -12001,7 +12047,7 @@ typedef Marpa_Tree TREE;
 @ An exhausted bocage iterator (or parse tree)
 does not need a worklist
 or a stack, so they are destroyed.
-if the bocage iterator has a parse count,
+If the bocage iterator has a parse count,
 but no stack,
 it is exhausted.
 @d Size_of_TREE(tree) FSTACK_LENGTH((tree)->t_nook_stack)
@@ -12231,7 +12277,7 @@ int marpa_t_next(Marpa_Tree t)
 }
 
 @*0 Tree is exhausted?.
-Is this tree for a nulling parse?
+Is this tree for an exhausted parse?
 @d T_is_Exhausted(t) ((t)->t_is_exhausted)
 @ @<Bit aligned tree elements@> =
 BITFIELD t_is_exhausted:1;
@@ -12337,13 +12383,28 @@ Otherwise, the tree is exhausted.
     if ( Size_of_T(t) <= 0) goto TREE_IS_EXHAUSTED;
 }
 
+@ Once we have the initial segment of a tree we want
+to interate, we ``finish'' it.
+Finishing a tree involves building it out, taking
+choice 0 for every or-node.
+(Any other choices will be encountered when we iterate.
+@ The worklist is a list of potentially ``dirty'' nooks,
+either the predecessor or cause of which may need to be
+expanded.
+It is harmless to have ``clean'' nooks in the worklist ---
+the finishing code does nothing to a clean nook except
+pop it off the work list.
 @ @<Finish tree if possible@> = {
     {
         const int stack_length = Size_of_T(t);
         MARPA_DEBUG2("Finishing tree, size = %ld", (long)stack_length);
         int i;
+        @t}\comment{@>
         /* Clear the worklist, then copy the entire remaining
-           tree onto it. */
+           tree onto it.
+           A good optimization might be to check if the nook
+           is ``dirty'' before adding it to the work list.
+           */
         FSTACK_CLEAR(t->t_nook_worklist);
         for (i = 0; i < stack_length; i++) {
             *(FSTACK_PUSH(t->t_nook_worklist)) = i;
@@ -12464,39 +12525,6 @@ int _marpa_t_size(Marpa_Tree t)
   if (T_is_Nulling(t)) return 0;
   return Size_of_T(t);
 }
-
-@** Nook (NOOK) code.
-@ In Marpa, a nook is any node of a parse tree. The usual term is "node", but within Marpa,
-the word "node" is already heavily overloaded. So what most texts call "tree nodes" are
-here called "nooks". "Nook" can be thought of as a pun on both "node" and "fork".
-@<Public typedefs@> =
-typedef int Marpa_Nook_ID;
-@ @<Private typedefs@> =
-typedef Marpa_Nook_ID NOOKID;
-@ @s NOOK int
-@s NOOKID int
-@<Private incomplete structures@> =
-struct s_nook;
-typedef struct s_nook* NOOK;
-@ @d OR_of_NOOK(nook) ((nook)->t_or_node)
-@d Choice_of_NOOK(nook) ((nook)->t_choice)
-@d Parent_of_NOOK(nook) ((nook)->t_parent)
-@d NOOK_Cause_is_Expanded(nook) ((nook)->t_is_cause_ready)
-@d NOOK_is_Cause(nook) ((nook)->t_is_cause_of_parent)
-@d NOOK_Predecessor_is_Expanded(nook) ((nook)->t_is_predecessor_ready)
-@d NOOK_is_Predecessor(nook) ((nook)->t_is_predecessor_of_parent)
-@s NOOK_Object int
-@<NOOK structure@> =
-struct s_nook {
-    OR t_or_node;
-    int t_choice;
-    NOOKID t_parent;
-    BITFIELD t_is_cause_ready:1;
-    BITFIELD t_is_predecessor_ready:1;
-    BITFIELD t_is_cause_of_parent:1;
-    BITFIELD t_is_predecessor_of_parent:1;
-};
-typedef struct s_nook NOOK_Object;
 
 @** Evaluation (V, VALUE) code.
 @ This code helps
