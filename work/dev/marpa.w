@@ -10292,6 +10292,7 @@ Position is the dot position.
 @d Origin_Ord_of_OR(or) ((or)->t_final.t_start_set_ordinal)
 @d ID_of_OR(or) ((or)->t_final.t_id)
 @d YS_Ord_of_OR(or) ((or)->t_draft.t_end_set_ordinal)
+@d Length_of_OR(or) (YS_Ord_of_OR(or)-Origin_Ord_of_OR(or))
 @d DANDs_of_OR(or) ((or)->t_draft.t_draft_and_node)
 @d First_ANDID_of_OR(or) ((or)->t_final.t_first_and_node_id)
 @d AND_Count_of_OR(or) ((or)->t_final.t_and_node_count)
@@ -12243,11 +12244,12 @@ Is this tree for a nulling parse?
 @ @<Bit aligned tree elements@> =
 BITFIELD t_is_nulling:1;
 
-@*0 Claiming and releasing and-nodes.
-To avoid cycles, the same and node is not allowed to occur twice
-in the parse tree.
+@*0 Claiming and releasing or-nodes.
+To avoid cycles, the same or node is not allowed to occur twice
+in the parse tree,
+unless it is zero-length.
 A boolean vector, accessed by these functions, enforces this.
-@ Try to claim the and-node.
+@ Try to claim the or-node.
 If it was already claimed, return 0, otherwise claim it (that is,
 set the bit) and return 1.
 @<Function definitions@> =
@@ -12255,7 +12257,10 @@ PRIVATE int tree_or_node_try(TREE tree, ORID or_node_id)
 {
     return !bv_bit_test_then_set(tree->t_or_node_in_use, or_node_id);
 }
-@ Release the and-node by unsetting its bit.
+@ Release the or-node by unsetting its bit.
+This may be called on unclaimed or-nodes,
+in which case it a no-op.
+which is necessary b
 @<Function definitions@> =
 PRIVATE void tree_or_node_release(TREE tree, ORID or_node_id)
 {
@@ -12359,6 +12364,10 @@ Otherwise, the tree is exhausted.
         work_nook = NOOK_of_TREE_by_IX(t, *p_work_nook_id);
         work_or_node = OR_of_NOOK(work_nook);
         work_and_node_id = and_order_get(o, work_or_node, Choice_of_NOOK(work_nook));
+        (void)MARPA_DEBUG5("Work node is %ld, OR=%ld, choice=%ld, AND=%ld\n",
+          (long)*p_work_nook_id, 
+          (long)ID_of_OR(work_or_node), (long)Choice_of_NOOK(work_nook),
+          (long)work_and_node_id);
         work_and_node = ands_of_b + work_and_node_id;
         do
           {
@@ -12369,6 +12378,8 @@ Otherwise, the tree is exhausted.
                   {
                     child_or_node = cause_or_node;
                     child_is_cause = 1;
+                    (void)MARPA_DEBUG3("Work node is %ld, child OR %ld is cause",
+                      (long)*p_work_nook_id, ID_of_OR(child_or_node));
                     break;
                   }
               }
@@ -12379,6 +12390,8 @@ Otherwise, the tree is exhausted.
                 if (child_or_node)
                   {
                     child_is_predecessor = 1;
+                    (void)MARPA_DEBUG3("Work node is %ld, child OR %ld is predecessor",
+                      (long)*p_work_nook_id, ID_of_OR(child_or_node));
                     break;
                   }
               }
@@ -12389,7 +12402,12 @@ Otherwise, the tree is exhausted.
         while (0);
         (void)MARPA_DEBUG3("Before check for duplicate or node, node=%lx ID=%ld",
           (long)child_or_node, (long)ID_of_OR(child_or_node));
-        if (!tree_or_node_try(t, ID_of_OR(child_or_node))) goto NEXT_TREE;
+        /* If the child or-node is not of zero length, try to claim it.
+            Otherwise, reject the tree.
+            */
+        if ( Length_of_OR(child_or_node)
+          && !tree_or_node_try(t, ID_of_OR(child_or_node))
+        ) goto NEXT_TREE;
         (void)MARPA_DEBUG3("After check for duplicate or node, node=%lx ID=%ld",
           (long)child_or_node, (long)ID_of_OR(child_or_node));
         choice = 0;
@@ -12409,6 +12427,9 @@ Otherwise, the tree is exhausted.
   Parent_of_NOOK (new_nook) = *p_work_nook_id;
   Choice_of_NOOK (new_nook) = choice;
   OR_of_NOOK (new_nook) = child_or_node;
+  (void)MARPA_DEBUG5("New node is %ld, OR=%ld, choice=%ld, AND=%ld\n",
+    (long)new_nook_id, (long)ID_of_OR(child_or_node), (long)choice,
+        (long)and_order_get(o, child_or_node, choice));
   NOOK_Cause_is_Expanded (new_nook) = 0;
   if ((NOOK_is_Cause (new_nook) = Boolean (child_is_cause)))
     {
@@ -12445,6 +12466,9 @@ int _marpa_t_size(Marpa_Tree t)
 }
 
 @** Nook (NOOK) code.
+@ In Marpa, a nook is any node of a parse tree. The usual term is "node", but within Marpa,
+the word "node" is already heavily overloaded. So what most texts call "tree nodes" are
+here called "nooks". "Nook" can be thought of as a pun on both "node" and "fork".
 @<Public typedefs@> =
 typedef int Marpa_Nook_ID;
 @ @<Private typedefs@> =
