@@ -12314,6 +12314,13 @@ PRIVATE void tree_or_node_release(TREE tree, ORID or_node_id)
 }
 
 @*0 Iterating the tree.
+The initial or-node is the root or-node,
+whose rule is the augmented start rule of the grammar.
+The augment rule has a dedicated LHS symbol,
+which does not appear
+on any RHS, so the augment rule,
+and therefore the root or-node,
+cannot be part of cycle.
 @<Initialize the tree iterator@> =
 {
     MARPA_DEBUG1("Initialize tree");
@@ -12517,8 +12524,7 @@ will cause this derivation to be repeated an arbitrary number of times,
 causing an or-node cycle.
 QED for |@<Lemma: Non-zero duplicate implies cycle@>|.
 
-@*0 Cycle implies duplicate.
-Lemma:
+@*0 Lemma: Cycle implies duplicate.
 If an or-node is part of a cycle, then
 it has a duplicate in the tree.
 \par
@@ -12526,6 +12532,7 @@ it has a duplicate in the tree.
 in the tree,
 by definition there is no cycle for this or-node in
 that tree.
+@<Lemma: Cycle implies duplicate@> =
 
 @*0 Lemma: Cycle implies non-zero.
 If an or-node is part of a cycle, then
@@ -12558,17 +12565,33 @@ it has a duplicate in the tree, iff that or-node is part
 of a cycle.
 \par
 {\bf Proof:}
-This theorem follows from the ``Non-zero implies cycle'' Lemma,
-the ``Cycle implies duplicate'' Lemma,
-and the ``Cycle implies non-zero'' Lemma.
+This theorem follows from
+|@<Lemma: Non-zero duplicate implies cycle@>|,
+|@<Lemma: Cycle implies duplicate@>| and
+|@<Lemma: Cycle implies non-zero@>|.
 QED.
 @<Theorem: Non-zero and duplicate iff cycle@> =
 @<Lemma: Non-zero duplicate implies cycle@>@/
-@<Lemma: Cycle implies non-zero@> =
+@<Lemma: Cycle implies duplicate@>@/
+@<Lemma: Cycle implies non-zero@>
+
+@*0 Theorem: Or-node cycle detection is consistent.
+Or-node cycle detection is consistent,
+that is, every tree pruned because of an or-node
+cycle actually does contain an or-node cycle.
+\par {\bf Proof:}
+All pruning for or-node cycles occurs in
+|@<If tree has cycle, go to |NEXT_TREE|@>|.
+This proof follows directly from that fact
+and |@<Theorem: Non-zero and duplicate iff cycle@>|.
+QED.
+@<Theorem: Or-node cycle detection is consistent@> =
+@<Theorem: Non-zero and duplicate iff cycle@>
 
 @ @<If tree has cycle, go to |NEXT_TREE|@> =
 {
         @<Theorem: Non-zero and duplicate iff cycle@>@/
+        @<Theorem: Or-node cycle detection is consistent@>@/
         MARPA_DEBUG3("Before check for duplicate or node, node=%lx ID=%ld",
           (long)child_or_node, (long)ID_of_OR(child_or_node));
         /* If the child or-node is not of zero length, try to claim it.
