@@ -12481,11 +12481,12 @@ outweighs the cost of duplicating the
 It is necessary to demonstrate carefully that our logic
 eliminates all, and only, the or-nodes which lead to cycles.
 
-@*0 Non-zero duplicate implies cycle.
-Lemma: If the length of an or-node is non-zero and
+@*0 Lemma: Non-zero duplicate implies cycle.
+If the length of an or-node is non-zero and
 it has a duplicate in the tree, then that or-node is part
 of a cycle.
-Proof: Let an or-node appear twice in the tree,
+\par
+{\bf Proof:} Let an or-node appear twice in the tree,
 at instances ${\it i1}$ and ${\it i2}$.
 Since the or-node has non-zero length then its dotted rule has
 the form $A \mathbin{::=} \alpha \mathbin{\bullet} \beta$, where
@@ -12499,34 +12500,38 @@ $\it terms$ contains at least
 one non-null symbol, call it $t$.
 $t$ has a fixed location in
 the lexical input string, call it $x$.
+@<Lemma: Non-zero duplicate implies cycle@> =
 
-@ Either $\it i1$ derives $\it i2$ or $\it i2$ derives $\it i1$.
+@ [Continuing |@<Lemma: Non-zero duplicate implies cycle@>|]
+Either $\it i1$ derives $\it i2$ or $\it i2$ derives $\it i1$.
 If that were not the case then $t$ would appear at two
 distinct locations, both of which must be location $x$,
 which is nonsensical.
-@ Assume without loss of generality that 
+
+@ [Continuing |@<Lemma: Non-zero duplicate implies cycle@>|]
+Assume without loss of generality that 
 $\it i1$ derives $\it i2$.
 The same logic which caused the derivation from 
 $\it i1$ to $\it i2$,
 will cause this derivation to be repeated an arbitrary number of times,
 causing an or-node cycle.
-This is what we need to show for the ``Non-zero implies cycle'' Lemma.
-QED.
+QED for |@<Lemma: Non-zero duplicate implies cycle@>|.
 
 @*0 Cycle implies duplicate.
 Lemma:
 If an or-node is part of a cycle, then
 it has a duplicate in the tree.
-Proof: If an or-node never produces a duplicate
+\par
+{\bf Proof:} If an or-node never produces a duplicate
 in the tree,
 by definition there is no cycle for this or-node in
 that tree.
 
-@*0 Cycle implies non-zero.
-Lemma:
+@*0 Lemma: Cycle implies non-zero.
 If an or-node is part of a cycle, then
 the length of the or-node is non-zero.
-Proof:
+\par
+{\bf Proof:}
 We will show the contrapositive,
 that a zero-length or-node does
 not produce a cycle.
@@ -12544,19 +12549,26 @@ The only zero-length causes are nulling symbols,
 and these are derivational dead-ends.
 Thus a derivation from a zero-length or-node
 never takes us back to an or-node.
+QED for |@<Lemma: Cycle implies non-zero@>|.
+@<Lemma: Cycle implies non-zero@> =
 
-@*0 Non-zero and duplicate iff cycle.
+@*0 Theorem: Non-zero and duplicate iff cycle.
 Theorem: The length of an or-node is non-zero and
 it has a duplicate in the tree, iff that or-node is part
 of a cycle.
-Proof:
+\par
+{\bf Proof:}
 This theorem follows from the ``Non-zero implies cycle'' Lemma,
 the ``Cycle implies duplicate'' Lemma,
 and the ``Cycle implies non-zero'' Lemma.
 QED.
+@<Theorem: Non-zero and duplicate iff cycle@> =
+@<Lemma: Non-zero duplicate implies cycle@>@/
+@<Lemma: Cycle implies non-zero@> =
 
-@<If tree has cycle, go to |NEXT_TREE|@> =
+@ @<If tree has cycle, go to |NEXT_TREE|@> =
 {
+        @<Theorem: Non-zero and duplicate iff cycle@>@/
         MARPA_DEBUG3("Before check for duplicate or node, node=%lx ID=%ld",
           (long)child_or_node, (long)ID_of_OR(child_or_node));
         /* If the child or-node is not of zero length, try to claim it.
