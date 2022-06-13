@@ -12486,24 +12486,28 @@ Lemma: If the length of an or-node is non-zero and
 it has a duplicate in the tree, then that or-node is part
 of a cycle.
 Proof: Let an or-node appear twice in the tree,
-at instances ${\rm i1}$ and ${\rm i2}$.
+at instances ${\it i1}$ and ${\it i2}$.
 Since the or-node has non-zero length then its dotted rule has
-the form $A \mathbin{::=} {\rm alpha} \mathbin{\bullet} {\rm beta}$,
-where $alpha$ is a sentential form of one or more symbols
-which derives $t$,
-and and where $t$ is a string of terminals which contains at least
-one non-null symbol, call it ${\rm term}$.  ${\rm term}$ has a
-fixed location in
-the lexical parse, call it $x$.
+the form $A \mathbin{::=} \alpha \mathbin{\bullet} \beta$, where
+\item{$\bullet$} $\alpha$ is a sentential form of one or more symbols
+which derives $\it terms$, and
+\item{$\bullet$}
+$\it terms$ is a string of terminals.
+\par\noindent
+Since the or-node is not zero-length,
+$\it terms$ contains at least
+one non-null symbol, call it $t$.
+$t$ has a fixed location in
+the lexical input string, call it $x$.
 
-@ Either $\rm i1$ derives $\rm i2$ or $\rm i2$ derives $\rm i1$.
-If that were not the case then $\rm term$ would appear at two
+@ Either $\it i1$ derives $\it i2$ or $\it i2$ derives $\it i1$.
+If that were not the case then $t$ would appear at two
 distinct locations, both of which must be location $x$,
 which is nonsensical.
 @ Assume without loss of generality that 
-$\rm i1$ derives $\rm i2$.
+$\it i1$ derives $\it i2$.
 The same logic which caused the derivation from 
-$\rm i1$ to $\rm i2$,
+$\it i1$ to $\it i2$,
 will cause this derivation to be repeated an arbitrary number of times,
 causing an or-node cycle.
 This is what we need to show for the ``Non-zero implies cycle'' Lemma.
