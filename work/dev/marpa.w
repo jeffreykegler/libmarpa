@@ -12575,8 +12575,8 @@ QED.
 @<Lemma: Cycle implies duplicate@>@/
 @<Lemma: Cycle implies non-zero@>
 
-@*0 Theorem: Or-node cycle detection is consistent.
-Or-node cycle detection is consistent,
+@*0 Theorem: Or-node cycle elimination is consistent.
+Or-node cycle elimination is consistent,
 that is, every tree pruned because of an or-node
 cycle actually does contain an or-node cycle.
 \par {\bf Proof:}
@@ -12585,13 +12585,35 @@ All pruning for or-node cycles occurs in
 This proof follows directly from that fact
 and |@<Theorem: Non-zero and duplicate iff cycle@>|.
 QED.
-@<Theorem: Or-node cycle detection is consistent@> =
+@<Theorem: Or-node cycle elimination is consistent@> =
+@<Theorem: Non-zero and duplicate iff cycle@>
+
+@*0 Theorem: Or-node cycle elimination is complete.
+Or-node cycle elimination is complete,
+that is, every tree than contains 
+an or-node cycle is pruned.
+\par {\bf Proof:}
+Or-nodes are added to the trees in either
+|@<Initialize the tree iterator@>| or
+|@<Add new nook to tree@>|.
+Only the root or-node is added in|@<Initialize the tree iterator@>|,
+and this is never part of an or-node cycle
+for the reasons given in |@<Initialize the tree iterator@>|.
+\par
+The code in |@<Add new nook to tree@>|
+is guarded by |@<If tree has cycle, go to |NEXT_TREE|@>|.
+By |@<Theorem: Non-zero and duplicate iff cycle@>|,
+|@<If tree has cycle, go to |NEXT_TREE|@>| prunes every tree containing
+and or-node cycle.
+It follow that or-node cycle elimination is complete.
+QED.
+@<Theorem: Or-node cycle elimination is complete@> =
 @<Theorem: Non-zero and duplicate iff cycle@>
 
 @ @<If tree has cycle, go to |NEXT_TREE|@> =
 {
-        @<Theorem: Non-zero and duplicate iff cycle@>@/
-        @<Theorem: Or-node cycle detection is consistent@>@/
+        @<Theorem: Or-node cycle elimination is consistent@>@/
+        @<Theorem: Or-node cycle elimination is complete@>@/
         MARPA_DEBUG3("Before check for duplicate or node, node=%lx ID=%ld",
           (long)child_or_node, (long)ID_of_OR(child_or_node));
         /* If the child or-node is not of zero length, try to claim it.
