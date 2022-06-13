@@ -12394,6 +12394,14 @@ expanded.
 It is harmless to have ``clean'' nooks in the worklist ---
 the finishing code does nothing to a clean nook except
 pop it off the work list.
+@ We might consider further optimizing by checking every
+nook to see if it is ``dirty'' before pushing it onto the worklist,
+but we must make the same tests when the nook is popped
+of the worklist, in order to process it.
+So it's a question of
+whether the cost of a push and pop.
+outweighs the cost of duplicating the
+``dirty'' bit tests.
 @ @<Finish tree if possible@> = {
     {
         const int stack_length = Size_of_T(t);
@@ -12402,8 +12410,6 @@ pop it off the work list.
         @t}\comment{@>
         /* Clear the worklist, then copy the entire remaining
            tree onto it.
-           A good optimization might be to check if the nook
-           is ``dirty'' before adding it to the work list.
            */
         FSTACK_CLEAR(t->t_nook_worklist);
         for (i = 0; i < stack_length; i++) {
@@ -12461,7 +12467,7 @@ pop it off the work list.
             goto NEXT_NOOK_ON_WORKLIST;
           }
         while (0);
-        @<If tree has cycle, |goto NEXT_TREE|@>
+        @<If tree has cycle, go to |NEXT_TREE|@>
         choice = 0;
         if (!and_order_ix_is_valid(o, child_or_node, choice)) goto NEXT_TREE;
         MARPA_DEBUG2("After check for valid and order ix, node=%lx", (long)child_or_node);
@@ -12471,7 +12477,81 @@ pop it off the work list.
     NEXT_TREE: ;
 }
 
-@ @<If tree has cycle, |goto NEXT_TREE|@> =
+@ We check for or-node cycles here.
+It is necessary to demonstrate carefully that our logic
+eliminates all, and only, the or-nodes which lead to cycles.
+
+@*0 Non-zero duplicate implies cycle.
+Lemma: If the length of an or-node is non-zero and
+it has a duplicate in the tree, then that or-node is part
+of a cycle.
+Proof: Let an or-node appear twice in the tree,
+at instances ${\rm i1}$ and ${\rm i2}$.
+Since the or-node has non-zero length then its dotted rule has
+the form $A \mathbin{::=} {\rm alpha} \mathbin{\bullet} {\rm beta}$,
+where $alpha$ is a sentential form of one or more symbols
+which derives $t$,
+and and where $t$ is a string of terminals which contains at least
+one non-null symbol, call it ${\rm term}$.  ${\rm term}$ has a
+fixed location in
+the lexical parse, call it $x$.
+
+@ Either $\rm i1$ derives $\rm i2$ or $\rm i2$ derives $\rm i1$.
+If that were not the case then $\rm term$ would appear at two
+distinct locations, both of which must be location $x$,
+which is nonsensical.
+@ Assume without loss of generality that 
+$\rm i1$ derives $\rm i2$.
+The same logic which caused the derivation from 
+$\rm i1$ to $\rm i2$,
+will cause this derivation to be repeated an arbitrary number of times,
+causing an or-node cycle.
+This is what we need to show for the ``Non-zero implies cycle'' Lemma.
+QED.
+
+@*0 Cycle implies duplicate.
+Lemma:
+If an or-node is part of a cycle, then
+it has a duplicate in the tree.
+Proof: If an or-node never produces a duplicate
+in the tree,
+by definition there is no cycle for this or-node in
+that tree.
+
+@*0 Cycle implies non-zero.
+Lemma:
+If an or-node is part of a cycle, then
+the length of the or-node is non-zero.
+Proof:
+We will show the contrapositive,
+that a zero-length or-node does
+not produce a cycle.
+To do this we show that a zero-length or-node is
+a ``dead-end` in terms of derivation.
+An or-node derives other or-nodes with through its
+predecessor or its cause.
+A zero-length or-node has no predecessor.
+(In theory a predicted dotted rule can be seen as the
+predecessor, but predecessors are semantically inert,
+and derivationally dead-ends, so we do not bother with
+them.)
+The cause of a zero-length or-node must be zero length.
+The only zero-length causes are nulling symbols,
+and these are derivational dead-ends.
+Thus a derivation from a zero-length or-node
+never takes us back to an or-node.
+
+@*0 Non-zero and duplicate iff cycle.
+Theorem: The length of an or-node is non-zero and
+it has a duplicate in the tree, iff that or-node is part
+of a cycle.
+Proof:
+This theorem follows from the ``Non-zero implies cycle'' Lemma,
+the ``Cycle implies duplicate'' Lemma,
+and the ``Cycle implies non-zero'' Lemma.
+QED.
+
+@<If tree has cycle, go to |NEXT_TREE|@> =
 {
         MARPA_DEBUG3("Before check for duplicate or node, node=%lx ID=%ld",
           (long)child_or_node, (long)ID_of_OR(child_or_node));
