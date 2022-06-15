@@ -12050,16 +12050,16 @@ or a stack, so they are destroyed.
 If the bocage iterator has a parse count,
 but no stack,
 it is exhausted.
-@d Size_of_TREE(tree) FSTACK_LENGTH((tree)->t_nook_stack)
+@d Size_of_TREE(tree) MARPA_DSTACK_LENGTH((tree)->t_nook_stack)
 @d NOOK_of_TREE_by_IX(tree, nook_id)
-    FSTACK_INDEX((tree)->t_nook_stack, NOOK_Object, nook_id)
+    MARPA_DSTACK_INDEX((tree)->t_nook_stack, NOOK_Object, nook_id)
 @d O_of_T(t) ((t)->t_order)
 @<Private structures@> =
 @<NOOK structure@>@;
 @<VALUE structure@>@;
 struct marpa_tree {
-    FSTACK_DECLARE(t_nook_stack, NOOK_Object)@;
-    FSTACK_DECLARE(t_nook_worklist, int)@;
+    MARPA_DSTACK_DECLARE(t_nook_stack);
+    MARPA_DSTACK_DECLARE(t_nook_worklist);
     Bit_Vector t_or_node_in_use;
     Marpa_Order t_order;
     @<Int aligned tree elements@>@;
@@ -12074,15 +12074,15 @@ struct marpa_tree {
 @ @<Function definitions@> =
 PRIVATE void tree_exhaust(TREE t)
 {
-  if (FSTACK_IS_INITIALIZED (t->t_nook_stack))
+  if (MARPA_DSTACK_IS_INITIALIZED (t->t_nook_stack))
     {
-      FSTACK_DESTROY (t->t_nook_stack);
-      FSTACK_SAFE (t->t_nook_stack);
+      MARPA_DSTACK_DESTROY (t->t_nook_stack);
+      MARPA_DSTACK_SAFE (t->t_nook_stack);
     }
-  if (FSTACK_IS_INITIALIZED (t->t_nook_worklist))
+  if (MARPA_DSTACK_IS_INITIALIZED (t->t_nook_worklist))
     {
-      FSTACK_DESTROY (t->t_nook_worklist);
-      FSTACK_SAFE (t->t_nook_worklist);
+      MARPA_DSTACK_DESTROY (t->t_nook_worklist);
+      MARPA_DSTACK_SAFE (t->t_nook_worklist);
     }
   bv_free (t->t_or_node_in_use);
   t->t_or_node_in_use = NULL;
@@ -12112,8 +12112,8 @@ Marpa_Tree marpa_t_new(Marpa_Order o)
     {
       T_is_Nulling (t) = 1;
       t->t_or_node_in_use = NULL;
-      FSTACK_SAFE (t->t_nook_stack);
-      FSTACK_SAFE (t->t_nook_worklist);
+      MARPA_DSTACK_SAFE (t->t_nook_stack);
+      MARPA_DSTACK_SAFE (t->t_nook_worklist);
     }
   else
     {
@@ -12121,8 +12121,8 @@ Marpa_Tree marpa_t_new(Marpa_Order o)
       const int or_count = OR_Count_of_B (b);
       T_is_Nulling (t) = 0;
       t->t_or_node_in_use = bv_create (or_count);
-      FSTACK_INIT (t->t_nook_stack, NOOK_Object, and_count);
-      FSTACK_INIT (t->t_nook_worklist, int, and_count);
+      MARPA_DSTACK_INIT (t->t_nook_stack, NOOK_Object, and_count);
+      MARPA_DSTACK_INIT (t->t_nook_worklist, NOOKID, and_count);
     }
 }
 
@@ -12268,7 +12268,7 @@ int marpa_t_next(Marpa_Tree t)
     }
     TREE_IS_FINISHED: ;
     t->t_parse_count++;
-    return FSTACK_LENGTH(t->t_nook_stack);
+    return MARPA_DSTACK_LENGTH(t->t_nook_stack);
     TREE_IS_EXHAUSTED: ;
     tree_exhaust(t);
     MARPA_ERROR (MARPA_ERR_TREE_EXHAUSTED);
@@ -12333,7 +12333,7 @@ cannot be part of cycle.
   const int choice = 0;
   if (!and_order_ix_is_valid(o, root_or_node, choice))
     goto TREE_IS_EXHAUSTED;
-  nook = FSTACK_PUSH (t->t_nook_stack);
+  nook = MARPA_DSTACK_PUSH (t->t_nook_stack, NOOK_Object);
   tree_or_node_try(t, root_or_id); /* Empty stack, so cannot fail */
   OR_of_NOOK (nook) = root_or_node;
   Choice_of_NOOK (nook) = choice;
@@ -12351,7 +12351,7 @@ Otherwise, the tree is exhausted.
     MARPA_DEBUG1("Start new iteration of tree");
     while (1) {
         OR iteration_candidate_or_node;
-        const NOOK iteration_candidate = FSTACK_TOP(t->t_nook_stack, NOOK_Object);
+        const NOOK iteration_candidate = MARPA_DSTACK_TOP(t->t_nook_stack, NOOK_Object);
         int choice;
         if (!iteration_candidate) break;
         iteration_candidate_or_node = OR_of_NOOK(iteration_candidate);
@@ -12384,7 +12384,7 @@ Otherwise, the tree is exhausted.
 
             /* Continue with the next item on the stack */
             tree_or_node_release(t, ID_of_OR(iteration_candidate_or_node));
-            FSTACK_POP(t->t_nook_stack);
+            MARPA_DSTACK_POP(t->t_nook_stack, NOOK_Object);
         }
     }
     if ( Size_of_T(t) <= 0) goto TREE_IS_EXHAUSTED;
@@ -12418,9 +12418,9 @@ outweighs the cost of duplicating the
         /* Clear the worklist, then copy the entire remaining
            tree onto it.
            */
-        FSTACK_CLEAR(t->t_nook_worklist);
+        MARPA_DSTACK_CLEAR(t->t_nook_worklist);
         for (i = 0; i < stack_length; i++) {
-            *(FSTACK_PUSH(t->t_nook_worklist)) = i;
+            *(MARPA_DSTACK_PUSH(t->t_nook_worklist, NOOKID)) = i;
         }
     }
     while (1) {
@@ -12433,8 +12433,8 @@ outweighs the cost of duplicating the
         int choice;
         int child_is_cause = 0;
         int child_is_predecessor = 0;
-        if (FSTACK_LENGTH(t->t_nook_worklist) <= 0) { goto TREE_IS_FINISHED; }
-        p_work_nook_id = FSTACK_TOP(t->t_nook_worklist, NOOKID);
+        if (MARPA_DSTACK_LENGTH(t->t_nook_worklist) <= 0) { goto TREE_IS_FINISHED; }
+        p_work_nook_id = MARPA_DSTACK_TOP(t->t_nook_worklist, NOOKID);
         work_nook = NOOK_of_TREE_by_IX(t, *p_work_nook_id);
         work_or_node = OR_of_NOOK(work_nook);
         work_and_node_id = and_order_get(o, work_or_node, Choice_of_NOOK(work_nook));
@@ -12470,7 +12470,7 @@ outweighs the cost of duplicating the
                   }
               }
             NOOK_Predecessor_is_Expanded (work_nook) = 1;
-            FSTACK_POP (t->t_nook_worklist);
+            MARPA_DSTACK_POP (t->t_nook_worklist, NOOKID);
             goto NEXT_NOOK_ON_WORKLIST;
           }
         while (0);
@@ -12629,8 +12629,8 @@ QED.
 @ @<Add new nook to tree@> =
 {
   NOOKID new_nook_id = Size_of_T (t);
-  NOOK new_nook = FSTACK_PUSH (t->t_nook_stack);
-  *(FSTACK_PUSH (t->t_nook_worklist)) = new_nook_id;
+  NOOK new_nook = MARPA_DSTACK_PUSH (t->t_nook_stack, NOOK_Object);
+  *(MARPA_DSTACK_PUSH (t->t_nook_worklist, NOOKID)) = new_nook_id;
   Parent_of_NOOK (new_nook) = *p_work_nook_id;
   Choice_of_NOOK (new_nook) = choice;
   OR_of_NOOK (new_nook) = child_or_node;
@@ -12657,7 +12657,7 @@ int marpa_t_parse_count(Marpa_Tree t)
 }
 
 @
-@d Size_of_T(t) FSTACK_LENGTH((t)->t_nook_stack)
+@d Size_of_T(t) MARPA_DSTACK_LENGTH((t)->t_nook_stack)
 @<Function definitions@> =
 int _marpa_t_size(Marpa_Tree t)
 {
@@ -16294,7 +16294,7 @@ set |nook|@> = {
   if (nook_id >= Size_of_T(t)) {
       return -1;
   }
-  base_nook = FSTACK_BASE(t->t_nook_stack, NOOK_Object);
+  base_nook = MARPA_DSTACK_BASE(t->t_nook_stack, NOOK_Object);
   nook = base_nook + nook_id;
 }
 
