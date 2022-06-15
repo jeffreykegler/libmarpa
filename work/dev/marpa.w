@@ -12424,7 +12424,7 @@ outweighs the cost of duplicating the
         }
     }
     while (1) {
-        NOOKID* p_work_nook_id;
+        NOOKID work_nook_id;
         NOOK work_nook;
         ANDID work_and_node_id;
         AND work_and_node;
@@ -12434,12 +12434,12 @@ outweighs the cost of duplicating the
         int child_is_cause = 0;
         int child_is_predecessor = 0;
         if (MARPA_DSTACK_LENGTH(t->t_nook_worklist) <= 0) { goto TREE_IS_FINISHED; }
-        p_work_nook_id = MARPA_DSTACK_TOP(t->t_nook_worklist, NOOKID);
-        work_nook = NOOK_of_TREE_by_IX(t, *p_work_nook_id);
+        work_nook_id = *MARPA_DSTACK_TOP(t->t_nook_worklist, NOOKID);
+        work_nook = NOOK_of_TREE_by_IX(t, work_nook_id);
         work_or_node = OR_of_NOOK(work_nook);
         work_and_node_id = and_order_get(o, work_or_node, Choice_of_NOOK(work_nook));
         MARPA_DEBUG5("Work node is %ld, OR=%ld, choice=%ld, AND=%ld\n",
-          (long)*p_work_nook_id, 
+          (long)work_nook_id, 
           (long)ID_of_OR(work_or_node), (long)Choice_of_NOOK(work_nook),
           (long)work_and_node_id);
         work_and_node = ands_of_b + work_and_node_id;
@@ -12452,8 +12452,8 @@ outweighs the cost of duplicating the
                   {
                     child_or_node = cause_or_node;
                     child_is_cause = 1;
-                    MARPA_DEBUG3("Work node is %ld, child OR %ld is cause",
-                      (long)*p_work_nook_id, ID_of_OR(child_or_node));
+                    MARPA_DEBUG3("Work nook ID is %ld, child OR %ld is cause",
+                      (long)work_nook_id, ID_of_OR(child_or_node));
                     break;
                   }
               }
@@ -12464,8 +12464,8 @@ outweighs the cost of duplicating the
                 if (child_or_node)
                   {
                     child_is_predecessor = 1;
-                    MARPA_DEBUG3("Work node is %ld, child OR %ld is predecessor",
-                      (long)*p_work_nook_id, ID_of_OR(child_or_node));
+                    MARPA_DEBUG3("Work nook ID is %ld, child OR %ld is predecessor",
+                      (long)work_nook_id, ID_of_OR(child_or_node));
                     break;
                   }
               }
@@ -12631,7 +12631,9 @@ QED.
   NOOKID new_nook_id = Size_of_T (t);
   NOOK new_nook = MARPA_DSTACK_PUSH (t->t_nook_stack, NOOK_Object);
   *(MARPA_DSTACK_PUSH (t->t_nook_worklist, NOOKID)) = new_nook_id;
-  Parent_of_NOOK (new_nook) = *p_work_nook_id;
+  work_nook = NOOK_of_TREE_by_IX(t, work_nook_id); /* Refresh |work_nook| because
+      push to dynamic stack may have moved it */
+  Parent_of_NOOK (new_nook) = work_nook_id;
   Choice_of_NOOK (new_nook) = choice;
   OR_of_NOOK (new_nook) = child_or_node;
   MARPA_DEBUG5("New node is %ld, OR=%ld, choice=%ld, AND=%ld\n",
