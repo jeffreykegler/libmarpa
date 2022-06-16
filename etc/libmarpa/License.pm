@@ -1,4 +1,4 @@
-# Copyright 2018 Jeffrey Kegler
+# Copyright 2022 Jeffrey Kegler
 # Permission is hereby granted, free of charge, to any person obtaining a
 # copy of this software and associated documentation files (the "Software"),
 # to deal in the Software without restriction, including without limitation
@@ -28,7 +28,7 @@ use Fatal qw(open close read);
 use File::Spec;
 use Text::Diff ();
 
-my $copyright_line = q{Copyright 2018 Jeffrey Kegler};
+my $copyright_line = q{Copyright 2022 Jeffrey Kegler};
 ( my $copyright_line_in_tex = $copyright_line )
     =~ s/ ^ Copyright \s /Copyright \\copyright\\ /xms;
 
@@ -70,7 +70,7 @@ $license_in_tex =~ s/^$/\\smallskip\\noindent/gxms;
 my $license_file = $license;
 
 my $texi_copyright = <<'END_OF_TEXI_COPYRIGHT';
-Copyright @copyright{} 2018 Jeffrey Kegler.
+Copyright @copyright{} 2022 Jeffrey Kegler.
 END_OF_TEXI_COPYRIGHT
 
 my $texi_license = <<'END_OF_TEXI_LICENSE';
@@ -294,7 +294,8 @@ my %files_by_type = (
     'libmarpa/test/Makefile'        => \&trivial,
     'libmarpa/test/README'          => \&trivial,
     'libmarpa/test/dev/install-sh'  => \&check_X_copyright,
-    'libmarpa/win32/make.bat'           => \&trivial,
+    'work/win32/make.bat'           => \&trivial,
+    'work/win32/README'           => \&trivial,
     'doc_dist/version.texi'   => \&trivial,
     'doc_dist/version_i.texi' => \&trivial,
     'doc1_dist/version.texi'   => \&trivial,
@@ -323,9 +324,10 @@ my %files_by_type = (
     'libmarpa/tavl/tavl-test.c'  => \&ignored,
     'libmarpa/tavl/test.c'       => \&ignored,
     'libmarpa/tavl/test.h'       => \&ignored,
+    'work/timestamp/ABOUT_ME' => \&trivial,
 
     # MS .def file -- contents trivial
-    'dist/win32/marpa.def' => \&ignored,
+    'work/win32/marpa.def' => \&ignored,
 );
 
 # Common files in the GNU distributions

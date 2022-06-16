@@ -25,7 +25,7 @@ use autodie;
 use English qw( -no_match_vars );
 
 use Getopt::Long;
-my $verbose = 1;
+my $verbose = 0;
 my $result = Getopt::Long::GetOptions( 'verbose=i' => \$verbose );
 die "usage $PROGRAM_NAME [--verbose=n] file ...\n" if not $result;
 
