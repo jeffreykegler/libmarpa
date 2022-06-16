@@ -151,10 +151,7 @@ END_OF_STRING
 my %GNU_file = (
     map {
     (   'work/stage/' . $_, 1,
-        'work/test/dev/' . $_,   1,
-        'dist/' . $_,   1,
-        'doc_dist/' . $_,   1,
-        'doc1_dist/' . $_,   1
+        'ac_dist/' . $_,   1,
         )
     } qw(
         aclocal.m4
@@ -293,9 +290,6 @@ my %files_by_type = (
     'work/shared/copyright_page_license.w' => \&copyright_page,
     'work/shared/cwebmac.tex'              =>
       \&ignored,    # originally from Cweb, leave it alone
-    'libmarpa/test/Makefile'       => \&trivial,
-    'libmarpa/test/README'         => \&trivial,
-    'libmarpa/test/dev/install-sh' => \&check_X_copyright,
     'work/win32/make.bat'          => \&trivial,
     'work/win32/README'            => \&trivial,
     'etc/my_suppressions'          => \&trivial,
@@ -327,13 +321,23 @@ my %files_by_type = (
     'work/tavl/test.c'       => \&ignored,
     'work/tavl/test.h'       => \&ignored,
 
+    # Leave Russ Allbery's licensing as is
+    'test/tap/ABOUT.txt' => \&ignored,
+    'test/tap/basic.c' => \&ignored,
+    'test/tap/basic.h' => \&ignored,
+    'test/tap/float.c' => \&ignored,
+    'test/tap/float.h' => \&ignored,
+    'test/tap/libtap.sh' => \&ignored,
+    'test/tap/macros.h' => \&ignored,
+    'test/tap/runtests.c' => \&ignored,
+
     # MS .def file -- contents trivial
     'work/win32/marpa.def' => \&ignored,
 );
 
 # Common files in the GNU distributions
 for my $distlib (
-    qw(work/ac_doc work/ac_doc1 work/ac dist doc_dist doc1_dist)
+    qw(work/ac ac_dist )
     )
 {
     $files_by_type{"$distlib/AUTHORS"}   = \&trivial;
