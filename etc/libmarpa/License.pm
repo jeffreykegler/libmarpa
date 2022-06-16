@@ -313,6 +313,7 @@ my %files_by_type = (
     # Config files
     '.inputrc' => \&trivial,
     '.travis.yml' => \&trivial,
+    'etc/indent.pro' => \&trivial,
 
     # Temporary working file -- will be deleted
     'es_locators.txt' => \&ignored,
