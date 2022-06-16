@@ -261,13 +261,7 @@ sub check_tag {
 } ## end sub check_tag
 
 my %files_by_type = (
-    'COPYING.LESSER' => \&ignored,    # GNU license text, leave it alone
-    'cm_dist/COPYING.LESSER' => \&ignored,    # GNU license text, leave it alone
-    'cm_dist/COPYING' => \&ignored,    # MIT license text, leave it alone
     'dist/compile' => \&ignored,    # GNU file, leave it alone
-    'dist/COPYING' => \&ignored,    # MIT license text, leave it alone
-    'doc_dist/COPYING' => \&ignored,    # MIT license text, leave it alone
-    'doc1_dist/COPYING' => \&ignored,    # MIT license text, leave it alone
     'LICENSE' => \&license_problems_in_license_file,
     'META.json' =>
         \&ignored,    # not source, and not clear how to add license at top
@@ -305,6 +299,10 @@ my %files_by_type = (
     'work/tavl/README' => \&trivial,
 
     # Leave obstack licensing as is
+    'work/obs/marpa_obs.c' => \&ignored,
+    'work/obs/marpa_obs.h' => \&ignored,
+    'work/obs/orig/marpa_obs.c' => \&ignored,
+    'work/obs/orig/marpa_obs.h' => \&ignored,
     'dist/marpa_obs.c' => \&ignored,
     'dist/marpa_obs.h' => \&ignored,
     'cm_dist/marpa_obs.c' => \&ignored,
@@ -317,15 +315,12 @@ my %files_by_type = (
     'cm_dist/marpa_tavl.h' => \&ignored,
     'work/avl/marpa_avl.c' => \&ignored,
     'work/avl/marpa_avl.h' => \&ignored,
-    'work/tavl/COPYING.LESSER' => \&ignored,    # GNU license text, leave it alone
     'work/tavl/marpa_tavl.c' => \&ignored,
     'work/tavl/marpa_tavl.h' => \&ignored,
     'work/tavl/README.Pfaff' => \&ignored,
     'work/tavl/tavl-test.c'  => \&ignored,
     'work/tavl/test.c'       => \&ignored,
     'work/tavl/test.h'       => \&ignored,
-
-    'work/timestamp/ABOUT_ME' => \&trivial,
 
     # MS .def file -- contents trivial
     'work/win32/marpa.def' => \&ignored,
@@ -339,9 +334,6 @@ for my $distlib (
     $files_by_type{"$distlib/AUTHORS"}   = \&trivial;
     $files_by_type{"$distlib/NEWS"}      = \&trivial;
     $files_by_type{"$distlib/ChangeLog"} = \&trivial;
-
-    ## GNU license text, leave it alone
-    $files_by_type{"$distlib/COPYING.LESSER"} = \&ignored;
 
     ## GNU standard -- has their license language
     $files_by_type{"$distlib/INSTALL"} = \&ignored;
@@ -373,6 +365,12 @@ sub file_type {
         if scalar @dirs >= 2
             and $dirs[0] eq 'libmarpa'
             and $dirs[1] eq 'orig';
+    return \&trivial if $filepart eq 'ABOUT_ME';
+
+    ## GNU license text, leave it alone
+    return \&ignored if $filepart eq 'COPYING';
+    return \&ignored if $filepart eq 'COPYING.LESSER';
+
     return \&trivial if $filepart eq '.gitignore';
     return \&trivial if $filepart eq '.gitattributes';
     return \&trivial if $filepart eq '.gdbinit';
