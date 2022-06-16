@@ -278,18 +278,19 @@ my %files_by_type = (
     'etc/dovg.sh'                       => \&trivial,
     'etc/compile_for_debug.sh'          => \&trivial,
     'etc/reserved_check.sh'             => \&trivial,
-    'libmarpa/shared/do_not_edit.c'            => \&trivial,
-    'libmarpa/public/marpa_codes.c.p10'        => \&trivial,
-    'libmarpa/public/marpa.h.p10'              => \&trivial,
-    'libmarpa/public/marpa.h-version'          => \&trivial,
-    'libmarpa/public/marpa.h.p90'              => \&trivial,
-    'libmarpa/dev/README'                      => \&trivial,
+    'work/shared/do_not_edit.c'            => \&trivial,
+    'work/shared/do_not_edit.hash'            => \&trivial,
+    'work/public/marpa_codes.c.p10'        => \&trivial,
+    'work/public/marpa.h.p10'              => \&trivial,
+    'work/public/marpa.h-version'          => \&trivial,
+    'work/public/marpa.h.p90'              => \&trivial,
+    'work/dev/README'                      => \&trivial,
     'cm_dist/README'             => \&license_problems_in_text_file,
     'cm_dist/modules/inline.c'             => \&trivial,
     'cm_dist/config.h.cmake'             => \&trivial,
     'libmarpa/bin/too_long.pl'                 => \&trivial,
-    'libmarpa/shared/copyright_page_license.w' => \&copyright_page,
-    'libmarpa/shared/cwebmac.tex' =>
+    'work/shared/copyright_page_license.w' => \&copyright_page,
+    'work/shared/cwebmac.tex' =>
         \&ignored,    # originally from Cweb, leave it alone
     'libmarpa/test/Makefile'        => \&trivial,
     'libmarpa/test/README'          => \&trivial,
@@ -301,7 +302,7 @@ my %files_by_type = (
     'doc1_dist/version.texi'   => \&trivial,
     'doc1_dist/version_i.texi' => \&trivial,
     'etc/my_suppressions'              => \&trivial,
-    'libmarpa/tavl/README' => \&trivial,
+    'work/tavl/README' => \&trivial,
 
     # Leave obstack licensing as is
     'dist/marpa_obs.c' => \&ignored,
@@ -310,20 +311,20 @@ my %files_by_type = (
     'cm_dist/marpa_obs.h' => \&ignored,
 
     # Leave Pfaff's licensing as is
-    'dist/marpa_avl.c' => \&ignored,
-    'dist/marpa_avl.h' => \&ignored,
-    'dist/marpa_tavl.c' => \&ignored,
-    'dist/marpa_tavl.h' => \&ignored,
     'cm_dist/marpa_avl.c' => \&ignored,
     'cm_dist/marpa_avl.h' => \&ignored,
     'cm_dist/marpa_tavl.c' => \&ignored,
     'cm_dist/marpa_tavl.h' => \&ignored,
-    'libmarpa/tavl/marpa_tavl.c' => \&ignored,
-    'libmarpa/tavl/marpa_tavl.h' => \&ignored,
-    'libmarpa/tavl/README.Pfaff' => \&ignored,
-    'libmarpa/tavl/tavl-test.c'  => \&ignored,
-    'libmarpa/tavl/test.c'       => \&ignored,
-    'libmarpa/tavl/test.h'       => \&ignored,
+    'work/avl/marpa_avl.c' => \&ignored,
+    'work/avl/marpa_avl.h' => \&ignored,
+    'work/tavl/COPYING.LESSER' => \&ignored,    # GNU license text, leave it alone
+    'work/tavl/marpa_tavl.c' => \&ignored,
+    'work/tavl/marpa_tavl.h' => \&ignored,
+    'work/tavl/README.Pfaff' => \&ignored,
+    'work/tavl/tavl-test.c'  => \&ignored,
+    'work/tavl/test.c'       => \&ignored,
+    'work/tavl/test.h'       => \&ignored,
+
     'work/timestamp/ABOUT_ME' => \&trivial,
 
     # MS .def file -- contents trivial
