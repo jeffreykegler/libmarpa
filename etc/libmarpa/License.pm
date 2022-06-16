@@ -69,6 +69,21 @@ $license_in_tex =~ s/^$/\\smallskip\\noindent/gxms;
 
 my $license_file = $license;
 
+my $copying_dicta = <<'EOS';
+
+Most of Libmarpa is licensed under the MIT License, which is given
+below and at http://www.opensource.org/licenses/mit-license.html.
+Individual libraries and source files may be under other licenses,
+including the GNU's LGPL.  For details, see those individual libraries
+and source files.
+
+===============
+The MIT License
+===============
+EOS
+
+my $copying_file = join "\n", $copyright_line, $copying_dicta, $license_body;
+
 my $texi_copyright = <<'END_OF_TEXI_COPYRIGHT';
 Copyright @copyright{} 2022 Jeffrey Kegler.
 END_OF_TEXI_COPYRIGHT
@@ -261,7 +276,7 @@ my %files_by_type = (
     'dist/compile' => \&ignored,    # GNU file, leave it alone
     'LICENSE'      => \&license_problems_in_license_file,
     'META.json'    =>
-      \&ignored,    # not source, and not clear how to add license at top
+      \&gnore,ignored,    # not source, and not clear how to add license at top
     'META.yml' =>
       \&ignored,    # not source, and not clear how to add license at top
     'README'                               => \&trivial,
@@ -283,18 +298,24 @@ my %files_by_type = (
     'work/dev/README'                      => \&trivial,
     'work/dev/api.premenu'                 => \&license_problems_in_texi_file,
     'work/dev/internal.premenu'            => \&license_problems_in_texi_file,
-    'cm_dist/README'                       => \&license_problems_in_text_file,
-    'cm_dist/modules/inline.c'             => \&trivial,
-    'cm_dist/config.h.cmake'               => \&trivial,
+    'cmake/config.h.cmake'               => \&license_problems_in_c_file,
+    'cmake/modules/inline.c' => \&trivial,
     'work/bin/too_long.pl'                 => \&trivial,
     'work/shared/copyright_page_license.w' => \&copyright_page,
     'work/shared/cwebmac.tex'              =>
       \&ignored,    # originally from Cweb, leave it alone
-    'work/shared/COPYING'                       => \&license_problems_in_text_file,
+    'work/shared/COPYING'                       => \&license_problems_in_copying_file,
     'work/win32/make.bat'          => \&trivial,
     'work/win32/README'            => \&trivial,
     'etc/my_suppressions'          => \&trivial,
     'work/tavl/README'             => \&trivial,
+
+    # Config files
+    '.inputrc' => \&trivial,
+    '.travis.yml' => \&trivial,
+
+    # Temporary working file -- will be deleted
+    'es_locators.txt' => \&ignored,
 
     # Leave obstack licensing as is
     'work/obs/marpa_obs.c'      => \&ignored,
@@ -331,6 +352,27 @@ my %files_by_type = (
     'test/tap/libtap.sh' => \&ignored,
     'test/tap/macros.h' => \&ignored,
     'test/tap/runtests.c' => \&ignored,
+
+    # Leave GNU license as is
+    'work/avl/COPYING.LESSER' => \&ignored,
+    'work/obs/COPYING.LESSER' => \&ignored,
+    'work/tavl/COPYING.LESSER' => \&ignored,
+
+    # Small files to describe directory contents
+    'cmake/ABOUT_ME' => \&trivial,
+    'notes/ABOUT_ME' => \&trivial,
+    'tars/ABOUT_ME' => \&trivial,
+    'timestamp/ABOUT_ME' => \&trivial,
+    'work/ac/ABOUT_ME' => \&trivial,
+    'work/ac_doc/ABOUT_ME' => \&trivial,
+    'work/ac_doc1/ABOUT_ME' => \&trivial,
+    'work/etc/ABOUT_ME' => \&trivial,
+    'work/public/ABOUT_ME' => \&trivial,
+    'work/timestamp/ABOUT_ME' => \&trivial,
+
+    # We do not add copyright notices to legalese
+    'README' => \&ignored,
+    'legal/copyright_assignment_rns' => \&ignored,
 
     # MS .def file -- contents trivial
     'work/win32/marpa.def' => \&ignored,
@@ -456,24 +498,34 @@ sub tops_equal {
         ${ slurp_top( $filename2, $length ) };
 }
 
+sub license_problems_in_copying_file {
+    my ( $filename, $verbose ) = @_;
+    return match_file($filename, $verbose, $copying_file);
+}
+
 sub license_problems_in_license_file {
     my ( $filename, $verbose ) = @_;
+    return match_file($filename, $verbose, $license_file);
+}
+
+sub match_file {
+    my ( $filename, $verbose, $file_text ) = @_;
     my @problems = ();
     my $text     = ${ slurp($filename) };
-    if ( $text ne $license_file ) {
-        my $problem = "LICENSE file is wrong\n";
+    if ( $text ne $file_text ) {
+        my $problem = "$filename is wrong\n";
         if ($verbose) {
             $problem
                 .= "=== Differences ===\n"
-                . Text::Diff::diff( \$text, \$license_file )
+                . Text::Diff::diff( \$text, \$file_text )
                 . ( q{=} x 30 );
         } ## end if ($verbose)
         push @problems, $problem;
-    } ## end if ( $text ne $license_file )
+    } ## end if ( $text ne $file_text )
     if ( scalar @problems and $verbose >= 2 ) {
         my $problem =
               "=== $filename should be as follows:\n"
-            . $license_file
+            . $file_text
             . ( q{=} x 30 );
         push @problems, $problem;
     } ## end if ( scalar @problems and $verbose >= 2 )
