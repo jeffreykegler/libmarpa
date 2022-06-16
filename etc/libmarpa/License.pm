@@ -290,6 +290,7 @@ my %files_by_type = (
     'work/shared/copyright_page_license.w' => \&copyright_page,
     'work/shared/cwebmac.tex'              =>
       \&ignored,    # originally from Cweb, leave it alone
+    'work/shared/COPYING'                       => \&license_problems_in_text_file,
     'work/win32/make.bat'          => \&trivial,
     'work/win32/README'            => \&trivial,
     'etc/my_suppressions'          => \&trivial,
@@ -362,23 +363,13 @@ sub file_type {
     return $closure if defined $closure;
     my ( $volume, $dirpart, $filepart ) = File::Spec->splitpath($filename);
     my @dirs = grep {length} File::Spec->splitdir($dirpart);
-    return \&license_problems_in_perl_file
-        if scalar @dirs > 1
-            and $dirs[0] eq 'pperl'
-            and $filepart =~ /[.]pm\z/xms;
+
     return \&ignored if $filepart =~ /[.]tar\z/xms;
 
     # info files are generated -- licensing is in source
     return \&ignored if $filepart =~ /[.]info\z/xms;
-    return \&ignored
-        if scalar @dirs >= 2
-            and $dirs[0] eq 'libmarpa'
-            and $dirs[1] eq 'orig';
-    return \&trivial if $filepart eq 'ABOUT_ME';
 
     ## GNU license text, leave it alone
-    return \&ignored if $filepart eq 'COPYING';
-    return \&ignored if $filepart eq 'COPYING.LESSER';
 
     return \&trivial if $filepart eq '.gitignore';
     return \&trivial if $filepart eq '.gitattributes';
