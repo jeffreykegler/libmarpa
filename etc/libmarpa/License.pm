@@ -393,6 +393,11 @@ my %files_by_type = (
 
     # MS .def file -- contents trivial
     'work/win32/marpa.def' => \&ignored,
+
+    # Generated HTML files
+    'ac_dist/api_docs/libmarpa_api.html' => \&license_problems_in_text_file,
+    'cm_dist/api_docs/libmarpa_api.html' => \&license_problems_in_text_file,
+
 );
 
 # Common files in the GNU distributions
