@@ -288,7 +288,11 @@ my %files_by_type = (
     'work/shared/do_not_edit.hash'         => \&trivial,
     'work/public/marpa_codes.c.p10'        => \&trivial,
     'work/public/marpa.h.raw'              => \&license_problems_in_c_file,
+    'ac_dist/GIT_LOG.txt'                 => \&trivial,
+    'cm_dist/GIT_LOG.txt'                 => \&trivial,
     'work/etc/GIT_LOG.txt'                 => \&trivial,
+    'ac_dist/README.AIX'                 => \&trivial,
+    'cm_dist/README.AIX'                 => \&trivial,
     'work/etc/README.AIX'                  => \&trivial,
     'work/etc/libmarpa.pc.in'              => \&license_problems_in_hash_file,
     'work/public/README'                   => \&trivial,
@@ -305,6 +309,8 @@ my %files_by_type = (
     'work/shared/cwebmac.tex'              =>
       \&ignored,    # originally from Cweb, leave it alone
     'work/shared/COPYING'                       => \&license_problems_in_copying_file,
+    'ac_dist/COPYING'                       => \&license_problems_in_copying_file,
+    'cm_dist/COPYING'                       => \&license_problems_in_copying_file,
     'work/win32/make.bat'          => \&trivial,
     'work/win32/README'            => \&trivial,
     'etc/my_suppressions'          => \&trivial,
@@ -325,12 +331,16 @@ my %files_by_type = (
     'work/obs/orig/marpa_obs.h' => \&ignored,
     'work/obs/orig/obstack.c'   => \&ignored,
     'work/obs/orig/obstack.h'   => \&ignored,
-    'dist/marpa_obs.c'          => \&ignored,
-    'dist/marpa_obs.h'          => \&ignored,
+    'ac_dist/marpa_obs.c'          => \&ignored,
+    'ac_dist/marpa_obs.h'          => \&ignored,
     'cm_dist/marpa_obs.c'       => \&ignored,
     'cm_dist/marpa_obs.h'       => \&ignored,
 
     # Leave Pfaff's licensing as is
+    'ac_dist/marpa_avl.c'    => \&ignored,
+    'ac_dist/marpa_avl.h'    => \&ignored,
+    'ac_dist/marpa_tavl.c'   => \&ignored,
+    'ac_dist/marpa_tavl.h'   => \&ignored,
     'cm_dist/marpa_avl.c'    => \&ignored,
     'cm_dist/marpa_avl.h'    => \&ignored,
     'cm_dist/marpa_tavl.c'   => \&ignored,
@@ -418,8 +428,10 @@ sub file_type {
     # info files are generated -- licensing is in source
     return \&ignored if $filepart =~ /[.]info\z/xms;
 
-    ## GNU license text, leave it alone
+    # PDF files are generated -- licensing is in source
+    return \&ignored if $filepart =~ /[.] (pdf) \z /xms;
 
+    ## GNU license text, leave it alone
     return \&trivial if $filepart eq '.gitignore';
     return \&trivial if $filepart eq '.gitattributes';
     return \&trivial if $filepart eq '.gdbinit';
