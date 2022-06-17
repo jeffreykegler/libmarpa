@@ -128,7 +128,7 @@ sub c_comment {
 } ## end sub c_comment
 
 my $c_license          = c_comment($license);
-my $r2_hash_license    = hash_comment($license);
+my $hash_license    = hash_comment($license);
 my $xsh_hash_license    = hash_comment($license, q{ #});
 my $tex_closed_license = hash_comment( $closed_license, q{%} );
 my $tex_license        = hash_comment( $license, q{%} );
@@ -360,6 +360,7 @@ my %files_by_type = (
     'work/tavl/COPYING.LESSER' => \&ignored,
 
     # Small files to describe directory contents
+    'etc/ABOUT_ME' => \&trivial,
     'cmake/ABOUT_ME' => \&trivial,
     'notes/ABOUT_ME' => \&trivial,
     'tars/ABOUT_ME' => \&trivial,
@@ -374,6 +375,11 @@ my %files_by_type = (
     # We do not add copyright notices to legalese
     'README' => \&ignored,
     'legal/copyright_assignment_rns' => \&ignored,
+
+    # Short and not  very significant
+    'notes/HOWTO' => \&trivial,
+    'test/TESTS' => \&trivial,
+    'test/json/make_test_in.pl' => \&trivial,
 
     # MS .def file -- contents trivial
     'work/win32/marpa.def' => \&ignored,
@@ -539,21 +545,21 @@ sub license_problems_in_hash_file {
         say {*STDERR} "Checking $filename as hash style file" or die "say failed: $ERRNO";
     }
     my @problems = ();
-    my $text = slurp_top( $filename, length $r2_hash_license );
-    if ( $r2_hash_license ne ${$text} ) {
+    my $text = slurp_top( $filename, length $hash_license );
+    if ( $hash_license ne ${$text} ) {
         my $problem = "No license language in $filename (hash style)\n";
         if ($verbose) {
             $problem
                 .= "=== Differences ===\n"
-                . Text::Diff::diff( $text, \$r2_hash_license )
+                . Text::Diff::diff( $text, \$hash_license )
                 . ( q{=} x 30 );
         } ## end if ($verbose)
         push @problems, $problem;
-    } ## end if ( $r2_hash_license ne ${$text} )
+    } ## end if ( $hash_license ne ${$text} )
     if ( scalar @problems and $verbose >= 2 ) {
         my $problem =
               "=== license for $filename should be as follows:\n"
-            . $r2_hash_license
+            . $hash_license
             . ( q{=} x 30 );
         push @problems, $problem;
     } ## end if ( scalar @problems and $verbose >= 2 )
@@ -596,16 +602,16 @@ sub license_problems_in_sh_file {
     }
     my @problems = ();
     $DB::single = 1;
-    my $ref_text = slurp_top( $filename, 256 + length $r2_hash_license );
+    my $ref_text = slurp_top( $filename, 256 + length $hash_license );
     my $text = ${$ref_text};
     $text =~ s/ \A [#][!] [^\n]* \n//xms;
-    $text = substr $text, 0, length $r2_hash_license;
-    if ( $r2_hash_license ne $text ) {
+    $text = substr $text, 0, length $hash_license;
+    if ( $hash_license ne $text ) {
         my $problem = "No license language in $filename (sh hash style)\n";
         if ($verbose) {
             $problem
                 .= "=== Differences ===\n"
-                . Text::Diff::diff( \$text, \$r2_hash_license )
+                . Text::Diff::diff( \$text, \$hash_license )
                 . ( q{=} x 30 );
         } ## end if ($verbose)
         push @problems, $problem;
@@ -613,7 +619,7 @@ sub license_problems_in_sh_file {
     if ( scalar @problems and $verbose >= 2 ) {
         my $problem =
               "=== license for $filename should be as follows:\n"
-            . $r2_hash_license
+            . $hash_license
             . ( q{=} x 30 );
         push @problems, $problem;
     } ## end if ( scalar @problems and $verbose >= 2 )
@@ -621,30 +627,27 @@ sub license_problems_in_sh_file {
 }
 
 sub license_problems_in_perl_file {
-    my ( $filename, $type, $verbose ) = @_;
-    if ($verbose) {
-        say {*STDERR} "Checking $filename as $type perl file" or die "say failed: $ERRNO";
-    }
+    my ( $filename, $verbose ) = @_;
     $verbose //= 0;
     my @problems = ();
-    my $text = slurp_top( $filename, 132 + length $r2_hash_license );
+    my $text = slurp_top( $filename, 132 + length $hash_license );
 
     # Delete hash bang line, if present
     ${$text} =~ s/\A [#][!] [^\n] \n//xms;
-    if ( 0 > index ${$text}, $r2_hash_license ) {
+    if ( 0 > index ${$text}, $hash_license ) {
         my $problem = "No license language in $filename (perl style)\n";
         if ($verbose) {
             $problem
                 .= "=== Differences ===\n"
-                . Text::Diff::diff( $text, \$r2_hash_license )
+                . Text::Diff::diff( $text, \$hash_license )
                 . ( q{=} x 30 );
         } ## end if ($verbose)
         push @problems, $problem;
-    } ## end if ( 0 > index ${$text}, $r2_hash_license )
+    } ## end if ( 0 > index ${$text}, $hash_license )
     if ( scalar @problems and $verbose >= 2 ) {
         my $problem =
               "=== license for $filename should be as follows:\n"
-            . $r2_hash_license
+            . $hash_license
             . ( q{=} x 30 );
         push @problems, $problem;
     } ## end if ( scalar @problems and $verbose >= 2 )
