@@ -111,6 +111,16 @@ OTHER DEALINGS IN THE SOFTWARE.
 @end copying
 END_OF_TEXI_LICENSE
 
+# For texi's auto-generated HTML
+my $html_copyright = <<'END_OF_HTML_COPYRIGHT';
+Copyright (C) 2022 Jeffrey Kegler.
+
+END_OF_HTML_COPYRIGHT
+
+my $html_license = $html_copyright .  $license_body;
+chomp $html_license;
+$html_license .= ' -->';
+
 sub hash_comment {
     my ( $text, $char ) = @_;
     $char //= q{#};
@@ -170,20 +180,22 @@ my %GNU_file = (
         )
     } qw(
         aclocal.m4
+        compile
         config.guess
         config.sub
         configure
         depcomp
-        mdate-sh
-        texinfo.tex
         ltmain.sh
         m4/libtool.m4
+        m4/lt~obsolete.m4
         m4/ltoptions.m4
         m4/ltsugar.m4
         m4/ltversion.m4
-        m4/lt~obsolete.m4
-        missing
         Makefile.in
+        mdate-sh
+        missing
+        texinfo.tex
+        version.m4
     )
 );;
 
@@ -273,7 +285,6 @@ sub check_tag {
 } ## end sub check_tag
 
 my %files_by_type = (
-    'dist/compile' => \&ignored,    # GNU file, leave it alone
     'LICENSE'      => \&license_problems_in_license_file,
     'META.json'    =>
       \&gnore,ignored,    # not source, and not clear how to add license at top
@@ -368,6 +379,8 @@ my %files_by_type = (
     'work/avl/COPYING.LESSER' => \&ignored,
     'work/obs/COPYING.LESSER' => \&ignored,
     'work/tavl/COPYING.LESSER' => \&ignored,
+    'ac_dist/COPYING.LESSER' => \&ignored,
+    'cm_dist/COPYING.LESSER' => \&ignored,
 
     # Small files to describe directory contents
     'etc/ABOUT_ME' => \&trivial,
@@ -393,10 +406,18 @@ my %files_by_type = (
 
     # MS .def file -- contents trivial
     'work/win32/marpa.def' => \&ignored,
+    'ac_dist/win32/marpa.def' => \&ignored,
 
     # Generated HTML files
-    'ac_dist/api_docs/libmarpa_api.html' => \&license_problems_in_text_file,
-    'cm_dist/api_docs/libmarpa_api.html' => \&license_problems_in_text_file,
+    'ac_dist/api_docs/libmarpa_api.html' => \&license_problems_in_html_file,
+    'cm_dist/api_docs/libmarpa_api.html' => \&license_problems_in_html_file,
+
+    # Short, auto-generated sh files
+    'ac_dist/libmarpa_version.sh' => \&trivial,
+    'cm_dist/libmarpa_version.sh' => \&trivial,
+
+    # Short, auto-generated m4 file
+    'ac_dist/version.m4' => \&trivial,
 
 );
 
@@ -828,6 +849,29 @@ sub license_problems_in_pod_file {
     return @problems;
 } ## end sub license_problems_in_pod_file
 
+# For texinfo's auoto-generated HTML files
+sub license_problems_in_html_file {
+    my ( $filename, $verbose ) = @_;
+    my @problems = ();
+    my $text     = slurp_top($filename, (length $html_license)*2);
+    if ( ( index ${$text}, $html_license ) < 0 ) {
+        my $problem = "Full language missing in text file $filename\n";
+        if ($verbose) {
+            $problem .= "\nMissing license language:\n"
+                . Text::Diff::diff( $text, \$html_license );
+        }
+        push @problems, $problem;
+    }
+    if ( scalar @problems and $verbose >= 2 ) {
+        my $problem =
+            "=== licensing pod section for $filename should be as follows:\n"
+            . $pod_section
+            . ( q{=} x 30 );
+        push @problems, $problem;
+    } ## end if ( scalar @problems and $verbose >= 2 )
+    return @problems;
+}
+
 # In "Text" files, just look for the full language.
 # No need to comment it out.
 sub license_problems_in_text_file {
@@ -855,8 +899,6 @@ sub license_problems_in_text_file {
     return @problems;
 } ## end sub license_problems_in_text_file
 
-# In "Text" files, just look for the full language.
-# No need to comment it out.
 sub license_problems_in_texi_file {
     my ( $filename, $verbose ) = @_;
     if ($verbose) {
