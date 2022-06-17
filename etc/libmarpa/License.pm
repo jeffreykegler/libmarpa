@@ -314,7 +314,9 @@ my %files_by_type = (
     'work/dev/api.premenu'                 => \&license_problems_in_texi_file,
     'work/dev/internal.premenu'            => \&license_problems_in_texi_file,
     'cmake/config.h.cmake'               => \&license_problems_in_c_file,
+    'cm_dist/config.h.cmake'               => \&license_problems_in_c_file,
     'cmake/modules/inline.c' => \&trivial,
+    'cm_dist/modules/inline.c' => \&trivial,
     'work/bin/too_long.pl'                 => \&trivial,
     'work/shared/copyright_page_license.w' => \&copyright_page,
     'work/shared/cwebmac.tex'              =>
@@ -416,9 +418,16 @@ my %files_by_type = (
     'ac_dist/libmarpa_version.sh' => \&trivial,
     'cm_dist/libmarpa_version.sh' => \&trivial,
 
+    # Short, auto-generated cmake file
+    'cm_dist/version.cmake' => \&trivial,
+
     # Short, auto-generated m4 file
     'ac_dist/version.m4' => \&trivial,
 
+    # The top-level README files in the distributions
+    'work/ac/README'     => \&license_problems_in_text_file,
+    'ac_dist/README'     => \&license_problems_in_text_file,
+    'cm_dist/README'     => \&license_problems_in_text_file,
 );
 
 # Common files in the GNU distributions
@@ -433,7 +442,6 @@ for my $distlib (
     ## GNU standard -- has their license language
     $files_by_type{"$distlib/INSTALL"} = \&ignored;
 
-    $files_by_type{"$distlib/README"}     = \&license_problems_in_text_file;
     $files_by_type{"$distlib/stamp-h1"}   = \&trivial;
     $files_by_type{"$distlib/stamp-1"}   = \&trivial;
     $files_by_type{"$distlib/stamp-vti"}   = \&trivial;
