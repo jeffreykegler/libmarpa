@@ -90,7 +90,8 @@ timestamp/doc_build.stamp:
 	@( \
 	  echo doc/configure.ac: ac_doc1/configure.ac; \
 	  echo doc/Makefile.am: ac_doc/Makefile.am; \
-	  echo doc/README: ac_doc/README; \
+	  echo doc/README: ac_doc/ABOUT_ME; \
+	  echo doc/COPYING: shared/COPYING; \
 	  echo doc/NEWS: ac/NEWS; \
 	  echo doc/AUTHORS: ac/AUTHORS; \
 	  echo doc/ChangeLog: ac/ChangeLog; \
@@ -108,7 +109,8 @@ timestamp/doc1_build.stamp:
 	@( \
 	  echo doc1/configure.ac: ac_doc1/configure.ac; \
 	  echo doc1/Makefile.am: ac_doc1/Makefile.am; \
-	  echo doc1/README: ac_doc1/README; \
+	  echo doc1/README: ac_doc1/ABOUT_ME; \
+	  echo doc1/COPYING: shared/COPYING; \
 	  echo doc1/NEWS: ac/NEWS; \
 	  echo doc1/AUTHORS: ac/AUTHORS; \
 	  echo doc1/ChangeLog: ac/ChangeLog; \
