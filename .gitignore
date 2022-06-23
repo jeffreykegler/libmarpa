@@ -16,5 +16,4 @@ junk
 nogit*
 *[.]exe
 libmarpa-*[.]tar[.]gz
-libmarpa_version[.]sh
-api[.]pdf
+/libmarpa_version[.]sh

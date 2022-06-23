@@ -32,13 +32,11 @@
 #    (cd libmarpa/ac_dist; tar cf - .) | (cd test/cpan/engine/read_only; tar xvf -)
 # 
 # Step 3: Hack Marpa::R2 repo and distro to match.
-# In test, and assuming ../libmarpa is the libmarpa directory:
-major=`sh ../libmarpa/libmarpa_version.sh major`
-minor=`sh ../libmarpa/libmarpa_version.sh minor`
-micro=`sh ../libmarpa/libmarpa_version.sh micro`
+# In test, do the following:
 ro=cpan/engine/read_only
-echo $major $minor $micro | sed -e 's/ /./g' > $ro/LIB_VERSION
-cp $ro/LIB_VERSION $ro/LIB_VERSION.in
+major=`sh $ro/libmarpa_version.sh major`
+minor=`sh $ro/libmarpa_version.sh minor`
+micro=`sh $ro/libmarpa_version.sh micro`
 (cd cpan/xs;make)
 sed -e "/^#define EXPECTED_LIBMARPA_MAJOR /s/[0-9][0-9]*/$major/" \
    -e "/^#define EXPECTED_LIBMARPA_MINOR /s/[0-9][0-9]*/$minor/" \

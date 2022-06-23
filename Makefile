@@ -33,6 +33,7 @@ dummy:
 timestamp/stage.stamp:
 	$(MAKE) libmarpa_version.sh
 	cp libmarpa_version.sh work/etc/
+	sh libmarpa_version.sh version > work/etc/LIB_VERSION
 	(cd work; $(MAKE) install)
 	date > timestamp/stage.stamp
 	@echo Updating stage time stamp: `cat timestamp/stage.stamp`
@@ -57,6 +58,7 @@ timestamp/cm_dist.stamp: timestamp/ac_dist.stamp
 	  echo cm_dist/libmarpa.pc.in: ac_dist/libmarpa.pc.in; \
 	  echo cm_dist/README.AIX: ac_dist/README.AIX; \
 	  echo cm_dist/GIT_LOG.txt: ac_dist/GIT_LOG.txt; \
+	  echo cm_dist/LIB_VERSION: ac_dist/LIB_VERSION; \
 	  echo cm_dist/libmarpa_version.sh: ac_dist/libmarpa_version.sh; \
 	  echo cm_dist/marpa_obs.c: ac_dist/marpa_obs.c; \
 	  echo cm_dist/marpa_obs.h: ac_dist/marpa_obs.h; \
