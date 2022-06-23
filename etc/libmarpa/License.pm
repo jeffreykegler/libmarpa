@@ -332,6 +332,7 @@ my %files_by_type = (
     # Config files
     '.inputrc' => \&trivial,
     '.travis.yml' => \&trivial,
+    '.github/workflows/main.yml' => \&ignored,
     'etc/indent.pro' => \&trivial,
 
     # Temporary working file -- will be deleted

@@ -17,9 +17,11 @@
 # ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 # OTHER DEALINGS IN THE SOFTWARE.
 
-MAJOR=8
-MINOR=6
-MICRO=7
+# Even major numbers are stable releases
+# Odd major numbers are development releases
+MAJOR=9
+MINOR=0
+MICRO=1
 VERSION=$(MAJOR).$(MINOR).$(MICRO)
 
 .PHONY: ac_dist asan clean cm_dist dist distcheck dummy \
