@@ -299,9 +299,9 @@ my %files_by_type = (
     'work/shared/do_not_edit.hash'         => \&trivial,
     'work/public/marpa_codes.c.p10'        => \&trivial,
     'work/public/marpa.h.raw'              => \&license_problems_in_c_file,
-    'ac_dist/GIT_LOG.txt'                 => \&trivial,
-    'cm_dist/GIT_LOG.txt'                 => \&trivial,
-    'work/etc/GIT_LOG.txt'                 => \&trivial,
+    'ac_dist/GIT_LOG.txt'                 => \&ignored,
+    'cm_dist/GIT_LOG.txt'                 => \&ignored,
+    'work/etc/GIT_LOG.txt'                 => \&ignored,
     'ac_dist/README.AIX'                 => \&trivial,
     'cm_dist/README.AIX'                 => \&trivial,
     'work/etc/README.AIX'                  => \&trivial,
@@ -332,7 +332,6 @@ my %files_by_type = (
     # Config files
     '.inputrc' => \&trivial,
     '.travis.yml' => \&trivial,
-    '.github/workflows/main.yml' => \&ignored,
     'etc/indent.pro' => \&trivial,
 
     # Temporary working file -- will be deleted
