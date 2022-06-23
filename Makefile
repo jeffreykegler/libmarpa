@@ -21,7 +21,7 @@
 # Odd major numbers are development releases
 MAJOR=9
 MINOR=0
-MICRO=1
+MICRO=2
 VERSION=$(MAJOR).$(MINOR).$(MICRO)
 
 .PHONY: ac_dist asan clean cm_dist dist distcheck dummy \
