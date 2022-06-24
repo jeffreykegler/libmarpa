@@ -17,8 +17,12 @@
 # ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 # OTHER DEALINGS IN THE SOFTWARE.
 
-# Even major numbers are stable releases
-# Odd major numbers are development releases
+# Releases with major number 0-9 are development releases.  Also releases
+# with odd major numbers are development releases
+
+# Releases with even major numbers, beginning with major number 10, are
+# stable releases
+
 MAJOR=9
 MINOR=0
 MICRO=4
