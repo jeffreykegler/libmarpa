@@ -3030,7 +3030,7 @@ If an application-settable threshold
 on the number of Earley items has been reached or exceeded,
 generates a @code{MARPA_EVENT_EARLEY_ITEM_THRESHOLD} event.
 Often, the application will want to treat this event
-as if it were a library-recoverable
+as if it were a grammar-recoverable
 failure.
 @xref{marpa_r_earley_item_warning_threshold_set,
 marpa_r_earley_item_warning_threshold_set()}.
@@ -3079,6 +3079,45 @@ The distinction is that, on success, the call creates a new Earley set before
 becoming exhausted while,
 on failure, it becomes exhausted without creating a new Earley set.
 
+This method is commonly called at the top of a loop.
+Almost all applications will want to check the return value
+and take special action in case of a value other than zero.
+If the value is greater than zero, an event will have occurred
+and almost all applications
+should react to @code{MARPA_EVENT_EARLEY_ITEM_THRESHOLD} events,
+as described above,
+and to unexpected events.
+If the value is less than zero,
+it may be due to an irrecoverable error,
+and only in very unusual circumstances will an application wish
+to ignore these.
+
+How an application reacts to exhaustion will depend on the kind of
+parsing it is doing:
+@itemize
+@item Very often an application knows the length of its input in advance.
+In this case, the application will treat exhaustion before the end of input
+as a parse error.
+Depending on the application, exhaustion on success at the end of input
+might be ignored.
+@item An exhaustion-loving application which does not know the length of
+its input will often want terminate the parse in case of exhaustion on method
+success, treating exhaustion as an end-of-input indicator.
+These application will usually want to treat exhaustion on method failure
+as a parse error.
+@item Occasionally, an exhaustion-hating application may not know
+the length of its input in advance.
+Since these applications will not know from the length of the input,
+or from exhaustion, that they are at end of input,
+they will need some other way of determining this.
+One way they may do this is with a
+@code{MARPA_EVENT_SYMBOL_COMPLETED} event.
+Typically, these applications will treat exhaustion on method
+failure and exhaustion before the end of input
+as parse errors.
+They may wish to ignore exhaustion on method success
+at the end of input.
+@end itemize
 @strong{Return value}:  On success, the number of events generated.
 On hard failure, @minus{}2.
 Hard failure with the code
