@@ -391,22 +391,57 @@ Grammars have no parent object.
 Every other time object has exactly one parent object.
 Value objects have no child objects.
 All other time objects can have any number of children,
-from zero up to a number determined by memory or
-some other machine-determined limit.
+from zero up to
+some machine-determined limit,
+such as memory.
 
-Every time object has a
+An object is the
+@dfindex ancestor (object)
+@dfn{ancestor}
+of another object if it is the parent of
+that object,
+or it is the parent of an ancestor of that object.
+An object is the
+@dfindex descendant (object)
+@dfn{descendant}
+of another object if it is the child of
+that object,
+or it is the child of an descendant of that object.
+The following three statements are mutually exclusive:
+@itemize
+@item Object @code{X} is of class @code{C}.
+@item Object @code{X} has an ancestor of class @code{C}.
+@item Object @code{X} has a descendant of class @code{C}.
+@end itemize
+It follows from the definitions of "parent" and "ancestor" that,
+for any time object class, an
+object can have at most one ancestor of that class.
+On the other hand, if an object has descendants in a class,
+there can be many of them.
+
+An object is a
+@dfindex base (object)
+@dfn{base}
+of another object, if it is that object,
+or if it is the ancestor of the object.
+For each time object class, an object has at most one base object.
+For example, a recognizer is its own base recognizer,
+and has exactly one base grammar.
+
+The
 @dfindex @sortas{base grammar} base grammar (of a time object)
-@dfn{base grammar}.
+@dfn{base grammar}
+of a time object is of special importance.
+Every time object has a base grammar.
 A grammar object is its own base grammar.
-The base grammar of a recognizer is the grammar
-that it was created with.
+The base grammar of a recognizer is its parent grammar,
+the one that it was created with.
 The base grammar of any other time object is the base
 grammar of its parent object.
 For example,
 the base grammar of a bocage is the base
 grammar of the recognizer that it was created
 with.
-
 
 @node Reference counting
 @section Reference counting
@@ -1468,22 +1503,29 @@ mentioning:
 @itemize
 @item For methods that return an integer,
 a return value of @minus{}1
-usually indicates soft failure.
+usually indicates soft method failure.
 @item For methods that return an integer,
 a return value of @minus{}2
-usually indicates hard failure.
+usually indicates hard method failure.
 @item For methods that return an integer,
-a return value greater of zero or more usually indicates success.
+a return value greater of zero or more usually indicates method success.
 @item If a method returns an pointer value,
-@code{NULL} usually indicates failure.
-Any other result usually indicates success.
+@code{NULL} usually indicates method failure.
+Any other result usually indicates method success.
 @end itemize
+
+The words ``success'' and ``failure'' are heavily overloaded
+in these documents.
+But in contexts where our meaning is clear we will usually
+abbreviate ``method success'' and ``method failure'' to
+``success'' and ``failure'', respectively.
+
 
 The Libmarpa programmer should not overly rely on the general
 conventions for return values.
 In particular, @minus{}2 may sometimes be ambiguous ---
 both a valid return value
-for success, and a potential indication of hard failure.
+for method success, and a potential indication of hard method failure.
 In this case, the programmer must distinguish the two return statuses
 based on the error code,
 and a programmer who is relying too heavily on the general
@@ -3030,7 +3072,7 @@ If an application-settable threshold
 on the number of Earley items has been reached or exceeded,
 generates a @code{MARPA_EVENT_EARLEY_ITEM_THRESHOLD} event.
 Often, the application will want to treat this event
-as if it were a grammar-recoverable
+as if it were a ancestry-recoverable
 failure.
 @xref{marpa_r_earley_item_warning_threshold_set,
 marpa_r_earley_item_warning_threshold_set()}.
