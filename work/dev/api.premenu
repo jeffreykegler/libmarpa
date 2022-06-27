@@ -400,13 +400,13 @@ An object is the
 @dfn{ancestor}
 of another object if it is the parent of
 that object,
-or it is the parent of an ancestor of that object.
+or if it is the parent of an ancestor of that object.
 An object is the
 @dfindex descendant (object)
 @dfn{descendant}
 of another object if it is the child of
 that object,
-or it is the child of an descendant of that object.
+or if it is the child of an descendant of that object.
 The following three statements are mutually exclusive:
 @itemize
 @item Object @code{X} is of class @code{C}.
@@ -1314,23 +1314,72 @@ The application behaviors
 remaining after a library-recoverable hard failure
 are the following:
 @itemize
-@item All Libmarpa accessor method calls, even those whose base
-grammar is the failure grammar.
-@item All Libmarpa destructor method calls, even those whose base
-grammar is the failure grammar.
+@item All non-Libmarpa interfaces, including calls to other libraries
+and the C language environment.
+@item All Libmarpa static method calls.
+@item All Libmarpa accessor and destructor method calls.
+@item All Libmarpa mutator and constructor method calls
+whose base grammar is not the failure grammar.
+@end itemize
+
+Note that Libmarpa destructors remain available after
+a library recoverable failure.
 An application will often want to destroy all Libmarpa objects
 whose base grammar is the failure grammar,
-in order to clear memory of unusable objects.
-@item All Libmarpa mutator and constructor method calls,
-except those whose base grammar is the failure grammar.
-@item All Libmarpa static method calls.
-@item All use of non-Libmarpa interfaces, including other libraries
-and the C language environment.
-@end itemize
+in order to clear memory of problematic objects.
 
 An example of a library-recoverable hard failure is
 the @code{MARPA_ERR_COUNTED_NULLABLE} error
 in the @code{marpa_g_precompute} method.
+@xref{marpa_g_precompute,marpa_g_precompute()}.
+
+@node Ancestry-recoverable hard failure
+@section Ancestry-recoverable hard failure
+
+A
+@dfindex ancestry-recoverable hard failure
+@dfindex hard failure, ancestry-recoverable
+@dfindex failure, ancestry-recoverable hard
+@dfn{ancestry-recoverable hard failure}
+is a type of partially recoverable hard failure,
+that allows a superset of the application behaviors
+allowed by a library-recoverable hard failure.
+More precisely, let
+the ``failure object'' be the object which detected
+the ancestry-recoverable hard failure.
+After an ancestry-recoverable hard failure,
+the following behaviors are no longer applcation
+behaviors:
+@itemize
+@item Libmarpa mutator and constructor method calls where the object is the
+  failure object, or one of its descendants.
+@end itemize
+Recall that any use of a behavior which is not an application
+behavior is an irrecoverable failure.
+
+The application behaviors
+remaining after a ancestry-recoverable hard failure
+are the following:
+@itemize
+@item All non-Libmarpa interfaces, including calls to other libraries
+and the C language environment.
+@item All Libmarpa static method calls.
+@item All Libmarpa accessor and destructor method calls.
+@item All Libmarpa mutator and constructor method calls
+for time objects which are not the failure object,
+or one of its descendants.
+@end itemize
+
+Note that all Libmarpa destructors remain available after
+an ancestry-recoverable failure.
+An application will often want to destroy the failure object
+and all of its descendants,
+in order to clear memory of problematic objects.
+
+As an example,
+users calling @code{marpa_g_precompute()}
+will often want to treat a @code{MARPA_EVENT_EARLEY_ITEM_THRESHOLD} event
+as if it were an ancestry-recoverable hard failure.
 @xref{marpa_g_precompute,marpa_g_precompute()}.
 
 @node Fully recoverable hard failure
