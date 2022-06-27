@@ -1382,6 +1382,12 @@ will often want to treat a @code{MARPA_EVENT_EARLEY_ITEM_THRESHOLD} event
 as if it were an ancestry-recoverable hard failure.
 @xref{marpa_g_precompute,marpa_g_precompute()}.
 
+Library-recoverable failure is a special case of ancestry-recoverable
+failure.
+When the failure object is a grammar,
+ancestry-recoverable failure is synonymous with
+library-recoverable failure.
+
 @node Fully recoverable hard failure
 @section Fully recoverable hard failure
 
