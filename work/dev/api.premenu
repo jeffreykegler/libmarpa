@@ -1336,13 +1336,13 @@ in the @code{marpa_g_precompute} method.
 @node Ancestry-recoverable hard failure
 @section Ancestry-recoverable hard failure
 
-A
+An
 @dfindex ancestry-recoverable hard failure
 @dfindex hard failure, ancestry-recoverable
 @dfindex failure, ancestry-recoverable hard
 @dfn{ancestry-recoverable hard failure}
-is a type of partially recoverable hard failure,
-that allows a superset of the application behaviors
+is a type of partially recoverable hard failure.
+An ancestry-recoverable failure allows a superset of the application behaviors
 allowed by a library-recoverable hard failure.
 More precisely, let
 the ``failure object'' be the object which detected
