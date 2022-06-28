@@ -582,7 +582,7 @@ current earleme.
 The @code{marpa_r_start input()} and
 @code{marpa_r_earleme_complete()} methods
 are only ones that change the latest earleme.
-@xref{marpa_r_start_input, marpa_r_start_input()} and
+@xref{marpa_r_start_input, marpa_r_start_input()}, and
 @ref{marpa_r_earleme_complete, marpa_r_earleme_complete()}.
 
 The latest earleme is different from the current earleme if and only if
@@ -611,7 +611,7 @@ current earleme by 1.
 The @code{marpa_r_start input()} and
 @code{marpa_r_earleme_complete()} methods
 are only ones that change the current earleme.
-@xref{marpa_r_start_input, marpa_r_start_input()} and
+@xref{marpa_r_start_input, marpa_r_start_input()}, and
 @ref{marpa_r_earleme_complete, marpa_r_earleme_complete()}.
 
 @node The furthest earleme
@@ -642,7 +642,7 @@ is @code{max(old_f, current+length)}.
 The @code{marpa_r_new()} and
 @code{marpa_r_alternative()} methods
 are only ones that change the furthest earleme.
-@xref{marpa_r_new, marpa_r_new()} and
+@xref{marpa_r_new, marpa_r_new()}, and
 @ref{marpa_r_alternative, marpa_r_alternative()}.
 
 In the basic input models,
@@ -905,7 +905,7 @@ basically exhaustion-hating language.
 @code{marpa_r_earleme_complete()} and
 @code{marpa_r_start_input} are the only methods
 that may encounter parse exhaustion.
-@xref{marpa_r_earleme_complete,marpa_r_earleme_complete()} and
+@xref{marpa_r_earleme_complete,marpa_r_earleme_complete()}, and
 @ref{marpa_r_start_input,marpa_r_start_input()}.
 When the @code{marpa_r_start_input} or
 @code{marpa_r_earleme_complete()} methods
@@ -6678,7 +6678,7 @@ The treatment of parse exhaustion is very awkward.
 while
 @code{marpa_r_earleme_complete()} either returns success or
 a hard failure, depending on circumstances.
-@xref{marpa_r_earleme_complete,marpa_r_earleme_complete()} and
+@xref{marpa_r_earleme_complete,marpa_r_earleme_complete()}, and
 @ref{marpa_r_start_input,marpa_r_start_input()}.
 
 Ideally the treatment should be simpler, more intuitive

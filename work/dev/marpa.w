@@ -12323,7 +12323,7 @@ and therefore the root or-node,
 cannot be part of cycle.
 @<Initialize the tree iterator@> =
 {
-    MARPA_DEBUG1("Initialize tree");
+  MARPA_OFF_DEBUG1("Initialize tree");
   ORID root_or_id = Top_ORID_of_B (b);
   OR root_or_node = OR_of_B_by_ID (b, root_or_id);
   NOOK nook;
@@ -12412,7 +12412,7 @@ outweighs the cost of duplicating the
 @ @<Finish tree if possible@> = {
     {
         const int stack_length = Size_of_T(t);
-        MARPA_DEBUG2("Finishing tree, size = %ld", (long)stack_length);
+        MARPA_OFF_DEBUG2("Finishing tree, size = %ld", (long)stack_length);
         int i;
         @t}\comment{@>
         /* Clear the worklist, then copy the entire remaining
