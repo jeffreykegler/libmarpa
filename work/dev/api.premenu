@@ -3227,9 +3227,15 @@ is fully recoverable.
 
 @anchor{marpa_r_current_earleme}
 @deftypefun @code{Marpa_Earleme} marpa_r_current_earleme (Marpa_Recognizer @var{r})
-Return value: If input has started, the current earleme.
-If input has not started, @minus{}1.
-Always succeeds.
+
+If input has started, and on success,
+returns the current earleme.
+If input has not started, returns soft failure.
+
+@strong{Return value}:
+On success, the current earleme, which is always non-negative.
+On soft failure, @minus{}1.
+Never returns a hard failure.
 @end deftypefun
 
 @anchor{marpa_r_earleme}
@@ -3237,20 +3243,21 @@ Always succeeds.
     Marpa_Recognizer @var{r}, @
     Marpa_Earley_Set_ID @var{set_id})
 
+On success, returns the earleme of the Earley set with ID @code{set_id}.
 In the default, token-stream model, Earley set ID and earleme
 are always equal, but this is not the case in other input
 models.
 (The ID of an Earley set ID is also called its ordinal.)
-If there is no Earley set whose ID is
-@var{set_id},
-@code{marpa_r_earleme()}
-fails.
+
+Hard fails if there is no Earley set whose ID is
+@var{set_id}.
+This hard failure is fully recoverable.
 If @var{set_id} was negative,
-the error code is set to
+the error code of the hard failure is
 @code{MARPA_ERR_INVALID_LOCATION}.
 If @var{set_id} is greater than the ordinal
 of the latest Earley set,
-the error code is set to
+the error code of the hard failure is
 @code{MARPA_ERR_NO_EARLEY_SET_AT_LOCATION}.
 
 At this writing, there is no method for
@@ -3271,11 +3278,16 @@ array using the
 method
 and invert it.
 
-Return value:
-On success,
-the earleme corresponding to Earley
-set @var{set_id}.
-On failure, @minus{}2.
+@strong{Return value}:
+On success, the earleme corresponding to Earley
+set @var{set_id},
+which is always non-negative.
+On hard failure, @minus{}2.
+The hard failures with error codes
+@code{MARPA_ERR_INVALID_LOCATION} and
+@code{MARPA_ERR_NO_EARLEY_SET_AT_LOCATION}
+are fully recoverable.
+
 @end deftypefun
 
 @anchor{marpa_r_earley_set_value}
