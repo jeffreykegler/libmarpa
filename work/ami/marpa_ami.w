@@ -470,7 +470,19 @@ int marpa__default_debug_handler (const char *format, ...)
 # define alignof(type) (offsetof (struct { char __slot1; type __slot2; }, __slot2))
 #endif
 
-@** Internal typdefs.
+@*0 Silence "fall through" warnings
+@ This macro to portably silence warnings about falling through case
+statements.  Macro is supposed to mimic a statement, so must be
+following by semi-colon.
+
+@<Internal macros@> =
+#if defined(__GNUC__) && __GNUC__ >= 7
+ #define FALL_THROUGH __attribute__ ((fallthrough))
+#else
+ #define FALL_THROUGH ((void)0)
+#endif /* __GNUC__ >= 7 */
+
+@** Internal typedefs.
 @<Internal typedefs@> =
 typedef unsigned int BITFIELD;
 @<Internal macros@>

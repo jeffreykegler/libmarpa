@@ -13164,11 +13164,11 @@ Marpa_Step_Type marpa_v_step(Marpa_Value public_v)
               lbv_fill (Valued_Locked_BV_of_V (v), xsy_count);
               @<Set rule-is-valued vector@>@;
             }
-            /* fall through */
+            FALL_THROUGH;
           case STEP_GET_DATA:
             @<Perform evaluation steps @>@;
             if (!V_is_Active (v)) break;
-            /* fall through */
+            FALL_THROUGH;
           case MARPA_STEP_TOKEN:
             {
               int tkn_type = Token_Type_of_V (v);
@@ -13186,7 +13186,7 @@ Marpa_Step_Type marpa_v_step(Marpa_Value public_v)
                    return Step_Type_of_V(v) = MARPA_STEP_TOKEN;
                  }
             }
-            /* fall through */
+            FALL_THROUGH;
           case MARPA_STEP_RULE:
             if (RULEID_of_V (v) >= 0)
               {
@@ -13194,7 +13194,7 @@ Marpa_Step_Type marpa_v_step(Marpa_Value public_v)
                 Result_of_V(v) = Arg_0_of_V(v);
                 return Step_Type_of_V(v) = MARPA_STEP_RULE;
               }
-            /* fall through */
+            FALL_THROUGH;
           case MARPA_STEP_TRACE:
             Next_Value_Type_of_V(v) = STEP_GET_DATA;
             if (V_is_Trace (v))
