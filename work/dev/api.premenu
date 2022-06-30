@@ -3230,7 +3230,7 @@ is fully recoverable.
 @anchor{marpa_r_current_earleme}
 @deftypefun @code{Marpa_Earleme} marpa_r_current_earleme (Marpa_Recognizer @var{r})
 
-[ Accessor ]
+[Accessor]
 Successful iff input has started.
 If input has not started, returns soft failure.
 
@@ -3245,7 +3245,7 @@ Never returns a hard failure.
     Marpa_Recognizer @var{r}, @
     Marpa_Earley_Set_ID @var{set_id})
 
-[ Accessor ]
+[Accessor]
 On success, returns the earleme of the Earley set with ID @code{set_id}.
 In the default, token-stream model, Earley set ID and earleme
 are always equal, but this is not the case in other input
