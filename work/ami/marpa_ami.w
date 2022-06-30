@@ -420,67 +420,73 @@ int marpa__default_debug_handler (const char *format, ...)
 #define MARPA_ASSERT(exp) @[@]
 #endif
 
-@*0 Internal macros.
+@** Internal macros.
 @<Internal macros@> =
 
 #if     __GNUC__ > 2 || (__GNUC__ == 2 && __GNUC_MINOR__ > 4)
-#define UNUSED __attribute__((__unused__))
+#define UNUSED @[__attribute__((__unused__))@]
 #else
 #define UNUSED
 #endif
-
+@#
 #if defined (__GNUC__) && defined (__STRICT_ANSI__)
 #  undef inline
 #  define inline __inline__
-#endif
-
+#endif @#
 #undef Dim
-#define Dim(x) (sizeof(x)/sizeof(*x))
+#define Dim(x) (sizeof(x)/sizeof(*x)) @#
 
 #undef      MAX
-#define MAX(a, b)  (((a) > (b)) ? (a) : (b))
+#define MAX(a, b)  (((a) > (b)) ? (a) : (b)) @#
 
 #undef      CLAMP
-#define CLAMP(x, low, high)  (((x) > (high)) ? (high) : (((x) < (low)) ? (low) : (x)))
+#define CLAMP(x, low, high)  (((x) > (high)) ? (high) : (((x) < (low)) ? (low) : (x))) @#
 
+@ |STRINGIFY| turns its argument, which might be a macro, into a C string.
+This string is in a form that allows concatenation.
+@<Internal macros@> =
 #undef STRINGIFY_ARG
-#define STRINGIFY_ARG(contents)       #contents
+#define STRINGIFY_ARG(contents)       @[#contents@]
 #undef STRINGIFY
-#define STRINGIFY(macro_or_string)        STRINGIFY_ARG (macro_or_string)
+#define STRINGIFY(macro_or_string)        @[STRINGIFY_ARG (macro_or_string)@]
 
-/* A string identifying the current code position */
+@ |STRLOC| is a string identifying the current code position.
+@<Internal macros@> =
 #if defined(__GNUC__) && (__GNUC__ < 3) && !defined(__cplusplus)
-#  define STRLOC        __FILE__ ":" STRINGIFY (__LINE__) ":" __PRETTY_FUNCTION__ "()"
+#  define STRLOC        @[__FILE__ ":" STRINGIFY (__LINE__) ":" __PRETTY_FUNCTION__ "()"@]
 #else
-#  define STRLOC        __FILE__ ":" STRINGIFY (__LINE__)
+#  define STRLOC        @[__FILE__ ":" STRINGIFY (__LINE__)@]
 #endif
 
-/* Provide a string identifying the current function, non-concatenatable */
+@ |STRFUNC| is a string identifying the current function.
+It is in a form that does not allow concatenation.
+@<Internal macros@> =
 #if defined (__GNUC__)
 #  define STRFUNC     ((const char*) (__PRETTY_FUNCTION__))
 #elif defined (__STDC_VERSION__) && __STDC_VERSION__ >= 19901L
 #  define STRFUNC     ((const char*) (__func__))
 #else
 #  define STRFUNC     ((const char*) ("???"))
-#endif
+#endif @#
 
+@ @<Internal macros@> =
 #if defined __GNUC__
 # define alignof(type) (__alignof__(type))
 #else
-# define alignof(type) (offsetof (struct { char __slot1; type __slot2; }, __slot2))
+# define alignof(type) @[(offsetof (struct { char __slot1; type __slot2; }, @/
+    __slot2))@]
 #endif
 
-@*0 Silence "fall through" warnings
-@ This macro to portably silence warnings about falling through case
-statements.  Macro is supposed to mimic a statement, so must be
-following by semi-colon.
-
+@*0 Silence "fall through" warnings.
+This macro is used to portably silence warnings about falling through case
+statements.  GCC requires this macro to be part of a null statement,
+so it must be followed by a semi-colon.
 @<Internal macros@> =
-#if defined(__GNUC__) && __GNUC__ >= 7
- #define FALL_THROUGH __attribute__ ((fallthrough))
+#if @[defined(__GNUC__) && __GNUC__ >= 7@]
+#  define FALL_THROUGH @[__attribute__ ((fallthrough))@]
 #else
- #define FALL_THROUGH ((void)0)
-#endif /* __GNUC__ >= 7 */
+#  define FALL_THROUGH @[((void)0)@]
+#endif
 
 @** Internal typedefs.
 @<Internal typedefs@> =

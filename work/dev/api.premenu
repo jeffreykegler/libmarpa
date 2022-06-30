@@ -2958,6 +2958,7 @@ On hard failure, @minus{}2.
     int @var{value}, @
     int @var{length})
 
+[Mutator] 
 The @var{token_id} argument must be the symbol ID of a terminal.
 The @var{value} argument is an
 integer that represents the ``value'' of the
@@ -3068,6 +3069,7 @@ is fully recoverable.
 @anchor{marpa_r_earleme_complete}
 @deftypefun int marpa_r_earleme_complete (Marpa_Recognizer @var{r})
 
+[Mutator] 
 For the purposes of this method description, we define the following:
 @itemize
 @item @var{current} is the value of the current earleme before the call of
@@ -3228,8 +3230,8 @@ is fully recoverable.
 @anchor{marpa_r_current_earleme}
 @deftypefun @code{Marpa_Earleme} marpa_r_current_earleme (Marpa_Recognizer @var{r})
 
-If input has started, and on success,
-returns the current earleme.
+[ Accessor ]
+Successful iff input has started.
 If input has not started, returns soft failure.
 
 @strong{Return value}:
@@ -3243,6 +3245,7 @@ Never returns a hard failure.
     Marpa_Recognizer @var{r}, @
     Marpa_Earley_Set_ID @var{set_id})
 
+[ Accessor ]
 On success, returns the earleme of the Earley set with ID @code{set_id}.
 In the default, token-stream model, Earley set ID and earleme
 are always equal, but this is not the case in other input
