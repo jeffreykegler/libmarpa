@@ -3308,7 +3308,9 @@ For more about the integer value of an Earley set,
 On success, returns the the integer value of @var{earley_set},
 and sets the error code to @code{MARPA_ERR_NONE}.
 On hard failure, returns @minus{}2,
-and sets the error code to a value other than @code{MARPA_ERR_NONE}.
+and sets the error code to
+the error code of the hard failure,
+which will never be @code{MARPA_ERR_NONE}.
 Note that @minus{}2 is a valid ``integer value'' for
 an Earley set,
 so that when @minus{}2 is returned,
@@ -3389,7 +3391,7 @@ the
 method.
 @xref{marpa_r_earleme,marpa_r_earleme()}.
 
-Return value: The ID of the latest Earley set.  Always succeeds.
+@strong{Return value}: The ID of the latest Earley set.  Always succeeds.
 @end deftypefun
 
 @anchor{marpa_r_latest_earley_set_value_set}
@@ -3406,7 +3408,9 @@ For more about the integer value of an Earley set,
 On success, returns the newly set integer value of the latest earley set,
 and sets the error code to @code{MARPA_ERR_NONE}.
 On hard failure, returns @minus{}2,
-and sets the error code to a value other than @code{MARPA_ERR_NONE}.
+and sets the error code to
+the error code of the hard failure,
+which will never be @code{MARPA_ERR_NONE}.
 Note that @minus{}2 is a valid ``integer value'' for
 an Earley set,
 so that when @minus{}2 is returned,
