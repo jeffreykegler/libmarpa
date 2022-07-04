@@ -118,6 +118,7 @@
 @s Marpa_IRL_ID int
 @s Marpa_Rule_ID int
 @s Marpa_Symbol_ID int
+@s Marpa_Error_Code int
 @s NOOKID int
 @s NOOK_Object int
 @s OR int
@@ -130,6 +131,7 @@
 @s RULE int
 @s RULEID int
 @s XRL int
+@s IRL int
 
 @** License.
 \bigskip\noindent
@@ -6788,6 +6790,7 @@ int marpa_r_earley_set_value(Marpa_Recognizer r, Marpa_Earley_Set_ID set_id)
       return failure_indicator;
     }
   earley_set = YS_of_R_by_Ord (r, set_id);
+  MARPA_ERROR(MARPA_ERR_NONE);
   return Value_of_YS(earley_set);
 }
 
@@ -6826,6 +6829,7 @@ int marpa_r_latest_earley_set_value_set(Marpa_Recognizer r, int value)
   @<Unpack recognizer objects@>@;
   @<Fail if not trace-safe@>@;
   earley_set = Latest_YS_of_R(r);
+  MARPA_ERROR(MARPA_ERR_NONE);
   return Value_of_YS(earley_set) = value;
 }
 

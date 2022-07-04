@@ -763,7 +763,7 @@ main (int argc, char *argv[])
     API_STD_TEST1 (defaults, current_earleme, MARPA_ERR_NONE,
         marpa_r_earleme, r, current_earleme);
 
-    API_STD_TEST1 (defaults, -1, MARPA_ERR_RECCE_NOT_ACCEPTING_INPUT,
+    API_STD_TEST1 (defaults, -1, MARPA_ERR_NONE,
         marpa_r_earley_set_value, r, current_earleme);
 
     {
