@@ -3297,6 +3297,8 @@ are fully recoverable.
 @deftypefun int marpa_r_earley_set_value (@
   Marpa_Recognizer @var{r}, @
   Marpa_Earley_Set_ID earley_set)
+
+[Accessor]
 On success,
 returns the ``integer value'' of @var{earley_set}.
 For more about the integer value of an Earley set,
@@ -3326,6 +3328,7 @@ The error code can be determined using
   void** p_pvalue @
   )
 
+[Mutator]
 On success, does the following:
 @itemize
 @item If @var{p_value} is non-zero,
@@ -3365,6 +3368,8 @@ On hard failure, returns @minus{}2.
 @anchor{marpa_r_furthest_earleme}
 @deftypefun @code{unsigned int} marpa_r_furthest_earleme (Marpa_Recognizer @var{r})
 
+[Accessor]
+
 @strong{Return value}: On success, the furthest earleme.
 Always succeeds.
 
@@ -3372,6 +3377,8 @@ Always succeeds.
 
 @anchor{marpa_r_latest_earley_set}
 @deftypefun Marpa_Earley_Set_ID marpa_r_latest_earley_set (Marpa_Recognizer @var{r})
+
+[Accessor]
 Returns the Earley set ID of the latest Earley set.
 The ID of an Earley set ID is also called its ordinal.
 Applications that want the
@@ -3389,6 +3396,8 @@ Return value: The ID of the latest Earley set.  Always succeeds.
 @deftypefun int marpa_r_latest_earley_set_value_set (@
   Marpa_Recognizer @var{r}, @
   int value)
+
+[Mutator]
 Sets the ``integer value'' of the latest Earley set.
 For more about the integer value of an Earley set,
 @pxref{marpa_r_latest_earley_set_values_set,marpa_r_latest_earley_set_values_set()}.
@@ -3414,6 +3423,8 @@ The error code can be determined using
   Marpa_Recognizer @var{r}, @
   int value, @
   void* pvalue)
+
+[Mutator]
 Sets the integer and pointer value of the latest Earley set.
 For more about the ``integer value'' and ``pointer value''
 of an Earley set,
