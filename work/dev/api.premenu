@@ -3247,10 +3247,10 @@ Never returns a hard failure.
 
 [Accessor]
 On success, returns the earleme of the Earley set with ID @code{set_id}.
+The ID of an Earley set ID is also called its ordinal.
 In the default, token-stream model, Earley set ID and earleme
 are always equal, but this is not the case in other input
 models.
-(The ID of an Earley set ID is also called its ordinal.)
 
 Hard fails if there is no Earley set whose ID is
 @var{set_id}.
@@ -3325,9 +3325,9 @@ The error code can be determined using
 @anchor{marpa_r_earley_set_values}
 @deftypefun int marpa_r_earley_set_values (@
   Marpa_Recognizer @var{r}, @
-  Marpa_Earley_Set_ID earley_set, @
-  int* p_value, @
-  void** p_pvalue @
+  Marpa_Earley_Set_ID @var{earley_set}, @
+  int* @var{p_value}, @
+  void** @var{p_pvalue} @
   )
 
 [Mutator]
@@ -3335,10 +3335,12 @@ On success, does the following:
 @itemize
 @item If @var{p_value} is non-zero,
 sets the location pointed to by
-@var{p_value} to the integer value of the Earley set.
+@var{p_value} to the integer value of the Earley set
+with ID @var{earley_set}.
 @item If @var{p_pvalue} is non-zero,
 sets the location pointed to by
-@var{p_pvalue} to the pointer value of the Earley set.
+@var{p_pvalue} to the pointer value of the Earley set
+with ID @var{earley_set}.
 @end itemize
 
 The ``value'' and ``pointer'' of an Earley set are
@@ -3372,8 +3374,7 @@ On hard failure, returns @minus{}2.
 
 [Accessor]
 
-@strong{Return value}: On success, the furthest earleme.
-Always succeeds.
+@strong{Return value}: The furthest earleme.  Always succeeds.
 
 @end deftypefun
 
@@ -3396,13 +3397,12 @@ method.
 
 @anchor{marpa_r_latest_earley_set_value_set}
 @deftypefun int marpa_r_latest_earley_set_value_set (@
-  Marpa_Recognizer @var{r}, @
-  int value)
+  Marpa_Recognizer @var{r}, int @var{value})
 
 [Mutator]
-Sets the ``integer value'' of the latest Earley set.
+Sets the ``integer value'' of the latest Earley set to @var{value}.
 For more about the integer value of an Earley set,
-@pxref{marpa_r_latest_earley_set_values_set,marpa_r_latest_earley_set_values_set()}.
+@pxref{marpa_r_earley_set_values,marpa_r_earley_set_values()}.
 
 @strong{Return value}:
 On success, returns the newly set integer value of the latest earley set,
