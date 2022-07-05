@@ -39,7 +39,10 @@ LINE: while ( my $line = <STDIN> ) {
 
     next LINE if $line =~ m/ [{] Macro [}] /xms;
 
-    next LINE if $line !~ m/[@]deftypefun/xms;
+    my $fundef;
+    $fundef = "fun" if $line =~ m/[@]deftypefun/xms;
+    $fundef = "fn"  if $line =~ m/[@]deftypefn/xms;
+    next LINE if not defined $fundef;
 
     my $def = q{};
     while ( $line =~ / [@] \s* \z /xms ) {
@@ -48,7 +51,10 @@ LINE: while ( my $line = <STDIN> ) {
         $line = <STDIN>;
     }
     $def .= $line;
-    $def =~ s/\A \s* [@] deftypefun x? \s* //xms;
+
+    $def =~ s/\A \s* [@] deftypefun x? \s* //xms if $fundef eq "fun";
+    $def =~ s/\A \s* [@] deftypefn x? \s* [{] [^}]* [}] //xms if $fundef eq "fn";
+
     $def =~ s/ [@]var[{] ([^}]*) [}]/$1/xmsg;
     $def =~ s/ [@]code[{] ([^}]*) [}]/$1/xmsg;
     $def =~ s/\s+/ /xmsg;
@@ -59,8 +65,7 @@ LINE: while ( my $line = <STDIN> ) {
     $def =~ s/ \s* [(] .* //xms;
     $def =~ s/ \A .* \s //xms;
     push @defs, $def;
-
-} ## end LINE: while ( my $line = <STDIN> )
+}
 
 say join "\n", @protos;
 

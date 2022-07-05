@@ -1735,10 +1735,11 @@ returns.
 For example, they could be put on the stack.
 
 @anchor{marpa_c_init}
-@deftypefun int marpa_c_init ( @
+@deftypefn {Mutator function} @
+int marpa_c_init ( @
   Marpa_Config* @var{config})
 
-[Mutator] Initialize the @var{config} information to ``safe'' default
+Initialize the @var{config} information to ``safe'' default
 values.
 An irrecoverable error will result
 if an uninitialized
@@ -1746,7 +1747,7 @@ configuration is used to create a grammar.
 
 @strong{Return value}: Always succeeds.  The return value is indeterminate.
 
-@end deftypefun
+@end deftypefn
 
 @anchor{marpa_c_error}
 @deftypefn {Accessor function} @
@@ -1859,10 +1860,11 @@ The error code may be accessed using
 @end deftypefun
 
 @anchor{marpa_g_force_valued}
-@deftypefun int marpa_g_force_valued ( @
+@deftypefn {Mutator function} @
+int marpa_g_force_valued ( @
     Marpa_Grammar @var{g} )
 
-[Mutator] It is recommended that
+It is recommended that
 this call be made immediately after the
 grammar constructor.
 It turns off a deprecated feature.
@@ -1880,7 +1882,7 @@ complexity.
 
 @strong{Return value}: On success, a non-negative integer, whose value is otherwise indeterminate.
 On failure, -2.
-@end deftypefun
+@end deftypefn
 
 @node Grammar reference counting
 @section Tracking the reference count of the grammar
@@ -1889,16 +1891,17 @@ On failure, -2.
 @cindex grammar reference count
 
 @anchor{marpa_g_ref}
-@deftypefun Marpa_Grammar marpa_g_ref (Marpa_Grammar @var{g})
+@deftypefn {Mutator function} @
+Marpa_Grammar marpa_g_ref (Marpa_Grammar @var{g})
 
-[Mutator] Increases the reference count of @var{g} by 1.
+Increases the reference count of @var{g} by 1.
 Not needed by most applications.
 
 @strong{Return value}:
 On success, @var{g}.
 On hard failure, @code{NULL}.
 
-@end deftypefun
+@end deftypefn
 
 @anchor{marpa_g_unref}
 @deftypefun void marpa_g_unref (Marpa_Grammar @var{g})
@@ -1930,11 +1933,12 @@ On hard failure, @minus{}2.
 @end deftypefn
 
 @anchor{marpa_g_start_symbol_set}
-@deftypefun Marpa_Symbol_ID marpa_g_start_symbol_set ( @
+@deftypefn {Mutator function} @
+Marpa_Symbol_ID marpa_g_start_symbol_set ( @
     Marpa_Grammar @var{g}, @
     Marpa_Symbol_ID @var{sym_id})
 
-[Mutator] When successful,
+When successful,
 sets the start symbol of grammar @var{g} to symbol @var{sym_id}.
 Soft fails if @var{sym_id} is well-formed (a non-negative integer),
 but a symbol with that ID does not exist.
@@ -1944,7 +1948,7 @@ which will always be a non-negative number.
 On soft failure, @minus{}1.
 On hard failure, @minus{}2.
 
-@end deftypefun
+@end deftypefn
 
 @anchor{marpa_g_highest_symbol_id}
 @deftypefn {Accessor function} @
@@ -2094,12 +2098,13 @@ On hard failure, @minus{}2.
 @end deftypefn
 
 @anchor{marpa_g_symbol_is_terminal_set}
-@deftypefun int marpa_g_symbol_is_terminal_set ( @
+@deftypefn {Mutator function} @
+int marpa_g_symbol_is_terminal_set ( @
     Marpa_Grammar @var{g}, @
     Marpa_Symbol_ID @var{sym_id}, @
  int @var{value})
 
-[Mutator] Sets the ``terminal status'' of a symbol.
+Sets the ``terminal status'' of a symbol.
 This function flags symbol @var{sym_id} as a terminal if
 @var{value} is 1,
 or flags it as a non-terminal if @var{value} is 0.
@@ -2134,18 +2139,19 @@ On success, @var{value}, which will be 1 or 0.
 On soft failure, @minus{}1.
 On hard failure, @minus{}2.
 
-@end deftypefun
+@end deftypefn
 
 @anchor{marpa_g_symbol_new}
-@deftypefun Marpa_Symbol_ID marpa_g_symbol_new (Marpa_Grammar @var{g})
+@deftypefn {Mutator function} @
+Marpa_Symbol_ID marpa_g_symbol_new (Marpa_Grammar @var{g})
 
-[Mutator] When successful, creates a new symbol in grammar @var{g}.
+When successful, creates a new symbol in grammar @var{g}.
 
 @strong{Return value}: On success, the ID of the new symbol;
 which will be a non-negative integer.
 On hard failure, @minus{}2.
 
-@end deftypefun
+@end deftypefn
 
 @node Rule methods
 @section Rule methods
@@ -2327,12 +2333,13 @@ On hard failure, @minus{}2.
 @end deftypefn
 
 @anchor{marpa_g_rule_new}
-@deftypefun Marpa_Rule_ID marpa_g_rule_new (Marpa_Grammar @var{g}, @
+@deftypefn {Mutator function} @
+Marpa_Rule_ID marpa_g_rule_new (Marpa_Grammar @var{g}, @
     Marpa_Symbol_ID @var{lhs_id}, @
  Marpa_Symbol_ID *@var{rhs_ids}, @
      int @var{length})
 
-[Mutator] On success, creates a new external BNF rule in grammar @var{g}.
+On success, creates a new external BNF rule in grammar @var{g}.
 The ID of the new rule will be a non-negative integer,
 which will be unique to that rule.
 In addition to BNF rules, Marpa also allows sequence rules,
@@ -2368,7 +2375,7 @@ in the array of symbols @var{rhs_ids}.
 @strong{Return value}:  On success, the ID of the new external rule.
 On hard failure, @minus{}2.
 
-@end deftypefun
+@end deftypefn
 
 @anchor{marpa_g_rule_rhs}
 @deftypefn {Accessor function} @
@@ -2473,14 +2480,15 @@ On hard failure, @minus{}2.
 @end deftypefn
 
 @anchor{marpa_g_sequence_new}
-@deftypefun Marpa_Rule_ID marpa_g_sequence_new (Marpa_Grammar @var{g}, @
+@deftypefn {Mutator function} @
+Marpa_Rule_ID marpa_g_sequence_new (Marpa_Grammar @var{g}, @
     Marpa_Symbol_ID @var{lhs_id}, @
  Marpa_Symbol_ID @var{rhs_id}, @
      Marpa_Symbol_ID @var{separator_id}, @
     int @var{min}, @
  int @var{flags} )
 
-[Mutator] When successful,
+When successful,
 adds a new sequence rule to grammar @var{g},
 and return its ID.
 The ID of the sequence rule will be a non-negative integer,
@@ -2552,7 +2560,7 @@ separators''.
 sequence rule, which is always non-negative.
 On hard failure, @minus{}2.
 
-@end deftypefun
+@end deftypefn
 
 @anchor{marpa_g_sequence_separator}
 @deftypefn {Accessor function} @
@@ -2638,12 +2646,13 @@ The error code can be determined using
 @end deftypefn
 
 @anchor{marpa_g_rule_rank_set}
-@deftypefun Marpa_Rank marpa_g_rule_rank_set ( @
+@deftypefn {Mutator function} @
+Marpa_Rank marpa_g_rule_rank_set ( @
     Marpa_Grammar @var{g}, @
     Marpa_Rule_ID @var{rule_id}, @
     Marpa_Rank @var{rank})
 
-[Mutator] When successful,
+When successful,
 sets
 the rank of the rule with ID @var{rule_id} to @var{rank}
 and returns @var{rank}.
@@ -2665,7 +2674,7 @@ The error code can be determined using
 @code{marpa_g_error()}.
 @xref{marpa_g_error,marpa_g_error()}.
 
-@end deftypefun
+@end deftypefn
 
 @anchor{marpa_g_rule_null_high}
 @deftypefn {Accessor function} @
@@ -2693,12 +2702,13 @@ On hard failure, @minus{}2.
 @end deftypefn
 
 @anchor{marpa_g_rule_null_high_set}
-@deftypefun int marpa_g_rule_null_high_set ( @
+@deftypefn {Mutator function} @
+int marpa_g_rule_null_high_set ( @
     Marpa_Grammar @var{g}, @
     Marpa_Rule_ID @var{rule_id}, @
     int @var{flag})
 
-[Mutator] On success,
+On success,
 @itemize
 @item sets ``null ranks high'' in the rule with ID @var{rule_id} if the value
 of the boolean @var{flag} is 1;
@@ -2731,7 +2741,7 @@ On success, a boolean.
 On soft failure, @minus{}1.
 On hard failure, @minus{}2.
 
-@end deftypefun
+@end deftypefn
 
 @node Grammar precomputation
 @section Precomputing the Grammar
@@ -2769,9 +2779,10 @@ On hard failure, @minus{}2.
 @end deftypefn
 
 @anchor{marpa_g_precompute}
-@deftypefun int marpa_g_precompute (Marpa_Grammar @var{g})
+@deftypefn {Mutator function} @
+int marpa_g_precompute (Marpa_Grammar @var{g})
 
-[Mutator] On success,
+On success,
 and on fully recoverable hard failure,
 precomputes the grammar @var{g}.
 Precomputation involves running a series of grammar checks
@@ -2866,7 +2877,7 @@ For the error codes @code{MARPA_ERR_COUNTED_NULLABLE}
 and @code{MARPA_ERR_NULLING_TERMINAL},
 the hard failure is library-recoverable.
 
-@end deftypefun
+@end deftypefn
 
 @node Recognizer methods
 @chapter Recognizer methods
@@ -2927,9 +2938,10 @@ If @var{g} is not precomputed, or on other hard failure, @code{NULL}.
 @section Keeping the reference count of a recognizer
 
 @anchor{marpa_r_ref}
-@deftypefun Marpa_Recognizer marpa_r_ref (Marpa_Recognizer @var{r})
+@deftypefn {Mutator function} @
+Marpa_Recognizer marpa_r_ref (Marpa_Recognizer @var{r})
 
-[Mutator]
+
 Increases the reference count by 1.
 This method is not needed by most applications.
 
@@ -2937,7 +2949,7 @@ This method is not needed by most applications.
 On success, the recognizer object, @var{r}, which is never @code{NULL}.
 On hard failure, @code{NULL}.
 
-@end deftypefun
+@end deftypefn
 
 @anchor{marpa_r_unref}
 @deftypefun void marpa_r_unref (Marpa_Recognizer @var{r})
@@ -2956,9 +2968,10 @@ to zero, the base grammar is also destroyed.
 @section Life cycle mutators
 
 @anchor{marpa_r_start_input}
-@deftypefun int marpa_r_start_input (Marpa_Recognizer @var{r})
+@deftypefn {Mutator function} @
+int marpa_r_start_input (Marpa_Recognizer @var{r})
 
-[Mutator] When successful, does the following:
+When successful, does the following:
 @itemize
 @item Readies @var{r} to accept input.
 @item
@@ -2978,15 +2991,16 @@ and which is located at earleme 0.
 whose value is otherwise indeterminate.
 On hard failure, @minus{}2.
 
-@end deftypefun
+@end deftypefn
 
 @anchor{marpa_r_alternative}
-@deftypefun int marpa_r_alternative (Marpa_Recognizer @var{r}, @
+@deftypefn {Mutator function} @
+int marpa_r_alternative (Marpa_Recognizer @var{r}, @
     Marpa_Symbol_ID @var{token_id}, @
     int @var{value}, @
     int @var{length})
 
-[Mutator] 
+
 The @var{token_id} argument must be the symbol ID of a terminal.
 The @var{value} argument is an
 integer that represents the ``value'' of the
@@ -3092,12 +3106,13 @@ On failure, an error code other than @code{MARPA_ERR_NONE}.
 The hard failure for @code{MARPA_ERR_UNEXPECTED_TOKEN_ID}
 is fully recoverable.
 
-@end deftypefun
+@end deftypefn
 
 @anchor{marpa_r_earleme_complete}
-@deftypefun int marpa_r_earleme_complete (Marpa_Recognizer @var{r})
+@deftypefn {Mutator function} @
+int marpa_r_earleme_complete (Marpa_Recognizer @var{r})
 
-[Mutator] 
+
 For the purposes of this method description, we define the following:
 @itemize
 @item @var{current} is the value of the current earleme before the call of
@@ -3250,7 +3265,7 @@ On hard failure, @minus{}2.
 Hard failure with the code
 @code{MARPA_ERR_PARSE_EXHAUSTED}
 is fully recoverable.
-@end deftypefun
+@end deftypefn
 
 @node Location accessors
 @section Location accessors
@@ -3474,10 +3489,11 @@ Always succeeds.
 @end deftypefun
 
 @anchor{marpa_r_earley_item_warning_threshold_set}
-@deftypefun int marpa_r_earley_item_warning_threshold_set (Marpa_Recognizer @var{r}, @
+@deftypefn {Mutator function} @
+int marpa_r_earley_item_warning_threshold_set (Marpa_Recognizer @var{r}, @
     int @var{threshold})
 
-[Mutator] On success, sets
+On success, sets
 the Earley item warning threshold.
 The
 @dfindex Earley item warning threshold
@@ -3513,7 +3529,7 @@ Return value:
 The value that the Earley item warning threshold has
 after the method call is finished.
 Always succeeds.
-@end deftypefun
+@end deftypefn
 
 @anchor{marpa_r_is_exhausted}
 @deftypefun int marpa_r_is_exhausted (Marpa_Recognizer @var{r})
