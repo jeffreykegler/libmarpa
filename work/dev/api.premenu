@@ -1662,13 +1662,14 @@ and application behaviors otherwise.
 @chapter Static methods
 
 @anchor{marpa_check_version}
-@deftypefun Marpa_Error_Code marpa_check_version ( @
+@deftypefn {Accessor function} @
+Marpa_Error_Code marpa_check_version ( @
     int @var{required_major}, @
     int @var{required_minor}, @
     int @var{required_micro} @
     )
 
-[Accessor] Checks that the Marpa library in use is compatible with the
+Checks that the Marpa library in use is compatible with the
 given version. Generally, the application programmer will pass in the constants
 @code{MARPA_MAJOR_VERSION},
 @code{MARPA_MINOR_VERSION}, and
@@ -1687,20 +1688,21 @@ hard failure.
 @strong{Return value}: On success, @code{MARPA_ERR_NONE}.
 On hard failure, the error code.
 
-@end deftypefun
+@end deftypefn
 
 @anchor{marpa_version}
-@deftypefun Marpa_Error_Code marpa_version ( @
+@deftypefn {Accessor function} @
+Marpa_Error_Code marpa_version ( @
     int* version)
 
-[Accessor] Writes the version number in @var{version}.
+Writes the version number in @var{version}.
 It is an undetected irrecoverable hard failure
 if @var{version} does not have room for three @code{int}'s.
 
 @strong{Return value}: Always succeeds.
 The return value is indeterminate.
 
-@end deftypefun
+@end deftypefn
 
 @node Configuration methods
 @chapter Configuration methods
@@ -1747,10 +1749,11 @@ configuration is used to create a grammar.
 @end deftypefun
 
 @anchor{marpa_c_error}
-@deftypefun Marpa_Error_Code marpa_c_error ( @
+@deftypefn {Accessor function} @
+Marpa_Error_Code marpa_c_error ( @
   Marpa_Config* @var{config}, const char** @var{p_error_string} )
 
-[Accessor] Error codes are usually kept in the base grammar,
+Error codes are usually kept in the base grammar,
 which leaves
 @code{marpa_g_new()}
 no place to put
@@ -1767,7 +1770,7 @@ Always succeeds, so that
 never requires an error code
 for itself.
 
-@end deftypefun
+@end deftypefn
 
 @node Grammar methods
 @chapter Grammar methods
@@ -1910,9 +1913,10 @@ zero.
 @section Symbol methods
 
 @anchor{marpa_g_start_symbol}
-@deftypefun Marpa_Symbol_ID marpa_g_start_symbol (Marpa_Grammar @var{g})
+@deftypefn {Accessor function} @
+Marpa_Symbol_ID marpa_g_start_symbol (Marpa_Grammar @var{g})
 
-[Accessor] When successful, returns the ID of the start symbol.
+When successful, returns the ID of the start symbol.
 Soft fails, if there is no start symbol.
 The start symbol is set by the
 @code{marpa_g_start_symbol_set()}
@@ -1923,7 +1927,7 @@ On success, the ID of the start symbol,
 which is always a non-negative number.
 On soft failure, @minus{}1.
 On hard failure, @minus{}2.
-@end deftypefun
+@end deftypefn
 
 @anchor{marpa_g_start_symbol_set}
 @deftypefun Marpa_Symbol_ID marpa_g_start_symbol_set ( @
@@ -1943,18 +1947,20 @@ On hard failure, @minus{}2.
 @end deftypefun
 
 @anchor{marpa_g_highest_symbol_id}
-@deftypefun int marpa_g_highest_symbol_id (Marpa_Grammar @var{g})
+@deftypefn {Accessor function} @
+int marpa_g_highest_symbol_id (Marpa_Grammar @var{g})
 
-[Accessor] @strong{Return value}: On success, the numerically largest symbol ID
+@strong{Return value}: On success, the numerically largest symbol ID
 of @var{g}.
 On hard failure, @minus{}2.
-@end deftypefun
+@end deftypefn
 
 @anchor{marpa_g_symbol_is_accessible}
-@deftypefun int marpa_g_symbol_is_accessible (Marpa_Grammar @var{g}, @
+@deftypefn {Accessor function} @
+int marpa_g_symbol_is_accessible (Marpa_Grammar @var{g}, @
     Marpa_Symbol_ID @var{sym_id})
 
-[Accessor] A symbol is
+A symbol is
 @dfindex accessible symbol
 @dfindex symbol, accessible
 @dfn{accessible}
@@ -1968,13 +1974,14 @@ a grammar that is not precomputed.
 On soft failure, @minus{}1.
 On hard failure, @minus{}2.
 
-@end deftypefun
+@end deftypefn
 
 @anchor{marpa_g_symbol_is_nullable}
-@deftypefun int marpa_g_symbol_is_nullable ( @
+@deftypefn {Accessor function} @
+int marpa_g_symbol_is_nullable ( @
   Marpa_Grammar g, Marpa_Symbol_ID sym_id)
 
-[Accessor] A symbol is
+A symbol is
 @dfindex nullable symbol
 @dfindex symbol, nullable
 @dfn{nullable}
@@ -1990,13 +1997,14 @@ a grammar that is not precomputed.
 On soft failure, @minus{}1.
 On hard failure, @minus{}2.
 
-@end deftypefun
+@end deftypefn
 
 @anchor{marpa_g_symbol_is_nulling}
-@deftypefun int marpa_g_symbol_is_nulling (Marpa_Grammar @var{g}, @
+@deftypefn {Accessor function} @
+int marpa_g_symbol_is_nulling (Marpa_Grammar @var{g}, @
     Marpa_Symbol_ID @var{sym_id})
 
-[Accessor] A symbol is
+A symbol is
 @dfindex nulling symbol
 @dfindex symbol, nulling
 @dfn{nulling}
@@ -2010,13 +2018,14 @@ a grammar that is not precomputed.
 On soft failure, @minus{}1.
 On hard failure, @minus{}2.
 
-@end deftypefun
+@end deftypefn
 
 @anchor{marpa_g_symbol_is_productive}
-@deftypefun int marpa_g_symbol_is_productive (Marpa_Grammar @var{g}, @
+@deftypefn {Accessor function} @
+int marpa_g_symbol_is_productive (Marpa_Grammar @var{g}, @
     Marpa_Symbol_ID @var{sym_id})
 
-[Accessor] A symbol is
+A symbol is
 @dfindex productive symbol
 @dfindex symbol, productive
 @dfn{productive}
@@ -2031,13 +2040,14 @@ a grammar that is not precomputed.
 On soft failure, @minus{}1.
 On hard failure, @minus{}2.
 
-@end deftypefun
+@end deftypefn
 
 @anchor{marpa_g_symbol_is_start}
-@deftypefun int marpa_g_symbol_is_start ( Marpa_Grammar @var{g}, @
+@deftypefn {Accessor function} @
+int marpa_g_symbol_is_start ( Marpa_Grammar @var{g}, @
     Marpa_Symbol_ID @var{sym_id})
 
-[Accessor] On success, if @var{sym_id} is the start symbol, returns 1.
+On success, if @var{sym_id} is the start symbol, returns 1.
 On success, if @var{sym_id} is not the start symbol, returns 0.
 On success, if no start symbol has been set, returns 0.
 is the start symbol.
@@ -2050,14 +2060,15 @@ On success, 1 or 0.
 On soft failure, @minus{}1.
 On hard failure, @minus{}2.
 
-@end deftypefun
+@end deftypefn
 
 @anchor{marpa_g_symbol_is_terminal}
-@deftypefun int marpa_g_symbol_is_terminal ( @
+@deftypefn {Accessor function} @
+int marpa_g_symbol_is_terminal ( @
     Marpa_Grammar @var{g}, @
     Marpa_Symbol_ID @var{sym_id})
 
-[Accessor] On succcess, returns the ``terminal status'' of a @var{sym_id}.
+On succcess, returns the ``terminal status'' of a @var{sym_id}.
 The terminal status is 1 if @var{sym_id} is a terminal,
 0 otherwise.
 To be used as an input symbol
@@ -2080,7 +2091,7 @@ On success, 1 or 0.
 On soft failure, @minus{}1.
 On hard failure, @minus{}2.
 
-@end deftypefun
+@end deftypefn
 
 @anchor{marpa_g_symbol_is_terminal_set}
 @deftypefun int marpa_g_symbol_is_terminal_set ( @
@@ -2140,18 +2151,20 @@ On hard failure, @minus{}2.
 @section Rule methods
 
 @anchor{marpa_g_highest_rule_id}
-@deftypefun int marpa_g_highest_rule_id (Marpa_Grammar @var{g})
+@deftypefn {Accessor function} @
+int marpa_g_highest_rule_id (Marpa_Grammar @var{g})
 
-[Accessor] @strong{Return value}: On success, the numerically largest rule ID
+@strong{Return value}: On success, the numerically largest rule ID
 of @var{g}.
 On hard failure, @minus{}2.
-@end deftypefun
+@end deftypefn
 
 @anchor{marpa_g_rule_is_accessible}
-@deftypefun int marpa_g_rule_is_accessible (Marpa_Grammar @var{g}, @
+@deftypefn {Accessor function} @
+int marpa_g_rule_is_accessible (Marpa_Grammar @var{g}, @
     Marpa_Rule_ID @var{rule_id})
 
-[Accessor] A rule is
+A rule is
 @dfindex accessible rule
 @dfindex rule, accessible
 @dfn{accessible}
@@ -2169,13 +2182,14 @@ a grammar that is not precomputed.
 On soft failure, @minus{}1.
 On hard failure, @minus{}2.
 
-@end deftypefun
+@end deftypefn
 
 @anchor{marpa_g_rule_is_nullable}
-@deftypefun int marpa_g_rule_is_nullable ( @
+@deftypefn {Accessor function} @
+int marpa_g_rule_is_nullable ( @
   Marpa_Grammar @var{g}, Marpa_Rule_ID @var{ruleid})
 
-[Accessor] A rule is
+A rule is
 @dfindex nullable rule
 @dfindex rule, nullable
 @dfn{nullable}
@@ -2193,13 +2207,14 @@ a grammar that is not precomputed.
 On soft failure, @minus{}1.
 On hard failure, @minus{}2.
 
-@end deftypefun
+@end deftypefn
 
 @anchor{marpa_g_rule_is_nulling}
-@deftypefun int marpa_g_rule_is_nulling (Marpa_Grammar @var{g}, @
+@deftypefn {Accessor function} @
+int marpa_g_rule_is_nulling (Marpa_Grammar @var{g}, @
     Marpa_Rule_ID @var{ruleid})
 
-[Accessor] A rule is
+A rule is
 @dfindex nulling rule
 @dfindex rule, nulling
 @dfn{nulling}
@@ -2215,13 +2230,14 @@ a grammar that is not precomputed.
 On soft failure, @minus{}1.
 On hard failure, @minus{}2.
 
-@end deftypefun
+@end deftypefn
 
 @anchor{marpa_g_rule_is_loop}
-@deftypefun int marpa_g_rule_is_loop (Marpa_Grammar @var{g}, @
+@deftypefn {Accessor function} @
+int marpa_g_rule_is_loop (Marpa_Grammar @var{g}, @
     Marpa_Rule_ID @var{rule_id})
 
-[Accessor] A rule is a loop rule if it non-trivially
+A rule is a loop rule if it non-trivially
 produces the string of length one
 which consists only of its LHS symbol.
 Such a derivation takes the parse back to where
@@ -2245,13 +2261,14 @@ a grammar that is not precomputed.
 On soft failure, @minus{}1.
 On hard failure, @minus{}2.
 
-@end deftypefun
+@end deftypefn
 
 @anchor{marpa_g_rule_is_productive}
-@deftypefun int marpa_g_rule_is_productive (Marpa_Grammar @var{g}, @
+@deftypefn {Accessor function} @
+int marpa_g_rule_is_productive (Marpa_Grammar @var{g}, @
     Marpa_Rule_ID @var{rule_id})
 
-[Accessor] A rule is
+A rule is
 @dfindex productive rule
 @dfindex rule, productive
 @dfn{productive}
@@ -2273,14 +2290,15 @@ a grammar that is not precomputed.
 On soft failure, @minus{}1.
 On hard failure, @minus{}2.
 
-@end deftypefun
+@end deftypefn
 
 @anchor{marpa_g_rule_length}
-@deftypefun int marpa_g_rule_length ( @
+@deftypefn {Accessor function} @
+int marpa_g_rule_length ( @
     Marpa_Grammar @var{g}, @
     Marpa_Rule_ID @var{rule_id})
 
-[Accessor] The length of a rule is the number of symbols on its RHS.
+The length of a rule is the number of symbols on its RHS.
 
 Soft fails if @var{rule_id} is well-formed (a non-negative integer),
 but a rule with that ID does not exist.
@@ -2290,14 +2308,15 @@ the length of the rule with ID @var{rule_id}.
 On soft failure, @minus{}1.
 On hard failure, @minus{}2.
 
-@end deftypefun
+@end deftypefn
 
 @anchor{marpa_g_rule_lhs}
-@deftypefun Marpa_Symbol_ID marpa_g_rule_lhs ( @
+@deftypefn {Accessor function} @
+Marpa_Symbol_ID marpa_g_rule_lhs ( @
     Marpa_Grammar @var{g}, @
     Marpa_Rule_ID @var{rule_id})
 
-[Accessor] Soft fails if @var{rule_id} is well-formed (a non-negative integer),
+Soft fails if @var{rule_id} is well-formed (a non-negative integer),
 but a rule with that ID does not exist.
 
 @strong{Return value}: On success, the ID of the LHS
@@ -2305,7 +2324,7 @@ symbol of the rule with ID @var{rule_id}.
 On soft failure, @minus{}1.
 On hard failure, @minus{}2.
 
-@end deftypefun
+@end deftypefn
 
 @anchor{marpa_g_rule_new}
 @deftypefun Marpa_Rule_ID marpa_g_rule_new (Marpa_Grammar @var{g}, @
@@ -2352,12 +2371,13 @@ On hard failure, @minus{}2.
 @end deftypefun
 
 @anchor{marpa_g_rule_rhs}
-@deftypefun Marpa_Symbol_ID marpa_g_rule_rhs ( @
+@deftypefn {Accessor function} @
+Marpa_Symbol_ID marpa_g_rule_rhs ( @
     Marpa_Grammar @var{g}, @
     Marpa_Rule_ID @var{rule_id}, @
     int @var{ix})
 
-[Accessor] When successful, returns the ID of the symbol at index @var{ix}
+When successful, returns the ID of the symbol at index @var{ix}
 in the RHS of the rule with ID @var{rule_id}.
 The indexing of RHS symbols is zero-based.
 
@@ -2376,17 +2396,18 @@ which is always non-negative.
 On soft failure, @minus{}1.
 On hard failure, @minus{}2.
 
-@end deftypefun
+@end deftypefn
 
 @node Sequence methods
 @section Sequence methods
 
 @anchor{marpa_g_rule_is_proper_separation}
-@deftypefun int marpa_g_rule_is_proper_separation ( @
+@deftypefn {Accessor function} @
+int marpa_g_rule_is_proper_separation ( @
     Marpa_Grammar @var{g}, @
     Marpa_Rule_ID @var{rule_id})
 
-[Accessor] When successful, returns
+When successful, returns
 @itemize
 @item 1 if @var{rule_id} is the ID of a sequence rule whose
 proper separation flag is set,
@@ -2416,14 +2437,15 @@ On success, 1 or 0.
 On soft failure, @minus{}1.
 On hard failure, @minus{}2.
 
-@end deftypefun
+@end deftypefn
 
 @anchor{marpa_g_sequence_min}
-@deftypefun int marpa_g_sequence_min ( @
+@deftypefn {Accessor function} @
+int marpa_g_sequence_min ( @
     Marpa_Grammar @var{g}, @
     Marpa_Rule_ID @var{rule_id})
 
-[Accessor] On success, returns the mininum length of a sequence rule.
+On success, returns the mininum length of a sequence rule.
 Soft fails if a rule with ID @var{rule_id} exists,
 but is not a sequence rule.
 This soft failure can used to test whether
@@ -2448,7 +2470,7 @@ with ID @var{rule_id}, which is always non-negative.
 On soft failure, @minus{}1.
 On hard failure, @minus{}2.
 
-@end deftypefun
+@end deftypefn
 
 @anchor{marpa_g_sequence_new}
 @deftypefun Marpa_Rule_ID marpa_g_sequence_new (Marpa_Grammar @var{g}, @
@@ -2533,11 +2555,12 @@ On hard failure, @minus{}2.
 @end deftypefun
 
 @anchor{marpa_g_sequence_separator}
-@deftypefun int marpa_g_sequence_separator ( @
+@deftypefn {Accessor function} @
+int marpa_g_sequence_separator ( @
     Marpa_Grammar @var{g}, @
     Marpa_Rule_ID @var{rule_id})
 
-[Accessor] On success, returns the symbol ID of the separator
+On success, returns the symbol ID of the separator
 of the sequence rule with ID @var{rule_id}.
 Soft fails if there is no separator.
 The causes of hard failure include
@@ -2550,13 +2573,14 @@ On success, a symbol ID, which is always non-negative.
 On soft failure, @minus{}1.
 On hard failure, @minus{}2.
 
-@end deftypefun
+@end deftypefn
 
 @anchor{marpa_g_symbol_is_counted}
-@deftypefun int marpa_g_symbol_is_counted (Marpa_Grammar @var{g}, @
+@deftypefn {Accessor function} @
+int marpa_g_symbol_is_counted (Marpa_Grammar @var{g}, @
     Marpa_Symbol_ID @var{sym_id})
 
-[Accessor] On success, returns a boolean whose value is
+On success, returns a boolean whose value is
 1 iff the symbol with
 ID @var{sym_id} is counted.
 A symbol is
@@ -2577,17 +2601,18 @@ On success, a boolean.
 On soft failure, @minus{}1.
 On hard failure, @minus{}2.
 
-@end deftypefun
+@end deftypefn
 
 @node Rank methods
 @section Rank methods
 
 @anchor{marpa_g_rule_rank}
-@deftypefun Marpa_Rank marpa_g_rule_rank ( @
+@deftypefn {Accessor function} @
+Marpa_Rank marpa_g_rule_rank ( @
     Marpa_Grammar @var{g}, @
     Marpa_Rule_ID rule_id)
 
-[Accessor] When successful, returns
+When successful, returns
 the rank of the rule with ID @var{rule_id}.
 When a rule is created, its rank
 is initialized to the default rank of the grammar.
@@ -2610,7 +2635,7 @@ The error code can be determined using
 @code{marpa_g_error()}.
 @xref{marpa_g_error,marpa_g_error()}.
 
-@end deftypefun
+@end deftypefn
 
 @anchor{marpa_g_rule_rank_set}
 @deftypefun Marpa_Rank marpa_g_rule_rank_set ( @
@@ -2643,11 +2668,12 @@ The error code can be determined using
 @end deftypefun
 
 @anchor{marpa_g_rule_null_high}
-@deftypefun int marpa_g_rule_null_high ( @
+@deftypefn {Accessor function} @
+int marpa_g_rule_null_high ( @
     Marpa_Grammar @var{g}, @
     Marpa_Rule_ID rule_id)
 
-[Accessor] On success, returns a boolean whose value is 1
+On success, returns a boolean whose value is 1
 iff ``null ranks high'' is set in the rule with ID @var{rule_id}.
 When a rule is created, it has ``null ranks high'' set.
 
@@ -2664,7 +2690,7 @@ On success, a boolean.
 On soft failure, @minus{}1.
 On hard failure, @minus{}2.
 
-@end deftypefun
+@end deftypefn
 
 @anchor{marpa_g_rule_null_high_set}
 @deftypefun int marpa_g_rule_null_high_set ( @
@@ -2711,9 +2737,10 @@ On hard failure, @minus{}2.
 @section Precomputing the Grammar
 
 @anchor{marpa_g_has_cycle}
-@deftypefun int marpa_g_has_cycle (Marpa_Grammar @var{g})
+@deftypefn {Accessor function} @
+int marpa_g_has_cycle (Marpa_Grammar @var{g})
 
-[Accessor] On success, returns a boolean which is 1 iff
+On success, returns a boolean which is 1 iff
 @var{g} has a cycle.
 Cycles make a grammar infinitely ambiguous,
 and are considered useless in current
@@ -2729,16 +2756,17 @@ can be used.
 @strong{Return value}: On success, a boolean.
 On hard failure, @minus{}2.
 
-@end deftypefun
+@end deftypefn
 
 @anchor{marpa_g_is_precomputed}
-@deftypefun int marpa_g_is_precomputed (Marpa_Grammar @var{g})
+@deftypefn {Accessor function} @
+int marpa_g_is_precomputed (Marpa_Grammar @var{g})
 
-[Accessor] @strong{Return value}: On success, a boolean which is 1 iff
+@strong{Return value}: On success, a boolean which is 1 iff
 grammar @var{g} is precomputed.
 On hard failure, @minus{}2.
 
-@end deftypefun
+@end deftypefn
 
 @anchor{marpa_g_precompute}
 @deftypefun int marpa_g_precompute (Marpa_Grammar @var{g})
