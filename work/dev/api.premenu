@@ -1828,10 +1828,11 @@ method.
 @cindex grammar constructor
 
 @anchor{marpa_g_new}
-@deftypefun Marpa_Grammar marpa_g_new ( @
+@deftypefn {Constructor function} @
+Marpa_Grammar marpa_g_new ( @
     Marpa_Config* @var{configuration} )
 
-[Constructor] Creates a new grammar time object.
+Creates a new grammar time object.
 The returned grammar object is not yet precomputed,
 and will have no symbols and rules.
 Its reference count will be 1.
@@ -1857,7 +1858,7 @@ the error code is set in @var{configuration}.
 The error code may be accessed using
 @code{marpa_c_error()}.
 
-@end deftypefun
+@end deftypefn
 
 @anchor{marpa_g_force_valued}
 @deftypefn {Mutator function} @
@@ -1904,13 +1905,14 @@ On hard failure, @code{NULL}.
 @end deftypefn
 
 @anchor{marpa_g_unref}
-@deftypefun void marpa_g_unref (Marpa_Grammar @var{g})
+@deftypefn {Destructor function} @
+void marpa_g_unref (Marpa_Grammar @var{g})
 
-[Destructor] Decreases the reference count by 1,
+Decreases the reference count by 1,
 destroying @var{g} once the reference count reaches
 zero.
 
-@end deftypefun
+@end deftypefn
 
 @node Symbol methods
 @section Symbol methods
@@ -2916,9 +2918,9 @@ call.
 @section Creating a new recognizer
 
 @anchor{marpa_r_new}
-@deftypefun Marpa_Recognizer marpa_r_new ( Marpa_Grammar @var{g} )
+@deftypefn {Constructor function} @
+Marpa_Recognizer marpa_r_new ( Marpa_Grammar @var{g} )
 
-[Constructor]
 On success, creates a new recognizer and
 increments the reference count of @var{g},
 the base grammar, by one.
@@ -2932,7 +2934,7 @@ In the new recognizer,
 @strong{Return value}:
 On success, the newly created recognizer, which is never @code{NULL}.
 If @var{g} is not precomputed, or on other hard failure, @code{NULL}.
-@end deftypefun
+@end deftypefn
 
 @node Recognizer reference counting
 @section Keeping the reference count of a recognizer
@@ -2952,9 +2954,10 @@ On hard failure, @code{NULL}.
 @end deftypefn
 
 @anchor{marpa_r_unref}
-@deftypefun void marpa_r_unref (Marpa_Recognizer @var{r})
+@deftypefn {Destructor function} @
+void marpa_r_unref (Marpa_Recognizer @var{r})
 
-[Destructor] Decreases the reference count by 1,
+Decreases the reference count by 1,
 destroying @var{r} once the reference count reaches
 zero.
 When @var{r} is destroyed, the reference count
@@ -2962,7 +2965,7 @@ of its base grammar is decreased by one.
 If this takes the reference count of the base grammar
 to zero, the base grammar is also destroyed.
 
-@end deftypefun
+@end deftypefn
 
 @node Recognizer life cycle mutators
 @section Life cycle mutators
