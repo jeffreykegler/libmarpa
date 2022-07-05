@@ -3228,9 +3228,9 @@ is fully recoverable.
 @section Location accessors
 
 @anchor{marpa_r_current_earleme}
-@deftypefun @code{Marpa_Earleme} marpa_r_current_earleme (Marpa_Recognizer @var{r})
+@deftypefn {Accessor function} @
+@code{Marpa_Earleme} marpa_r_current_earleme (Marpa_Recognizer @var{r})
 
-[Accessor]
 Successful iff input has started.
 If input has not started, returns soft failure.
 
@@ -3238,14 +3238,14 @@ If input has not started, returns soft failure.
 On success, the current earleme, which is always non-negative.
 On soft failure, @minus{}1.
 Never returns a hard failure.
-@end deftypefun
+@end deftypefn
 
 @anchor{marpa_r_earleme}
-@deftypefun Marpa_Earleme marpa_r_earleme ( @
+@deftypefn {Accessor function} @
+Marpa_Earleme marpa_r_earleme ( @
     Marpa_Recognizer @var{r}, @
     Marpa_Earley_Set_ID @var{set_id})
 
-[Accessor]
 On success, returns the earleme of the Earley set with ID @code{set_id}.
 The ID of an Earley set ID is also called its ordinal.
 In the default, token-stream model, Earley set ID and earleme
@@ -3291,14 +3291,13 @@ The hard failures with error codes
 @code{MARPA_ERR_NO_EARLEY_SET_AT_LOCATION}
 are fully recoverable.
 
-@end deftypefun
+@end deftypefn
 
 @anchor{marpa_r_earley_set_value}
-@deftypefun int marpa_r_earley_set_value (@
+@deftypefn {Accessor function} int marpa_r_earley_set_value (@
   Marpa_Recognizer @var{r}, @
   Marpa_Earley_Set_ID earley_set)
 
-[Accessor]
 On success,
 returns the ``integer value'' of @var{earley_set}.
 For more about the integer value of an Earley set,
@@ -3320,17 +3319,16 @@ The error code can be determined using
 @code{marpa_g_error()}.
 @xref{marpa_g_error,marpa_g_error()}.
 
-@end deftypefun
+@end deftypefn
 
 @anchor{marpa_r_earley_set_values}
-@deftypefun int marpa_r_earley_set_values (@
+@deftypefn {Mutator function} int marpa_r_earley_set_values (@
   Marpa_Recognizer @var{r}, @
   Marpa_Earley_Set_ID @var{earley_set}, @
   int* @var{p_value}, @
   void** @var{p_pvalue} @
   )
 
-[Mutator]
 On success, does the following:
 @itemize
 @item If @var{p_value} is non-zero,
@@ -3367,21 +3365,18 @@ method.
 
 @strong{Return value}: On success, returns a non-negative integer.
 On hard failure, returns @minus{}2.
-@end deftypefun
+@end deftypefn
 
 @anchor{marpa_r_furthest_earleme}
-@deftypefun @code{unsigned int} marpa_r_furthest_earleme (Marpa_Recognizer @var{r})
-
-[Accessor]
+@deftypefn {Accessor function} @code{unsigned int} marpa_r_furthest_earleme (Marpa_Recognizer @var{r})
 
 @strong{Return value}: The furthest earleme.  Always succeeds.
 
-@end deftypefun
+@end deftypefn
 
 @anchor{marpa_r_latest_earley_set}
-@deftypefun Marpa_Earley_Set_ID marpa_r_latest_earley_set (Marpa_Recognizer @var{r})
+@deftypefn {Accessor function} Marpa_Earley_Set_ID marpa_r_latest_earley_set (Marpa_Recognizer @var{r})
 
-[Accessor]
 Returns the Earley set ID of the latest Earley set.
 The ID of an Earley set ID is also called its ordinal.
 Applications that want the
@@ -3393,13 +3388,12 @@ method.
 @xref{marpa_r_earleme,marpa_r_earleme()}.
 
 @strong{Return value}: The ID of the latest Earley set.  Always succeeds.
-@end deftypefun
+@end deftypefn
 
 @anchor{marpa_r_latest_earley_set_value_set}
-@deftypefun int marpa_r_latest_earley_set_value_set (@
+@deftypefn {Mutator function} int marpa_r_latest_earley_set_value_set (@
   Marpa_Recognizer @var{r}, int @var{value})
 
-[Mutator]
 Sets the ``integer value'' of the latest Earley set to @var{value}.
 For more about the integer value of an Earley set,
 @pxref{marpa_r_earley_set_values,marpa_r_earley_set_values()}.
@@ -3420,23 +3414,22 @@ The error code can be determined using
 @code{marpa_g_error()}.
 @xref{marpa_g_error,marpa_g_error()}.
 
-@end deftypefun
+@end deftypefn
 
 @anchor{marpa_r_latest_earley_set_values_set}
-@deftypefun int marpa_r_latest_earley_set_values_set (@
+@deftypefn {Mutator function} int marpa_r_latest_earley_set_values_set (@
   Marpa_Recognizer @var{r}, @
   int value, @
   void* pvalue)
 
-[Mutator]
 Sets the integer and pointer value of the latest Earley set.
 For more about the ``integer value'' and ``pointer value''
 of an Earley set,
-@pxref{marpa_r_latest_earley_set_values_set,marpa_r_latest_earley_set_values_set()}.
+@pxref{marpa_r_earley_set_values,marpa_r_earley_set_values()}.
 
 @strong{Return value}: On success, returns a non-negative integer.
 On hard failure, returns @minus{}2.
-@end deftypefun
+@end deftypefn
 
 @node Other parse status methods
 @section Other parse status methods
