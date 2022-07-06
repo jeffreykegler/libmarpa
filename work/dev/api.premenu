@@ -3481,15 +3481,16 @@ On hard failure, returns @minus{}2.
 @section Other parse status methods
 
 @anchor{marpa_r_earley_item_warning_threshold}
-@deftypefun int marpa_r_earley_item_warning_threshold (Marpa_Recognizer @var{r})
+@deftypefn {Accessor function} @
+int marpa_r_earley_item_warning_threshold (Marpa_Recognizer @var{r})
 
-Returns the Earley item warning threshold.
-@xref{marpa_r_earley_item_warning_threshold_set,marpa_r_earley_item_warning_threshold_set()}.
+For details about the ``earley item warning threshold'',
+@pxref{marpa_r_earley_item_warning_threshold_set,marpa_r_earley_item_warning_threshold_set()}.
 
 @strong{Return value}:
 The Earley item warning threshold.
 Always succeeds.
-@end deftypefun
+@end deftypefn
 
 @anchor{marpa_r_earley_item_warning_threshold_set}
 @deftypefn {Mutator function} @
@@ -3528,7 +3529,7 @@ in effect treating
 the @code{MARPA_EVENT_EARLEY_ITEM_THRESHOLD} event
 as equivalent to library-recoverable hard failure.
 
-Return value:
+@strong{Return value}:
 The value that the Earley item warning threshold has
 after the method call is finished.
 Always succeeds.
