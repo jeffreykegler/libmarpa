@@ -3684,38 +3684,59 @@ On success, a non-negative value.
 @end deftypefun
 
 @anchor{marpa_r_progress_item}
-@deftypefun Marpa_Rule_ID marpa_r_progress_item ( @
+@deftypefn {Accessor function} @
+Marpa_Rule_ID marpa_r_progress_item ( @
   Marpa_Recognizer @var{r}, @
   int* @var{position}, @
   Marpa_Earley_Set_ID* @var{origin} )
 This method allows access to the data
 for the next item of a
 progress report.
-If there are no more progress report items,
-it returns @minus{}1 as a termination indicator
-and sets the error code to @code{MARPA_ERR_PROGRESS_REPORT_EXHAUSTED}.
-Either the termination indicator,
-or the item count returned by
-@code{marpa_r_progress_report_start()},
-can be used to determine when the last
+A progress item consists of a rule,
+a dot position, and an origin.
+
+In the event of success:
+@itemize
+@item Returns the rule ID of the progress item
+@item Writes the "cooked dot position" of the progress item to the location
+pointed to by the @var{position} argument.
+@item Writes the origin of the progress item to the location
+pointed to by the @var{origin} argument.
+@end itemize
+
+The "cooked dot position" is
+@itemize
+@item the standard 0-based start-relative
+dot position, if the dotted rule is @strong{not} a completion; and
+@item the end-relative dot position, where the last position is
+@minus{}1, if the dotted rule @strong{is} a completion.
+@end itemize
+Use of the cooked dot position allows an application to quickly
+determine if the dotted rule is a completion.
+The cooked dot position is @minus{}1 iff the dotted rule is a completion.
+
+In the event of soft failure:
+@itemize
+@item There are no more progress report items.
+@item Returns @minus{}1.
+@item Sets the error code to @code{MARPA_ERR_PROGRESS_REPORT_EXHAUSTED}.
+@item Leaves unchanged the locations pointed to by
+the @var{position} and @var{origin} arguments.
+@end itemize
+
+In addition to watching for soft failure,
+the application can use the item count returned by
+@code{marpa_r_progress_report_start()}
+to determine when the last
 item has been seen.
 
-On success,
-the dot position is returned in the location
-pointed to by the @var{position} argument,
-and the origin is returned in the location
-pointed to by the @var{origin} argument.
-On failure, the locations pointed to by
-the @var{position} and @var{origin}
-arguments are unchanged.
-
-Return value: On success, the rule ID of
-the next progress report item.
-If there are no more progress report items, @minus{}1.
+@strong{Return value}: On success, the rule ID of
+the progress report item, which is always non-negative.
+On soft failure, @minus{}1.
 If either the @var{position} or the @var{origin}
 argument is @code{NULL},
-or on other failure, @minus{}2.
-@end deftypefun
+or on other hard failure, @minus{}2.
+@end deftypefn
 
 @node Bocage methods
 @chapter Bocage methods
@@ -6770,6 +6791,18 @@ This chapter discusses features that are @strong{not}
 in the external interface,
 but that might be added
 to the external interface in the future.
+
+@node Orthogonal treatment of soft failures
+@section Orthogonal treatment of soft failures
+
+The treatment of soft failure evolved along with this interface,
+leaving traces of that evolution in the interface.
+For example, soft failures should not set the error code,
+but soft failure in
+@code{marpa_r_progress_item}
+sets the error code to @code{MARPA_ERR_PROGRESS_REPORT_EXHAUSTED}.
+@xref{marpa_r_progress_item,marpa_r_progress_item()}.
+These non-orthogonalities should be fixed someday.
 
 @node Orthogonal treatment of exhaustion
 @section Orthogonal treatment of exhaustion
