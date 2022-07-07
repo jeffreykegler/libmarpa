@@ -5159,7 +5159,7 @@ memoize_xrl_data_for_AHM(AHM current_item, IRL irl)
   XRL_of_AHM(current_item) = source_xrl;
   if (!source_xrl) {
     @t}\comment{@>
-    /* |source_xrl = NULL|, which is the case only for the start rule */
+    /* |source_xrl = NULL|, which is the case only for an augment rule */
     XRL_Position_of_AHM(current_item) = -2;
     return;
   }
@@ -5250,7 +5250,17 @@ the XRL is |NULL|, XRL position is not defined.
 @d XRL_of_AHM(ahm) ((ahm)->t_xrl)
 @<Widely aligned AHM elements@> =
    XRL t_xrl;
-@ @d XRL_Position_of_AHM(ahm) ((ahm)->t_xrl_position)
+@ ``XRL position`` is the ``cooked dot position'',
+except for an augment rule, in which it is |-2|.
+(Augment rules have no XRL, so the |-2| here is a
+pseudo-position.)
+``Cooked dot position'' is dot position, except
+for completions, in which case it is |-1|.
+|-1| is the end-relative position of the dot in
+a completed rule, so that cooked dot position is
+always a relative dot position ----
+end-relative for completions and start-relative otherwise.
+@d XRL_Position_of_AHM(ahm) ((ahm)->t_xrl_position)
 @d Raw_XRL_Position_of_AHM(ahm) (
     XRL_Position_of_AHM(ahm) < 0
     ? Length_of_XRL(XRL_of_AHM(ahm))
@@ -9775,14 +9785,6 @@ progress_report_items_insert(MARPA_AVL_TREE report_tree,
       marpa_obs_new (MARPA_AVL_OBSTACK (report_tree),
                      struct marpa_progress_item, 1);
 
-    MARPA_OFF_DEBUG2("%s, === Adding report item ===", STRLOC);
-    MARPA_OFF_DEBUG3("%s, report irl = %d", STRLOC, IRLID_of_AHM(report_ahm));
-    MARPA_OFF_DEBUG3("%s, report irl position = %d", STRLOC, Position_of_AHM(report_ahm));
-
-    MARPA_OFF_DEBUG3("%s, xrl = %d", STRLOC, ID_of_XRL (source_xrl));
-    MARPA_OFF_DEBUG3("%s, xrl dot = %d", STRLOC, XRL_Position_of_AHM (report_ahm));
-    MARPA_OFF_DEBUG3("%s, origin ord = %d", STRLOC, Origin_Ord_of_YIM(origin_yim));
-
     Position_of_PROGRESS (new_report_item) = xrl_position;
     Origin_of_PROGRESS (new_report_item) = origin_of_xrl;
     RULEID_of_PROGRESS (new_report_item) = xrl_id;
@@ -12327,7 +12329,6 @@ and therefore the root or-node,
 cannot be part of cycle.
 @<Initialize the tree iterator@> =
 {
-  MARPA_OFF_DEBUG1("Initialize tree");
   ORID root_or_id = Top_ORID_of_B (b);
   OR root_or_node = OR_of_B_by_ID (b, root_or_id);
   NOOK nook;
@@ -12416,7 +12417,6 @@ outweighs the cost of duplicating the
 @ @<Finish tree if possible@> = {
     {
         const int stack_length = Size_of_T(t);
-        MARPA_OFF_DEBUG2("Finishing tree, size = %ld", (long)stack_length);
         int i;
         @t}\comment{@>
         /* Clear the worklist, then copy the entire remaining
@@ -12442,10 +12442,6 @@ outweighs the cost of duplicating the
         work_nook = NOOK_of_TREE_by_IX(t, work_nook_id);
         work_or_node = OR_of_NOOK(work_nook);
         work_and_node_id = and_order_get(o, work_or_node, Choice_of_NOOK(work_nook));
-        MARPA_DEBUG5("Work node is %ld, OR=%ld, choice=%ld, AND=%ld\n",
-          (long)work_nook_id, 
-          (long)ID_of_OR(work_or_node), (long)Choice_of_NOOK(work_nook),
-          (long)work_and_node_id);
         work_and_node = ands_of_b + work_and_node_id;
         do
           {
@@ -12520,9 +12516,9 @@ distinct locations, both of which must be location $x$,
 which is nonsensical.
 
 @ [Continuing |@<Lemma: Non-zero duplicate implies cycle@>|]
-Assume without loss of generality that 
+Assume without loss of generality that
 $\it i1$ derives $\it i2$.
-The same logic which caused the derivation from 
+The same logic which caused the derivation from
 $\it i1$ to $\it i2$,
 will cause this derivation to be repeated an arbitrary number of times,
 causing an or-node cycle.
@@ -12594,7 +12590,7 @@ QED.
 
 @*0 Theorem: Or-node cycle elimination is complete.
 Or-node cycle elimination is complete,
-that is, every tree than contains 
+that is, every tree than contains
 an or-node cycle is pruned.
 \par {\bf Proof:}
 Or-nodes are added to the trees in either
