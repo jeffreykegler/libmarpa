@@ -3536,21 +3536,19 @@ Always succeeds.
 @end deftypefn
 
 @anchor{marpa_r_is_exhausted}
-@deftypefun int marpa_r_is_exhausted (Marpa_Recognizer @var{r})
+@deftypefn {Accessor function} @
+int marpa_r_is_exhausted (Marpa_Recognizer @var{r})
 A parser is ``exhausted'' if it cannot accept any more input.
-Both successful and failed parses can be exhausted.
-In many grammars,
-the parse is always exhausted as soon as it succeeds.
-Good parses may also exist at earlemes prior to the
-current one.
+@xref{Exhaustion}.
 
-Return value:
+@strong{Return value}:
 1 if the parser is exhausted, 0 otherwise.
 Always succeeds.
-@end deftypefun
+@end deftypefn
 
 @anchor{marpa_r_terminals_expected}
-@deftypefun int marpa_r_terminals_expected ( @
+@deftypefn {Accessor function} @
+int marpa_r_terminals_expected ( @
     Marpa_Recognizer @var{r}, @
     Marpa_Symbol_ID* @var{buffer})
 Returns a list of the ID's of the symbols
@@ -3559,39 +3557,44 @@ at the current earleme.
 @var{buffer} is expected to be large enough to hold
 the result.
 This is guaranteed to be the case if the buffer
-is large enough to hold a number of
-@code{Marpa_Symbol_ID}'s that
+is large enough to hold an array of
+@code{Marpa_Symbol_ID}'s whose length
 is greater than or equal to the number of symbols
 in the grammar.
 
-Return value:  On success, the number of @code{Marpa_Symbol_ID}'s
-in @var{buffer}.
-On failure, @minus{}2.
-@end deftypefun
+@strong{Return value}:  On success, the number of @code{Marpa_Symbol_ID}'s
+in @var{buffer}, which is always non-negative.
+On hard failure, @minus{}2.
+@end deftypefn
 
 @anchor{marpa_r_terminal_is_expected}
-@deftypefun int marpa_r_terminal_is_expected ( @
+@deftypefn {Accessor function} @
+int marpa_r_terminal_is_expected ( @
     Marpa_Recognizer @var{r}, @
     Marpa_Symbol_ID @var{symbol_id})
 
-Return values on success:
-If @var{symbol_id} is the
-ID of a valid terminal symbol that is expected at
-the current earleme,
-a number greater than zero.
-If @var{symbol_id} is the
-ID of a valid terminal symbol that is
-@strong{not} expected at
-the current earleme, or
-if @var{symbol_id} is the ID of a valid symbol
-that is not a terminal, zero.
+On success, does the folloing:
+@itemize
+@item If
+@var{symbol_id} is not the ID of
+a terminal symbol, returns 0.
+@item If
+@var{symbol_id} is the ID of
+a terminal symbol, but that symbol is @strong{not}
+expected at the current earleme, returns 0.
+@item If
+@var{symbol_id} is the ID of
+a terminal symbol, but that symbol @strong{is}
+expected at the current earleme, returns 1.
+@end itemize
+Hard fails if
+the symbol with ID @var{symbol_id} does not
+exist.
 
-Failure cases:
-Returns @minus{}2 on failure.
-It is a failure
-if @var{symbol_id} is not the ID of a valid
-symbol.
-@end deftypefun
+@strong{Return value}: On success, 0 or 1.
+On hard failure, @minus{}2.
+
+@end deftypefn
 
 @node Progress reports
 @chapter Progress reports
