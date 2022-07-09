@@ -3599,28 +3599,25 @@ On hard failure, @minus{}2.
 @node Progress reports
 @chapter Progress reports
 
-An important advantage of the Marpa algorithm is the ability
-to easily get full information about the state of the parse.
+It is an important property of the Marpa algorithm that the
+Earley sets are added to one at a time,
+so that after the construction of Earley set and location @code{n}
+but before the construction of the Earley set at @code{n+1},
+we know the full the full state of the parse at and before
+location @code{n}.
+Libmpara's progress reports allow access to the Earley items
+in an Earley set.
 
 To start a progress report,
 use the
 @code{marpa_r_progress_report_start()}
 command.
-Only one progress report can be in use at any one time.
+For each recognizer,
+only one progress report can be in use at any one time.
 
-To get the information in a progress report,
-it is necessary to step through the progress report
-items.
-To get the data for the current progress report item,
-and advance to the next one,
+To step through the Earley items,
 use the
 @code{marpa_r_progress_item()}
-method.
-
-To destroy a progress report,
-freeing the memory it uses,
-call the
-@code{marpa_r_progress_report_finish()}
 method.
 
 @anchor{marpa_r_progress_report_reset}
@@ -3643,8 +3640,26 @@ On failure, @minus{}2.
 @deftypefun int marpa_r_progress_report_start ( @
   Marpa_Recognizer @var{r}, @
   Marpa_Earley_Set_ID @var{set_id})
-Initializes a report of the progress at Earley set @var{set_id}
-for recognizer @var{r}.
+
+Creates a traverser of the Earley set with ID @var{set_id}
+in recognizer @var{r}.
+A traverser is a non-empty directed cycle graph whose vertices consist
+of the following.
+@itemize
+@item One vertex for every Earley item.
+This vertex is called the ``progress report item''
+or, when the meaning is clear, the ``report item''.
+In this description, we will write @code{ritem[i]}
+for the @code{i}'th report item.
+@item A special vertex, called the ``null item'', which does not correspond
+to any Earley item.
+@end itemize
+
+There may be no Earley items in an Earley set,
+and therefore a traverse may contain no report items.
+A traverser with no report items is called a
+``trivial traverser''.
+
 If a progress report already exists, it is destroyed and its
 memory is freed.
 Initially,
