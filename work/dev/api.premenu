@@ -3623,16 +3623,23 @@ method.
 @anchor{marpa_r_progress_report_reset}
 @deftypefun int marpa_r_progress_report_reset ( @
   Marpa_Recognizer @var{r})
-Resets the progress report.
-Assumes a report of the progress has already been initialized
-at some Earley set
-for recognizer @var{r},
-with
-@code{marpa_r_progress_report_start()}.
-The reset progress report will
-be positioned before its first item.
 
-Return value: On success, a non-negative value.
+On success, sets the current vertex of the report traverser
+to the null vertex.
+For more about the report traverser,
+and for definitions of the current and null vertices,
+@pxref{marpa_r_progress_report_start,marpa_r_progress_report_start()}.
+
+This method is not usually needed.
+Its effect is to leave the traverser in the same state as it is
+immediately after the
+@code{marpa_r_progress_report_start()} method.
+Loosely speaking, it allows the traversal to "start over".
+
+Hard fails if the recognizer is not started,
+or if no progress report traverser is active.
+
+@strong{Return value}: On success, a non-negative value.
 On failure, @minus{}2.
 @end deftypefun
 
@@ -3641,60 +3648,96 @@ On failure, @minus{}2.
   Marpa_Recognizer @var{r}, @
   Marpa_Earley_Set_ID @var{set_id})
 
-Creates a traverser of the Earley set with ID @var{set_id}
+Creates a progress report traverser of the Earley set with ID @var{set_id}
 in recognizer @var{r}.
-A traverser is a non-empty directed cycle graph whose vertices consist
-of the following.
+A
+@dfindex progress report traverser
+@dfindex traverser, progress report
+@dfn{progress report traverser}
+is a non-empty directed cycle graph whose vertices consist
+of the following:
 @itemize
 @item One vertex for every Earley item.
-This vertex is called the ``progress report item''
-or, when the meaning is clear, the ``report item''.
-In this method description, we will write @code{ritem[i]}
-for the @code{i}'th report item,
-and we will say the the number of report items is @code{n}.
-@item A special vertex, called the ``null vertex'' or ``null item'', which does not correspond
+This vertex is called the
+@dfindex progress report item
+@dfn{progress report item}
+or, when the meaning is clear, the
+@dfindex report item
+@dfn{report item}.
+In this method description,
+we will say the the number of report items is @code{n},
+and we will write @code{ritem[i]}
+for the @code{i}'th report item.
+@item A special vertex, called the
+@dfindex null vertex
+@dfindex vertex, null
+@dfn{null vertex},
+@dfindex null report item
+@dfindex report item, null
+@dfn{null report item}, or
+@dfindex null item
+@dfn{null item},
+which does not correspond
 to any Earley item.
 In this method decription, we will write @code{null} for
 the null vertex.
 @end itemize
 
 There may be no Earley items in an Earley set,
-and therefore a traverser may contain no report items.
-A traverser with no report items is called a
+and therefore a progress report traverser may contain no report items.
+A progress report traverser with no report items is called a
 ``trivial traverser''.
 
 A trivial traverser has exactly one edge: @code{(null, null)}.
-The edge of a non-trivial traverser are
-@code{(null, ritem[0])},
-@code{ritem[n-1], null} and,
-for every @code{0 <= i < v-1},
-@code{ritem[i-1], ritem[i]}.
+The edges of a non-trivial traverser are
+@itemize
+@item @code{(null, ritem[0])},
+@item @code{(ritem[n-1], null)} and,
+@item for every @code{0 <= i < v-1}, @code{ritem[i-1], ritem[i]}.
+@end itemize
 This implies that every vertex has exactly one direct successor.
+The report items are a subgraph,
+and this graph can be seen as inducing the sequence @code{ritem[0] ... ritem[n-1]}.
 
-The traverser, when active, has exactly one ``current'' vertex or
+The progress report traverser, when active, has exactly one
+@dfindex current vertex (of a progress report traverser)
+@dfindex vertex, current (of a progress report traverser)
+@dfn{current vertex}
+or
 item, which we will write as @code{current}.
 We call the direct successor of the current item,
-the ``next'' vertex or item.
+the
+@dfindex next vertex (of a progress report traverser)
+@dfindex vertex, next (of a progress report traverser)
+@dfn{next vertex}
+or item.
 
-If a progress report already exists, it is destroyed and its
-memory is freed.
 Initially,
 the progress report is positioned before its first item.
 
-If no Earley set with ID
-@var{set_id} exists,
-@code{marpa_r_progress_report_start()}
-fails.
+On success, does the following:
+@itemize
+@item If a progress report traverser already exists, before this method call
+destroys and frees its memory.
+@item Creates a new progress report traverser from the Earley items for the
+Earley set with ID @var{set_id}.
+@item Activates the newly creted progress report traverer,
+setting the current vertex to the null vertex.
+@item Returns @code{n}, the number of report items.
+    @code{n} may be zero.
+@end itemize
+
+Hard fails if no Earley set with ID
+@var{set_id} exists.
 The error code is @code{MARPA_ERR_INVALID_LOCATION} if @var{set_id}
 is negative.
 The error code is @code{MARPA_ERR_NO_EARLEY_SET_AT_LOCATION}
 if @var{set_id} is greater than the ID of
 the latest Earley set.
 
-Return value: On success, the number of report items available.
-If the recognizer has not been started;
-if @var{set_id} does not exist;
-or on other failure, @minus{}2.
+Return value: On success, the number of report items,
+which will always be non-negative.
+On hard failure, @minus{}2.
 @end deftypefun
 
 @anchor{marpa_r_progress_report_finish}
