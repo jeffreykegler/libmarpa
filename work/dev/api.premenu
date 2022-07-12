@@ -3649,16 +3649,32 @@ of the following.
 @item One vertex for every Earley item.
 This vertex is called the ``progress report item''
 or, when the meaning is clear, the ``report item''.
-In this description, we will write @code{ritem[i]}
-for the @code{i}'th report item.
-@item A special vertex, called the ``null item'', which does not correspond
+In this method description, we will write @code{ritem[i]}
+for the @code{i}'th report item,
+and we will say the the number of report items is @code{n}.
+@item A special vertex, called the ``null vertex'' or ``null item'', which does not correspond
 to any Earley item.
+In this method decription, we will write @code{null} for
+the null vertex.
 @end itemize
 
 There may be no Earley items in an Earley set,
-and therefore a traverse may contain no report items.
+and therefore a traverser may contain no report items.
 A traverser with no report items is called a
 ``trivial traverser''.
+
+A trivial traverser has exactly one edge: @code{(null, null)}.
+The edge of a non-trivial traverser are
+@code{(null, ritem[0])},
+@code{ritem[n-1], null} and,
+for every @code{0 <= i < v-1},
+@code{ritem[i-1], ritem[i]}.
+This implies that every vertex has exactly one direct successor.
+
+The traverser, when active, has exactly one ``current'' vertex or
+item, which we will write as @code{current}.
+We call the direct successor of the current item,
+the ``next'' vertex or item.
 
 If a progress report already exists, it is destroyed and its
 memory is freed.
