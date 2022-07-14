@@ -3747,6 +3747,9 @@ On success,
 destroys the progress report traverser
 for recognizer @var{r},
 freeing its memory.
+For details about the report traverser,
+@pxref{marpa_r_progress_report_start,marpa_r_progress_report_start()}.
+
 It is often not necessary to call this method.
 @code{marpa_r_progress_report_start()} destroys
 any previously existing progress report.
@@ -3768,10 +3771,10 @@ Marpa_Rule_ID marpa_r_progress_item ( @
   int* @var{position}, @
   Marpa_Earley_Set_ID* @var{origin} )
 This method allows access to the data
-for the next report item of a
+for the next progress report item of a
 progress report.
-A progress item consists of a rule,
-a dot position, and an origin.
+For details about progress reports,
+@pxref{marpa_r_progress_report_start,marpa_r_progress_report_start()}.
 
 In the event of success:
 @itemize
