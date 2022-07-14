@@ -3650,8 +3650,9 @@ int marpa_r_progress_report_start ( @
   Marpa_Recognizer @var{r}, @
   Marpa_Earley_Set_ID @var{set_id})
 
-Creates a progress report traverser of the Earley set with ID @var{set_id}
-in recognizer @var{r}.
+Creates a progress report traverser
+in recognizer @var{r}
+for the Earley set with ID @var{set_id}.
 A
 @dfindex progress report traverser
 @dfindex traverser, progress report
@@ -3717,7 +3718,7 @@ it is destroyed and its memory is freed..
 Earley set with ID @var{set_id}.
 @item Activates the newly created progress report traverser,
 setting the current vertex to the null vertex.
-Intuitively, in a on-trivial traverser,
+Intuitively, in a non-trivial traverser,
 this can be thought of as positioning the
 traverser before the first report item.
 @item Returns @code{n}, the number of report items.
