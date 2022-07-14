@@ -3600,9 +3600,9 @@ On hard failure, @minus{}2.
 @chapter Progress reports
 
 It is an important property of the Marpa algorithm that the
-Earley sets are added to one at a time,
-so that after the construction of Earley set and location @code{n}
-but before the construction of the Earley set at @code{n+1},
+Earley sets are added one at a time,
+so that
+before we have started the construction of the Earley set at @code{n+1},
 we know the full the full state of the parse at and before
 location @code{n}.
 Libmpara's progress reports allow access to the Earley items
@@ -3645,7 +3645,7 @@ On failure, @minus{}2.
 @end deftypefn
 
 @anchor{marpa_r_progress_report_start}
-@deftypefn {Accessor function} @
+@deftypefn {Mutator function} @
 int marpa_r_progress_report_start ( @
   Marpa_Recognizer @var{r}, @
   Marpa_Earley_Set_ID @var{set_id})
@@ -3694,20 +3694,19 @@ A trivial traverser has exactly one edge: @code{(null, null)}.
 The edges of a non-trivial traverser are
 @itemize
 @item @code{(null, ritem[0])},
-@item @code{(ritem[n-1], null)} and,
-@item for every @code{0 <= i < v-1}, @code{ritem[i-1], ritem[i]}.
+@item @code{(ritem[n-1], null)}, and
+@item for every @code{0 <= i < v-1}, @code{(ritem[i-1], ritem[i])}.
 @end itemize
 This implies that every vertex has exactly one direct successor.
 The report items are a subgraph,
 and this graph can be seen as inducing the sequence @code{ritem[0] ... ritem[n-1]}.
 
-The progress report traverser, when active, has exactly one
+When a progress report traverser is active, one vertex is distinguished as the
 @dfindex current vertex (of a progress report traverser)
 @dfindex vertex, current (of a progress report traverser)
-@dfn{current vertex}
-or
-item, which we will write as @code{current}.
-We call the direct successor of the current item,
+@dfn{current vertex},
+which we will write as @code{current}.
+We call the direct successor of the current vertex,
 the
 @dfindex next vertex (of a progress report traverser)
 @dfindex vertex, next (of a progress report traverser)
@@ -3780,19 +3779,20 @@ a dot position, and an origin.
 In the event of success:
 @itemize
 @item Advances the current vertex to the next vertex.
-More precisely, let @code{c_before} is the current vertex immediately
+More precisely, let @code{c_before} be the vertex
+that is the current vertex immediately
 before the call to this method.
 The report item traverser has exactly one edge such that @code{c_before}
 is its first element.
 Let this edge be @code{(c_before,c_after)}.
-This method set the current vertex to @code{c_after}.
-In this method description, @code{current} will be an alias for @code{c_after}.
+This method sets the current vertex to @code{c_after}.
+In this method description, we will write @code{current} as an alias for @code{c_after}.
 @item @code{current} will be a report item vertex.
 @item Writes the "cooked dot position" of @code{current} to the location
 pointed to by the @var{position} argument.
 @item Writes the origin of @code{current} to the location
 pointed to by the @var{origin} argument.
-@item Returns the rule ID of @code{current}
+@item Returns the rule ID of @code{current}.
 @end itemize
 
 The "cooked dot position" is
