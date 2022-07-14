@@ -3628,7 +3628,7 @@ int marpa_r_progress_report_reset ( @
 On success, sets the current vertex of the report traverser
 to the null vertex.
 For more about the report traverser,
-and for definitions of the current and null vertices,
+including details about the current and null vertices,
 @pxref{marpa_r_progress_report_start,marpa_r_progress_report_start()}.
 
 This method is not usually needed.
@@ -3659,7 +3659,9 @@ A
 is a non-empty directed cycle graph whose vertices consist
 of the following:
 @itemize
-@item One vertex for every Earley item.
+@item For every Earley item,
+exactly one vertex that corresponds to
+that Earley item.
 This vertex is called the
 @dfindex progress report item
 @dfn{progress report item}
@@ -3674,14 +3676,9 @@ for the @code{i}'th report item.
 @dfindex null vertex
 @dfindex vertex, null
 @dfn{null vertex},
-@dfindex null report item
-@dfindex report item, null
-@dfn{null report item}, or
-@dfindex null item
-@dfn{null item},
 which does not correspond
 to any Earley item.
-In this method decription, we will write @code{null} for
+In this method description, we will write @code{null} for
 the null vertex.
 @end itemize
 
@@ -3689,8 +3686,8 @@ There may be no Earley items in an Earley set,
 and therefore a progress report traverser may contain no report items.
 A progress report traverser with no report items is called a
 ``trivial traverser''.
-
 A trivial traverser has exactly one edge: @code{(null, null)}.
+
 The edges of a non-trivial traverser are
 @itemize
 @item @code{(null, ritem[0])},
@@ -3710,20 +3707,19 @@ We call the direct successor of the current vertex,
 the
 @dfindex next vertex (of a progress report traverser)
 @dfindex vertex, next (of a progress report traverser)
-@dfn{next vertex}
-or item.
-
-Initially,
-the progress report is positioned before its first item.
+@dfn{next vertex}.
 
 On success, does the following:
 @itemize
-@item If a progress report traverser already exists, before this method call
-destroys and frees its memory.
+@item If a progress report traverser was active in this recognizer before this method call,
+it is destroyed and its memory is freed..
 @item Creates a new progress report traverser from the Earley items for the
 Earley set with ID @var{set_id}.
-@item Activates the newly created progress report traverer,
+@item Activates the newly created progress report traverser,
 setting the current vertex to the null vertex.
+Intuitively, in a on-trivial traverser,
+this can be thought of as positioning the
+traverser before the first report item.
 @item Returns @code{n}, the number of report items.
     @code{n} may be zero.
 @end itemize
@@ -3753,9 +3749,9 @@ freeing its memory.
 It is often not necessary to call this method.
 @code{marpa_r_progress_report_start()} destroys
 any previously existing progress report.
-And any existing progress report
-is destroyed when
-the recognizer is destroyed.
+And,
+when a recognizer is destroyed,
+its progress report is destroyed as a side effect.
 
 Hard fails if no progress report is active.
 
@@ -3771,7 +3767,7 @@ Marpa_Rule_ID marpa_r_progress_item ( @
   int* @var{position}, @
   Marpa_Earley_Set_ID* @var{origin} )
 This method allows access to the data
-for the next item of a
+for the next report item of a
 progress report.
 A progress item consists of a rule,
 a dot position, and an origin.
@@ -6882,6 +6878,16 @@ This chapter discusses features that are @strong{not}
 in the external interface,
 but that might be added
 to the external interface in the future.
+
+@node Report item traverser should be a time object
+@section Report item traverser should be a time object
+
+Right now, a report item traverser is a kind of "subobject"
+of a recognizer.
+It should be made into a full-fledged time object.
+This will allow multiple report item traversers to be in
+use at once,
+allowing more aggressive use of this facility.
 
 @node Orthogonal treatment of soft failures
 @section Orthogonal treatment of soft failures
