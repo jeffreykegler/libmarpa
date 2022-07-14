@@ -3784,12 +3784,13 @@ is its first element.
 Let this edge be @code{(c_before,c_after)}.
 This method sets the current vertex to @code{c_after}.
 In this method description, we will write @code{current} as an alias for @code{c_after}.
-@item @code{current} will be a report item vertex.
-@item Writes the "cooked dot position" of @code{current} to the location
-pointed to by the @var{position} argument.
-@item Writes the origin of @code{current} to the location
-pointed to by the @var{origin} argument.
-@item Returns the rule ID of @code{current}.
+@item @code{current} will be a report item vertex and therefore there will
+be an Earley item corresponding to @code{current}.
+@item Writes the "cooked dot position" of the Earley item corresponding to @code{current}
+to the location pointed to by the @var{position} argument.
+@item Writes the origin of the Earley item corresponding to @code{current}
+to the location pointed to by the @var{origin} argument.
+@item Returns the rule ID of the Earley item corresponding to @code{current}.
 @end itemize
 
 The "cooked dot position" is
