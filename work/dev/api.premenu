@@ -3603,9 +3603,9 @@ It is an important property of the Marpa algorithm that the
 Earley sets are added one at a time,
 so that
 before we have started the construction of the Earley set at @code{n+1},
-we know the full the full state of the parse at and before
+we know the full state of the parse at and before
 location @code{n}.
-Libmpara's progress reports allow access to the Earley items
+Libmarpa's progress reports allow access to the Earley items
 in an Earley set.
 
 To start a progress report,
