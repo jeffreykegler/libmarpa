@@ -11371,9 +11371,16 @@ Marpa_Or_Node_ID _marpa_b_top_or_node(Marpa_Bocage b)
 
 @*0 Ambiguity metric.
 An ambiguity metric, named vaguely because it is vaguely defined.
-It is 1 if the parse in not ambiguous,
+It is 1 if the parse is not ambiguous,
 and greater than 1 if it is ambiguous.
 For convenience, it is initialized to 1.
+@ In the future, the ambiguity metric for an ambiguous parse
+should be approximately
+the or-node count minus the and-node count,
+provided that it is always at least 2.
+Here ``approximately'' means ``within one or two''.
+Allowing for approximation is intended to enable cheap
+on the fly computation of this metric.
 @d Ambiguity_Metric_of_B(b) ((b)->t_ambiguity_metric)
 @ @<Int aligned bocage elements@>= int t_ambiguity_metric;
 @ @<Initialize bocage elements@> =
@@ -11564,10 +11571,10 @@ PRIVATE void order_free(ORDER o)
     @<Unpack bocage objects@>@;
 
 @*0 Ambiguity metric.
-An ambiguity metric, named vaguely because it is vaguely defined.
-It is 1 if the parse in not ambiguous,
+The ambiguity metric is 1 if the parse is not ambiguous,
 and greater than 1 if it is ambiguous.
 For convenience, it is initialized to 1.
+See the discussion of the ambiguity metric for the bocage.
 @d Ambiguity_Metric_of_O(o) ((o)->t_ambiguity_metric)
 @ @<Int aligned order elements@>= int t_ambiguity_metric;
 
