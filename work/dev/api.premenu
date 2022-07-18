@@ -3836,19 +3836,6 @@ or on other hard failure, @minus{}2.
 @node Bocage overview
 @section Overview
 
-A bocage is a data structures containing the parses
-found by processing the input according to the grammar.
-It is related to a parse forest,
-but is in a form which is more compact and easily traverable.
-"Bocage" is our term, and we discovered this structure
-independently,
-but our work was preceded by Elizabeth Scott.
-And, unlike us,
-Prof. Scott has done the all-important
-work of documenting it and provided the
-appropriate mathematical apparatus.
-@xref{Elizabeth Scott's SPPFs}.
-
 To create a bocage, use the
 @code{marpa_b_new()}
 method.
@@ -3858,32 +3845,69 @@ using the
 @code{marpa_b_unref()}
 method.
 
+@node Bocage data structure
+@section Bocage data structure
+
+A bocage is a data structure containing the parses
+found by processing the input according to the grammar.
+It is related to a parse forest,
+but is in a form which is more compact and easily traversable.
+``Bocage'' is our term, and we discovered this structure
+independently,
+but our work was preceded by Elizabeth Scott.
+And, unlike us,
+Prof. Scott did the all-important
+work of documenting it and providing the
+appropriate mathematical apparatus.
+@xref{Elizabeth Scott's SPPFs}.
+
+The bocage contains the data for the parse trees whose root is
+an instance of the start symbol that begins at Earley set 0
+and ends at the
+@dfindex End of parse Earley set
+@dfindex Earley set, end of parse
+@dfn{end of parse Earley set}.
+Applications usually use the Earley set at the current earleme
+as the
+``end of parse Earley set'',
+so that the bocage is for the entire input.
+But some applications may be interested in parsing prefixes of
+the input, and these applications can set choose other
+end of parse Earley sets in their constructor.
+@xref{marpa_b_new,marpa_b_new()}.
+
 @node Bocage constructor
 @section Creating a new bocage
 
 @anchor{marpa_b_new}
-@deftypefun Marpa_Bocage marpa_b_new (Marpa_Recognizer @var{r}, @
+@deftypefn {Constructor function} @
+Marpa_Bocage marpa_b_new (Marpa_Recognizer @var{r}, @
     Marpa_Earley_Set_ID @var{earley_set_ID})
 
-Creates a new bocage object, with a reference count of 1.
-The reference count of its parent recognizer object, @var{r},
+On success, the following is the case:
+@itemize
+@item If @code{earley_set_ID} is non-negative,
+creates a new bocage object, whose ``end of parse Earley set''
+is the Earley set with ID @code{earley_set_ID}.
+@item If @code{earley_set_ID} is @minus{}1,
+creates a new bocage object, whose ``end of parse Earley set''
+is the Earley set at the current earleme.
+@item The new bocage object has a reference count of 1.
+@item The reference count of its parent recognizer object, @var{r},
 is increased by 1.
-If @var{earley_set_ID} is @minus{}1,
-the Earley set at the current earleme is used,
-if there is one.
+@end itemize
 
 If @var{earley_set_ID} is @minus{}1
 and there is no Earley set at the current earleme;
-or if @var{earley_set_ID} is @minus{}1
+or if @var{earley_set_ID} is non-negative
 and there is no parse ending at Earley set @var{earley_set_ID},
 @code{marpa_b_new()}
-fails
-and the error code is set to
-@code{MARPA_ERR_NO_PARSE}.
+hard fails
+with the error code @code{MARPA_ERR_NO_PARSE}.
 
-Success return value: On success, the new bocage object.
-On failure, @code{NULL}.
-@end deftypefun
+@strong{Return value}: On success, the new bocage object.
+On hard failure, @code{NULL}.
+@end deftypefn
 
 @node Bocage reference counting
 @section  Reference counting
