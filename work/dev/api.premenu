@@ -3870,7 +3870,7 @@ and ends at the
 Applications usually use the Earley set at the current earleme
 as the
 ``end of parse Earley set'',
-so that the bocage is for the entire input.
+so that the bocage is for parses of the entire input.
 But some applications may be interested in parsing prefixes of
 the input, and these applications can set choose other
 end of parse Earley sets in their constructor.
