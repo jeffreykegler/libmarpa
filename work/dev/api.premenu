@@ -6880,9 +6880,17 @@ the lastest and current earlemes will always be the same.
 @chapter Futures
 
 This chapter discusses features that are @strong{not}
-in the external interface,
-but that might be added
+in the external interface.
+These features are change or additions that might be made
 to the external interface in the future.
+
+@node Better defined ambiguity metric
+@section Better defined ambiguity metric
+
+With experience, we are now in a position to define an
+ambiguity metric that can be cheaply calculated,
+and which might be of real use.
+Preliminary notes are in the CWeb code.
 
 @node Report item traverser should be a time object
 @section Report item traverser should be a time object
