@@ -3836,10 +3836,18 @@ or on other hard failure, @minus{}2.
 @node Bocage overview
 @section Overview
 
-A bocage is structure containing the full set of parses found
-by processing the input according to the grammar.
-The bocage structure is new with Libmarpa, but is very similar
-in purpose to the more familar parse forests.
+A bocage is a data structures containing the parses
+found by processing the input according to the grammar.
+It is related to a parse forest,
+but is in a form which is more compact and easily traverable.
+"Bocage" is our term, and we discovered this structure
+independently,
+but our work was preceded by Elizabeth Scott.
+And, unlike us,
+Prof. Scott has done the all-important
+work of documenting it and provided the
+appropriate mathematical apparatus.
+@xref{Elizabeth Scott's SPPFs}.
 
 To create a bocage, use the
 @code{marpa_b_new()}
@@ -6553,7 +6561,18 @@ Numeric value: 72.
 
 This section contains technical notes that are
 not necessary for the main presentation,
-but which may be useful or interesting.
+but which may be helpful or interesting.
+
+@node Elizabeth Scott's SPPFs
+@section Elizabeth Scott's SPPFs
+
+One of our most important data structures is what we call a "bocage".
+Prof. Scott's work preceded ours,
+and her SPPF structure is our bocage in all essential respects,
+so much so that her excellent writeup serves perfectly
+as documentation for the bocage:
+Scott, Elizabeth. "SPPF-style parsing from Earley recognisers." Electronic Notes in Theoretical Computer Science 203.2 (2008): 53-67,
+@url{https://dinhe.net/~aredridel/.notmine/PDFs/Parsing/SCOTT%2C%20Elizabeth%20-%20SPPF-Style%20Parsing%20From%20Earley%20Recognizers.pdf}.
 
 @node Data types used by Libmarpa
 @section Data types used by Libmarpa
