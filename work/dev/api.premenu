@@ -3872,7 +3872,7 @@ as the
 ``end of parse Earley set'',
 so that the bocage is for parses of the entire input.
 But some applications may be interested in parsing prefixes of
-the input, and these applications can set choose other
+the input, and these applications can choose other
 end of parse Earley sets in their constructor.
 @xref{marpa_b_new,marpa_b_new()}.
 
