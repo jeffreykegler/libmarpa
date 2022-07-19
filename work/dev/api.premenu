@@ -3912,62 +3912,56 @@ On hard failure, @code{NULL}.
 @node Bocage reference counting
 @section  Reference counting
 @anchor{marpa_b_ref}
-@deftypefun Marpa_Bocage marpa_b_ref (Marpa_Bocage @var{b})
-Increases the reference count by 1.
-Not needed by most applications.
+@deftypefn {Mutator function} @
+Marpa_Bocage marpa_b_ref (Marpa_Bocage @var{b})
 
-Return value:
+On success, increases the reference count by 1.
+This method is not needed by most applications.
+
+@strong{Return value}:
 On success, @var{b}.
-On failure, @code{NULL}.
-@end deftypefun
+On hard failure, @code{NULL}.
+@end deftypefn
 
 @anchor{marpa_b_unref}
-@deftypefun void marpa_b_unref (Marpa_Bocage @var{b})
+@deftypefn {Destructor function} @
+void marpa_b_unref (Marpa_Bocage @var{b})
 Decreases the reference count by 1,
 destroying @var{b} once the reference count reaches
 zero.
 When @var{b} is destroyed, the reference count
 of its parent recognizer is decreased by 1.
-If this takes the reference count of the parent recognizer
-to zero, it too is destroyed.
-If the parent recognizer is destroyed, the reference count
-of its base grammar is decreased by 1.
-If this takes the reference count of the base grammar
-to zero, it too is destroyed.
 
-@end deftypefun
+@end deftypefn
 
 @node Bocage accessor
 @section  Accessors
 @anchor{marpa_b_ambiguity_metric}
-@deftypefun int marpa_b_ambiguity_metric (Marpa_Bocage @var{b})
-Returns an ambiguity metric.
-The metric is 1 is the parse is unambiguous.
-If the metric is 2 or greater,
-the parse is ambiguous.
-It was originally intended to have values greater
-than 2 be an cheaply computed
-estimate of the degree of ambiguity,
-but a satisfactory scheme for this
-has yet to be implemented.
+@deftypefn {Accessor function} @
+int marpa_b_ambiguity_metric (Marpa_Bocage @var{b})
+On success, returns an ambiguity metric.
+If the parse is unambiguous,
+the metric is 1.
+If the parse is ambiguous, the metric
+is 2 or greater, and is otherwise indeterminate.
+@xref{Better defined ambiguity metric}.
 
-Return value on success:
-1 if the bocage is not for an ambiguous parse;
-2 or greater if the bocage is for an ambiguous parse.
+@strong{Return value}: On success, the ambiguity metric,
+which is always non-negative.
+On hard failure, @minus{}2.
 
-Failures: On failure, @minus{}2.
-
-@end deftypefun
+@end deftypefn
 
 @anchor{marpa_b_is_null}
-@deftypefun int marpa_b_is_null (Marpa_Bocage @var{b})
-Return value on success:
-A number greater than or equal to 1 if the bocage is for a null parse;
-otherwise, 0.
+@deftypefn {Accessor function} @
+int marpa_b_is_null (Marpa_Bocage @var{b})
 
-Failures: On failure, @minus{}2.
-
-@end deftypefun
+@strong{Return value}
+On success, a non-negative integer:
+1 or greater if the bocage @strong{is} for a null parse,
+and 0 if the bocage is @strong{not} for a null parse.
+On hard failure, @minus{}2.
+@end deftypefn
 
 @node Ordering methods
 @chapter Ordering methods
