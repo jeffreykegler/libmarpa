@@ -3996,50 +3996,44 @@ This is expected to change.
 @section Creating an ordering
 
 @anchor{marpa_o_new}
-@deftypefun Marpa_Order marpa_o_new ( @
-    Marpa_Bocage @var{b})
-Creates a new ordering object, with a reference count of 1.
-The reference count of its parent bocage object, @var{b},
-is increased by 1.
+@deftypefn {Constructor function} @
+Marpa_Order marpa_o_new ( Marpa_Bocage @var{b})
 
-Return value: On success, the new ordering object.
-On failure, @code{NULL}.
-@end deftypefun
+On success, does the following:
+@itemize
+@item Creates a new ordering object, with a reference count of 1.
+@item Increases the reference count of its parent bocage object, @var{b}, by 1.
+@end itemize
+
+@strong{Return value}: On success, the new ordering object.
+On hard failure, @code{NULL}.
+@end deftypefn
 
 @node Ordering reference counting
 @section Reference counting
 
 @anchor{marpa_o_ref}
-@deftypefun Marpa_Order marpa_o_ref ( @
-    Marpa_Order @var{o})
-Increases the reference count by 1.
+@deftypefn {Mutator function} @
+Marpa_Order marpa_o_ref ( Marpa_Order @var{o})
+
+On success, increases the reference count by 1.
 Not needed by most applications.
 
-Return value:
+@strong{Return value}:
 On success, @var{o}.
-On failure, @code{NULL}.
-@end deftypefun
+On hard failure, @code{NULL}.
+@end deftypefn
 
 @anchor{marpa_o_unref}
-@deftypefun void marpa_o_unref ( @
+@deftypefn {Destructor function} @
+void marpa_o_unref ( @
     Marpa_Order @var{o})
+
 Decreases the reference count by 1,
 destroying @var{o} once the reference count reaches
 zero.
-Beginning with @var{o}'s parent bocage,
-Libmarpa then proceeds up the chain of parent objects.
-Every time a child is destroyed, the
-reference count of its parent is decreased by 1.
-Every time the reference count of an object
-is decreased by 1,
-if that reference count is now zero,
-that object is destroyed.
-Libmarpa follows this chain of decrements
-and destructions as required,
-all the way back to the
-base grammar, if necessary.
 
-@end deftypefun
+@end deftypefn
 
 @node Order accessor
 @section  Accessors
