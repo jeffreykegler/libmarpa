@@ -3988,10 +3988,6 @@ tree iterator is created
 using it.
 A frozen ordering cannot be changed.
 
-As of this writing, the only methods to order parses
-are internal and undocumented.
-This is expected to change.
-
 @node Ordering constructor
 @section Creating an ordering
 
@@ -4038,20 +4034,29 @@ zero.
 @node Order accessor
 @section  Accessors
 @anchor{marpa_o_ambiguity_metric}
-@deftypefun int marpa_o_ambiguity_metric (Marpa_Order @var{o})
-Returns an ambiguity metric.
-The metric is 1 is the parse is unambiguous.
-If the metric is 2 or greater,
-the parse is ambiguous.
-It was originally intended to have values greater
-than 2 be an cheaply computed
-estimate of the degree of ambiguity,
-but a satisfactory scheme for this
-has yet to be implemented.
+@deftypefn {Accessor function} @
+int marpa_o_ambiguity_metric (Marpa_Order @var{o})
+
+On success, returns an ambiguity metric.
+If the parse is unambiguous,
+the metric is 1.
+If the parse is ambiguous, the metric
+is 2 or greater, and is otherwise indeterminate.
+@xref{Better defined ambiguity metric}.
+
+If ``high rank only'' is in effect,
+this ambiguity metric may differ from that returned by
+@code{marpa_b_ambiguity_metric()}.
+In particular, a ``high rank only'' ordering
+may be unambiguous even if its base bocage is ambiguous.
+But note also,
+because multiple parses choices may have the same rank,
+a ``high rank only'' ordering may be ambiguous.
 
 If the ordering is not already frozen,
 it will be frozen on return from
 @code{marpa_o_ambiguity_metric()}.
+For our purposes,
 @code{marpa_o_ambiguity_metric()}
 is considered an ``accessor'',
 because it is assumed that the ordering is frozen
@@ -4059,13 +4064,11 @@ when
 @code{marpa_o_ambiguity_metric()}
 is called.
 
-Return value on success:
-1 if the ordering is not for an ambiguous parse;
-2 or greater if the ordering is for an ambiguous parse.
+@strong{Return value}:
+On success, the ambiguity metric, which is non-negative.
+On hard failure, @minus{}2.
 
-Failures: On failure, @minus{}2.
-
-@end deftypefun
+@end deftypefn
 
 @anchor{marpa_o_is_null}
 @deftypefun int marpa_o_is_null (Marpa_Order @var{o})
