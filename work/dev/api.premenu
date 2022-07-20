@@ -4835,46 +4835,112 @@ returns the integer which is
 the value of the token.
 @end deftypefn
 
-@node Other step accessors
-@section Other step accessors
+@node Step location accessors
+@section Step location accessors
 
-This section contains the step accessors that
-are not basic to stack manipulation, but which provide
-other useful information about the parse.
+This section describes step accessors which are not basic to stack manipulation,
+but that provide other Earley set location information about the parse.
+A step's location in terms of Earley sets is called its ES location.
+Every ES location is the ID of an Earley set.
+
 These step accessors are implemented as macros.
+All of these accessors always succeed, but if called when they are
+irrelevant they return an unspecified value. In this context, an
+“unspecified value” is a value that is either -1 or the ID of a
+valid Earley set, but which is otherwise unpredictable.
 
-All of these accessors always succeed, but
-if called when they are irrelevant
-they return an unspecified value.
-In this context, an ``unspecified value'' is a value
-that is either @minus{}1 or the ID of a valid Earley set,
-but which is otherwise unpredictable.
+ES location is only relevant for parse nodes.
+A parse node is either a leaf node or a rule node.
+The step type for a rule node is MARPA_STEP_RULE.
+A leaf node is either a nulled node,
+or a token node.
+The step type for a nulled node is MARPA_STEP_NULLING_SYMBOL.
+The step type for a token node is MARPA_STEP_TOKEN.
 
-@deftypefn {Macro} Marpa_Earley_Set_ID marpa_v_es_id (Marpa_Value @var{v})
-Return value:
-If the current step type is @code{MARPA_STEP_RULE},
-the Earley Set ordinal where the rule ends.
-If the current step type is
-@code{MARPA_STEP_TOKEN}
-or @code{MARPA_STEP_NULLING_SYMBOL},
-the Earley Set ordinal where the symbol ends.
-If the current step type is anything else, an unspecified value.
+Every parse node has both a start ES location
+and an end ES location.
+The start ES location is the first ES location of
+that parse node.
+
+The end ES location of a leaf is the ES location where
+the next leaf symbol in the fringe of the current parse would start.
+Typically, this is the location where a leaf node actually starts,
+but toward the end of a parse, there may not be an actual next leaf node.
+
+The start ES location of a MARPA_RULE_STEP is the start ES location
+of its first child node in the current parse tree.
+The end ES location of a MARPA_RULE_STEP is the end ES location
+of its last child node in the current parse tree.
+
+@deftypefn {Accessor macro} @
+Marpa_Earley_Set_ID marpa_v_es_id (Marpa_Value v)
+
+@strong{Return value}:
+If the current step type is MARPA_STEP_RULE, MARPA_STEP_TOKEN, or MARPA_STEP_NULLING_SYMBOL,
+the return value is the end ES location of the parse node.
+If the current step type is anything else,
+or if the valuator is inactive,
+the return value is indeterminate.
 @end deftypefn
 
-@deftypefn {Macro} Marpa_Earley_Set_ID marpa_v_rule_start_es_id (Marpa_Value @var{v})
-Return value:
-If the current step type is @code{MARPA_STEP_RULE},
-the Earley Set ordinal where the rule begins.
-If the current step type is anything else, an unspecified value.
+@deftypefn {Accessor macro} @
+Marpa_Earley_Set_ID marpa_v_rule_start_es_id (Marpa_Value v)
+
+@strong{Return value}:
+If the current step type is MARPA_STEP_RULE, the start ES location of the rule node.
+If the current step type is anything else,
+or if the valuator is inactive,
+the return value is indeterminate.
 @end deftypefn
 
-@deftypefn {Macro} Marpa_Earley_Set_ID marpa_v_token_start_es_id (Marpa_Value @var{v})
-Return value:
-If the current step type is @code{MARPA_STEP_TOKEN}
-or @code{MARPA_STEP_NULLING_SYMBOL},
-the Earley Set ordinal where the token begins.
-If the current step type is anything else, an unspecified value.
+@deftypefn {Accessor macro} @
+Marpa_Earley_Set_ID marpa_v_token_start_es_id (Marpa_Value v)
+
+@strong{Return value}:
+If the current step type is MARPA_STEP_TOKEN or MARPA_STEP_NULLING_SYMBOL,
+the start ES location of the leaf node.
+or if the valuator is inactive,
+the return value is indeterminate.
 @end deftypefn
+
+For every parse node of the current parse tree,
+the Earley set length (ES length) of the node is the end ES location,
+less the start ES location.
+The ES length of a nulled node is always 0.
+
+If v is a valuator whose current step type is MARPA_STEP_NULLING_SYMBOL, it is always the case that
+
+@verbatim
+         marpa_v_token_start_es_id(v) == marpa_v__es_id(v)
+@end verbatim
+
+If v is a valuator whose current step type is MARPA_STEP_RULE or MARPA_STEP_TOKEN,
+it is always the case that
+
+@verbatim
+        marpa_v_token_start_es_id(v) <= marpa_v__es_id(v)
+@end verbatim
+
+As an example, let Null be a nulling symbol and let Tok be a non-nullable symbol.
+Then a possible fringe is
+
+@verbatim
+        Null@0-0, Tok@0-1, Null@1-1, Tok@1-2, Null@2-2
+@end verbatim
+
+where the fringe is ordered from left to right, and the notation @verb{|Sym@m-n|} indicates that the symbol
+Sym has ES start location m and ES end location n.
+Another example is
+
+@verbatim
+        Null@0-0, Null@0-0, Tok@0-1, Null@1-1, Null@1-1, Tok@1-2, Null@2-2, Null@2-2
+@end verbatim
+
+In this second example note that when a nulled leaf immediately follows another
+nulled leaf, both leaves has the same start ES location and the same end ES location.
+This makes sense, because nulled symbol instances do not advance the current ES location,
+but it also implies that the ES locations and LHS symbol
+cannot be used to uniquely identify a parse node.
 
 @node Events
 @chapter Events
