@@ -4182,6 +4182,7 @@ To create a tree, use the
 @code{marpa_t_new()}
 method.
 A newly created tree iterator is positioned before the first parse tree.
+
 When a tree iterator is no longer in use, its memory can be freed
 using the
 @code{marpa_t_unref()}
@@ -4201,62 +4202,55 @@ to position it to the next parse tree.
 @section Creating a new tree iterator
 
 @anchor{marpa_t_new}
-@deftypefun Marpa_Tree marpa_t_new (Marpa_Order @var{o})
-Creates a new tree iterator, with a reference count of 1.
-The reference count of its parent ordering object, @var{o},
-is increased by 1.
+@deftypefn {Constructor function} @
+Marpa_Tree marpa_t_new (Marpa_Order @var{o})
 
-When initialized, a tree iterator is positioned
-before the first parse tree.
-To position the tree iterator to the first parse,
-the application must call
-@code{marpa_t_next()}.
+On success, does the following:
+@itemize
+@item Creates a new tree iterator, with a reference count of 1.
+@item Increases the reference count of its parent ordering object, @var{o}, by 1.
+@item Positions the new tree iterator before the first parse tree.
+@end itemize
 
-Return value:  On success, a newly created tree.
-On failure, @code{NULL}.
-@end deftypefun
+@strong{Return value}:
+On success, a newly created tree.
+On hard failure, @code{NULL}.
+@end deftypefn
 
 @node Tree reference counting
 @section Reference counting
 
 @anchor{marpa_t_ref}
-@deftypefun Marpa_Tree marpa_t_ref (Marpa_Tree @var{t})
-Increases the reference count by 1.
+@deftypefn {Mutator function} @
+Marpa_Tree marpa_t_ref (Marpa_Tree @var{t})
+On success, increases the reference count by 1.
 Not needed by most applications.
 
-Return value:
+@strong{Return value}:
 On success, @var{t}.
-On failure, @code{NULL}.
-@end deftypefun
+On hard failure, @code{NULL}.
+@end deftypefn
 
 @anchor{marpa_t_unref}
-@deftypefun void marpa_t_unref (Marpa_Tree @var{t})
+@deftypefn {Destructor function} @
+void marpa_t_unref (Marpa_Tree @var{t})
+
 Decreases the reference count by 1,
 destroying @var{t} once the reference count reaches
 zero.
-Beginning with @var{t}'s parent ordering,
-Libmarpa then proceeds up the chain of parent objects.
-Every time a child is destroyed, the
-reference count of its parent is decreased by 1.
-Every time the reference count of an object
-is decreased by 1,
-if that reference count is now zero,
-that object is destroyed.
-Libmarpa follows this chain of decrements
-and destructions as required,
-all the way back to the
-base grammar, if necessary.
+@end deftypefn
 
-@end deftypefun
-
-@node Tree iteration
+@node Iterating through the trees
 @section Iterating through the trees
 
 @anchor{marpa_t_next}
-@deftypefun int marpa_t_next ( @
-        Marpa_Tree @var{t})
-Positions @var{t} at the next parse tree
+@deftypefn {Mutator function} @
+int marpa_t_next ( Marpa_Tree @var{t})
+
+On success,
+positions @var{t} at the next parse tree
 in the iteration.
+
 Tree iterators are initialized to the position
 before the first parse tree,
 so this method must be called before creating a valuator
@@ -4266,30 +4260,33 @@ If a tree iterator is positioned after the last parse,
 the tree is said to be ``exhausted''.
 A tree iterator for a bocage with no parse trees
 is considered to be ``exhausted'' when initialized.
-If the tree iterator is exhausted,
-@code{marpa_t_next()}
-returns @minus{}1 as a termination indicator,
-and sets the error code to
-@code{MARPA_ERR_TREE_EXHAUSTED}.
 
-Return value: On success, a non-negative value.
-If the tree iterator is exhausted, @minus{}1.
-On failure, @minus{}2.
-@end deftypefun
+If the tree iterator is exhausted,
+@itemize
+@item soft fails, and
+@item sets the error code to @code{MARPA_ERR_TREE_EXHAUSTED}.
+@end itemize
+
+@strong{Return value}: On success, a non-negative value.
+On soft failure, @minus{}1.
+On hard failure, @minus{}2.
+@end deftypefn
 
 @anchor{marpa_t_parse_count}
-@deftypefun int marpa_t_parse_count ( @
-        Marpa_Tree @var{t})
-The parse counter counts the number of parse trees
+@deftypefn {Accessor function} @
+int marpa_t_parse_count ( Marpa_Tree @var{t})
+
+Returns the count of the number of parse trees
 traversed so far.
 The count includes the current iteration of the
-tree, so that a value of 0 indicates that the tree iterator
+tree.
+A value of 0 indicates that the tree iterator
 is at its initialized position,
 before the first parse tree.
 
-Return value: The number of parses traversed so far.
+@strong{Return value}: The number of parses traversed so far.
 Always succeeds.
-@end deftypefun
+@end deftypefn
 
 @node Value methods
 @chapter Value methods
@@ -6977,9 +6974,12 @@ The treatment of soft failure evolved along with this interface,
 leaving traces of that evolution in the interface.
 For example, soft failures should not set the error code,
 but soft failure in
-@code{marpa_r_progress_item}
+@code{marpa_r_progress_item()}
 sets the error code to @code{MARPA_ERR_PROGRESS_REPORT_EXHAUSTED}.
 @xref{marpa_r_progress_item,marpa_r_progress_item()}.
+Similar, soft failure
+@code{marpa_t_next()}
+sets the error code to @code{MARPA_ERR_TREE_EXHAUSTED}.
 These non-orthogonalities should be fixed someday.
 
 @node Orthogonal treatment of exhaustion
