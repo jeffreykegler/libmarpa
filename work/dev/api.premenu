@@ -4429,15 +4429,6 @@ In the system described above,
 by the time a return value is finally consumed,
 a language boundary will have been crossed four times.
 
-How do
-Libmarpa users deal with difficulties like this?
-Usually, by
-doing the absolute minimum possible in the callbacks.
-A horrific debugging enviroment can become a manageable
-one if there is next to no code to be debugged.
-And this can be accomplished by
-doing as much as possible in pre- and post-processing.
-
 In essence, callbacks force applications to do most
 of the programming
 via side effects.
@@ -4461,11 +4452,10 @@ they can be expected to know more about it.
 These advantages of step-driven valuation
 are strictly in
 the context of a low-level interface.
-The author is under no illusion
+We are under no illusion
 that direct use of Libmarpa's valuator will be found
 satisfactory by most Libmarpa users,
 even those using the C language.
-The author certainly avoids using step-driven valuation directly.
 Libmarpa's valuator is intended
 to be used via an upper layer,
 one which @strong{does} know about semantics.
@@ -4485,7 +4475,7 @@ For the C programmer,
 things are not quite so easy.
 
 In this section,
-we will assume a C90 or C99 standard-conformant
+we will assume a C89 standard-conformant
 C application.
 This assumption is convenient on two grounds.
 First, this will be the intended use
@@ -4512,23 +4502,9 @@ as discussed in
 the sections
 @ref{Sizing the stack} and
 @ref{Initializing locations in the stack}.
-
 In the discussions in this document,
-stack locations are non-negative integers.
-The bottom of the stack is location 0.
-In moving from the bottom of the stack to the top,
-the numbers increase.
-Stack location @var{Y} is said to be ``greater''
-than stack location @var{X} if stack location
-@var{Y} is closer to the top of stack than location @var{X},
-and therefore stack locations are considered greater or
-lesser if the integers that represent them are
-greater or lesser.
-Another way to state that
-a stack location @var{Y} is greater (lesser)
-than stack location @var{X} is to say that
-a stack location @var{Y} is later (earlier)
-than stack location @var{X}.
+the stack is treated as an array,
+whose indexes are 0-based.
 
 @node Sizing the stack
 @subsection Sizing the stack
@@ -4597,7 +4573,7 @@ Write optimizations also creates issues for implementations
 which require data to be initialized before reading.
 Every fully standard-conforming C application is such an
 implementation.
-Both C90 and C99 allow ``trap values'',
+C89 allows ``trap values'',
 and therefore conforming applications must be
 prepared for
 an uninitialized location to contain one of those.
