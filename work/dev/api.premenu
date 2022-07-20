@@ -3974,19 +3974,34 @@ they must be ordered.
 To create an ordering, use the
 @code{marpa_o_new()}
 method.
+
 When an ordering is no longer in use, its memory can be freed
 using the
 @code{marpa_o_unref()}
 method.
 
+@node Freezing the ordering
+@section Freezing the ordering
+
 An ordering is
 @dfindex frozen ordering
 @dfindex ordering, frozen
 @dfn{frozen}
-once the first
+under the following circumstances:
+@itemize
+@item The first
 tree iterator is created
-using it.
+using the ordering.
+@xref{marpa_t_new,marpa_t_new()}.
+@item @code{marpa_o_ambiguity_metric()}
+is successfully called.
+@xref{marpa_o_ambiguity_metric,marpa_o_ambiguity_metric()}.
+@item @code{marpa_o_rank()} is successfully called.
+@xref{marpa_o_rank,marpa_o_rank()}.
+@end itemize
+
 A frozen ordering cannot be changed.
+There is no way to ``unfreeze'' an ordering.
 
 @node Ordering constructor
 @section Creating an ordering
@@ -4071,27 +4086,39 @@ On hard failure, @minus{}2.
 @end deftypefn
 
 @anchor{marpa_o_is_null}
-@deftypefun int marpa_o_is_null (Marpa_Order @var{o})
-Return value on success:
+@deftypefn {Accessor function} @
+int marpa_o_is_null (Marpa_Order @var{o})
+@strong{Return value}:
+On success:
 A number greater than or equal to 1 if the ordering is for a null parse;
 otherwise, 0.
-
-Failures: On failure, @minus{}2.
-
-@end deftypefun
+On hard failure, @minus{}2.
+@end deftypefn
 
 @node Non-default ordering
 @section Non-default ordering
 
+@anchor{marpa_o_high_rank_only}
+@deftypefn {Accessor function} @
+int marpa_o_high_rank_only ( Marpa_Order @var{o})
+
+On success, returns,
+the ``high rank only'' flag of ordering @var{o}.
+@xref{marpa_o_high_rank_only_set,marpa_o_high_rank_only_set()}.
+
+@strong{Return value}:
+On success, the  value of the
+``high rank only'' flag, which is a boolean.
+On hard failure, @minus{}2.
+@end deftypefn
+
 @anchor{marpa_o_high_rank_only_set}
-@deftypefun int marpa_o_high_rank_only_set ( @
+@deftypefn {Mutator function} @
+int marpa_o_high_rank_only_set ( @
     Marpa_Order @var{o}, @
     int @var{flag})
-@anchor{marpa_o_high_rank_only}
-@deftypefunx int marpa_o_high_rank_only ( @
-    Marpa_Order @var{o})
-These methods, respectively, set and query
-the ``high rank only'' flag of ordering @var{o}.
+
+Sets the ``high rank only'' flag of ordering @var{o}.
 A @var{flag} of 1 indicates that, when ranking,
 all choices should be discarded except those of the
 highest rank.
@@ -4105,25 +4132,32 @@ unless ranking has been turned on using the
 @code{marpa_o_rank()}
 method.
 
-Return value:  On success, the  value of the
+Return value:  On success, a boolean which is the value of the
 ``high rank only'' flag @strong{after}
 the call.
-On failure, @minus{}2.
-@end deftypefun
+On hard failure, @minus{}2.
+@end deftypefn
 
 @anchor{marpa_o_rank}
-@deftypefun int marpa_o_rank ( Marpa_Order @var{o} )
+@deftypefn {Mutator function} @
+int marpa_o_rank ( Marpa_Order @var{o} )
+
 By default, the ordering of parse trees is arbitrary.
-This method causes the ordering to be ranked
+On success, the following happens:
+@itemize
+@item The ordering is ranked
 according to the ranks of symbols and rules,
 the ``null ranks high'' flags of the rules,
 and the ``high rank only'' flag of the ordering.
-Once this method returns, the ordering is frozen.
+@item
+There is no way to change the ordering.
+The ordering is @dfn{frozen}.
+@end itemize
 
-Return value:  On success, a non-negative value.
-On failure, @minus{}2.
-
-@end deftypefun
+@strong{Return value}:
+On success, a non-negative value.
+On hard failure, @minus{}2.
+@end deftypefn
 
 @node Tree methods
 @chapter Tree methods
