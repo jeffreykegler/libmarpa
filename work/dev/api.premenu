@@ -4074,10 +4074,8 @@ it will be frozen on return from
 For our purposes,
 @code{marpa_o_ambiguity_metric()}
 is considered an ``accessor'',
-because it is assumed that the ordering is frozen
-when
-@code{marpa_o_ambiguity_metric()}
-is called.
+because it treats its ordering as if it was frozen
+before the call to @code{marpa_o_ambiguity_metric()}.
 
 @strong{Return value}:
 On success, the ambiguity metric, which is non-negative.
@@ -4128,9 +4126,11 @@ basis of their rank.
 
 A value of 1 is the default.
 The value of the ``high rank only'' flag has no effect
-unless ranking has been turned on using the
+until ranking is turned on using the
 @code{marpa_o_rank()}
 method.
+
+Hards fails if the ordering is frozen.
 
 Return value:  On success, a boolean which is the value of the
 ``high rank only'' flag @strong{after}
@@ -4150,8 +4150,8 @@ according to the ranks of symbols and rules,
 the ``null ranks high'' flags of the rules,
 and the ``high rank only'' flag of the ordering.
 @item
-There is no way to change the ordering.
 The ordering is @dfn{frozen}.
+@xref{Freezing the ordering}.
 @end itemize
 
 @strong{Return value}:
