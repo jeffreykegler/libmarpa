@@ -4899,6 +4899,7 @@ Marpa_Earley_Set_ID marpa_v_token_start_es_id (Marpa_Value v)
 @strong{Return value}:
 If the current step type is MARPA_STEP_TOKEN or MARPA_STEP_NULLING_SYMBOL,
 the start ES location of the leaf node.
+If the current step type is anything else,
 or if the valuator is inactive,
 the return value is indeterminate.
 @end deftypefn
@@ -4930,10 +4931,12 @@ Then a possible fringe is
 
 where the fringe is ordered from left to right, and the notation @verb{|Sym@m-n|} indicates that the symbol
 Sym has ES start location m and ES end location n.
+
 Another example is
 
 @verbatim
-        Null@0-0, Null@0-0, Tok@0-1, Null@1-1, Null@1-1, Tok@1-2, Null@2-2, Null@2-2
+        Null@0-0, Null@0-0, Tok@0-1, Null@1-1, Null@1-1, Tok@1-2,
+        Null@2-2, Null@2-2
 @end verbatim
 
 In this second example note that when a nulled leaf immediately follows another
