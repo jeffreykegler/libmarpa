@@ -141,8 +141,15 @@ in BNF as a right-recursion?
 @node Terminology and notation
 @section Terminology and notation
 
-In this document,
+In this document, the following terms are used, sometimes with special meanings:
 @itemize
+@item
+@dfindex application
+@dfn{application} means an ``application'' of Libmarpa.
+In this document,
+a Libmarpa application is not necessarily an application program.
+For our purposes, an ``application''
+might be another library which uses Libmarpa.
 @item A
 @dfindex value, boolean
 @dfindex boolean
@@ -153,24 +160,48 @@ is an integer which is 0 or 1.
 @dfindex iff
 @dfn{iff} abbreviates ``if and only if''.
 @item
-@dfindex application
-@dfn{application} means an ``application'' of Libmarpa.
-In this document,
-a Libmarpa application is not necessarily an application program.
-For our purposes, an ``application''
-might be another library which uses Libmarpa.
-@item
 @dfindex max(x,y)
 @code{max(x,y)} is the maximum of
 @code{x} and @code{y},
 where @code{x} and @code{y} are two numbers.
 @item
+@dfindex indeterminate value
+An @dfn{indeterminate value}
+is either an unspecified value or a trap value.
+Our use of this term is analogous to its use in the C99 standard.
+@item
 @dfindex method
 @dfn{Libmarpa method}, or just @dfn{method} means a C function
 or a function-like macro of the Libmarpa library.
 @item
+@dfindex trap value
+A @dfn{trap value},
+also called a @dfn{trap representation},
+is a value which when accessed causes undefined behavior.
+Our use of this term is analogous to its use in the C99 standard.
+@xref{Trap representations}
+@item
+@dfindex undefined behavior
+An @dfn{undefined behavior}
+is a behavior that this document does not specify.
+The implication is that this behavior might well be problematic.
+Our use of this term is analogous to its use in the C99 standard.
+@item
+@dfindex unspecified behavior
+An @dfn{unspecified behavior}
+is a behavior that, within a range of possibilities,
+is not further specified by this document.
+This is not necessarily problematic.
+Our use of this term is analogous to its use in the C99 standard.
+@item
+@dfindex unspecified value
+An @dfn{unspecified value}
+is a value on which this document imposes no restrictions,
+except that it cannot be a trap value.
+Our use of this term is analogous to its use in the C99 standard.
+@item
 @dfindex user
-@dfn{user} means a ``user'' of the Libmarpa library.
+@dfn{User} means a ``user'' of the Libmarpa library.
 A user of the library is also a programmer,
 so that in this documents, ``user''
 and ``programmer'' are essentially synonyms.
