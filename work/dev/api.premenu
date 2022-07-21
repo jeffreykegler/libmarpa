@@ -6781,6 +6781,43 @@ For this reason,
 the traditional behavior is the default
 in Libmarpa.
 
+@node Trap representations
+@section Trap representations
+
+In order to be C89 conformant, an application
+must initialize all locations which might be read.
+This is because C89 allows
+@dfindex trap representations
+@dfn{trap representations}.
+
+A trap representation is a byte pattern in memory
+that is not a valid value of some object type.
+When read, the trap representation causes undefined behavior
+according to the C89 standard,
+making the application which allowed the read non-conformant
+to the C89 standard.
+Trap representations are carefully defined and discussed in the C99 standard.
+
+In real life, trap representations can occur when floating point values are
+used: Some byte patterns which can occur in memory are not valid floating point
+values, and can cause undefined behavior when read.
+
+Pointers raise the same issue although,
+since it can be safely read as an integer,
+some insist that an invalid pointer is not,
+strictly speaking, a trap representation.
+But there is no portable c89-conformant way of
+testing the integer form of a pointer for validity,
+so that the only way to guarantee C89 conformance
+is to initialize the pointer, either to a valid pointer,
+or to a known and therefore testable value, such as @code{NULL}.
+
+All this implies that, in order to claim c89-conformance,
+an application must initialize all locations which might be read
+to non-trap values.
+For a stack implementation, this means that, as a practical matter,
+all locations on the stack must be initialized.
+
 @node Advanced input models
 @chapter Advanced input models
 
