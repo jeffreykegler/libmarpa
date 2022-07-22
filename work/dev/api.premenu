@@ -150,13 +150,13 @@ The following definitions apply in this document:
 In this document,
 a Libmarpa application is not necessarily an application program.
 For our purposes, an ``application''
-might be another library which uses Libmarpa.
+might be another library that uses Libmarpa.
 @item A
 @dfindex value, boolean
 @dfindex boolean
 @dfindex boolean value
 @dfn{boolean} value, or @dfn{boolean},
-is an integer which is 0 or 1.
+is an integer that is 0 or 1.
 @item
 @dfindex iff
 @dfn{iff} abbreviates ``if and only if''.
@@ -178,7 +178,7 @@ or a function-like macro of the Libmarpa library.
 @dfindex trap value
 A @dfn{trap value},
 also called a @dfn{trap representation},
-is a value which when accessed causes undefined behavior.
+is a value that when accessed causes undefined behavior.
 Our use of this term is consistent with its use in the C99 standard.
 @xref{Trap representations}
 @item
@@ -238,7 +238,7 @@ to emphasize that that behavior is an application behavior.
 
 After an irrecoverable failure, the behavior of a Libmarpa application
 is undefined,
-so that there are no behaviors which can be relied on for normal
+so that there are no behaviors that can be relied on for normal
 application processing,
 and therefore, there are no application behaviors.
 In this circumstance,
@@ -484,7 +484,7 @@ Every object in a ``time'' class
 has its own, distinct, lifetime,
 which is controlled by the object's reference count.
 Reference counting follows the usual practice.
-Contexts which take a share of the
+Contexts that take a share of the
 ``ownership'' of an object
 increase the reference count by 1.
 When a context relinquishes its share of
@@ -492,7 +492,7 @@ the ownership of an object, it decreases the reference
 count by 1.
 
 Each class of time object has a ``ref'' and an ``unref''
-method, to be used by those contexts which need to
+method, to be used by those contexts that need to
 explicitly increment and decrement the reference count.
 For example, the ``ref'' method for the grammar class is
 @code{marpa_g_ref()}
@@ -821,7 +821,7 @@ as described for the standard model.
 @node Terminals
 @section Terminals
 
-A terminal symbol is a symbol which
+A terminal symbol is a symbol that
 may appear in the input.
 Traditionally,
 all LHS symbols, as well as
@@ -921,13 +921,13 @@ When the parentheses come into perfect balance the parse is exhausted,
 because any further input would unbalance the brackets.
 And the parse succeeds when the parentheses come into perfect balance.
 Exhaustion means success.
-Any language which balances start and end indicators will tend to
+Any language that balances start and end indicators will tend to
 be exhaustion-loving.
 HTML and XML, with their start and end tags, can be seen
 as exhaustion-loving languages.
 
 One common form of exhaustion-loving parsing
-occurs in lexers which look for longest matches.
+occurs in lexers that look for longest matches.
 Exhaustion will indicate that the longest match has been found.
 
 It is possible for a language to be
@@ -1058,7 +1058,7 @@ The decades have made a large difference in the trade-offs,
 and the consensus about the degree to which even a
 low-level language should protect the user has changed.
 It seems inevitable that C will be replaced as the low-level
-language of choice, by a language which places
+language of choice, by a language that places
 fewer burdens on the programmer,
 and more on the machine.
 The question seems to be not whether C will be dethroned
@@ -1285,9 +1285,9 @@ the behavior of a Libmarpa application is undefined.
 In the event of an irrecoverable failure,
 there are no application behaviors.
 The diagnostic behavior for a hard failure is as described
-for the method which detects the hard failure.
+for the method that detects the hard failure.
 At a minimum, this diagnostic behavior will be returning from
-the method which detects the hard failure with the return
+the method that detects the hard failure with the return
 value specified for hard failure,
 and setting the error code as specified for hard failure.
 
@@ -1325,15 +1325,15 @@ A
 @dfindex failure, library-recoverable hard
 @dfn{library-recoverable hard failure}
 is a type of partially recoverable hard failure.
-Loosely described, it is a hard failure which
+Loosely described, it is a hard failure that
 allows the programmer to continue to use many
 of the Libmarpa methods in the library,
-but which disallows certain methods on  some objects.
+but that disallows certain methods on  some objects.
 
 To state the restrictions of application behaviors
 more precisely, let
 the ``failure grammar'' be the base grammar
-of the method which detected the library-recoverable hard failure.
+of the method that detected the library-recoverable hard failure.
 After a library-recoverable hard failure,
 the following behaviors are no longer applcation
 behaviors:
@@ -1341,7 +1341,7 @@ behaviors:
 @item Libmarpa mutator and constructor method calls where the base grammar is the
   failure grammar.
 @end itemize
-Recall that any use of a behavior which is not an application
+Recall that any use of a behavior that is not an application
 behavior is an irrecoverable failure.
 
 The application behaviors
@@ -1379,7 +1379,7 @@ is a type of partially recoverable hard failure.
 An ancestry-recoverable failure allows a superset of the application behaviors
 allowed by a library-recoverable hard failure.
 More precisely, let
-the ``failure object'' be the object which detected
+the ``failure object'' be the object that detected
 the ancestry-recoverable hard failure.
 After an ancestry-recoverable hard failure,
 the following behaviors are no longer applcation
@@ -1388,7 +1388,7 @@ behaviors:
 @item Libmarpa mutator and constructor method calls where the object is the
   failure object, or one of its descendants.
 @end itemize
-Recall that any use of a behavior which is not an application
+Recall that any use of a behavior that is not an application
 behavior is an irrecoverable failure.
 
 The application behaviors
@@ -1400,7 +1400,7 @@ and the C language environment.
 @item All Libmarpa static method calls.
 @item All Libmarpa accessor and destructor method calls.
 @item All Libmarpa mutator and constructor method calls
-for time objects which are not the failure object,
+for time objects that are not the failure object,
 or one of its descendants.
 @end itemize
 
@@ -1491,7 +1491,7 @@ are given in their own section
 (@ref{External error codes}).
 
 How the error code is accessed depends on the method
-which detects the hard failure associated with that error code.
+that detects the hard failure associated with that error code.
 Methods for time objects always set the error code in the base grammar,
 from which it may be accessed using the error methods described below
 (@ref{Error methods}).
@@ -2183,7 +2183,7 @@ Marpa_Symbol_ID marpa_g_symbol_new (Marpa_Grammar @var{g})
 
 When successful, creates a new symbol in grammar @var{g}.
 
-@strong{Return value}: On success, the ID of the new symbol;
+@strong{Return value}: On success, the ID of the new symbol,
 which will be a non-negative integer.
 On hard failure, @minus{}2.
 
@@ -2281,7 +2281,7 @@ int marpa_g_rule_is_loop (Marpa_Grammar @var{g}, @
 
 A rule is a loop rule if it non-trivially
 produces the string of length one
-which consists only of its LHS symbol.
+that consists only of its LHS symbol.
 Such a derivation takes the parse back to where
 it started, hence the term ``loop''.
 ``Non-trivially'' means the zero-step derivation does not count --- the
@@ -2464,9 +2464,9 @@ separation from non-sequence rules.
 That is,
 does not distinguish an unset proper separation flag
 from a
-proper separation flag which value is undefined
+proper separation flag whose value is undefined
 because @var{rule_id} is the ID of a BNF rule.
-Applications which want to determine whether
+Applications that want to determine whether
 or not a rule is a sequence rule
 can use
 @code{marpa_g_sequence_min()} to do this.
@@ -2502,7 +2502,7 @@ Note that,
 in its handling of the non-existence of a rule for its rule
 argument, this method differs from many of the other grammar
 methods.
-Grammar methods which take a rule ID argument
+Grammar methods that take a rule ID argument
 more often treat the
 non-existence of rule for a well-formed
 rule ID as a soft, recoverable, failure.
@@ -2535,7 +2535,7 @@ rule, and vice versa.
 
 Sequence rules are ``sugar'' ---
 their presence in the Libmarpa interface does not extend its power.
-Every Libmarpa grammar which can be written using sequence rules
+Every Libmarpa grammar that can be written using sequence rules
 can be rewritten as a grammar without sequence rules.
 
 The LHS of the sequence is @var{lhs_id},
@@ -2609,7 +2609,7 @@ of the sequence rule with ID @var{rule_id}.
 Soft fails if there is no separator.
 The causes of hard failure include
 @var{rule_id} not being well-formed;
-@var{rule_id} not being the ID of a rule which exists; and
+@var{rule_id} not being the ID of a rule that exists; and
 @var{rule_id} not being the ID a sequence rule.
 
 @strong{Return value}:
@@ -2825,7 +2825,7 @@ Precomputation involves running a series of grammar checks
 and ``precomputing'' some useful information which is kept
 internally to save repeated calculations.
 After precomputation, the grammar is ``frozen'' in many respects,
-and many grammar mutators which succeed before precomputation
+and many grammar mutators that succeed before precomputation
 will cause hard failures after precomputation.
 Precomputation is necessary for a recognizer to be generated
 from a grammar.
@@ -2840,7 +2840,7 @@ A @code{MARPA_EVENT_LOOP_RULES},
 All of these events occur only on failure.
 Applications must be prepared for this method
 to return additional events,
-including events which occur on success.
+including events that occur on success.
 Events may be queried using the
 @code{marpa_g_event()} method.
 @xref{marpa_g_event,marpa_g_event()}.
@@ -2866,7 +2866,7 @@ which Libmarpa does not allow in a grammar.
 Error code @code{MARPA_ERR_COUNTED_NULLABLE} occurs iff
 one or more @code{MARPA_EVENT_COUNTED_NULLABLE} events occur.
 There is one @code{MARPA_EVENT_COUNTED_NULLABLE} event for every symbol
-which is a nullable on the right hand side of a sequence
+that is a nullable on the right hand side of a sequence
 rule.
 An application may use these events to inform the user
 of the problematic symbols,
@@ -2887,7 +2887,7 @@ An application may use these events to inform the user
 of the problematic symbols,
 and this detail may help the user fix the grammar.
 
-Among the other error codes which may case this
+Among the other error codes that may case this
 method to fail
 are the following:
 
@@ -3012,9 +3012,9 @@ When successful, does the following:
 @itemize
 @item Readies @var{r} to accept input.
 @item
-Completes the first Earley set,
-which is the Earley set whose ID is 0
-and which is located at earleme 0.
+Completes the first Earley set.
+The ID of the first Earley set is 0,
+and it is located at earleme 0.
 @item Leaves the latest, current and furthest earlemes all at 0.
 @item Clears any events that were in the event queue before this method was called.
 @item If this method exhausts the parse, generates a @code{MARPA_EVENT_EXHAUSTED} event.
@@ -3180,7 +3180,7 @@ incrementing its value by 1.
 That is, sets the current earleme to @code{@var{current}+1}.
 @item
 If any token was accepted at @var{current},
-creates a new Earley set
+creates a new Earley set,
 which will be the latest Earley set.
 After the call, the latest
 earleme will be equal to the new current earleme,
@@ -3198,7 +3198,7 @@ earleme will be equal to the new current earleme,
 The value of the furthest earleme is never changed by
 a call to
 @code{marpa_r_earleme_complete()}.
-@item Clears the event queue of any events which
+@item Clears the event queue of any events that
 occured before this method was called.
 @item May generate one or more @code{MARPA_EVENT_SYMBOL_COMPLETED},
     @code{MARPA_EVENT_SYMBOL_NULLED}, @code{MARPA_EVENT_SYMBOL_PREDICTED},
@@ -3240,7 +3240,7 @@ No new Earley set is created.
 will be accepted.  @xref{Exhaustion}.
 @item Leaves the parse in a state where no terminals
 are expected or anticipated.
-@item Clears the event queue of any events which
+@item Clears the event queue of any events that
 occured before the call to this method.
 @item Triggers a
 @code{MARPA_EVENT_EXHAUSTED} event and no others.
@@ -3279,7 +3279,7 @@ In this case, the application will treat exhaustion before the end of input
 as a parse error.
 Depending on the application, exhaustion on success at the end of input
 might be ignored.
-@item An exhaustion-loving application which does not know the length of
+@item An exhaustion-loving application that does not know the length of
 its input will often want terminate the parse in case of exhaustion on method
 success, treating exhaustion as an end-of-input indicator.
 These application will usually want to treat exhaustion on method failure
@@ -3885,7 +3885,7 @@ method.
 A bocage is a data structure containing the parses
 found by processing the input according to the grammar.
 It is related to a parse forest,
-but is in a form which is more compact and easily traversable.
+but is in a form that is more compact and easily traversable.
 ``Bocage'' is our term, and we discovered this structure
 independently,
 but our work was preceded by Elizabeth Scott.
@@ -4370,7 +4370,7 @@ Libmarpa's valuator provides the application with
 instructions for stack manipulation.
 Libmarpa itself does not maintain a stack.
 This leaves the upper layer in total control of the
-stack and the values which are placed on it.
+stack and the values that are placed on it.
 
 As example may make this clearer.
 Suppose the evalution is at a place in the parse tree
@@ -4408,7 +4408,7 @@ Or, if it is addition, it could allow for its arguments
 to be floating point or complex numbers.
 Since the application maintains the stack, it is up
 to the application whether the stack contains integers,
-strings, complex numbers, or polymorphic objects which are
+strings, complex numbers, or polymorphic objects that are
 capable of being any of these things and more.
 
 @node Advantages of step-driven valuation
@@ -4492,7 +4492,7 @@ satisfactory by most Libmarpa users,
 even those using the C language.
 Libmarpa's valuator is intended
 to be used via an upper layer,
-one which @strong{does} know about semantics.
+one that @strong{does} know about semantics.
 
 @node Maintaining the stack
 @section Maintaining the stack
@@ -4604,7 +4604,7 @@ either reads from or writes to location 0.
 @subsection Initializing locations in the stack
 
 Write optimizations also creates issues for implementations
-which require data to be initialized before reading.
+that require data to be initialized before reading.
 Every fully standard-conforming C application is such an
 implementation.
 C89 allows ``trap values'',
@@ -4622,7 +4622,7 @@ may require special precautions.
 The required precautions may amount to a need to initialize
 ``uninitialized'' values.
 A practical example might be an implementation that expects
-all locations to contain a pointer which it can safely indirect
+all locations to contain a pointer that it can safely indirect
 from.
 In such implementations,
 just as in standard-conformant C,
@@ -4642,7 +4642,7 @@ is to do all of the following:
 initialize every stack location added.
 @end itemize
 
-Applications which try to optimize out some of
+Applications that try to optimize out some of
 these initializations
 need to be aware that
 an application can never assume that activity in
@@ -4719,7 +4719,7 @@ base grammar, if necessary.
     Marpa_Value @var{v})
 This method ``steps through'' the valuator.
 The return value is a @code{Marpa_Step_Type},
-an integer which indicates the type of step.
+an integer that indicates the type of step.
 How the application is expected to act on
 each step is described below
 (@ref{Valuator steps by type}).
@@ -4864,15 +4864,15 @@ macro.
 
 @deftypefn {Macro} int marpa_v_token_value (Marpa_Value @var{v})
 For the @code{MARPA_STEP_TOKEN} step,
-returns the integer which is
-(or which represents)
+returns the integer that is
+(or that represents)
 the value of the token.
 @end deftypefn
 
 @node Step location accessors
 @section Step location accessors
 
-This section describes step accessors which are not basic to stack manipulation,
+This section describes step accessors that are not basic to stack manipulation,
 but that provide other Earley set location information about the parse.
 A step's location in terms of Earley sets is called its ES location.
 Every ES location is the ID of an Earley set.
@@ -4881,7 +4881,7 @@ These step accessors are implemented as macros.
 All of these accessors always succeed, but if called when they are
 irrelevant they return an unspecified value. In this context, an
 “unspecified value” is a value that is either -1 or the ID of a
-valid Earley set, but which is otherwise unpredictable.
+valid Earley set, but that is otherwise unpredictable.
 
 ES location is only relevant for parse nodes.
 A parse node is either a leaf node or a rule node.
@@ -5419,7 +5419,7 @@ mark a symbol as a nulled event symbol,
 even if the symbol is non-nullable.
 This is convenient, for example,
 for automatically generated grammars.
-Applications which wish to treat
+Applications that wish to treat
 it as a failure if there is an
 attempt to
 mark a non-nullable symbol
@@ -5696,7 +5696,7 @@ using its
 method.
 Note that this event only triggers if the symbol is
 expected as a terminal.
-Predicted symbols which are not expected as terminals
+Predicted symbols that are not expected as terminals
 do not trigger this event.
 This event code indicates that one of those events
 occurred.
@@ -5794,7 +5794,7 @@ Internal error codes are in their own section
 @deftypevr Macro int MARPA_ERR_NONE
 No error condition.
 The error code is initialized to this value.
-Methods which do not result in failure
+Methods that do not result in failure
 sometimes reset the error code to @code{MARPA_ERR_NONE}.
 Numeric value: 0.
 Suggested message: "No error".
@@ -5848,7 +5848,7 @@ Suggested message: "Nullable symbol on RHS of a sequence rule".
 @end deftypevr
 
 @deftypevr Macro int MARPA_ERR_DUPLICATE_RULE
-This error indicates an attempt to add a BNF rule which
+This error indicates an attempt to add a BNF rule that
 is a duplicate of a BNF rule already in the grammar.
 Two BNF rules are considered duplicates if
 
@@ -5928,7 +5928,7 @@ Suggested message: "Grammar has cycle".
 @deftypevr Macro int MARPA_ERR_HEADERS_DO_NOT_MATCH
 This is an internal error, and indicates that
 Libmarpa was wrongly built.
-Libmarpa was compiled with headers which do not
+Libmarpa was compiled with headers that do not
 match the rest of the code.
 The solution is to find a correctly built
 Libmarpa.
@@ -5947,7 +5947,7 @@ Suggested message: "Marpa is in a not OK state".
 
 @deftypevr Macro int MARPA_ERR_INACCESSIBLE_TOKEN
 This error code indicates that
-the token symbol is an inaccessible symbol --- one which
+the token symbol is an inaccessible symbol --- one that
 cannot be reached from the start symbol.
 
 Since the inaccessibility of a symbol is a property of the grammar,
@@ -5999,7 +5999,7 @@ Suggested message: "Specified start symbol is not valid".
 
 @deftypevr Macro int MARPA_ERR_INVALID_ASSERTION_ID
 A method was called with an invalid assertion ID.
-This is a assertion ID which not only does
+This is a assertion ID that not only does
 not exist, but cannot exist.
 Currently that means its value is less than zero.
 Numeric value: 96.
@@ -6008,7 +6008,7 @@ Suggested message: "Assertion ID is malformed".
 
 @deftypevr Macro int MARPA_ERR_INVALID_RULE_ID
 A method was called with an invalid rule ID.
-This is a rule ID which not only does
+This is a rule ID that not only does
 not exist, but cannot exist.
 Currently that means its value is less than zero.
 Numeric value: 26.
@@ -6017,7 +6017,7 @@ Suggested message: "Rule ID is malformed".
 
 @deftypevr Macro int MARPA_ERR_INVALID_SYMBOL_ID
 A method was called with an invalid symbol ID.
-This is a symbol ID which not only does
+This is a symbol ID that not only does
 not exist, but cannot exist.
 Currently that means its value is less than zero.
 Numeric value: 28.
@@ -6080,7 +6080,7 @@ Suggested message: "No parse".
 @end deftypevr
 
 @deftypevr Macro int MARPA_ERR_NO_RULES
-A grammar which has no rules is being used
+A grammar that has no rules is being used
 in a way that is not allowed.
 Usually the problem is that the user is
 trying to precompute the grammar.
@@ -6091,7 +6091,7 @@ Suggested message: "This grammar does not have any rules".
 @deftypevr Macro int MARPA_ERR_NO_START_SYMBOL
 The grammar has no start symbol,
 and an attempt was made to perform an
-operation which requires one.
+operation that requires one.
 Usually the problem is that the user is
 trying to precompute the grammar.
 Numeric value: 43.
@@ -6099,21 +6099,21 @@ Suggested message: "This grammar has no start symbol".
 @end deftypevr
 
 @deftypevr Macro int MARPA_ERR_NO_SUCH_ASSERTION_ID
-A method was called with an assertion ID which is well-formed,
+A method was called with an assertion ID that is well-formed,
 but the assertion does not exist.
 Numeric value: 97.
 Suggested message: "No assertion with this ID exists".
 @end deftypevr
 
 @deftypevr Macro int MARPA_ERR_NO_SUCH_RULE_ID
-A method was called with a rule ID which is well-formed,
+A method was called with a rule ID that is well-formed,
 but the rule does not exist.
 Numeric value: 89.
 Suggested message: "No rule with this ID exists".
 @end deftypevr
 
 @deftypevr Macro int MARPA_ERR_NO_SUCH_SYMBOL_ID
-A method was called with a symbol ID which is well-formed,
+A method was called with a symbol ID that is well-formed,
 but the symbol does not exist.
 Numeric value: 90.
 Suggested message: "No symbol with this ID exists".
@@ -6203,7 +6203,7 @@ Suggested message: "This input would make the parse too long".
 @end deftypevr
 
 @deftypevr Macro int MARPA_ERR_POINTER_ARG_NULL
-In a method which takes pointers as arguments,
+In a method that takes pointers as arguments,
 one of the pointer arguments is @code{NULL},
 in a case where that is not allowed.
 One such method is@
@@ -6225,8 +6225,8 @@ Suggested message: "This grammar is precomputed".
 
 @deftypevr Macro int MARPA_ERR_PROGRESS_REPORT_NOT_STARTED
 No recognizer progress report is currently active,
-and an action has been attempted which
-is inconsistent with that.
+and an action has been attempted that
+requires the progress report to be active.
 One such action would be a
 @code{marpa_r_progress_item()}
 call.
@@ -6242,7 +6242,7 @@ Suggested message: "The progress report is exhausted".
 @end deftypevr
 
 @deftypevr Macro int MARPA_ERR_RANK_TOO_LOW
-A symbol or rule rank was specified which
+A symbol or rule rank was specified that
 was less than an implementation-defined minimum.
 Implementations will always allow at least those
 ranks in the range between
@@ -6252,7 +6252,7 @@ Suggested message: "Rule or symbol rank too low".
 @end deftypevr
 
 @deftypevr Macro int MARPA_ERR_RANK_TOO_HIGH
-A symbol or rule rank was specified which
+A symbol or rule rank was specified that
 was greater than an implementation-defined maximum.
 Implementations will always allow at least those
 ranks in the range between
@@ -6395,7 +6395,7 @@ the
 @code{marpa_g_force_valued()}
 method.
 An unvalued symbol may take on any value,
-and therefore a symbol which is unvalued at some points
+and therefore a symbol that is unvalued at some points
 cannot safely to be used to contain a value at
 others.
 This error indicates that such an unsafe use is
@@ -6420,7 +6420,7 @@ Suggested message: "Token symbol must be a terminal".
 @end deftypevr
 
 @deftypevr Macro int MARPA_ERR_TOKEN_LENGTH_LE_ZERO
-A token length was specified which is less than
+A token length was specified that is less than
 or equal to zero.
 Zero-length tokens are not allowed in Libmarpa.
 Numeric value: 77.
@@ -6449,7 +6449,7 @@ Suggested message: "Tree iterator is exhausted".
 
 @deftypevr Macro int MARPA_ERR_TREE_PAUSED
 A Libmarpa tree is ``paused''
-and an operation was attempted which
+and an operation was attempted that
 is inconsistent with that fact.
 Typically, this operation will be
 a call of the
@@ -6534,11 +6534,11 @@ Suggested message: "Symbol is not used".
 
 An internal error code may be one of two things:
 First,
-it can be an error code which
+it can be an error code that
 arises from an internal Libmarpa programming issue
 (in other words, something happening in the code
 that was not supposed to be able to happen.)
-Second, it can be an error code which only occurs
+Second, it can be an error code that only occurs
 when a method from Libmarpa's internal interface
 is used.
 Both kinds of internal error message share one common
@@ -6583,7 +6583,7 @@ Development errors have an error string
 associated with them.
 The error string is a
 short 7-bit ASCII error string
-which describes the error.
+that describes the error.
 Numeric value: 9.
 Suggested message: "Development error, see string".
 @end deftypevr
@@ -6720,8 +6720,8 @@ keeping with its multi-pass approach.
 
 Bocage objects come at no cost,
 even for unambiguous parses,
-because the same pass which creates the bocage
-also deals with other issues which are of major
+because the same pass that creates the bocage
+also deals with other issues that are of major
 significance for unambiguous parses.
 It is the post-processing of the bocage pass
 that enables Marpa to do both left-
@@ -6819,7 +6819,7 @@ in Libmarpa.
 @section Trap representations
 
 In order to be C89 conformant, an application
-must initialize all locations which might be read.
+must initialize all locations that might be read.
 This is because C89 allows
 @dfindex trap representations
 @dfn{trap representations}.
@@ -6828,12 +6828,12 @@ A trap representation is a byte pattern in memory
 that is not a valid value of some object type.
 When read, the trap representation causes undefined behavior
 according to the C89 standard,
-making the application which allowed the read non-conformant
+making the application that allowed the read non-conformant
 to the C89 standard.
 Trap representations are carefully defined and discussed in the C99 standard.
 
 In real life, trap representations can occur when floating point values are
-used: Some byte patterns which can occur in memory are not valid floating point
+used: Some byte patterns that can occur in memory are not valid floating point
 values, and can cause undefined behavior when read.
 
 Pointers raise the same issue although,
@@ -6847,7 +6847,7 @@ is to initialize the pointer, either to a valid pointer,
 or to a known and therefore testable value, such as @code{NULL}.
 
 All this implies that, in order to claim c89-conformance,
-an application must initialize all locations which might be read
+an application must initialize all locations that might be read
 to non-trap values.
 For a stack implementation, this means that, as a practical matter,
 all locations on the stack must be initialized.
@@ -7070,7 +7070,7 @@ to the external interface in the future.
 
 With experience, we are now in a position to define an
 ambiguity metric that can be cheaply calculated,
-and which might be of real use.
+and that might be of real use.
 Preliminary notes are in the CWeb code.
 
 @node Report item traverser should be a time object
@@ -7118,14 +7118,15 @@ as a soft failure.
 @section Furthest earleme values
 
 @code{marpa_r_furthest_earleme} returns
-@code{unsigned int} which is non-orthogonal with
+@code{unsigned int}, which is non-orthogonal with
 @code{marpa_r_current_earleme}.
 This leaves no room for an failure return value,
-which we deal with by not checking for failures,
-of which the only important one is calling
-@code{marpa_r_furthest_earleme} before the start of input.
-To consider
-@code{marpa_r_furthest_earleme} we consider furthese earleme to have
+which we deal with by not checking for failures.
+The only important potential failure is calling
+@code{marpa_r_furthest_earleme} when the furthest
+earleme is an indeterminate value.
+We eliminate this potential cause of failure by
+regarding furthest earleme as having
 been initialized when the recognizer was created,
 which is another non-orthogonality with
 @code{marpa_r_current_earleme}.
@@ -7156,7 +7157,7 @@ but are not documented as such because this has not been
 tested.
 
 At this writing,
-we know of no applications which
+we know of no applications that
 attempt to recover from these errors.
 It is possible that
 these error codes may also be useable for the
@@ -7523,7 +7524,7 @@ value, which will never be
 This index is of terms that are used in a special sense in
 this document.
 Not every use of these terms is indexed ---
-only those uses which are in some way defining.
+only those uses that are in some way defining.
 
 @printindex df
 
