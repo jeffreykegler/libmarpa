@@ -1134,7 +1134,7 @@ and that it recovered from all the recoverable failures that were detected.
 @section Classifying failure
 
 A Libmarpa application programming failure,
-unless specified otherwise,
+unless stated otherwise,
 is an irrecoverable failure.
 Once an irrecoverable failure has occurred,
 the further behavior of the program is undefined.
@@ -1146,7 +1146,8 @@ in an effort to handle irrecoverable failures as
 smoothly as possible.
 
 A Libmarpa application programming failure
-is recoverable if and only if it is specified as such.
+is not recoverable,
+unless this document states otherwise.
 
 @c So far all recoverable failures are trivially recoverable,
 @c Wait and set and determine what to do with the following
@@ -4879,9 +4880,7 @@ Every ES location is the ID of an Earley set.
 
 These step accessors are implemented as macros.
 All of these accessors always succeed, but if called when they are
-irrelevant they return an unspecified value. In this context, an
-“unspecified value” is a value that is either -1 or the ID of a
-valid Earley set, but that is otherwise unpredictable.
+irrelevant they return an unspecified value.
 
 ES location is only relevant for parse nodes.
 A parse node is either a leaf node or a rule node.
@@ -5810,8 +5809,9 @@ Suggested message: "Separator has invalid symbol ID".
 
 @deftypevr Macro int MARPA_ERR_BEFORE_FIRST_TREE
 A tree iterator is positioned before the first tree,
-and it was specified in a context where that is not
-allowed.
+and the tree iterator was specified in a context where
+the tree iterator must be positioned at or after
+the first tree.
 A newly created tree is positioned before the first
 tree.
 To position a newly created tree iterator to the first tree
@@ -6967,7 +6967,7 @@ Since it is unrestricted, the sparse input model
 is Libmarpa's fully general input model.
 Because of this,
 it may be useful for us
-specify the effect of mutators
+to state the effect of mutators
 on the earleme variables in detail,
 even at the expense of some repetition.
 
