@@ -2464,7 +2464,7 @@ separation from non-sequence rules.
 That is,
 does not distinguish an unset proper separation flag
 from a
-proper separation flag whose value is undefined
+proper separation flag whose value is unspecified
 because @var{rule_id} is the ID of a BNF rule.
 Applications that want to determine whether
 or not a rule is a sequence rule
@@ -2962,7 +2962,7 @@ In the new recognizer,
 @itemize
 @item the reference count will be 1;
 @item the furthest earleme will be 0; and
-@item latest and current earleme will be undefined.
+@item the values of the latest and current earleme will be indeterminate.
 @end itemize
 
 @strong{Return value}:
@@ -5625,7 +5625,7 @@ or on other failure.
 
 @deftypevr Macro int MARPA_EVENT_NONE
 Applications should never see this event.
-Event value: Undefined.
+Event value: Unspecified.
 Suggested message: "No event".
 @end deftypevr
 
@@ -5650,7 +5650,7 @@ Suggested message: "Too many Earley items".
 
 @deftypevr Macro int MARPA_EVENT_EXHAUSTED
 The parse is exhausted.
-Event value: Undefined.
+Event value: Unspecified.
 Suggested message: "Recognizer is exhausted".
 @end deftypevr
 
