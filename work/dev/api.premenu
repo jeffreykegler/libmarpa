@@ -4503,7 +4503,7 @@ C application.
 This assumption is convenient on two grounds.
 First, this will be the intended use
 for many readers.
-Second, standard-conformant C is
+Second, standard-conformant C89 is
 a ``worst case''.
 Any issue faced by a programmer of another environment
 is likely to also be one that must be solved
@@ -4520,125 +4520,48 @@ as suggested by the Libmarpa step instructions,
 may be a read.
 This possibility
 requires a special awareness from the C
-programmer,
-as discussed in
-the sections
-@ref{Sizing the stack} and
-@ref{Initializing locations in the stack}.
-In the discussions in this document,
-the stack is treated as an array,
-whose indexes are 0-based.
+programmer.
+@xref{Sizing the stack}.
 
 @node Sizing the stack
 @subsection Sizing the stack
 
+In our discussion of the stack handler for the valuator,
+we will treat the stack as a 0-based array.
 If an implementation applies Libmarpa's step
 instructions literally, using a physical stack,
-it must make sure the stack is large enough.
-Specifically, the application must do the following
-
+it must make sure that all locations in the stack are initialized.
+The range of locations that must be initialized is from
+stack location 0 to the ``end of stack'' location.
+The result of the parse is always stored in stack location 0,
+so that a stack location 0 is always needed.
+Therefore, the end of stack location is always a specified value, and greater than or equal to 0.
+The end of stack location must also be greater than or equal to
 @itemize
-@item Ensure location 0 exists --- in other
-words that the stack is at least length 1.
-@item For @code{MARPA_STEP_TOKEN} steps,
-ensure that location
+@item
+@code{marpa_v_result(v)} for every @code{MARPA_STEP_TOKEN} step,
+@item
 @code{marpa_v_result(v)}
-exists.
-@item For @code{MARPA_STEP_NULLING_SYMBOL} steps,
-ensure that location
-@code{marpa_v_result(v)}
-exists.
-@item For @code{MARPA_STEP_RULE} steps,
-ensure that stack locations from
-@code{marpa_v_arg_0(v)}
-to
+for every @code{MARPA_STEP_NULLING_SYMBOL} step, and
+@item
 @code{marpa_v_arg_n(v)}
-exist.
+for every @code{MARPA_STEP_RULE} step.
 @end itemize
 
-Three aspects of these requirements deserve special mention.
-First,
-note that the requirement for a
-@code{MARPA_STEP_RULE} is that the application
-size the stack to include the arguments to be
-read.
-Because stack writes may be optimized away,
-an application,
-when reading,
-cannot assume
-that the stack was
-sized appropriately by a prior write.
-The first access to a new stack location may be
-a read.
+In practice, an application will often extend the stack
+as it iterates through the steps,
+initializing the new stack locations as they are created.
 
-Second,
-note that there is no explicit requirement that
-the application size the stack to include the
-location for the result of the
-@code{MARPA_STEP_RULE} step.
-An application is allowed to assume that
-result will go into one of the locations
-that were read.
-
-Third, special note should be made of the requirement
-that location 0 exist.
-By convention, the parse result resides
-in location 0 of the stack.
-Because of potential optimizations,
-an application cannot assume that it
-will receive a Libmarpa step instruction that
-either reads from or writes to location 0.
-
-@node Initializing locations in the stack
-@subsection Initializing locations in the stack
-
-Write optimizations also creates issues for implementations
-that require data to be initialized before reading.
-Every fully standard-conforming C application is such an
-implementation.
-C89 allows ``trap values'',
-and therefore conforming applications must be
-prepared for
-an uninitialized location to contain one of those.
-Reading a trap value may cause an abend.
-(It is safe, in standard-conforming C, to write to a location
-containing a trap value.)
-
-The requirement that locations be initialized before
-reading occurs in other implementations.
-Any implementation that has a ``universe'' of ``safe'' values,
-may require special precautions.
-The required precautions may amount to a need to initialize
-``uninitialized'' values.
-A practical example might be an implementation that expects
-all locations to contain a pointer that it can safely indirect
-from.
-In such implementations,
-just as in standard-conformant C,
-every stack location
-needs to be initialized before being read.
-
-Due to write optimizations, an application
-cannot rely on Libmarpa's step instructions to
-initialize every stack location before its first read.
-One way to safely deal with the
-initialization of stack locations,
-is to do all of the following:
-@itemize
-@item When starting evaluation, ensure that the stack contains at least location 0.
-@item Also, when starting evaluation, initialize every location in the stack.
-@item Whenever the stack is extended,
-initialize every stack location added.
-@end itemize
-
-Applications that try to optimize out some of
-these initializations
-need to be aware that
-an application can never assume that activity in
-the stack is safely ``beyond'' an uninitialized location.
-Libmarpa steps often revisit earlier sections of the stack,
-and these revisits may include reads of previously
-unvisited stack locations.
+Note that our requirement is not merely that the stack locations
+exist and be writable, but that they be initialized.
+This is necessary for C89 conformance.
+Because of write optimizations in our implementation,
+the first access to any stack location
+may be a read.
+C89 allows trap values,
+so that a read of an uninitialized location could result
+in undefined behavior.
+@xref{Trap representations}.
 
 @node Valuator constructor
 @section Creating a new valuator
