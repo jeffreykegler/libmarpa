@@ -4337,10 +4337,6 @@ the value of the parse.
 To create a valuator, use the
 @code{marpa_v_new()}
 method.
-When a valuator is no longer in use, its memory can be freed
-using the
-@code{marpa_v_unref()}
-method.
 
 The application is required to maintain the stack,
 and the application is also required to implement
@@ -4357,12 +4353,14 @@ When successful, @code{marpa_v_step()}
 returns the type
 of step.
 Most step types have values associated with them.
-To access these values use the methods
-described in the section @ref{Basic step accessors}.
-How to perform the steps is described in
-the sections
-@ref{How to use the valuator}
-and @ref{Stepping through the valuator}.
+@xref{Basic step accessors},
+@pxref{How to use the valuator}, and
+@pxref{Stepping through the valuator}.
+
+When a valuator is no longer in use, its memory can be freed
+using the
+@code{marpa_v_unref()}
+method.
 
 @node How to use the valuator
 @section How to use the valuator
