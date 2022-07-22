@@ -589,7 +589,7 @@ the latest earleme.
 the current earleme, and
 the furthest earleme.
 Latest, current and furthest earleme,
-when they have determinate values,
+when they have specified values,
 obey a lexical order in this sense:
 The latest earleme is always at or before the current earleme,
 and the current earleme is always at or before the furthest earleme.
@@ -1674,9 +1674,9 @@ and the method description will state
 the circumstances under which the soft failure occurs,
 and what the application must do to recover.
 @item If a method call soft fails, the value of the error code is
-indeterminate.
+unspecified.
 @item If a method call succeeds, the value of the error code is
-indeterminate.
+unspecified.
 @item A return status of success indicates that the method did not detect
 any failures.
 @item If both a hard failure and a soft failure occur,
@@ -1734,7 +1734,7 @@ It is an undetected irrecoverable hard failure
 if @var{version} does not have room for three @code{int}'s.
 
 @strong{Return value}: Always succeeds.
-The return value is indeterminate.
+The return value is unspecified.
 
 @end deftypefn
 
@@ -1779,7 +1779,7 @@ An irrecoverable error will result
 if an uninitialized
 configuration is used to create a grammar.
 
-@strong{Return value}: Always succeeds.  The return value is indeterminate.
+@strong{Return value}: Always succeeds.  The return value is unspecified.
 
 @end deftypefn
 
@@ -1915,7 +1915,7 @@ of gaining efficiencies at evaluation time.
 Current thinking is that the gains do not repay the extra
 complexity.
 
-@strong{Return value}: On success, a non-negative integer, whose value is otherwise indeterminate.
+@strong{Return value}: On success, a non-negative integer, whose value is otherwise unspecified.
 On failure, -2.
 @end deftypefn
 
@@ -2905,7 +2905,7 @@ description of the appropriate code.
 @xref{External error codes}.
 
 @strong{Return value}: On success, a non-negative number,
-whose value is otherwise indeterminate.
+whose value is otherwise unspecified.
 On hard failure, @minus{}2.
 For the error code @code{MARPA_ERR_GRAMMAR_HAS_CYCLE},
 the hard failure is fully recoverable.
@@ -2962,7 +2962,7 @@ In the new recognizer,
 @itemize
 @item the reference count will be 1;
 @item the furthest earleme will be 0; and
-@item the values of the latest and current earleme will be indeterminate.
+@item the values of the latest and current earleme will be unspecified.
 @end itemize
 
 @strong{Return value}:
@@ -3025,7 +3025,7 @@ and it is located at earleme 0.
 @end itemize
 
 @strong{Return value}:  On success, a non-negative value,
-whose value is otherwise indeterminate.
+whose value is otherwise unspecified.
 On hard failure, @minus{}2.
 
 @end deftypefn
@@ -3977,7 +3977,7 @@ On success, returns an ambiguity metric.
 If the parse is unambiguous,
 the metric is 1.
 If the parse is ambiguous, the metric
-is 2 or greater, and is otherwise indeterminate.
+is 2 or greater, and is otherwise unspecified.
 @xref{Better defined ambiguity metric}.
 
 @strong{Return value}: On success, the ambiguity metric,
@@ -4090,7 +4090,7 @@ On success, returns an ambiguity metric.
 If the parse is unambiguous,
 the metric is 1.
 If the parse is ambiguous, the metric
-is 2 or greater, and is otherwise indeterminate.
+is 2 or greater, and is otherwise unspecified.
 @xref{Better defined ambiguity metric}.
 
 If ``high rank only'' is in effect,
@@ -4914,7 +4914,7 @@ If the current step type is MARPA_STEP_RULE, MARPA_STEP_TOKEN, or MARPA_STEP_NUL
 the return value is the end ES location of the parse node.
 If the current step type is anything else,
 or if the valuator is inactive,
-the return value is indeterminate.
+the return value is unspecified.
 @end deftypefn
 
 @deftypefn {Accessor macro} @
@@ -4924,7 +4924,7 @@ Marpa_Earley_Set_ID marpa_v_rule_start_es_id (Marpa_Value v)
 If the current step type is MARPA_STEP_RULE, the start ES location of the rule node.
 If the current step type is anything else,
 or if the valuator is inactive,
-the return value is indeterminate.
+the return value is unspecified.
 @end deftypefn
 
 @deftypefn {Accessor macro} @
@@ -4935,7 +4935,7 @@ If the current step type is MARPA_STEP_TOKEN or MARPA_STEP_NULLING_SYMBOL,
 the start ES location of the leaf node.
 If the current step type is anything else,
 or if the valuator is inactive,
-the return value is indeterminate.
+the return value is unspecified.
 @end deftypefn
 
 For every parse node of the current parse tree,
@@ -6749,9 +6749,9 @@ parse trees does the tree traversal.
 This eliminates much of the work that otherwise would
 need to be done in
 the valuation time object.
-In the current implement, the valuation time object
+In the current implementation, the valuation time object
 needs only to step through a sequence already determined
-in the tree iterator.
+by the tree iterator.
 
 @node Design of numbered objects
 @section Numbered objects
