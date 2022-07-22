@@ -138,10 +138,11 @@ What does the sequence look like when rewritten
 in BNF as a right-recursion?
 @end itemize
 
-@node Terminology and notation
-@section Terminology and notation
+@node Terms, definitions and notation
+@chapter Terms, definitions and notation
 
-In this document, the following terms are used, sometimes with special meanings:
+The following definitions apply in this document:
+
 @itemize
 @item
 @dfindex application
@@ -219,7 +220,7 @@ into mathematics and language.
 @end itemize
 
 @node Application and diagnostic behavior
-@subsection Application and diagnostic behavior
+@section Application and diagnostic behavior
 
 An
 @dfindex application behavior
@@ -228,6 +229,8 @@ An
 is a behavior on which it is intended that
 the design of applications
 will be based.
+In this document,
+a behavior is an application behavior unless otherwise stated.
 Most of the behaviors specified in this document are application
 behaviors.
 We sometimes say that ``applications may expect'' a certain behavior
@@ -245,10 +248,10 @@ A
 @dfindex diagnostic behavior
 @dfindex behavior, diagnostic
 @dfn{diagnostic behavior}
-is a behavior which it is suggested
+is a behavior that this document suggests
 that the programmer may attempt in the face of an irrecoverable failure,
-for testing, diagnostics and debugging.
-They are hoped for, rather than expected,
+for purpose of testing, diagnostics and debugging.
+Diagnostic behaviors are hoped for, rather than expected,
 and intended
 to allow the programmer to deal with irrecoverable
 failures as smoothly as possible.
@@ -258,7 +261,7 @@ In this document,
 a behavior is a diagnostic behavior only if that is specifically
 indicated.
 Applications should not be designed to rely
-on diagnostics behaviors.
+on diagnostic behaviors.
 We sometimes say that ``diagnostics may attempt'' a certain behavior
 to emphasize that that behavior is a diagnostic behavior.
 
