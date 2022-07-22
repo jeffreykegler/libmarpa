@@ -37,7 +37,7 @@ my @protos;
 my @defs;
 LINE: while ( my $line = <STDIN> ) {
 
-    next LINE if $line =~ m/ [{] Macro [}] /xms;
+    next LINE if $line =~ m/ [{] .* [mM] acro \s* [}] /xms;
 
     my $fundef;
     $fundef = "fun" if $line =~ m/[@]deftypefun/xms;
