@@ -4452,27 +4452,17 @@ back to the higher-level language when appropriate.
 A setup like this is not terribly efficient.
 And exception handling across language boundaries would be
 very tricky.
-But neither of these is the worst problem.
 
-Callbacks are hard to debug.
+But neither of these is the worst problem.
+The worst problem is that callbacks are hard to debug.
 Wrappered callbacks are even worse.
 Calls made across language boundaries
 are harder yet to debug.
 In the system described above,
 by the time a return value is finally consumed,
 a language boundary will have been crossed four times.
-
-In essence, callbacks force applications to do most
-of the programming
-via side effects.
-One need not be a functional programming purist to find
-this a very undesirable style of design to force on
-an application.
-But the ability to debug can make the difference between
-code that does work and code that does not.
-Unfairly or not,
-code is rarely considered well-designed when it does
-not work.
+The ability to debug can make the difference between
+code that works and code that does not work.
 
 So, while step-driven valuation seems
 a roundabout approach,
