@@ -168,7 +168,7 @@ where @code{x} and @code{y} are two numbers.
 @dfindex indeterminate value
 An @dfn{indeterminate value}
 is either an unspecified value or a trap value.
-Our use of this term is analogous to its use in the C99 standard.
+Our use of this term is consistent with its use in the C99 standard.
 @item
 @dfindex method
 @dfn{Libmarpa method}, or just @dfn{method} means a C function
@@ -178,27 +178,27 @@ or a function-like macro of the Libmarpa library.
 A @dfn{trap value},
 also called a @dfn{trap representation},
 is a value which when accessed causes undefined behavior.
-Our use of this term is analogous to its use in the C99 standard.
+Our use of this term is consistent with its use in the C99 standard.
 @xref{Trap representations}
 @item
 @dfindex undefined behavior
 An @dfn{undefined behavior}
 is a behavior that this document does not specify.
-The implication is that this behavior might well be problematic.
-Our use of this term is analogous to its use in the C99 standard.
+One implication is that this behavior might be problematic.
+Our use of this term is consistent with its use in the C99 standard.
 @item
 @dfindex unspecified behavior
 An @dfn{unspecified behavior}
 is a behavior that, within a range of possibilities,
 is not further specified by this document.
-This is not necessarily problematic.
-Our use of this term is analogous to its use in the C99 standard.
+This is usually not problematic.
+Our use of this term is consistent with its use in the C99 standard.
 @item
 @dfindex unspecified value
 An @dfn{unspecified value}
 is a value on which this document imposes no restrictions,
 except that it cannot be a trap value.
-Our use of this term is analogous to its use in the C99 standard.
+Our use of this term is consistent with its use in the C99 standard.
 @item
 @dfindex user
 @dfn{User} means a ``user'' of the Libmarpa library.
