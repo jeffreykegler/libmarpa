@@ -4297,14 +4297,21 @@ A tree iterator for a bocage with no parse trees
 is considered to be ``exhausted'' when initialized.
 
 If the tree iterator is exhausted,
-@itemize
-@item soft fails, and
-@item sets the error code to @code{MARPA_ERR_TREE_EXHAUSTED}.
-@end itemize
+soft fails, and
+sets the error code to @code{MARPA_ERR_TREE_EXHAUSTED}.
+@xref{Orthogonal treatment of soft failures}.
+
+It the tree iterator is paused,
+hard fails, and
+sets the error code to @code{MARPA_ERR_TREE_PAUSED}.
+This hard failure is fully recoverable.
+@xref{marpa_v_new,marpa_v_new()}.
 
 @strong{Return value}: On success, a non-negative value.
 On soft failure, @minus{}1.
 On hard failure, @minus{}2.
+The hard failure with error code @code{MARPA_ERR_TREE_PAUSED}
+is fully recoverable.
 @end deftypefn
 
 @anchor{marpa_t_parse_count}
@@ -4567,61 +4574,56 @@ in undefined behavior.
 @section Creating a new valuator
 
 @anchor{marpa_v_new}
-@deftypefun Marpa_Value marpa_v_new ( @
-    Marpa_Tree @var{t} @
-)
-Creates a new valuator.
-The parent object of the new valuator
-will be the tree iterator @var{t},
-and the reference count of the new valuator will be 1.
-The reference count of @var{t} is increased by 1.
+@deftypefn {Constructor function} @
+Marpa_Value marpa_v_new (  Marpa_Tree @var{t} )
 
-The parent tree iterator is ``paused'',
-so that the tree iterator
-cannot move on to a new parse tree
-until the valuator is destroyed.
-Many valuators of the same parse tree
-can exist at once.
+On success, does the following:
+@itemize
+@item Creates a new valuator.  The parent object of the new valuator
+will be the tree iterator @var{t}.
+@item Sets the reference count of the new valuator to 1.
+@item Increases the reference count of @var{t} by 1.
+@item ``Pauses'' the parent tree iterator.
+@end itemize
+
+As long as a parent tree iterator is
+@dfindex pause (a parent tree iterator)
+@dfn{paused}
+@code{marpa_t_next()}
+will not succeed,
+and therefore the parent tree iterator cannot move on
+to a new parse tree.
+Many valuators can share the same parent parse tree.
 A tree iterator is ``unpaused'' when
 all of the valuators of that tree iterator are destroyed.
 
-Return value:  On success, the newly created valuator.
-On failure, @code{NULL}.
-@end deftypefun
+@strong{Return value}:
+On success, the newly created valuator.
+On hard failure, @code{NULL}.
+@end deftypefn
 
 @node Valuator reference counting
 @section Reference counting
 
 @anchor{marpa_v_ref}
-@deftypefun Marpa_Value marpa_v_ref (Marpa_Value @var{v})
-Increases the reference count by 1.
+@deftypefn {Mutator function} @
+Marpa_Value marpa_v_ref (Marpa_Value @var{v})
+On success, increases the reference count by 1.
 Not needed by most applications.
 
-Return value:
+@strong{Return value}:
 On success, @var{v}.
-On failure, @code{NULL}.
-@end deftypefun
+On hard failure, @code{NULL}.
+@end deftypefn
 
 @anchor{marpa_v_unref}
-@deftypefun void marpa_v_unref ( @
-    Marpa_Value @var{v})
+@deftypefn {Destructor function} @
+void marpa_v_unref (Marpa_Value @var{v})
+
 Decreases the reference count by 1,
 destroying @var{v} once the reference count reaches
 zero.
-Beginning with @var{v}'s parent tree,
-Libmarpa then proceeds up the chain of parent objects.
-Every time a child is destroyed, the
-reference count of its parent is decreased by 1.
-Every time the reference count of an object
-is decreased by 1,
-if that reference count is now zero,
-that object is destroyed.
-Libmarpa follows this chain of decrements
-and destructions as required,
-all the way back to the
-base grammar, if necessary.
-
-@end deftypefun
+@end deftypefn
 
 @node Stepping through the valuator
 @section Stepping through the valuator
