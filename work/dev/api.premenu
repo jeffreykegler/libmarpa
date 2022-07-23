@@ -4629,49 +4629,75 @@ zero.
 @section Stepping through the valuator
 
 @anchor{marpa_v_step}
-@deftypefun Marpa_Step_Type marpa_v_step ( @
-    Marpa_Value @var{v})
-This method ``steps through'' the valuator.
-The return value is a @code{Marpa_Step_Type},
-an integer that indicates the type of step.
-How the application is expected to act on
-each step is described below
-(@ref{Valuator steps by type}).
+@deftypefn {Mutator function} @
+Marpa_Step_Type marpa_v_step ( Marpa_Value @var{v})
+
+On success, does the following
+@itemize
+@item Takes the valuator to the next
+@dfindex step (of a valuator)
+@dfindex valuator step
+@dfn{step}
+in its life cycle.
+@item Sets and returns the
+@dfindex valuator step type
+@dfindex step type, valuator
+@dfindex step type
+@dfn{step type},
+which is a non-negative integer.
+The C type for a step type is @code{Marpa_Step_Type}.
+@end itemize
+
+The step type tells
+the application how it expected to act on
+the step.
+@xref{Valuator step types}.
 When the iteration through the steps is finished,
-@code{marpa_v_step()}
-returns @code{MARPA_STEP_INACTIVE}.
+the step type is @code{MARPA_STEP_INACTIVE}.
 
-Return value:  On success, a @code{Marpa_Step_Type},
+Steps are often referred to along with their step type so that,
+for example, we say
+``a @code{MARPA_STEP_RULE} step''
+to refer to a step whose step type
+is @code{MARPA_STEP_RULE}.
+
+@strong{Return value}:  On success, a @code{Marpa_Step_Type},
 which always be a non-negative integer.
-On failure, @minus{}2.
+On hard failure, @minus{}2.
 
-@end deftypefun
+@end deftypefn
 
-@node Valuator steps by type
-@section Valuator steps by type
+@node Valuator step types
+@section Valuator step types
 
-@deftypevr Macro Marpa_Step_Type MARPA_STEP_RULE
-The semantics of a rule should be performed.
-The application can find the value of the rule's
-children in the stack locations from
+@deftypevr {Accessor macro} Marpa_Step_Type MARPA_STEP_RULE
+The application should perform its equivalent
+of rule execution.
+@itemize
+@item The ``child values'' for this step
+will be in the stack locations from
 @code{marpa_v_arg_0(v)}
 to
 @code{marpa_v_arg_n(v)}.
-The semantics for the rule whose ID is
-@code{marpa_v_rule(v)}
-should be executed
-on these child values,
-and the result placed in
+@item
+The rule for this step will be
+@code{marpa_v_rule(v)}.
+@item The result of this step should be written
+to stack location
 @code{marpa_v_result(v)}.
-In the case of a @code{MARPA_STEP_RULE} step,
-the stack location of
+Typically, the result of this step is determined by
+executing the semantics for its rule on
+its child values.
+@item The stack location of
 @code{marpa_v_result(v)}
 is guaranteed to
 be equal to
 @code{marpa_v_arg_0(v)}.
+@end itemize
+
 @end deftypevr
 
-@deftypevr Macro Marpa_Step_Type MARPA_STEP_TOKEN
+@deftypevr {Accessor macro} Marpa_Step_Type MARPA_STEP_TOKEN
 The semantics of a non-null token should be performed.
 The application's value for the token whose ID is
 @code{marpa_v_token(v)}
@@ -4683,7 +4709,7 @@ Its value according to Libmarpa will be in
 @code{marpa_v_token_value(v)}.
 @end deftypevr
 
-@deftypevr Macro Marpa_Step_Type MARPA_STEP_NULLING_SYMBOL
+@deftypevr {Accessor macro} Marpa_Step_Type MARPA_STEP_NULLING_SYMBOL
 The semantics for a nulling symbol should be performed.
 The ID of the symbol is
 @code{marpa_v_symbol(v)}
@@ -4693,7 +4719,7 @@ stack location
 @code{marpa_v_result(v)}.
 @end deftypevr
 
-@deftypevr Macro Marpa_Step_Type MARPA_STEP_INACTIVE
+@deftypevr {Accessor macro} Marpa_Step_Type MARPA_STEP_INACTIVE
 The valuator has gone through all of its steps
 and is now inactive.
 The value of the parse will be in stack location 0.
@@ -4704,12 +4730,12 @@ be both the first and last step.
 
 @end deftypevr
 
-@deftypevr Macro Marpa_Step_Type MARPA_STEP_INITIAL
+@deftypevr {Accessor macro} Marpa_Step_Type MARPA_STEP_INITIAL
 The valuator is new and has
 yet to go through any steps.
 @end deftypevr
 
-@deftypevr Macro Marpa_Step_Type MARPA_STEP_INTERNAL1
+@deftypevr {Accessor macro} Marpa_Step_Type MARPA_STEP_INTERNAL1
 @deftypevrx Macro Marpa_Step_Type MARPA_STEP_INTERNAL2
 @deftypevrx Macro Marpa_Step_Type MARPA_STEP_TRACE
 These step types are reserved for internal purposes.
@@ -5535,13 +5561,13 @@ or on other failure.
 @node Event codes
 @section Event codes
 
-@deftypevr Macro int MARPA_EVENT_NONE
+@deftypevr {Accessor macro} int MARPA_EVENT_NONE
 Applications should never see this event.
 Event value: Unspecified.
 Suggested message: "No event".
 @end deftypevr
 
-@deftypevr Macro int MARPA_EVENT_COUNTED_NULLABLE
+@deftypevr {Accessor macro} int MARPA_EVENT_COUNTED_NULLABLE
 A nullable symbol is either the separator
 for, or the right hand side of, a sequence.
 Event value: The ID of the symbol.
@@ -5549,7 +5575,7 @@ Suggested message: "This symbol is a counted nullable".
 @end deftypevr
 
 @anchor{MARPA_EVENT_EARLEY_ITEM_THRESHOLD}
-@deftypevr Macro int MARPA_EVENT_EARLEY_ITEM_THRESHOLD
+@deftypevr {Accessor macro} int MARPA_EVENT_EARLEY_ITEM_THRESHOLD
 This event
 indicates that an application-settable threshold
 on the number of Earley items has been reached or exceeded.
@@ -5560,13 +5586,13 @@ Event value: The current Earley item count.
 Suggested message: "Too many Earley items".
 @end deftypevr
 
-@deftypevr Macro int MARPA_EVENT_EXHAUSTED
+@deftypevr {Accessor macro} int MARPA_EVENT_EXHAUSTED
 The parse is exhausted.
 Event value: Unspecified.
 Suggested message: "Recognizer is exhausted".
 @end deftypevr
 
-@deftypevr Macro int MARPA_EVENT_LOOP_RULES
+@deftypevr {Accessor macro} int MARPA_EVENT_LOOP_RULES
 One or more rules are loop rules --- rules
 that are part of a cycle.
 Cycles are pathological cases of recursion,
@@ -5580,13 +5606,13 @@ Event value: The count of loop rules.
 Suggested message: "Grammar contains a infinite loop".
 @end deftypevr
 
-@deftypevr Macro int MARPA_EVENT_NULLING_TERMINAL
+@deftypevr {Accessor macro} int MARPA_EVENT_NULLING_TERMINAL
 A nulling symbol is also a terminal.
 Event value: The ID of the symbol.
 Suggested message: "This symbol is a nulling terminal".
 @end deftypevr
 
-@deftypevr Macro int MARPA_EVENT_SYMBOL_COMPLETED
+@deftypevr {Accessor macro} int MARPA_EVENT_SYMBOL_COMPLETED
 The recognizer can be set to generate an event
 a symbol is completed
 using its
@@ -5600,7 +5626,7 @@ Event value: The ID of the completed symbol.
 Suggested message: "Completed symbol".
 @end deftypevr
 
-@deftypevr Macro int MARPA_EVENT_SYMBOL_EXPECTED
+@deftypevr {Accessor macro} int MARPA_EVENT_SYMBOL_EXPECTED
 The recognizer can be set to generate an event when a
 symbol is expected as a terminal,
 using its
@@ -5617,7 +5643,7 @@ Suggested message: "Expecting symbol".
 @end deftypevr
 
 
-@deftypevr Macro int MARPA_EVENT_SYMBOL_NULLED
+@deftypevr {Accessor macro} int MARPA_EVENT_SYMBOL_NULLED
 The recognizer can be set to generate an event when a
 symbol is nulled -- that is, recognized as a
 zero-length symbol.
@@ -5631,7 +5657,7 @@ Event value: The ID of the nulled symbol.
 Suggested message: "Symbol was nulled".
 @end deftypevr
 
-@deftypevr Macro int MARPA_EVENT_SYMBOL_PREDICTED
+@deftypevr {Accessor macro} int MARPA_EVENT_SYMBOL_PREDICTED
 The recognizer can be set to generate an event when a
 symbol is predicted.
 To set an predicted symbol event,
@@ -5687,7 +5713,7 @@ Always succeeds.
 @node Error Macros
 @section Error Macros
 
-@deftypevr Macro int MARPA_ERRCODE_COUNT
+@deftypevr {Accessor macro} int MARPA_ERRCODE_COUNT
 The number of error codes.
 All error codes, whether internal or external,
 will be integers, non-negative but
@@ -5703,7 +5729,7 @@ of the Libmarpa external interface should ever see.
 Internal error codes are in their own section
 (@ref{Internal error codes}).
 
-@deftypevr Macro int MARPA_ERR_NONE
+@deftypevr {Accessor macro} int MARPA_ERR_NONE
 No error condition.
 The error code is initialized to this value.
 Methods that do not result in failure
@@ -5712,7 +5738,7 @@ Numeric value: 0.
 Suggested message: "No error".
 @end deftypevr
 
-@deftypevr Macro int MARPA_ERR_BAD_SEPARATOR
+@deftypevr {Accessor macro} int MARPA_ERR_BAD_SEPARATOR
 A separator was specified for a sequence rule,
 but its ID was not that
 of a valid symbol.
@@ -5720,7 +5746,7 @@ Numeric value: 6.
 Suggested message: "Separator has invalid symbol ID".
 @end deftypevr
 
-@deftypevr Macro int MARPA_ERR_BEFORE_FIRST_TREE
+@deftypevr {Accessor macro} int MARPA_ERR_BEFORE_FIRST_TREE
 A tree iterator is positioned before the first tree,
 and the tree iterator was specified in a context where
 the tree iterator must be positioned at or after
@@ -5735,7 +5761,7 @@ Numeric value: 91.
 Suggested message: "Tree iterator is before first tree".
 @end deftypevr
 
-@deftypevr Macro int MARPA_ERR_COUNTED_NULLABLE
+@deftypevr {Accessor macro} int MARPA_ERR_COUNTED_NULLABLE
 A ``counted'' symbol was found
 that is also a nullable symbol.
 A ``counted'' symbol is one that appears on the RHS
@@ -5760,7 +5786,7 @@ Numeric value: 8.
 Suggested message: "Nullable symbol on RHS of a sequence rule".
 @end deftypevr
 
-@deftypevr Macro int MARPA_ERR_DUPLICATE_RULE
+@deftypevr {Accessor macro} int MARPA_ERR_DUPLICATE_RULE
 This error indicates an attempt to add a BNF rule that
 is a duplicate of a BNF rule already in the grammar.
 Two BNF rules are considered duplicates if
@@ -5781,7 +5807,7 @@ Numeric value: 11.
 Suggested message: "Duplicate rule".
 @end deftypevr
 
-@deftypevr Macro int MARPA_ERR_DUPLICATE_TOKEN
+@deftypevr {Accessor macro} int MARPA_ERR_DUPLICATE_TOKEN
 This error indicates an attempt to add a duplicate token.
 A token is a duplicate if one already read at the same
 earleme has the same symbol ID and the same length.
@@ -5789,7 +5815,7 @@ Numeric value: 12.
 Suggested message: "Duplicate token".
 @end deftypevr
 
-@deftypevr Macro int MARPA_ERR_YIM_COUNT
+@deftypevr {Accessor macro} int MARPA_ERR_YIM_COUNT
 This error code indicates that
 an implementation-defined limit on the
 number of Earley items per Earley set
@@ -5811,14 +5837,14 @@ Numeric value: 13.
 Suggested message: "Maximum number of Earley items exceeded".
 @end deftypevr
 
-@deftypevr Macro int MARPA_ERR_EVENT_IX_NEGATIVE
+@deftypevr {Accessor macro} int MARPA_ERR_EVENT_IX_NEGATIVE
 A negative event index was specified.
 That is not allowed.
 Numeric value: 15.
 Suggested message: "Negative event index".
 @end deftypevr
 
-@deftypevr Macro int MARPA_ERR_EVENT_IX_OOB
+@deftypevr {Accessor macro} int MARPA_ERR_EVENT_IX_OOB
 An non-negative event index was specified,
 but there is no event at that index.
 Since the events are in sequence, this means it
@@ -5827,7 +5853,7 @@ Numeric value: 16.
 Suggested message: "No event at that index".
 @end deftypevr
 
-@deftypevr Macro int MARPA_ERR_GRAMMAR_HAS_CYCLE
+@deftypevr {Accessor macro} int MARPA_ERR_GRAMMAR_HAS_CYCLE
 The grammar has a cycle --- one or more loop
 rules.
 This is a recoverable error,
@@ -5838,7 +5864,7 @@ Numeric value: 17.
 Suggested message: "Grammar has cycle".
 @end deftypevr
 
-@deftypevr Macro int MARPA_ERR_HEADERS_DO_NOT_MATCH
+@deftypevr {Accessor macro} int MARPA_ERR_HEADERS_DO_NOT_MATCH
 This is an internal error, and indicates that
 Libmarpa was wrongly built.
 Libmarpa was compiled with headers that do not
@@ -5849,7 +5875,7 @@ Numeric value: 98.
 Suggested message: "Internal error: Libmarpa was built incorrectly"
 @end deftypevr
 
-@deftypevr Macro int MARPA_ERR_I_AM_NOT_OK
+@deftypevr {Accessor macro} int MARPA_ERR_I_AM_NOT_OK
 The Libmarpa base grammar is in a "not ok"
 state.
 Currently, the only way this can happen
@@ -5858,7 +5884,7 @@ Numeric value: 29.
 Suggested message: "Marpa is in a not OK state".
 @end deftypevr
 
-@deftypevr Macro int MARPA_ERR_INACCESSIBLE_TOKEN
+@deftypevr {Accessor macro} int MARPA_ERR_INACCESSIBLE_TOKEN
 This error code indicates that
 the token symbol is an inaccessible symbol --- one that
 cannot be reached from the start symbol.
@@ -5874,14 +5900,14 @@ Numeric value: 18.
 Suggested message: "Token symbol is inaccessible".
 @end deftypevr
 
-@deftypevr Macro int MARPA_ERR_INVALID_BOOLEAN
+@deftypevr {Accessor macro} int MARPA_ERR_INVALID_BOOLEAN
 A function was called that takes a boolean argument,
 but the value of that argument was not either 0 or 1.
 Numeric value: 22.
 Suggested message: "Argument is not boolean".
 @end deftypevr
 
-@deftypevr Macro int MARPA_ERR_INVALID_LOCATION
+@deftypevr {Accessor macro} int MARPA_ERR_INVALID_LOCATION
 The location (Earley set ID) is not valid.
 It may be invalid for one of two reasons:
 @itemize
@@ -5903,14 +5929,14 @@ Numeric value: 25.
 Suggested message: "Location is not valid".
 @end deftypevr
 
-@deftypevr Macro int MARPA_ERR_INVALID_START_SYMBOL
+@deftypevr {Accessor macro} int MARPA_ERR_INVALID_START_SYMBOL
 A start symbol was specified,
 but its symbol ID is not that of a valid symbol.
 Numeric value: 27.
 Suggested message: "Specified start symbol is not valid".
 @end deftypevr
 
-@deftypevr Macro int MARPA_ERR_INVALID_ASSERTION_ID
+@deftypevr {Accessor macro} int MARPA_ERR_INVALID_ASSERTION_ID
 A method was called with an invalid assertion ID.
 This is a assertion ID that not only does
 not exist, but cannot exist.
@@ -5919,7 +5945,7 @@ Numeric value: 96.
 Suggested message: "Assertion ID is malformed".
 @end deftypevr
 
-@deftypevr Macro int MARPA_ERR_INVALID_RULE_ID
+@deftypevr {Accessor macro} int MARPA_ERR_INVALID_RULE_ID
 A method was called with an invalid rule ID.
 This is a rule ID that not only does
 not exist, but cannot exist.
@@ -5928,7 +5954,7 @@ Numeric value: 26.
 Suggested message: "Rule ID is malformed".
 @end deftypevr
 
-@deftypevr Macro int MARPA_ERR_INVALID_SYMBOL_ID
+@deftypevr {Accessor macro} int MARPA_ERR_INVALID_SYMBOL_ID
 A method was called with an invalid symbol ID.
 This is a symbol ID that not only does
 not exist, but cannot exist.
@@ -5937,7 +5963,7 @@ Numeric value: 28.
 Suggested message: "Symbol ID is malformed".
 @end deftypevr
 
-@deftypevr Macro int MARPA_ERR_MAJOR_VERSION_MISMATCH
+@deftypevr {Accessor macro} int MARPA_ERR_MAJOR_VERSION_MISMATCH
 There was a mismatch in the major version number
 between the requested version
 of libmarpa, and the actual one.
@@ -5945,7 +5971,7 @@ Numeric value: 30.
 Suggested message: "Libmarpa major version number is a mismatch".
 
 @end deftypevr
-@deftypevr Macro int MARPA_ERR_MICRO_VERSION_MISMATCH
+@deftypevr {Accessor macro} int MARPA_ERR_MICRO_VERSION_MISMATCH
 There was a mismatch in the micro version number
 between the requested version
 of libmarpa, and the actual one.
@@ -5953,7 +5979,7 @@ Numeric value: 31.
 Suggested message: "Libmarpa micro version number is a mismatch".
 @end deftypevr
 
-@deftypevr Macro int MARPA_ERR_MINOR_VERSION_MISMATCH
+@deftypevr {Accessor macro} int MARPA_ERR_MINOR_VERSION_MISMATCH
 There was a mismatch in the minor version number
 between the requested version
 of libmarpa, and the actual one.
@@ -5961,7 +5987,7 @@ Numeric value: 32.
 Suggested message: "Libmarpa minor version number is a mismatch".
 @end deftypevr
 
-@deftypevr Macro int MARPA_ERR_NO_EARLEY_SET_AT_LOCATION
+@deftypevr {Accessor macro} int MARPA_ERR_NO_EARLEY_SET_AT_LOCATION
 A non-negative Earley set ID (also called an Earley set ordinal)
 was specified,
 but there is no corresponding Earley set.
@@ -5972,7 +5998,7 @@ Numeric value: 39.
 Suggested message: "Earley set ID is after latest Earley set".
 @end deftypevr
 
-@deftypevr Macro int MARPA_ERR_NOT_PRECOMPUTED
+@deftypevr {Accessor macro} int MARPA_ERR_NOT_PRECOMPUTED
 The grammar is not precomputed,
 and attempt was made to do something with it
 that is not allowed for unprecomputed
@@ -5983,7 +6009,7 @@ Numeric value: 34.
 Suggested message: "This grammar is not precomputed".
 @end deftypevr
 
-@deftypevr Macro int MARPA_ERR_NO_PARSE
+@deftypevr {Accessor macro} int MARPA_ERR_NO_PARSE
 The application attempted to create a bocage
 from a recognizer without a parse.
 Applications will often want to treat this as
@@ -5992,7 +6018,7 @@ Numeric value: 41.
 Suggested message: "No parse".
 @end deftypevr
 
-@deftypevr Macro int MARPA_ERR_NO_RULES
+@deftypevr {Accessor macro} int MARPA_ERR_NO_RULES
 A grammar that has no rules is being used
 in a way that is not allowed.
 Usually the problem is that the user is
@@ -6001,7 +6027,7 @@ Numeric value: 42.
 Suggested message: "This grammar does not have any rules".
 @end deftypevr
 
-@deftypevr Macro int MARPA_ERR_NO_START_SYMBOL
+@deftypevr {Accessor macro} int MARPA_ERR_NO_START_SYMBOL
 The grammar has no start symbol,
 and an attempt was made to perform an
 operation that requires one.
@@ -6011,28 +6037,28 @@ Numeric value: 43.
 Suggested message: "This grammar has no start symbol".
 @end deftypevr
 
-@deftypevr Macro int MARPA_ERR_NO_SUCH_ASSERTION_ID
+@deftypevr {Accessor macro} int MARPA_ERR_NO_SUCH_ASSERTION_ID
 A method was called with an assertion ID that is well-formed,
 but the assertion does not exist.
 Numeric value: 97.
 Suggested message: "No assertion with this ID exists".
 @end deftypevr
 
-@deftypevr Macro int MARPA_ERR_NO_SUCH_RULE_ID
+@deftypevr {Accessor macro} int MARPA_ERR_NO_SUCH_RULE_ID
 A method was called with a rule ID that is well-formed,
 but the rule does not exist.
 Numeric value: 89.
 Suggested message: "No rule with this ID exists".
 @end deftypevr
 
-@deftypevr Macro int MARPA_ERR_NO_SUCH_SYMBOL_ID
+@deftypevr {Accessor macro} int MARPA_ERR_NO_SUCH_SYMBOL_ID
 A method was called with a symbol ID that is well-formed,
 but the symbol does not exist.
 Numeric value: 90.
 Suggested message: "No symbol with this ID exists".
 @end deftypevr
 
-@deftypevr Macro int MARPA_ERR_NO_TOKEN_EXPECTED_HERE
+@deftypevr {Accessor macro} int MARPA_ERR_NO_TOKEN_EXPECTED_HERE
 This error code indicates that
 no tokens at all were expected at this earleme
 location.
@@ -6052,7 +6078,7 @@ Numeric value: 44.
 Suggested message: "No token is expected at this earleme location".
 @end deftypevr
 
-@deftypevr Macro int MARPA_ERR_NOT_A_SEQUENCE
+@deftypevr {Accessor macro} int MARPA_ERR_NOT_A_SEQUENCE
 This error occurs in situations where a rule
 is required to be a sequence,
 and indicates that the rule of interest is,
@@ -6063,14 +6089,14 @@ Numeric value: 99.
 Suggested message: "Rule is not a sequence".
 @end deftypevr
 
-@deftypevr Macro int MARPA_ERR_NULLING_TERMINAL
+@deftypevr {Accessor macro} int MARPA_ERR_NULLING_TERMINAL
 Marpa does not allow a symbol to be both nulling
 and a terminal.
 Numeric value: 49.
 Suggested message: "A symbol is both terminal and nulling".
 @end deftypevr
 
-@deftypevr Macro int MARPA_ERR_ORDER_FROZEN
+@deftypevr {Accessor macro} int MARPA_ERR_ORDER_FROZEN
 The Marpa order object has been frozen.
 If a Marpa order object is frozen, it cannot be
 changed.
@@ -6085,13 +6111,13 @@ Numeric value: 50.
 Suggested message: "The ordering is frozen".
 @end deftypevr
 
-@deftypevr Macro int MARPA_ERR_PARSE_EXHAUSTED
+@deftypevr {Accessor macro} int MARPA_ERR_PARSE_EXHAUSTED
 The parse is exhausted.
 Numeric value: 53.
 Suggested message: "The parse is exhausted".
 @end deftypevr
 
-@deftypevr Macro int MARPA_ERR_PARSE_TOO_LONG
+@deftypevr {Accessor macro} int MARPA_ERR_PARSE_TOO_LONG
 The parse is too long.
 The limit on the length of a parse is implementation
 dependent, but it is very large,
@@ -6115,7 +6141,7 @@ Numeric value: 54.
 Suggested message: "This input would make the parse too long".
 @end deftypevr
 
-@deftypevr Macro int MARPA_ERR_POINTER_ARG_NULL
+@deftypevr {Accessor macro} int MARPA_ERR_POINTER_ARG_NULL
 In a method that takes pointers as arguments,
 one of the pointer arguments is @code{NULL},
 in a case where that is not allowed.
@@ -6125,7 +6151,7 @@ Numeric value: 56.
 Suggested message: "An argument is null when it should not be".
 @end deftypevr
 
-@deftypevr Macro int MARPA_ERR_PRECOMPUTED
+@deftypevr {Accessor macro} int MARPA_ERR_PRECOMPUTED
 An attempt was made to use a precomputed grammar
 in a way that is not allowed.
 Often this is an attempt to change the grammar.
@@ -6136,7 +6162,7 @@ Numeric value: 57.
 Suggested message: "This grammar is precomputed".
 @end deftypevr
 
-@deftypevr Macro int MARPA_ERR_PROGRESS_REPORT_NOT_STARTED
+@deftypevr {Accessor macro} int MARPA_ERR_PROGRESS_REPORT_NOT_STARTED
 No recognizer progress report is currently active,
 and an action has been attempted that
 requires the progress report to be active.
@@ -6147,14 +6173,14 @@ Numeric value: 59.
 Suggested message: "No progress report has been started".
 @end deftypevr
 
-@deftypevr Macro int MARPA_ERR_PROGRESS_REPORT_EXHAUSTED
+@deftypevr {Accessor macro} int MARPA_ERR_PROGRESS_REPORT_EXHAUSTED
 The progress report is ``exhausted'' --- all its
 items have been iterated through.
 Numeric value: 58.
 Suggested message: "The progress report is exhausted".
 @end deftypevr
 
-@deftypevr Macro int MARPA_ERR_RANK_TOO_LOW
+@deftypevr {Accessor macro} int MARPA_ERR_RANK_TOO_LOW
 A symbol or rule rank was specified that
 was less than an implementation-defined minimum.
 Implementations will always allow at least those
@@ -6164,7 +6190,7 @@ Numeric value: 85.
 Suggested message: "Rule or symbol rank too low".
 @end deftypevr
 
-@deftypevr Macro int MARPA_ERR_RANK_TOO_HIGH
+@deftypevr {Accessor macro} int MARPA_ERR_RANK_TOO_HIGH
 A symbol or rule rank was specified that
 was greater than an implementation-defined maximum.
 Implementations will always allow at least those
@@ -6174,7 +6200,7 @@ Numeric value: 86.
 Suggested message: "Rule or symbol rank too high".
 @end deftypevr
 
-@deftypevr Macro int MARPA_ERR_RECCE_IS_INCONSISTENT
+@deftypevr {Accessor macro} int MARPA_ERR_RECCE_IS_INCONSISTENT
 The recognizer is ``inconsistent'',
 usually because the user has rejected one or
 more rules or terminals,
@@ -6186,7 +6212,7 @@ Numeric value: 95.
 Suggested message: "The recognizer is inconsistent.
 @end deftypevr
 
-@deftypevr Macro int MARPA_ERR_RECCE_NOT_ACCEPTING_INPUT
+@deftypevr {Accessor macro} int MARPA_ERR_RECCE_NOT_ACCEPTING_INPUT
 The recognizer is not accepting input,
 and the application has attempted something that
 is inconsistent with that fact.
@@ -6194,7 +6220,7 @@ Numeric value: 60.
 Suggested message: "The recognizer is not accepting input".
 @end deftypevr
 
-@deftypevr Macro int MARPA_ERR_RECCE_NOT_STARTED
+@deftypevr {Accessor macro} int MARPA_ERR_RECCE_NOT_STARTED
 The recognizer has not been started.
 and the application has attempted something that
 is inconsistent with that fact.
@@ -6202,7 +6228,7 @@ Numeric value: 61.
 Suggested message: "The recognizer has not been started".
 @end deftypevr
 
-@deftypevr Macro int MARPA_ERR_RECCE_STARTED
+@deftypevr {Accessor macro} int MARPA_ERR_RECCE_STARTED
 The recognizer has been started.
 and the application has attempted something that
 is inconsistent with that fact.
@@ -6210,7 +6236,7 @@ Numeric value: 62.
 Suggested message: "The recognizer has been started".
 @end deftypevr
 
-@deftypevr Macro int MARPA_ERR_RHS_IX_NEGATIVE
+@deftypevr {Accessor macro} int MARPA_ERR_RHS_IX_NEGATIVE
 The index of a RHS symbol was specified,
 and it was negative.
 That is not allowed.
@@ -6218,7 +6244,7 @@ Numeric value: 63.
 Suggested message: "RHS index cannot be negative".
 @end deftypevr
 
-@deftypevr Macro int MARPA_ERR_RHS_IX_OOB
+@deftypevr {Accessor macro} int MARPA_ERR_RHS_IX_OOB
 A non-negative index of RHS symbol was specified,
 but there is no symbol at that index.
 Since the indexes are in sequence, this means the
@@ -6227,7 +6253,7 @@ Numeric value: 64.
 Suggested message: "RHS index must be less than rule length".
 @end deftypevr
 
-@deftypevr Macro int MARPA_ERR_RHS_TOO_LONG
+@deftypevr {Accessor macro} int MARPA_ERR_RHS_TOO_LONG
 An attempt was made to add a rule with too many
 right hand side symbols.
 The limit on the RHS symbol count is implementation
@@ -6241,7 +6267,7 @@ Numeric value: 65.
 Suggested message: "The RHS is too long".
 @end deftypevr
 
-@deftypevr Macro int MARPA_ERR_SEQUENCE_LHS_NOT_UNIQUE
+@deftypevr {Accessor macro} int MARPA_ERR_SEQUENCE_LHS_NOT_UNIQUE
 The LHS of a
 sequence rule cannot be the LHS of any other rule,
 whether a sequence rule or a BNF rule.
@@ -6250,7 +6276,7 @@ Numeric value: 66.
 Suggested message: "LHS of sequence rule would not be unique".
 @end deftypevr
 
-@deftypevr Macro int MARPA_ERR_START_NOT_LHS
+@deftypevr {Accessor macro} int MARPA_ERR_START_NOT_LHS
 The start symbol is not on the LHS on
 any rule.
 That means it could never match any possible input,
@@ -6260,7 +6286,7 @@ Numeric value: 73.
 Suggested message: "Start symbol not on LHS of any rule".
 @end deftypevr
 
-@deftypevr Macro int MARPA_ERR_SYMBOL_IS_NOT_COMPLETION_EVENT
+@deftypevr {Accessor macro} int MARPA_ERR_SYMBOL_IS_NOT_COMPLETION_EVENT
 An attempt was made to use a symbol in
 a way that requires it to be
 set up for completion events,
@@ -6275,7 +6301,7 @@ Numeric value: 92.
 Suggested message: "Symbol is not set up for completion events".
 @end deftypevr
 
-@deftypevr Macro int MARPA_ERR_SYMBOL_IS_NOT_NULLED_EVENT
+@deftypevr {Accessor macro} int MARPA_ERR_SYMBOL_IS_NOT_NULLED_EVENT
 An attempt was made to use a symbol in
 a way that requires it to be
 set up for nulled events,
@@ -6288,7 +6314,7 @@ Numeric value: 93.
 Suggested message: "Symbol is not set up for nulled events".
 @end deftypevr
 
-@deftypevr Macro int MARPA_ERR_SYMBOL_IS_NOT_PREDICTION_EVENT
+@deftypevr {Accessor macro} int MARPA_ERR_SYMBOL_IS_NOT_PREDICTION_EVENT
 An attempt was made to use a symbol in
 a way that requires it to be
 set up for predictino events,
@@ -6301,7 +6327,7 @@ Numeric value: 94.
 Suggested message: "Symbol is not set up for prediction events".
 @end deftypevr
 
-@deftypevr Macro int MARPA_ERR_SYMBOL_VALUED_CONFLICT
+@deftypevr {Accessor macro} int MARPA_ERR_SYMBOL_VALUED_CONFLICT
 Unvalued symbols are a deprecated Marpa feature,
 which may be avoided with
 the
@@ -6317,7 +6343,7 @@ Numeric value: 74.
 Suggested message: "Symbol is treated both as valued and unvalued".
 @end deftypevr
 
-@deftypevr Macro int MARPA_ERR_TERMINAL_IS_LOCKED
+@deftypevr {Accessor macro} int MARPA_ERR_TERMINAL_IS_LOCKED
 An attempt was made to change the terminal status
 of a symbol to a different value
 after it was locked.
@@ -6325,14 +6351,14 @@ Numeric value: 75.
 Suggested message: "The terminal status of the symbol is locked".
 @end deftypevr
 
-@deftypevr Macro int MARPA_ERR_TOKEN_IS_NOT_TERMINAL
+@deftypevr {Accessor macro} int MARPA_ERR_TOKEN_IS_NOT_TERMINAL
 A token was specified whose symbol ID is not
 a terminal.
 Numeric value: 76.
 Suggested message: "Token symbol must be a terminal".
 @end deftypevr
 
-@deftypevr Macro int MARPA_ERR_TOKEN_LENGTH_LE_ZERO
+@deftypevr {Accessor macro} int MARPA_ERR_TOKEN_LENGTH_LE_ZERO
 A token length was specified that is less than
 or equal to zero.
 Zero-length tokens are not allowed in Libmarpa.
@@ -6340,7 +6366,7 @@ Numeric value: 77.
 Suggested message: "Token length must greater than zero".
 @end deftypevr
 
-@deftypevr Macro int MARPA_ERR_TOKEN_TOO_LONG
+@deftypevr {Accessor macro} int MARPA_ERR_TOKEN_TOO_LONG
 The token length is too long.
 The limit on the length of a token
 is implementation dependent, but it
@@ -6352,7 +6378,7 @@ Numeric value: 78.
 Suggested message: "Token is too long".
 @end deftypevr
 
-@deftypevr Macro int MARPA_ERR_TREE_EXHAUSTED
+@deftypevr {Accessor macro} int MARPA_ERR_TREE_EXHAUSTED
 A Libmarpa parse tree iterator
 is ``exhausted'', that is,
 it has no more parses.
@@ -6360,7 +6386,7 @@ Numeric value: 79.
 Suggested message: "Tree iterator is exhausted".
 @end deftypevr
 
-@deftypevr Macro int MARPA_ERR_TREE_PAUSED
+@deftypevr {Accessor macro} int MARPA_ERR_TREE_PAUSED
 A Libmarpa tree is ``paused''
 and an operation was attempted that
 is inconsistent with that fact.
@@ -6372,7 +6398,7 @@ Numeric value: 80.
 Suggested message: "Tree iterator is paused".
 @end deftypevr
 
-@deftypevr Macro int MARPA_ERR_UNEXPECTED_TOKEN_ID
+@deftypevr {Accessor macro} int MARPA_ERR_UNEXPECTED_TOKEN_ID
 An attempt was made to read a token
 where a token with that symbol ID is not
 expected.
@@ -6383,7 +6409,7 @@ Numeric value: 81.
 Suggested message: "Unexpected token".
 @end deftypevr
 
-@deftypevr Macro int MARPA_ERR_UNPRODUCTIVE_START
+@deftypevr {Accessor macro} int MARPA_ERR_UNPRODUCTIVE_START
 The start symbol is unproductive.
 That means it could never match any possible input,
 not even the null string.
@@ -6392,14 +6418,14 @@ Numeric value: 82.
 Suggested message: "Unproductive start symbol".
 @end deftypevr
 
-@deftypevr Macro int MARPA_ERR_VALUATOR_INACTIVE
+@deftypevr {Accessor macro} int MARPA_ERR_VALUATOR_INACTIVE
 The valuator is inactive in a context where that
 should not be the case.
 Numeric value: 83.
 Suggested message: "Valuator inactive".
 @end deftypevr
 
-@deftypevr Macro int MARPA_ERR_VALUED_IS_LOCKED
+@deftypevr {Accessor macro} int MARPA_ERR_VALUED_IS_LOCKED
 Unvalued symbols are a deprecated Marpa feature,
 which may be avoided with
 the
@@ -6414,7 +6440,7 @@ Numeric value: 84.
 Suggested message: "The valued status of the symbol is locked".
 @end deftypevr
 
-@deftypevr Macro int MARPA_ERR_SYMBOL_IS_NULLING
+@deftypevr {Accessor macro} int MARPA_ERR_SYMBOL_IS_NULLING
 An attempt was made to do something with a nulling
 symbol that is not allowed.
 For example,
@@ -6428,7 +6454,7 @@ Numeric value: 87.
 Suggested message: "Symbol is nulling".
 @end deftypevr
 
-@deftypevr Macro int MARPA_ERR_SYMBOL_IS_UNUSED
+@deftypevr {Accessor macro} int MARPA_ERR_SYMBOL_IS_UNUSED
 An attempt was made to do something with an unused symbol that is not allowed.
 An ``unused'' symbol is a inaccessible or unproductive symbol.
 For example,
@@ -6463,26 +6489,26 @@ require someone with knowledge of the Libmarpa internals
 to follow up on them.
 They usually do not have descriptions or suggested messages.
 
-@deftypevr Macro int MARPA_ERR_AHFA_IX_NEGATIVE
+@deftypevr {Accessor macro} int MARPA_ERR_AHFA_IX_NEGATIVE
 Numeric value: 1.
 @end deftypevr
-@deftypevr Macro int MARPA_ERR_AHFA_IX_OOB
+@deftypevr {Accessor macro} int MARPA_ERR_AHFA_IX_OOB
 Numeric value: 2.
 @end deftypevr
-@deftypevr Macro int MARPA_ERR_ANDID_NEGATIVE
+@deftypevr {Accessor macro} int MARPA_ERR_ANDID_NEGATIVE
 Numeric value: 3.
 @end deftypevr
-@deftypevr Macro int MARPA_ERR_ANDID_NOT_IN_OR
+@deftypevr {Accessor macro} int MARPA_ERR_ANDID_NOT_IN_OR
 Numeric value: 4.
 @end deftypevr
-@deftypevr Macro int MARPA_ERR_ANDIX_NEGATIVE
+@deftypevr {Accessor macro} int MARPA_ERR_ANDIX_NEGATIVE
 Numeric value: 5.
 @end deftypevr
-@deftypevr Macro int MARPA_ERR_BOCAGE_ITERATION_EXHAUSTED
+@deftypevr {Accessor macro} int MARPA_ERR_BOCAGE_ITERATION_EXHAUSTED
 Numeric value: 7.
 @end deftypevr
 
-@deftypevr Macro int MARPA_ERR_DEVELOPMENT
+@deftypevr {Accessor macro} int MARPA_ERR_DEVELOPMENT
 "Development" errors were used heavily during
 Libmarpa's development,
 when it was not yet clear how precisely
@@ -6501,96 +6527,96 @@ Numeric value: 9.
 Suggested message: "Development error, see string".
 @end deftypevr
 
-@deftypevr Macro int MARPA_ERR_DUPLICATE_AND_NODE
+@deftypevr {Accessor macro} int MARPA_ERR_DUPLICATE_AND_NODE
 Numeric value: 10.
 @end deftypevr
 
-@deftypevr Macro int MARPA_ERR_YIM_ID_INVALID
+@deftypevr {Accessor macro} int MARPA_ERR_YIM_ID_INVALID
 Numeric value: 14.
 @end deftypevr
 
-@deftypevr Macro int MARPA_ERR_INTERNAL
+@deftypevr {Accessor macro} int MARPA_ERR_INTERNAL
 A ``catchall'' internal error.
 Numeric value: 19.
 @end deftypevr
 
-@deftypevr Macro int MARPA_ERR_INVALID_AHFA_ID
+@deftypevr {Accessor macro} int MARPA_ERR_INVALID_AHFA_ID
 The AHFA ID was invalid.  There are no AHFAs
 any more, so this message should not occur.
 Numeric value: 20.
 @end deftypevr
 
-@deftypevr Macro int MARPA_ERR_INVALID_AIMID
+@deftypevr {Accessor macro} int MARPA_ERR_INVALID_AIMID
 The AHM ID was invalid.  The term ``AIMID''
 is a legacy of earlier implementations and must
 be kept for backward compatibility.
 Numeric value: 21.
 
 @end deftypevr
-@deftypevr Macro int MARPA_ERR_INVALID_IRLID
+@deftypevr {Accessor macro} int MARPA_ERR_INVALID_IRLID
 Numeric value: 23.
 @end deftypevr
-@deftypevr Macro int MARPA_ERR_INVALID_NSYID
+@deftypevr {Accessor macro} int MARPA_ERR_INVALID_NSYID
 Numeric value: 24.
 @end deftypevr
-@deftypevr Macro int MARPA_ERR_NOOKID_NEGATIVE
+@deftypevr {Accessor macro} int MARPA_ERR_NOOKID_NEGATIVE
 Numeric value: 33.
 @end deftypevr
-@deftypevr Macro int MARPA_ERR_NOT_TRACING_COMPLETION_LINKS
+@deftypevr {Accessor macro} int MARPA_ERR_NOT_TRACING_COMPLETION_LINKS
 Numeric value: 35.
 @end deftypevr
-@deftypevr Macro int MARPA_ERR_NOT_TRACING_LEO_LINKS
+@deftypevr {Accessor macro} int MARPA_ERR_NOT_TRACING_LEO_LINKS
 Numeric value: 36.
 @end deftypevr
-@deftypevr Macro int MARPA_ERR_NOT_TRACING_TOKEN_LINKS
+@deftypevr {Accessor macro} int MARPA_ERR_NOT_TRACING_TOKEN_LINKS
 Numeric value: 37.
 @end deftypevr
-@deftypevr Macro int MARPA_ERR_NO_AND_NODES
+@deftypevr {Accessor macro} int MARPA_ERR_NO_AND_NODES
 Numeric value: 38.
 @end deftypevr
-@deftypevr Macro int MARPA_ERR_NO_OR_NODES
+@deftypevr {Accessor macro} int MARPA_ERR_NO_OR_NODES
 Numeric value: 40.
 @end deftypevr
-@deftypevr Macro int MARPA_ERR_NO_TRACE_YS
+@deftypevr {Accessor macro} int MARPA_ERR_NO_TRACE_YS
 Numeric value: 46.
 @end deftypevr
-@deftypevr Macro int MARPA_ERR_NO_TRACE_PIM
+@deftypevr {Accessor macro} int MARPA_ERR_NO_TRACE_PIM
 Numeric value: 47.
 @end deftypevr
-@deftypevr Macro int MARPA_ERR_NO_TRACE_YIM
+@deftypevr {Accessor macro} int MARPA_ERR_NO_TRACE_YIM
 Numeric value: 45.
 @end deftypevr
-@deftypevr Macro int MARPA_ERR_NO_TRACE_SRCL
+@deftypevr {Accessor macro} int MARPA_ERR_NO_TRACE_SRCL
 Numeric value: 48.
 @end deftypevr
 
-@deftypevr Macro int MARPA_ERR_ORID_NEGATIVE
+@deftypevr {Accessor macro} int MARPA_ERR_ORID_NEGATIVE
 Numeric value: 51.
 @end deftypevr
-@deftypevr Macro int MARPA_ERR_OR_ALREADY_ORDERED
+@deftypevr {Accessor macro} int MARPA_ERR_OR_ALREADY_ORDERED
 Numeric value: 52.
 @end deftypevr
 
-@deftypevr Macro int MARPA_ERR_PIM_IS_NOT_LIM
+@deftypevr {Accessor macro} int MARPA_ERR_PIM_IS_NOT_LIM
 Numeric value: 55.
 @end deftypevr
 
-@deftypevr Macro int MARPA_ERR_SOURCE_TYPE_IS_NONE
+@deftypevr {Accessor macro} int MARPA_ERR_SOURCE_TYPE_IS_NONE
 Numeric value: 70.
 @end deftypevr
-@deftypevr Macro int MARPA_ERR_SOURCE_TYPE_IS_TOKEN
+@deftypevr {Accessor macro} int MARPA_ERR_SOURCE_TYPE_IS_TOKEN
 Numeric value: 71.
 @end deftypevr
-@deftypevr Macro int MARPA_ERR_SOURCE_TYPE_IS_COMPLETION
+@deftypevr {Accessor macro} int MARPA_ERR_SOURCE_TYPE_IS_COMPLETION
 Numeric value: 68.
 @end deftypevr
-@deftypevr Macro int MARPA_ERR_SOURCE_TYPE_IS_LEO
+@deftypevr {Accessor macro} int MARPA_ERR_SOURCE_TYPE_IS_LEO
 Numeric value: 69.
 @end deftypevr
-@deftypevr Macro int MARPA_ERR_SOURCE_TYPE_IS_AMBIGUOUS
+@deftypevr {Accessor macro} int MARPA_ERR_SOURCE_TYPE_IS_AMBIGUOUS
 Numeric value: 67.
 @end deftypevr
-@deftypevr Macro int MARPA_ERR_SOURCE_TYPE_IS_UNKNOWN
+@deftypevr {Accessor macro} int MARPA_ERR_SOURCE_TYPE_IS_UNKNOWN
 Numeric value: 72.
 @end deftypevr
 
