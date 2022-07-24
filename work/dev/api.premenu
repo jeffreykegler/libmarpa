@@ -4813,8 +4813,9 @@ Always succeeds.
 @end deftypefn
 
 @deftypefn {Accessor macro} Marpa_Step_Type marpa_v_step_type (Marpa_Value @var{v})
-This macro is usually not needed since this its return value
+This macro is usually not needed since its return value
 is the same as the value that @code{marpa_v_step()} returns on success.
+
 @strong{Return value}:
 The current step type: @code{MARPA_STEP_TOKEN}, @code{MARPA_STEP_RULE}, etc.
 Always succeeds.
