@@ -4771,69 +4771,91 @@ These step types are reserved for internal purposes.
 @node Basic step accessors
 @section Basic step accessors
 
-The basic step accessors are so called because their information
-is basic to the stack manipulation.
-The basic step accessors are implemented as macros.
-They always succeed.
+This section describes the
+accessors that are basic to the stack manipulation.
 
 @deftypefn {Accessor macro} int marpa_v_arg_0 (Marpa_Value @var{v})
+@strong{Return value}:
 For a @code{MARPA_STEP_RULE} step,
-returns the stack location where the value of first child
+the stack location where the value of first child
 can be found.
+For other step types, an unspecified value.
+Always succeeds.
 @end deftypefn
 
 @deftypefn {Accessor macro} int marpa_v_arg_n (Marpa_Value @var{v})
+@strong{Return value}:
 For a @code{MARPA_STEP_RULE} step,
-returns the stack location where the value of the last child
+the stack location where the value of the last child
 can be found.
+For other step types, an unspecified value.
+Always succeeds.
 @end deftypefn
 
 @deftypefn {Accessor macro} int marpa_v_result (Marpa_Value @var{v})
+@strong{Return value}:
 For @code{MARPA_STEP_RULE},
 @code{MARPA_STEP_TOKEN},
 and @code{MARPA_STEP_NULLING_SYMBOL} steps,
-returns the stack location where the result of the semantics
+the stack location where the result of the semantics
 should be placed.
+For other step types, an unspecified value.
+Always succeeds.
 @end deftypefn
 
 @deftypefn {Accessor macro} Marpa_Rule_ID marpa_v_rule (Marpa_Value @var{v})
+@strong{Return value}:
 For the
 @code{MARPA_STEP_RULE} step,
-returns the ID of the rule.
+the ID of the rule.
+For other step types, an unspecified value.
+Always succeeds.
 @end deftypefn
 
 @deftypefn {Accessor macro} Marpa_Step_Type marpa_v_step_type (Marpa_Value @var{v})
+@strong{Return value}:
 Returns the current step type:
 @code{MARPA_STEP_TOKEN},
 @code{MARPA_STEP_RULE},
 etc.
 Usually not needed since this is also the return value of
 @code{marpa_v_step()}.
+For other step types, an unspecified value.
+Always succeeds.
 @end deftypefn
 
 @deftypefn {Accessor macro} Marpa_Symbol_ID marpa_v_symbol (Marpa_Value @var{v})
+@strong{Return value}:
 For the @code{MARPA_STEP_NULLING_SYMBOL} step,
-returns the ID of the symbol.
+the ID of the symbol.
 The value returned is the same as that
 returned by the
 @code{marpa_v_token()}
 macro.
+For other step types, an unspecified value.
+Always succeeds.
 @end deftypefn
 
 @deftypefn {Accessor macro} Marpa_Symbol_ID marpa_v_token (Marpa_Value @var{v})
+@strong{Return value}:
 For the @code{MARPA_STEP_TOKEN} step,
-returns the ID of the token.
+the ID of the token.
 The value returned is the same as that
 returned by the
 @code{marpa_v_symbol()}
 macro.
+For other step types, an unspecified value.
+Always succeeds.
 @end deftypefn
 
 @deftypefn {Accessor macro} int marpa_v_token_value (Marpa_Value @var{v})
+@strong{Return value}:
 For the @code{MARPA_STEP_TOKEN} step,
-returns the integer that is
+the integer that is
 (or that represents)
 the value of the token.
+For other step types, an unspecified value.
+Always succeeds.
 @end deftypefn
 
 @node Step location accessors
