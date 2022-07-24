@@ -4772,7 +4772,7 @@ These step types are reserved for internal purposes.
 @section Basic step accessors
 
 This section describes the
-accessors that are basic to the stack manipulation.
+accessors that are basic to stack manipulation.
 
 @deftypefn {Accessor macro} int marpa_v_arg_0 (Marpa_Value @var{v})
 @strong{Return value}:
@@ -4813,14 +4813,10 @@ Always succeeds.
 @end deftypefn
 
 @deftypefn {Accessor macro} Marpa_Step_Type marpa_v_step_type (Marpa_Value @var{v})
+This macro is usually not needed since this its return value
+is the same as the value that @code{marpa_v_step()} returns on success.
 @strong{Return value}:
-Returns the current step type:
-@code{MARPA_STEP_TOKEN},
-@code{MARPA_STEP_RULE},
-etc.
-Usually not needed since this is also the return value of
-@code{marpa_v_step()}.
-For other step types, an unspecified value.
+The current step type: @code{MARPA_STEP_TOKEN}, @code{MARPA_STEP_RULE}, etc.
 Always succeeds.
 @end deftypefn
 
@@ -4851,9 +4847,9 @@ Always succeeds.
 @deftypefn {Accessor macro} int marpa_v_token_value (Marpa_Value @var{v})
 @strong{Return value}:
 For the @code{MARPA_STEP_TOKEN} step,
-the integer that is
-(or that represents)
-the value of the token.
+the ``token value'' that was assigned to the token by
+the @code{marpa_r_alternative()} method.
+@xref{marpa_r_alternative,marpa_r_alternative()}.
 For other step types, an unspecified value.
 Always succeeds.
 @end deftypefn
