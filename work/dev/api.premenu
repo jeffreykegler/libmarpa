@@ -4582,6 +4582,10 @@ On success, does the following:
 @item Creates a new valuator.  The parent object of the new valuator
 will be the tree iterator @var{t}.
 @item Sets the reference count of the new valuator to 1.
+@item Sets new valuator to
+@dfindex active (valuator)
+@dfn{active}.
+A valuator is always either active or inactive.
 @item Increases the reference count of @var{t} by 1.
 @item ``Pauses'' the parent tree iterator.
 @end itemize
@@ -4632,7 +4636,7 @@ zero.
 @deftypefn {Mutator function} @
 Marpa_Step_Type marpa_v_step ( Marpa_Value @var{v})
 
-On success, does the following
+On success, does the following:
 @itemize
 @item Takes the valuator to the next
 @dfindex step (of a valuator)
@@ -4652,14 +4656,18 @@ The step type tells
 the application how it expected to act on
 the step.
 @xref{Valuator step types}.
-When the iteration through the steps is finished,
-the step type is @code{MARPA_STEP_INACTIVE}.
-
 Steps are often referred to along with their step type so that,
 for example, we say
 ``a @code{MARPA_STEP_RULE} step''
 to refer to a step whose step type
 is @code{MARPA_STEP_RULE}.
+
+When the iteration through the steps is finished,
+the step type is @code{MARPA_STEP_INACTIVE}.
+At this point, we say that the valuator is
+@dfindex inactive (valuator)
+@dfn{inactive}.
+Once a valuator becomes inactive, it stays inactive.
 
 @strong{Return value}:  On success, a @code{Marpa_Step_Type},
 which always be a non-negative integer.
@@ -4698,35 +4706,54 @@ be equal to
 @end deftypevr
 
 @deftypevr {Accessor macro} Marpa_Step_Type MARPA_STEP_TOKEN
-The semantics of a non-null token should be performed.
-The application's value for the token whose ID is
-@code{marpa_v_token(v)}
-should be
-placed in
-stack location
-@code{marpa_v_result(v)}.
-Its value according to Libmarpa will be in
-@code{marpa_v_token_value(v)}.
+The application's equivalent of the evaluation
+of the semantics of a non-null token should be performed.
+@itemize
+@item The application's value for the token whose ID is
+at stack location @code{marpa_v_token(v)}.
+@item
+Libmarpa will already have a``token value'' for the token
+in this step,
+as was set by the
+@code{marpa_r_alternative()} method.
+@xref{marpa_r_alternative,marpa_r_alternative()}.
+Libmarpa's ``token value'' will be in
+stack location @code{marpa_v_token_value(v)}.
+@item
+The result of the applications's evaluation of the semantics of this token
+should be placed in stack location @code{marpa_v_result(v)}.
+Often, an application will simply copy Libmarpa's ``token value''
+to stack location @code{marpa_v_result(v)}.
+@end itemize
 @end deftypevr
 
 @deftypevr {Accessor macro} Marpa_Step_Type MARPA_STEP_NULLING_SYMBOL
-The semantics for a nulling symbol should be performed.
-The ID of the symbol is
-@code{marpa_v_symbol(v)}
-and its value should
-be placed in
-stack location
-@code{marpa_v_result(v)}.
+The application's equivalent of the evaluation
+of the semantics of a nulling token should be performed.
+@itemize
+@item
+The ID of the nulling symbol is
+at stack location @code{marpa_v_symbol(v)}.
+@item
+The application's value for this nulling symbol instance
+should be placed in
+stack location @code{marpa_v_result(v)}.
+Often, an application will assign a fixed value to each
+nullable symbol,
+and will simply copy this fixed value to
+stack location @code{marpa_v_result(v)}.
+@end itemize
 @end deftypevr
 
 @deftypevr {Accessor macro} Marpa_Step_Type MARPA_STEP_INACTIVE
-The valuator has gone through all of its steps
+When this is the step type, the valuator has gone through all of its steps
 and is now inactive.
 The value of the parse will be in stack location 0.
 Because of optimizations,
 it is possible for valuator to immediately
 became inactive --- @code{MARPA_STEP_INACTIVE} could
 be both the first and last step.
+Once a valuator becomes inactive, it stays inactive.
 
 @end deftypevr
 
