@@ -4927,33 +4927,33 @@ The ES length of a nulled node is always 0.
 If v is a valuator whose current step type is MARPA_STEP_NULLING_SYMBOL, it is always the case that
 
 @verbatim
-         marpa_v_token_start_es_id(v) == marpa_v__es_id(v)
+         marpa_v_token_start_es_id(v) == marpa_v_es_id(v)
 @end verbatim
 
 If v is a valuator whose current step type is MARPA_STEP_RULE or MARPA_STEP_TOKEN,
 it is always the case that
 
 @verbatim
-        marpa_v_token_start_es_id(v) <= marpa_v__es_id(v)
+        marpa_v_token_start_es_id(v) <= marpa_v_es_id(v)
 @end verbatim
 
-As an example, let Null be a nulling symbol and let Tok be a non-nullable symbol.
-Then a possible fringe is
+For the following examples,
+@itemize
+@item let @verb{|Null|} be a nulling symbol,
+@item let @verb{|Tok|} be a non-nullable symbol, and
+@item let the notation @verb{|Sym@m-n|} indicate that the symbol
+@verb{|Sym|} has ES start location @verb{|m|} and ES end location @verb{|n|}.
+@end itemize
 
+Ordered from left to right, a possible fringe is
 @verbatim
         Null@0-0, Tok@0-1, Null@1-1, Tok@1-2, Null@2-2
 @end verbatim
-
-where the fringe is ordered from left to right, and the notation @verb{|Sym@m-n|} indicates that the symbol
-Sym has ES start location m and ES end location n.
-
 Another example is
-
 @verbatim
         Null@0-0, Null@0-0, Tok@0-1, Null@1-1, Null@1-1, Tok@1-2,
         Null@2-2, Null@2-2
 @end verbatim
-
 In this second example note that when a nulled leaf immediately follows another
 nulled leaf, both leaves has the same start ES location and the same end ES location.
 This makes sense, because nulled symbol instances do not advance the current ES location,
