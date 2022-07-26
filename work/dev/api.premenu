@@ -4858,14 +4858,11 @@ Always succeeds.
 @node Step location accessors
 @section Step location accessors
 
-This section describes step accessors that are not basic to stack manipulation,
-but that provide other Earley set location information about the parse.
+This section describes step accessors that are not basic to stack manipulation.
+They provide Earley set location information about the parse.
+
 A step's location in terms of Earley sets is called its ES location.
 Every ES location is the ID of an Earley set.
-
-These step accessors are implemented as macros.
-All of these accessors always succeed, but if called when they are
-irrelevant they return an unspecified value.
 
 ES location is only relevant for parse nodes.
 A parse node is either a leaf node or a rule node.
@@ -4882,8 +4879,8 @@ that parse node.
 
 The end ES location of a leaf is the ES location where
 the next leaf symbol in the fringe of the current parse would start.
-Typically, this is the location where a leaf node actually starts,
-but toward the end of a parse, there may not be an actual next leaf node.
+Typically, this is the location where a leaf node actually starts but,
+toward the end of a parse, there may not be an actual next leaf node.
 
 The start ES location of a MARPA_RULE_STEP is the start ES location
 of its first child node in the current parse tree.
