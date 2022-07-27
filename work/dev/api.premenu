@@ -5013,42 +5013,56 @@ methods.
 @section Basic event accessors
 
 @anchor{marpa_g_event}
-@deftypefun Marpa_Event_Type marpa_g_event (Marpa_Grammar @var{g}, @
-    Marpa_Event* @var{event}, @
-               int @var{ix})
+@deftypefn {Accessor function} @
+Marpa_Event_Type marpa_g_event (Marpa_Grammar @var{g}, @
+    Marpa_Event* @var{event}, int @var{ix})
+
 On success,
-the type of the @var{ix}'th event is returned
-and the data for the @var{ix}'th event is placed
+@itemize
+@item the type of the @var{ix}'th event is returned, and
+@item the data for the @var{ix}'th event is placed
 in the location pointed to by @var{event}.
+@end itemize
 
 Event indexes are in sequence.
 Valid events will be in the range from 0 to @var{n},
 where @var{n} is one less than the event count.
 The event count
-can be queried using the
+can be read using the
 @code{marpa_g_event_count()}
 method.
 
-Return value:  On success, the type of event @var{ix}.
-If there is no @var{ix}'th event,
-if @var{ix} is negative,
-or on other failure, @minus{}2.
+Hard fails if
+there is no @var{ix}'th event,
+or if @var{ix} is negative.
 On failure,
 the locations pointed to by @var{event}
 are not changed.
-@end deftypefun
+
+@strong{Return value}:
+On success, the type of event @var{ix},
+which is always non-negative.
+On hard failure, @minus{}2.
+@end deftypefn
 
 @anchor{marpa_g_event_count}
-@deftypefun int marpa_g_event_count ( Marpa_Grammar g )
-Return value:  On success, the number of events.
-On failure, @minus{}2.
-@end deftypefun
+@deftypefn {Accessor function} @
+int marpa_g_event_count ( Marpa_Grammar g )
+
+@strong{Return value}:
+On success, the number of events, which is always non-negative.
+On hard failure, @minus{}2.
+@end deftypefn
 
 @deftypefn {Accessor macro} int marpa_g_event_value (Marpa_Event* @var{event})
-This macro provides access to the ``value'' of the event.
+Returns the ``value'' of the event.
 The semantics of the value varies according to the type
 of the event, and is described in the section on event
-codes (@ref{Event codes}).
+codes.
+@xref{Event codes}.
+
+@strong{Return value}: The ``value'' of the event.
+Always succeeds.
 @end deftypefn
 
 @node Completion events
