@@ -5195,7 +5195,7 @@ A symbol is said to be @strong{completed}
 when a non-nulling rule with
 that symbol on its LHS is completed.
 
-For completion events to occur, @var{sym_id} must be marked
+For completion events for @var{sym_id} to occur, @var{sym_id} must be marked
 as a completion event symbol,
 and the completion event for @var{sym_id} must be activated in the recognizer.
 Event activation also occurs in the grammar,
