@@ -5147,11 +5147,9 @@ On success, does the following:
 @end itemize
 
 When a recognizer is created,
-the activation status of each of its events is initialized
-to the activation status of that event in the base grammar.
-Symbol completion events are active by default for @var{sym_id} if
-@var{sym_id} was marked for completion events in the
-grammar.
+the activation status of its symbol completion event for @var{sym_id}
+is initialized to the activation status of the symbol completion event
+for @var{sym_id} in the base grammar.
 
 Hard fails if
 @var{sym_id} was not marked for completion events in the base grammar.
