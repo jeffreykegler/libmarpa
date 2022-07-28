@@ -5197,14 +5197,14 @@ A symbol is said to be @strong{completed}
 when a non-nulling rule with
 that symbol on its LHS is completed.
 
-For completion events to occur, @{sym_id} must be marked
+For completion events to occur, @var{sym_id} must be marked
 as a completion event symbol,
-and the event must be activated in the recognizer.
+and the completion event for @var{sym_id} must be activated in the recognizer.
 Event activation also occurs in the grammar,
 and the recognizer event activation status for @var{sym_id}
 is initialized
 from
-and the grammar event activation status for @var{sym_id}.
+the grammar event activation status for @var{sym_id}.
 @xref{marpa_g_completion_symbol_activate,marpa_g_completion_symbol_activate()}, and
 @pxref{marpa_r_completion_symbol_activate,marpa_r_completion_symbol_activate()}.
 
@@ -5242,9 +5242,7 @@ Hards fails if
 the grammar is precomputed.
 
 @strong{Return value}:
-On success, a boolean which is 1 iff
-@var{sym_id} is a completion event symbol after the
-call
+On success, @var{value}, which is a boolean.
 On soft failure, @minus{}1.
 On hard failure, @minus{}2.
 @end deftypefn
