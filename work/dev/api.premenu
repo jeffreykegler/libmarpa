@@ -5068,57 +5068,72 @@ Always succeeds.
 @node Completion events
 @section Completion events
 
+Libmarpa can be set up to generate an
+@code{MARPA_EVENT_SYMBOL_COMPLETED}
+event whenever the symbol is completed.
+A symbol is said to be @strong{completed}
+when a non-nulling rule with
+that symbol on its LHS is completed.
+
+For a completion event to be generated,
+the symbol must be
+@dfindex mark (as a completion event symbol)
+@dfn{marked},
+and the event must be
+@dfindex activate (a completion symbol event)
+@dfn{activated}.
+
+To mark as symbol as a completion event symbol
+use the @code{marpa_g_symbol_is_completion_event_set()}
+method.
+It will be activated by default.
+
+To activate or deactivate a completion symbol event
+use the @code{marpa_r_completion_symbol_activate()}
+method.
+
 @anchor{marpa_g_completion_symbol_activate}
-@deftypefun int marpa_g_completion_symbol_activate ( @
+@deftypefn {Mutator function} @
+int marpa_g_completion_symbol_activate ( @
   Marpa_Grammar @var{g}, @
   Marpa_Symbol_ID @var{sym_id}, @
   int @var{reactivate} )
 
 Allows the user to deactivate and reactivate symbol completion
 events in the grammar.
-When a recognizer is created,
-the activation status of each of its events is initialized
-to the activation status of that event in the base grammar.
-If @var{reactivate} is zero, the event is deactivated
-in the grammar.
-If @var{reactivate} is one, the event is activated
-in the grammar.
+On success, does the following:
+@itemize
+@item If @var{reactivate} is zero, deactivates the event in the grammar.
+@item If @var{reactivate} is one, activates the event in the grammar.
+@end itemize
 
-Symbol completion events are active by default if
-the symbol was set up for completion events in the
-grammar.
-If a symbol was not set up for completion events in
-the grammar, symbol completion events are inactive
-by default and any attempt to change that is a fatal error.
+The activation status of a completion event in the grammar becomes the initial
+activation status of a completion event in all of its child recognizers.
 
-The activation status of a completion event in the grammar
-can only be changed if the symbol is marked as a completion event symbol
+This method is seldom needed.
+When a symbol is marked as a completion event symbol in
+the grammar,
+it is activated by default.
+@xref{marpa_g_symbol_is_completion_event_set, marpa_g_symbol_is_completion_event_set()}.
+And a completion event can be deactivated
+and reactivated in the recognizer
+using the 
+@code{marpa_r_completion_symbol_activate} method.
+@xref{marpa_r_completion_symbol_activate,marpa_r_completion_symbol_activate()}.
+
+Hard fails 
+if the symbol is not marked as a completion event symbol
 in the grammar,
-and before
-the grammar is precomputed.
-However, if a symbol is marked as a completion event symbol in
-the recognizer,
-the completion event can be deactivated
-and reactivated in the recognizer.
+or if the grammar has not been precomputed.
 
-Success cases:
-On success,
-the method returns the value of @var{reactivate}.
-The method succeeds trivially
-if the symbol is already set as indicated by
-@var{reactivate}.
-
-Failure cases:
-If the active status
-of the
-completion event for @var{sym_id}
-cannot be set as indicated by @var{reactivate},
-the method fails.
-On failure, @minus{}2 is returned.
-@end deftypefun
+@strong{Return value}:
+On success, the value of @var{reactivate}, which is a boolean.
+On hard failure, @minus{}2.
+@end deftypefn
 
 @anchor{marpa_r_completion_symbol_activate}
-@deftypefun int marpa_r_completion_symbol_activate ( @
+@deftypefn {Mutator function} @
+int marpa_r_completion_symbol_activate ( @
   Marpa_Recognizer @var{r}, @
   Marpa_Symbol_ID @var{sym_id}, @
   int @var{reactivate} )
@@ -5128,6 +5143,9 @@ events in the recognizer.
 If @var{reactivate} is zero, the event is deactivated.
 If @var{reactivate} is one, the event is activated.
 
+When a recognizer is created,
+the activation status of each of its events is initialized
+to the activation status of that event in the base grammar.
 Symbol completion events are active by default if
 the symbol was set up for completion events in the
 grammar.
@@ -5149,14 +5167,77 @@ completion event for @var{sym_id}
 cannot be set as indicated by @var{reactivate},
 the method fails.
 On failure, @minus{}2 is returned.
-@end deftypefun
+@end deftypefn
 
 @anchor{marpa_g_symbol_is_completion_event}
-@deftypefun int marpa_g_symbol_is_completion_event ( @
+@deftypefn {Accessor function} @
+int marpa_g_symbol_is_completion_event ( @
     Marpa_Grammar @var{g}, @
     Marpa_Symbol_ID @var{sym_id})
+
+Libmarpa can be set up to generate an
+@code{MARPA_EVENT_SYMBOL_COMPLETED}
+event whenever the symbol is completed.
+A symbol is said to be @strong{completed}
+when a non-nulling rule with
+that symbol on its LHS is completed.
+
+For completion events to occur, the symbol must be marked
+as a completion event symbol.
+The
+@code{marpa_g_symbol_is_completion_event_set()}
+function
+marks symbol @var{sym_id} as a completion event symbol
+if @var{value} is 1,
+and unmarks it
+it as a completion event symbol if @var{value} is 0.
+The
+@code{marpa_g_symbol_is_completion_event()}
+method
+returns the current value of the completion event marking
+for symbol @var{sym_id}.
+
+Marking a completion event sets its activation status to on.
+Unmarking a completion event sets its activation status to off.
+The completion event marking cannot be changed once
+the grammar is precomputed.
+
+If a completion event is marked,
+its activation status can be changed using the
+@code{marpa_g_completion_symbol_activate()}
+method.
+Note that, if a symbol is marked as a completion event symbol
+in the recognizer,
+its completion event can be deactivated
+and reactivated in the recognizer.
+
+Nulled rules and symbols will never cause completion events.
+Nullable symbols
+may be marked as completion event symbols,
+but this will have an effect only when the symbol
+is not nulled.
+Nulling symbols
+may be marked as completion event symbols,
+but no completion events will ever be generated
+for a nulling symbol.
+Note that this implies at no completion event will
+ever be generated at earleme 0,
+the start of parsing.
+
+Success: On success, 1 if symbol @var{sym_id}
+is a completion event symbol after the
+call, 0 otherwise.
+
+Failures:
+If @var{sym_id} is well-formed, but there is no
+such symbol, @minus{}1.
+If the grammar @var{g} is precomputed;
+or on other failure, @minus{}2.
+@end deftypefn
+
 @anchor{marpa_g_symbol_is_completion_event_set}
-@deftypefunx int marpa_g_symbol_is_completion_event_set ( @
+@deftypefn {Mutator function} @
+int marpa_g_symbol_is_completion_event_set ( @
     Marpa_Grammar @var{g}, @
     Marpa_Symbol_ID @var{sym_id}, @
  int @var{value})
@@ -5219,7 +5300,7 @@ If @var{sym_id} is well-formed, but there is no
 such symbol, @minus{}1.
 If the grammar @var{g} is precomputed;
 or on other failure, @minus{}2.
-@end deftypefun
+@end deftypefn
 
 @node Symbol nulled events
 @section Symbol nulled events
