@@ -5083,10 +5083,10 @@ and the event must be
 @dfindex activate (a completion symbol event)
 @dfn{activated}.
 
-To mark as symbol as a completion event symbol
+To mark a symbol as a completion event symbol
 use the @code{marpa_g_symbol_is_completion_event_set()}
 method.
-It will be activated by default.
+The event will be activated by default.
 
 To activate or deactivate a completion symbol event
 use the @code{marpa_r_completion_symbol_activate()}
@@ -5122,7 +5122,7 @@ using the
 @xref{marpa_r_completion_symbol_activate,marpa_r_completion_symbol_activate()}.
 
 Hard fails
-if the symbol is not marked as a completion event symbol
+if the @var{sym_id} is not marked as a completion event symbol
 in the grammar,
 or if the grammar has not been precomputed.
 
@@ -5229,7 +5229,7 @@ Nulling symbols
 may be marked as completion event symbols,
 but no completion events will ever be generated
 for a nulling symbol.
-Note that this implies at no completion event will
+Note that this implies that no completion event will
 ever be generated at earleme 0,
 the start of parsing.
 
