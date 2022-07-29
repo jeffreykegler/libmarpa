@@ -7783,10 +7783,10 @@ int evaluate_zwas(RECCE r, YSID ysid, AHM ahm)
      const ZWA zwa = RZWA_by_ID(zwaid);
       @t}\comment{@>
       /* Use the memoized value, if it is for this YS */
-     MARPA_OFF_DEBUG3("At %s, evaluating assertion %ld", STRLOC, (long)zwaid);
+     MARPA_OFF_DEBUG3("At %s, evaluating assertion %ld", STRLOC, (long)zwaid)
      if (Memo_YSID_of_ZWA(zwa) == ysid) {
          if (Memo_Value_of_ZWA(zwa)) continue;
-         MARPA_OFF_DEBUG3("At %s: returning 0 for assertion %ld", STRLOC, (long)zwaid);
+         MARPA_OFF_DEBUG3("At %s: returning 0 for assertion %ld", STRLOC, (long)zwaid)
          return 0;
      }
 
@@ -7801,11 +7801,11 @@ int evaluate_zwas(RECCE r, YSID ysid, AHM ahm)
       Otherwise, continue to check assertions.
       */
      if (!value) {
-       MARPA_OFF_DEBUG3("At %s: returning 0 for assertion %ld", STRLOC, (long)zwaid);
+       MARPA_OFF_DEBUG3("At %s: returning 0 for assertion %ld", STRLOC, (long)zwaid)
        return 0;
      }
 
-     MARPA_OFF_DEBUG3("At %s: value is 1 for assertion %ld", STRLOC, (long)zwaid);
+     MARPA_OFF_DEBUG3("At %s: value is 1 for assertion %ld", STRLOC, (long)zwaid)
   }
   return 1;
 }
@@ -9689,7 +9689,7 @@ int marpa_r_progress_report_start(
   earley_set = YS_of_R_by_Ord (r, set_id);
 
   MARPA_OFF_DEBUG3("At %s, starting progress report Earley set %ld",
-    STRLOC, (long)set_id);
+    STRLOC, (long)set_id)
 
   @<Clear progress report in |r|@>@;
   {
@@ -9728,7 +9728,7 @@ int marpa_r_progress_report_reset( Marpa_Recognizer r)
 {
   SRCL leo_source_link = NULL;
 
-   MARPA_OFF_DEBUG2("At %s, Do the progress report", STRLOC);
+   MARPA_OFF_DEBUG2("At %s, Do the progress report", STRLOC)
 
   progress_report_items_insert (report_tree, AHM_of_YIM (earley_item),
 			       earley_item);
@@ -9736,11 +9736,11 @@ int marpa_r_progress_report_reset( Marpa_Recognizer r)
        leo_source_link; leo_source_link = Next_SRCL_of_SRCL (leo_source_link))
     {
       LIM leo_item;
-       MARPA_OFF_DEBUG3("At %s, Leo source link %p", STRLOC, leo_source_link);
+       MARPA_OFF_DEBUG3("At %s, Leo source link %p", STRLOC, leo_source_link)
 
       if (!SRCL_is_Active (leo_source_link)) continue;
 
-       MARPA_OFF_DEBUG3("At %s, active Leo source link %p", STRLOC, leo_source_link);
+       MARPA_OFF_DEBUG3("At %s, active Leo source link %p", STRLOC, leo_source_link)
 
       @t}\comment{@>
       /* If the SRCL at the Leo summit is active, then the whole path
@@ -9754,7 +9754,7 @@ int marpa_r_progress_report_reset( Marpa_Recognizer r)
 				       trailhead_yim);
 	}
 
-       MARPA_OFF_DEBUG3("At %s, finished Leo source link %p", STRLOC, leo_source_link);
+       MARPA_OFF_DEBUG3("At %s, finished Leo source link %p", STRLOC, leo_source_link)
     }
 }
 
@@ -9768,7 +9768,7 @@ progress_report_items_insert(MARPA_AVL_TREE report_tree,
 
   MARPA_OFF_DEBUG5(
      "%s Calling progress_report_items_insert(%p, %p, %p)",
-     STRLOC, report_tree, report_ahm, origin_yim);
+     STRLOC, report_tree, report_ahm, origin_yim)
 
   if (!source_xrl) return;
 

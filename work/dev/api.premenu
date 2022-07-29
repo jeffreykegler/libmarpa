@@ -5068,9 +5068,9 @@ Always succeeds.
 @node Completion events
 @section Completion events
 
-Libmarpa can be set up to generate an
-@code{MARPA_EVENT_SYMBOL_COMPLETED}
-event whenever the symbol is completed.
+Libmarpa can be set up to generate
+a @code{MARPA_EVENT_SYMBOL_COMPLETED} event
+whenever the symbol is completed.
 A symbol is said to be @strong{completed}
 when a non-nulling rule with
 that symbol on its LHS is completed.
@@ -7092,6 +7092,19 @@ This chapter discusses features that are @strong{not}
 in the external interface.
 These features are change or additions that might be made
 to the external interface in the future.
+
+@node Simpler events interface
+@section Simpler events interface
+
+Some of the events interfaces are unnecessarily
+complex.
+Activation in the grammar is unnecessary,
+as is the ability to "unmark" an event
+for a symbol
+before precomputation.
+@xref{Completion events},
+@pxref{Symbol nulled events}, and
+@pxref{Prediction events}.
 
 @node Better defined ambiguity metric
 @section Better defined ambiguity metric

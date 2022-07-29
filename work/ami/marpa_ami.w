@@ -353,6 +353,14 @@ internal matters on |STDERR|.
 |MARPA_DEBUG| is expected to be defined in the |CFLAGS|.
 |MARPA_DEBUG| implies |MARPA_ENABLE_ASSERT|, but not
 vice versa.
+
+@ |MARPA_OFF_DEBUG1|, etc. is used to ``turn off''
+|MARPA_DEBUGx| statements.
+For C89 compatibility,
+any semi-colon after the |MARPA_DEBUGx| statements must
+be removed if they precede a declaration.
+It is probably most convenient to remove the
+semi-colon in all cases.
 @<Debug macros@> =
 #define MARPA_OFF_DEBUG1(a)
 #define MARPA_OFF_DEBUG2(a, b)
@@ -473,8 +481,7 @@ It is in a form that does not allow concatenation.
 #if defined __GNUC__
 # define alignof(type) (__alignof__(type))
 #else
-# define alignof(type) @[(offsetof (struct { char __slot1; type __slot2; }, @/
-    __slot2))@]
+# define alignof(type) @[(offsetof (struct { char __slot1; type __slot2; }, __slot2))@]
 #endif
 
 @*0 Silence "fall through" warnings.
