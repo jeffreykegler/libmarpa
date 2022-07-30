@@ -5248,57 +5248,72 @@ On hard failure, @minus{}2.
 @node Symbol nulled events
 @section Symbol nulled events
 
+Libmarpa can set up to generate
+an @code{MARPA_EVENT_SYMBOL_NULLED}
+event whenever the symbol is nulled.
+A symbol is said to be @strong{nulled}
+when a zero length instance of that symbol
+is recognized.
+
+For a nulled event to be generated,
+the symbol must be
+@dfindex mark (as a nulled event symbol)
+@dfn{marked},
+and the event must be
+@dfindex activate (a nulled symbol event)
+@dfn{activated}.
+
+To mark a symbol as a nulled event symbol
+use the @code{marpa_g_symbol_is_nulled_event_set()}
+method.
+The event will be activated by default.
+
+To activate or deactivate a nulled symbol event
+use the @code{marpa_r_nulled_symbol_activate()}
+method.
+
 @anchor{marpa_g_nulled_symbol_activate}
-@deftypefun int marpa_g_nulled_symbol_activate ( @
+@deftypefn {Mutator function} @
+int marpa_g_nulled_symbol_activate ( @
   Marpa_Grammar @var{g}, @
   Marpa_Symbol_ID @var{sym_id}, @
   int @var{reactivate} )
 
 Allows the user to deactivate and reactivate symbol nulled
 events in the grammar.
-When a recognizer is created,
-the activation status of each of its events is initialized
-to the activation status of that event in the base grammar.
-If @var{reactivate} is zero, the event is deactivated
-in the grammar.
-If @var{reactivate} is one, the event is activated
-in the grammar.
+On success, does the following:
+@itemize
+@item If @var{reactivate} is zero, deactivates the event in the grammar.
+@item If @var{reactivate} is one, activates the event in the grammar.
+@end itemize
 
-Symbol nulled events are active by default if
-the symbol was set up for nulled events in the
-grammar.
-If a symbol was not set up for nulled events in
-the grammar, symbol nulled events are inactive
-by default and any attempt to change that is a fatal error.
+The activation status of a nulled event in the grammar becomes the initial
+activation status of a nulled event in all of its child recognizers.
 
-The activation status of a nulled event in the grammar
-can only be changed if the symbol is marked as a nulled event symbol
+This method is seldom needed.
+When a symbol is marked as a nulled event symbol in
+the grammar,
+it is activated by default.
+@xref{marpa_g_symbol_is_nulled_event_set, marpa_g_symbol_is_nulled_event_set()}.
+And a nulled event can be deactivated
+and reactivated in the recognizer
+using the
+@code{marpa_r_nulled_symbol_activate} method.
+@xref{marpa_r_nulled_symbol_activate,marpa_r_nulled_symbol_activate()}.
+
+Hard fails
+if the @var{sym_id} is not marked as a nulled event symbol
 in the grammar,
-and before
-the grammar is precomputed.
-However, if a symbol is marked as a nulled event symbol in
-the recognizer,
-the nulled event can be deactivated
-and reactivated in the recognizer.
+or if the grammar has not been precomputed.
 
-Success cases:
-On success,
-the method returns the value of @var{reactivate}.
-The method succeeds trivially
-if the symbol is already set as indicated by
-@var{reactivate}.
-
-Failure cases:
-If the active status
-of the
-nulled event for @var{sym_id}
-cannot be set as indicated by @var{reactivate},
-the method fails.
-On failure, @minus{}2 is returned.
-@end deftypefun
+@strong{Return value}:
+On success, the value of @var{reactivate}, which is a boolean.
+On hard failure, @minus{}2.
+@end deftypefn
 
 @anchor{marpa_r_nulled_symbol_activate}
-@deftypefun int marpa_r_nulled_symbol_activate ( @
+@deftypefn {Mutator function} @
+int marpa_r_nulled_symbol_activate ( @
   Marpa_Recognizer @var{r}, @
   Marpa_Symbol_ID @var{sym_id}, @
   int @var{boolean} )
@@ -5329,14 +5344,18 @@ nulled event for @var{sym_id}
 cannot be set as indicated by @var{boolean},
 the method fails.
 On failure, @minus{}2 is returned.
-@end deftypefun
+@end deftypefn
 
 @anchor{marpa_g_symbol_is_nulled_event}
-@deftypefun int marpa_g_symbol_is_nulled_event ( @
+@deftypefn {Accessor function} @
+int marpa_g_symbol_is_nulled_event ( @
     Marpa_Grammar @var{g}, @
     Marpa_Symbol_ID @var{sym_id})
+@end deftypefn
+
 @anchor{marpa_g_symbol_is_nulled_event_set}
-@deftypefunx int marpa_g_symbol_is_nulled_event_set ( @
+@deftypefn {Mutator function} @
+int marpa_g_symbol_is_nulled_event_set ( @
     Marpa_Grammar @var{g}, @
     Marpa_Symbol_ID @var{sym_id}, @
  int @var{value})
@@ -5465,7 +5484,7 @@ If @var{sym_id} is well-formed, but there is no
 such symbol, @minus{}1.
 If the grammar @var{g} is precomputed;
 or on other failure, @minus{}2.
-@end deftypefun
+@end deftypefn
 
 @node Prediction events
 @section Prediction events
