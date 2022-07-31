@@ -5320,30 +5320,23 @@ int marpa_r_nulled_symbol_activate ( @
 
 Allows the user to deactivate and reactivate symbol nulled
 events in the recognizer.
-If @var{boolean} is zero, the event is deactivated.
-If @var{boolean} is one, the event is activated.
+On success, does the following:
+@itemize
+@item If @var{reactivate} is zero, deactivates the event in the recognizer.
+@item If @var{reactivate} is one, activates the event in the recognizer.
+@end itemize
 
-Symbol nulled events are active by default if
-the symbol was set up for nulled events in the
-grammar.
-If a symbol was not set up for nulled events in
-the grammar, symbol nulled events are inactive
-by default and any attempt to change that is a fatal error.
+When a recognizer is created,
+the activation status of its symbol nulled event for @var{sym_id}
+is initialized to the activation status of the symbol nulled event
+for @var{sym_id} in the base grammar.
 
-Success cases:
-On success,
-the method returns the value of @var{boolean}.
-The method succeeds trivially
-if the symbol is already set as indicated by
-@var{boolean}.
+Hard fails if
+@var{sym_id} was not marked for nulled events in the base grammar.
 
-Failure cases:
-If the active status
-of the
-nulled event for @var{sym_id}
-cannot be set as indicated by @var{boolean},
-the method fails.
-On failure, @minus{}2 is returned.
+@strong{Return value}:
+On success, the value of @var{reactivate}, which is a boolean.
+On hard failure, @minus{}2.
 @end deftypefn
 
 @anchor{marpa_g_symbol_is_nulled_event}
@@ -5351,6 +5344,21 @@ On failure, @minus{}2 is returned.
 int marpa_g_symbol_is_nulled_event ( @
     Marpa_Grammar @var{g}, @
     Marpa_Symbol_ID @var{sym_id})
+
+On success, returns a boolean which is 1 iff @var{sym_id} is marked
+as a nulled event symbol in @var{g}.
+For more about nulled events,
+@pxref{marpa_g_symbol_is_nulled_event_set,marpa_g_symbol_is_nulled_event_set()}.
+
+On soft failure, @var{sym_id} is well-formed, but there is no
+such symbol.
+
+Hard fails if @var{g} is precomputed.
+
+@strong{Return value}:
+On success, a boolean .
+On soft failure, @minus{}1.
+On hard failure, @minus{}2.
 @end deftypefn
 
 @anchor{marpa_g_symbol_is_nulled_event_set}
