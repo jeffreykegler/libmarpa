@@ -571,9 +571,9 @@ optimized out.
 @ Set globals to the library version numbers,
 so that they can be found at runtime.
 @<Global constant variables@> =
-const int marpa_major_version = MARPA_LIB_MAJOR_VERSION;
-const int marpa_minor_version = MARPA_LIB_MINOR_VERSION;
-const int marpa_micro_version = MARPA_LIB_MICRO_VERSION;
+MARPA_LINKAGE const int marpa_major_version = MARPA_LIB_MAJOR_VERSION;
+MARPA_LINKAGE const int marpa_minor_version = MARPA_LIB_MINOR_VERSION;
+MARPA_LINKAGE const int marpa_micro_version = MARPA_LIB_MICRO_VERSION;
 
 @ Check the arguments, which will usually be
 the version numbers from macros in the public
@@ -582,6 +582,7 @@ against the compiled-in version number.
 Currently, we don't support any kind of
 backward or forward compatibility here.
 @<Function definitions@> =
+MARPA_LINKAGE
 Marpa_Error_Code
 marpa_check_version (int required_major,
                     int required_minor,
@@ -600,6 +601,7 @@ marpa_check_version (int required_major,
 not the one in the headers.
 Always succeeds at this point.
 @<Function definitions@> =
+MARPA_LINKAGE
 Marpa_Error_Code
 marpa_version (int* version)
 {
@@ -619,6 +621,7 @@ struct marpa_config {
 typedef struct marpa_config Marpa_Config;
 
 @ @<Function definitions@> =
+MARPA_LINKAGE
 int marpa_c_init (Marpa_Config *config)
 {
     config->t_is_ok = I_AM_OK;
@@ -628,6 +631,7 @@ int marpa_c_init (Marpa_Config *config)
 }
 
 @ @<Function definitions@> =
+MARPA_LINKAGE
 Marpa_Error_Code marpa_c_error(Marpa_Config* config, const char** p_error_string)
 {
     const Marpa_Error_Code error_code = config->t_error;
@@ -665,6 +669,7 @@ typedef struct marpa_g* GRAMMAR;
 
 @*0 Constructors.
 @ @<Function definitions@> =
+MARPA_LINKAGE
 Marpa_Grammar marpa_g_new (Marpa_Config* configuration)
 {
     GRAMMAR g;
@@ -754,6 +759,7 @@ with their
 @ Symbol count accesors.
 @d XSY_Count_of_G(g) (MARPA_DSTACK_LENGTH((g)->t_xsy_stack))
 @ @<Function definitions@> =
+MARPA_LINKAGE
 int marpa_g_highest_symbol_id(Marpa_Grammar g) {
    @<Return |-2| on failure@>@;
     @<Fail if fatal error@>@;
@@ -811,11 +817,13 @@ The |rule_tree| is a tree for detecting duplicates.
 @ @d XRL_Count_of_G(g) (MARPA_DSTACK_LENGTH((g)->t_xrl_stack))
 @ @d IRL_Count_of_G(g) (MARPA_DSTACK_LENGTH((g)->t_irl_stack))
 @ @<Function definitions@> =
+MARPA_LINKAGE
 int marpa_g_highest_rule_id(Marpa_Grammar g) {
    @<Return |-2| on failure@>@;
    @<Fail if fatal error@>@;
    return XRL_Count_of_G(g) - 1;
 }
+MARPA_LINKAGE
 int _marpa_g_irl_count(Marpa_Grammar g) {
   @<Return |-2| on failure@>@;
   @<Fail if fatal error@>@;
@@ -850,6 +858,7 @@ rule_add (GRAMMAR g, RULE rule)
 @ @<Initialize grammar elements@> =
 g->t_start_xsy_id = -1;
 @ @<Function definitions@> =
+MARPA_LINKAGE
 Marpa_Symbol_ID marpa_g_start_symbol(Marpa_Grammar g)
 {
    @<Return |-2| on failure@>@;
@@ -867,6 +876,7 @@ a non-existent symbol.
 That does not really make sense
 here, but we let consistency prevail.
 @<Function definitions@> =
+MARPA_LINKAGE
 Marpa_Symbol_ID marpa_g_start_symbol_set(Marpa_Grammar g, Marpa_Symbol_ID xsy_id)
 {
    @<Return |-2| on failure@>@;
@@ -928,6 +938,7 @@ typedef int Marpa_Rank;
 @ @<Initialize grammar elements@> =
 g->t_default_rank = 0;
 @ @<Function definitions@> =
+MARPA_LINKAGE
 Marpa_Rank marpa_g_default_rank(Marpa_Grammar g)
 {
    @<Return |-2| on failure@>@;
@@ -938,6 +949,7 @@ Marpa_Rank marpa_g_default_rank(Marpa_Grammar g)
 @ Returns the symbol ID on success,
 |-2| on failure.
 @<Function definitions@> =
+MARPA_LINKAGE
 Marpa_Rank marpa_g_default_rank_set(Marpa_Grammar g, Marpa_Rank rank)
 {
   @<Return |-2| on failure@>@;
@@ -963,6 +975,7 @@ Marpa_Rank marpa_g_default_rank_set(Marpa_Grammar g, Marpa_Rank rank)
 @ @<Initialize grammar elements@> =
 g->t_is_precomputed = 0;
 @ @<Function definitions@> =
+MARPA_LINKAGE
 int marpa_g_is_precomputed(Marpa_Grammar g)
 {
    @<Return |-2| on failure@>@/
@@ -975,6 +988,7 @@ int marpa_g_is_precomputed(Marpa_Grammar g)
 @ @<Initialize grammar elements@> =
 g->t_has_cycle = 0;
 @ @<Function definitions@> =
+MARPA_LINKAGE
 int marpa_g_has_cycle(Marpa_Grammar g)
 {
    @<Return |-2| on failure@>@/
@@ -1082,6 +1096,7 @@ void int_event_new(GRAMMAR g, int type, int value)
 }
 
 @ @<Function definitions@> =
+MARPA_LINKAGE
 Marpa_Event_Type
 marpa_g_event (Marpa_Grammar g, Marpa_Event* public_event,
                int ix)
@@ -1107,6 +1122,7 @@ marpa_g_event (Marpa_Grammar g, Marpa_Event* public_event,
 }
 
 @ @<Function definitions@> =
+MARPA_LINKAGE
 Marpa_Event_Type
 marpa_g_event_count (Marpa_Grammar g)
 {
@@ -1227,6 +1243,7 @@ They cannot and should not be de-allocated.
 @ As a side effect, the current error is cleared
 if it is non=fatal.
 @<Function definitions@> =
+MARPA_LINKAGE
 Marpa_Error_Code marpa_g_error(Marpa_Grammar g, const char** p_error_string)
 {
     const Marpa_Error_Code error_code = g->t_error;
@@ -1238,6 +1255,7 @@ Marpa_Error_Code marpa_g_error(Marpa_Grammar g, const char** p_error_string)
 }
 
 @ @<Function definitions@> =
+MARPA_LINKAGE
 Marpa_Error_Code
 marpa_g_error_clear (Marpa_Grammar g)
 {
@@ -1278,6 +1296,7 @@ symbol_new (GRAMMAR g)
 }
 
 @ @<Function definitions@> =
+MARPA_LINKAGE
 Marpa_Symbol_ID
 marpa_g_symbol_new (Marpa_Grammar g)
 {
@@ -1287,6 +1306,7 @@ marpa_g_symbol_new (Marpa_Grammar g)
 
 @*0 Symbol is start?.
 @ @<Function definitions@> =
+MARPA_LINKAGE
 int marpa_g_symbol_is_start( Marpa_Grammar g, Marpa_Symbol_ID xsy_id)
 {
     @<Return |-2| on failure@>@;
@@ -1304,6 +1324,7 @@ int marpa_g_symbol_is_start( Marpa_Grammar g, Marpa_Symbol_ID xsy_id)
 xsy->t_rank = Default_Rank_of_G(g);
 @ @d Rank_of_XSY(symbol) ((symbol)->t_rank)
 @<Function definitions@> =
+MARPA_LINKAGE
 int marpa_g_symbol_rank(Marpa_Grammar g,
   Marpa_Symbol_ID xsy_id)
 {
@@ -1317,6 +1338,7 @@ int marpa_g_symbol_rank(Marpa_Grammar g,
     return Rank_of_XSY(xsy);
 }
 @ @<Function definitions@> =
+MARPA_LINKAGE
 int marpa_g_symbol_rank_set(
 Marpa_Grammar g, Marpa_Symbol_ID xsy_id, Marpa_Rank rank)
 {
@@ -1381,6 +1403,7 @@ forward.
 @ @<Initialize grammar elements@> =
   g->t_force_valued = 0;
 @ @<Function definitions@> =
+MARPA_LINKAGE
 int marpa_g_force_valued( Marpa_Grammar g)
 {
     XSYID xsyid;
@@ -1400,6 +1423,7 @@ int marpa_g_force_valued( Marpa_Grammar g)
 }
 
 @ @<Function definitions@> =
+MARPA_LINKAGE
 int marpa_g_symbol_is_valued(
     Marpa_Grammar g,
     Marpa_Symbol_ID xsy_id)
@@ -1411,6 +1435,7 @@ int marpa_g_symbol_is_valued(
 }
 
 @ @<Function definitions@> =
+MARPA_LINKAGE
 int marpa_g_symbol_is_valued_set(
     Marpa_Grammar g, Marpa_Symbol_ID xsy_id, int value)
 {
@@ -1446,6 +1471,7 @@ If that becomes private,
 the prototype of this function
 must be changed.
 @<Function definitions@> =
+MARPA_LINKAGE
 int marpa_g_symbol_is_accessible(Marpa_Grammar g, Marpa_Symbol_ID xsy_id)
 {
   @<Return |-2| on failure@>@;
@@ -1461,6 +1487,7 @@ int marpa_g_symbol_is_accessible(Marpa_Grammar g, Marpa_Symbol_ID xsy_id)
 @ @<Initialize XSY elements@> =
 xsy->t_is_counted = 0;
 @ @<Function definitions@> =
+MARPA_LINKAGE
 int marpa_g_symbol_is_counted(Marpa_Grammar g,
 Marpa_Symbol_ID xsy_id)
 {
@@ -1477,6 +1504,7 @@ Marpa_Symbol_ID xsy_id)
 @ @<Initialize XSY elements@> =
 xsy->t_is_nulling = 0;
 @ @<Function definitions@> =
+MARPA_LINKAGE
 int marpa_g_symbol_is_nulling(Marpa_Grammar g, Marpa_Symbol_ID xsy_id)
 {
     @<Return |-2| on failure@>@;
@@ -1494,6 +1522,7 @@ int marpa_g_symbol_is_nulling(Marpa_Grammar g, Marpa_Symbol_ID xsy_id)
 @ @<Initialize XSY elements@> =
 xsy->t_is_nullable = 0;
 @ @<Function definitions@> =
+MARPA_LINKAGE
 int marpa_g_symbol_is_nullable(Marpa_Grammar g, Marpa_Symbol_ID xsy_id)
 {
     @<Return |-2| on failure@>@;
@@ -1521,6 +1550,7 @@ xsy->t_is_locked_terminal = 0;
 @ @d XSY_is_Locked_Terminal(xsy) ((xsy)->t_is_locked_terminal)
 @d XSYID_is_Terminal(id) (XSY_is_Terminal(XSY_by_ID(id)))
 @<Function definitions@> =
+MARPA_LINKAGE
 int marpa_g_symbol_is_terminal(Marpa_Grammar g,
 Marpa_Symbol_ID xsy_id)
 {
@@ -1531,6 +1561,7 @@ Marpa_Symbol_ID xsy_id)
     return XSYID_is_Terminal(xsy_id);
 }
 @ @<Function definitions@> =
+MARPA_LINKAGE
 int marpa_g_symbol_is_terminal_set(
 Marpa_Grammar g, Marpa_Symbol_ID xsy_id, int value)
 {
@@ -1562,6 +1593,7 @@ Marpa_Grammar g, Marpa_Symbol_ID xsy_id, int value)
 @ @<Initialize XSY elements@> =
 xsy->t_is_productive = 0;
 @ @<Function definitions@> =
+MARPA_LINKAGE
 int marpa_g_symbol_is_productive(
     Marpa_Grammar g,
     Marpa_Symbol_ID xsy_id)
@@ -1586,6 +1618,7 @@ BITFIELD t_completion_event_starts_active:1;
 xsy->t_is_completion_event = 0;
 xsy->t_completion_event_starts_active = 0;
 @ @<Function definitions@> =
+MARPA_LINKAGE
 int marpa_g_symbol_is_completion_event(Marpa_Grammar g,
 Marpa_Symbol_ID xsy_id)
 {
@@ -1596,6 +1629,7 @@ Marpa_Symbol_ID xsy_id)
     return XSYID_is_Completion_Event(xsy_id);
 }
 @ @<Function definitions@> =
+MARPA_LINKAGE
 int marpa_g_symbol_is_completion_event_set(
 Marpa_Grammar g, Marpa_Symbol_ID xsy_id, int value)
 {
@@ -1615,6 +1649,7 @@ Marpa_Grammar g, Marpa_Symbol_ID xsy_id, int value)
     return failure_indicator;
 }
 @ @<Function definitions@> =
+MARPA_LINKAGE
 int
 marpa_g_completion_symbol_activate (Marpa_Grammar g,
                                     Marpa_Symbol_ID xsy_id,
@@ -1656,6 +1691,7 @@ BITFIELD t_nulled_event_starts_active:1;
 xsy->t_is_nulled_event = 0;
 xsy->t_nulled_event_starts_active = 0;
 @ @<Function definitions@> =
+MARPA_LINKAGE
 int marpa_g_symbol_is_nulled_event(Marpa_Grammar g,
 Marpa_Symbol_ID xsy_id)
 {
@@ -1669,6 +1705,7 @@ Marpa_Symbol_ID xsy_id)
 @ Does not check if the symbol is actually nullable --
 this is by design.
 @<Function definitions@> =
+MARPA_LINKAGE
 int marpa_g_symbol_is_nulled_event_set(
 Marpa_Grammar g, Marpa_Symbol_ID xsy_id, int value)
 {
@@ -1688,6 +1725,7 @@ Marpa_Grammar g, Marpa_Symbol_ID xsy_id, int value)
     return failure_indicator;
 }
 @ @<Function definitions@> =
+MARPA_LINKAGE
 int
 marpa_g_nulled_symbol_activate (Marpa_Grammar g,
                                     Marpa_Symbol_ID xsy_id,
@@ -1729,6 +1767,7 @@ BITFIELD t_prediction_event_starts_active:1;
 xsy->t_is_prediction_event = 0;
 xsy->t_prediction_event_starts_active = 0;
 @ @<Function definitions@> =
+MARPA_LINKAGE
 int marpa_g_symbol_is_prediction_event(Marpa_Grammar g,
 Marpa_Symbol_ID xsy_id)
 {
@@ -1739,6 +1778,7 @@ Marpa_Symbol_ID xsy_id)
     return XSYID_is_Prediction_Event(xsy_id);
 }
 @ @<Function definitions@> =
+MARPA_LINKAGE
 int marpa_g_symbol_is_prediction_event_set(
 Marpa_Grammar g, Marpa_Symbol_ID xsy_id, int value)
 {
@@ -1758,6 +1798,7 @@ Marpa_Grammar g, Marpa_Symbol_ID xsy_id, int value)
     return failure_indicator;
 }
 @ @<Function definitions@> =
+MARPA_LINKAGE
 int
 marpa_g_prediction_symbol_activate (Marpa_Grammar g,
                                     Marpa_Symbol_ID xsy_id,
@@ -1822,6 +1863,7 @@ it is the non-nullable NSY.
 @<Widely aligned XSY elements@> = NSY t_nsy_equivalent;
 @ @<Initialize XSY elements@> = NSY_of_XSY(xsy) = NULL;
 @ @<Function definitions@> =
+MARPA_LINKAGE
 Marpa_NSY_ID _marpa_g_xsy_nsy(
     Marpa_Grammar g,
     Marpa_Symbol_ID xsy_id)
@@ -1854,6 +1896,7 @@ there is no nulling internal equivalent.
 @<Widely aligned XSY elements@> = NSY t_nulling_nsy;
 @ @<Initialize XSY elements@> = Nulling_NSY_of_XSY(xsy) = NULL;
 @ @<Function definitions@> =
+MARPA_LINKAGE
 Marpa_NSY_ID _marpa_g_xsy_nulling_nsy(
     Marpa_Grammar g,
     Marpa_Symbol_ID xsy_id)
@@ -1991,6 +2034,7 @@ added to the list of rules.
 @ Symbol count accesors.
 @d NSY_Count_of_G(g) (MARPA_DSTACK_LENGTH((g)->t_nsy_stack))
 @ @<Function definitions@> =
+MARPA_LINKAGE
 int _marpa_g_nsy_count(Marpa_Grammar g) {
    @<Return |-2| on failure@>@;
     @<Fail if fatal error@>@;
@@ -2002,6 +2046,7 @@ int _marpa_g_nsy_count(Marpa_Grammar g) {
 @<Bit aligned NSY elements@> = BITFIELD t_is_start:1;
 @ @<Initialize NSY elements@> = NSY_is_Start(nsy) = 0;
 @ @<Function definitions@> =
+MARPA_LINKAGE
 int _marpa_g_nsy_is_start( Marpa_Grammar g, Marpa_NSY_ID nsy_id)
 {
     @<Return |-2| on failure@>@;
@@ -2016,6 +2061,7 @@ int _marpa_g_nsy_is_start( Marpa_Grammar g, Marpa_NSY_ID nsy_id)
 @<Bit aligned NSY elements@> = BITFIELD t_is_lhs:1;
 @ @<Initialize NSY elements@> = NSY_is_LHS(nsy) = 0;
 @ @<Function definitions@> =
+MARPA_LINKAGE
 int _marpa_g_nsy_is_lhs( Marpa_Grammar g, Marpa_NSY_ID nsy_id)
 {
     @<Return |-2| on failure@>@;
@@ -2030,6 +2076,7 @@ int _marpa_g_nsy_is_lhs( Marpa_Grammar g, Marpa_NSY_ID nsy_id)
 @<Bit aligned NSY elements@> = BITFIELD t_nsy_is_nulling:1;
 @ @<Initialize NSY elements@> = NSY_is_Nulling(nsy) = 0;
 @ @<Function definitions@> =
+MARPA_LINKAGE
 int _marpa_g_nsy_is_nulling(Marpa_Grammar g, Marpa_NSY_ID nsy_id)
 {
   @<Return |-2| on failure@>@;
@@ -2055,6 +2102,7 @@ externally.
 @<Bit aligned NSY elements@> = BITFIELD t_is_semantic:1;
 @ @<Initialize NSY elements@> = NSY_is_Semantic(nsy) = 0;
 @ @<Function definitions@> =
+MARPA_LINKAGE
 int _marpa_g_nsy_is_semantic(
     Marpa_Grammar g,
     Marpa_IRL_ID nsy_id)
@@ -2078,6 +2126,7 @@ for tracing and debugging.
 @<Widely aligned NSY elements@> = XSY t_source_xsy;
 @ @<Initialize NSY elements@> = Source_XSY_of_NSY(nsy) = NULL;
 @ @<Function definitions@> =
+MARPA_LINKAGE
 Marpa_Rule_ID _marpa_g_source_xsy(
     Marpa_Grammar g,
     Marpa_IRL_ID nsy_id)
@@ -2113,6 +2162,7 @@ returns the XRLID.
 If there is no such external rule, returns |-1|.
 On other failures, returns |-2|.
 @ @<Function definitions@> =
+MARPA_LINKAGE
 Marpa_Rule_ID _marpa_g_nsy_lhs_xrl(Marpa_Grammar g, Marpa_NSY_ID nsy_id)
 {
   @<Return |-2| on failure@>@;
@@ -2137,6 +2187,7 @@ used in the CHAF rewrite.
 Otherwise, -1 is returned.
 On other failures, returns |-2|.
 @<Function definitions@> =
+MARPA_LINKAGE
 int _marpa_g_nsy_xrl_offset(Marpa_Grammar g, Marpa_NSY_ID nsy_id)
 {
   @<Return |-2| on failure@>@;
@@ -2155,6 +2206,7 @@ The rank of the internal symbol.
 @ @<Initialize NSY elements@> =
   Rank_of_NSY(nsy) = Default_Rank_of_G(g) * EXTERNAL_RANK_FACTOR + MAXIMUM_CHAF_RANK;
 @ @<Function definitions@> =
+MARPA_LINKAGE
 Marpa_Rank _marpa_g_nsy_rank(
     Marpa_Grammar g,
     Marpa_NSY_ID nsy_id)
@@ -2275,6 +2327,7 @@ irl_finish( GRAMMAR g, IRL irl)
 }
 
 @ @<Function definitions@> =
+MARPA_LINKAGE
 Marpa_Rule_ID
 marpa_g_rule_new (Marpa_Grammar g,
                   Marpa_Symbol_ID lhs_id, Marpa_Symbol_ID * rhs_ids, int length)
@@ -2329,6 +2382,7 @@ marpa_g_rule_new (Marpa_Grammar g,
 }
 
 @ @<Function definitions@> =
+MARPA_LINKAGE
 Marpa_Rule_ID marpa_g_sequence_new(Marpa_Grammar g,
 Marpa_Symbol_ID lhs_id, Marpa_Symbol_ID rhs_id, Marpa_Symbol_ID separator_id,
 int min, int flags )
@@ -2482,6 +2536,7 @@ PRIVATE Marpa_Symbol_ID rule_lhs_get(RULE rule)
 {
     return rule->t_symbols[0]; }
 @ @<Function definitions@> =
+MARPA_LINKAGE
 Marpa_Symbol_ID marpa_g_rule_lhs(Marpa_Grammar g, Marpa_Rule_ID xrl_id) {
     @<Return |-2| on failure@>@;
     @<Fail if fatal error@>@;
@@ -2494,6 +2549,7 @@ PRIVATE Marpa_Symbol_ID* rule_rhs_get(RULE rule)
 {
     return rule->t_symbols+1; }
 @ @<Function definitions@> =
+MARPA_LINKAGE
 Marpa_Symbol_ID marpa_g_rule_rhs(Marpa_Grammar g, Marpa_Rule_ID xrl_id, int ix) {
     RULE rule;
     @<Return |-2| on failure@>@;
@@ -2513,6 +2569,7 @@ Marpa_Symbol_ID marpa_g_rule_rhs(Marpa_Grammar g, Marpa_Rule_ID xrl_id, int ix) 
 }
 
 @ @<Function definitions@> =
+MARPA_LINKAGE
 int marpa_g_rule_length(Marpa_Grammar g, Marpa_Rule_ID xrl_id) {
     @<Return |-2| on failure@>@;
     @<Fail if fatal error@>@;
@@ -2545,6 +2602,7 @@ added to the list of rules.
 rule->t_rank = Default_Rank_of_G(g);
 @ @d Rank_of_XRL(rule) ((rule)->t_rank)
 @<Function definitions@> =
+MARPA_LINKAGE
 int marpa_g_rule_rank(Marpa_Grammar g,
   Marpa_Rule_ID xrl_id)
 {
@@ -2559,6 +2617,7 @@ int marpa_g_rule_rank(Marpa_Grammar g,
     return Rank_of_XRL(xrl);
 }
 @ @<Function definitions@> =
+MARPA_LINKAGE
 int marpa_g_rule_rank_set(
 Marpa_Grammar g, Marpa_Rule_ID xrl_id, Marpa_Rank rank)
 {
@@ -2595,6 +2654,7 @@ rule->t_null_ranks_high = 0;
 @
 @d Null_Ranks_High_of_RULE(rule) ((rule)->t_null_ranks_high)
 @<Function definitions@> =
+MARPA_LINKAGE
 int marpa_g_rule_null_high (Marpa_Grammar g,
   Marpa_Rule_ID xrl_id)
 {
@@ -2607,6 +2667,7 @@ int marpa_g_rule_null_high (Marpa_Grammar g,
     return Null_Ranks_High_of_RULE(xrl);
 }
 @ @<Function definitions@> =
+MARPA_LINKAGE
 int marpa_g_rule_null_high_set(
 Marpa_Grammar g, Marpa_Rule_ID xrl_id, int flag)
 {
@@ -2653,6 +2714,7 @@ other failures are hard failures.
 @ @<Initialize rule elements@> =
 rule->t_minimum = -1;
 @ @<Function definitions@> =
+MARPA_LINKAGE
 int marpa_g_sequence_min(
     Marpa_Grammar g,
     Marpa_Rule_ID xrl_id)
@@ -2679,6 +2741,7 @@ other failures are hard failures.
 @ @<Initialize rule elements@> =
 Separator_of_XRL(rule) = -1;
 @ @<Function definitions@> =
+MARPA_LINKAGE
 Marpa_Symbol_ID marpa_g_sequence_separator(
     Marpa_Grammar g,
     Marpa_Rule_ID xrl_id)
@@ -2716,6 +2779,7 @@ Alternatively, it may be deleted.
 @ @<Initialize rule elements@> =
 rule->t_is_discard = 0;
 @ @<Function definitions@> =
+MARPA_LINKAGE
 int _marpa_g_rule_is_keep_separation(
     Marpa_Grammar g,
     Marpa_Rule_ID xrl_id)
@@ -2756,6 +2820,7 @@ taken care of in the rewrite itself.
 @ @<Initialize rule elements@> =
 rule->t_is_proper_separation = 0;
 @ @<Function definitions@> =
+MARPA_LINKAGE
 int marpa_g_rule_is_proper_separation(
     Marpa_Grammar g,
     Marpa_Rule_ID xrl_id)
@@ -2777,6 +2842,7 @@ derivation must have at least one step.
 @ @<Initialize rule elements@> =
 rule->t_is_loop = 0;
 @ @<Function definitions@> =
+MARPA_LINKAGE
 int marpa_g_rule_is_loop(Marpa_Grammar g, Marpa_Rule_ID xrl_id)
 {
   @<Return |-2| on failure@>@;
@@ -2795,6 +2861,7 @@ Is the rule nulling?
 @ @<Initialize rule elements@> =
 XRL_is_Nulling(rule) = 0;
 @ @<Function definitions@> =
+MARPA_LINKAGE
 int marpa_g_rule_is_nulling(Marpa_Grammar g, Marpa_Rule_ID xrl_id)
 {
   @<Return |-2| on failure@>@;
@@ -2814,6 +2881,7 @@ Is the rule nullable?
 @ @<Initialize rule elements@> =
 XRL_is_Nullable(rule) = 0;
 @ @<Function definitions@> =
+MARPA_LINKAGE
 int marpa_g_rule_is_nullable(Marpa_Grammar g, Marpa_Rule_ID xrl_id)
 {
   @<Return |-2| on failure@>@;
@@ -2833,6 +2901,7 @@ int marpa_g_rule_is_nullable(Marpa_Grammar g, Marpa_Rule_ID xrl_id)
 @ @<Initialize rule elements@> =
 XRL_is_Accessible(rule) = 1;
 @ @<Function definitions@> =
+MARPA_LINKAGE
 int marpa_g_rule_is_accessible(Marpa_Grammar g, Marpa_Rule_ID xrl_id)
 {
   @<Return |-2| on failure@>@;
@@ -2852,6 +2921,7 @@ Is the rule productive?
 @ @<Initialize rule elements@> =
 XRL_is_Productive(rule) = 1;
 @ @<Function definitions@> =
+MARPA_LINKAGE
 int marpa_g_rule_is_productive(Marpa_Grammar g, Marpa_Rule_ID xrl_id)
 {
   @<Return |-2| on failure@>@;
@@ -2871,6 +2941,7 @@ int marpa_g_rule_is_productive(Marpa_Grammar g, Marpa_Rule_ID xrl_id)
 @<Initialize rule elements@> =
 XRL_is_Used(rule) = 0;
 @ @<Function definitions@> =
+MARPA_LINKAGE
 int
 _marpa_g_rule_is_used(Marpa_Grammar g, Marpa_Rule_ID xrl_id)
 {
@@ -2884,6 +2955,7 @@ _marpa_g_rule_is_used(Marpa_Grammar g, Marpa_Rule_ID xrl_id)
 this external accessor returns the ``original rule".
 Otherwise it returns -1.
 @ @<Function definitions@> =
+MARPA_LINKAGE
 Marpa_Rule_ID
 _marpa_g_irl_semantic_equivalent (Marpa_Grammar g, Marpa_IRL_ID irl_id)
 {
@@ -2931,6 +3003,7 @@ so that they can be variable length.
 @ @d LHS_of_IRL(irl) (NSY_by_ID(LHSID_of_IRL(irl)))
 
 @<Function definitions@> =
+MARPA_LINKAGE
 Marpa_NSY_ID _marpa_g_irl_lhs(Marpa_Grammar g, Marpa_IRL_ID irl_id) {
     IRL irl;
     @<Return |-2| on failure@>@;
@@ -2944,6 +3017,7 @@ Marpa_NSY_ID _marpa_g_irl_lhs(Marpa_Grammar g, Marpa_IRL_ID irl_id) {
 @ @d RHSID_of_IRL(irl, position) ((irl)->t_nsyid_array[(position)+1])
 @ @d RHS_of_IRL(irl, position) NSY_by_ID(RHSID_of_IRL((irl), (position)))
 @<Function definitions@> =
+MARPA_LINKAGE
 Marpa_NSY_ID _marpa_g_irl_rhs(Marpa_Grammar g, Marpa_IRL_ID irl_id, int ix) {
     IRL irl;
     @<Return |-2| on failure@>@;
@@ -2958,6 +3032,7 @@ Marpa_NSY_ID _marpa_g_irl_rhs(Marpa_Grammar g, Marpa_IRL_ID irl_id, int ix) {
 @ @d Length_of_IRL(irl) ((irl)->t_length)
 @<Int aligned IRL elements@> = int t_length;
 @ @<Function definitions@> =
+MARPA_LINKAGE
 int _marpa_g_irl_length(Marpa_Grammar g, Marpa_IRL_ID irl_id) {
     @<Return |-2| on failure@>@;
     @<Fail if fatal error@>@;
@@ -3008,6 +3083,7 @@ side NSY must have a semantic XRL.
 @ @<Initialize IRL elements@> =
 IRL_has_Virtual_LHS(irl) = 0;
 @ @<Function definitions@> =
+MARPA_LINKAGE
 int _marpa_g_irl_is_virtual_lhs(
     Marpa_Grammar g,
     Marpa_IRL_ID irl_id)
@@ -3024,6 +3100,7 @@ int _marpa_g_irl_is_virtual_lhs(
 @ @<Initialize IRL elements@> =
 IRL_has_Virtual_RHS(irl) = 0;
 @ @<Function definitions@> =
+MARPA_LINKAGE
 int _marpa_g_irl_is_virtual_rhs(
     Marpa_Grammar g,
     Marpa_IRL_ID irl_id)
@@ -3053,6 +3130,7 @@ the rule has a virtual rhs or a virtual lhs.
 @ @<Int aligned IRL elements@> = int t_real_symbol_count;
 @ @<Initialize IRL elements@> = Real_SYM_Count_of_IRL(irl) = 0;
 @ @<Function definitions@> =
+MARPA_LINKAGE
 int _marpa_g_real_symbol_count(
     Marpa_Grammar g,
     Marpa_IRL_ID irl_id)
@@ -3071,6 +3149,7 @@ where the IRL starts.
 @<Int aligned IRL elements@> = int t_virtual_start;
 @ @<Initialize IRL elements@> = irl->t_virtual_start = -1;
 @ @<Function definitions@> =
+MARPA_LINKAGE
 int _marpa_g_virtual_start(
     Marpa_Grammar g,
     Marpa_IRL_ID irl_id)
@@ -3091,6 +3170,7 @@ where the IRL ends.
 @<Int aligned IRL elements@> = int t_virtual_end;
 @ @<Initialize IRL elements@> = irl->t_virtual_end = -1;
 @ @<Function definitions@> =
+MARPA_LINKAGE
 int _marpa_g_virtual_end(
     Marpa_Grammar g,
     Marpa_IRL_ID irl_id)
@@ -3113,6 +3193,7 @@ because the ``virtual LHS'' flag serves that purpose.
 @<Widely aligned IRL elements@> = XRL t_source_xrl;
 @ @<Initialize IRL elements@> = Source_XRL_of_IRL(irl) = NULL;
 @ @<Function definitions@> =
+MARPA_LINKAGE
 Marpa_Rule_ID _marpa_g_source_xrl(
     Marpa_Grammar g,
     Marpa_IRL_ID irl_id)
@@ -3141,6 +3222,7 @@ assume that |t_source_xrl| is not |NULL|.
 @ @<Initialize IRL elements@> =
   Rank_of_IRL(irl) = Default_Rank_of_G(g) * EXTERNAL_RANK_FACTOR + MAXIMUM_CHAF_RANK;
 @ @<Function definitions@> =
+MARPA_LINKAGE
 Marpa_Rank _marpa_g_irl_rank(
     Marpa_Grammar g,
     Marpa_IRL_ID irl_id)
@@ -3181,6 +3263,7 @@ logic error, and treat it as a fatal error.
 Anything in between these two extremes is also possible.
 
 @<Function definitions@> =
+MARPA_LINKAGE
 int marpa_g_precompute(Marpa_Grammar g)
 {
     @<Return |-2| on failure@>@;
@@ -4061,10 +4144,12 @@ Is this IRL a product of the CHAF rewrite?
 @ @<Initialize IRL elements@> =
   IRL_is_CHAF(irl) = 0;
 @ @<Public function prototypes@> =
+MARPA_LINKAGE
 int _marpa_g_irl_is_chaf(
     Marpa_Grammar g,
     Marpa_IRL_ID irl_id);
 @ @<Function definitions@> =
+MARPA_LINKAGE
 int _marpa_g_irl_is_chaf(
     Marpa_Grammar g,
     Marpa_IRL_ID irl_id)
@@ -5007,6 +5092,7 @@ AHM itself has zero-width assertions.
 
 @*0 AHM external accessors.
 @<Function definitions@> =
+MARPA_LINKAGE
 int _marpa_g_ahm_count(Marpa_Grammar g) {
     @<Return |-2| on failure@>@/
     @<Fail if not precomputed@>@/
@@ -5014,6 +5100,7 @@ int _marpa_g_ahm_count(Marpa_Grammar g) {
 }
 
 @ @<Function definitions@> =
+MARPA_LINKAGE
 Marpa_IRL_ID _marpa_g_ahm_irl(Marpa_Grammar g,
         Marpa_AHM_ID item_id) {
     @<Return |-2| on failure@>@/
@@ -5024,6 +5111,7 @@ Marpa_IRL_ID _marpa_g_ahm_irl(Marpa_Grammar g,
 
 @ |-1| is the value for completions, so |-2| is the failure indicator.
 @ @<Function definitions@> =
+MARPA_LINKAGE
 int _marpa_g_ahm_position(Marpa_Grammar g,
         Marpa_AHM_ID item_id) {
     @<Return |-2| on failure@>@/
@@ -5034,6 +5122,7 @@ int _marpa_g_ahm_position(Marpa_Grammar g,
 
 @ |-1| is the value for completions, so |-2| is the failure indicator.
 @ @<Function definitions@> =
+MARPA_LINKAGE
 Marpa_Symbol_ID _marpa_g_ahm_postdot(Marpa_Grammar g,
         Marpa_AHM_ID item_id) {
     @<Return |-2| on failure@>@/
@@ -5859,6 +5948,7 @@ PRIVATE_NOT_INLINE int zwp_cmp (
 }
 
 @ @<Function definitions@> =
+MARPA_LINKAGE
 Marpa_Assertion_ID
 marpa_g_zwa_new (Marpa_Grammar g, int default_value)
 {
@@ -5881,6 +5971,7 @@ marpa_g_zwa_new (Marpa_Grammar g, int default_value)
 }
 
 @ @<Function definitions@> =
+MARPA_LINKAGE
 Marpa_Assertion_ID
 marpa_g_highest_zwa_id (Marpa_Grammar g)
 {
@@ -5893,6 +5984,7 @@ marpa_g_highest_zwa_id (Marpa_Grammar g)
 and -1 is returned.
 On success, returns a non-negative number.
 @<Function definitions@> =
+MARPA_LINKAGE
 int
 marpa_g_zwa_place(Marpa_Grammar g,
     Marpa_Assertion_ID zwaid,
@@ -6025,6 +6117,7 @@ recognizer.
 In the event of an error creating the recognizer,
 |NULL| is returned.
 @<Function definitions@> =
+MARPA_LINKAGE
 Marpa_Recognizer marpa_r_new( Marpa_Grammar g )
 {
     RECCE r;
@@ -6133,6 +6226,7 @@ r->t_current_earleme = -1;
 @d Latest_YS_of_R(r) ((r)->t_latest_earley_set)
 @d Current_Earleme_of_R(r) ((r)->t_current_earleme)
 @<Function definitions@> =
+MARPA_LINKAGE
 Marpa_Earleme marpa_r_current_earleme(Marpa_Recognizer r)
 {
   @<Return |-2| on failure@>@;
@@ -6164,6 +6258,7 @@ PRIVATE YS ys_at_current_earleme(RECCE r)
 r->t_earley_item_warning_threshold =
     MAX (DEFAULT_YIM_WARNING_THRESHOLD, AHM_Count_of_G (g) * 3);
 @ @<Function definitions@> =
+MARPA_LINKAGE
 int
 marpa_r_earley_item_warning_threshold (Marpa_Recognizer r)
 {
@@ -6173,6 +6268,7 @@ marpa_r_earley_item_warning_threshold (Marpa_Recognizer r)
 @ Returns true on success,
 false on failure.
 @<Function definitions@> =
+MARPA_LINKAGE
 int
 marpa_r_earley_item_warning_threshold_set (Marpa_Recognizer r, int threshold)
 {
@@ -6197,6 +6293,7 @@ This makes the interface for the furthest earleme non-orthogonal with
 that for the current earleme,
 but allows more values for the furthest earleme.
 @<Function definitions@> =
+MARPA_LINKAGE
 unsigned int marpa_r_furthest_earleme(Marpa_Recognizer r)
 { return (unsigned int)Furthest_Earleme_of_R(r); }
 
@@ -6246,6 +6343,7 @@ This will be the case if the length of the buffer
 is greater than or equal to the number of symbols
 in the grammar.
 @<Function definitions@> =
+MARPA_LINKAGE
 int marpa_r_terminals_expected(Marpa_Recognizer r, Marpa_Symbol_ID* buffer)
 {
   @<Return |-2| on failure@>@;
@@ -6284,6 +6382,7 @@ int marpa_r_terminals_expected(Marpa_Recognizer r, Marpa_Symbol_ID* buffer)
 }
 
 @ @<Function definitions@> =
+MARPA_LINKAGE
 int marpa_r_terminal_is_expected(Marpa_Recognizer r,
 Marpa_Symbol_ID xsy_id)
 {
@@ -6321,6 +6420,7 @@ Does not check if |xsy_id| is a terminal,
 because this is not decided until precomputation,
 which may not have been performed yet.
 @<Function definitions@> =
+MARPA_LINKAGE
 int
 marpa_r_expected_symbol_event_set (Marpa_Recognizer r, Marpa_Symbol_ID xsy_id,
                                    int value)
@@ -6372,6 +6472,7 @@ Any other result is a failure.
 On success, returns the new value.
 Returns |-2| if there was a failure.
 @<Function definitions@> =
+MARPA_LINKAGE
 int
 marpa_r_completion_symbol_activate (Marpa_Recognizer r,
                                     Marpa_Symbol_ID xsy_id, int reactivate)
@@ -6419,6 +6520,7 @@ Any other result is a failure.
 On success, returns the new value.
 Returns |-2| if there was a failure.
 @<Function definitions@> =
+MARPA_LINKAGE
 int
 marpa_r_nulled_symbol_activate (Marpa_Recognizer r, Marpa_Symbol_ID xsy_id,
                                 int reactivate)
@@ -6466,6 +6568,7 @@ Any other result is a failure.
 On success, returns the new value.
 Returns |-2| if there was a failure.
 @<Function definitions@> =
+MARPA_LINKAGE
 int
 marpa_r_prediction_symbol_activate (Marpa_Recognizer r,
                                     Marpa_Symbol_ID xsy_id, int reactivate)
@@ -6567,6 +6670,7 @@ r->t_is_using_leo = 0;
 0 if not,
 and |-2| if there was an error.
 @<Function definitions@> =
+MARPA_LINKAGE
 int _marpa_r_is_use_leo(Marpa_Recognizer  r)
 {
    @<Unpack recognizer objects@>@;
@@ -6575,6 +6679,7 @@ int _marpa_r_is_use_leo(Marpa_Recognizer  r)
     return r->t_use_leo_flag;
 }
 @ @<Function definitions@> =
+MARPA_LINKAGE
 int _marpa_r_is_use_leo_set(
 Marpa_Recognizer r, int value)
 {
@@ -6622,6 +6727,7 @@ earleme at which the parse became exhausted.
 Once exhausted a parse stays exhausted,
 even though the phase may change.
 @<Function definitions@> =
+MARPA_LINKAGE
 int marpa_r_is_exhausted(Marpa_Recognizer r)
 {
    @<Unpack recognizer objects@>@;
@@ -6781,6 +6887,7 @@ of its choice with each Earley set.
    PValue_of_YS(set) = NULL;
 
 @ @<Function definitions@> =
+MARPA_LINKAGE
 int marpa_r_earley_set_value(Marpa_Recognizer r, Marpa_Earley_Set_ID set_id)
 {
   @<Return |-2| on failure@>@;
@@ -6805,6 +6912,7 @@ int marpa_r_earley_set_value(Marpa_Recognizer r, Marpa_Earley_Set_ID set_id)
 }
 
 @ @<Function definitions@> =
+MARPA_LINKAGE
 int
 marpa_r_earley_set_values(Marpa_Recognizer r, Marpa_Earley_Set_ID set_id,
   int* p_value, void** p_pvalue)
@@ -6832,6 +6940,7 @@ marpa_r_earley_set_values(Marpa_Recognizer r, Marpa_Earley_Set_ID set_id,
 }
 
 @ @<Function definitions@> =
+MARPA_LINKAGE
 int marpa_r_latest_earley_set_value_set(Marpa_Recognizer r, int value)
 {
   YS earley_set;
@@ -6844,6 +6953,7 @@ int marpa_r_latest_earley_set_value_set(Marpa_Recognizer r, int value)
 }
 
 @ @<Function definitions@> =
+MARPA_LINKAGE
 int marpa_r_latest_earley_set_values_set(Marpa_Recognizer r, int value,
   void* pvalue)
 {
@@ -7681,7 +7791,7 @@ PRIVATE int alternative_insert(RECCE r, ALT new_alternative)
 }
 
 @** Starting recognizer input.
-@<Function definitions@> = int marpa_r_start_input(Marpa_Recognizer r)
+@<Function definitions@> = MARPA_LINKAGE int marpa_r_start_input(Marpa_Recognizer r)
 {
     int return_value = 1;
     YS set0;
@@ -7894,6 +8004,7 @@ If tokens ending at location $n$ cannot be scanned, then clearly
 the parse can
 never reach location $n$.
 @<Function definitions@> =
+MARPA_LINKAGE
 Marpa_Earleme marpa_r_alternative(
     Marpa_Recognizer r,
     Marpa_Symbol_ID tkn_xsy_id,
@@ -8108,6 +8219,7 @@ exhausted parse is significant to the higher layers,
 they must explicitly check the phase whenever this function
 returns zero.
 @<Function definitions@> =
+MARPA_LINKAGE
 int
 marpa_r_earleme_complete(Marpa_Recognizer r)
 {
@@ -9180,6 +9292,7 @@ alternatives can be attempted.
 Or, in other words, attempting to reject a rule or terminal
 once an alternative has been read must be a fatal error.
 @<Function definitions@> =
+MARPA_LINKAGE
 Marpa_Earleme
 marpa_r_clean(Marpa_Recognizer r)
 {
@@ -9575,6 +9688,7 @@ PRIVATE int alternative_is_acceptable(ALT alternative)
 
 @** Recognizer zero-width assertion code.
 @<Function definitions@> =
+MARPA_LINKAGE
 int
 marpa_r_zwa_default_set(Marpa_Recognizer r,
     Marpa_Assertion_ID zwaid,
@@ -9599,6 +9713,7 @@ marpa_r_zwa_default_set(Marpa_Recognizer r,
 }
 
 @ @<Function definitions@> =
+MARPA_LINKAGE
 int
 marpa_r_zwa_default(Marpa_Recognizer r,
     Marpa_Assertion_ID zwaid)
@@ -9666,6 +9781,7 @@ PRIVATE_NOT_INLINE int report_item_cmp (
 }
 
 @ @<Function definitions@> =
+MARPA_LINKAGE
 int marpa_r_progress_report_start(
   Marpa_Recognizer r,
   Marpa_Earley_Set_ID set_id)
@@ -9711,6 +9827,7 @@ int marpa_r_progress_report_start(
 }
 @ Start the progress report again.
 @<Function definitions@> =
+MARPA_LINKAGE
 int marpa_r_progress_report_reset( Marpa_Recognizer r)
 {
   @<Return |-2| on failure@>@;
@@ -9829,6 +9946,7 @@ progress_report_items_insert(MARPA_AVL_TREE report_tree,
 }
 
 @ @<Function definitions@> =
+MARPA_LINKAGE
 int marpa_r_progress_report_finish(Marpa_Recognizer r) {
   const int success = 1;
   @<Return |-2| on failure@>@;
@@ -9841,6 +9959,7 @@ int marpa_r_progress_report_finish(Marpa_Recognizer r) {
 }
 
 @ @<Function definitions@> =
+MARPA_LINKAGE
 Marpa_Rule_ID marpa_r_progress_item(
   Marpa_Recognizer r, int* position, Marpa_Earley_Set_ID* origin
 ) {
@@ -11166,6 +11285,7 @@ marpa_obs_free(OBS_of_B(b));
 
 @*0 Bocage construction.
 @<Function definitions@> =
+MARPA_LINKAGE
 Marpa_Bocage marpa_b_new(Marpa_Recognizer r,
     Marpa_Earley_Set_ID ordinal_arg)
 {
@@ -11361,6 +11481,7 @@ to make sense.
 @*0 Top or-node.
 @ If |b| is nulling, the top Or node ID will be -1.
 @<Function definitions@> =
+MARPA_LINKAGE
 Marpa_Or_Node_ID _marpa_b_top_or_node(Marpa_Bocage b)
 {
   @<Return |-2| on failure@>@;
@@ -11387,6 +11508,7 @@ on the fly computation of this metric.
 Ambiguity_Metric_of_B(b) = 1;
 
 @ @<Function definitions@> =
+MARPA_LINKAGE
 int marpa_b_ambiguity_metric(Marpa_Bocage b)
 {
   @<Return |-2| on failure@>@;
@@ -11459,6 +11581,7 @@ BITFIELD t_is_nulling:1;
 @ @<Initialize bocage elements@> =
 B_is_Nulling(b) = 0;
 @ @<Function definitions@> =
+MARPA_LINKAGE
 int marpa_b_is_null(Marpa_Bocage b)
 {
   @<Return |-2| on failure@>@;
@@ -11504,6 +11627,7 @@ struct marpa_order {
     BOCAGE t_bocage;
 
 @ @<Function definitions@> =
+MARPA_LINKAGE
 Marpa_Order marpa_o_new(Marpa_Bocage b)
 {
     @<Return |NULL| on failure@>@;
@@ -11579,6 +11703,7 @@ See the discussion of the ambiguity metric for the bocage.
 @ @<Int aligned order elements@>= int t_ambiguity_metric;
 
 @ @<Function definitions@> =
+MARPA_LINKAGE
 int marpa_o_ambiguity_metric(Marpa_Order o)
 {
   @<Return |-2| on failure@>@;
@@ -11673,6 +11798,7 @@ Is this order for a nulling parse?
 @ @<Bit aligned order elements@> =
 BITFIELD t_is_nulling:1;
 @ @<Function definitions@> =
+MARPA_LINKAGE
 int marpa_o_is_null(Marpa_Order o)
 {
   @<Return |-2| on failure@>@;
@@ -11692,6 +11818,7 @@ and 1.
 @ @<Pre-initialize order elements@> =
     High_Rank_Count_of_O(o) = 1;
 @ @<Function definitions@> =
+MARPA_LINKAGE
 int marpa_o_high_rank_only_set(
     Marpa_Order o,
     int count)
@@ -11714,6 +11841,7 @@ int marpa_o_high_rank_only_set(
 
 @
 @<Function definitions@> =
+MARPA_LINKAGE
 int marpa_o_high_rank_only( Marpa_Order o)
 {
   @<Return |-2| on failure@>@;
@@ -11756,6 +11884,7 @@ but to my mind doing this portably makes the code more obscure,
 not less.
 
 @ @<Function definitions@> =
+MARPA_LINKAGE
 int marpa_o_rank( Marpa_Order o)
 {
   ANDID** and_node_orderings;
@@ -11977,6 +12106,7 @@ PRIVATE ANDID and_order_get(ORDER o, OR or_node, int ix)
 }
 
 @ @<Function definitions@> =
+MARPA_LINKAGE
 Marpa_And_Node_ID _marpa_o_and_order_get(Marpa_Order o,
     Marpa_Or_Node_ID or_node_id, int ix)
 {
@@ -12103,6 +12233,7 @@ PRIVATE void tree_exhaust(TREE t)
 }
 
 @ @<Function definitions@> =
+MARPA_LINKAGE
 Marpa_Tree marpa_t_new(Marpa_Order o)
 {
     @<Return |NULL| on failure@>@;
@@ -12242,6 +12373,7 @@ tree_unpause (TREE t)
 }
 
 @ @<Function definitions@> =
+MARPA_LINKAGE
 int marpa_t_next(Marpa_Tree t)
 {
     @<Return |-2| on failure@>@;
@@ -12660,6 +12792,7 @@ QED.
 
 @*0 Accessors.
 @<Function definitions@> =
+MARPA_LINKAGE
 int marpa_t_parse_count(Marpa_Tree t)
 {
     return t->t_parse_count;
@@ -12668,6 +12801,7 @@ int marpa_t_parse_count(Marpa_Tree t)
 @
 @d Size_of_T(t) MARPA_DSTACK_LENGTH((t)->t_nook_stack)
 @<Function definitions@> =
+MARPA_LINKAGE
 int _marpa_t_size(Marpa_Tree t)
 {
   @<Return |-2| on failure@>@;
@@ -12856,6 +12990,7 @@ stack reallocations is $O(1)$.
 
 @*0 Valuator constructor.
 @<Function definitions@> =
+MARPA_LINKAGE
 Marpa_Value marpa_v_new(Marpa_Tree t)
 {
     @<Return |NULL| on failure@>@;
@@ -12955,6 +13090,7 @@ BITFIELD t_is_nulling:1;
 @ @<Initialize value elements@> =
    V_is_Trace(v) = 0;
 @ @<Function definitions@> =
+MARPA_LINKAGE
 int _marpa_v_trace(Marpa_Value public_v, int flag)
 {
     @<Return |-2| on failure@>@;
@@ -12977,6 +13113,7 @@ int _marpa_v_trace(Marpa_Value public_v, int flag)
         NOOK_of_V(v) = -1;
 @ Returns -1 if valuator is nulling.
 @<Function definitions@> =
+MARPA_LINKAGE
 Marpa_Nook_ID _marpa_v_nook(Marpa_Value public_v)
 {
     @<Return |-2| on failure@>@;
@@ -13019,6 +13156,7 @@ PRIVATE int symbol_is_valued(
 
 @
 @<Function definitions@> =
+MARPA_LINKAGE
 int marpa_v_symbol_is_valued(
     Marpa_Value public_v,
     Marpa_Symbol_ID xsy_id)
@@ -13058,6 +13196,7 @@ PRIVATE int symbol_is_valued_set (
 }
 
 @ @<Function definitions@> =
+MARPA_LINKAGE
 int marpa_v_symbol_is_valued_set (
     Marpa_Value public_v, Marpa_Symbol_ID xsy_id, int value)
 {
@@ -13078,6 +13217,7 @@ int marpa_v_symbol_is_valued_set (
 @ Force all symbols to be locked as valued.
 Return failure if that is not possible.
 @<Function definitions@> =
+MARPA_LINKAGE
 int
 marpa_v_valued_force (Marpa_Value public_v)
 {
@@ -13102,6 +13242,7 @@ marpa_v_valued_force (Marpa_Value public_v)
 }
 
 @ @<Function definitions@> =
+MARPA_LINKAGE
 int marpa_v_rule_is_valued_set (
     Marpa_Value public_v, Marpa_Rule_ID xrl_id, int value)
 {
@@ -13124,6 +13265,7 @@ int marpa_v_rule_is_valued_set (
 }
 
 @ @<Function definitions@> =
+MARPA_LINKAGE
 int marpa_v_rule_is_valued (
     Marpa_Value public_v, Marpa_Rule_ID xrl_id)
 {
@@ -13148,6 +13290,7 @@ typedef int Marpa_Step_Type;
 @ @d STEP_GET_DATA MARPA_STEP_INTERNAL2
 
 @<Function definitions@> =
+MARPA_LINKAGE
 Marpa_Step_Type marpa_v_step(Marpa_Value public_v)
 {
     @<Return |-2| on failure@>@;
@@ -15139,6 +15282,7 @@ struct s_earley_set* t_trace_earley_set;
 r->t_trace_earley_set = NULL;
 
 @ @<Function definitions@> =
+MARPA_LINKAGE
 Marpa_Earley_Set_ID _marpa_r_trace_earley_set(Marpa_Recognizer r)
 {
   @<Return |-2| on failure@>@;
@@ -15153,6 +15297,7 @@ Marpa_Earley_Set_ID _marpa_r_trace_earley_set(Marpa_Recognizer r)
 }
 
 @ @<Function definitions@> =
+MARPA_LINKAGE
 Marpa_Earley_Set_ID marpa_r_latest_earley_set(Marpa_Recognizer r)
 {
   @<Return |-2| on failure@>@;
@@ -15163,6 +15308,7 @@ Marpa_Earley_Set_ID marpa_r_latest_earley_set(Marpa_Recognizer r)
 }
 
 @ @<Function definitions@> =
+MARPA_LINKAGE
 Marpa_Earleme marpa_r_earleme(Marpa_Recognizer r, Marpa_Earley_Set_ID set_id)
 {
   @<Unpack recognizer objects@>@;
@@ -15188,6 +15334,7 @@ Marpa_Earleme marpa_r_earleme(Marpa_Recognizer r, Marpa_Earley_Set_ID set_id)
 of the {\bf current earley set}.
 It includes rejected |YIM|'s.
 @ @<Function definitions@> =
+MARPA_LINKAGE
 int _marpa_r_earley_set_size(Marpa_Recognizer r, Marpa_Earley_Set_ID set_id)
 {
     @<Return |-2| on failure@>@;
@@ -15237,6 +15384,7 @@ On failure because the ID is illegal (less than zero)
 or for other failures, |-2| is returned.
 The upper levels may choose to treat these as hard failures.
 @ @<Function definitions@> =
+MARPA_LINKAGE
 Marpa_Earleme
 _marpa_r_earley_set_trace (Marpa_Recognizer r, Marpa_Earley_Set_ID set_id)
 {
@@ -15274,6 +15422,7 @@ _marpa_r_earley_set_trace (Marpa_Recognizer r, Marpa_Earley_Set_ID set_id)
 }
 
 @ @<Function definitions@> =
+MARPA_LINKAGE
 Marpa_AHM_ID
 _marpa_r_earley_item_trace (Marpa_Recognizer r, Marpa_Earley_Item_ID item_id)
 {
@@ -15324,6 +15473,7 @@ PRIVATE void trace_earley_item_clear(RECCE r)
 }
 
 @ @<Function definitions@> =
+MARPA_LINKAGE
 Marpa_Earley_Set_ID _marpa_r_earley_item_origin(Marpa_Recognizer r)
 {
     @<Return |-2| on failure@>@;
@@ -15344,6 +15494,7 @@ The trace Leo item is selected by setting the trace postdot item
 to a Leo item.
 
 @ @<Function definitions@> =
+MARPA_LINKAGE
 Marpa_Symbol_ID _marpa_r_leo_predecessor_symbol(Marpa_Recognizer r)
 {
   const Marpa_Symbol_ID no_predecessor = -1;
@@ -15366,6 +15517,7 @@ Marpa_Symbol_ID _marpa_r_leo_predecessor_symbol(Marpa_Recognizer r)
 }
 
 @ @<Function definitions@> =
+MARPA_LINKAGE
 Marpa_Earley_Set_ID _marpa_r_leo_base_origin(Marpa_Recognizer r)
 {
   const JEARLEME pim_is_not_a_leo_item = -1;
@@ -15385,6 +15537,7 @@ Marpa_Earley_Set_ID _marpa_r_leo_base_origin(Marpa_Recognizer r)
 
 @ Actually return AHM ID, not the obsolete AHFA ID.
 @<Function definitions@> =
+MARPA_LINKAGE
 Marpa_AHM_ID _marpa_r_leo_base_state(Marpa_Recognizer r)
 {
   const JEARLEME pim_is_not_a_leo_item = -1;
@@ -15431,6 +15584,7 @@ On failure for other reasons,
 it returns |-2|
 and clears the trace postdot item.
 @<Function definitions@> =
+MARPA_LINKAGE
 Marpa_Symbol_ID
 _marpa_r_postdot_symbol_trace (Marpa_Recognizer r,
     Marpa_Symbol_ID nsy_id)
@@ -15467,6 +15621,7 @@ clear the trace postdot item.
 On other failures, return -2 and clear the trace
 postdot item.
 @<Function definitions@> =
+MARPA_LINKAGE
 Marpa_Symbol_ID
 _marpa_r_first_postdot_item_trace (Marpa_Recognizer r)
 {
@@ -15498,6 +15653,7 @@ return -1 and clear the trace postdot item.
 On other failures, return -2 and clear the trace
 postdot item.
 @<Function definitions@> =
+MARPA_LINKAGE
 Marpa_Symbol_ID
 _marpa_r_next_postdot_item_trace (Marpa_Recognizer r)
 {
@@ -15536,6 +15692,7 @@ _marpa_r_next_postdot_item_trace (Marpa_Recognizer r)
 }
 
 @ @<Function definitions@> =
+MARPA_LINKAGE
 Marpa_Symbol_ID _marpa_r_postdot_item_symbol(Marpa_Recognizer r)
 {
   @<Return |-2| on failure@>@;
@@ -15572,6 +15729,7 @@ Returns the symbol ID if there was a token source link,
 |-1| if there was none,
 and |-2| on some other kind of failure.
 @<Function definitions@> =
+MARPA_LINKAGE
 Marpa_Symbol_ID _marpa_r_first_token_link_trace(Marpa_Recognizer r)
 {
    @<Return |-2| on failure@>@;
@@ -15613,6 +15771,7 @@ a next token source link,
 |-1| if there was none,
 and |-2| on some other kind of failure.
 @<Function definitions@> =
+MARPA_LINKAGE
 Marpa_Symbol_ID _marpa_r_next_token_link_trace(Marpa_Recognizer r)
 {
    @<Return |-2| on failure@>@;
@@ -15644,6 +15803,7 @@ if there was a completion source link,
 |-1| if there was none,
 and |-2| on some other kind of failure.
 @<Function definitions@> =
+MARPA_LINKAGE
 Marpa_Symbol_ID _marpa_r_first_completion_link_trace(Marpa_Recognizer r)
 {
    @<Return |-2| on failure@>@;
@@ -15684,6 +15844,7 @@ a next completion source link,
 |-1| if there was none,
 and |-2| on some other kind of failure.
 @<Function definitions@> =
+MARPA_LINKAGE
 Marpa_Symbol_ID _marpa_r_next_completion_link_trace(Marpa_Recognizer r)
 {
    @<Return |-2| on failure@>@;
@@ -15715,6 +15876,7 @@ if there was a Leo source link,
 |-1| if there was none,
 and |-2| on some other kind of failure.
 @<Function definitions@> =
+MARPA_LINKAGE
 Marpa_Symbol_ID
 _marpa_r_first_leo_link_trace (Marpa_Recognizer r)
 {
@@ -15743,6 +15905,7 @@ a next Leo source link,
 |-1| if there was none,
 and |-2| on some other kind of failure.
 @<Function definitions@> =
+MARPA_LINKAGE
 Marpa_Symbol_ID
 _marpa_r_next_leo_link_trace (Marpa_Recognizer r)
 {
@@ -15793,6 +15956,7 @@ if the trace source link is a Leo source,
 or if there is some other failure,
 |-2| is returned.
 @<Function definitions@> =
+MARPA_LINKAGE
 AHMID _marpa_r_source_predecessor_state(Marpa_Recognizer r)
 {
    @<Return |-2| on failure@>@/
@@ -15834,6 +15998,7 @@ which means the symbol ID comes at essentially zero cost.
 Second, whenever the token value is
 wanted, the symbol ID is almost always wanted as well.
 @<Function definitions@> =
+MARPA_LINKAGE
 Marpa_Symbol_ID _marpa_r_source_token(Marpa_Recognizer r, int *value_p)
 {
    @<Return |-2| on failure@>@;
@@ -15865,6 +16030,7 @@ if the trace source link is not a Leo source,
 or there is some other failure,
 |-2| is returned.
 @<Function definitions@> =
+MARPA_LINKAGE
 Marpa_Symbol_ID _marpa_r_source_leo_transition_symbol(Marpa_Recognizer r)
 {
    @<Return |-2| on failure@>@/
@@ -15908,6 +16074,7 @@ On failure, such as
 there being no source link,
 |-2| is returned.
 @<Function definitions@> =
+MARPA_LINKAGE
 Marpa_Earley_Set_ID _marpa_r_source_middle(Marpa_Recognizer r)
 {
    @<Return |-2| on failure@>@/
@@ -15983,6 +16150,7 @@ or negative.
 }
 
 @ @<Function definitions@> =
+MARPA_LINKAGE
 int _marpa_b_or_node_set(Marpa_Bocage b,
   Marpa_Or_Node_ID or_node_id)
 {
@@ -15996,6 +16164,7 @@ int _marpa_b_or_node_set(Marpa_Bocage b,
 }
 
 @ @<Function definitions@> =
+MARPA_LINKAGE
 int _marpa_b_or_node_origin(Marpa_Bocage b,
   Marpa_Or_Node_ID or_node_id)
 {
@@ -16009,6 +16178,7 @@ int _marpa_b_or_node_origin(Marpa_Bocage b,
 }
 
 @ @<Function definitions@> =
+MARPA_LINKAGE
 Marpa_IRL_ID _marpa_b_or_node_irl(Marpa_Bocage b,
   Marpa_Or_Node_ID or_node_id)
 {
@@ -16022,6 +16192,7 @@ Marpa_IRL_ID _marpa_b_or_node_irl(Marpa_Bocage b,
 }
 
 @ @<Function definitions@> =
+MARPA_LINKAGE
 int _marpa_b_or_node_position(Marpa_Bocage b,
   Marpa_Or_Node_ID or_node_id)
 {
@@ -16035,6 +16206,7 @@ int _marpa_b_or_node_position(Marpa_Bocage b,
 }
 
 @ @<Function definitions@> =
+MARPA_LINKAGE
 int _marpa_b_or_node_is_whole(Marpa_Bocage b,
   Marpa_Or_Node_ID or_node_id)
 {
@@ -16048,6 +16220,7 @@ int _marpa_b_or_node_is_whole(Marpa_Bocage b,
 }
 
 @ @<Function definitions@> =
+MARPA_LINKAGE
 int _marpa_b_or_node_is_semantic(Marpa_Bocage b,
   Marpa_Or_Node_ID or_node_id)
 {
@@ -16061,6 +16234,7 @@ int _marpa_b_or_node_is_semantic(Marpa_Bocage b,
 }
 
 @ @<Function definitions@> =
+MARPA_LINKAGE
 int _marpa_b_or_node_first_and(Marpa_Bocage b,
   Marpa_Or_Node_ID or_node_id)
 {
@@ -16074,6 +16248,7 @@ int _marpa_b_or_node_first_and(Marpa_Bocage b,
 }
 
 @ @<Function definitions@> =
+MARPA_LINKAGE
 int _marpa_b_or_node_last_and(Marpa_Bocage b,
   Marpa_Or_Node_ID or_node_id)
 {
@@ -16088,6 +16263,7 @@ int _marpa_b_or_node_last_and(Marpa_Bocage b,
 }
 
 @ @<Function definitions@> =
+MARPA_LINKAGE
 int _marpa_b_or_node_and_count(Marpa_Bocage b,
   Marpa_Or_Node_ID or_node_id)
 {
@@ -16111,6 +16287,7 @@ depending on whether it is non-negative
 or negative.
 
 @ @<Function definitions@> =
+MARPA_LINKAGE
 int _marpa_o_or_node_and_node_count(Marpa_Order o,
   Marpa_Or_Node_ID or_node_id)
 {
@@ -16132,6 +16309,7 @@ int _marpa_o_or_node_and_node_count(Marpa_Order o,
 }
 
 @ @<Function definitions@> =
+MARPA_LINKAGE
 int _marpa_o_or_node_and_node_id_by_ix(Marpa_Order o,
   Marpa_Or_Node_ID or_node_id, int ix)
 {
@@ -16155,6 +16333,7 @@ int _marpa_o_or_node_and_node_id_by_ix(Marpa_Order o,
 @*0 And-node trace functions.
 
 @ @<Function definitions@> =
+MARPA_LINKAGE
 int _marpa_b_and_node_count(Marpa_Bocage b)
 {
   @<Unpack bocage objects@>@;
@@ -16186,6 +16365,7 @@ int _marpa_b_and_node_count(Marpa_Bocage b)
 }
 
 @ @<Function definitions@> =
+MARPA_LINKAGE
 int _marpa_b_and_node_parent(Marpa_Bocage b,
   Marpa_And_Node_ID and_node_id)
 {
@@ -16197,6 +16377,7 @@ int _marpa_b_and_node_parent(Marpa_Bocage b,
 }
 
 @ @<Function definitions@> =
+MARPA_LINKAGE
 int _marpa_b_and_node_predecessor(Marpa_Bocage b,
   Marpa_And_Node_ID and_node_id)
 {
@@ -16213,6 +16394,7 @@ int _marpa_b_and_node_predecessor(Marpa_Bocage b,
 }
 
 @ @<Function definitions@> =
+MARPA_LINKAGE
 int _marpa_b_and_node_cause(Marpa_Bocage b,
   Marpa_And_Node_ID and_node_id)
 {
@@ -16229,6 +16411,7 @@ int _marpa_b_and_node_cause(Marpa_Bocage b,
 }
 
 @ @<Function definitions@> =
+MARPA_LINKAGE
 int _marpa_b_and_node_symbol(Marpa_Bocage b,
   Marpa_And_Node_ID and_node_id)
 {
@@ -16245,6 +16428,7 @@ int _marpa_b_and_node_symbol(Marpa_Bocage b,
 }
 
 @ @<Function definitions@> =
+MARPA_LINKAGE
 Marpa_Symbol_ID _marpa_b_and_node_token(Marpa_Bocage b,
     Marpa_And_Node_ID and_node_id, int* value_p)
 {
@@ -16268,6 +16452,7 @@ Instead, the end of the predecessor is used, if there is one.
 If there is no predecessor, the origin of the parent or-node will
 always be the same as ``middle'' of the or-node.
 @<Function definitions@> =
+MARPA_LINKAGE
 Marpa_Earley_Set_ID _marpa_b_and_node_middle(Marpa_Bocage b,
     Marpa_And_Node_ID and_node_id)
 {
@@ -16308,6 +16493,7 @@ set |nook|@> = {
 }
 
 @ @<Function definitions@> =
+MARPA_LINKAGE
 int _marpa_t_nook_or_node(Marpa_Tree t, int nook_id)
 {
   NOOK nook;
@@ -16318,6 +16504,7 @@ int _marpa_t_nook_or_node(Marpa_Tree t, int nook_id)
 }
 
 @ @<Function definitions@> =
+MARPA_LINKAGE
 int _marpa_t_nook_choice(Marpa_Tree t, int nook_id)
 {
   NOOK nook;
@@ -16328,6 +16515,7 @@ int _marpa_t_nook_choice(Marpa_Tree t, int nook_id)
 }
 
 @ @<Function definitions@> =
+MARPA_LINKAGE
 int _marpa_t_nook_parent(Marpa_Tree t, int nook_id)
 {
   NOOK nook;
@@ -16338,6 +16526,7 @@ int _marpa_t_nook_parent(Marpa_Tree t, int nook_id)
 }
 
 @ @<Function definitions@> =
+MARPA_LINKAGE
 int _marpa_t_nook_cause_is_ready(Marpa_Tree t, int nook_id)
 {
   NOOK nook;
@@ -16348,6 +16537,7 @@ int _marpa_t_nook_cause_is_ready(Marpa_Tree t, int nook_id)
 }
 
 @ @<Function definitions@> =
+MARPA_LINKAGE
 int _marpa_t_nook_predecessor_is_ready(Marpa_Tree t, int nook_id)
 {
   NOOK nook;
@@ -16358,6 +16548,7 @@ int _marpa_t_nook_predecessor_is_ready(Marpa_Tree t, int nook_id)
 }
 
 @ @<Function definitions@> =
+MARPA_LINKAGE
 int _marpa_t_nook_is_cause(Marpa_Tree t, int nook_id)
 {
   NOOK nook;
@@ -16368,6 +16559,7 @@ int _marpa_t_nook_is_cause(Marpa_Tree t, int nook_id)
 }
 
 @ @<Function definitions@> =
+MARPA_LINKAGE
 int _marpa_t_nook_is_predecessor(Marpa_Tree t, int nook_id)
 {
   NOOK nook;
@@ -16456,10 +16648,12 @@ PRIVATE int look_yim(Marpa_Earley_Item_Look* look,
 @ This is the external wrapper of the YIM looker.
 Caller must ensure that its arguments are checked.
 @<Public function prototypes@> =
+MARPA_LINKAGE
 int
 _marpa_r_look_yim(Marpa_Recognizer r, Marpa_Earley_Item_Look* look,
   Marpa_Earley_Set_ID es_id, Marpa_Earley_Item_ID eim_id);
 @ @<Function definitions@> =
+MARPA_LINKAGE
 int
 _marpa_r_look_yim(Marpa_Recognizer r, Marpa_Earley_Item_Look* look,
   Marpa_Earley_Set_ID es_id, Marpa_Earley_Item_ID eim_id)
@@ -16476,10 +16670,12 @@ If Earley item or Earley set are malformed,
 or on other hard failure,
 returns -2.
 @<Public function prototypes@> =
+MARPA_LINKAGE
 int
 _marpa_r_yim_check(Marpa_Recognizer r,
   Marpa_Earley_Set_ID es_id, Marpa_Earley_Item_ID eim_id);
 @ @<Function definitions@> =
+MARPA_LINKAGE
 int
 _marpa_r_yim_check(Marpa_Recognizer r,
   Marpa_Earley_Set_ID es_id, Marpa_Earley_Item_ID eim_id)
@@ -16548,12 +16744,14 @@ If this PIM chain contains a LIM,
 returns -1.
 
 @<Public function prototypes@> =
+MARPA_LINKAGE
 int
 _marpa_r_look_pim_eim_first(Marpa_Recognizer r, Marpa_Postdot_Item_Look* look,
   Marpa_Earley_Set_ID es_id, Marpa_Symbol_ID nsy_id);
 @ This function is prototyped here rather than
 the internal.texi file.
 @<Function definitions@> =
+MARPA_LINKAGE
 int
 _marpa_r_look_pim_eim_first(Marpa_Recognizer r, Marpa_Postdot_Item_Look* look,
   Marpa_Earley_Set_ID es_id, Marpa_Symbol_ID nsy_id)
@@ -16586,11 +16784,13 @@ just in case,
 |_marpa_r_look_pim_eim_next| soft fails and returns -1
 if this PIM chain contains a LIM.
 @<Public function prototypes@> =
+MARPA_LINKAGE
 int
 _marpa_r_look_pim_eim_next(Marpa_Postdot_Item_Look* look);
 @ This function is prototyped here rather than
 the internal.texi file.
 @<Function definitions@> =
+MARPA_LINKAGE
 int
 _marpa_r_look_pim_eim_next(Marpa_Postdot_Item_Look* look)
 {
@@ -16618,12 +16818,14 @@ extern int (*marpa__debug_handler)(const char*, ...);
 extern int marpa__debug_level;
 
 @ @<Function definitions@> =
+MARPA_LINKAGE
 void marpa_debug_handler_set( int (*debug_handler)(const char*, ...) )
 {
     marpa__debug_handler = debug_handler;
 }
 
 @ @<Function definitions@> =
+MARPA_LINKAGE
 int marpa_debug_level_set( int new_level )
 {
     const int old_level = marpa__debug_level;
@@ -16808,10 +17010,14 @@ or used strictly for debugging.
 
 @*0 Public header file.
 @ Our portion of the public header file.
+@ By default the extern keyword is assumed, unless stated otherwise on preprocessor command-line.
 @ @(marpa.h.p50@> =
-extern const int marpa_major_version;
-extern const int marpa_minor_version;
-extern const int marpa_micro_version;
+#ifndef MARPA_LINKAGE
+#  define MARPA_LINKAGE /* Default linkage */
+#endif
+MARPA_LINKAGE const int marpa_major_version;
+MARPA_LINKAGE const int marpa_minor_version;
+MARPA_LINKAGE const int marpa_micro_version;
 
 @<Public defines@>@;
 @<Public incomplete structures@>@;

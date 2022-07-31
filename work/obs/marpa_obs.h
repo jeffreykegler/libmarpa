@@ -26,6 +26,11 @@
 #ifndef _MARPA_OBS_H__
 #define _MARPA_OBS_H__ 1
 
+/* C standard keywords only should be used for linkage, i.e. static or online */
+#ifndef MARPA_OBS_LINKAGE
+#  define MARPA_OBS_LINKAGE /* Default linkage */
+#endif
+
 /* Suppress 'unnamed type definition in parentheses' warning
    in #define ALIGNOF(type) below 
    under MS C compiler older than .NET 2003 */
@@ -85,11 +90,11 @@ struct marpa_obstack_chunk
   char contents[4];
 };
 
-extern void* marpa__obs_newchunk (struct marpa_obstack *, size_t, size_t);
+MARPA_OBS_LINKAGE void* marpa__obs_newchunk (struct marpa_obstack *, size_t, size_t);
 
-extern struct marpa_obstack* marpa__obs_begin (size_t);
+MARPA_OBS_LINKAGE struct marpa_obstack* marpa__obs_begin (size_t);
 
-void marpa__obs_free (struct marpa_obstack *__obstack);
+MARPA_OBS_LINKAGE void marpa__obs_free (struct marpa_obstack *__obstack);
 
 /* Pointer to beginning of object being allocated or to be allocated next.
    Note that this might not be the final address of the object

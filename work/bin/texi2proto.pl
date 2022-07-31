@@ -35,6 +35,7 @@ open my $def_fh, q{>}, $def_file;
 
 my @protos;
 my @defs;
+my $linkage_re = qr/\b(?:static|extern)\b/;
 LINE: while ( my $line = <STDIN> ) {
 
     next LINE if $line =~ m/ [{] .* [mM] acro \s* [}] /xms;
@@ -59,7 +60,10 @@ LINE: while ( my $line = <STDIN> ) {
     $def =~ s/ [@]code[{] ([^}]*) [}]/$1/xmsg;
     $def =~ s/\s+/ /xmsg;
     $def =~ s/\s \z/;/xmsg;
-    push @protos, $def;
+    #
+    # Unless linkage is explicitly given in the source, MARPA_LINKAGE is prepended
+    #
+    push @protos, ($def =~ $linkage_re) ? $def : "MARPA_LINKAGE $def";
 
     $def =~ s/ \s* [(] .* //xms;
     $def =~ s/ \s* [(] .* //xms;

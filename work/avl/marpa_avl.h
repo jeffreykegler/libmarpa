@@ -29,6 +29,11 @@
 
 #include <stddef.h>
 
+/* C standard keywords only should be used for linkage, i.e. static or online */
+#ifndef MARPA_AVL_LINKAGE
+#  define MARPA_AVL_LINKAGE /* Default linkage */
+#endif
+
 /* Function types. */
 typedef int marpa_avl_comparison_func (const void *avl_a, const void *avl_b,
                                  void *avl_param);
@@ -77,30 +82,30 @@ typedef struct marpa_avl_traverser* MARPA_AVL_TRAV;
 #define MARPA_AVL_OBSTACK(table) ((table)->avl_obstack)
 
 /* Table functions. */
-MARPA_AVL_TREE _marpa_avl_create (marpa_avl_comparison_func *, void *);
-MARPA_AVL_TREE _marpa_avl_copy (const MARPA_AVL_TREE , marpa_avl_copy_func *,
+MARPA_AVL_LINKAGE MARPA_AVL_TREE _marpa_avl_create (marpa_avl_comparison_func *, void *);
+MARPA_AVL_LINKAGE MARPA_AVL_TREE _marpa_avl_copy (const MARPA_AVL_TREE , marpa_avl_copy_func *,
                             marpa_avl_item_func *, int alignment);
-void _marpa_avl_destroy (MARPA_AVL_TREE );
-void **_marpa_avl_probe (MARPA_AVL_TREE , void *);
-void *_marpa_avl_insert (MARPA_AVL_TREE , void *);
-void *_marpa_avl_replace (MARPA_AVL_TREE , void *);
-void *_marpa_avl_find (const MARPA_AVL_TREE , const void *);
-void *_marpa_avl_at_or_after (const MARPA_AVL_TREE , const void *);
+MARPA_AVL_LINKAGE void _marpa_avl_destroy (MARPA_AVL_TREE );
+MARPA_AVL_LINKAGE void **_marpa_avl_probe (MARPA_AVL_TREE , void *);
+MARPA_AVL_LINKAGE void *_marpa_avl_insert (MARPA_AVL_TREE , void *);
+MARPA_AVL_LINKAGE void *_marpa_avl_replace (MARPA_AVL_TREE , void *);
+MARPA_AVL_LINKAGE void *_marpa_avl_find (const MARPA_AVL_TREE , const void *);
+MARPA_AVL_LINKAGE void *_marpa_avl_at_or_after (const MARPA_AVL_TREE , const void *);
 
 #define marpa_avl_count(table) ((size_t) (table)->avl_count)
 
 /* Table traverser functions. */
-MARPA_AVL_TRAV _marpa_avl_t_init (MARPA_AVL_TREE );
-MARPA_AVL_TRAV _marpa_avl_t_reset (MARPA_AVL_TRAV );
-void *_marpa_avl_t_first (MARPA_AVL_TRAV );
-void *_marpa_avl_t_last ( MARPA_AVL_TRAV );
-void *_marpa_avl_t_find ( MARPA_AVL_TRAV , void *);
-void *_marpa_avl_t_copy (struct marpa_avl_traverser *, const struct marpa_avl_traverser *);
-void *_marpa_avl_t_next (MARPA_AVL_TRAV);
-void *_marpa_avl_t_prev (MARPA_AVL_TRAV);
-void *_marpa_avl_t_cur (MARPA_AVL_TRAV);
-void *_marpa_avl_t_insert (MARPA_AVL_TRAV, void *);
-void *_marpa_avl_t_replace (MARPA_AVL_TRAV, void *);
-void *_marpa_avl_t_at_or_after (MARPA_AVL_TRAV, void*);
+MARPA_AVL_LINKAGE MARPA_AVL_TRAV _marpa_avl_t_init (MARPA_AVL_TREE );
+MARPA_AVL_LINKAGE MARPA_AVL_TRAV _marpa_avl_t_reset (MARPA_AVL_TRAV );
+MARPA_AVL_LINKAGE void *_marpa_avl_t_first (MARPA_AVL_TRAV );
+MARPA_AVL_LINKAGE void *_marpa_avl_t_last ( MARPA_AVL_TRAV );
+MARPA_AVL_LINKAGE void *_marpa_avl_t_find ( MARPA_AVL_TRAV , void *);
+MARPA_AVL_LINKAGE void *_marpa_avl_t_copy (struct marpa_avl_traverser *, const struct marpa_avl_traverser *);
+MARPA_AVL_LINKAGE void *_marpa_avl_t_next (MARPA_AVL_TRAV);
+MARPA_AVL_LINKAGE void *_marpa_avl_t_prev (MARPA_AVL_TRAV);
+MARPA_AVL_LINKAGE void *_marpa_avl_t_cur (MARPA_AVL_TRAV);
+MARPA_AVL_LINKAGE void *_marpa_avl_t_insert (MARPA_AVL_TRAV, void *);
+MARPA_AVL_LINKAGE void *_marpa_avl_t_replace (MARPA_AVL_TRAV, void *);
+MARPA_AVL_LINKAGE void *_marpa_avl_t_at_or_after (MARPA_AVL_TRAV, void*);
 
 #endif /* marpa_avl.h */
