@@ -17015,7 +17015,7 @@ or used strictly for debugging.
 @ By default the extern keyword is assumed, unless stated otherwise on preprocessor command-line.
 @
 The linkage macros |MARPA_.*LINKAGE| are useful for specifying
-alternative linkage, usually 'static'.  The intended use case is
+alternative linkage, usually {\tt static}.  The intended use case is
 including the Marpa source in a single file, and redefining
 the |MARPA_.*LINKAGE| on the command line: \par
 \vskip1ex
