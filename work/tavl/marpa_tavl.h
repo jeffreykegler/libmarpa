@@ -32,7 +32,16 @@
 
 #include <stddef.h>
 
-/* C standard keywords only should be used for linkage, i.e. static or online */
+/* The linkage macros (MARPA_.*LINKAGE) are useful for specifying
+   alternative linkage, usually 'static'.  The intended use case is
+   including the Marpa source in a single file, and redefining
+   the linkage macros on the command line:
+
+-DMARPA_LINKAGE=static -DMARPA_AVL_LINKAGE=static -DMARPA_TAVL_LINKAGE=static -DMARPA_OBS_LINKAGE=static
+
+   However, it is important to note that any redefinition of the linkaage
+   macros is currently experimental, and therefore unsupported.
+*/
 #ifndef MARPA_TAVL_LINKAGE
 #  define MARPA_TAVL_LINKAGE /* Default linkage */
 #endif

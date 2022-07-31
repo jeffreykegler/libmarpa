@@ -106,6 +106,8 @@
 @s xor normal
 
 @s error normal
+@s MARPA_LINKAGE static
+@s MARPA_AVL_TRAV int
 @s MARPA_AVL_TRAV int
 @s MARPA_AVL_TREE int
 @s Bit_Matrix int
@@ -17011,7 +17013,18 @@ or used strictly for debugging.
 @*0 Public header file.
 @ Our portion of the public header file.
 @ By default the extern keyword is assumed, unless stated otherwise on preprocessor command-line.
-@ @(marpa.h.p50@> =
+@
+The linkage macros |MARPA_.*LINKAGE| are useful for specifying
+alternative linkage, usually 'static'.  The intended use case is
+including the Marpa source in a single file, and redefining
+the |MARPA_.*LINKAGE| on the command line: \par
+\vskip1ex
+{\tt \ \ \ -|DMARPA_LINKAGE|=static} {\tt -|DMARPA_AVL_LINKAGE|=static \char`\\} \par
+{\tt \ \ \ \ \ \  -|DMARPA_TAVL_LINKAGE|=static} {\tt -|DMARPA_OBS_LINKAGE|=static} \par
+\vskip1ex
+However, it is important to note that any redefinition of the linkage
+macros is currently experimental, and therefore unsupported.
+@(marpa.h.p50@> =
 #ifndef MARPA_LINKAGE
 #  define MARPA_LINKAGE /* Default linkage */
 #endif
