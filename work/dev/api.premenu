@@ -5592,44 +5592,41 @@ is acceptable at the current
 earleme according to the grammar.
 Nulled symbols do not generate predictions.
 
-For predicted events to occur, the symbol must be marked
-as a predicted event symbol.
-The
-@code{marpa_g_symbol_is_predicted_event_set()}
-function
-marks symbol @var{sym_id} as a predicted event symbol
-if @var{value} is 1,
-and unmarks it
-it as a predicted event symbol if @var{value} is 0.
-The
-@code{marpa_g_symbol_is_predicted_event()}
-method
-returns the current value of the predicted event marking
-for symbol @var{sym_id}.
+For prediction events for @var{sym_id} to occur, @var{sym_id} must be marked
+as a prediction event symbol,
+and the prediction event for @var{sym_id} must be activated in the recognizer.
+Event activation also occurs in the grammar,
+and the recognizer event activation status for @var{sym_id}
+is initialized
+from
+the grammar event activation status for @var{sym_id}.
+@xref{marpa_g_prediction_symbol_activate,marpa_g_prediction_symbol_activate()}, and
+@pxref{marpa_r_prediction_symbol_activate,marpa_r_prediction_symbol_activate()}.
 
-Marking a prediction event sets its activation status to on.
-Unmarking a prediction event sets its activation status to off.
-The prediction event marking cannot be changed once
+On success, if @var{value} is 1,
+@itemize
+@item marks symbol @var{sym_id} as a prediction event symbol,
+@item activates the prediction event for @var{sym_id} in @var{g}, and
+@item returns 1.
+@end itemize
+
+On success, if @var{value} is 0,
+@itemize
+@item unmarks symbol @var{sym_id} as a prediction event symbol,
+@item deactivates the prediction event for @var{sym_id} in @var{g}, and
+@item returns 0.
+@end itemize
+
+If @var{sym_id} is well-formed, but there is no
+such symbol, soft fails.
+
+Hards fails if
 the grammar is precomputed.
 
-If a prediction event is marked,
-its activation status can be changed using the
-@code{marpa_g_prediction_symbol_activate()}
-method.
-Note that, if a symbol is marked as a prediction event symbol
-in the recognizer,
-its prediction event can be deactivated
-and reactivated in the recognizer.
-
-Success: On success, 1 if symbol @var{sym_id}
-is a predicted event symbol after the
-call, 0 otherwise.
-
-Failures:
-If @var{sym_id} is well-formed, but there is no
-such symbol, @minus{}1.
-If the grammar @var{g} is precomputed;
-or on other failure, @minus{}2.
+@strong{Return value}:
+On success, @var{value}, which is a boolean.
+On soft failure, @minus{}1.
+On hard failure, @minus{}2.
 @end deftypefn
 
 @node Symbol expected events
