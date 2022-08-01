@@ -2784,7 +2784,6 @@ When successful, returns
 the rank of the rule with ID @var{rule_id}.
 When a rule is created, its rank
 is initialized to the default rank of the grammar.
-The default rank of the grammar is 0.
 
 @strong{Return value}:
 On success, returns a rule rank,
