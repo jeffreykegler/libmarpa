@@ -5458,8 +5458,36 @@ On hard failure, @minus{}2.
 @node Prediction events
 @section Prediction events
 
+Libmarpa can be set up
+to generate a
+@code{MARPA_EVENT_SYMBOL_PREDICTED}
+event when a non-nulled symbol is predicted.
+A non-nulled symbol is said to be @strong{predicted}
+when a instance of it
+is acceptable at the current
+earleme according to the grammar.
+Nulled symbols do not generate predictions.
+
+For a prediction event to be generated,
+the symbol must be
+@dfindex mark (as a prediction event symbol)
+@dfn{marked},
+and the event must be
+@dfindex activate (a prediction symbol event)
+@dfn{activated}.
+
+To mark a symbol as a prediction event symbol
+use the @code{marpa_g_symbol_is_prediction_event_set()}
+method.
+The event will be activated by default.
+
+To activate or deactivate a prediction symbol event
+use the @code{marpa_r_prediction_symbol_activate()}
+method.
+
 @anchor{marpa_g_prediction_symbol_activate}
-@deftypefun int marpa_g_prediction_symbol_activate ( @
+@deftypefn {Mutator function} @
+int marpa_g_prediction_symbol_activate ( @
   Marpa_Grammar @var{g}, @
   Marpa_Symbol_ID @var{sym_id}, @
   int @var{reactivate} )
@@ -5505,10 +5533,11 @@ prediction event for @var{sym_id}
 cannot be set as indicated by @var{reactivate},
 the method fails.
 On failure, @minus{}2 is returned.
-@end deftypefun
+@end deftypefn
 
 @anchor{marpa_r_prediction_symbol_activate}
-@deftypefun int marpa_r_prediction_symbol_activate ( @
+@deftypefn {Mutator function} @
+int marpa_r_prediction_symbol_activate ( @
   Marpa_Recognizer @var{r}, @
   Marpa_Symbol_ID @var{sym_id}, @
   int @var{boolean} )
@@ -5539,14 +5568,18 @@ prediction event for @var{sym_id}
 cannot be set as indicated by @var{boolean},
 the method fails.
 On failure, @minus{}2 is returned.
-@end deftypefun
+@end deftypefn
 
 @anchor{marpa_g_symbol_is_prediction_event}
-@deftypefun int marpa_g_symbol_is_prediction_event ( @
+@deftypefn {Accessor function} @
+int marpa_g_symbol_is_prediction_event ( @
     Marpa_Grammar @var{g}, @
     Marpa_Symbol_ID @var{sym_id})
+@end deftypefn
+
 @anchor{marpa_g_symbol_is_prediction_event_set}
-@deftypefunx int marpa_g_symbol_is_prediction_event_set ( @
+@deftypefn {Mutator function} @
+int marpa_g_symbol_is_prediction_event_set ( @
     Marpa_Grammar @var{g}, @
     Marpa_Symbol_ID @var{sym_id}, @
  int @var{value})
@@ -5599,7 +5632,7 @@ If @var{sym_id} is well-formed, but there is no
 such symbol, @minus{}1.
 If the grammar @var{g} is precomputed;
 or on other failure, @minus{}2.
-@end deftypefun
+@end deftypefn
 
 @node Symbol expected events
 @section Symbol expected events
