@@ -5633,35 +5633,56 @@ On hard failure, @minus{}2.
 @section Symbol expected events
 
 @anchor{marpa_r_expected_symbol_event_set}
-@deftypefun int marpa_r_expected_symbol_event_set ( @
+@deftypefn {Mutator function} @
+int marpa_r_expected_symbol_event_set ( @
   Marpa_Recognizer @var{r}, @
   Marpa_Symbol_ID @var{symbol_id}, @
   int @var{value})
-Sets the ``expected symbol event bit'' for @var{symbol_id} to @var{value}.
-A recognizer event is created whenever
-symbol @var{symbol_id} is expected at the current earleme.
-if and only if the expected symbol event bit
-for @var{symbol_id} is 1.
-The ``expected symbol event bit'' must be 1 or 0.
 
-In this context, ``expected'' means ``expected as a terminal''.
-Even if a symbol is predicted at the current earleme,
-if it is not acceptable as a terminal,
-it does not trigger an
-``expected symbol event''.
+Libmarpa can be set up
+to generate an
+@dfindex expected symbol event
+@dfindex event, expected symbol
+@dfn{expected symbol event}
+(@code{MARPA_EVENT_SYMBOL_EXPECTED})
+when symbol @var{symbol_id} is acceptable as a terminal at the current earleme.
+Note that the symbol expected event is only generated if
+the symbol with @var{symbol_id} is acceptable as terminal.
+If the symbol with @var{symbol_id} is expected
+at the current
+as a non-terminal,
+but is not acceptable as a terminal,
+an expected symbol event will not be triggered
+at the current earleme.
 
-By default, the ``expected symbol event bit'' is 0.
-It is an error to attempt to set the
-``expected symbol event bit'' to 1 for a nulling symbol,
+On success, if @var{value} is 1,
+@itemize
+@item
+activates the symbol expected event for
+the symbol with ID @var{symbol_id} in recognizer @var{r}; and
+@item returns 1.
+@end itemize
+
+On success, if @var{value} is 0,
+@itemize
+@item
+deactivates the symbol expected event for
+the symbol with ID @var{symbol_id} in recognizer @var{r}; and
+@item returns 0.
+@end itemize
+
+Hard fails if @var{value} is not a boolean.
+Hard fails if @var{value} is 1,
+and @var{symbol_id} is the is the ID of a nulling symbol,
 an inaccessible symbol,
 or an unproductive symbol.
+Hard fails if @var{symbol_id} is not the ID of a valid symbol;
 
-Return value:
-The value of the event bit after the method call is finished.
--2 if @var{symbol_id} is not the ID of a valid symbol;
-if it is the ID of an nulling, inaccessible for unproductive symbol;
-or on other failure.
-@end deftypefun
+@strong{Return value}:
+On success, @var{value}, which will be a boolean.
+On hard failure,
+@minus{}2.
+@end deftypefn
 
 @node Event codes
 @section Event codes
