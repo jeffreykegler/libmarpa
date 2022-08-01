@@ -5650,7 +5650,7 @@ is acceptable as a terminal at the current earleme.
 Note that the symbol expected event is only generated if
 the symbol with ID @var{symbol_id} is acceptable as terminal.
 If the symbol with ID @var{symbol_id} is expected
-at the current
+at the current earleme
 as a non-terminal,
 but is not acceptable as a terminal,
 an expected symbol event will not be triggered
@@ -5677,7 +5677,7 @@ Hard fails if @var{value} is 1,
 and @var{symbol_id} is the ID of a nulling symbol,
 an inaccessible symbol,
 or an unproductive symbol.
-Hard fails if @var{symbol_id} is not the ID of a valid symbol;
+Hard fails if @var{symbol_id} is not the ID of a valid symbol.
 
 @strong{Return value}:
 On success, @var{value}, which will be a boolean.
