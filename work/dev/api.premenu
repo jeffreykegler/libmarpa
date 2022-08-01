@@ -5809,22 +5809,23 @@ Suggested message: "Symbol was predicted".
 @section Error methods
 
 @anchor{marpa_g_error}
-@deftypefun Marpa_Error_Code marpa_g_error ( @
+@deftypefn {Accessor function} @
+Marpa_Error_Code marpa_g_error ( @
     Marpa_Grammar @var{g}, @
     const char** @var{p_error_string})
-When a method fails,
-this method allows the application to read
-the error code.
+
+Allows the application to read the error code.
 @var{p_error_string} is reserved for use by
 the internals.
 Applications should set it to @code{NULL}.
 
-Return value: The last error code from a Libmarpa method.
+@strong{Return value}: The current error code.
 Always succeeds.
-@end deftypefun
+@end deftypefn
 
 @anchor{marpa_g_error_clear}
-@deftypefun Marpa_Error_Code marpa_g_error_clear ( @
+@deftypefn {Mutator function} @
+Marpa_Error_Code marpa_g_error_clear ( @
     Marpa_Grammar @var{g} )
 
 Sets the error code
@@ -5833,9 +5834,9 @@ Not often used,
 but now and then it can be useful
 to force the error code to a known state.
 
-Return value: @code{MARPA_ERR_NONE}.
+@strong{Return value}: @code{MARPA_ERR_NONE}.
 Always succeeds.
-@end deftypefun
+@end deftypefn
 
 @node Error Macros
 @section Error Macros
