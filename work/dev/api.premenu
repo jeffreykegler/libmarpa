@@ -2655,6 +2655,28 @@ On hard failure, @minus{}2.
 @deftypefn {Accessor function} @
 Marpa_Rank marpa_g_default_rank ( @
     Marpa_Grammar @var{g})
+
+On success, returns the default rank of the grammar @var{g}.
+For more about 
+On success, returns the default rank of a grammar,
+@pxref{marpa_g_default_rank_set, marpa_g_default_rank_set()}.
+
+@strong{Return value}: On success, returns
+the rank @strong{after}
+the call,
+and sets the error code to
+@code{MARPA_ERR_NONE}.
+On failure, returns @minus{}2,
+and sets the error code to an appropriate
+value, which will never be
+@code{MARPA_ERR_NONE}.
+Note that when the rank is @minus{}2,
+the error code is the only way to distinguish
+success from failure.
+The error code can be determined by using the
+@code{marpa_g_error()}
+call.
+
 @end deftypefn
 
 @anchor{marpa_g_default_rank_set}
@@ -2662,8 +2684,7 @@ Marpa_Rank marpa_g_default_rank ( @
     Marpa_Grammar @var{g}, @
     Marpa_Rank @var{rank})
 
-These methods, respectively, set
-and query the default rank of the grammar.
+On success, sets the default rank of the grammar @var{g} to @var{rank}.
 When a grammar is created, the default rank is 0.
 When rules and symbols are created, their rank is
 the default rank of the grammar.
@@ -2677,7 +2698,7 @@ the grammar's default rank can be used to,
 in effect, assign ranks to groups of rules and symbols.
 Applications may find this behavior useful.
 
-Return value: On success, returns
+@strong{Return value}: On success, returns
 the rank @strong{after}
 the call,
 and sets the error code to
@@ -2700,6 +2721,30 @@ call.
 Marpa_Rank marpa_g_symbol_rank ( @
     Marpa_Grammar @var{g}, @
     Marpa_Symbol_ID sym_id)
+
+When successful, returns
+the rank of the symbol with ID @var{sym_id}.
+When a symbol is created, its rank
+is initialized to the default rank of the grammar.
+The default rank of the grammar is 0.
+
+@strong{Return value}:
+On success, returns a symbol rank,
+and sets the error code to
+@code{MARPA_ERR_NONE}.
+The symbol rank is an integer.
+On hard failure, returns @minus{}2,
+and sets the error code to an appropriate
+value, which will never be
+@code{MARPA_ERR_NONE}.
+Note that @minus{}2 is a valid symbol rank,
+so that when @minus{}2 is returned,
+the error code is the only way to distinguish
+success from failure.
+The error code can be determined using
+@code{marpa_g_error()}.
+@xref{marpa_g_error,marpa_g_error()}.
+
 @end deftypefn
 
 @anchor{marpa_g_symbol_rank_set}
@@ -2711,7 +2756,7 @@ Marpa_Rank marpa_g_symbol_rank_set ( @
 
 When successful,
 sets
-the rank of the rule with ID @var{rule_id} to @var{rank}
+the rank of the symbol with ID @var{sm_id} to @var{rank}
 and returns @var{rank}.
 
 @strong{Return value}:
@@ -2723,7 +2768,7 @@ On hard failure, returns @minus{}2,
 and sets the error code to an appropriate
 value, which will never be
 @code{MARPA_ERR_NONE}.
-Note that @minus{}2 is a valid rule rank,
+Note that @minus{}2 is a valid symbol rank,
 so that when @minus{}2 is returned,
 the error code is the only way to distinguish
 success from failure.
