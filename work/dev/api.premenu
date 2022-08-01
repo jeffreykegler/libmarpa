@@ -5375,96 +5375,56 @@ A symbol is said to be @strong{nulled}
 when a zero length instance of that symbol
 is recognized.
 
-For nulled events to occur, the symbol must be marked
-as a nulled event symbol.
-The
-@code{marpa_g_symbol_is_nulled_event_set()}
-function
-marks symbol @var{sym_id} as a nulled event symbol
-if @var{value} is 1,
-and unmarks it
-it as a nulled event symbol if @var{value} is 0.
-The
-@code{marpa_g_symbol_is_nulled_event()}
-method
-returns the current value of the nulled event marking
-for symbol @var{sym_id}.
+For nulled events for @var{sym_id} to occur, @var{sym_id} must be marked
+as a nulled event symbol,
+and the nulled event for @var{sym_id} must be activated in the recognizer.
+Event activation also occurs in the grammar,
+and the recognizer event activation status for @var{sym_id}
+is initialized
+from
+the grammar event activation status for @var{sym_id}.
+@xref{marpa_g_nulled_symbol_activate,marpa_g_nulled_symbol_activate()}, and
+@pxref{marpa_r_nulled_symbol_activate,marpa_r_nulled_symbol_activate()}.
 
-Marking a nulled event sets its activation status to on.
-Unmarking a nulled event sets its activation status to off.
-The nulled event marking cannot be changed once
-the grammar is precomputed.
+On success, if @var{value} is 1,
+@itemize
+@item marks symbol @var{sym_id} as a nulled event symbol,
+@item activates the nulled event for @var{sym_id} in @var{g}, and
+@item returns 1.
+@end itemize
 
-If a nulled event is marked,
-its activation status can be changed using the
-@code{marpa_g_nulled_symbol_activate()}
-method.
-Note that, if a symbol is marked as a nulled event symbol
-in the recognizer,
-its nulled event can be deactivated
-and reactivated in the recognizer.
+On success, if @var{value} is 0,
+@itemize
+@item unmarks symbol @var{sym_id} as a nulled event symbol,
+@item deactivates the nulled event for @var{sym_id} in @var{g}, and
+@item returns 0.
+@end itemize
 
-As a reminder, a symbol instance is a symbol
-at a specific location in the input,
-and with a specific length.
-Also, whenever a nulled symbol instance is
-recognized at a location, it is acceptable
-at that location,
-and vice versa.
+A symbol instance can never generated both a nulled
+and a prediction event at the same location.
+Also, a symbol instance can never generate both a nulled
+and a completion event at the same location.
+(As a reminder, a symbol instance is a symbol
+starting at a specific location in the input,
+and with a specific length.)
+This is because the symbol instance for a nulled
+event must be zero length,
+and the symbol instance for prediction and completion
+events can never be zero length.
 
-When a symbol instance is recognized at a location,
-it will generate a nulled event or a prediction event,
-but never both.
-A symbol instance of zero length,
-when recognized at a location,
-generates a nulled event at that location,
-and does not generate a completion event.
-A symbol instance of non-zero length,
-when acceptable at a location,
-generates a completion event at that location,
-and does not generate a nulled event.
+However, prediction and nulled events for the
+same symbol can trigger at the same location.
+This is because
+The same location can be the location of a nulled instance
+of a symbol,
+and the start of an non-nulled instance of the same symbol.
 
-When a symbol instance is acceptable at a location,
-it will generate a nulled event or a prediction event,
-but never both.
-A symbol instance of zero length,
-when acceptable at a location,
-generates a nulled event at that location,
-and does not generate a prediction event.
-A symbol instance of non-zero length,
-when acceptable at a location,
-generates a prediction event at that location,
-and does not generate a nulled event.
-
-While it is not possible for
-a @strong{symbol instance}
-to generate both a nulled event and
-a completion event at a location,
-it is quite possible that
-a @strong{symbol} might generate
-both kinds of event at that location.
-This is because multiple instances
-of the same symbol may be recognized at
-a given location,
-and these instances will have
-different lengths.
-If one instance is recognized at a given location
-as zero length and
-a second, non-zero-length,
-instance is recognized at the same location,
-the first will generate only nulled events,
-while the second will generate only completion events.
-For similar reasons,
-while a @strong{symbol instance} will never
-generate both a null event and a prediction
-event at a location,
-multiple instances of the same symbol
-may do so.
-
-Zero length derivations can be ambiguous.
-When a zero length symbol is recognized,
-all of its zero-length derivations are also considered to be
-recognized.
+Also, completion and nulled events for the
+same symbol can trigger at the same location.
+This is because
+the same location can be the location of a nulled instance
+of a symbol,
+and the end of one or more non-nulled instances of the same symbol.
 
 The
 @code{marpa_g_symbol_is_nulled_event_set()}
@@ -5483,15 +5443,16 @@ the
 @code{marpa_g_symbol_is_nullable()}
 method.
 
-Success: On success, 1 if symbol @var{sym_id}
-is a nulled event symbol after the
-call, 0 otherwise.
-
-Failures:
 If @var{sym_id} is well-formed, but there is no
-such symbol, @minus{}1.
-If the grammar @var{g} is precomputed;
-or on other failure, @minus{}2.
+such symbol, soft fails.
+
+Hards fails if
+the grammar is precomputed.
+
+@strong{Return value}:
+On success, @var{value}, which is a boolean.
+On soft failure, @minus{}1.
+On hard failure, @minus{}2.
 @end deftypefn
 
 @node Prediction events
