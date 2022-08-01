@@ -2657,25 +2657,25 @@ Marpa_Rank marpa_g_default_rank ( @
     Marpa_Grammar @var{g})
 
 On success, returns the default rank of the grammar @var{g}.
-For more about 
-On success, returns the default rank of a grammar,
+For more about the default rank of a grammar,
 @pxref{marpa_g_default_rank_set, marpa_g_default_rank_set()}.
 
 @strong{Return value}: On success, returns
-the rank @strong{after}
-the call,
+the default rank of the grammar,
 and sets the error code to
 @code{MARPA_ERR_NONE}.
 On failure, returns @minus{}2,
 and sets the error code to an appropriate
 value, which will never be
 @code{MARPA_ERR_NONE}.
-Note that when the rank is @minus{}2,
+Note that when
+the default rank of the grammar is @minus{}2,
 the error code is the only way to distinguish
 success from failure.
 The error code can be determined by using the
 @code{marpa_g_error()}
 call.
+@xref{marpa_g_error,marpa_g_error()}.
 
 @end deftypefn
 
@@ -2698,21 +2698,20 @@ the grammar's default rank can be used to,
 in effect, assign ranks to groups of rules and symbols.
 Applications may find this behavior useful.
 
-@strong{Return value}: On success, returns
-the rank @strong{after}
-the call,
+@strong{Return value}: On success, returns @var{rank}
 and sets the error code to
 @code{MARPA_ERR_NONE}.
 On failure, returns @minus{}2,
 and sets the error code to an appropriate
 value, which will never be
 @code{MARPA_ERR_NONE}.
-Note that when the rank is @minus{}2,
+Note that when the @var{rank} is @minus{}2,
 the error code is the only way to distinguish
 success from failure.
 The error code can be determined by using the
 @code{marpa_g_error()}
 call.
+@xref{marpa_g_error,marpa_g_error()}.
 
 @end deftypefn
 
@@ -2720,19 +2719,17 @@ call.
 @deftypefn {Accessor function} @
 Marpa_Rank marpa_g_symbol_rank ( @
     Marpa_Grammar @var{g}, @
-    Marpa_Symbol_ID sym_id)
+    Marpa_Symbol_ID @var{sym_id})
 
 When successful, returns
 the rank of the symbol with ID @var{sym_id}.
 When a symbol is created, its rank
 is initialized to the default rank of the grammar.
-The default rank of the grammar is 0.
 
 @strong{Return value}:
 On success, returns a symbol rank,
 and sets the error code to
 @code{MARPA_ERR_NONE}.
-The symbol rank is an integer.
 On hard failure, returns @minus{}2,
 and sets the error code to an appropriate
 value, which will never be
@@ -2756,20 +2753,20 @@ Marpa_Rank marpa_g_symbol_rank_set ( @
 
 When successful,
 sets
-the rank of the symbol with ID @var{sm_id} to @var{rank}
-and returns @var{rank}.
+the rank of the symbol with ID @var{sym_id} to @var{rank}.
+When a symbol is created, its rank
+is initialized to the default rank of the grammar.
 
 @strong{Return value}:
 On success, returns @var{rank},
-which will be an integer,
 and sets the error code to
 @code{MARPA_ERR_NONE}.
 On hard failure, returns @minus{}2,
 and sets the error code to an appropriate
 value, which will never be
 @code{MARPA_ERR_NONE}.
-Note that @minus{}2 is a valid symbol rank,
-so that when @minus{}2 is returned,
+Note that @var{rank} may be @minus{}2,
+and in this case
 the error code is the only way to distinguish
 success from failure.
 The error code can be determined using
