@@ -40,6 +40,8 @@ my $copy_count = 0;
 
 FILE: while ( my $copy = <STDIN> ) {
     chomp $copy;
+    $copy =~ s/[#] .* \z//xms;
+    next FILE if $copy =~ m/\A \w* \z/xms;
     my ( $to, $from ) = $copy =~ m/\A (.*) [:] \s+ (.*) \z/xms;
     die "Bad copy spec: $copy" if not defined $to;
     # Don't skip copying even if timestamps suggest it is unnecessary
