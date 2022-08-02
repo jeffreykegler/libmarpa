@@ -56,41 +56,7 @@ timestamp/ac_dist.stamp: timestamp/stage.stamp
 timestamp/cm_dist.stamp: timestamp/ac_dist.stamp
 	@echo cm_dist Out of date wrt ac_dist
 	cd cmake; make
-	@( \
-	  echo cm_dist/marpa.c: ac_dist/marpa.c; \
-	  echo cm_dist/include/marpa.h: ac_dist/marpa.h; \
-	  echo cm_dist/libmarpa.pc.in: ac_dist/libmarpa.pc.in; \
-	  echo cm_dist/README.AIX: ac_dist/README.AIX; \
-	  echo cm_dist/GIT_LOG.txt: ac_dist/GIT_LOG.txt; \
-	  echo cm_dist/LIB_VERSION: ac_dist/LIB_VERSION; \
-	  echo cm_dist/libmarpa_version.sh: ac_dist/libmarpa_version.sh; \
-	  echo cm_dist/marpa_obs.c: ac_dist/marpa_obs.c; \
-	  echo cm_dist/marpa_obs.h: ac_dist/marpa_obs.h; \
-	  echo cm_dist/marpa_ami.c: ac_dist/marpa_ami.c; \
-	  echo cm_dist/marpa_ami.h: ac_dist/marpa_ami.h; \
-	  echo cm_dist/marpa_avl.c: ac_dist/marpa_avl.c; \
-	  echo cm_dist/marpa_avl.h: ac_dist/marpa_avl.h; \
-	  echo cm_dist/marpa_tavl.h: ac_dist/marpa_tavl.h; \
-	  echo cm_dist/marpa_tavl.c: ac_dist/marpa_tavl.c; \
-	  echo cm_dist/error_codes.table: ac_dist/error_codes.table; \
-	  echo cm_dist/steps.table: ac_dist/steps.table; \
-	  echo cm_dist/events.table: ac_dist/events.table; \
-	  echo cm_dist/COPYING.LESSER: ac_dist/COPYING.LESSER; \
-	  echo cm_dist/COPYING: ac_dist/COPYING; \
-	  echo cm_dist/README: ac_dist/README; \
-	  echo cm_dist/CMakeLists.txt: cmake/CMakeLists.txt; \
-	  echo cm_dist/version.cmake: cmake/version.cmake; \
-	  echo cm_dist/config.h.cmake: cmake/config.h.cmake; \
-	  echo cm_dist/modules/FindInline.cmake: cmake/modules/FindInline.cmake; \
-	  echo cm_dist/modules/FindNullIsZeroes.cmake: cmake/modules/FindNullIsZeroes.cmake; \
-	  echo cm_dist/modules/inline.c: cmake/modules/inline.c; \
-	  echo cm_dist/internals/libmarpa_core.pdf: ac_dist/internals/libmarpa_core.pdf; \
-	  echo cm_dist/internals/libmarpa_ami.pdf: ac_dist/internals/libmarpa_ami.pdf; \
-	  echo cm_dist/api_docs/libmarpa_api.pdf: ac_dist/api_docs/libmarpa_api.pdf; \
-	  echo cm_dist/api_docs/libmarpa_api.info: ac_dist/api_docs/libmarpa_api.info; \
-	  echo cm_dist/api_docs/libmarpa_api.html: ac_dist/api_docs/libmarpa_api.html; \
-          echo cm_dist/api_docs/api_html.tar: ac_dist/api_docs/api_html.tar; \
-	) | perl ./etc/copier.pl --verbose
+	perl ./etc/copier.pl --verbose < cmake/copier.list
 	date > timestamp/cm_dist.stamp
 	@echo Updating cm_dist time stamp: `cat timestamp/cm_dist.stamp`
 
