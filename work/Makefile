@@ -40,48 +40,7 @@ clean:
 timestamp/stage_build.stamp:
 	test -d stage || mkdir stage
 	test -d stage/m4 || mkdir stage/m4
-	@( \
-          echo stage/configure.ac: ac/configure.ac; \
-          echo stage/version.m4: ac/version.m4; \
-          echo stage/Makefile.am: ac/Makefile.am; \
-          echo stage/Makefile.win32: win32/Makefile.win32; \
-          echo stage/win32/do_config_h.pl: win32/do_config_h.pl; \
-          echo stage/marpa.c: dev/marpa.c; \
-          echo stage/win32/README: dev/README; \
-          echo stage/win32/marpa.def: dev/marpa.def; \
-          echo stage/marpa.h: public/marpa.h; \
-          echo stage/marpa_obs.c: obs/marpa_obs.c; \
-          echo stage/marpa_obs.h: obs/marpa_obs.h; \
-          echo stage/marpa_ami.c: ami/marpa_ami.c; \
-          echo stage/marpa_codes.c: public/marpa_codes.c; \
-          echo stage/marpa_codes.h: public/marpa_codes.h; \
-          echo stage/marpa_ami.h: ami/marpa_ami.h; \
-          echo stage/marpa_avl.c: avl/marpa_avl.c; \
-          echo stage/marpa_avl.h: avl/marpa_avl.h; \
-          echo stage/marpa_tavl.h: tavl/marpa_tavl.h; \
-          echo stage/marpa_tavl.c: tavl/marpa_tavl.c; \
-          echo stage/AUTHORS: ac/AUTHORS; \
-          echo stage/COPYING: shared/COPYING; \
-          echo stage/COPYING.LESSER: obs/COPYING.LESSER; \
-          echo stage/ChangeLog: ac/ChangeLog; \
-          echo stage/NEWS: ac/NEWS; \
-          echo stage/README: ac/README; \
-          echo stage/README.INSTALL: etc/README.INSTALL; \
-          echo stage/README.AIX: etc/README.AIX; \
-          echo stage/GIT_LOG.txt: etc/GIT_LOG.txt; \
-          echo stage/LIB_VERSION: etc/LIB_VERSION; \
-          echo stage/libmarpa_version.sh: etc/libmarpa_version.sh; \
-          echo stage/libmarpa.pc.in: etc/libmarpa.pc.in; \
-          echo stage/error_codes.table: public/error_codes.table; \
-          echo stage/events.table: public/events.table; \
-          echo stage/steps.table: public/steps.table; \
-          echo stage/internals/libmarpa_core.pdf: dev/marpa.pdf; \
-          echo stage/internals/libmarpa_ami.pdf: ami/marpa_ami.pdf; \
-          echo stage/api_docs/libmarpa_api.pdf: doc1/api.pdf; \
-          echo stage/api_docs/libmarpa_api.info: doc1/api.info; \
-          echo stage/api_docs/libmarpa_api.html: doc1/api.html; \
-          echo stage/api_docs/api_html.tar: doc/api_html.tar; \
-        ) | perl ../etc/copier.pl --verbose
+	perl ../etc/copier.pl --verbose < ac/copier.list
 	cd stage && autoreconf -iv
 	cd stage && ./configure
 	(cd stage; $(MAKE) dist)

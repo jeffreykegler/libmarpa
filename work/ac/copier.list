@@ -1,0 +1,61 @@
+# Copyright 2022 Jeffrey Kegler
+# Permission is hereby granted, free of charge, to any person obtaining a
+# copy of this software and associated documentation files (the "Software"),
+# to deal in the Software without restriction, including without limitation
+# the rights to use, copy, modify, merge, publish, distribute, sublicense,
+# and/or sell copies of the Software, and to permit persons to whom the
+# Software is furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included
+# in all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+# THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+# OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+# ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+# OTHER DEALINGS IN THE SOFTWARE.
+
+# Files to copy to the stage directory, relative to work/
+
+stage/configure.ac: ac/configure.ac
+stage/version.m4: ac/version.m4
+stage/Makefile.am: ac/Makefile.am
+stage/Makefile.win32: win32/Makefile.win32
+stage/win32/do_config_h.pl: win32/do_config_h.pl
+stage/marpa.c: dev/marpa.c
+stage/win32/README: dev/README
+stage/win32/marpa.def: dev/marpa.def
+stage/marpa.h: public/marpa.h
+stage/marpa_obs.c: obs/marpa_obs.c
+stage/marpa_obs.h: obs/marpa_obs.h
+stage/marpa_ami.c: ami/marpa_ami.c
+stage/marpa_codes.c: public/marpa_codes.c
+stage/marpa_codes.h: public/marpa_codes.h
+stage/marpa_ami.h: ami/marpa_ami.h
+stage/marpa_avl.c: avl/marpa_avl.c
+stage/marpa_avl.h: avl/marpa_avl.h
+stage/marpa_tavl.h: tavl/marpa_tavl.h
+stage/marpa_tavl.c: tavl/marpa_tavl.c
+stage/AUTHORS: ac/AUTHORS
+stage/COPYING: shared/COPYING
+stage/COPYING.LESSER: obs/COPYING.LESSER
+stage/ChangeLog: ac/ChangeLog
+stage/NEWS: ac/NEWS
+stage/README: ac/README
+stage/README.INSTALL: etc/README.INSTALL
+stage/README.AIX: etc/README.AIX
+stage/GIT_LOG.txt: etc/GIT_LOG.txt
+stage/LIB_VERSION: etc/LIB_VERSION
+stage/libmarpa_version.sh: etc/libmarpa_version.sh
+stage/libmarpa.pc.in: etc/libmarpa.pc.in
+stage/error_codes.table: public/error_codes.table
+stage/events.table: public/events.table
+stage/steps.table: public/steps.table
+stage/internals/libmarpa_core.pdf: dev/marpa.pdf
+stage/internals/libmarpa_ami.pdf: ami/marpa_ami.pdf
+stage/api_docs/libmarpa_api.pdf: doc1/api.pdf
+stage/api_docs/libmarpa_api.info: doc1/api.info
+stage/api_docs/libmarpa_api.html: doc1/api.html
+stage/api_docs/api_html.tar: doc/api_html.tar
