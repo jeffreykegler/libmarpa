@@ -47,17 +47,7 @@ timestamp/stage_build.stamp:
 	date > $@
 
 timestamp/doc_build.stamp:
-	@( \
-	  echo doc/configure.ac: ac_doc1/configure.ac; \
-	  echo doc/Makefile.am: ac_doc/Makefile.am; \
-	  echo doc/README: ac_doc/ABOUT_ME; \
-	  echo doc/COPYING: shared/COPYING; \
-	  echo doc/NEWS: ac/NEWS; \
-	  echo doc/AUTHORS: ac/AUTHORS; \
-	  echo doc/ChangeLog: ac/ChangeLog; \
-	  echo doc/api.texi: dev/api.texi; \
-	  echo doc/internal.texi: dev/internal.texi; \
-	) | perl ../etc/copier.pl --verbose
+	perl ../etc/copier.pl --verbose < ac_doc/copier.list
 	test -d doc/m4 || mkdir doc/m4
 	cd doc && autoreconf -ivf
 	cd doc && ./configure
@@ -66,17 +56,7 @@ timestamp/doc_build.stamp:
 	date > $@
 
 timestamp/doc1_build.stamp:
-	@( \
-	  echo doc1/configure.ac: ac_doc1/configure.ac; \
-	  echo doc1/Makefile.am: ac_doc1/Makefile.am; \
-	  echo doc1/README: ac_doc1/ABOUT_ME; \
-	  echo doc1/COPYING: shared/COPYING; \
-	  echo doc1/NEWS: ac/NEWS; \
-	  echo doc1/AUTHORS: ac/AUTHORS; \
-	  echo doc1/ChangeLog: ac/ChangeLog; \
-	  echo doc1/api.texi: dev/api.texi; \
-	  echo doc1/internal.texi: dev/internal.texi; \
-	) | perl ../etc/copier.pl --verbose
+	perl ../etc/copier.pl --verbose < ac_doc1/copier.list
 	test -d doc1/m4 || mkdir doc1/m4
 	cd doc1 && autoreconf -ivf
 	cd doc1 && ./configure
