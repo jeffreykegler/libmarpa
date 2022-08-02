@@ -2680,7 +2680,8 @@ call.
 @end deftypefn
 
 @anchor{marpa_g_default_rank_set}
-@deftypefn Marpa_Rank marpa_g_default_rank_set ( @
+@deftypefn {Mutator function} @
+Marpa_Rank marpa_g_default_rank_set ( @
     Marpa_Grammar @var{g}, @
     Marpa_Rank @var{rank})
 
