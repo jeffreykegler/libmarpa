@@ -1,0 +1,77 @@
+=for stopwords
+breallocarray realloc UINT_MAX Allbery SUSv3 FSFAP SPDX-License-Identifier
+breallocarray_type
+
+=head1 NAME
+
+breallocarray, breallocarray_type - Checked realloc with overflow protection
+
+=head1 SYNOPSIS
+
+#include <tap/basic.h>
+
+void *B<breallocarray>(void *I<ptr>, size_t I<n>, size_t I<size>);
+
+I<type> *B<breallocarray_type>(void *I<ptr>, size_t I<n>, I<type>);
+
+=head1 DESCRIPTION
+
+breallocarray() is a wrapper around realloc() that checks whether the
+memory allocation succeed, returning the newly allocated memory on success
+and calling sysbail() on failure.  It takes a count and a per-element
+size, the same as calloc(), instead of a simple size, and checks
+internally for integer overflow when doing the allocation.  It is intended
+for use inside TAP test cases where the test case should be aborted if
+memory allocation fails, and avoid the need to check each allocation as
+it's performed.
+
+This function is inspired by the OpenBSD reallocarray() function, but does
+its own range checking rather than relying on a system reallocarray()
+function.
+
+breallocarray_type() is a macro wrapper around breallocarray() that takes
+a type instead of a size as the third argument.  That type is translated
+into a size with B<sizeof>, and the result from breallocarray() is cast to
+a pointer to I<type>.  This is friendlier to C++ code.
+
+=head1 RETURN VALUE
+
+breallocarray() returns a pointer to the reallocated memory (which may or
+may not be the same as I<ptr>), the same as the standard realloc()
+function.  It will never return NULL; if memory allocation fails, it will
+abort the program.
+
+breallocarray_type() returns the same thing as breallocarray() except cast
+to a pointer to I<type>.
+
+=head1 CAVEATS
+
+breallocarray() will not allocate more than UINT_MAX bytes rather than
+SIZE_MAX bytes, since the C TAP Harness library only assumes ISO C89 and
+SUSv3 and therefore cannot assume F<stdint.h> exists or that SIZE_MAX is
+defined.  This is unlikely to cause issues in practice.  This constraint
+will be relaxed when assuming ISO C99 is somewhat safer.
+
+=head1 AUTHOR
+
+Russ Allbery <eagle@eyrie.org>
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright 2014, 2019 Russ Allbery <eagle@eyrie.org>
+
+Copying and distribution of this file, with or without modification, are
+permitted in any medium without royalty provided the copyright notice and
+this notice are preserved.  This file is offered as-is, without any
+warranty.
+
+SPDX-License-Identifier: FSFAP
+
+=head1 SEE ALSO
+
+brealloc(3), realloc(3), reallocarray(3), sysbail(3)
+
+The current version of the C TAP Harness library is available from its web
+page at L<https://www.eyrie.org/~eagle/software/c-tap-harness/>.
+
+=cut

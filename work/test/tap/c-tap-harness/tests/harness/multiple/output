@@ -1,0 +1,12 @@
+pass....ok
+fail....FAILED 2-3, 5-8
+skip....ok (skipped 5 tests)
+todo....FAILED 3-4
+
+Failed Set                 Fail/Total (%) Skip Stat  Failing Tests
+-------------------------- -------------- ---- ----  ------------------------
+fail                          6/8     75%    1    0  2-3, 5-8
+todo                          2/2    100%    2    0  3-4
+
+Failed 8/24 tests, 66.67% okay, 8 tests skipped.
+Files=4,  Tests=24

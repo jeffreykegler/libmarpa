@@ -1,0 +1,14 @@
+docs/pod
+docs/pod-spelling
+docs/spdx-license
+harness/basic
+harness/env
+harness/multiple
+harness/options
+harness/search
+harness/single
+harness/verbose
+libtap/basic
+libtap/cleanup
+style/obsolete-strings
+valgrind/logs

@@ -1,0 +1,12 @@
+
+Running all tests listed in abort-one.list.  If any tests fail, run the failing
+test program with runtests -o to see more details.
+
+badnum..ABORTED (invalid test number 5)
+
+Failed Set                 Fail/Total (%) Skip Stat  Failing Tests
+-------------------------- -------------- ---- ----  ------------------------
+badnum                        2/4     50%    0    0  aborted
+
+Aborted 1 test set, passed 2/4 tests.
+Files=1,  Tests=4

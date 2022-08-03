@@ -1,0 +1,13 @@
+
+Running all tests listed in search.list.  If any tests fail, run the failing
+test program with runtests -o to see more details.
+
+relative................ok
+relative-no-ext.........ok
+source..................ok
+source-no-ext...........ok
+build...................ok
+build-no-ext.tap........ok
+
+All tests successful.
+Files=6,  Tests=6

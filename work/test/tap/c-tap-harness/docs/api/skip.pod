@@ -1,0 +1,62 @@
+=for stopwords
+const printf-style Allbery FSFAP SPDX-License-Identifier
+
+=head1 NAME
+
+skip, skip_block - Skip a TAP test
+
+=head1 SYNOPSIS
+
+#include <tap/basic.h>
+
+void B<skip>(const char *I<reason>, ...);
+
+void B<skip_block>(unsigned long I<count>, const char *I<reason>, ...);
+
+=head1 DESCRIPTION
+
+skip() marks the next test as skipped.  I<reason> may be NULL; if not
+NULL, I<reason> should be a printf-style format string with optional
+additional arguments specifying the reason why the test was skipped.
+Common reasons to skip tests include tests that are not applicable to the
+current platform, environment, or software configuration options, and
+tests that rely on optional test configuration that isn't present.
+
+skip_block() is identical to skip() except that it marks the next I<count>
+tests as skipped.
+
+To skip an entire test case, call skip_all() before plan() or plan_lazy()
+rather than using these functions.
+
+=head1 RETURN VALUE
+
+None.
+
+=head1 CAVEATS
+
+plan() or plan_lazy() should always be called before calling skip() or
+skip_block().
+
+=head1 AUTHOR
+
+Russ Allbery <eagle@eyrie.org>
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright 2010, 2013 Russ Allbery <eagle@eyrie.org>
+
+Copying and distribution of this file, with or without modification, are
+permitted in any medium without royalty provided the copyright notice and
+this notice are preserved.  This file is offered as-is, without any
+warranty.
+
+SPDX-License-Identifier: FSFAP
+
+=head1 SEE ALSO
+
+ok(3), plan(3), skip_all(3)
+
+The current version of the C TAP Harness library is available from its web
+page at L<https://www.eyrie.org/~eagle/software/c-tap-harness/>.
+
+=cut

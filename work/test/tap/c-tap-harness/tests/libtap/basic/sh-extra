@@ -1,0 +1,16 @@
+#! /bin/sh
+#
+# Test of the libtap.sh end summary with extra tests
+#
+# Copyright 2009, 2016 Russ Allbery <eagle@eyrie.org>
+#
+# SPDX-License-Identifier: MIT
+
+# Load the test library.
+. "$C_TAP_SOURCE/tap/libtap.sh"
+
+plan 2
+ok "first" true
+ok "second" false
+ok "third" true
+exit 0

@@ -1,0 +1,17 @@
+#!/bin/sh
+#
+# Install packages for integration tests.
+#
+# This script is normally run via sudo in a test container or VM, such as via
+# GitHub Actions.
+#
+# Copyright 2015-2020 Russ Allbery <eagle@eyrie.org>
+#
+# SPDX-License-Identifier: MIT
+
+set -eux
+
+# Install packages.
+apt-get update -qq
+apt-get install aspell autoconf automake cppcheck libtest-pod-perl \
+        libtest-spelling-perl perl valgrind

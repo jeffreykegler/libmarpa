@@ -1,0 +1,10 @@
+1..3
+ok 1 - some test
+ok 2 - another test
+ok 3 - third test
+Called cleanup with 1 1
+Second cleanup (1 1)
+Called cleanup with 1 1
+Second cleanup (1 1)
+Called cleanup with 1 1
+# All 3 tests successful or skipped

@@ -1,0 +1,89 @@
+1..62
+ok 1
+ok 2 - ok result is 1
+# a diagnostic
+not ok 3
+ok 4 - ok result is 0
+ok 5
+ok 6 - is_int result is 1
+ok 7 - an integer test
+ok 8 - comparing -1 and -1
+#  left: -1
+# right: 1
+not ok 9
+ok 10 - is_int result is 0
+ok 11
+ok 12 - is_double result is 1
+ok 13 - a double test
+#  left: 0.1
+# right: -0.1
+not ok 14 - a failing double test
+ok 15 - is_double result is 0
+ok 16
+ok 17
+ok 18 - NaN
+ok 19 - inf
+ok 20 - -inf
+#  left: inf
+# right: -inf
+not ok 21 - inf and -inf
+ok 22
+ok 23 - a string test
+ok 24 - is_string result is 1
+#  left: yes
+# right: yes no
+not ok 25 - 
+ok 26 - is_string result is 0
+ok 27 - null null
+#  left: yes
+# right: (null)
+not ok 28
+#  left: (null)
+# right: yes
+not ok 29
+ok 30 # skip testing skip foo
+ok 31
+ok 32
+ok 33 - ok_block result is 1
+not ok 34 - some block
+not ok 35 - some block
+not ok 36 - some block
+not ok 37 - some block
+ok 38 - ok_block result is 0
+ok 39 # skip testing skip block
+ok 40 # skip testing skip block
+ok 41 # skip testing skip block
+ok 42 # skip testing skip block
+ok 43 # skip
+ok 44 # skip
+ok 45 # skip
+ok 46 - 2^31 + 1 correct
+ok 47 - is_hex result is 1
+#  left: 80000001
+# right: 0
+not ok 48 - 2^31 + 1 incorrect
+ok 49 - is_hex result is 0
+ok 50
+ok 51 - testing okv
+ok 52 - okv result is 1
+ok 53 - is_bool on 0
+ok 54 - is_bool on 1 and 4
+#  left: true
+# right: false
+not ok 55 - is_bool display output
+#  left: false
+# right: true
+not ok 56 - is_bool more display output
+ok 57 - is_blob 1
+ok 58 - is_blob returned 1
+# offset 0: left 00, right 01
+# offset 3: left ff, right fa
+# offset 4: left fe, right ef
+not ok 59 - is_blob 2
+ok 60 - is_blob returned 0
+# testing diag
+ok 61 - diag returns 1
+#  left: (null)
+# right: (null)
+not ok 62 - (null) and NULL
+# Looks like you failed 16 tests of 62

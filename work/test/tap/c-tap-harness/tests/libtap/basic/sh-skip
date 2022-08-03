@@ -1,0 +1,14 @@
+#! /bin/sh
+#
+# Test of the libtap.sh skip_all function
+#
+# Copyright 2009, 2016 Russ Allbery <eagle@eyrie.org>
+#
+# SPDX-License-Identifier: MIT
+
+# Load the test library.
+. "$C_TAP_SOURCE/tap/libtap.sh"
+
+skip_all "some reason"
+ok true
+exit 1

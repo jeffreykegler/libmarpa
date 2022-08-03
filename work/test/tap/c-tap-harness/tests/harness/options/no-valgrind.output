@@ -1,0 +1,10 @@
+
+Running all tests listed in valgrind.list.  If any tests fail, run the failing
+test program with runtests -o to see more details.
+
+simple..........ok
+executable......ok
+lt-executable...ok
+
+All tests successful.
+Files=3,  Tests=3

@@ -1,0 +1,7 @@
+
+Running all tests listed in empty.list.  If any tests fail, run the failing
+test program with runtests -o to see more details.
+
+
+All tests successful.
+Files=0,  Tests=0

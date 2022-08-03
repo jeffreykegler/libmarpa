@@ -1,0 +1,49 @@
+                         C TAP Harness To-Do List
+
+Protocol:
+
+ * Report the text after the "# skip" directive as the reason for the
+   skipping of the test.  We should accumulate reasons and the count of
+   tests that had that reason and report how many tests were skipped for
+   each reason.
+
+Shell:
+
+ * ok_program merges stdout and stderr, which could cause test problems
+   when output isn't flushed or when the difference is important.  Add
+   a new function that keeps the streams separate and specifies what's
+   expected on each stream.
+
+Reporting:
+
+ * Report passing todo tests as something other than simple failed tests.
+
+ * Add an option to report test results in color.
+
+Extra Harness Features:
+
+ * Record lines starting with # prior to a test and report the output if
+   the test reported a failure.
+
+ * Support automatically re-running failed tests at the end of the run
+   and showing their complete output.
+
+ * Save log files for the output of each test, either by default or via an
+   option, similar to the new Automake TAP test support.
+
+ * Support automatically finding test cases under a particular directory
+   similar to how prove finds tests, without needing a TESTS file.  Allow
+   directories to be given on the command line.
+
+ * Support -D/--dry-run to list the tests that would be run.  (Mostly only
+   useful after passing directories and recursion are implemented.)
+
+ * Remove support for SOURCE and BUILD.
+
+Documentation:
+
+ * Move the integration documentation in README into a separate file in
+   docs, probably docs/autotools-integration, and clarify in README what
+   documentation to read first.
+
+ * Document the versions at which APIs and runtests features were added.

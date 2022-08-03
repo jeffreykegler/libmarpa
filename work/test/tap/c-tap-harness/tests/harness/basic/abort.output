@@ -1,0 +1,43 @@
+
+Running all tests listed in abort.list.  If any tests fail, run the failing
+test program with runtests -o to see more details.
+
+fail............FAILED 2-3, 5-8
+missing.........MISSED 1, 6, 10, 12, 14, 18; FAILED 8, 16
+hup.............dubious (killed by signal 1)
+segv............MISSED 1-3 (killed by signal 6, core dumped)
+status..........dubious (exit status 1)
+pass............ok
+abort...........MISSED 3-4
+nocount.........ABORTED (no valid test plan)
+badnum..........ABORTED (invalid test number 5)
+duplicate.......ABORTED (duplicate test number 4)
+bail............ABORTED (stopping now)
+bail-silent.....ABORTED (passed 1/2)
+too-many........ABORTED (invalid test number 3)
+zero............ABORTED (invalid test number 0)
+nonexistent.....ABORTED (execution failed -- not found?)
+badnum-delay....ABORTED (invalid test number 5)
+plan-twice......ABORTED (multiple plans)
+
+Failed Set                 Fail/Total (%) Skip Stat  Failing Tests
+-------------------------- -------------- ---- ----  ------------------------
+fail                          6/8     75%    1    0  2-3, 5-8
+missing                       8/19    42%    0    0  1, 6, 8, 10, 12, 14, ...
+hup                           0/4      0%    0   --  
+segv                          3/4     75%    0   --  1-3
+status                        0/4      0%    0    1  
+abort                         2/4     50%    0    0  3-4
+nocount                       0/1      0%    0    0  aborted
+badnum                        2/4     50%    0    0  aborted
+duplicate                     0/4      0%    0    0  aborted
+bail                          1/2     50%    0    0  aborted
+bail-silent                   1/2     50%    0    0  aborted
+too-many                      0/2      0%    0    0  aborted
+zero                          1/1    100%    0    0  aborted
+nonexistent                   0/0      0%    0  101  aborted
+badnum-delay                  0/5      0%    0    0  aborted
+plan-twice                    0/4      0%    0    0  aborted
+
+Aborted 10 test sets, passed 54/78 tests, 1 test skipped.
+Files=17,  Tests=78

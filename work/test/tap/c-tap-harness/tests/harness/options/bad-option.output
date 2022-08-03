@@ -1,0 +1,5 @@
+
+Running all tests listed in bad-option.list.  If any tests fail, run the failing
+test program with runtests -o to see more details.
+
+runtests: unknown test list option unknown-option

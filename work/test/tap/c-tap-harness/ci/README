@@ -1,0 +1,2 @@
+The files in this directory are used for CI testing.  ci/install installs
+the prerequisite packages (run as root), and ci/test runs the tests.

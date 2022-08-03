@@ -1,0 +1,97 @@
+=for stopwords
+const printf-style Allbery FSFAP SPDX-License-Identifier
+
+=head1 NAME
+
+is_bool, is_int, is_double, is_string, is_hex, is_blob - Check values for TAP
+
+=head1 SYNOPSIS
+
+#include <tap/basic.h>
+
+int B<is_bool>(int, int, const char *I<format>, ...);
+
+int B<is_int>(long, long, const char *I<format>, ...);
+
+int B<is_string>(const char *, const char *, const char *I<format>, ...);
+
+int B<is_hex>(unsigned long, unsigned long, const char *I<format>, ...);
+
+int B<is_blob>(const void *, const void *, size_t I<length>,
+    const char *I<format>, ...);
+
+#include <tap/float.h>
+
+int B<is_double>(double, double, double I<epsilon>,
+    const char *I<format>, ...);
+
+=head1 DESCRIPTION
+
+These functions compare two values and report success to a TAP harness if
+the values match and failure otherwise.  If the values do not match, the
+mismatched values are reported as a TAP diagnostic (named "left" and
+"right").  For each function, I<format> may be NULL; if not NULL,
+I<format> should be a printf-style format string with possible optional
+arguments giving the name or intention of this test.  I<format> should be
+specified where possible to make it easier to track failures down to
+specific tests.
+
+is_bool() compares two boolean values, is_int() compares two longs,
+is_double() compares two doubles, is_string() compares two strings,
+is_hex() compares two unsigned longs, and is_blob() compares two regions
+of memory of length I<length>.  The advantage of these functions over ok()
+is that, if the values don't match, the expected and seen values are
+reported as diagnostics to make it easier to understand the test failure.
+
+Although is_bool() takes parameters of type int, both values are evaluated
+for their truth value, not for their numeric value.  (In other words,
+C<is_bool(1, 4)> is a passing test.)
+
+is_double() takes an I<epsilon> value and considers the two values equal
+if their difference is less than I<epsilon>.  This avoids problems with
+rounding errors in representation of floating point numbers.  The two
+values may be positive or negative infinity or NaN as well as a regular
+number.  Any two NaNs are considered equal, contrary to the normal NaN
+behavior.  Callers of is_double() need to also include C<tap/float.h> and
+link the test program with C<-lm>.
+
+is_string() correctly handles NULL values (two NULL values compare equal).
+
+is_hex() reports its values as hex strings and is useful for testing flags
+or similar values.
+
+is_blob() reports all differing octets in a diagnostic if the two regions
+of memory do not match.
+
+=head1 RETURN VALUE
+
+All functions return true if the test passed and false if it failed.
+
+=head1 CAVEATS
+
+plan() or plan_lazy() should always be called before calling any of these
+functions.
+
+=head1 AUTHOR
+
+Russ Allbery <eagle@eyrie.org>
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright 2010, 2012-2014, 2017-2018 Russ Allbery <eagle@eyrie.org>
+
+Copying and distribution of this file, with or without modification, are
+permitted in any medium without royalty provided the copyright notice and
+this notice are preserved.  This file is offered as-is, without any
+warranty.
+
+SPDX-License-Identifier: FSFAP
+
+=head1 SEE ALSO
+
+ok(3), plan(3)
+
+The current version of the C TAP Harness library is available from its web
+page at L<https://www.eyrie.org/~eagle/software/c-tap-harness/>.
+
+=cut

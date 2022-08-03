@@ -1,0 +1,55 @@
+=for stopwords
+Allbery FSFAP SPDX-License-Identifier
+
+=head1 NAME
+
+test_tmpdir, test_tmpdir_free - Manage temporary directory for TAP tests
+
+=head1 SYNOPSIS
+
+#include <tap/basic.h>
+
+char *B<test_tmpdir>();
+
+void B<test_tmpdir_free>(char *I<path>);
+
+=head1 DESCRIPTION
+
+test_tmpdir() creates a temporary directory for tests to use for transient
+files and returns the path to that directory.  test_tmpdir_free() attempts
+to remove the directory and then frees the path string.
+
+The directory created will be named F<tmp> under the location named by the
+C_TAP_BUILD environment variable, or under the current directory if
+C_TAP_BUILD is not set.
+
+=head1 RETURN VALUE
+
+test_tmpdir() returns the path to the temporary directory.  It never
+returns NULL; if any problems occur in creating the directory, it calls
+bail() to exit the test instead.  Note that the path may be relative if
+the environment variable C_TAP_BUILD is not set or is relative itself.
+
+=head1 AUTHOR
+
+Russ Allbery <eagle@eyrie.org>
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright 2011, 2013, 2016 Russ Allbery <eagle@eyrie.org>
+
+Copying and distribution of this file, with or without modification, are
+permitted in any medium without royalty provided the copyright notice and
+this notice are preserved.  This file is offered as-is, without any
+warranty.
+
+SPDX-License-Identifier: FSFAP
+
+=head1 SEE ALSO
+
+bail(3), runtests(1)
+
+The current version of the C TAP Harness library is available from its web
+page at L<https://www.eyrie.org/~eagle/software/c-tap-harness/>.
+
+=cut

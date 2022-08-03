@@ -1,0 +1,54 @@
+#!/bin/sh
+#
+# Test suite for runtests in verbose mode.
+#
+# Copyright 2015, 2016, 2020 Russ Allbery <eagle@eyrie.org>
+#
+# SPDX-License-Identifier: MIT
+
+. "$C_TAP_SOURCE/tap/libtap.sh"
+cd "$C_TAP_BUILD"
+
+# Run runtests with the name of the test (and hence the desired output file)
+# in the first argument, and the arguments to runtests in the subsequent
+# arguments.  Check that the status is 0 and the output matches the given
+# output file (which is in the verbose subdirectory).
+ok_runtests () {
+    name="$1"
+    shift
+    $C_TAP_VALGRIND "$C_TAP_BUILD"/runtests                     \
+        -s "${C_TAP_SOURCE}/harness/basic"                      \
+        -b "${C_TAP_BUILD}/harness/basic" "$@" > "$name".raw
+    status=$?
+    ok "test result status for $name" [ $status -eq 0 ]
+    sed 's/\(Tests=[0-9]*\),  .*/\1/' "$name".raw > "$name".result
+    rm "$name".raw
+    diff -u "${C_TAP_SOURCE}/harness/verbose/$name".output "$name".result 2>&1
+    status=$?
+    ok "test output for $name" [ $status -eq 0 ]
+    rm "$name".result
+}
+
+# Total tests.
+plan 8
+
+# Do not inherit test verbosity.
+unset C_TAP_VERBOSE
+
+# Remove any valgrind flags to trace children, since we only want to check the
+# harness itself.
+C_TAP_VALGRIND=`echo "$C_TAP_VALGRIND" | sed 's/--trace-children[^ ]* //'`
+
+# Run runtests in verbose mode, overriding the source directory, and passing a
+# few tests from the basic directory to run.
+ok_runtests 'multiple' -v pass skip
+
+# Try with a list instead.
+ok_runtests 'list' -vl "${C_TAP_SOURCE}/harness/basic/pass.list"
+
+# The same again but using the environment variable.
+diag 'Retesting with environment variable'
+C_TAP_VERBOSE=1
+export C_TAP_VERBOSE
+ok_runtests 'multiple' pass skip
+ok_runtests 'list' -l "${C_TAP_SOURCE}/harness/basic/pass.list"

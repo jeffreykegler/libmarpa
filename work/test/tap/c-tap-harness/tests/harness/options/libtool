@@ -1,0 +1,15 @@
+#!/bin/sh
+echo 1..5
+if [ "$1" = "--mode=execute" ]; then echo ok 2; else echo not ok 2; fi
+if echo "$2" | grep '/harness/options/valgrind$' >/dev/null; then
+    echo ok 1
+else
+    echo not ok 1
+fi
+if [ "$3" = "--opt" ];         then echo ok 3; else echo not ok 3; fi
+if [ "$4" = "--another-opt" ]; then echo ok 4; else echo not ok 4; fi
+if echo "$5" | grep '/harness/options/lt-executable\.t$' >/dev/null; then
+    echo ok 5
+else
+    echo not ok 5
+fi

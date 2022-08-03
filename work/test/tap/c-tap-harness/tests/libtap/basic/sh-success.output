@@ -1,0 +1,4 @@
+1..2
+ok 1 - first
+ok 2 # skip second
+# All 2 tests successful or skipped

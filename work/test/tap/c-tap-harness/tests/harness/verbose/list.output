@@ -1,0 +1,129 @@
+
+Running all tests listed in pass.list.  If any tests fail, run the failing
+test program with runtests -o to see more details.
+
+pass
+
+1..10
+ok 1
+ok 2
+some other nonsense ok 3
+ok 3
+   ok 4  ok 5
+ok 4  ok 5
+ok 5
+ok 6
+ok 7
+ok    8
+    ok    9
+ok 9
+ok10
+ok
+
+order
+
+1..4
+ok   4
+ok 2
+ok 1
+ok 3
+ok
+
+plan-last
+
+ok 1
+ok 2
+ok 3
+ok 4
+1..4
+ok
+
+plan-order
+
+ok 33
+ok 1
+ok
+ok
+ok
+ok
+ok
+ok
+ok
+ok
+ok
+ok
+ok
+ok
+ok
+ok
+ok
+ok
+ok
+ok
+ok
+ok
+ok
+ok
+ok
+ok
+ok
+ok
+ok
+ok
+ok
+ok
+ok
+1..33
+ok
+
+plan-middle
+
+ok 1
+ok 2
+1..4
+ok 3
+ok 4
+ok
+
+plan-long
+
+ok
+ok
+ok
+ok
+ok
+ok
+ok
+ok
+ok
+ok
+ok
+ok
+ok
+ok
+ok
+ok
+ok
+ok
+ok
+ok
+ok
+ok
+ok
+ok
+ok
+ok
+ok
+ok
+ok
+ok
+ok
+ok
+ok
+ok
+1..34
+ok
+
+
+All tests successful.
+Files=6,  Tests=89

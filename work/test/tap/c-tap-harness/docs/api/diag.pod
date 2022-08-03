@@ -1,0 +1,67 @@
+=for stopwords
+diag sysdiag printf-style Allbery FSFAP SPDX-License-Identifier
+
+=head1 NAME
+
+diag, sysdiag - Report diagnostics in a TAP test case
+
+=head1 SYNOPSIS
+
+#include <tap/basic.h>
+
+int B<diag>(const char *I<format>, ...);
+
+int B<sysdiag>(const char *I<format>, ...);
+
+=head1 DESCRIPTION
+
+diag() reports a diagnostic in a TAP test case.  I<format> must be a
+printf-style format string with possible optional arguments stating the
+fatal error encountered.  This function adds C<#> and a space to the
+beginning of the formatted string and prints it, followed by a newline, to
+standard output.
+
+sysdiag() is identical to diag() except that it appends a colon, a space,
+and the results of strerror() on the current value of B<errno> to the end
+of the diagnostic.
+
+These functions are useful for reporting supplemental information about
+the progress of a test case or additional information about test failures.
+The output will be ignored by a TAP test harness but can be reviewed by a
+human analyzing what a test case is doing.
+
+=head1 RETURN VALUE
+
+diag() and sysdiag() always return 1.  The return value is not meaningful,
+and exists only to allow these functions to be dropped into the middle of
+compound statements, allowing debugging of tests without more intrusive
+changes.
+
+=head1 CAVEATS
+
+Unlike most TAP library functions, I<format> in this case may not be NULL.
+A diagnostic message must be provided.
+
+=head1 AUTHOR
+
+Russ Allbery <eagle@eyrie.org>
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright 2010, 2013-2014 Russ Allbery <eagle@eyrie.org>
+
+Copying and distribution of this file, with or without modification, are
+permitted in any medium without royalty provided the copyright notice and
+this notice are preserved.  This file is offered as-is, without any
+warranty.
+
+SPDX-License-Identifier: FSFAP
+
+=head1 SEE ALSO
+
+bail(3), plan(3)
+
+The current version of the C TAP Harness library is available from its web
+page at L<https://www.eyrie.org/~eagle/software/c-tap-harness/>.
+
+=cut

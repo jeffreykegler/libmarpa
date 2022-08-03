@@ -1,0 +1,71 @@
+=for stopwords
+nul Allbery FSFAP SPDX-License-Identifier
+
+=head1 NAME
+
+diag_file_add, diag_file_remove - Report diagnostics from a file in a TAP test
+
+=head1 SYNOPSIS
+
+#include <tap/basic.h>
+
+void B<diag_file_add>(const char *I<file>);
+
+void B<diag_file_remove>(const char *I<file>);
+
+=head1 DESCRIPTION
+
+diag_file_add() adds a log file on disk as a supplemental source of
+diagnostic information for a TAP test case.  I<file> is the path to a file
+that will be opened when diag_file_add() is called.  Before each TAP
+function call that produces output, the file will be checked for any new
+lines since the previous check.  If any are found, they will be output to
+standard output as if they were passed to the diag() function, including
+the leading C<#> and space.  This file may be called multiple times to add
+multiple files.
+
+Only complete lines ending in a newline will be output.  If at the time
+the file is checked there is an incomplete line (no newline before end of
+file), that output will be deferred until a later check sees a newline.
+This means that any data at the end of a file without a newline will never
+be output.
+
+diag_file_remove() removes a file name previously passed to
+diag_file_add() from the list of files checked for output.  The file name
+must match the file name passed to diag_file_add() and need not point to
+the actual file (if, for example, a subsequent chdir() changed the meaning
+of relative file names).
+
+=head1 RETURN VALUE
+
+None.
+
+=head1 CAVEATS
+
+Zero bytes (nul characters) in the file are not supported and will result
+in truncated output or other strange results.
+
+File contents in registered files are ignored if skip_all() is called, and
+is not output before the output of plan().  The output will appear after
+the first output-producing function (or a regular program exit) after
+plan().
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright 2013 Russ Allbery <eagle@eyrie.org>
+
+Copying and distribution of this file, with or without modification, are
+permitted in any medium without royalty provided the copyright notice and
+this notice are preserved.  This file is offered as-is, without any
+warranty.
+
+SPDX-License-Identifier: FSFAP
+
+=head1 SEE ALSO
+
+diag(3)
+
+The current version of the C TAP Harness library is available from its web
+page at L<https://www.eyrie.org/~eagle/software/c-tap-harness/>.
+
+=cut

@@ -1,0 +1,3 @@
+simple
+  executable    valgrind
+ lt-executable	libtool  valgrind   

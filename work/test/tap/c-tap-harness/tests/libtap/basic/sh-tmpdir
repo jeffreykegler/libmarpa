@@ -1,0 +1,30 @@
+#!/bin/sh
+#
+# Test of the test_tmpdir utility function in libtap.sh.
+#
+# This silently succeeds if the temporary directory already exists (which will
+# happen for the valgrind tests), but fixing that is complicated and it
+# shouldn't be a huge problem.
+#
+# Copyright 2009, 2012, 2016, 2020 Russ Allbery <eagle@eyrie.org>
+#
+# SPDX-License-Identifier: MIT
+
+. "${C_TAP_SOURCE}/tap/libtap.sh"
+
+set -e
+echo "Path to temporary directory: ${C_TAP_BUILD}/tmp" > sh-tmpdir.output
+if [ -d "${C_TAP_BUILD}/tmp" ]; then
+    exists=1
+else
+    exists=0
+fi
+path=`test_tmpdir`
+echo "Path to temporary directory: $path"
+if [ ! -d "${C_TAP_BUILD}/tmp" ] ; then
+    bail "${C_TAP_BUILD}/tmp not created"
+fi
+if [ "$exists" -eq 0 ]; then
+    rmdir "${C_TAP_BUILD}/tmp"
+fi
+exit 0

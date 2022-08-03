@@ -1,0 +1,63 @@
+#! /bin/sh
+#
+# Test suite for runtests support of test list options.
+#
+# Copyright 2018, 2020 Russ Allbery <eagle@eyrie.org>
+#
+# SPDX-License-Identifier: MIT
+
+. "$C_TAP_SOURCE/tap/libtap.sh"
+cd "$C_TAP_BUILD"
+
+# Run runtests on a list and compare the output to the expected output,
+# printing ok if it matches.  Strip out the time information from the runtests
+# result since it changes for each run.
+ok_runtests () {
+    $VALGRIND "$C_TAP_BUILD"/runtests -s "${C_TAP_SOURCE}/harness/options" \
+        -l "${C_TAP_SOURCE}/harness/options/$1.list" > "$2".raw 2>&1
+    status=$?
+    ok "$1 test set status ($status)" [ $status -eq "$3" ]
+    sed 's/\(Tests=[0-9]*\),  .*/\1/' < "$2".raw > "$2".result
+    rm "$2".raw
+    diff -u "${C_TAP_SOURCE}/harness/options/$2".output "$2".result 2>&1
+    status=$?
+    ok "$1 test set output" [ $status -eq 0 ]
+    if [ $status -eq 0 ] ; then
+        rm "$2".result
+    fi
+}
+
+# Total tests.
+plan 10
+
+# Do not inherit test verbosity.
+unset C_TAP_VERBOSE
+
+# Stash the value of C_TAP_VALGRIND and then clear it.  Remove the flags to
+# trace children, since we only want to check the harness itself.
+VALGRIND=`echo "$C_TAP_VALGRIND" | sed 's/--trace-children[^ ]* //'`
+unset C_TAP_VALGRIND
+
+# A test list with a bad option should immediately fail.
+ok_runtests bad-option bad-option 1
+
+# Running the tests without any environment variables set should succeed and
+# not try to use valgrind.
+ok_runtests valgrind no-valgrind 0
+
+# Set C_TAP_VALGRIND and run the test list again.  This should fail because
+# libtool support is requested for one test, but C_TAP_LIBTOOL is not set.
+valgrind="${C_TAP_SOURCE}/harness/options/valgrind"
+C_TAP_VALGRIND="${valgrind} --opt --another-opt"
+export C_TAP_VALGRIND
+ok_runtests valgrind valgrind-fail 1
+
+# Also set C_TAP_LIBTOOL and then run the test list again.  This should then
+# succeed.
+C_TAP_LIBTOOL="${C_TAP_SOURCE}/harness/options/libtool"
+export C_TAP_LIBTOOL
+ok_runtests valgrind valgrind 0
+
+# Try again but with weird spacing in C_TAP_VALGRIND (including a tab).
+C_TAP_VALGRIND=" ${valgrind}   --opt	--another-opt   "
+ok_runtests valgrind valgrind 0

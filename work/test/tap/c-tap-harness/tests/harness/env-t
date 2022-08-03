@@ -1,0 +1,31 @@
+#! /bin/sh
+#
+# Test suite for runtests directory search support.
+#
+# Copyright 2009, 2012, 2013, 2016, 2020 Russ Allbery <eagle@eyrie.org>
+#
+# SPDX-License-Identifier: MIT
+
+. "$C_TAP_SOURCE/tap/libtap.sh"
+cd "$C_TAP_BUILD/harness/env"
+
+# Total tests.
+plan 1
+
+# Do not inherit test verbosity.
+unset C_TAP_VERBOSE
+
+# Remove any valgrind flags to trace children, since we only want to check the
+# harness itself.
+C_TAP_VALGRIND=`echo "$C_TAP_VALGRIND" | sed 's/--trace-children[^ ]* //'`
+
+# Run runtests on the env test list.
+$C_TAP_VALGRIND "${C_TAP_BUILD}/runtests"                       \
+                -l "${C_TAP_SOURCE}/harness/env/env.list"       \
+    | sed 's/\(Tests=[0-9]*\),  .*/\1/' > env.result
+diff -u "${C_TAP_SOURCE}/harness/env/env.output" env.result 2>&1
+status=$?
+ok '' [ $status -eq 0 ]
+if [ $status -eq 0 ] ; then
+    rm env.result
+fi

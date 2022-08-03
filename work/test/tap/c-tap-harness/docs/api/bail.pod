@@ -1,0 +1,63 @@
+=for stopwords
+sysbail printf-style Allbery FSFAP SPDX-License-Identifier
+
+=head1 NAME
+
+bail, sysbail - Report fatal test case errors to a TAP harness
+
+=head1 SYNOPSIS
+
+#include <tap/basic.h>
+
+void B<bail>(const char *I<format>, ...);
+
+void B<sysbail>(const char *I<format>, ...);
+
+=head1 DESCRIPTION
+
+bail() reports a fatal error to a TAP test harness.  I<format> must be a
+printf-style format string with possible optional arguments stating the
+fatal error encountered.  This function prints a string like:
+
+    Bail out! <reason>
+
+to standard output after flushing it and then exits with an exit status of
+255.
+
+sysbail() is identical to bail() except that it appends a colon, a space,
+and the results of strerror() on the current value of B<errno> to the end
+of the error message.
+
+=head1 RETURN VALUE
+
+None.  bail() and sysbail() exit with an exit status of 255 after printing
+the error message.
+
+=head1 CAVEATS
+
+Unlike most TAP library functions, I<format> in this case may not be NULL.
+An error message must be provided.
+
+=head1 AUTHOR
+
+Russ Allbery <eagle@eyrie.org>
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright 2010, 2013 Russ Allbery <eagle@eyrie.org>
+
+Copying and distribution of this file, with or without modification, are
+permitted in any medium without royalty provided the copyright notice and
+this notice are preserved.  This file is offered as-is, without any
+warranty.
+
+SPDX-License-Identifier: FSFAP
+
+=head1 SEE ALSO
+
+diag(3), plan(3), strerror(3)
+
+The current version of the C TAP Harness library is available from its web
+page at L<https://www.eyrie.org/~eagle/software/c-tap-harness/>.
+
+=cut

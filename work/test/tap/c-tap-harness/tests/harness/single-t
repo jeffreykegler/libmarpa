@@ -1,0 +1,32 @@
+#! /bin/sh
+#
+# Test suite for running a single test.
+#
+# Copyright 2009, 2012, 2016, 2020 Russ Allbery <eagle@eyrie.org>
+#
+# SPDX-License-Identifier: MIT
+
+. "$C_TAP_SOURCE/tap/libtap.sh"
+cd "$C_TAP_BUILD"
+
+# Total tests.
+plan 2
+
+# Do not inherit test verbosity.
+unset C_TAP_VERBOSE
+
+# Remove any valgrind flags to trace children, since we only want to check the
+# harness itself.
+C_TAP_VALGRIND=`echo "$C_TAP_VALGRIND" | sed 's/--trace-children[^ ]* //'`
+
+# Run runtests, overriding the build and source directories.
+$C_TAP_VALGRIND "${C_TAP_BUILD}/runtests" -s "${C_TAP_SOURCE}/harness/single" \
+    -o test > test.result
+status=$?
+ok 'test result status' [ $status -eq 4 ]
+diff -u "${C_TAP_SOURCE}/harness/single/test.output" test.result 2>&1
+status=$?
+ok 'test output' [ $status -eq 0 ]
+if [ $status -eq 0 ] ; then
+    rm test.result
+fi

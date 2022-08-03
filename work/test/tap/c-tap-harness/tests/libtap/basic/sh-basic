@@ -1,0 +1,47 @@
+#! /bin/sh
+#
+# Calls basic libtap functions for testing the shell library.
+#
+# Written by Russ Allbery <eagle@eyrie.org>
+# Copyright 2016 Russ Allbery <eagle@eyrie.org>
+# Copyright 2008, 2009
+#     The Board of Trustees of the Leland Stanford Junior University
+#
+# SPDX-License-Identifier: MIT
+
+# Load the test library.
+. "$C_TAP_SOURCE/tap/libtap.sh"
+
+# Plan test.
+plan 25
+
+# ok tests.
+ok '' true
+ok '' false
+ok 'with desc' [ 1 -eq 1 ]
+ok 'with desc' [ 2 -eq 1 ]
+
+# skip tests.
+skip no idea why
+
+# ok_block tests.
+ok_block 1 '' false
+ok_block 2 'with desc' true
+ok_block 3 '' [ 1 -ne 1 ]
+
+# skip_block tests.
+skip_block 1 some reason
+skip_block 2 some other reason
+
+# ok_program tests.
+ok_program '' 0 '' /bin/true
+ok_program 'some program' 0 '' sh -c 'exit 1'
+ok_program 'another program' 1 '' sh -c 'exit 1'
+ok_program '' 0 'test is successful' echo test is successful
+ok_program '' 0 'test fails' sh -c 'echo test fails; exit 1'
+ok_program '' 0 'test fails' echo test failed
+ok_program '' 1 'yay' sh -c 'echo yay; exit 1'
+ok_program '' 10 'yay' sh -c 'echo yay; exit 10'
+ok_program '' 10 'yay' sh -c 'echo yay; exit 9'
+ok_program '' 1 'test' echo test
+ok_program '' 1 'test' sh -c 'echo yay; exit 1'

@@ -1,0 +1,285 @@
+# Package metadata for C TAP Harness.
+#
+# This file contains configuration for DocKnot used to generate
+# documentation files (like README.md) and web pages.  Other documentation
+# in this package is generated automatically from these files as part of
+# the release process.  For more information, see DocKnot's documentation.
+#
+# DocKnot is available from <https://www.eyrie.org/~eagle/software/docknot/>.
+#
+# Copyright 2009-2021 Russ Allbery <eagle@eyrie.org>
+#
+# SPDX-License-Identifier: MIT
+
+format: v1
+
+name: C TAP Harness
+maintainer: Russ Allbery <eagle@eyrie.org>
+version: '4.8'
+synopsis: C harness for running TAP-compliant tests
+
+license:
+  name: Expat
+copyrights:
+  - holder: Russ Allbery <eagle@eyrie.org>
+    years: 2000-2001, 2004, 2006-2022
+  - holder: The Board of Trustees of the Leland Stanford Junior University
+    years: 2006-2009, 2011-2013
+
+build:
+  autoconf: '2.64'
+  automake: '1.11'
+  autotools: true
+  cplusplus: true
+  install: false
+  manpages: true
+  suffix: |
+    Installing C TAP Harness is not normally done.  Instead, see the section
+    on using the harness below.
+  type: Autoconf
+  valgrind: true
+distribution:
+  section: devel
+  tarname: c-tap-harness
+  version: c-tap-harness
+support:
+  email: eagle@eyrie.org
+  github: rra/c-tap-harness
+  web: https://www.eyrie.org/~eagle/software/c-tap-harness/
+vcs:
+  browse: https://git.eyrie.org/?p=devel/c-tap-harness.git
+  github: rra/c-tap-harness
+  openhub: https://www.openhub.net/p/c-tap-harness
+  status:
+    workflow: build
+  type: Git
+  url: https://git.eyrie.org/git/devel/c-tap-harness.git
+
+docs:
+  api:
+    - name: bail
+      title: bail and sysbail
+    - name: bmalloc
+      title: bmalloc, bcalloc, brealloc, bstrdup, and bstrndup
+    - name: bcalloc_type
+      title: bcalloc_type
+    - name: breallocarray
+      title: breallocarray and breallocarray_type
+    - name: diag
+      title: diag and sysdiag
+    - name: diag_file_add
+      title: diag_file_add and diag_file_remove
+    - name: is_int
+      title: is_bool, is_int, is_double, is_string, is_hex, and is_blob
+    - name: ok
+      title: ok, okv, and ok_block
+    - name: plan
+      title: plan and plan_lazy
+    - name: skip
+      title: skip and skip_block
+    - name: skip_all
+      title: skip_all
+    - name: test_cleanup_register
+      title: test_cleanup_register
+    - name: test_file_path
+      title: test_file_path and test_file_path_free
+    - name: test_tmpdir
+      title: test_tmpdir and test_tmpdir_free
+  user:
+    - name: writing
+      title: Writing TAP tests
+    - name: runtests
+      title: runtests manual page
+
+blurb: |
+  C TAP Harness is a pure-C implementation of TAP, the Test Anything Protocol.
+  TAP is the text-based protocol used by Perl's test suite.  This package
+  provides a harness similar to Perl's Test::Harness for running tests, with
+  some additional features useful for test suites in packages that use
+  Autoconf and Automake, and C and shell libraries to make writing
+  TAP-compliant test programs easier.
+
+description: |
+  This package started as the runtests program I wrote for INN in 2000 to
+  serve as the basis for a new test suite using a test protocol similar to
+  that used for Perl modules.  When I started maintaining additional C
+  packages, I adopted runtests for the test suite driver of those as well,
+  resulting in further improvements but also separate copies of the same
+  program in different distributions.  The C TAP Harness distribution merges
+  all the various versions into a single code base that all my packages can
+  pull from.
+
+  C TAP Harness provides a full TAP specification driver (apart from a few
+  possible edge cases) and has additional special features for supporting
+  builds outside the source directory.  It's mostly useful for packages using
+  Autoconf and Automake and because it doesn't assume or require Perl.
+
+  The runtests program can be built with knowledge of the source and build
+  directory and pass that knowledge on to test scripts, and will search for
+  test scripts in both the source and build directory.  This makes it easier
+  for packages using Autoconf and Automake and supporting out-of-tree builds
+  to build some test programs, ship others, and run them all regardless of
+  what tree they're in.  It also makes it easier for test cases to find their
+  supporting files when they run.
+
+  Also included in this package are C and shell libraries that provide utility
+  functions for writing test scripts that use TAP to report results.  The C
+  library also provides a variety of utility functions useful for test
+  programs running as part of an Automake-built package: finding test data
+  files, creating temporary files, reporting output from external programs
+  running in the background, and similar common problems.
+
+requirements: |
+  C TAP Harness requires a C compiler to build.  Any ISO C89 or later C
+  compiler on a system supporting the Single UNIX Specification, version 3
+  (SUSv3) should be sufficient.  This should not be a problem on any modern
+  system.  The test suite and shell library require a Bourne-compatible shell.
+  Outside of the test suite, C TAP Harness has no other prerequisites or
+  requirements.
+
+  C TAP Harness can also be built with a C++ compiler and should be similarly
+  portable to any recent C++ compiler, although it is only tested with g++.
+
+test:
+  lancaster: true
+  override: |
+    C TAP Harness comes with a comprehensive test suite, which you can run
+    after building with:
+
+    ```
+        make check
+    ```
+
+    If a test fails, you can run a single test with verbose output via:
+
+    ```
+        tests/runtests -b $(pwd)/tests -s $(pwd)/tests -o <name-of-test>
+    ```
+
+    Do this instead of running the test program directly since it will ensure
+    that necessary environment variables are set up.  You may need to change
+    the `-s` option argument if you build with a separate build directory from
+    the source directory.
+
+    To run the test suite, you will need Perl 5.10 or later.  The following
+    additional Perl modules will be used by the test suite if present:
+
+    * Test::Pod
+    * Test::Spelling
+
+    All are available on CPAN.  Those tests will be skipped if the modules are
+    not available.
+
+sections:
+  - title: Using the Harness
+    body: |
+      While there is an install target that installs runtests in the default
+      binary directory (`/usr/local/bin` by default) and installs the man
+      pages, one normally wouldn't install anything from this package.
+      Instead, the code is intended to be copied into your package and
+      refreshed from the latest release of C TAP Harness for each release.
+
+      You can obviously copy the code and integrate it however works best for
+      your package and your build system.  Here's how I do it for my packages
+      as an example:
+
+      * Create a tests directory and copy tests/runtests.c into it.  Create a
+        `tests/tap` subdirectory and copy the portions of the TAP library
+        (from `tests/tap`) that I need for that package into it.  The TAP
+        library is designed to let you drop in additional source and header
+        files for additional utility functions that are useful in your
+        package.
+
+      * Add code to my top-level `Makefile.am` (I always use a non-recursive
+        Makefile with `subdir-objects` set) to build `runtests` and the test
+        library:
+
+        ```make
+            check_PROGRAMS = tests/runtests
+            tests_runtests_CPPFLAGS = \
+                    -DC_TAP_SOURCE='"$(abs_top_srcdir)/tests"' \
+                    -DC_TAP_BUILD='"$(abs_top_builddir)/tests"'
+            check_LIBRARIES = tests/tap/libtap.a
+            tests_tap_libtap_a_CPPFLAGS = -I$(abs_top_srcdir)/tests
+            tests_tap_libtap_a_SOURCES = tests/tap/basic.c tests/tap/basic.h \
+                    tests/tap/float.c tests/tap/float.h tests/tap/macros.h
+        ```
+
+        Omit `float.c` and `float.h` from the last line if your package
+        doesn't need the `is_double` function.  Building the build and source
+        directories into runtests will let `tests/runtests -o <test>` work for
+        users without requiring that they set any other variables, even if
+        they're doing an out-of-source build.
+
+        Add additional source files and headers that should go into the TAP
+        library if you added extra utility functions for your package.
+
+      * Add code to `Makefile.am` to run the test suite:
+
+        ```make
+            check-local: $(check_PROGRAMS)
+                  cd tests && ./runtests -l $(abs_top_srcdir)/tests/TESTS
+        ```
+
+        See the `Makefile.am` in this package for an example.
+
+      * List the test programs in the `tests/TESTS` file.  This should have
+        the name of the test executable with the trailing "-t" or ".t" (you
+        can use either extension as you prefer) omitted.
+
+        Test programs must be executable.
+
+        For any test programs that need to be compiled, add build rules for
+        them in `Makefile.am`, similar to:
+
+        ```make
+            tests_libtap_c_basic_LDADD = tests/tap/libtap.a
+        ```
+
+        and add them to `check_PROGRAMS`.  If you include the `float.c` add-on
+        in your libtap library, you will need to add `-lm` to the `_LDADD`
+        setting for all test programs linked against it.
+
+        A more complex example from the remctl package that needs additional
+        libraries:
+
+        ```make
+            tests_client_open_t_LDFLAGS = $(GSSAPI_LDFLAGS)
+            tests_client_open_t_LDADD = client/libremctl.la tests/tap/libtap.a \
+                    util/libutil.la $(GSSAPI_LIBS)
+        ```
+
+        If the test program doesn't need to be compiled, add it to `EXTRA_DIST`
+        so that it will be included in the distribution.
+
+      * If you have test programs written in shell, copy `tests/tap/libtap.sh`
+        the tap subdirectory of your tests directory and add it to
+        `EXTRA_DIST`.  Shell programs should start with:
+
+        ```sh
+            . "${C_TAP_SOURCE}/tap/libtap.sh"
+        ```
+
+        and can then use the functions defined in the library.
+
+      * Optionally copy `docs/writing-tests` into your package somewhere, such
+        as `tests/README`, as instructions to contributors on how to write
+        tests for this framework.
+
+      If you have configuration files that the user must create to enable some
+      of the tests, conventionally they go into `tests/config`.
+
+      If you have data files that your test cases use, conventionally they go
+      into `tests/data`.  You can then find the data directory relative to the
+      `C_TAP_SOURCE` environment variable (set by `runtests`) in your test
+      program.  If you have data that's compiled or generated by Autoconf, it
+      will be relative to the `BUILD` environment variable.  Don't forget to
+      add test data to `EXTRA_DIST` as necessary.
+
+      For more TAP library add-ons, generally ones that rely on additional
+      portability code not shipped in this package or with narrower uses, see
+      [the rra-c-util
+      package](https://www.eyrie.org/~eagle/software/rra-c-util/).  There are
+      several additional TAP library add-ons in the `tests/tap` directory in
+      that package.  It's also an example of how to use this test harness in
+      another package.

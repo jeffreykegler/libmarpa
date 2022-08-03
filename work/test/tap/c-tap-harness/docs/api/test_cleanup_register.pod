@@ -1,0 +1,94 @@
+=for stopwords
+Allbery typedef FSFAP SPDX-License-Identifier
+
+=head1 NAME
+
+test_cleanup_register, test_cleanup_register_with_data - Register a function to run at the end of a TAP test
+
+=head1 SYNOPSIS
+
+#include <tap/basic.h>
+
+typedef void (*B<test_cleanup_func>)(int, int);
+
+typedef void (*B<test_cleanup_func_with_data>)(int, int, void *);
+
+void B<test_cleanup_register>(test_cleanup_func I<func>);
+
+void B<test_cleanup_register_with_data>(test_cleanup_func_with_data I<func>,
+    void *I<data>);
+
+=head1 DESCRIPTION
+
+test_cleanup_register() registers a cleanup function that is called when
+testing ends.  All such registered functions will be run during atexit
+handling (and are therefore subject to all the same constraints and
+caveats as atexit functions).  The function must return void and will be
+passed two arguments, both ints.  The first will be true if the test
+completed successfully and false otherwise.  The second will be true if
+the cleanup function is being run in the primary process (the one in which
+plan() or plan_lazy() was called) and false otherwise.
+
+Typical uses of cleanup functions include removing temporary files,
+cleaning up temporary resources, or deciding whether to preserve log files
+based on whether the test succeeded.  Generally, cleanup that involves
+external resources, like files, should only be done in the primary process
+(when the second argument is true), but internal resources, like memory,
+can be freed unconditionally.
+
+test_cleanup_register() may be called at any point in the program before
+its exit, but either plan() or plan_lazy() must be called before the
+program exits or cleanup functions will not be run.  Provided that plan()
+or plan_lazy() has been called, the cleanup functions will be called even
+if the test aborts with bail().
+
+test_cleanup_register() may be called as many times as desired.  All
+registered functions will be called (provided that none of them terminate
+the process prematurely) in the order in which they were registered.
+
+test_cleanup_register_with_data() functions as described above, except
+that the additional opaque pointer is passed on to the registered
+function.  This can be useful to pass data such as directory or file names
+to the cleanup function, rather than relying on global variables.
+
+=head1 RETURN VALUE
+
+None.
+
+=head1 BUGS
+
+test_cleanup_register_with_data() should have been the only variant of
+this function; not including a data pointer in test_cleanup_register() was
+an API design error.  test_cleanup_register() has been kept for backward
+compatibility, but test_cleanup_register_with_data() should be preferred.
+
+=head1 CAVEATS
+
+Cleanup functions registered with test_cleanup_register() or with
+test_cleanup_register_with_data() cannot be used to clean up after actions
+taken before a call to skip_all(), since calling skip_all() means that
+plan() and plan_lazy() were never called.
+
+=head1 AUTHOR
+
+Russ Allbery <eagle@eyrie.org>
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright 2011, 2013-2014, 2018 Russ Allbery <eagle@eyrie.org>
+
+Copying and distribution of this file, with or without modification, are
+permitted in any medium without royalty provided the copyright notice and
+this notice are preserved.  This file is offered as-is, without any
+warranty.
+
+SPDX-License-Identifier: FSFAP
+
+=head1 SEE ALSO
+
+plan(3), skip_all(3)
+
+The current version of the C TAP Harness library is available from its web
+page at L<https://www.eyrie.org/~eagle/software/c-tap-harness/>.
+
+=cut

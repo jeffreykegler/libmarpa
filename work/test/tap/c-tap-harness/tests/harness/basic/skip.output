@@ -1,0 +1,14 @@
+
+Running all tests listed in skip.list.  If any tests fail, run the failing
+test program with runtests -o to see more details.
+
+skip............ok (skipped 5 tests)
+skip-all........skipped (some reason)
+skip-all-case...skipped (some reason)
+skip-all-quiet..skipped
+pass............ok
+order...........ok
+skip-all-late...skipped (some reason)
+
+All tests successful, 9 tests skipped.
+Files=7,  Tests=18

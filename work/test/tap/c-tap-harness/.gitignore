@@ -1,0 +1,60 @@
+# Ignore list for Git.  -*- conf -*-
+#
+# Copyright 2008-2014, 2018, 2021 Russ Allbery <eagle@eyrie.org>
+#
+# Copying and distribution of this file, with or without modification, are
+# permitted in any medium without royalty provided the copyright notice and
+# this notice are preserved.  This file is offered as-is, without any
+# warranty.
+#
+# SPDX-License-Identifier: FSFAP
+
+/Makefile
+/Makefile.in
+/aclocal.m4
+/autom4te.cache/
+/build-aux/
+/c-tap-harness-*
+/config.cache
+/config.log
+/config.status
+/config.status.lineno
+/configure
+/configure~
+/configure.lineno
+/docs/runtests.1
+/tests/harness/env/env.t
+/tests/harness/search-t
+/tests/libtap/basic/c-bail
+/tests/libtap/basic/c-basic
+/tests/libtap/basic/c-bstrndup
+/tests/libtap/basic/c-diag
+/tests/libtap/basic/c-diag-file
+/tests/libtap/basic/c-extra
+/tests/libtap/basic/c-extra-one
+/tests/libtap/basic/c-file
+/tests/libtap/basic/c-lazy
+/tests/libtap/basic/c-missing
+/tests/libtap/basic/c-missing-one
+/tests/libtap/basic/c-skip
+/tests/libtap/basic/c-skip-reason
+/tests/libtap/basic/c-success
+/tests/libtap/basic/c-success-one
+/tests/libtap/basic/c-sysbail
+/tests/libtap/basic/c-tmpdir
+/tests/libtap/cleanup/c-bail
+/tests/libtap/cleanup/c-bail-lazy
+/tests/libtap/cleanup/c-fork
+/tests/libtap/cleanup/c-lazy
+/tests/libtap/cleanup/c-many
+/tests/libtap/cleanup/c-many-fail
+/tests/libtap/cleanup/c-one
+/tests/libtap/cleanup/c-one-fail
+/tests/libtap/cleanup/c-one-with-data
+/tests/runtests
+/tmp-valgrind/
+.deps/
+.dirstamp
+*.3
+*.a
+*.o

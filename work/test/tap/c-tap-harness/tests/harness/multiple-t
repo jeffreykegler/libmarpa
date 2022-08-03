@@ -1,0 +1,44 @@
+#!/bin/sh
+#
+# Test suite for running multiple tests listed on the command line.
+#
+# Copyright 2013, 2016, 2020 Russ Allbery <eagle@eyrie.org>
+#
+# SPDX-License-Identifier: MIT
+
+. "$C_TAP_SOURCE/tap/libtap.sh"
+cd "$C_TAP_BUILD"
+
+# Total tests.
+plan 4
+
+# Do not inherit test verbosity.
+unset C_TAP_VERBOSE
+
+# Remove any valgrind flags to trace children, since we only want to check the
+# harness itself.
+C_TAP_VALGRIND=`echo "$C_TAP_VALGRIND" | sed 's/--trace-children[^ ]* //'`
+
+# Run runtests, overriding the build and source directories, and passing a
+# few tests from the basic directory to run.
+$C_TAP_VALGRIND "${C_TAP_BUILD}/runtests" -s "${C_TAP_SOURCE}/harness/basic" \
+    pass fail skip todo > multiple.raw
+status=$?
+ok 'test result status' [ $status -eq 1 ]
+sed 's/\(Tests=[0-9]*\),  .*/\1/' multiple.raw > multiple.result
+rm multiple.raw
+diff -u "${C_TAP_SOURCE}/harness/multiple/output" multiple.result 2>&1
+status=$?
+ok 'test output' [ $status -eq 0 ]
+if [ $status -eq 0 ] ; then
+    rm multiple.result
+fi
+
+# Verify that running runtests without any tests fails and prints a usage
+# message.
+output=`$C_TAP_VALGRIND "${C_TAP_BUILD}/runtests" 2>&1`
+status=$?
+ok 'runtests with no arguments fails' [ $status -eq 1 ]
+echo "$output" | grep Usage: >/dev/null 2>&1
+status=$?
+ok '...and produces usage message' [ $status -eq 0 ]

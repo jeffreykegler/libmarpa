@@ -1,0 +1,74 @@
+=for stopwords
+const printf-style Allbery testnum FSFAP SPDX-License-Identifier
+
+=head1 NAME
+
+plan, plan_lazy - Set TAP test suite plan
+
+=head1 SYNOPSIS
+
+#include <tap/basic.h>
+
+void B<plan>(unsigned long I<count>);
+
+void B<plan_lazy>(void);
+
+=head1 DESCRIPTION
+
+plan() sets up a TAP test plan and prints out the initial output line that
+tells the harness how many tests are expected.  It also sets up some
+internal tracking in the TAP library, such as initializing the test number
+and preparing to track how many tests succeeded and failed.  It should be
+called before performing any tests, and takes the number of tests that
+will be performed.
+
+plan_lazy() is identical to plan() except that it does not specify the
+number of tests to be performed.  Instead, the library will automatically
+print out a plan line when the tests are complete, making the assumption
+that the number of tests run was the number of tests planned.  This is not
+the recommended approach for writing tests since, should the test program
+exit in the middle for some reason, everything will appear to succeed.
+But it can save time in writing test cases quickly and can make it easier
+to write test cases where the number of tests are not known in advance.
+
+After one of these functions has been called, the current test number,
+maintained internally by the TAP library, is available as the global
+variable B<testnum>.  If the test case must report test results without
+using the TAP library functions, it can manipulate the B<testnum> variable
+directly to maintain proper test numbering, but be aware that doing so
+will cause the test summary reported at the end of the test case to be
+incorrect.
+
+=head1 RETURN VALUE
+
+None.
+
+=head1 CAVEATS
+
+Only one of plan() or plan_lazy() should be called for a given test suite,
+and one of them should be called before any tests are performed and before
+any other TAP library functions except skip_all() are called.
+
+=head1 AUTHOR
+
+Russ Allbery <eagle@eyrie.org>
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright 2010, 2013 Russ Allbery <eagle@eyrie.org>
+
+Copying and distribution of this file, with or without modification, are
+permitted in any medium without royalty provided the copyright notice and
+this notice are preserved.  This file is offered as-is, without any
+warranty.
+
+SPDX-License-Identifier: FSFAP
+
+=head1 SEE ALSO
+
+bail(3), diag(3), is_int(3), ok(3), skip(3), skip_all(3)
+
+The current version of the C TAP Harness library is available from its web
+page at L<https://www.eyrie.org/~eagle/software/c-tap-harness/>.
+
+=cut

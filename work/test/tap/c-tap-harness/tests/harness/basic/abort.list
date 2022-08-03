@@ -1,0 +1,17 @@
+fail
+missing
+hup
+segv
+status
+pass
+abort
+nocount
+badnum
+duplicate
+bail
+bail-silent
+too-many
+zero
+nonexistent
+badnum-delay
+plan-twice

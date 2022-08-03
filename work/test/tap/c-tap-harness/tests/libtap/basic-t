@@ -1,0 +1,78 @@
+#! /bin/sh
+#
+# Test suite for libtap functionality.
+#
+# Written by Russ Allbery <eagle@eyrie.org>
+# Copyright 2009, 2012-2013, 2016, 2020 Russ Allbery <eagle@eyrie.org>
+# Copyright 2008, 2013
+#     The Board of Trustees of the Leland Stanford Junior University
+#
+# SPDX-License-Identifier: MIT
+
+. "$C_TAP_SOURCE/tap/libtap.sh"
+cd "${C_TAP_BUILD}/libtap/basic"
+
+# Run a binary, saving its output, and then compare that output to the
+# corresponding *.output file.
+ok_result () {
+    case "$1" in
+        c-*) $C_TAP_VALGRIND "$2"/libtap/basic/"$1" > "$1".result 2>&1 ;;
+        *)   "$2"/libtap/basic/"$1" > "$1".result 2>&1 ;;
+    esac
+    status=$?
+    ok "$1 exit status" [ $status -eq "$3" ]
+    case "$1" in
+        c-diag|c-file|c-sysbail|c-tmpdir|sh-file|sh-tmpdir)
+            diff -u "${C_TAP_BUILD}/libtap/basic/$1".output "$1".result 2>&1
+            ;;
+        *)
+            diff -u "${C_TAP_SOURCE}/libtap/basic/$1".output "$1".result 2>&1
+            ;;
+    esac
+    status=$?
+    ok "$1 output" [ $status -eq 0 ]
+    if [ $status -eq 0 ] ; then
+        rm "$1".result
+    fi
+}
+
+# Total tests.
+plan 62
+
+# Run the individual tests.
+ok_result c-bail         "$C_TAP_BUILD"  255
+ok_result c-basic        "$C_TAP_BUILD"  0
+ok_result c-bstrndup     "$C_TAP_BUILD"  0
+ok_result c-diag         "$C_TAP_BUILD"  0
+ok_result c-diag-file    "$C_TAP_BUILD"  0
+ok_result c-extra        "$C_TAP_BUILD"  0
+ok_result c-extra-one    "$C_TAP_BUILD"  0
+ok_result c-file         "$C_TAP_BUILD"  0
+ok_result c-lazy         "$C_TAP_BUILD"  0
+ok_result c-missing      "$C_TAP_BUILD"  0
+ok_result c-missing-one  "$C_TAP_BUILD"  0
+ok_result c-skip         "$C_TAP_BUILD"  0
+ok_result c-skip-reason  "$C_TAP_BUILD"  0
+ok_result c-success      "$C_TAP_BUILD"  0
+ok_result c-success-one  "$C_TAP_BUILD"  0
+ok_result c-sysbail      "$C_TAP_BUILD"  255
+ok_result c-tmpdir       "$C_TAP_BUILD"  0
+ok_result sh-bail        "$C_TAP_SOURCE" 255
+ok_result sh-basic       "$C_TAP_SOURCE" 0
+ok_result sh-diag        "$C_TAP_SOURCE" 0
+ok_result sh-extra       "$C_TAP_SOURCE" 0
+ok_result sh-extra-one   "$C_TAP_SOURCE" 0
+ok_result sh-file        "$C_TAP_SOURCE" 0
+ok_result sh-lazy        "$C_TAP_SOURCE" 0
+ok_result sh-missing     "$C_TAP_SOURCE" 0
+ok_result sh-missing-one "$C_TAP_SOURCE" 0
+ok_result sh-skip        "$C_TAP_SOURCE" 0
+ok_result sh-strip-colon "$C_TAP_SOURCE" 0
+ok_result sh-success     "$C_TAP_SOURCE" 0
+ok_result sh-success-one "$C_TAP_SOURCE" 0
+ok_result sh-tmpdir      "$C_TAP_SOURCE" 0
+
+# Remove the output files created by c-diag, c-file, c-sysbail, c-tmpdir,
+# sh-file, and sh-tmpdir
+rm -f c-diag.output c-file.output c-sysbail.output c-tmpdir.output \
+    sh-file.output sh-tmpdir.output

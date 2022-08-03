@@ -1,0 +1,14 @@
+1..4
+# log1 line 1
+ok 1
+# log2 line 1
+# main diag
+ok 2
+# log1 line 2
+# log2 line 2
+# log2 line 3
+ok 3 - some comment
+# log1 line 3
+ok 4 # skip some skipped test
+# log1 line 4
+# All 4 tests successful or skipped

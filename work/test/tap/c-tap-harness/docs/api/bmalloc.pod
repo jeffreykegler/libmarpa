@@ -1,0 +1,71 @@
+=for stopwords
+bmalloc bcalloc brealloc bstrdup bstrndup nul-terminates Allbery FSFAP
+SPDX-License-Identifier
+
+=head1 NAME
+
+bmalloc, bcalloc, brealloc, bstrdup, bstrndup - Checked memory allocation
+
+=head1 SYNOPSIS
+
+#include <tap/basic.h>
+
+void *B<bmalloc>(size_t I<size>);
+
+void *B<bcalloc>(size_t I<n>, size_t I<size>);
+
+void *B<brealloc>(void *I<ptr>, size_t I<size>);
+
+char *B<bstrdup>(const char *I<string>);
+
+char *B<bstrndup>(const char *I<string>, size_t I<size>);
+
+=head1 DESCRIPTION
+
+These functions are wrappers around the standard C memory allocation
+functions.  They each check whether the memory allocation succeeded,
+returning the newly allocated memory on success and calling sysbail() on
+failure.  They're intended for use inside TAP test cases where the test
+case should be aborted if memory allocation fails, and avoid the need to
+check each allocation as it's performed.
+
+=head1 RETURN VALUE
+
+bmalloc() and bcalloc() return a pointer to the newly allocated memory,
+and brealloc() a pointer to the reallocated memory (which may or may not
+be the same as I<ptr>), identical to their standard C counterparts.
+bstrdup() returns a pointer to a newly allocated copy of I<string>.
+bstrndup() does the same, but copies at most I<size> characters of
+I<string> and always nul-terminates the returned string.  None of these
+functions may return NULL; if memory allocation fails, they will abort the
+program.
+
+=head1 CAVEATS
+
+bmalloc() and bcalloc() do not guard against allocating 0 bytes, just
+calling the underlying C library functions, and may return NULL in that
+case on some platforms.
+
+=head1 AUTHOR
+
+Russ Allbery <eagle@eyrie.org>
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright 2011-2013 Russ Allbery <eagle@eyrie.org>
+
+Copying and distribution of this file, with or without modification, are
+permitted in any medium without royalty provided the copyright notice and
+this notice are preserved.  This file is offered as-is, without any
+warranty.
+
+SPDX-License-Identifier: FSFAP
+
+=head1 SEE ALSO
+
+calloc(3), malloc(3), realloc(3), strdup(3), strndup(3), sysbail(3)
+
+The current version of the C TAP Harness library is available from its web
+page at L<https://www.eyrie.org/~eagle/software/c-tap-harness/>.
+
+=cut

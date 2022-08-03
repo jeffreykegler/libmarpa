@@ -1,0 +1,4 @@
+1..2
+ok 1
+Bail out! Some error message
+# Looks like you planned 2 tests but only ran 1

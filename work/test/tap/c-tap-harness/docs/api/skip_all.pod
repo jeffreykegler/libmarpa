@@ -1,0 +1,59 @@
+=for stopwords
+printf-style Allbery FSFAP SPDX-License-Identifier
+
+=head1 NAME
+
+skip_all - Tell a TAP harness that all of a test case is skipped
+
+=head1 SYNOPSIS
+
+#include <tap/basic.h>
+
+void B<skip_all>(const char *I<format>, ...);
+
+=head1 DESCRIPTION
+
+skip_all() tells a TAP harness that all of a test case is being skipped.
+I<format> may be NULL to give no reason; if I<format> is not NULL, it
+should be a printf-style format string with optional following arguments
+that explains the reason why the test case was skipped.  skip_all() will
+print an output line like:
+
+    1..0 # skip <reason>
+
+and then exit with an exit status of 0.  skip_all() must be called before
+plan() or plan_lazy(), since it presents an alternative plan to the TAP
+test harness.
+
+skip_all() should be used if prerequisites for a test case are not met and
+it would be meaningless to run that test case (if, for example, optional
+test configuration is not present, or if the test case only applies to a
+particular platform).
+
+=head1 RETURN VALUE
+
+None.  skip_all() exits the program with an exit status of 0 when called.
+
+=head1 AUTHOR
+
+Russ Allbery <eagle@eyrie.org>
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright 2010, 2013 Russ Allbery <eagle@eyrie.org>
+
+Copying and distribution of this file, with or without modification, are
+permitted in any medium without royalty provided the copyright notice and
+this notice are preserved.  This file is offered as-is, without any
+warranty.
+
+SPDX-License-Identifier: FSFAP
+
+=head1 SEE ALSO
+
+plan(3), skip(3)
+
+The current version of the C TAP Harness library is available from its web
+page at L<https://www.eyrie.org/~eagle/software/c-tap-harness/>.
+
+=cut

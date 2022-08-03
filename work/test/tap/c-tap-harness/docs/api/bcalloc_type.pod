@@ -1,0 +1,59 @@
+=for stopwords
+bcalloc_type Allbery FSFAP SPDX-License-Identifier
+
+=head1 NAME
+
+bcalloc_type - C++-friendly checked memory allocation
+
+=head1 SYNOPSIS
+
+#include <tap/basic.h>
+
+I<type> *B<bcalloc_type>(size_t I<n>, I<type>);
+
+=head1 DESCRIPTION
+
+bcalloc_type() is a wrapper around bcalloc() that takes a type instead of
+a size as its second argument.  It converts that type to a size using
+B<sizeof> and calls bcalloc(), casting the return value to a pointer to
+I<type>.  This is friendlier to C++ code.
+
+As with bcalloc(), this is intended for use inside TAP test cases where
+the test case should be aborted if memory allocation fails.  It will call
+sysbail() on failure rather than returning NULL.
+
+=head1 RETURN VALUE
+
+bcalloc_type() returns a pointer to the newly allocated memory, cast to a
+pointer to I<type>.  It will never return NULL on failure; if memory
+allocation fails, it will abort the program.
+
+=head1 CAVEATS
+
+bcalloc_type() does not guard against allocating 0 bytes, only calls the
+underlying C library functions, and may return NULL in that case on some
+platforms.
+
+=head1 AUTHOR
+
+Russ Allbery <eagle@eyrie.org>
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright 2011-2013, 2019 Russ Allbery <eagle@eyrie.org>
+
+Copying and distribution of this file, with or without modification, are
+permitted in any medium without royalty provided the copyright notice and
+this notice are preserved.  This file is offered as-is, without any
+warranty.
+
+SPDX-License-Identifier: FSFAP
+
+=head1 SEE ALSO
+
+bmalloc(3), calloc(3), sysbail(3)
+
+The current version of the C TAP Harness library is available from its web
+page at L<https://www.eyrie.org/~eagle/software/c-tap-harness/>.
+
+=cut

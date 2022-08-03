@@ -1,0 +1,35 @@
+pass
+
+1..10
+ok 1
+ok 2
+some other nonsense ok 3
+ok 3
+   ok 4  ok 5
+ok 4  ok 5
+ok 5
+ok 6
+ok 7
+ok    8
+    ok    9
+ok 9
+ok10
+ok
+
+skip
+
+9
+ok   4
+ok 2
+ok 1
+ok 5 # skip blah
+ok 3#SKIP
+ok 6    #skip
+ok 7 # skip
+ok 8 # skIP
+ok 9 skip
+ok (skipped 5 tests)
+
+
+All tests successful, 5 tests skipped.
+Files=2,  Tests=14

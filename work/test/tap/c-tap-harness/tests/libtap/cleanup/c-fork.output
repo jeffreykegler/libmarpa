@@ -1,0 +1,6 @@
+1..1
+ok 1 - some test
+# some output from child
+Called cleanup with 1 0
+Called cleanup with 1 1
+# 1 test successful or skipped

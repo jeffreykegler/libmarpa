@@ -1,0 +1,34 @@
+#! /bin/sh
+#
+# Test suite for runtests directory search support.
+#
+# Copyright 2009, 2012, 2013, 2020 Russ Allbery <eagle@eyrie.org>
+#
+# SPDX-License-Identifier: MIT
+
+. "@abs_top_srcdir@/tests/tap/libtap.sh"
+
+# Total tests.
+plan 1
+
+# Do not inherit test verbosity.
+unset C_TAP_VERBOSE
+
+# Remove any valgrind flags to trace children, since we only want to check the
+# harness itself.
+C_TAP_VALGRIND=`echo "$C_TAP_VALGRIND" | sed 's/--trace-children[^ ]* //'`
+
+# Be sure that we run from the source directory.
+cd "@abs_top_srcdir@/tests/harness/search"
+
+# Run runtests, overriding the build and source directories.
+$C_TAP_VALGRIND "@abs_top_builddir@/tests/runtests" -b build -s source  \
+                -l search.list                                          \
+    | sed 's/\(Tests=[0-9]*\),  .*/\1/'                                 \
+    > "@abs_top_builddir@/tests/harness/search.result"
+diff -u search.output "@abs_top_builddir@/tests/harness/search.result" 2>&1
+status=$?
+ok '' [ $status -eq 0 ]
+if [ $status -eq 0 ] ; then
+    rm "@abs_top_builddir@/tests/harness/search.result"
+fi

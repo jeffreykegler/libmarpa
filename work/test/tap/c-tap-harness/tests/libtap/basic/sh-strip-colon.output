@@ -1,0 +1,10 @@
+1..4
+#  saw: (1) some error: No such file or directory
+#  not: (1) some error
+not ok 1
+#  saw: (1) foo: some error: No such file or directory
+#  not: (1) foo: some error
+not ok 2
+ok 3
+ok 4
+# Looks like you failed 2 tests of 4

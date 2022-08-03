@@ -1,0 +1,50 @@
+# Configuration for clang-format automated reformatting.  -*- yaml -*-
+#
+# This configuration requires Clang 13.0 or later.
+#
+# The canonical version of this file is maintained in the rra-c-util package,
+# which can be found at <https://www.eyrie.org/~eagle/software/rra-c-util/>.
+#
+# Copyright 2020-2021 Russ Allbery <eagle@eyrie.org>
+#
+# Copying and distribution of this file, with or without modification, are
+# permitted in any medium without royalty provided the copyright notice
+# and this notice are preserved.  This file is offered as-is, without any
+# warranty.
+#
+# SPDX-License-Identifier: FSFAP
+
+---
+Language: Cpp
+BasedOnStyle: LLVM
+AlignArrayOfStructures: Left
+AlignConsecutiveMacros: AcrossEmptyLinesAndComments
+AlignEscapedNewlines: Left
+AllowShortEnumsOnASingleLine: false
+AlwaysBreakAfterReturnType: AllDefinitions
+BreakBeforeBinaryOperators: NonAssignment
+BreakBeforeBraces: WebKit
+ColumnLimit: 79
+IndentPPDirectives: AfterHash
+IndentWidth: 4
+IndentWrappedFunctionNames: false
+MaxEmptyLinesToKeep: 2
+SpaceAfterCStyleCast: true
+---
+
+# Additional formatting options that we would like to use but cannot (at least
+# yet):
+#
+# PPIndentWidth: 1
+#     Better indentation of #if blocks, but unfortunately in Clang 13.0 this
+#     indentation is also applied to code in #define macros, so produces:
+#
+#     #define ENTRY(args, flags)                     \
+#      do {                                          \
+#       if (args->debug)                             \
+#        putil_log_entry((args), __func__, (flags)); \
+#      } while (0)
+#
+#     Should be used as soon as there is a way to distinguish between
+#     identation of the preprocessor directives themselves and the code blocks
+#     in #define.

@@ -1,0 +1,57 @@
+#! /bin/sh
+#
+# Test suite for basic runtests functionality.
+#
+# Copyright 2008-2009, 2012-2013, 2016, 2020 Russ Allbery <eagle@eyrie.org>
+#
+# SPDX-License-Identifier: MIT
+
+. "$C_TAP_SOURCE/tap/libtap.sh"
+cd "$C_TAP_BUILD"
+
+# Run runtests on a list and compare the output to the expected output,
+# printing ok if it matches.  Strip out the time information from the runtests
+# result since it changes for each run.
+ok_runtests () {
+    $C_TAP_VALGRIND "$C_TAP_BUILD"/runtests                     \
+                    -s "${C_TAP_SOURCE}/harness/basic"          \
+                    -b "${C_TAP_BUILD}/harness/basic"           \
+                    -l "${C_TAP_SOURCE}/harness/basic/$1".list  \
+        | sed 's/\(Tests=[0-9]*\),  .*/\1/' > "$1".result
+    diff -u "${C_TAP_SOURCE}/harness/basic/$1".output "$1".result 2>&1
+    status=$?
+    ok "$1 test set" [ $status -eq 0 ]
+    if [ $status -eq 0 ] ; then
+        rm "$1".result
+    fi
+    rm -f core core.*
+}
+
+# Total tests.
+plan 8
+
+# Do not inherit test verbosity.
+unset C_TAP_VERBOSE
+
+# Remove any valgrind flags to trace children, since we only want to check the
+# harness itself.
+C_TAP_VALGRIND=`echo "$C_TAP_VALGRIND" | sed 's/--trace-children[^ ]* //'`
+
+# Run the tests.
+ok_runtests pass
+ok_runtests skip
+ok_runtests fail
+ok_runtests abort
+ok_runtests abort-one
+ok_runtests empty
+
+# Check that running runtests with a list and another argument fails and
+# produces the usage message.
+runtests="${C_TAP_BUILD}/runtests"
+list="${C_TAP_SOURCE}/harness/basic/pass.list"
+output=`$C_TAP_VALGRIND "$runtests" -l "$list" pass 2>&1`
+status=$?
+ok 'runtests with list and argument fails' [ $status -eq 1 ]
+echo "$output" | grep Usage: >/dev/null 2>&1
+status=$?
+ok '...and produces usage message' [ $status -eq 0 ]

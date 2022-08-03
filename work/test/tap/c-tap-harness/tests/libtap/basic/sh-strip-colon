@@ -1,0 +1,21 @@
+#!/bin/sh
+#
+# Tests parsing and post-processing of program output.
+#
+# Copyright 2010, 2016 Russ Allbery <eagle@eyrie.org>
+#
+# SPDX-License-Identifier: MIT
+
+. "${C_TAP_SOURCE}/tap/libtap.sh"
+
+plan 4
+
+# The first two should fail and the second two should succeed.
+ok_program '' 1 'some error' \
+    sh -c 'echo some error: No such file or directory; exit 1'
+ok_program '' 1 'foo: some error' \
+    sh -c 'echo foo: some error: No such file or directory; exit 1'
+ok_program '' 1 'some error' strip_colon_error \
+    sh -c 'echo some error: No such file or directory; exit 1'
+ok_program '' 1 'foo: some error' strip_colon_error \
+    sh -c 'echo foo: some error: No such file or directory; exit 1'

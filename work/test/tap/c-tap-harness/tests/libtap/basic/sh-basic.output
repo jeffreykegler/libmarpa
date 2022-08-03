@@ -1,0 +1,39 @@
+1..25
+ok 1
+not ok 2
+ok 3 - with desc
+not ok 4 - with desc
+ok 5 # skip no idea why
+not ok 6
+ok 7 - with desc
+ok 8 - with desc
+not ok 9
+not ok 10
+not ok 11
+ok 12 # skip some reason
+ok 13 # skip some other reason
+ok 14 # skip some other reason
+ok 15
+#  saw: (1) 
+#  not: (0) 
+not ok 16 - some program
+ok 17 - another program
+ok 18
+#  saw: (1) test fails
+#  not: (0) test fails
+not ok 19
+#  saw: (0) test failed
+#  not: (0) test fails
+not ok 20
+ok 21
+ok 22
+#  saw: (9) yay
+#  not: (10) yay
+not ok 23
+#  saw: (0) test
+#  not: (1) test
+not ok 24
+#  saw: (1) yay
+#  not: (1) test
+not ok 25
+# Looks like you failed 12 tests of 25

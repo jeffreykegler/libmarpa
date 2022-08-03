@@ -1,0 +1,78 @@
+=for stopwords
+ok okv const printf-style Allbery FSFAP SPDX-License-Identifier
+
+=head1 NAME
+
+ok, okv, ok_block - Simple success or failure for a TAP test
+
+=head1 SYNOPSIS
+
+#include <tap/basic.h>
+
+int B<ok>(int I<success>, const char *I<format>, ...);
+
+int B<okv>(int I<success>, const char *I<format>, va_list I<args>);
+
+int B<ok_block>(unsigned long I<count>, int I<success>,
+             const char *I<format>, ...);
+
+=head1 DESCRIPTION
+
+ok() reports success or failure for a simple test.  I<success> is
+interpreted as a boolean value, and the test is successful if I<success>
+is non-zero and a failure otherwise.  I<format> may be NULL; if not NULL,
+I<format> should be a printf-style format string with possible optional
+arguments giving the name or intention of this test.  I<format> should be
+specified where possible to make it easier to track failures down to
+specific tests.
+
+ok() cannot provide any additional information about why a test succeeded
+or failed.  Normally, is_int() or a similar function should be used
+instead to check a value against another value, but ok() is the only
+useful way to express some more complex test cases.  Consider calling
+diag() before ok() if the test is known to have failed to provide
+additional information about exactly what failed.
+
+okv() is identical to ok() except that it takes the additional
+printf-style arguments as a va_list instead of as variable arguments.
+It is intended for use by other test functions that follow the argument
+style of is_int() and ok() and allows those functions to reuse the
+reporting and statistics framework provided by ok().
+
+ok_block() is identical to ok() except that it takes an initial I<count>
+and reports the same status for the next I<count> tests.  It's rarely
+used.  To skip a set of tests because they don't apply to the current
+environment, use skip_block() instead.
+
+=head1 RETURN VALUE
+
+All functions return the value of the I<success> parameter.
+
+=head1 CAVEATS
+
+plan() or plan_lazy() should always be called before calling ok() or
+ok_block().
+
+=head1 AUTHOR
+
+Russ Allbery <eagle@eyrie.org>
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright 2010, 2013-2014 Russ Allbery <eagle@eyrie.org>
+
+Copying and distribution of this file, with or without modification, are
+permitted in any medium without royalty provided the copyright notice and
+this notice are preserved.  This file is offered as-is, without any
+warranty.
+
+SPDX-License-Identifier: FSFAP
+
+=head1 SEE ALSO
+
+diag(3), is_int(3), plan(3), skip(3)
+
+The current version of the C TAP Harness library is available from its web
+page at L<https://www.eyrie.org/~eagle/software/c-tap-harness/>.
+
+=cut
