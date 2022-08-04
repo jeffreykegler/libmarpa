@@ -45,22 +45,33 @@ check_PROGRAMS = test/tap/runtests \
 test_tap_runtests_CPPFLAGS = \
     -DC_TAP_SOURCE='"$(abs_top_srcdir)/test/tap"' \
     -DC_TAP_BUILD='"$(abs_top_builddir)/test/tap"'
-check_LIBRARIES = test/tap/libtap/libtap.a
-test_tap_libtap_libtap_a_CPPFLAGS = -I$(abs_top_srcdir)/test/tap
-test_tap_libtap_libtap_a_SOURCES = test/tap/libtap/basic.c test/tap/libtap/basic.h \
-	test/tap/libtap/float.c test/tap/libtap/float.h test/tap/libtap/macros.h
+check_LIBRARIES = test/tap/tap/libtap.a
+test_tap_tap_libtap_a_CPPFLAGS = -I$(abs_top_srcdir)/test/tap
+test_tap_tap_libtap_a_SOURCES = test/tap/tap/basic.c test/tap/tap/basic.h \
+	test/tap/tap/float.c test/tap/tap/float.h test/tap/tap/macros.h
 
 check-local: $(check_PROGRAMS)
 	cd tests && ./runtests -l $(abs_top_srcdir)/tests/TESTS
 
-test_tap_simple_rule1_LDADD = tests/tap/libtap/libtap.a
-test_tap_simple_trivial_LDADD = tests/tap/libtap/libtap.a
-test_tap_simple_trivial1_LDADD = tests/tap/libtap/libtap.a
-test_tap_simple_depr_unvalued_LDADD = tests/tap/libtap/libtap.a
-test_tap_simple_nits_LDADD = tests/tap/libtap/libtap.a
-test_tap_simple_issue92a_LDADD = tests/tap/libtap/libtap.a
-test_tap_simple_issue92b_LDADD = tests/tap/libtap/libtap.a
-test_tap_simple_issue92c_LDADD = tests/tap/libtap/libtap.a
+# Must turn off one of the warnings for Russ's runtests
+test_tap_runtests_CFLAGS = $(AM_CFLAGS) -Wno-sign-conversion
+
+test_tap_simple_rule1_LDADD = tests/tap/tap/libtap.a
+test_tap_simple_trivial_LDADD = tests/tap/tap/libtap.a
+test_tap_simple_trivial1_LDADD = tests/tap/tap/libtap.a
+test_tap_simple_depr_unvalued_LDADD = tests/tap/tap/libtap.a
+test_tap_simple_nits_LDADD = tests/tap/tap/libtap.a
+test_tap_simple_issue92a_LDADD = tests/tap/tap/libtap.a
+test_tap_simple_issue92b_LDADD = tests/tap/tap/libtap.a
+test_tap_simple_issue92c_LDADD = tests/tap/tap/libtap.a
+test_tap_simple_rule1_CPPFLAGS = -I$(abs_top_srcdir)/test/tap
+test_tap_simple_trivial_CPPFLAGS = -I$(abs_top_srcdir)/test/tap
+test_tap_simple_trivial1_CPPFLAGS = -I$(abs_top_srcdir)/test/tap
+test_tap_simple_depr_unvalued_CPPFLAGS = -I$(abs_top_srcdir)/test/tap
+test_tap_simple_nits_CPPFLAGS = -I$(abs_top_srcdir)/test/tap
+test_tap_simple_issue92a_CPPFLAGS = -I$(abs_top_srcdir)/test/tap
+test_tap_simple_issue92b_CPPFLAGS = -I$(abs_top_srcdir)/test/tap
+test_tap_simple_issue92c_CPPFLAGS = -I$(abs_top_srcdir)/test/tap
 
 EXTRA_DIST = README.INSTALL README.AIX libmarpa.pc GIT_LOG.txt \
   win32/marpa.def Makefile.win32 win32/do_config_h.pl \
@@ -69,7 +80,7 @@ EXTRA_DIST = README.INSTALL README.AIX libmarpa.pc GIT_LOG.txt \
   api_docs/libmarpa_api.info \
   error_codes.table events.table steps.table \
   version.m4 libmarpa_version.sh LIB_VERSION \
-  test/tap/libtap/libtap.sh
+  test/tap/tap/libtap.sh
 
 libmarpa_la_LIBADD = $(LIBOBJS)
 libmarpa_la_LDFLAGS = -release $(RELEASE)
