@@ -68,21 +68,25 @@ stage/api_docs/api_html.tar: doc/api_html.tar
 # Our destination directory is test/tap, instead of his
 # tests because we want to allow for non-TAP tests in
 # the future.
-stage/test/tap/runtests.c: test/tap/c-tap-harness/tests/runtests.c
-stage/test/tap/tap/basic.h: test/tap/c-tap-harness/tests/tap/basic.h
-stage/test/tap/tap/macros.h: test/tap/c-tap-harness/tests/tap/macros.h
-stage/test/tap/tap/libtap.sh: test/tap/c-tap-harness/tests/tap/libtap.sh
-stage/test/tap/tap/float.h: test/tap/c-tap-harness/tests/tap/float.h
-stage/test/tap/tap/float.c: test/tap/c-tap-harness/tests/tap/float.c
-stage/test/tap/tap/basic.c: test/tap/c-tap-harness/tests/tap/basic.c
-stage/test/tap/simple/trivial1.c: test/tap/simple/trivial1.c
-stage/test/tap/simple/issue92a.c: test/tap/simple/issue92a.c
-stage/test/tap/simple/marpa_m_test.h: test/tap/simple/marpa_m_test.h
-stage/test/tap/simple/issue92c.c: test/tap/simple/issue92c.c
-stage/test/tap/simple/trivial.c: test/tap/simple/trivial.c
-stage/test/tap/simple/rule1.c: test/tap/simple/rule1.c
-stage/test/tap/simple/depr_unvalued.c: test/tap/simple/depr_unvalued.c
-stage/test/tap/simple/issue92b.c: test/tap/simple/issue92b.c
-stage/test/tap/simple/marpa_m_test.c: test/tap/simple/marpa_m_test.c
-stage/test/tap/simple/nits.c: test/tap/simple/nits.c
-stage/test/tap/TESTS: test/tap/TESTS
+#
+# I would have prefered a choice in the matter, but the directory structure
+# "test/tap" is imposed by '#include' statements in Russ's code.
+#
+stage/tests/tap/runtests.c: test/tap/c-tap-harness/tests/runtests.c
+stage/tests/tap/basic.h: test/tap/c-tap-harness/tests/tap/basic.h
+stage/tests/tap/macros.h: test/tap/c-tap-harness/tests/tap/macros.h
+stage/tests/tap/libtap.sh: test/tap/c-tap-harness/tests/tap/libtap.sh
+stage/tests/tap/float.h: test/tap/c-tap-harness/tests/tap/float.h
+stage/tests/tap/float.c: test/tap/c-tap-harness/tests/tap/float.c
+stage/tests/tap/basic.c: test/tap/c-tap-harness/tests/tap/basic.c
+stage/tests/tap/simple/trivial1.c: test/tap/simple/trivial1.c
+stage/tests/tap/simple/issue92a.c: test/tap/simple/issue92a.c
+stage/tests/tap/simple/marpa_m_test.h: test/tap/simple/marpa_m_test.h
+stage/tests/tap/simple/issue92c.c: test/tap/simple/issue92c.c
+stage/tests/tap/simple/trivial.c: test/tap/simple/trivial.c
+stage/tests/tap/simple/rule1.c: test/tap/simple/rule1.c
+stage/tests/tap/simple/depr_unvalued.c: test/tap/simple/depr_unvalued.c
+stage/tests/tap/simple/issue92b.c: test/tap/simple/issue92b.c
+stage/tests/tap/simple/marpa_m_test.c: test/tap/simple/marpa_m_test.c
+stage/tests/tap/simple/nits.c: test/tap/simple/nits.c
+stage/tests/tap/TESTS: test/tap/TESTS
