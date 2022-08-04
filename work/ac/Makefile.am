@@ -19,6 +19,7 @@
 
 ## Makefile.am -- Process this file with automake to produce Makefile.in
 
+AUTOMAKE_OPTIONS = subdir-objects
 AM_CFLAGS = $(WARNING_CFLAGS) $(MARPA_DEBUG_FLAG)
 AM_CPPFLAGS = $(WARNING_CPPFLAGS)
 RELEASE= $(MARPA_LIB_MAJOR_VERSION).$(MARPA_LIB_MINOR_VERSION).$(MARPA_LIB_MICRO_VERSION)
@@ -30,6 +31,19 @@ libmarpa_la_SOURCES = marpa.c marpa.h \
     marpa_tavl.c marpa_tavl.h \
     marpa_ami.c marpa_ami.h \
     marpa_codes.c
+
+# After the suggestion in Russ Allbery's "Using the Harness"
+# in the page https://www.eyrie.org/~eagle/software/c-tap-harness/readme.html
+#
+check_PROGRAMS = test/tap/runtests
+test_tap_runtests_CPPFLAGS = \
+    -DC_TAP_SOURCE='"$(abs_top_srcdir)/test/tap"' \
+    -DC_TAP_BUILD='"$(abs_top_builddir)/test/tap"'
+check_LIBRARIES = test/tap/libtap/libtap.a
+test_tap_libtap_libtap_a_CPPFLAGS = -I$(abs_top_srcdir)/test/tap
+test_tap_libtap_libtap_a_SOURCES = test/tap/libtap/basic.c test/tap/libtap/basic.h \
+	test/tap/libtap/float.c test/tap/libtap/float.h test/tap/libtap/macros.h
+
 EXTRA_DIST = README.INSTALL README.AIX libmarpa.pc GIT_LOG.txt \
   win32/marpa.def Makefile.win32 win32/do_config_h.pl \
   internals/libmarpa_ami.pdf internals/libmarpa_core.pdf \

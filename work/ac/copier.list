@@ -59,3 +59,30 @@ stage/api_docs/libmarpa_api.pdf: doc1/api.pdf
 stage/api_docs/libmarpa_api.info: doc1/api.info
 stage/api_docs/libmarpa_api.html: doc1/api.html
 stage/api_docs/api_html.tar: doc/api_html.tar
+
+# Russ Allbery recommends not installing his TAP
+# harness, but copying it, and outlines how he does it
+# in the "Using the Harness" section of his web page
+# (https://www.eyrie.org/~eagle/software/c-tap-harness/readme.html)
+# Our procedure is based on Russ's.
+# Our destination directory is test/tap, instead of his
+# tests because we want to allow for non-TAP tests in
+# the future.
+stage/test/tap/runtests.c: test/tap/c-tap-harness/tests/runtests.c
+stage/test/tap/libtap/basic.h: test/tap/c-tap-harness/tests/tap/basic.h
+stage/test/tap/libtap/macros.h: test/tap/c-tap-harness/tests/tap/macros.h
+stage/test/tap/libtap/libtap.sh: test/tap/c-tap-harness/tests/tap/libtap.sh
+stage/test/tap/libtap/float.h: test/tap/c-tap-harness/tests/tap/float.h
+stage/test/tap/libtap/float.c: test/tap/c-tap-harness/tests/tap/float.c
+stage/test/tap/libtap/basic.c: test/tap/c-tap-harness/tests/tap/basic.c
+stage/test/tap/simple/trivial1.c: test/tap/simple/trivial1.c
+stage/test/tap/simple/issue92a.c: test/tap/simple/issue92a.c
+stage/test/tap/simple/marpa_m_test.h: test/tap/simple/marpa_m_test.h
+stage/test/tap/simple/issue92c.c: test/tap/simple/issue92c.c
+stage/test/tap/simple/trivial.c: test/tap/simple/trivial.c
+stage/test/tap/simple/rule1.c: test/tap/simple/rule1.c
+stage/test/tap/simple/depr_unvalued.c: test/tap/simple/depr_unvalued.c
+stage/test/tap/simple/issue92b.c: test/tap/simple/issue92b.c
+stage/test/tap/simple/marpa_m_test.c: test/tap/simple/marpa_m_test.c
+stage/test/tap/simple/nits.c: test/tap/simple/nits.c
+stage/test/tap/TESTS: test/tap/TESTS
