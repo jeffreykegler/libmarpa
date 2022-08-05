@@ -93,7 +93,7 @@ is_nullable (Marpa_Symbol_ID id)
 
 
 int
-main (int argc, char *argv[])
+main (int argc UNUSED, char *argv[] UNUSED)
 {
     int rc;
     const char *error_string;

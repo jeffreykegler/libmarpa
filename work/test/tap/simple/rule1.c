@@ -40,7 +40,7 @@ code_fail (const char *s, Marpa_Grammar g)
 }
 
 int
-main (int argc, char *argv[])
+main (int argc UNUSED, char *argv[] UNUSED)
 {
 
     Marpa_Config marpa_configuration;

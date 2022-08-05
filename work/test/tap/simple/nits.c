@@ -166,7 +166,7 @@ marpa_g_simple_precompute (Marpa_Grammar g, Marpa_Symbol_ID S_start)
 }
 
 int
-main (int argc, char *argv[])
+main (int argc UNUSED, char *argv[] UNUSED)
 {
     int rc;
     int flag;

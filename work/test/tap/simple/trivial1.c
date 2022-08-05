@@ -175,7 +175,7 @@ defaults_reset (API_test_data * defaults, Marpa_Grammar g)
 }
 
 int
-main (int argc, char *argv[])
+main (int argc UNUSED, char *argv[] UNUSED)
 {
     int rc;
     int current_earleme;
