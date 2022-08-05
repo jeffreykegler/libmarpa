@@ -74,14 +74,30 @@ tests_tap_simple_nits_LDADD = tests/tap/libtap.a libmarpa.a
 tests_tap_simple_issue92a_LDADD = tests/tap/libtap.a libmarpa.a
 tests_tap_simple_issue92b_LDADD = tests/tap/libtap.a libmarpa.a
 tests_tap_simple_issue92c_LDADD = tests/tap/libtap.a libmarpa.a
-tests_tap_simple_rule1_CPPFLAGS = -I$(abs_top_srcdir)/tests
-tests_tap_simple_trivial_CPPFLAGS = -I$(abs_top_srcdir)/tests
-tests_tap_simple_trivial1_CPPFLAGS = -I$(abs_top_srcdir)/tests
-tests_tap_simple_depr_unvalued_CPPFLAGS = -I$(abs_top_srcdir)/tests
-tests_tap_simple_nits_CPPFLAGS = -I$(abs_top_srcdir)/tests
-tests_tap_simple_issue92a_CPPFLAGS = -I$(abs_top_srcdir)/tests
-tests_tap_simple_issue92b_CPPFLAGS = -I$(abs_top_srcdir)/tests
-tests_tap_simple_issue92c_CPPFLAGS = -I$(abs_top_srcdir)/tests
+
+tests_tap_simple_rule1_CPPFLAGS = -I$(abs_top_srcdir)/tests/tap/simple -I$(abs_top_srcdir)/tests
+tests_tap_simple_trivial_CPPFLAGS = -I$(abs_top_srcdir)/tests/tap/simple -I$(abs_top_srcdir)/tests
+tests_tap_simple_trivial1_CPPFLAGS = -I$(abs_top_srcdir)/tests/tap/simple -I$(abs_top_srcdir)/tests
+tests_tap_simple_depr_unvalued_CPPFLAGS = -I$(abs_top_srcdir)/tests/tap/simple -I$(abs_top_srcdir)/tests
+tests_tap_simple_nits_CPPFLAGS = -I$(abs_top_srcdir)/tests/tap/simple -I$(abs_top_srcdir)/tests
+tests_tap_simple_issue92a_CPPFLAGS = -I$(abs_top_srcdir)/tests/tap/simple -I$(abs_top_srcdir)/tests
+tests_tap_simple_issue92b_CPPFLAGS = -I$(abs_top_srcdir)/tests/tap/simple -I$(abs_top_srcdir)/tests
+tests_tap_simple_issue92c_CPPFLAGS = -I$(abs_top_srcdir)/tests/tap/simple -I$(abs_top_srcdir)/tests
+
+tests_tap_simple_rule1_SOURCES = tests/tap/simple/rule1.c
+tests_tap_simple_trivial_SOURCES = tests/tap/simple/trivial.c
+tests_tap_simple_trivial1_SOURCES = tests/tap/simple/trivial1.c \
+  tests/tap/simple/marpa_m_test.c tests/tap/simple/marpa_m_test.h
+tests_tap_simple_depr_unvalued_SOURCES = tests/tap/simple/depr_unvalued.c \
+  tests/tap/simple/marpa_m_test.c tests/tap/simple/marpa_m_test.h
+tests_tap_simple_nits_SOURCES = tests/tap/simple/nits.c \
+  tests/tap/simple/marpa_m_test.c tests/tap/simple/marpa_m_test.h
+tests_tap_simple_issue92a_SOURCES = tests/tap/simple/issue92a.c \
+  tests/tap/simple/marpa_m_test.c tests/tap/simple/marpa_m_test.h
+tests_tap_simple_issue92b_SOURCES = tests/tap/simple/issue92b.c \
+  tests/tap/simple/marpa_m_test.c tests/tap/simple/marpa_m_test.h
+tests_tap_simple_issue92c_SOURCES = tests/tap/simple/issue92c.c \
+  tests/tap/simple/marpa_m_test.c tests/tap/simple/marpa_m_test.h
 
 EXTRA_DIST = README.INSTALL README.AIX libmarpa.pc GIT_LOG.txt \
   win32/marpa.def Makefile.win32 win32/do_config_h.pl \
