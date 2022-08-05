@@ -61,7 +61,7 @@ tests_tap_libtap_a_SOURCES = tests/tap/basic.c tests/tap/basic.h \
 	tests/tap/float.c tests/tap/float.h tests/tap/macros.h
 
 check-local: $(check_PROGRAMS)
-	cd tests && ./tap/runtests -l $(abs_top_srcdir)/tests/tap/TESTS
+	cd tests/tap && ./runtests -l $(abs_top_srcdir)/tests/tap/TESTS
 
 # Must turn off one of the warnings for Russ's runtests
 tests_tap_runtests_CFLAGS = $(AM_CFLAGS) -Wno-sign-conversion

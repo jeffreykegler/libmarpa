@@ -178,7 +178,7 @@ static const struct error_description_s error_description[] = {
 const char *
 marpa_m_error_message (Marpa_Error_Code error_code)
 {
-    int i;
+    unsigned int i;
     for (i = 0;
         i <
         sizeof (error_description) / sizeof (struct error_description_s);
