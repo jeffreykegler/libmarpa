@@ -61,7 +61,7 @@ tests_tap_libtap_a_SOURCES = tests/tap/basic.c tests/tap/basic.h \
 	tests/tap/float.c tests/tap/float.h tests/tap/macros.h
 
 check-local: $(check_PROGRAMS)
-	cd tests && ./runtests -l $(abs_top_srcdir)/tests/TESTS
+	cd tests && ./tap/runtests -l $(abs_top_srcdir)/tests/tap/TESTS
 
 # Must turn off one of the warnings for Russ's runtests
 tests_tap_runtests_CFLAGS = $(AM_CFLAGS) -Wno-sign-conversion
@@ -106,7 +106,7 @@ EXTRA_DIST = README.INSTALL README.AIX libmarpa.pc GIT_LOG.txt \
   api_docs/libmarpa_api.info \
   error_codes.table events.table steps.table \
   version.m4 libmarpa_version.sh LIB_VERSION \
-  tests/tap/libtap.sh
+  tests/tap/libtap.sh tests/tap/TESTS
 
 libmarpa_la_LIBADD = $(LIBOBJS)
 libmarpa_la_LDFLAGS = -release $(RELEASE)
