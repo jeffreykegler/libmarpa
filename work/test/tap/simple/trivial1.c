@@ -811,7 +811,7 @@ main (int argc UNUSED, char *argv[] UNUSED)
 
         for (ix = 0;
             ix <
-            sizeof (tests) / sizeof (Marpa_R_Earley_Set_Value_Test);
+            (int)(sizeof (tests) / sizeof (Marpa_R_Earley_Set_Value_Test));
             ix++) {
             const Marpa_R_Earley_Set_Value_Test test = tests[ix];
             diag ("marpa_r_earley_set_value_*() methods, earley_set: %d",
