@@ -30,6 +30,8 @@ PROJECT(libmarpa
   DESCRIPTION "C language library that implements the parse engine at the core of Marpa"
   VERSION ${MARPA_LIB_VERSION})
 
+include(CTest)
+
 # ------------------
 # Module search path
 # ------------------
@@ -101,5 +103,13 @@ install(FILES "${PROJECT_SOURCE_DIR}/include/marpa.h" DESTINATION include)
 
 configure_file(libmarpa.pc.in ${PROJECT_BINARY_DIR}/libmarpa.pc @ONLY) 
 install(FILES "${PROJECT_BINARY_DIR}/libmarpa.pc" DESTINATION "lib/pkgconfig/")
+
+add_test(tap_test ${CMAKE_CTEST_COMMAND}
+   --build-and-test "${CMAKE_SOURCE_DIR}/tap_test/tests"
+                    "${CMAKE_BINARY_DIR}/tap_test/tests"
+   --build-generator ${CMAKE_GENERATOR}
+   --build-makeprogram ${CMAKE_MAKE_PROGRAM}
+   --build-project tap_test
+   --test-command tap_test/do_tap_test.sh)
 
 # vim: expandtab shiftwidth=4:

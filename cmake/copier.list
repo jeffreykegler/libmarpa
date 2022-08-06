@@ -84,3 +84,7 @@ cm_dist/tap_test/tests/tap/simple/issue92b.c: ac_dist/tests/tap/simple/issue92b.
 cm_dist/tap_test/tests/tap/simple/marpa_m_test.c: ac_dist/tests/tap/simple/marpa_m_test.c
 cm_dist/tap_test/tests/tap/simple/nits.c: ac_dist/tests/tap/simple/nits.c
 cm_dist/tap_test/tests/tap/TESTS: ac_dist/tests/tap/TESTS
+cm_dist/tap_test/tests/simple/CMakeLists.txt: cmake/tap_test/tests/simple/CMakeLists.txt
+cm_dist/tap_test/tests/CMakeLists.txt: cmake/tap_test/tests/CMakeLists.txt
+cm_dist/tap_test/tests/tap/CMakeLists.txt: cmake/tap_test/tests/tap/CMakeLists.txt
+cm_dist/tap_test/do_tap_tests.sh: cmake/tap_test/do_tap_tests.sh
