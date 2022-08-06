@@ -19,7 +19,7 @@
 
 CMAKE_MINIMUM_REQUIRED(VERSION 3.16.3)
 
-PROJECT(test C CXX)
+PROJECT(tap_test C CXX)
 
 # You can tweak some common (for all subprojects) stuff here. For example:
 
