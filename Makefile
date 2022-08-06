@@ -94,10 +94,15 @@ timestamp/test.stamp: timestamp/cm_debug.stamp
 	date > timestamp/test.stamp
 	@echo Updating test time stamp: `cat timestamp/test.stamp`
 
-test: timestamp/test.stamp
+test: timestamp/ac_dist.stamp
+	rm -rf ac_build
+	mkdir ac_build
+	cd ac_build && ../ac_dist/configure && make check
+
+old_test: timestamp/test.stamp
 	cd do_test && $(MAKE) VERBOSE=1 && ./tap/runtests -l ../test/TESTS
 
-test_clean:
+old_test_clean:
 	rm -f timestamp/do_test.stamp
 
 clean:
