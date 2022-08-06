@@ -66,21 +66,21 @@ cm_dist/api_docs/api_html.tar: ac_dist/api_docs/api_html.tar
 # I would have prefered a choice in the matter, but the directory structure
 # "tests/tap" is imposed by '#include' statements in Russ's code.
 #
-cm_dist/tests/tap/runtests.c: ac_dist/tests/tap/runtests.c
-cm_dist/tests/tap/basic.h: ac_dist/tests/tap/basic.h
-cm_dist/tests/tap/macros.h: ac_dist/tests/tap/macros.h
-cm_dist/tests/tap/libtap.sh: ac_dist/tests/tap/libtap.sh
-cm_dist/tests/tap/float.h: ac_dist/tests/tap/float.h
-cm_dist/tests/tap/float.c: ac_dist/tests/tap/float.c
-cm_dist/tests/tap/basic.c: ac_dist/tests/tap/basic.c
-cm_dist/tests/tap/simple/trivial1.c: ac_dist/tests/tap/simple/trivial1.c
-cm_dist/tests/tap/simple/issue92a.c: ac_dist/tests/tap/simple/issue92a.c
-cm_dist/tests/tap/simple/marpa_m_test.h: ac_dist/tests/tap/simple/marpa_m_test.h
-cm_dist/tests/tap/simple/issue92c.c: ac_dist/tests/tap/simple/issue92c.c
-cm_dist/tests/tap/simple/trivial.c: ac_dist/tests/tap/simple/trivial.c
-cm_dist/tests/tap/simple/rule1.c: ac_dist/tests/tap/simple/rule1.c
-cm_dist/tests/tap/simple/depr_unvalued.c: ac_dist/tests/tap/simple/depr_unvalued.c
-cm_dist/tests/tap/simple/issue92b.c: ac_dist/tests/tap/simple/issue92b.c
-cm_dist/tests/tap/simple/marpa_m_test.c: ac_dist/tests/tap/simple/marpa_m_test.c
-cm_dist/tests/tap/simple/nits.c: ac_dist/tests/tap/simple/nits.c
-cm_dist/tests/tap/TESTS: ac_dist/tests/tap/TESTS
+cm_dist/tap_test/tests/tap/runtests.c: ac_dist/tests/tap/runtests.c
+cm_dist/tap_test/tests/tap/basic.h: ac_dist/tests/tap/basic.h
+cm_dist/tap_test/tests/tap/macros.h: ac_dist/tests/tap/macros.h
+cm_dist/tap_test/tests/tap/libtap.sh: ac_dist/tests/tap/libtap.sh
+cm_dist/tap_test/tests/tap/float.h: ac_dist/tests/tap/float.h
+cm_dist/tap_test/tests/tap/float.c: ac_dist/tests/tap/float.c
+cm_dist/tap_test/tests/tap/basic.c: ac_dist/tests/tap/basic.c
+cm_dist/tap_test/tests/tap/simple/trivial1.c: ac_dist/tests/tap/simple/trivial1.c
+cm_dist/tap_test/tests/tap/simple/issue92a.c: ac_dist/tests/tap/simple/issue92a.c
+cm_dist/tap_test/tests/tap/simple/marpa_m_test.h: ac_dist/tests/tap/simple/marpa_m_test.h
+cm_dist/tap_test/tests/tap/simple/issue92c.c: ac_dist/tests/tap/simple/issue92c.c
+cm_dist/tap_test/tests/tap/simple/trivial.c: ac_dist/tests/tap/simple/trivial.c
+cm_dist/tap_test/tests/tap/simple/rule1.c: ac_dist/tests/tap/simple/rule1.c
+cm_dist/tap_test/tests/tap/simple/depr_unvalued.c: ac_dist/tests/tap/simple/depr_unvalued.c
+cm_dist/tap_test/tests/tap/simple/issue92b.c: ac_dist/tests/tap/simple/issue92b.c
+cm_dist/tap_test/tests/tap/simple/marpa_m_test.c: ac_dist/tests/tap/simple/marpa_m_test.c
+cm_dist/tap_test/tests/tap/simple/nits.c: ac_dist/tests/tap/simple/nits.c
+cm_dist/tap_test/tests/tap/TESTS: ac_dist/tests/tap/TESTS
