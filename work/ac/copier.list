@@ -70,7 +70,7 @@ stage/api_docs/api_html.tar: doc/api_html.tar
 # the future.
 #
 # I would have prefered a choice in the matter, but the directory structure
-# "test/tap" is imposed by '#include' statements in Russ's code.
+# "tests/tap" is imposed by '#include' statements in Russ's code.
 #
 stage/tests/tap/runtests.c: test/tap/c-tap-harness/tests/runtests.c
 stage/tests/tap/basic.h: test/tap/c-tap-harness/tests/tap/basic.h

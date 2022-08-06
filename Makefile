@@ -104,9 +104,8 @@ clean:
 	-rm libmarpa_version.sh
 	(cd work; $(MAKE) clean)
 	(cd cmake; $(MAKE) clean)
-	rm -rf cm_build
-	rm -rf cm_dist
-	rm -rf ac_dist
+	rm -rf ac_dist ac_build
+	rm -rf cm_dist cm_build
 	rm -rf do_test
 	mv timestamp timestamp.$$.temp; mkdir timestamp; \
 	  mv timestamp.$$.temp/ABOUT_ME timestamp; rm -r timestamp.$$.temp

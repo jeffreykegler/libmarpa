@@ -17,7 +17,7 @@
 # ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 # OTHER DEALINGS IN THE SOFTWARE.
 
-# Files to copy from the autoconf distribution to the CMake distribution,
+# Files to copy to create the CMake distribution,
 # relative to repo root
 
 cm_dist/marpa.c: ac_dist/marpa.c
@@ -53,3 +53,34 @@ cm_dist/api_docs/libmarpa_api.pdf: ac_dist/api_docs/libmarpa_api.pdf
 cm_dist/api_docs/libmarpa_api.info: ac_dist/api_docs/libmarpa_api.info
 cm_dist/api_docs/libmarpa_api.html: ac_dist/api_docs/libmarpa_api.html
 cm_dist/api_docs/api_html.tar: ac_dist/api_docs/api_html.tar
+
+# Russ Allbery recommends not installing his TAP
+# harness, but copying it, and outlines how he does it
+# in the "Using the Harness" section of his web page
+# (https://www.eyrie.org/~eagle/software/c-tap-harness/readme.html)
+# Our procedure is based on Russ's.
+# Our destination directory is ac_dist/tests/tap, instead of his
+# ac_dist/testss because we want to allow for non-TAP tests in
+# the future.
+#
+# I would have prefered a choice in the matter, but the directory structure
+# "tests/tap" is imposed by '#include' statements in Russ's code.
+#
+cm_dist/tests/tap/runtests.c: ac_dist/tests/tap/runtests.c
+cm_dist/tests/tap/basic.h: ac_dist/tests/tap/basic.h
+cm_dist/tests/tap/macros.h: ac_dist/tests/tap/macros.h
+cm_dist/tests/tap/libtap.sh: ac_dist/tests/tap/libtap.sh
+cm_dist/tests/tap/float.h: ac_dist/tests/tap/float.h
+cm_dist/tests/tap/float.c: ac_dist/tests/tap/float.c
+cm_dist/tests/tap/basic.c: ac_dist/tests/tap/basic.c
+cm_dist/tests/tap/simple/trivial1.c: ac_dist/tests/tap/simple/trivial1.c
+cm_dist/tests/tap/simple/issue92a.c: ac_dist/tests/tap/simple/issue92a.c
+cm_dist/tests/tap/simple/marpa_m_test.h: ac_dist/tests/tap/simple/marpa_m_test.h
+cm_dist/tests/tap/simple/issue92c.c: ac_dist/tests/tap/simple/issue92c.c
+cm_dist/tests/tap/simple/trivial.c: ac_dist/tests/tap/simple/trivial.c
+cm_dist/tests/tap/simple/rule1.c: ac_dist/tests/tap/simple/rule1.c
+cm_dist/tests/tap/simple/depr_unvalued.c: ac_dist/tests/tap/simple/depr_unvalued.c
+cm_dist/tests/tap/simple/issue92b.c: ac_dist/tests/tap/simple/issue92b.c
+cm_dist/tests/tap/simple/marpa_m_test.c: ac_dist/tests/tap/simple/marpa_m_test.c
+cm_dist/tests/tap/simple/nits.c: ac_dist/tests/tap/simple/nits.c
+cm_dist/tests/tap/TESTS: ac_dist/tests/tap/TESTS
