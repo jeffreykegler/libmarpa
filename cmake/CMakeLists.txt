@@ -104,9 +104,11 @@ install(FILES "${PROJECT_SOURCE_DIR}/include/marpa.h" DESTINATION include)
 configure_file(libmarpa.pc.in ${PROJECT_BINARY_DIR}/libmarpa.pc @ONLY)
 install(FILES "${PROJECT_BINARY_DIR}/libmarpa.pc" DESTINATION "lib/pkgconfig/")
 
-configure_file(tap_test/do_tap_tests.sh.in tap_test/do_tap_tests.sh
-     FILE_PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ
-     @ONLY)
+# Remove temp directory after copy?
+configure_file(tap_test/do_tap_tests.sh.in temp/do_tap_tests.sh @ONLY)
+file(COPY ${PROJECT_BINARY_DIR}/temp/do_tap_tests.sh
+    DESTINATION ${PROJECT_BINARY_DIR}/tap_test/
+    FILE_PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ)
 
 # Convert testing to compile during testing phase?
 # add_test(tap_test ${CMAKE_CTEST_COMMAND}

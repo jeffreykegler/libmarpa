@@ -87,4 +87,4 @@ cm_dist/tap_test/tests/simple/nits.c: work/stage/tests/simple/nits.c
 cm_dist/tap_test/tests/simple/CMakeLists.txt: cmake/tap_test/tests/simple/CMakeLists.txt
 cm_dist/tap_test/tests/CMakeLists.txt: cmake/tap_test/tests/CMakeLists.txt
 cm_dist/tap_test/tests/tap/CMakeLists.txt: cmake/tap_test/tests/tap/CMakeLists.txt
-cm_dist/tap_test/do_tap_tests.sh: cmake/tap_test/do_tap_tests.sh
+cm_dist/tap_test/do_tap_tests.sh.in: cmake/tap_test/do_tap_tests.sh.in
