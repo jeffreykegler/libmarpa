@@ -71,22 +71,24 @@ stage/api_docs/api_html.tar: doc/api_html.tar
 #
 # I would have prefered a choice in the matter, but the directory structure
 # "tests/tap" is imposed by '#include' statements in Russ's code.
+# "tests" therefore is reserved for tap tests.  When and if we add
+# non-TAP tests, we will create another directory at that level.
 #
-stage/tests/tap/runtests.c: test/tap/c-tap-harness/tests/runtests.c
+stage/tests/runtests.c: test/tap/c-tap-harness/tests/runtests.c
+stage/tests/libtap.sh: test/tap/c-tap-harness/tests/tap/libtap.sh
 stage/tests/tap/basic.h: test/tap/c-tap-harness/tests/tap/basic.h
 stage/tests/tap/macros.h: test/tap/c-tap-harness/tests/tap/macros.h
-stage/tests/tap/libtap.sh: test/tap/c-tap-harness/tests/tap/libtap.sh
 stage/tests/tap/float.h: test/tap/c-tap-harness/tests/tap/float.h
 stage/tests/tap/float.c: test/tap/c-tap-harness/tests/tap/float.c
 stage/tests/tap/basic.c: test/tap/c-tap-harness/tests/tap/basic.c
-stage/tests/tap/simple/trivial1.c: test/tap/simple/trivial1.c
-stage/tests/tap/simple/issue92a.c: test/tap/simple/issue92a.c
-stage/tests/tap/simple/marpa_m_test.h: test/tap/simple/marpa_m_test.h
-stage/tests/tap/simple/issue92c.c: test/tap/simple/issue92c.c
-stage/tests/tap/simple/trivial.c: test/tap/simple/trivial.c
-stage/tests/tap/simple/rule1.c: test/tap/simple/rule1.c
-stage/tests/tap/simple/depr_unvalued.c: test/tap/simple/depr_unvalued.c
-stage/tests/tap/simple/issue92b.c: test/tap/simple/issue92b.c
-stage/tests/tap/simple/marpa_m_test.c: test/tap/simple/marpa_m_test.c
-stage/tests/tap/simple/nits.c: test/tap/simple/nits.c
-stage/tests/tap/TESTS: test/tap/TESTS
+stage/tests/simple/trivial1.c: test/tap/simple/trivial1.c
+stage/tests/simple/issue92a.c: test/tap/simple/issue92a.c
+stage/tests/simple/marpa_m_test.h: test/tap/simple/marpa_m_test.h
+stage/tests/simple/issue92c.c: test/tap/simple/issue92c.c
+stage/tests/simple/trivial.c: test/tap/simple/trivial.c
+stage/tests/simple/rule1.c: test/tap/simple/rule1.c
+stage/tests/simple/depr_unvalued.c: test/tap/simple/depr_unvalued.c
+stage/tests/simple/issue92b.c: test/tap/simple/issue92b.c
+stage/tests/simple/marpa_m_test.c: test/tap/simple/marpa_m_test.c
+stage/tests/simple/nits.c: test/tap/simple/nits.c
+stage/tests/TESTS: test/tap/TESTS

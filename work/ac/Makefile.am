@@ -46,13 +46,13 @@ libmarpa_a_SOURCES = marpa.c marpa.h \
 # his suggestions in "Using the harness" on his web page
 # https://www.eyrie.org/~eagle/software/c-tap-harness/readme.html
 #
-check_PROGRAMS = tests/tap/runtests \
-  tests/tap/simple/rule1 tests/tap/simple/trivial \
-  tests/tap/simple/trivial1 tests/tap/simple/depr_unvalued \
-  tests/tap/simple/nits tests/tap/simple/issue92a \
-  tests/tap/simple/issue92b tests/tap/simple/issue92c
+check_PROGRAMS = tests/runtests \
+  tests/simple/rule1 tests/simple/trivial \
+  tests/simple/trivial1 tests/simple/depr_unvalued \
+  tests/simple/nits tests/simple/issue92a \
+  tests/simple/issue92b tests/simple/issue92c
 
-tests_tap_runtests_CPPFLAGS = \
+tests_runtests_CPPFLAGS = \
     -DC_TAP_SOURCE='"$(abs_top_srcdir)/tests"' \
     -DC_TAP_BUILD='"$(abs_top_builddir)/tests"'
 check_LIBRARIES = tests/tap/libtap.a
@@ -61,43 +61,43 @@ tests_tap_libtap_a_SOURCES = tests/tap/basic.c tests/tap/basic.h \
 	tests/tap/float.c tests/tap/float.h tests/tap/macros.h
 
 check-local: $(check_PROGRAMS)
-	cd tests/tap && ./runtests -l $(abs_top_srcdir)/tests/tap/TESTS
+	cd tests && ./runtests -l $(abs_top_srcdir)/tests/TESTS
 
 # Must turn off one of the warnings for Russ's runtests
-tests_tap_runtests_CFLAGS = $(AM_CFLAGS) -Wno-sign-conversion
+tests_runtests_CFLAGS = $(AM_CFLAGS) -Wno-sign-conversion
 
-tests_tap_simple_rule1_LDADD = tests/tap/libtap.a libmarpa.a
-tests_tap_simple_trivial_LDADD = tests/tap/libtap.a libmarpa.a
-tests_tap_simple_trivial1_LDADD = tests/tap/libtap.a libmarpa.a
-tests_tap_simple_depr_unvalued_LDADD = tests/tap/libtap.a libmarpa.a
-tests_tap_simple_nits_LDADD = tests/tap/libtap.a libmarpa.a
-tests_tap_simple_issue92a_LDADD = tests/tap/libtap.a libmarpa.a
-tests_tap_simple_issue92b_LDADD = tests/tap/libtap.a libmarpa.a
-tests_tap_simple_issue92c_LDADD = tests/tap/libtap.a libmarpa.a
+tests_simple_rule1_LDADD = tests/tap/libtap.a libmarpa.a
+tests_simple_trivial_LDADD = tests/tap/libtap.a libmarpa.a
+tests_simple_trivial1_LDADD = tests/tap/libtap.a libmarpa.a
+tests_simple_depr_unvalued_LDADD = tests/tap/libtap.a libmarpa.a
+tests_simple_nits_LDADD = tests/tap/libtap.a libmarpa.a
+tests_simple_issue92a_LDADD = tests/tap/libtap.a libmarpa.a
+tests_simple_issue92b_LDADD = tests/tap/libtap.a libmarpa.a
+tests_simple_issue92c_LDADD = tests/tap/libtap.a libmarpa.a
 
-tests_tap_simple_rule1_CPPFLAGS = -I$(abs_top_srcdir)/tests/tap/simple -I$(abs_top_srcdir)/tests
-tests_tap_simple_trivial_CPPFLAGS = -I$(abs_top_srcdir)/tests/tap/simple -I$(abs_top_srcdir)/tests
-tests_tap_simple_trivial1_CPPFLAGS = -I$(abs_top_srcdir)/tests/tap/simple -I$(abs_top_srcdir)/tests
-tests_tap_simple_depr_unvalued_CPPFLAGS = -I$(abs_top_srcdir)/tests/tap/simple -I$(abs_top_srcdir)/tests
-tests_tap_simple_nits_CPPFLAGS = -I$(abs_top_srcdir)/tests/tap/simple -I$(abs_top_srcdir)/tests
-tests_tap_simple_issue92a_CPPFLAGS = -I$(abs_top_srcdir)/tests/tap/simple -I$(abs_top_srcdir)/tests
-tests_tap_simple_issue92b_CPPFLAGS = -I$(abs_top_srcdir)/tests/tap/simple -I$(abs_top_srcdir)/tests
-tests_tap_simple_issue92c_CPPFLAGS = -I$(abs_top_srcdir)/tests/tap/simple -I$(abs_top_srcdir)/tests
+tests_simple_rule1_CPPFLAGS = -I$(abs_top_srcdir)/tests/simple -I$(abs_top_srcdir)/tests
+tests_simple_trivial_CPPFLAGS = -I$(abs_top_srcdir)/tests/simple -I$(abs_top_srcdir)/tests
+tests_simple_trivial1_CPPFLAGS = -I$(abs_top_srcdir)/tests/simple -I$(abs_top_srcdir)/tests
+tests_simple_depr_unvalued_CPPFLAGS = -I$(abs_top_srcdir)/tests/simple -I$(abs_top_srcdir)/tests
+tests_simple_nits_CPPFLAGS = -I$(abs_top_srcdir)/tests/simple -I$(abs_top_srcdir)/tests
+tests_simple_issue92a_CPPFLAGS = -I$(abs_top_srcdir)/tests/simple -I$(abs_top_srcdir)/tests
+tests_simple_issue92b_CPPFLAGS = -I$(abs_top_srcdir)/tests/simple -I$(abs_top_srcdir)/tests
+tests_simple_issue92c_CPPFLAGS = -I$(abs_top_srcdir)/tests/simple -I$(abs_top_srcdir)/tests
 
-tests_tap_simple_rule1_SOURCES = tests/tap/simple/rule1.c
-tests_tap_simple_trivial_SOURCES = tests/tap/simple/trivial.c
-tests_tap_simple_trivial1_SOURCES = tests/tap/simple/trivial1.c \
-  tests/tap/simple/marpa_m_test.c tests/tap/simple/marpa_m_test.h
-tests_tap_simple_depr_unvalued_SOURCES = tests/tap/simple/depr_unvalued.c \
-  tests/tap/simple/marpa_m_test.c tests/tap/simple/marpa_m_test.h
-tests_tap_simple_nits_SOURCES = tests/tap/simple/nits.c \
-  tests/tap/simple/marpa_m_test.c tests/tap/simple/marpa_m_test.h
-tests_tap_simple_issue92a_SOURCES = tests/tap/simple/issue92a.c \
-  tests/tap/simple/marpa_m_test.c tests/tap/simple/marpa_m_test.h
-tests_tap_simple_issue92b_SOURCES = tests/tap/simple/issue92b.c \
-  tests/tap/simple/marpa_m_test.c tests/tap/simple/marpa_m_test.h
-tests_tap_simple_issue92c_SOURCES = tests/tap/simple/issue92c.c \
-  tests/tap/simple/marpa_m_test.c tests/tap/simple/marpa_m_test.h
+tests_simple_rule1_SOURCES = tests/simple/rule1.c
+tests_simple_trivial_SOURCES = tests/simple/trivial.c
+tests_simple_trivial1_SOURCES = tests/simple/trivial1.c \
+  tests/simple/marpa_m_test.c tests/simple/marpa_m_test.h
+tests_simple_depr_unvalued_SOURCES = tests/simple/depr_unvalued.c \
+  tests/simple/marpa_m_test.c tests/simple/marpa_m_test.h
+tests_simple_nits_SOURCES = tests/simple/nits.c \
+  tests/simple/marpa_m_test.c tests/simple/marpa_m_test.h
+tests_simple_issue92a_SOURCES = tests/simple/issue92a.c \
+  tests/simple/marpa_m_test.c tests/simple/marpa_m_test.h
+tests_simple_issue92b_SOURCES = tests/simple/issue92b.c \
+  tests/simple/marpa_m_test.c tests/simple/marpa_m_test.h
+tests_simple_issue92c_SOURCES = tests/simple/issue92c.c \
+  tests/simple/marpa_m_test.c tests/simple/marpa_m_test.h
 
 EXTRA_DIST = README.INSTALL README.AIX libmarpa.pc GIT_LOG.txt \
   win32/marpa.def Makefile.win32 win32/do_config_h.pl \
@@ -106,7 +106,7 @@ EXTRA_DIST = README.INSTALL README.AIX libmarpa.pc GIT_LOG.txt \
   api_docs/libmarpa_api.info \
   error_codes.table events.table steps.table \
   version.m4 libmarpa_version.sh LIB_VERSION \
-  tests/tap/libtap.sh tests/tap/TESTS
+  tests/libtap.sh tests/TESTS
 
 libmarpa_la_LIBADD = $(LIBOBJS)
 libmarpa_la_LDFLAGS = -release $(RELEASE)
