@@ -102,7 +102,7 @@ test: timestamp/ac_dist.stamp
 cm_test: timestamp/cm_dist.stamp
 	rm -rf cm_build
 	cmake -S cm_dist -B cm_build
-	cd cm_build && $(MAKE) && $(MAKE) test
+	cd cm_build && $(MAKE) VERBOSE=1 && $(MAKE) VERBOSE=1 test ARGS="-V"
 
 old_test: timestamp/test.stamp
 	cd do_test && $(MAKE) VERBOSE=1 && ./tap/runtests -l ../test/TESTS

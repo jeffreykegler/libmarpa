@@ -68,7 +68,7 @@ cm_dist/api_docs/api_html.tar: work/stage/api_docs/api_html.tar
 # to tests/ for them.
 cm_dist/tap_test/tests/runtests.c: work/stage/tests/runtests.c
 cm_dist/tap_test/tests/libtap.sh: work/stage/tests/libtap.sh
-cm_dist/tap_test/tests/tap/TESTS: work/stage/tests/TESTS
+cm_dist/tap_test/tests/TESTS: work/stage/tests/TESTS
 cm_dist/tap_test/tests/tap/basic.h: work/stage/tests/tap/basic.h
 cm_dist/tap_test/tests/tap/macros.h: work/stage/tests/tap/macros.h
 cm_dist/tap_test/tests/tap/float.h: work/stage/tests/tap/float.h
