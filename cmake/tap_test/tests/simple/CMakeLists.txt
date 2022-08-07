@@ -39,7 +39,8 @@ if (CMAKE_BUILD_TYPE MATCHES Asan)
     add_link_options( -fsanitize=leak -fsanitize=address -static-libasan )
 ENDIF()
 
-include_directories(${LIBMARPA_INCLUDE} "${CMAKE_SOURCE_DIR}/tap")
+include_directories(${LIBMARPA_INCLUDE} ${CMAKE_SOURCE_DIR}
+    ${CMAKE_SOURCE_DIR}/tap_test ${CMAKE_SOURCE_DIR}/tap_test/tests)
 
 add_executable(issue92a issue92a.c marpa_m_test.c)
 target_link_libraries(issue92a ${LIBMARPA_STATIC} ${LIBTAP})
