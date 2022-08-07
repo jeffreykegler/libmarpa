@@ -1,0 +1,1 @@
+cd tap_test/tests && ./runtests -l TESTS

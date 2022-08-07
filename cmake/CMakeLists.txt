@@ -101,8 +101,12 @@ install(TARGETS marpa marpa_s
 
 install(FILES "${PROJECT_SOURCE_DIR}/include/marpa.h" DESTINATION include)
 
-configure_file(libmarpa.pc.in ${PROJECT_BINARY_DIR}/libmarpa.pc @ONLY) 
+configure_file(libmarpa.pc.in ${PROJECT_BINARY_DIR}/libmarpa.pc @ONLY)
 install(FILES "${PROJECT_BINARY_DIR}/libmarpa.pc" DESTINATION "lib/pkgconfig/")
+
+configure_file(tap_test/do_tap_tests.sh.in tap_test/do_tap_tests.sh
+     FILE_PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ
+     @ONLY)
 
 # Convert testing to compile during testing phase?
 # add_test(tap_test ${CMAKE_CTEST_COMMAND}
@@ -110,9 +114,9 @@ install(FILES "${PROJECT_BINARY_DIR}/libmarpa.pc" DESTINATION "lib/pkgconfig/")
 #                     "${CMAKE_BINARY_DIR}/tap_test/tests"
 #    --build-generator ${CMAKE_GENERATOR}
 #    --build-project tap_test
-#    --test-command tap_test/do_tap_test.sh)
+#    --test-command tap_test/do_tap_tests.sh)
 
 add_subdirectory(tap_test/tests)
-add_test(tap_test tap_test/do_tap_test.sh)
+add_test(tap_test tap_test/do_tap_tests.sh)
 
 # vim: expandtab shiftwidth=4:

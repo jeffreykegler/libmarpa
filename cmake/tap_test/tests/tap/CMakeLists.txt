@@ -21,8 +21,6 @@ CMAKE_MINIMUM_REQUIRED(VERSION 3.16.3)
 
 PROJECT(tap C CXX)
 
-ADD_EXECUTABLE(runtests runtests.c)
-
 ADD_LIBRARY(${PROJECT_NAME} basic.c float.c)
 
 set(LIBTAP ${PROJECT_BINARY_DIR}/libtap.a

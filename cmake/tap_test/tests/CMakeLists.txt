@@ -45,6 +45,8 @@ if (WIN32)
   set(CMAKE_SHARED_LIBRARY_PREFIX "")
 endif ()
 
+ADD_EXECUTABLE(runtests runtests.c)
+
 # NOTE: The order matters! The most independent ones should go first.
 add_subdirectory(tap)
 add_subdirectory(simple)
