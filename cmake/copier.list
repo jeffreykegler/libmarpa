@@ -20,70 +20,70 @@
 # Files to copy to create the CMake distribution,
 # relative to repo root
 
-cm_dist/marpa.c: ac_dist/marpa.c
-cm_dist/include/marpa.h: ac_dist/marpa.h
-cm_dist/libmarpa.pc.in: ac_dist/libmarpa.pc.in
-cm_dist/README.AIX: ac_dist/README.AIX
-cm_dist/GIT_LOG.txt: ac_dist/GIT_LOG.txt
-cm_dist/LIB_VERSION: ac_dist/LIB_VERSION
-cm_dist/libmarpa_version.sh: ac_dist/libmarpa_version.sh
-cm_dist/marpa_obs.c: ac_dist/marpa_obs.c
-cm_dist/marpa_obs.h: ac_dist/marpa_obs.h
-cm_dist/marpa_ami.c: ac_dist/marpa_ami.c
-cm_dist/marpa_ami.h: ac_dist/marpa_ami.h
-cm_dist/marpa_avl.c: ac_dist/marpa_avl.c
-cm_dist/marpa_avl.h: ac_dist/marpa_avl.h
-cm_dist/marpa_tavl.h: ac_dist/marpa_tavl.h
-cm_dist/marpa_tavl.c: ac_dist/marpa_tavl.c
-cm_dist/error_codes.table: ac_dist/error_codes.table
-cm_dist/steps.table: ac_dist/steps.table
-cm_dist/events.table: ac_dist/events.table
-cm_dist/COPYING.LESSER: ac_dist/COPYING.LESSER
-cm_dist/COPYING: ac_dist/COPYING
-cm_dist/README: ac_dist/README
+cm_dist/marpa.c: work/stage/marpa.c
+cm_dist/include/marpa.h: work/stage/marpa.h
+cm_dist/libmarpa.pc.in: work/stage/libmarpa.pc.in
+cm_dist/README.AIX: work/stage/README.AIX
+cm_dist/GIT_LOG.txt: work/stage/GIT_LOG.txt
+cm_dist/LIB_VERSION: work/stage/LIB_VERSION
+cm_dist/libmarpa_version.sh: work/stage/libmarpa_version.sh
+cm_dist/marpa_obs.c: work/stage/marpa_obs.c
+cm_dist/marpa_obs.h: work/stage/marpa_obs.h
+cm_dist/marpa_ami.c: work/stage/marpa_ami.c
+cm_dist/marpa_ami.h: work/stage/marpa_ami.h
+cm_dist/marpa_avl.c: work/stage/marpa_avl.c
+cm_dist/marpa_avl.h: work/stage/marpa_avl.h
+cm_dist/marpa_tavl.h: work/stage/marpa_tavl.h
+cm_dist/marpa_tavl.c: work/stage/marpa_tavl.c
+cm_dist/error_codes.table: work/stage/error_codes.table
+cm_dist/steps.table: work/stage/steps.table
+cm_dist/events.table: work/stage/events.table
+cm_dist/COPYING.LESSER: work/stage/COPYING.LESSER
+cm_dist/COPYING: work/stage/COPYING
+cm_dist/README: work/stage/README
 cm_dist/CMakeLists.txt: cmake/CMakeLists.txt
 cm_dist/version.cmake: cmake/version.cmake
 cm_dist/config.h.cmake: cmake/config.h.cmake
 cm_dist/modules/FindInline.cmake: cmake/modules/FindInline.cmake
 cm_dist/modules/FindNullIsZeroes.cmake: cmake/modules/FindNullIsZeroes.cmake
 cm_dist/modules/inline.c: cmake/modules/inline.c
-cm_dist/internals/libmarpa_core.pdf: ac_dist/internals/libmarpa_core.pdf
-cm_dist/internals/libmarpa_ami.pdf: ac_dist/internals/libmarpa_ami.pdf
-cm_dist/api_docs/libmarpa_api.pdf: ac_dist/api_docs/libmarpa_api.pdf
-cm_dist/api_docs/libmarpa_api.info: ac_dist/api_docs/libmarpa_api.info
-cm_dist/api_docs/libmarpa_api.html: ac_dist/api_docs/libmarpa_api.html
-cm_dist/api_docs/api_html.tar: ac_dist/api_docs/api_html.tar
+cm_dist/internals/libmarpa_core.pdf: work/stage/internals/libmarpa_core.pdf
+cm_dist/internals/libmarpa_ami.pdf: work/stage/internals/libmarpa_ami.pdf
+cm_dist/api_docs/libmarpa_api.pdf: work/stage/api_docs/libmarpa_api.pdf
+cm_dist/api_docs/libmarpa_api.info: work/stage/api_docs/libmarpa_api.info
+cm_dist/api_docs/libmarpa_api.html: work/stage/api_docs/libmarpa_api.html
+cm_dist/api_docs/api_html.tar: work/stage/api_docs/api_html.tar
 
 # Russ Allbery recommends not installing his TAP
 # harness, but copying it, and outlines how he does it
 # in the "Using the Harness" section of his web page
 # (https://www.eyrie.org/~eagle/software/c-tap-harness/readme.html)
 # Our procedure is based on Russ's.
-# Our destination directory is ac_dist/tests/tap, instead of his
-# ac_dist/testss because we want to allow for non-TAP tests in
-# the future.
+# Our destination directory is cm_dist/tests.
 #
 # I would have prefered a choice in the matter, but the directory structure
 # "tests/tap" is imposed by '#include' statements in Russ's code.
-#
-cm_dist/tap_test/tests/tap/runtests.c: ac_dist/tests/tap/runtests.c
-cm_dist/tap_test/tests/tap/basic.h: ac_dist/tests/tap/basic.h
-cm_dist/tap_test/tests/tap/macros.h: ac_dist/tests/tap/macros.h
-cm_dist/tap_test/tests/tap/libtap.sh: ac_dist/tests/tap/libtap.sh
-cm_dist/tap_test/tests/tap/float.h: ac_dist/tests/tap/float.h
-cm_dist/tap_test/tests/tap/float.c: ac_dist/tests/tap/float.c
-cm_dist/tap_test/tests/tap/basic.c: ac_dist/tests/tap/basic.c
-cm_dist/tap_test/tests/tap/simple/trivial1.c: ac_dist/tests/tap/simple/trivial1.c
-cm_dist/tap_test/tests/tap/simple/issue92a.c: ac_dist/tests/tap/simple/issue92a.c
-cm_dist/tap_test/tests/tap/simple/marpa_m_test.h: ac_dist/tests/tap/simple/marpa_m_test.h
-cm_dist/tap_test/tests/tap/simple/issue92c.c: ac_dist/tests/tap/simple/issue92c.c
-cm_dist/tap_test/tests/tap/simple/trivial.c: ac_dist/tests/tap/simple/trivial.c
-cm_dist/tap_test/tests/tap/simple/rule1.c: ac_dist/tests/tap/simple/rule1.c
-cm_dist/tap_test/tests/tap/simple/depr_unvalued.c: ac_dist/tests/tap/simple/depr_unvalued.c
-cm_dist/tap_test/tests/tap/simple/issue92b.c: ac_dist/tests/tap/simple/issue92b.c
-cm_dist/tap_test/tests/tap/simple/marpa_m_test.c: ac_dist/tests/tap/simple/marpa_m_test.c
-cm_dist/tap_test/tests/tap/simple/nits.c: ac_dist/tests/tap/simple/nits.c
-cm_dist/tap_test/tests/tap/TESTS: ac_dist/tests/tap/TESTS
+# We reserve tests for TAP tests only.
+# If we have non-TAP tests in the future, we will create a sibling directory 
+# to tests/ for them.
+cm_dist/tap_test/tests/runtests.c: work/stage/tests/runtests.c
+cm_dist/tap_test/tests/libtap.sh: work/stage/tests/libtap.sh
+cm_dist/tap_test/tests/tap/TESTS: work/stage/tests/TESTS
+cm_dist/tap_test/tests/tap/basic.h: work/stage/tests/tap/basic.h
+cm_dist/tap_test/tests/tap/macros.h: work/stage/tests/tap/macros.h
+cm_dist/tap_test/tests/tap/float.h: work/stage/tests/tap/float.h
+cm_dist/tap_test/tests/tap/float.c: work/stage/tests/tap/float.c
+cm_dist/tap_test/tests/tap/basic.c: work/stage/tests/tap/basic.c
+cm_dist/tap_test/tests/simple/trivial1.c: work/stage/tests/simple/trivial1.c
+cm_dist/tap_test/tests/simple/issue92a.c: work/stage/tests/simple/issue92a.c
+cm_dist/tap_test/tests/simple/marpa_m_test.h: work/stage/tests/simple/marpa_m_test.h
+cm_dist/tap_test/tests/simple/issue92c.c: work/stage/tests/simple/issue92c.c
+cm_dist/tap_test/tests/simple/trivial.c: work/stage/tests/simple/trivial.c
+cm_dist/tap_test/tests/simple/rule1.c: work/stage/tests/simple/rule1.c
+cm_dist/tap_test/tests/simple/depr_unvalued.c: work/stage/tests/simple/depr_unvalued.c
+cm_dist/tap_test/tests/simple/issue92b.c: work/stage/tests/simple/issue92b.c
+cm_dist/tap_test/tests/simple/marpa_m_test.c: work/stage/tests/simple/marpa_m_test.c
+cm_dist/tap_test/tests/simple/nits.c: work/stage/tests/simple/nits.c
 cm_dist/tap_test/tests/simple/CMakeLists.txt: cmake/tap_test/tests/simple/CMakeLists.txt
 cm_dist/tap_test/tests/CMakeLists.txt: cmake/tap_test/tests/CMakeLists.txt
 cm_dist/tap_test/tests/tap/CMakeLists.txt: cmake/tap_test/tests/tap/CMakeLists.txt

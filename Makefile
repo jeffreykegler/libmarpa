@@ -99,6 +99,11 @@ test: timestamp/ac_dist.stamp
 	mkdir ac_build
 	cd ac_build && ../ac_dist/configure && make check
 
+cm_test: timestamp/cm_dist.stamp
+	rm -rf cm_build
+	cmake -S cm_dist -B cm_build
+	cd cm_build && make test
+
 old_test: timestamp/test.stamp
 	cd do_test && $(MAKE) VERBOSE=1 && ./tap/runtests -l ../test/TESTS
 
