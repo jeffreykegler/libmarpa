@@ -79,11 +79,16 @@ timestamp/cm_debug.stamp: timestamp/cm_dist.stamp
 	date > timestamp/cm_debug.stamp
 	@echo Updating cm_debug time stamp: `cat timestamp/cm_debug.stamp`
 
-asan: timestamp/cm_debug.stamp
+old_asan: timestamp/cm_debug.stamp
 	rm -rf do_test
 	mkdir do_test
 	cmake -DCMAKE_BUILD_TYPE:STRING=Asan -S test -B do_test
 	cd do_test && $(MAKE) VERBOSE=1 && ./tap/runtests -l ../test/TESTS
+
+asan: timestamp/cm_dist.stamp
+	rm -rf cm_build
+	cmake -DCMAKE_BUILD_TYPE:STRING=Asan -S cm_dist -B cm_build
+	cd cm_build && $(MAKE) VERBOSE=1 && $(MAKE) VERBOSE=1 test ARGS="-V"
 
 timestamp/test.stamp: timestamp/cm_debug.stamp
 	@echo test Out of date wrt cm_debug
@@ -104,6 +109,24 @@ cm_test: timestamp/cm_dist.stamp
 	cmake -S cm_dist -B cm_build
 	cd cm_build && $(MAKE) VERBOSE=1 && $(MAKE) VERBOSE=1 test ARGS="-V"
 
+# While we do build a shared library, Libmarpa is not primarily intended to be installed
+# as a system library.  Instead, Libmarpa is expected to be incorporated directly, perhaps
+# as a static library, into executables, or into other libraries.
+#
+# The Perl module is an important case, but unusual case.
+# The static library is compiled for position-independent-code (PIC) and then
+# linked into a shared library.
+#
+# Since installing the shared library is an unusual special case, we want to be able
+# to ensure that it does work for those who want it.  The following test does this.
+# Run this target and then check that the hierarchy below test_install/ looks the
+# way the standard hierarchy of installation directories normally does, which is something
+# like
+#
+# test_install/include/marpa.h
+# test_install/lib/pkgconfig/libmarpa.pc
+# test_install/lib/libmarpa.so
+# test_install/lib/libmarpa_s.a
 test_install: timestamp/cm_dist.stamp
 	rm -rf cm_build test_install
 	mkdir test_install
