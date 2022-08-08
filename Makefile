@@ -67,10 +67,17 @@ tag:
 
 cm_dist: timestamp/cm_dist.stamp
 
+# We make the Addresser sanatizer test extra verbose.
+# In particular, I want some output from even a clean run of
+# ASAN to make sure it is turned on.
 asan: timestamp/cm_dist.stamp
 	rm -rf cm_build
 	cmake -DCMAKE_BUILD_TYPE:STRING=Asan -S cm_dist -B cm_build
-	cd cm_build && $(MAKE) VERBOSE=1 && $(MAKE) VERBOSE=1 test ARGS="-V"
+	cd cm_build && $(MAKE) VERBOSE=1
+	cat cm_dist/tap_test/tests/TESTS | while read f; do \
+	     (cd cm_build/tap_test/tests/; \
+	     env ASAN_OPTIONS=atexit=true ./runtests -o $$f); \
+	done
 
 test: timestamp/ac_dist.stamp
 	rm -rf ac_build
