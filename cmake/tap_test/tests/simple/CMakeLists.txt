@@ -21,17 +21,6 @@ CMAKE_MINIMUM_REQUIRED(VERSION 3.16.3)
 
 project(simple C CXX)
 
-IF (CMAKE_COMPILER_IS_GNUCC)
-    # MARPA_DEBUG_FLAG ?
-    # -Wextra ?
-    # -Wdeclaration-after-statement ?
-    ADD_COMPILE_OPTIONS(-g -O2 -Wall -Wpointer-arith -Wstrict-prototypes -Wwrite-strings -Wshadow -Wmissing-declarations -Wconversion -ansi -pedantic)
-    ADD_DEFINITIONS(-Wundef -Wendif-labels)
-ENDIF (CMAKE_COMPILER_IS_GNUCC)
-IF (MSVC)
-    ADD_DEFINITIONS(/W3)
-ENDIF (MSVC)
-
 include(CMakePrintHelpers)
 cmake_print_variables(CMAKE_BUILD_TYPE)
 if (CMAKE_BUILD_TYPE MATCHES Asan)
