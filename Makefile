@@ -29,7 +29,7 @@ MICRO=4
 VERSION=$(MAJOR).$(MINOR).$(MICRO)
 
 .PHONY: ac_dist asan clean cm_dist dist distcheck dummy \
-    realclean tag test test_clean
+    realclean tag test cm_test install_test
 
 dummy:
 	@echo The target to make the distribution is '"dist"'
@@ -104,11 +104,15 @@ cm_test: timestamp/cm_dist.stamp
 	cmake -S cm_dist -B cm_build
 	cd cm_build && $(MAKE) VERBOSE=1 && $(MAKE) VERBOSE=1 test ARGS="-V"
 
+test_install: timestamp/cm_dist.stamp
+	rm -rf cm_build test_install
+	mkdir test_install
+	(cd test_install; tgt=`pwd`; cd ..; echo "TARGET $$tgt"; \
+	  cmake -DCMAKE_INSTALL_PREFIX:PATH=$$tgt -S cm_dist -B cm_build)
+	cd cm_build && $(MAKE) VERBOSE=1 && $(MAKE) install
+
 old_test: timestamp/test.stamp
 	cd do_test && $(MAKE) VERBOSE=1 && ./tap/runtests -l ../test/TESTS
-
-old_test_clean:
-	rm -f timestamp/do_test.stamp
 
 clean:
 	-rm libmarpa_version.sh
@@ -116,7 +120,7 @@ clean:
 	(cd cmake; $(MAKE) clean)
 	rm -rf ac_dist ac_build
 	rm -rf cm_dist cm_build
-	rm -rf do_test
+	rm -rf test_install
 	mv timestamp timestamp.$$.temp; mkdir timestamp; \
 	  mv timestamp.$$.temp/ABOUT_ME timestamp; rm -r timestamp.$$.temp
 	mv tars tars.$$.temp; mkdir tars; \
