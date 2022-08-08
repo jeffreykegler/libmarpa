@@ -42,8 +42,7 @@ timestamp/stage.stamp:
 	date > timestamp/stage.stamp
 	@echo Updating stage time stamp: `cat timestamp/stage.stamp`
 
-dist: timestamp/ac_dist.stamp \
-  timestamp/cm_dist.stamp
+ac_dist: timestamp/ac_dist.stamp
 
 timestamp/ac_dist.stamp: timestamp/stage.stamp
 	cp work/stage/libmarpa-$(VERSION).tar.gz tars
@@ -68,42 +67,19 @@ tag:
 
 cm_dist: timestamp/cm_dist.stamp
 
-timestamp/cm_debug.stamp: timestamp/cm_dist.stamp
-	@echo cm_debug Out of date wrt cm_dist
-	rm -rf cm_build
-	mkdir cm_build
-	cmake -DCMAKE_BUILD_TYPE:STRING=Debug -S cm_dist -B cm_build
-	cd cm_build && $(MAKE) VERBOSE=1 DESTDIR=../test install
-	# Shares a directory with the cm_build time stamp
-	-rm timestamp/cm_build.stamp
-	date > timestamp/cm_debug.stamp
-	@echo Updating cm_debug time stamp: `cat timestamp/cm_debug.stamp`
-
-old_asan: timestamp/cm_debug.stamp
-	rm -rf do_test
-	mkdir do_test
-	cmake -DCMAKE_BUILD_TYPE:STRING=Asan -S test -B do_test
-	cd do_test && $(MAKE) VERBOSE=1 && ./tap/runtests -l ../test/TESTS
-
 asan: timestamp/cm_dist.stamp
 	rm -rf cm_build
 	cmake -DCMAKE_BUILD_TYPE:STRING=Asan -S cm_dist -B cm_build
 	cd cm_build && $(MAKE) VERBOSE=1 && $(MAKE) VERBOSE=1 test ARGS="-V"
-
-timestamp/test.stamp: timestamp/cm_debug.stamp
-	@echo test Out of date wrt cm_debug
-	rm -rf do_test
-	mkdir do_test
-	cmake -S test -B do_test
-	-rm timestamp/asan_test.stamp
-	date > timestamp/test.stamp
-	@echo Updating test time stamp: `cat timestamp/test.stamp`
 
 test: timestamp/ac_dist.stamp
 	rm -rf ac_build
 	mkdir ac_build
 	cd ac_build && ../ac_dist/configure && make check
 
+# For even more debugging:
+#     cmake -DCMAKE_BUILD_TYPE:STRING=Debug -S cm_dist -B cm_build
+#
 cm_test: timestamp/cm_dist.stamp
 	rm -rf cm_build
 	cmake -S cm_dist -B cm_build
@@ -133,9 +109,6 @@ test_install: timestamp/cm_dist.stamp
 	(cd test_install; tgt=`pwd`; cd ..; echo "TARGET $$tgt"; \
 	  cmake -DCMAKE_INSTALL_PREFIX:PATH=$$tgt -S cm_dist -B cm_build)
 	cd cm_build && $(MAKE) VERBOSE=1 && $(MAKE) install
-
-old_test: timestamp/test.stamp
-	cd do_test && $(MAKE) VERBOSE=1 && ./tap/runtests -l ../test/TESTS
 
 clean:
 	-rm libmarpa_version.sh
