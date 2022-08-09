@@ -21,9 +21,57 @@ http://www.gnu.org/licenses/.
 > and sure, dear friends, my thanks are too dear a halfpenny.
 > --- Hamlet, Act 2, scene 2
 
-This section thanks those who have helped,
+This section is to thank those who have assisted us,
 not just with this repository,
 but with the Marpa project as a whole.
+Many people have helped us in many ways,
+and it is risky
+to single out one of them.
+But, from almost its beginning,
+Ron Savage has been unstinting in
+his support.
+
+Jean-Damien Durand's assistance included several ambitious
+Marpa applications.
+Deyan Ginev provided advice on LaTeX and
+on deeper matters which proved essential for this book.
+Lenz Moritz quietly and effectively maintained our IRC channel.
+Andrew Rodland stood in for Jeffrey Kegler as the face of Marpa
+when it was needed,
+and he pioneered the use of one Marpa grammar
+to feed another.
+Ruslan Shvedov provided many hours of assistance,
+ranging from linguistic insights to details of code testing.
+Luc St-Louis moderated the Marpa IRC channel,
+saving Jeffrey time,
+and the channel's other users from having to put up with Jeffrey,
+who could be too heavy-handed,
+as a moderator.
+Peter Stuifzand wrote the prototype on which Marpa's
+SLIF interface is based.
+Ruslan Zakirov was a very early Marpa supporter
+who made many useful suggestions
+that are incorporated in this book.
+Larry Wall has always made himself available,
+and his wise and experienced advice saved us much trouble.
+An anonymous member of the Hoon community was generous
+financially.
+
+Additional help came from
+Dave Abrahams,
+Mohammad S Anwar,
+Lukas Atkinson,
+Peter Blackson,
+Anton Dyudin,
+B. Fraser,
+Zaki Mughal,
+Omar Roth,
+Aria Stewart,
+Flaviu Tomas,
+and David Whitten.
+
+## An apology
+
 We feared that these acknowledgements would
 become an exhibition of our negligence and ingratitude,
 and at least to some degree this has turned out to be the case.
@@ -66,51 +114,4 @@ without exposing innocent and generous volunteers
 to ruinous legal action.
 And my notes for these acknkowledgements
 needed to be cobbled together from other sources.
-
-But, to proceed to business:
-Many members of the Marpa community
-have helped me in many ways,
-and it is risky
-to single out one of them.
-But, from almost its beginning,
-Ron Savage has been unstinting in
-his support.
-
-Jean-Damien Durand's assistance included several ambitious
-Marpa applications.
-Deyan Ginev provided advice on LaTeX and
-on deeper matters which proved essential for this book.
-Lenz Moritz quietly and effectively maintained our IRC channel.
-Andrew Rodland stood in for me as the face of Marpa,
-and he pioneered the use of one Marpa grammar
-to feed another.
-Ruslan Shvedov provided many hours of assistance,
-ranging from linguistic insights to details of code testing.
-Luc St-Louis moderated the Marpa IRC channel,
-saving me time,
-and the channel's other users from having to put up with
-my less than fully competent,
-and often too heavy-handed efforts.
-Peter Stuifzand wrote the prototype on which Marpa's
-SLIF interface is based.
-Ruslan Zakirov was a very early Marpa supporter
-who made many useful suggestions
-that are incorporated in this book.
-Larry Wall has always made himself available,
-and his wise and experienced advice saved us much trouble.
-An anonymous member of the Hoon community was generous
-financially.
-
-Additional help came from
-Dave Abrahams,
-Mohammad S Anwar,
-Lukas Atkinson,
-Peter Blackson,
-Anton Dyudin,
-B. Fraser,
-Zaki Mughal,
-Omar Roth,
-Aria Stewart,
-Flaviu Tomas,
-and David Whitten.
 
