@@ -7250,10 +7250,22 @@ the lastest and current earlemes will always be the same.
 @node Futures
 @chapter Futures
 
-This chapter discusses features that are @strong{not}
-in the external interface.
-These features are change or additions that might be made
+This chapter is not about the current interface.
+Instead, it discusses
+changes or additions that might be made
+to this document or
 to the external interface in the future.
+
+@node Document pre-conditions more formally
+@section Document pre-conditions more formally
+
+A more formal approach to documenting preconditions of
+the methods is possible,
+and may be helpful enough to repay any cost in
+verbosity or complexity.
+Dave Abrahams recommended I look at
+@url{https://www.boost.org/sgi/stl/}
+for one approach.
 
 @node Simpler events interface
 @section Simpler events interface
