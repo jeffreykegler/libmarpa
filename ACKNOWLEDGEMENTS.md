@@ -102,6 +102,7 @@ An anonymous member of the Hoon community was generous
 financially.
 
 Additional help came from
+Dave Abrahams,
 Mohammad S Anwar,
 Lukas Atkinson,
 Peter Blackson,
