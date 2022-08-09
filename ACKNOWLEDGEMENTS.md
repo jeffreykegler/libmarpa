@@ -1,31 +1,45 @@
-\chapter{Acknowledgments}
-\label{chap:Acknowledgments}
+<!--
+Copyright 2022 Jeffrey Kegler
+This file is part of Marpa::R2.  Marpa::R2 is free software: you can
+redistribute it and/or modify it under the terms of the GNU Lesser
+General Public License as published by the Free Software Foundation,
+either version 3 of the License, or (at your option) any later version.
 
-\todo[prepend, caption={``Acknowledgments'' chapter is FRAGMENTARY}]{%
-This chapter is fragmentary and inconsistent
-and much of it may be deleted.
-Non-author readers are not encouraged.
-Filing pull requests
-will usually be a waste of time.}
+Marpa::R2 is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+Lesser General Public License for more details.
 
-\myepi{\label{epi:hamlet}%
-    Beggar that I am, I am even poor in thanks; but I thank you;
-    and sure, dear friends, my thanks are too dear a halfpenny.}
-    {Hamlet}
+You should have received a copy of the GNU Lesser
+General Public License along with Marpa::R2.  If not, see
+http://www.gnu.org/licenses/.
+-->
 
-While we always feared that this section would
-be an exhibition of our negligence and ingratitude as anything else,
-there had been plans for it to be otherwise.
+# Acknowledgments
+
+> Beggar that I am, I am even poor in thanks; but I thank you;
+> and sure, dear friends, my thanks are too dear a halfpenny.
+> --- Hamlet, Act 2, scene 2
+
+This section thanks those who have helped,
+not just with this repository,
+but with the Marpa project as a whole.
+We feared that these acknowledgements would
+become an exhibition of our negligence and ingratitude,
+and at least to some degree this has turned out to be the case.
+But we assure the reader,
+despite appearances,
+there were plans for it to be otherwise.
 We took care to thank those who helped us
-in \Marpa's IRC channel,
+in Marpa's IRC channel,
 expecting to use its backlog
 as a source for this chapter.
 
-In 2018, the European Union (EU),
+However, in 2018, the European Union (EU),
 via its General Data Protection Regulation (GDPR),
 suddenly brought these plans to nought.
 Under the GDPR,
-logs like that for \Marpa's IRC channel could not possibly be made
+logs like that for Marpa's IRC channel could not possibly be made
 conformant in a way that kept their administrators safe from
 legal action.
 In theory this applied to similar, highly-profitable databases maintained
@@ -41,16 +55,20 @@ given the costs.
 Whether or not some were aware of
 GDPR's highly discriminatory effects
 when it was being drafted,
-realization of the GDPR's practical implications
-for ourselves
-came to the open source community very abruptly,
+the realization of the GDPR's practical implications
+for volunteer-driven open source effort
+came to that community very abruptly,
 and after it was already in effect.
 Our backlogging was done in EU jurisdiction,
 and no measure to save our IRC backlogs
 could be taken
-without inviting legal action.
+without exposing innocent and generous volunteers
+to ruinous legal action.
+And my notes for these acknkowledgements
+needed to be cobbled together from other sources.
 
-Many members of the \Marpa community
+But, to proceed to business:
+Many members of the Marpa community
 have helped me in many ways,
 and it is risky
 to single out one of them.
