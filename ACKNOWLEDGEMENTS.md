@@ -77,23 +77,23 @@ Ron Savage has been unstinting in
 his support.
 
 Jean-Damien Durand's assistance included several ambitious
-\Marpa applications.
-Deyan Ginev provided advice on \LaTeX{} and
+Marpa applications.
+Deyan Ginev provided advice on LaTeX and
 on deeper matters which proved essential for this book.
 Lenz Moritz quietly and effectively maintained our IRC channel.
-Andrew Rodland stood in for me as the face of \Marpa,
-and he pioneered the use of one \Marpa grammar
+Andrew Rodland stood in for me as the face of Marpa,
+and he pioneered the use of one Marpa grammar
 to feed another.
 Ruslan Shvedov provided many hours of assistance,
 ranging from linguistic insights to details of code testing.
-Luc St-Louis moderated the \Marpa IRC channel,
+Luc St-Louis moderated the Marpa IRC channel,
 saving me time,
 and the channel's other users from having to put up with
 my less than fully competent,
 and often too heavy-handed efforts.
-Peter Stuifzand wrote the prototype on which \Marpa's
+Peter Stuifzand wrote the prototype on which Marpa's
 SLIF interface is based.
-Ruslan Zakirov was a very early \Marpa supporter
+Ruslan Zakirov was a very early Marpa supporter
 who made many useful suggestions
 that are incorporated in this book.
 Larry Wall has always made himself available,
