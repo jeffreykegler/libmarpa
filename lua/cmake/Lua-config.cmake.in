@@ -1,0 +1,11 @@
+@PACKAGE_INIT@
+
+set_and_check(Lua_EXECUTABLE ${PACKAGE_PREFIX_DIR}/bin/lua@CMAKE_EXECUTABLE_SUFFIX@)
+set_and_check(Luac_EXECUTABLE ${PACKAGE_PREFIX_DIR}/bin/luac@CMAKE_EXECUTABLE_SUFFIX@)
+
+# for compatibility with the FindLua.cmake module, use `LUA`, not `Lua`
+set_and_check(LUA_INCLUDE_DIR ${PACKAGE_PREFIX_DIR}/bin/lua@CMAKE_EXECUTABLE_SUFFIX@)
+file(GLOB _LIBS ${PACKAGE_PREFIX_DIR}/lib/lua)
+set_and_check(LUA_LIBRARIES ${_LIBS})
+
+include(${CMAKE_CURRENT_LIST_DIR}/Lua-targets.cmake)

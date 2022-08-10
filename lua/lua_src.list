@@ -1,0 +1,55 @@
+# Copyright 2022 Jeffrey Kegler
+# Permission is hereby granted, free of charge, to any person obtaining a
+# copy of this software and associated documentation files (the "Software"),
+# to deal in the Software without restriction, including without limitation
+# the rights to use, copy, modify, merge, publish, distribute, sublicense,
+# and/or sell copies of the Software, and to permit persons to whom the
+# Software is furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included
+# in all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+# THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+# OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+# ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+# OTHER DEALINGS IN THE SOFTWARE.
+
+lua_src/CMakeLists.txt: cmake/CMakeLists.txt
+lua_src/cmake/Lua-config.cmake.in: cmake/Lua-config.cmake.in
+lua_src/src/loslib.c: lua-5.4.4/src/loslib.c
+lua_src/src/lstate.c: lua-5.4.4/src/lstate.c
+lua_src/src/ltable.c: lua-5.4.4/src/ltable.c
+lua_src/src/ldo.c: lua-5.4.4/src/ldo.c
+lua_src/src/lparser.c: lua-5.4.4/src/lparser.c
+lua_src/src/lmathlib.c: lua-5.4.4/src/lmathlib.c
+lua_src/src/lapi.c: lua-5.4.4/src/lapi.c
+lua_src/src/ldblib.c: lua-5.4.4/src/ldblib.c
+lua_src/src/lctype.c: lua-5.4.4/src/lctype.c
+lua_src/src/lauxlib.c: lua-5.4.4/src/lauxlib.c
+lua_src/src/llex.c: lua-5.4.4/src/llex.c
+lua_src/src/lcorolib.c: lua-5.4.4/src/lcorolib.c
+lua_src/src/lmem.c: lua-5.4.4/src/lmem.c
+lua_src/src/ltablib.c: lua-5.4.4/src/ltablib.c
+lua_src/src/lobject.c: lua-5.4.4/src/lobject.c
+lua_src/src/lbaselib.c: lua-5.4.4/src/lbaselib.c
+lua_src/src/lutf8lib.c: lua-5.4.4/src/lutf8lib.c
+lua_src/src/linit.c: lua-5.4.4/src/linit.c
+lua_src/src/lgc.c: lua-5.4.4/src/lgc.c
+lua_src/src/lfunc.c: lua-5.4.4/src/lfunc.c
+lua_src/src/lua.c: lua-5.4.4/src/lua.c
+lua_src/src/lzio.c: lua-5.4.4/src/lzio.c
+lua_src/src/ltm.c: lua-5.4.4/src/ltm.c
+lua_src/src/liolib.c: lua-5.4.4/src/liolib.c
+lua_src/src/loadlib.c: lua-5.4.4/src/loadlib.c
+lua_src/src/luac.c: lua-5.4.4/src/luac.c
+lua_src/src/lopcodes.c: lua-5.4.4/src/lopcodes.c
+lua_src/src/lcode.c: lua-5.4.4/src/lcode.c
+lua_src/src/ldebug.c: lua-5.4.4/src/ldebug.c
+lua_src/src/lvm.c: lua-5.4.4/src/lvm.c
+lua_src/src/lstring.c: lua-5.4.4/src/lstring.c
+lua_src/src/lstrlib.c: lua-5.4.4/src/lstrlib.c
+lua_src/src/lundump.c: lua-5.4.4/src/lundump.c
+lua_src/src/ldump.c: lua-5.4.4/src/ldump.c
