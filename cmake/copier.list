@@ -90,8 +90,7 @@ cm_dist/tap_test/tests/tap/CMakeLists.txt: cmake/tap_test/tests/tap/CMakeLists.t
 cm_dist/tap_test/do_tap_tests.sh.in: cmake/tap_test/do_tap_tests.sh.in
 
 # Marpalua
-cm_dist/marpalua/CMakeLists.txt: cmake/CMakeLists.txt
-cm_dist/marpalua/cmake/Lua-config.cmake.in: cmake/Lua-config.cmake.in
+cm_dist/marpalua/CMakeLists.txt: marpalua/cmake/CMakeLists.txt
 cm_dist/marpalua/src/lapi.c: marpalua/lua-5.4.4/src/lapi.c
 cm_dist/marpalua/src/lapi.h: marpalua/lua-5.4.4/src/lapi.h
 cm_dist/marpalua/src/lauxlib.c: marpalua/lua-5.4.4/src/lauxlib.c

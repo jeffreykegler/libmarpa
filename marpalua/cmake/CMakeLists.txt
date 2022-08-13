@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.10)
 
-project(LuaCMake VERSION 1.0.0 LANGUAGES C CXX
+project(marpalua VERSION 1.0.0 LANGUAGES C CXX
   DESCRIPTION "CMake build for Lua"
 )
 
@@ -8,9 +8,9 @@ set(_Lua "Lua")
 
 option(LUA_SKIP_TOOLS "Skip installing tools" OFF)
 
-set(LUA_VERSION_TO_BUILD "5.3.5")
+set(LUA_VERSION_TO_BUILD "5.4.4")
 
-set(LUA_SOURCE_DIR "${CMAKE_SOURCE_DIR}/src")
+set(LUA_SOURCE_DIR "${CMAKE_SOURCE_DIR}/marpalua/src")
 set(_LUA_LIB_SRC
   "${LUA_SOURCE_DIR}/lapi.c"
   "${LUA_SOURCE_DIR}/lcode.c"

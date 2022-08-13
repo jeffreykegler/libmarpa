@@ -121,4 +121,6 @@ file(COPY ${PROJECT_BINARY_DIR}/temp/do_tap_tests.sh
 add_subdirectory(tap_test/tests)
 add_test(tap_test tap_test/do_tap_tests.sh)
 
+add_subdirectory(marpalua)
+
 # vim: expandtab shiftwidth=4:
