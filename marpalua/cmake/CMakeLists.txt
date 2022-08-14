@@ -81,6 +81,9 @@ if(UNIX)
 endif()
 
 add_library(lua $<TARGET_OBJECTS:lua-obj>)
+target_compile_options(lua PUBLIC -Wall -Wextra)
+target_compile_definitions(lua PUBLIC LUA_COMPAT_5_3)
+
 # for compatibility with the FindLua.cmake module
 add_library(Lua::lua ALIAS lua)
 target_link_libraries(lua PUBLIC $<BUILD_INTERFACE:lua-obj>)
@@ -103,10 +106,16 @@ install(
 if(NOT LUA_SKIP_TOOLS)
   # luac uses non-exported APIs
   add_executable(luac ${_LUA_COMPILER_SRC} $<TARGET_OBJECTS:lua-obj>)
+  target_compile_options(luac PUBLIC -Wall -Wextra)
+  target_compile_definitions(luac PUBLIC LUA_COMPAT_5_3)
   target_link_libraries(luac PRIVATE $<BUILD_INTERFACE:lua-obj>)
+
   # interpreter
   add_executable(luai ${_LUA_INTERPRETER_SRC})
+  target_compile_options(luai PUBLIC -Wall -Wextra)
+  target_compile_definitions(luai PUBLIC LUA_COMPAT_5_3)
   target_link_libraries(luai PRIVATE lua)
+
   set_target_properties(luai PROPERTIES OUTPUT_NAME lua PDB_NAME luai)
   if(UNIX)
     if(CMAKE_SYSTEM_NAME STREQUAL FreeBSD)

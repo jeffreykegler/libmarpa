@@ -106,14 +106,6 @@ file(COPY ${PROJECT_BINARY_DIR}/temp/do_tap_tests.sh
     DESTINATION ${PROJECT_BINARY_DIR}/tap_test/
     FILE_PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ)
 
-# Convert testing to compile during testing phase?
-# add_test(tap_test ${CMAKE_CTEST_COMMAND}
-#    --build-and-test "${CMAKE_SOURCE_DIR}/tap_test/tests"
-#                     "${CMAKE_BINARY_DIR}/tap_test/tests"
-#    --build-generator ${CMAKE_GENERATOR}
-#    --build-project tap_test
-#    --test-command tap_test/do_tap_tests.sh)
-
 add_subdirectory(tap_test/tests)
 add_test(tap_test tap_test/do_tap_tests.sh)
 
