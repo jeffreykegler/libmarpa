@@ -27,9 +27,9 @@ SET(LIBMARPA_SHARED "${CMAKE_BINARY_DIR}/libmarpa.so")
 SET(LIBMARPA_STATIC "${CMAKE_BINARY_DIR}/libmarpa_s.a")
 SET(LIBMARPA_INCLUDE "${CMAKE_BINARY_DIR}")
 
-if ("${CMAKE_SOURCE_DIR}" STREQUAL "${CMAKE_BINARY_DIR}")
-  message(SEND_ERROR "${CMAKE_SOURCE_DIR} vs. ${CMAKE_BINARY_DIR}: In-source builds are not allowed.")
-endif ()
+# if ("${CMAKE_SOURCE_DIR}" STREQUAL "${CMAKE_BINARY_DIR}")
+#  message(SEND_ERROR "${CMAKE_SOURCE_DIR} vs. ${CMAKE_BINARY_DIR}: In-source builds are not allowed.")
+# endif ()
 
 # set(CMAKE_VERBOSE_MAKEFILE ON)
 # set(CMAKE_COLOR_MAKEFILE   ON)

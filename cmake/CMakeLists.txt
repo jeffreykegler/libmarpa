@@ -49,8 +49,10 @@ IF (CMAKE_COMPILER_IS_GNUCC)
     # MARPA_DEBUG_FLAG ?
     # -Wextra ?
     # -Wdeclaration-after-statement ?
-    ADD_DEFINITIONS(-g -O2 -Wall -Wpointer-arith -Wstrict-prototypes -Wwrite-strings -Wshadow -Wmissing-declarations -Wconversion -ansi -pedantic)
-    ADD_DEFINITIONS(-Wundef -Wendif-labels)
+    add_compile_options(-g -O2)
+    add_compile_options(-Wall -Wpointer-arith -Wstrict-prototypes -Wwrite-strings)
+    add_compile_options(-Wshadow -Wmissing-declarations -Wconversion -ansi -pedantic)
+    add_compile_options(-Wundef -Wendif-labels)
 ENDIF (CMAKE_COMPILER_IS_GNUCC)
 IF (MSVC)
     ADD_DEFINITIONS(/W3)
@@ -74,14 +76,6 @@ CONFIGURE_FILE(config.h.cmake config.h)
 SET(libmarpa_src
     marpa.c marpa_tavl.c
     marpa_ami.c marpa_obs.c marpa_avl.c )
-
-# Expose B's public includes (including Boost transitively) to other
-# subprojects through cache variable.
-set(${PROJECT_NAME}_INCLUDE_DIRS ${PROJECT_SOURCE_DIR}/include
-    CACHE INTERNAL "${PROJECT_NAME}: Include Directories" FORCE)
-
-set(${PROJECT_NAME}_ERROR_CODES ${PROJECT_SOURCE_DIR}/error_codes.table
-    CACHE INTERNAL "${PROJECT_NAME}: Error codes table" FORCE)
 
 include_directories(
     "${PROJECT_BINARY_DIR}" \  # for config.h
