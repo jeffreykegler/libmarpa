@@ -43,6 +43,7 @@ endif ()
 
 ADD_EXECUTABLE(runtests runtests.c)
 IF (CMAKE_COMPILER_IS_GNUCC)
+    target_compile_options(runtests PUBLIC ${LIBMARPA_COMPILE_OPTIONS})
     target_compile_options(runtests PUBLIC "-Wno-sign-conversion")
 ENDIF (CMAKE_COMPILER_IS_GNUCC)
 

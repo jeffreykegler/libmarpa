@@ -43,6 +43,8 @@ set(_LUA_COMPILER_SRC ${LUA_SOURCE_DIR}/luac.c)
 set(_LUA_INTERPRETER_SRC ${LUA_SOURCE_DIR}/lua.c)
 
 add_library(lua-obj OBJECT ${_LUA_LIB_SRC})
+target_compile_options(lua-obj PUBLIC -Wall -Wextra)
+target_compile_definitions(lua-obj PUBLIC LUA_COMPAT_5_3)
 
 if(BUILD_SHARED_LIBS)
   set_target_properties(lua-obj PROPERTIES POSITION_INDEPENDENT_CODE ON)

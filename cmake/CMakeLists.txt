@@ -87,8 +87,7 @@ target_compile_options(marpa PUBLIC ${LIBMARPA_COMPILE_OPTIONS})
 ADD_LIBRARY(marpa_s STATIC ${libmarpa_src})
 target_compile_options(marpa_s PUBLIC ${LIBMARPA_COMPILE_OPTIONS})
 
-set_target_properties(marpa_s
-                      PROPERTIES POSITION_INDEPENDENT_CODE ON)
+# set_target_properties(marpa_s PROPERTIES POSITION_INDEPENDENT_CODE ON)
 
 install(TARGETS marpa marpa_s
     RUNTIME DESTINATION bin

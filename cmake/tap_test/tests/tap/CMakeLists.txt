@@ -21,5 +21,6 @@ INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}
     ${CMAKE_SOURCE_DIR}/tap_test ${CMAKE_SOURCE_DIR}/tap_test/tests)
 
 ADD_LIBRARY(libtap basic.c float.c)
+target_compile_options(libtap PUBLIC ${LIBMARPA_COMPILE_OPTIONS})
 
 # vim: expandtab shiftwidth=4:
