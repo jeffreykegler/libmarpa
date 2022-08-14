@@ -17,10 +17,6 @@
 # ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 # OTHER DEALINGS IN THE SOFTWARE.
 
-CMAKE_MINIMUM_REQUIRED(VERSION 3.16.3)
-
-project(simple C CXX)
-
 include(CMakePrintHelpers)
 cmake_print_variables(CMAKE_BUILD_TYPE)
 if (CMAKE_BUILD_TYPE MATCHES Asan)
@@ -32,27 +28,27 @@ include_directories(${LIBMARPA_INCLUDE} ${CMAKE_SOURCE_DIR}
     ${CMAKE_SOURCE_DIR}/tap_test ${CMAKE_SOURCE_DIR}/tap_test/tests)
 
 add_executable(issue92a issue92a.c marpa_m_test.c)
-target_link_libraries(issue92a ${LIBMARPA_STATIC} ${LIBTAP})
+target_link_libraries(issue92a ${LIBMARPA_STATIC} libtap)
 
 add_executable(issue92b issue92b.c marpa_m_test.c)
-target_link_libraries(issue92b ${LIBMARPA_STATIC} ${LIBTAP})
+target_link_libraries(issue92b ${LIBMARPA_STATIC} libtap)
 
 add_executable(issue92c issue92c.c marpa_m_test.c)
-target_link_libraries(issue92c ${LIBMARPA_STATIC} ${LIBTAP})
+target_link_libraries(issue92c ${LIBMARPA_STATIC} libtap)
 
 add_executable(nits nits.c marpa_m_test.c)
-target_link_libraries(nits ${LIBMARPA_STATIC} ${LIBTAP})
+target_link_libraries(nits ${LIBMARPA_STATIC} libtap)
 
 add_executable(rule1 rule1.c)
-target_link_libraries(rule1 ${LIBMARPA_STATIC} ${LIBTAP})
+target_link_libraries(rule1 ${LIBMARPA_STATIC} libtap)
 
 add_executable(trivial trivial.c)
-target_link_libraries(trivial ${LIBMARPA_STATIC} ${LIBTAP})
+target_link_libraries(trivial ${LIBMARPA_STATIC} libtap)
 
 add_executable(trivial1 trivial1.c marpa_m_test.c)
-target_link_libraries(trivial1 ${LIBMARPA_STATIC} ${LIBTAP})
+target_link_libraries(trivial1 ${LIBMARPA_STATIC} libtap)
 
 add_executable(depr_unvalued depr_unvalued.c marpa_m_test.c)
-target_link_libraries(depr_unvalued ${LIBMARPA_STATIC} ${LIBTAP})
+target_link_libraries(depr_unvalued ${LIBMARPA_STATIC} libtap)
 
 # vim: expandtab shiftwidth=4:

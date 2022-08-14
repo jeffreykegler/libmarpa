@@ -17,10 +17,6 @@
 # ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 # OTHER DEALINGS IN THE SOFTWARE.
 
-CMAKE_MINIMUM_REQUIRED(VERSION 3.16.3)
-
-PROJECT(tap_test C CXX)
-
 # You can tweak some common (for all subprojects) stuff here. For example:
 
 SET (CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/modules")

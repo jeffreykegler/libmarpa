@@ -1,10 +1,3 @@
-cmake_minimum_required(VERSION 3.10)
-
-project(marpalua VERSION 1.0.0 LANGUAGES C CXX
-  DESCRIPTION "CMake build for Lua"
-)
-
-set(_Lua "Lua")
 
 option(LUA_SKIP_TOOLS "Skip installing tools" OFF)
 
