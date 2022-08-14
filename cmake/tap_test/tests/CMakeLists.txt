@@ -43,7 +43,7 @@ endif ()
 
 ADD_EXECUTABLE(runtests runtests.c)
 IF (CMAKE_COMPILER_IS_GNUCC)
-    set_source_files_properties(runtests.c PROPERTIES COMPILE_OPTIONS "-Wno-sign-conversion")
+    target_compile_options(runtests PUBLIC "-Wno-sign-conversion")
 ENDIF (CMAKE_COMPILER_IS_GNUCC)
 
 # NOTE: The order matters! The most independent ones should go first.

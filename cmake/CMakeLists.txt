@@ -50,12 +50,13 @@ IF (CMAKE_COMPILER_IS_GNUCC)
     # -Wextra ?
     # -Wdeclaration-after-statement ?
     add_compile_options(-g -O2)
-    add_compile_options(-Wall -Wpointer-arith -Wstrict-prototypes -Wwrite-strings)
-    add_compile_options(-Wshadow -Wmissing-declarations -Wconversion -ansi -pedantic)
-    add_compile_options(-Wundef -Wendif-labels)
+    set(LIBMARPA_COMPILE_OPTIONS
+        -Wall -Wpointer-arith -Wstrict-prototypes -Wwrite-strings
+        -Wshadow -Wmissing-declarations -Wconversion -ansi -pedantic
+        -Wundef -Wendif-labels)
 ENDIF (CMAKE_COMPILER_IS_GNUCC)
 IF (MSVC)
-    ADD_DEFINITIONS(/W3)
+    set(LIBMARPA_COMPILE_OPTIONS /W3)
 ENDIF (MSVC)
 
 if (CMAKE_BUILD_TYPE MATCHES Debug)
@@ -82,7 +83,9 @@ include_directories(
     "${PROJECT_SOURCE_DIR}" "${PROJECT_SOURCE_DIR}/include")
 
 ADD_LIBRARY(marpa SHARED ${libmarpa_src})
+target_compile_options(marpa PUBLIC ${LIBMARPA_COMPILE_OPTIONS})
 ADD_LIBRARY(marpa_s STATIC ${libmarpa_src})
+target_compile_options(marpa_s PUBLIC ${LIBMARPA_COMPILE_OPTIONS})
 
 set_target_properties(marpa_s
                       PROPERTIES POSITION_INDEPENDENT_CODE ON)
