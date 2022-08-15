@@ -22,5 +22,6 @@ INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}
 
 ADD_LIBRARY(libtap basic.c float.c)
 target_compile_options(libtap PUBLIC ${LIBMARPA_COMPILE_OPTIONS})
+set_target_properties(libtap PROPERTIES OUTPUT_NAME tap)
 
 # vim: expandtab shiftwidth=4:
