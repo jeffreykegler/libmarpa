@@ -46,10 +46,10 @@ if("${PROJECT_SOURCE_DIR}" STREQUAL "${PROJECT_BINARY_DIR}")
 # C.f. http://stackoverflow.com/questions/14231292/cmake-and-compiler-warnings
 # ----------------------------------------------------------------------------
 IF (CMAKE_COMPILER_IS_GNUCC)
+    add_compile_options(-g -O2)
     # MARPA_DEBUG_FLAG ?
     # -Wextra ?
     # -Wdeclaration-after-statement ?
-    add_compile_options(-g -O2)
     set(LIBMARPA_COMPILE_OPTIONS
         -Wall -Wpointer-arith -Wstrict-prototypes -Wwrite-strings
         -Wshadow -Wmissing-declarations -Wconversion -ansi -pedantic
@@ -88,6 +88,11 @@ ADD_LIBRARY(marpa_s STATIC ${libmarpa_src})
 target_compile_options(marpa_s PUBLIC ${LIBMARPA_COMPILE_OPTIONS})
 
 # set_target_properties(marpa_s PROPERTIES POSITION_INDEPENDENT_CODE ON)
+
+# Setup output directories.
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/bin)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/lib)
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/lib)
 
 install(TARGETS marpa marpa_s
     RUNTIME DESTINATION bin

@@ -1,1 +1,2 @@
-cd tap_test/tests && ./runtests -l @CMAKE_CURRENT_SOURCE_DIR@/tap_test/tests/TESTS
+cd tap_test/tests &&
+  @CMAKE_RUNTIME_OUTPUT_DIRECTORY@/runtests -l @CMAKE_CURRENT_SOURCE_DIR@/tap_test/tests/TESTS
