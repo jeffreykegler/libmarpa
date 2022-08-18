@@ -112,8 +112,11 @@ file(COPY ${PROJECT_BINARY_DIR}/temp/do_tap_tests.sh
     FILE_PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ)
 
 add_subdirectory(tap_test/tests)
-add_test(tap_test tap_test/do_tap_tests.sh)
 
 add_subdirectory(marpalua)
+
+add_test(marpalua 
+    ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/marpalua -e "print(_VERSION)")
+add_test(tap_test tap_test/do_tap_tests.sh)
 
 # vim: expandtab shiftwidth=4:
