@@ -84,10 +84,6 @@ cm_dist/tap_test/tests/simple/depr_unvalued.c: work/stage/tests/simple/depr_unva
 cm_dist/tap_test/tests/simple/issue92b.c: work/stage/tests/simple/issue92b.c
 cm_dist/tap_test/tests/simple/marpa_m_test.c: work/stage/tests/simple/marpa_m_test.c
 cm_dist/tap_test/tests/simple/nits.c: work/stage/tests/simple/nits.c
-cm_dist/tap_test/tests/simple/CMakeLists.txt: cmake/tap_test/tests/simple/CMakeLists.txt
-cm_dist/tap_test/tests/CMakeLists.txt: cmake/tap_test/tests/CMakeLists.txt
-cm_dist/tap_test/tests/tap/CMakeLists.txt: cmake/tap_test/tests/tap/CMakeLists.txt
-cm_dist/tap_test/do_tap_tests.sh.in: cmake/tap_test/do_tap_tests.sh.in
 
 # Marpalua
 cm_dist/marpalua/CMakeLists.txt: marpalua/cmake/CMakeLists.txt
@@ -152,3 +148,13 @@ cm_dist/marpalua/src/lvm.c: marpalua/lua-5.4.4/src/lvm.c
 cm_dist/marpalua/src/lvm.h: marpalua/lua-5.4.4/src/lvm.h
 cm_dist/marpalua/src/lzio.c: marpalua/lua-5.4.4/src/lzio.c
 cm_dist/marpalua/src/lzio.h: marpalua/lua-5.4.4/src/lzio.h
+
+cm_dist/marpalua/lib/Test/Builder.lua: marpalua/lib/Test/Builder.lua
+cm_dist/marpalua/lib/Test/More.lua: marpalua/lib/Test/More.lua
+
+# Test stuff
+cm_dist/tap_test/tests/simple/CMakeLists.txt: cmake/tap_test/tests/simple/CMakeLists.txt
+cm_dist/tap_test/tests/CMakeLists.txt: cmake/tap_test/tests/CMakeLists.txt
+cm_dist/tap_test/tests/tap/CMakeLists.txt: cmake/tap_test/tests/tap/CMakeLists.txt
+cm_dist/tap_test/do_tap_tests.sh.in: cmake/tap_test/do_tap_tests.sh.in
+cm_dist/tap_test/tests/marpalua/load.t.in: cmake/tap_test/tests/marpalua/load.t.in
