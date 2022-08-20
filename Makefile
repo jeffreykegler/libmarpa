@@ -52,8 +52,9 @@ timestamp/ac_dist.stamp: timestamp/stage.stamp
 	date > timestamp/ac_dist.stamp
 	@echo Updating ac_dist time stamp: `cat timestamp/ac_dist.stamp`
 
-timestamp/cm_dist.stamp: timestamp/ac_dist.stamp
+timestamp/cm_dist.stamp: timestamp/stage.stamp
 	@echo cm_dist Out of date wrt ac_dist
+	cp work/stage/tests/TESTS cmake/tap_test/TESTS.ac
 	cd cmake; make
 	perl ./etc/copier.pl --verbose < cmake/copier.list
 	date > timestamp/cm_dist.stamp
@@ -90,7 +91,8 @@ test: timestamp/ac_dist.stamp
 cm_test: timestamp/cm_dist.stamp
 	rm -rf cm_build
 	cmake -S cm_dist -B cm_build
-	cd cm_build && $(MAKE) VERBOSE=1 && $(MAKE) VERBOSE=1 test ARGS="-V"
+	cd cm_build && $(MAKE) VERBOSE=1 && \
+	$(MAKE) VERBOSE=1 test ARGS="-V" LUA_PATH="../../../cm_dist/marpalua/lib/?.lua"
 
 # While we do build a shared library, Libmarpa is not primarily intended to be installed
 # as a system library.  Instead, Libmarpa is expected to be incorporated directly, perhaps

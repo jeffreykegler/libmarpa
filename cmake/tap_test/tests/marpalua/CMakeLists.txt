@@ -17,22 +17,10 @@
 # ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 # OTHER DEALINGS IN THE SOFTWARE.
 
-.PHONY: all clean
+# Remove temp directory after copy?
+configure_file(load.t.in ${CMAKE_CURRENT_BINARY_DIR}/temp/load.t @ONLY)
+file(COPY ${CMAKE_CURRENT_BINARY_DIR}/temp/load.t
+    DESTINATION ${CMAKE_CURRENT_BINARY_DIR}
+    FILE_PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ)
 
-all: version.cmake tap_test/TESTS
-
-CLEAN_FILES = version.cmake tap_test/TESTS
-
-version.cmake:
-	major=`sh ../libmarpa_version.sh major`; \
-	  echo "SET(MARPA_LIB_MAJOR_VERSION $$major)" > $@
-	minor=`sh ../libmarpa_version.sh minor`; \
-	  echo "SET(MARPA_LIB_MINOR_VERSION $$minor)" >> $@
-	micro=`sh ../libmarpa_version.sh micro`; \
-	  echo "SET(MARPA_LIB_MICRO_VERSION $$micro)" >> $@
-
-tap_test/TESTS: tap_test/TESTS.ac tap_test/TESTS.cm
-	cat tap_test/TESTS.ac tap_test/TESTS.cm > tap_test/TESTS
-
-clean:
-	rm -f $(CLEAN_FILES)
+# vim: expandtab shiftwidth=4:
