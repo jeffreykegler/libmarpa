@@ -82,7 +82,7 @@ endif()
 
 add_library(marpalua $<TARGET_OBJECTS:marpalua-obj>)
 target_compile_options(marpalua PUBLIC -Wall -Wextra)
-target_compile_definitions(marpalua PUBLIC LUA_COMPAT_5_3)
+# target_compile_definitions(marpalua PUBLIC LUA_COMPAT_5_3)
 target_link_libraries(marpalua PUBLIC $<BUILD_INTERFACE:marpalua-obj>)
 
 if(BUILD_SHARED_LIBS AND WIN32)
