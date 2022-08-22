@@ -1,5 +1,3 @@
-#!@CMAKE_RUNTIME_OUTPUT_DIRECTORY@/marpalua
-
 require 'Test.More'
 plan(2)
 
