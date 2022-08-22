@@ -118,5 +118,7 @@ add_subdirectory(marpalua)
 add_test(marpalua 
     ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/marpalua -e "print(_VERSION)")
 add_test(tap_test tap_test/do_tap_tests.sh)
+add_test(NAME marpalua2
+    COMMAND $<TARGET_FILE:marpaluai> -e "print(_VERSION)")
 
 # vim: expandtab shiftwidth=4:
