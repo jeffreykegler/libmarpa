@@ -105,12 +105,6 @@ install(FILES "${PROJECT_SOURCE_DIR}/include/marpa.h" DESTINATION include)
 configure_file(libmarpa.pc.in ${PROJECT_BINARY_DIR}/libmarpa.pc @ONLY)
 install(FILES "${PROJECT_BINARY_DIR}/libmarpa.pc" DESTINATION "lib/pkgconfig/")
 
-# Remove temp directory after copy?
-configure_file(tap_test/do_tap_tests.sh.in temp/do_tap_tests.sh @ONLY)
-file(COPY ${PROJECT_BINARY_DIR}/temp/do_tap_tests.sh
-    DESTINATION ${PROJECT_BINARY_DIR}/tap_test/
-    FILE_PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ)
-
 add_subdirectory(tap_test/tests)
 
 add_subdirectory(marpalua)
@@ -118,17 +112,15 @@ add_subdirectory(marpalua)
 add_test(marpalua 
     ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/marpalua -e "print(_VERSION)")
 
-add_test(tap_test tap_test/do_tap_tests.sh)
-
 add_test(NAME c_test
     COMMAND $<TARGET_FILE:runtests> -l ${PROJECT_SOURCE_DIR}/tap_test/TESTS.ac
     WORKING_DIRECTORY ${PROJECT_BINARY_DIR}/tap_test/tests)
 
-add_test(NAME marpalua2
-    COMMAND $<TARGET_FILE:marpaluai> -e "print(_VERSION)")
-
-set_property(TEST marpalua2 PROPERTY ENVIRONMENT
-    LUA_PATH="${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/?.lua"
+add_test(NAME lua_test
+    COMMAND $<TARGET_FILE:runtests> -v -l ${PROJECT_SOURCE_DIR}/tap_test/TESTS.cm
+    WORKING_DIRECTORY ${PROJECT_BINARY_DIR}/tap_test/tests)
+set_property(TEST lua_test PROPERTY ENVIRONMENT
+    LUA_PATH=${PROJECT_SOURCE_DIR}/marpalua/lib/?.lua
     C_TAP_VALGRIND=$<TARGET_FILE:marpaluai>)
 
 # vim: expandtab shiftwidth=4:

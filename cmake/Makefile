@@ -19,9 +19,9 @@
 
 .PHONY: all clean
 
-all: version.cmake tap_test/TESTS
+all: version.cmake
 
-CLEAN_FILES = version.cmake tap_test/TESTS
+CLEAN_FILES = version.cmake
 
 version.cmake:
 	major=`sh ../libmarpa_version.sh major`; \
@@ -30,9 +30,6 @@ version.cmake:
 	  echo "SET(MARPA_LIB_MINOR_VERSION $$minor)" >> $@
 	micro=`sh ../libmarpa_version.sh micro`; \
 	  echo "SET(MARPA_LIB_MICRO_VERSION $$micro)" >> $@
-
-tap_test/TESTS: tap_test/TESTS.ac tap_test/TESTS.cm
-	cat tap_test/TESTS.ac tap_test/TESTS.cm > tap_test/TESTS
 
 clean:
 	rm -f $(CLEAN_FILES)
