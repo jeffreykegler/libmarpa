@@ -91,7 +91,7 @@ cm_test: timestamp/cm_dist.stamp
 	rm -rf cm_build
 	cmake -S cm_dist -B cm_build
 	cd cm_build && $(MAKE) VERBOSE=1 && \
-	$(MAKE) VERBOSE=1 test ARGS="-V" LUA_PATH="../../../cm_dist/marpalua/lib/?.lua"
+	$(MAKE) VERBOSE=1 test ARGS="-V"
 
 # While we do build a shared library, Libmarpa is not primarily intended to be installed
 # as a system library.  Instead, Libmarpa is expected to be incorporated directly, perhaps
