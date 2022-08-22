@@ -50,6 +50,6 @@ ENDIF (CMAKE_COMPILER_IS_GNUCC)
 # NOTE: The order matters! The most independent ones should go first.
 add_subdirectory(tap)
 add_subdirectory(simple)
-# add_subdirectory(marpalua) # no processing needed
+add_subdirectory(marpalua) # no processing needed
 
 # vim: expandtab shiftwidth=4:
