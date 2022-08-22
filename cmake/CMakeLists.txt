@@ -117,8 +117,18 @@ add_subdirectory(marpalua)
 
 add_test(marpalua 
     ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/marpalua -e "print(_VERSION)")
+
 add_test(tap_test tap_test/do_tap_tests.sh)
+
+add_test(NAME c_test
+    COMMAND $<TARGET_FILE:runtests> -l ${PROJECT_SOURCE_DIR}/tap_test/TESTS.ac
+    WORKING_DIRECTORY ${PROJECT_BINARY_DIR}/tap_test/tests)
+
 add_test(NAME marpalua2
     COMMAND $<TARGET_FILE:marpaluai> -e "print(_VERSION)")
+
+set_property(TEST marpalua2 PROPERTY ENVIRONMENT
+    LUA_PATH="${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/?.lua"
+    C_TAP_VALGRIND=$<TARGET_FILE:marpaluai>)
 
 # vim: expandtab shiftwidth=4:

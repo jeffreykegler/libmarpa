@@ -67,6 +67,8 @@ cm_dist/api_docs/api_html.tar: work/stage/api_docs/api_html.tar
 # If we have non-TAP tests in the future, we will create a sibling directory 
 # to tests/ for them.
 cm_dist/tap_test/TESTS: cmake/tap_test/TESTS
+cm_dist/tap_test/TESTS.ac: cmake/tap_test/TESTS.ac
+cm_dist/tap_test/TESTS.cm: cmake/tap_test/TESTS.cm
 cm_dist/tap_test/tests/runtests.c: work/stage/tests/runtests.c
 cm_dist/tap_test/tests/libtap.sh: work/stage/tests/libtap.sh
 cm_dist/tap_test/tests/tap/basic.h: work/stage/tests/tap/basic.h
