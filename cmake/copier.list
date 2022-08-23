@@ -150,10 +150,10 @@ cm_dist/marpalua/src/lvm.h: marpalua/lua-5.4.4/src/lvm.h
 cm_dist/marpalua/src/lzio.c: marpalua/lua-5.4.4/src/lzio.c
 cm_dist/marpalua/src/lzio.h: marpalua/lua-5.4.4/src/lzio.h
 
-cm_dist/marpalua/lib/Test/Builder.lua: marpalua/lib/Test/Builder.lua
-cm_dist/marpalua/lib/Test/More.lua: marpalua/lib/Test/More.lua
-cm_dist/marpalua/lib/inspect.lua: marpalua/lib/inspect.lua
-cm_dist/marpalua/lib/strict.lua: marpalua/lib/strict.lua
+cm_dist/marpalua/lib/Test/Builder.lua: marpalua/lib_orig/Test/Builder.lua
+cm_dist/marpalua/lib/Test/More.lua: marpalua/lib_orig/Test/More.lua
+cm_dist/marpalua/lib/inspect.lua: marpalua/lib_orig/inspect.lua
+cm_dist/marpalua/lib/strict.lua: marpalua/lib_orig/strict.lua
 
 # Test stuff
 cm_dist/tap_test/tests/simple/CMakeLists.txt: cmake/tap_test/tests/simple/CMakeLists.txt
