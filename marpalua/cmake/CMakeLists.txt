@@ -98,6 +98,14 @@ install(
   COMPONENT dev
 )
 
+add_custom_target(
+    inspect_lua.bytes ALL
+      ${CMAKE_COMMAND} -E make_directory ${PROJECT_BINARY_DIR}/marpalua/lib
+    COMMAND luac -o ${PROJECT_BINARY_DIR}/marpalua/lib/inspect.lua.bytes
+              ${PROJECT_SOURCE_DIR}/marpalua/lib/inspect.lua
+    DEPENDS luac ${PROJECT_SOURCE_DIR}/marpalua/lib/inspect.lua
+)
+
 # Preliminary versions of lua and luac (without libmarpa compiled in)
 # for bootstraping
 # luac uses non-exported APIs
@@ -106,27 +114,21 @@ target_compile_options(luac PUBLIC -Wall -Wextra)
 target_compile_definitions(luac PUBLIC LUA_COMPAT_5_3)
 target_link_libraries(luac PRIVATE $<BUILD_INTERFACE:lualib-obj>)
 
-# interpreter
+# "Vanilla" lua interpreter
 add_executable(luai ${_LUA_INTERPRETER_SRC})
 target_compile_options(luai PUBLIC -Wall -Wextra)
 target_compile_definitions(luai PUBLIC LUA_COMPAT_5_3)
 target_link_libraries(luai PRIVATE marpalua)
 set_target_properties(luai PROPERTIES OUTPUT_NAME lua PDB_NAME luai)
 
-# luac uses non-exported APIs
-add_executable(marpaluac ${_LUA_COMPILER_SRC} $<TARGET_OBJECTS:lualib-obj>)
-target_compile_options(marpaluac PUBLIC -Wall -Wextra)
-target_compile_definitions(marpaluac PUBLIC LUA_COMPAT_5_3)
-target_link_libraries(marpaluac PRIVATE $<BUILD_INTERFACE:lualib-obj>)
-
-# interpreter
+# marpalua interpreter
 add_executable(marpaluai ${_LUA_INTERPRETER_SRC})
 target_compile_options(marpaluai PUBLIC -Wall -Wextra)
 target_compile_definitions(marpaluai PUBLIC LUA_COMPAT_5_3)
 target_compile_definitions(marpaluai PUBLIC PROGNAME=marpalua)
 target_link_libraries(marpaluai PRIVATE marpalua)
-
 set_target_properties(marpaluai PROPERTIES OUTPUT_NAME marpalua PDB_NAME marpaluai)
+
 if(UNIX)
   if(CMAKE_SYSTEM_NAME STREQUAL FreeBSD)
     set(_LIB_READLINE_NAME edit)
@@ -149,7 +151,6 @@ mark_as_advanced(LIB_READLINE)
 install(
   TARGETS
     marpaluai
-    marpaluac
   RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}/
   COMPONENT bin
 )
