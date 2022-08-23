@@ -98,6 +98,21 @@ install(
   COMPONENT dev
 )
 
+# Preliminary versions of lua and luac (without libmarpa compiled in)
+# for bootstraping
+# luac uses non-exported APIs
+add_executable(luac ${_LUA_COMPILER_SRC} $<TARGET_OBJECTS:lualib-obj>)
+target_compile_options(luac PUBLIC -Wall -Wextra)
+target_compile_definitions(luac PUBLIC LUA_COMPAT_5_3)
+target_link_libraries(luac PRIVATE $<BUILD_INTERFACE:lualib-obj>)
+
+# interpreter
+add_executable(luai ${_LUA_INTERPRETER_SRC})
+target_compile_options(luai PUBLIC -Wall -Wextra)
+target_compile_definitions(luai PUBLIC LUA_COMPAT_5_3)
+target_link_libraries(luai PRIVATE marpalua)
+set_target_properties(luai PROPERTIES OUTPUT_NAME lua PDB_NAME luai)
+
 # luac uses non-exported APIs
 add_executable(marpaluac ${_LUA_COMPILER_SRC} $<TARGET_OBJECTS:lualib-obj>)
 target_compile_options(marpaluac PUBLIC -Wall -Wextra)
@@ -108,6 +123,7 @@ target_link_libraries(marpaluac PRIVATE $<BUILD_INTERFACE:lualib-obj>)
 add_executable(marpaluai ${_LUA_INTERPRETER_SRC})
 target_compile_options(marpaluai PUBLIC -Wall -Wextra)
 target_compile_definitions(marpaluai PUBLIC LUA_COMPAT_5_3)
+target_compile_definitions(marpaluai PUBLIC PROGNAME=marpalua)
 target_link_libraries(marpaluai PRIVATE marpalua)
 
 set_target_properties(marpaluai PROPERTIES OUTPUT_NAME marpalua PDB_NAME marpaluai)
@@ -120,9 +136,12 @@ if(UNIX)
   find_library(LIB_READLINE NAMES ${_LIB_READLINE_NAME})
   if(LIB_READLINE)
     target_compile_definitions(marpaluai PRIVATE LUA_USE_READLINE)
+    target_compile_definitions(luai PRIVATE LUA_USE_READLINE)
     target_link_libraries(marpaluai PRIVATE ${LIB_READLINE})
+    target_link_libraries(luai PRIVATE ${LIB_READLINE})
     if(_LIB_READLINE_NAME STREQUAL edit)
       TARGET_INCLUDE_DIRECTORIES (marpaluai PUBLIC /usr/include/edit)
+      TARGET_INCLUDE_DIRECTORIES (luai PUBLIC /usr/include/edit)
     endif()
   endif()
 endif()
