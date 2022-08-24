@@ -88,6 +88,9 @@ cm_dist/tap_test/tests/simple/nits.c: work/stage/tests/simple/nits.c
 
 # Marpalua
 cm_dist/marpalua/CMakeLists.txt: marpalua/cmake/CMakeLists.txt
+cm_dist/marpalua/src/lua.c: marpalua/src/lua.c
+
+# Lua files unchanged from original
 cm_dist/marpalua/src/lapi.c: marpalua/lua-5.4.4/src/lapi.c
 cm_dist/marpalua/src/lapi.h: marpalua/lua-5.4.4/src/lapi.h
 cm_dist/marpalua/src/lauxlib.c: marpalua/lua-5.4.4/src/lauxlib.c
@@ -138,7 +141,6 @@ cm_dist/marpalua/src/ltablib.c: marpalua/lua-5.4.4/src/ltablib.c
 cm_dist/marpalua/src/ltm.c: marpalua/lua-5.4.4/src/ltm.c
 cm_dist/marpalua/src/ltm.h: marpalua/lua-5.4.4/src/ltm.h
 cm_dist/marpalua/src/luac.c: marpalua/lua-5.4.4/src/luac.c
-cm_dist/marpalua/src/lua.c: marpalua/lua-5.4.4/src/lua.c
 cm_dist/marpalua/src/luaconf.h: marpalua/lua-5.4.4/src/luaconf.h
 cm_dist/marpalua/src/lua.h: marpalua/lua-5.4.4/src/lua.h
 cm_dist/marpalua/src/lualib.h: marpalua/lua-5.4.4/src/lualib.h

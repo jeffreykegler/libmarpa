@@ -623,7 +623,12 @@ static int pmain (lua_State *L) {
   }
   luaL_openlibs(L);  /* open standard libraries */
   createargtable(L, argv, argc, script);  /* create table 'arg' */
-  lua_gc(L, LUA_GCGEN, 0, 0);  /* GC in generational mode */
+
+  /* === Custom hack for KOLLOS ==
+     The traditional incremental mode is the default for embedded Lua,
+     and likely to be better for Kollos applications. */
+  /* lua_gc(L, LUA_GCGEN, 0, 0);  /* GC in generational mode */
+
   if (!(args & has_E)) {  /* no option '-E'? */
     if (handle_luainit(L) != LUA_OK)  /* run LUA_INIT */
       return 0;  /* error running LUA_INIT */

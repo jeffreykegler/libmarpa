@@ -27,10 +27,40 @@
 require 'strict'
 require 'inspect'
 
+local prog_name = "hex2h.lua"
+
+if #arg < 1 or #arg > 3 then
+    error("Bad # of args" .. #arg .. "\nusage: hex.lua name")
+end
+
 local string_name = arg[1]
 if not string_name then
-    error("usage: hex.lua name")
+    error("Null chunk name\nusage: hex.lua name")
 end
+if string_name:find("[^%a%d_-]") then
+    error("Bad characters in chunk name\nusage: hex.lua name")
+end
+
+local input_fh = io.stdin
+local input_name = arg[2] or "-"
+if input_name ~= "-" then
+    local fh, msg = io.open(input_name)
+    if not fh then
+        error("Cannot open " .. input_name .. " in " .. prog_name .. ": " .. msg)
+    end
+    input_fh = fh
+end
+   
+local output_fh = io.stdout
+local output_name = arg[3] or "-"
+if output_name ~= "-" then
+    local fh, msg = io.open(output_name, "w")
+    if not fh then
+        error("Cannot open " .. output_name .. " in " .. prog_name .. ": " .. msg)
+    end
+    output_fh = fh
+end
+   
 
 local header = [[
 /*
@@ -67,21 +97,21 @@ function write_hex_line(piece)
             return string.format("\\x%02x", str:byte())
         end
     )
-    io.write(string.format('  "%s"\n', line_out))
+    output_fh:write(string.format('  "%s"\n', line_out))
 end
 
-io.write(header)
-io.write(string.format("static char %s_loader[] =\n", string_name))
+output_fh:write(header)
+output_fh:write(string.format("static char %s_loader[] =\n", string_name))
 -- write_quoted_line(string.format("-- %q loaded by string2h\n", string_name))
 local loader_length = 0
 while true do
-    local piece = io.input():read(16)
+    local piece = input_fh:read(16)
     if not piece then break end
     loader_length = loader_length + #piece
     write_hex_line(piece)
 end
-io.write("  ;\n")
-io.write(string.format(
+output_fh:write("  ;\n")
+output_fh:write(string.format(
     "  static size_t %s_loader_length = %d;\n", string_name, loader_length))
 
 -- vim: expandtab shiftwidth=4:
