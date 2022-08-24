@@ -98,13 +98,22 @@ install(
   COMPONENT dev
 )
 
-add_custom_target(
-    inspect_lua.bytes ALL
-      ${CMAKE_COMMAND} -E make_directory ${PROJECT_BINARY_DIR}/marpalua/lib
-    COMMAND luac -o ${PROJECT_BINARY_DIR}/marpalua/lib/inspect.lua.bytes
-              ${PROJECT_SOURCE_DIR}/marpalua/lib/inspect.lua
-    DEPENDS luac ${PROJECT_SOURCE_DIR}/marpalua/lib/inspect.lua
-)
+function(chunk2c file name)
+  add_custom_target(
+      ${name}_lua.c ALL
+	${CMAKE_COMMAND} -E make_directory ${PROJECT_BINARY_DIR}/marpalua/lib
+      COMMAND luac -o ${PROJECT_BINARY_DIR}/marpalua/lib/${name}_lua.bytes
+		${file}
+      COMMAND
+	${CMAKE_COMMAND} -E env LUA_PATH=${PROJECT_SOURCE_DIR}/marpalua/lib/?.lua
+	  $<TARGET_FILE:luai> -W ${PROJECT_SOURCE_DIR}/marpalua/etc/hex2h.lua
+	    ${name} ${PROJECT_BINARY_DIR}/marpalua/lib/${name}_lua.bytes
+	      ${PROJECT_BINARY_DIR}/marpalua/lib/${name}_lua.c
+      DEPENDS luac luai ${file}
+  )
+endfunction()
+
+chunk2c(${PROJECT_SOURCE_DIR}/marpalua/lib/inspect.lua inspect)
 
 # Preliminary versions of lua and luac (without libmarpa compiled in)
 # for bootstraping
