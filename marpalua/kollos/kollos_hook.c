@@ -19,9 +19,11 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
+#include "lua.h"
 #include "kollos.h"
 
-void kollos_hook()
+void kollos_hook(lua_State *L)
 {
-      /* Do nothing for now */
+      kollos_load_strict(L);
+      kollos_load_inspect(L);
 }

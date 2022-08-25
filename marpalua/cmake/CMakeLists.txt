@@ -98,10 +98,11 @@ install(
   COMPONENT dev
 )
 
+set(KOLLOS_SRCS ${PROJECT_SOURCE_DIR}/marpalua/kollos/kollos_hook.c)
 function(chunk2c file name)
-  add_custom_target(
-      ${name}_lua.c ALL
-	${CMAKE_COMMAND} -E make_directory ${PROJECT_BINARY_DIR}/marpalua/lib
+  add_custom_command(
+      OUTPUT ${PROJECT_BINARY_DIR}/marpalua/lib/${name}_lua.c
+      COMMAND ${CMAKE_COMMAND} -E make_directory ${PROJECT_BINARY_DIR}/marpalua/lib
       COMMAND luac -o ${PROJECT_BINARY_DIR}/marpalua/lib/${name}_lua.bytes
 		${file}
       COMMAND
@@ -111,9 +112,12 @@ function(chunk2c file name)
 	      ${PROJECT_BINARY_DIR}/marpalua/lib/${name}_lua.c
       DEPENDS luac luai ${file}
   )
+  list(APPEND KOLLOS_SRCS ${PROJECT_BINARY_DIR}/marpalua/lib/${name}_lua.c)
+  set (KOLLOS_SRCS  ${KOLLOS_SRCS} PARENT_SCOPE)
 endfunction()
 
 chunk2c(${PROJECT_SOURCE_DIR}/marpalua/lib/inspect.lua inspect)
+chunk2c(${PROJECT_SOURCE_DIR}/marpalua/lib/strict.lua strict)
 
 # Preliminary versions of lua and luac (without libmarpa compiled in)
 # for bootstraping
@@ -132,7 +136,7 @@ set_target_properties(luai PROPERTIES OUTPUT_NAME lua PDB_NAME luai)
 
 # marpalua interpreter
 add_executable(marpaluai ${PROJECT_SOURCE_DIR}/marpalua/src/marpalua.c
-      ${PROJECT_SOURCE_DIR}/marpalua/kollos/kollos_hook.c
+      ${KOLLOS_SRCS}
 )
 target_compile_options(marpaluai PUBLIC -Wall -Wextra)
 target_compile_definitions(marpaluai PUBLIC LUA_COMPAT_5_3)

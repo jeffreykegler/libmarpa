@@ -20,5 +20,7 @@
  */
 
 void kollos_hook();
+void kollos_load_strict(lua_State *L);
+void kollos_load_inspect(lua_State *L);
 
 /* vim: set expandtab shiftwidth=4: */

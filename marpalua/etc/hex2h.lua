@@ -89,6 +89,9 @@ local header = [[
 /* EDITS IN THIS FILE WILL BE LOST
  * This file is auto-generated.
  */
+
+#include "lua.h"
+
 ]]
 
 function write_hex_line(piece)
@@ -112,6 +115,8 @@ while true do
 end
 output_fh:write("  ;\n")
 output_fh:write(string.format(
-    "  static size_t %s_loader_length = %d;\n", string_name, loader_length))
+    "  static const size_t %s_loader_length = %d;\n", string_name, loader_length))
+output_fh:write(string.format(
+    "  void kollos_load_%s(lua_State *L) {}\n", string_name))
 
 -- vim: expandtab shiftwidth=4:

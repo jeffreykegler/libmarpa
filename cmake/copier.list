@@ -143,7 +143,6 @@ cm_dist/marpalua/src/ltm.c: marpalua/lua-5.4.4/src/ltm.c
 cm_dist/marpalua/src/ltm.h: marpalua/lua-5.4.4/src/ltm.h
 cm_dist/marpalua/src/luac.c: marpalua/lua-5.4.4/src/luac.c
 cm_dist/marpalua/src/luaconf.h: marpalua/lua-5.4.4/src/luaconf.h
-cm_dist/marpalua/src/lua.h: marpalua/lua-5.4.4/src/lua.h
 cm_dist/marpalua/src/lualib.h: marpalua/lua-5.4.4/src/lualib.h
 cm_dist/marpalua/src/lundump.c: marpalua/lua-5.4.4/src/lundump.c
 cm_dist/marpalua/src/lundump.h: marpalua/lua-5.4.4/src/lundump.h
@@ -152,6 +151,9 @@ cm_dist/marpalua/src/lvm.c: marpalua/lua-5.4.4/src/lvm.c
 cm_dist/marpalua/src/lvm.h: marpalua/lua-5.4.4/src/lvm.h
 cm_dist/marpalua/src/lzio.c: marpalua/lua-5.4.4/src/lzio.c
 cm_dist/marpalua/src/lzio.h: marpalua/lua-5.4.4/src/lzio.h
+
+cm_dist/include/lua.h: marpalua/lua-5.4.4/src/lua.h
+cm_dist/include/luaconf.h: marpalua/lua-5.4.4/src/luaconf.h
 
 cm_dist/marpalua/lib/Test/Builder.lua: marpalua/lib_orig/Test/Builder.lua
 cm_dist/marpalua/lib/Test/More.lua: marpalua/lib_orig/Test/More.lua
