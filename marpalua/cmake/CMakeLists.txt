@@ -99,20 +99,20 @@ install(
 )
 
 set(KOLLOS_SRCS ${PROJECT_SOURCE_DIR}/marpalua/kollos/kollos_hook.c)
-function(chunk2c file name)
+function(chunk2c input_file name)
+  set(output ${PROJECT_BINARY_DIR}/marpalua/lib/${name}_lua.c)
+  set(bytes ${PROJECT_BINARY_DIR}/marpalua/lib/${name}_lua.bytes)
   add_custom_command(
-      OUTPUT ${PROJECT_BINARY_DIR}/marpalua/lib/${name}_lua.c
+      OUTPUT ${output}
       COMMAND ${CMAKE_COMMAND} -E make_directory ${PROJECT_BINARY_DIR}/marpalua/lib
-      COMMAND luac -o ${PROJECT_BINARY_DIR}/marpalua/lib/${name}_lua.bytes
-		${file}
+      COMMAND luac -o ${bytes} ${input_file}
       COMMAND
 	${CMAKE_COMMAND} -E env LUA_PATH=${PROJECT_SOURCE_DIR}/marpalua/lib/?.lua
 	  $<TARGET_FILE:luai> -W ${PROJECT_SOURCE_DIR}/marpalua/etc/hex2h.lua
-	    ${name} ${PROJECT_BINARY_DIR}/marpalua/lib/${name}_lua.bytes
-	      ${PROJECT_BINARY_DIR}/marpalua/lib/${name}_lua.c
-      DEPENDS luac luai ${file}
+	    ${name} ${bytes} ${output}
+      DEPENDS luac luai ${input_file}
   )
-  list(APPEND KOLLOS_SRCS ${PROJECT_BINARY_DIR}/marpalua/lib/${name}_lua.c)
+  list(APPEND KOLLOS_SRCS ${output})
   set (KOLLOS_SRCS  ${KOLLOS_SRCS} PARENT_SCOPE)
 endfunction()
 
