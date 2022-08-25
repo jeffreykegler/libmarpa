@@ -131,7 +131,9 @@ target_link_libraries(luai PRIVATE marpalua)
 set_target_properties(luai PROPERTIES OUTPUT_NAME lua PDB_NAME luai)
 
 # marpalua interpreter
-add_executable(marpaluai ${_LUA_INTERPRETER_SRC})
+add_executable(marpaluai ${PROJECT_SOURCE_DIR}/marpalua/src/marpalua.c
+      ${PROJECT_SOURCE_DIR}/marpalua/kollos/kollos_hook.c
+)
 target_compile_options(marpaluai PUBLIC -Wall -Wextra)
 target_compile_definitions(marpaluai PUBLIC LUA_COMPAT_5_3)
 target_compile_definitions(marpaluai PUBLIC PROGNAME=marpalua)

@@ -88,7 +88,8 @@ cm_dist/tap_test/tests/simple/nits.c: work/stage/tests/simple/nits.c
 
 # Marpalua
 cm_dist/marpalua/CMakeLists.txt: marpalua/cmake/CMakeLists.txt
-cm_dist/marpalua/src/lua.c: marpalua/src/lua.c
+cm_dist/marpalua/src/marpalua.c: marpalua/src/lua.c
+cm_dist/marpalua/src/lua.c: marpalua/lua-5.4.4/src/lua.c
 
 # Lua files unchanged from original
 cm_dist/marpalua/src/lapi.c: marpalua/lua-5.4.4/src/lapi.c
@@ -157,6 +158,9 @@ cm_dist/marpalua/lib/Test/More.lua: marpalua/lib_orig/Test/More.lua
 cm_dist/marpalua/lib/inspect.lua: marpalua/lib_orig/inspect.lua
 cm_dist/marpalua/lib/strict.lua: marpalua/lib_orig/strict.lua
 cm_dist/marpalua/etc/hex2h.lua: marpalua/etc/hex2h.lua
+
+cm_dist/include/kollos.h: marpalua/kollos/kollos.h
+cm_dist/marpalua/kollos/kollos_hook.c: marpalua/kollos/kollos_hook.c
 
 # Test stuff
 cm_dist/tap_test/tests/simple/CMakeLists.txt: cmake/tap_test/tests/simple/CMakeLists.txt
