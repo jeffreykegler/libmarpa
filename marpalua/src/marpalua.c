@@ -233,7 +233,36 @@ static int dolibrary (lua_State *L, char *globname) {
 }
 
 /* === Start of custom hacks for KOLLOS == */
+
+/* Stack hygiene in this hook is sloppy.  Little attempt is
+ * made to release stack as we go.  Instead, we record the
+ * top of stack, get some extra stack to allow for "leaks",
+ * and restore the top of stack justg before returning.
+ */
 static void kollos_hook( lua_State *L) {
+    int preload_ix;
+    int package_ix;
+    int loaded_ix;
+    int status;
+
+    const int top_of_stack = lua_gettop(L);
+
+    /* Get lots of stack */
+    if (!lua_checkstack(L, 50))
+    {
+        l_message(progname, "Unable to grow stack: ");
+    }
+
+    /* Get the preload table and leave it on the stack */
+    lua_getglobal(L, "package");
+    package_ix = lua_gettop(L);
+    lua_getfield(L, package_ix, "preload");
+    preload_ix = lua_gettop(L);
+    lua_getfield(L, package_ix, "loaded");
+    loaded_ix = lua_gettop(L);
+
+    /* Restore top of stack when called */
+    lua_settop (L, top_of_stack);
 }
 /* === End of custom hacks for KOLLOS == */
 
