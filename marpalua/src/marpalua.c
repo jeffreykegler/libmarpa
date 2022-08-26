@@ -232,6 +232,10 @@ static int dolibrary (lua_State *L, char *globname) {
   return report(L, status);
 }
 
+/* === Start of custom hacks for KOLLOS ==
+static void kollos_hook( lua_State *L) {
+}
+/* === End of custom hacks for KOLLOS ==
 
 /*
 ** Push on the stack the contents of table 'arg' from 1 to #arg
@@ -633,7 +637,7 @@ static int pmain (lua_State *L) {
      The traditional incremental mode is the default for embedded Lua,
      and likely to be better for Kollos applications. */
   /* lua_gc(L, LUA_GCGEN, 0, 0); */ /* GC in generational mode */
-  kollos_hook();
+  kollos_hook(L);
   /* === End of custom hacks for KOLLOS == */
 
   if (!(args & has_E)) {  /* no option '-E'? */
