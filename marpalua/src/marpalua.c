@@ -234,15 +234,22 @@ static int dolibrary (lua_State *L, char *globname) {
 
 /* === Start of custom hacks for KOLLOS == */
 
-static void chunk2library(
+static int chunk2library(
   lua_State *L, const struct kollos_chunk_data* const chunk, const int preload_ix)
 {
-    if (luaL_loadbuffer(L, chunk->buffer, chunk->length, chunk->name)
-      != LUA_OK) {
-      const char* msg = lua_tostring(L, -1);
-      l_message(progname, msg);
+    int status;
+    if (luaL_loadbuffer (L, chunk->buffer, chunk->length, chunk->name)
+        != LUA_OK) {
+        const char *msg = lua_tostring (L, -1);
+        l_message (progname, msg);
     }
-    lua_setfield(L, preload_ix, chunk->name);
+    lua_setfield (L, preload_ix, chunk->name);
+    lua_getglobal (L, "require");
+    lua_pushstring (L, chunk->name);
+    status = docall (L, 1, 1);  /* call 'require(modname)' */
+    if (status == LUA_OK)
+        lua_setglobal (L, chunk->name); /* globname = require(modname) */
+    return report (L, status);
 }
 
 /* Stack hygiene in this hook is sloppy.  Little attempt is
@@ -267,8 +274,8 @@ static void kollos_hook( lua_State *L) {
     package_ix = lua_gettop(L);
     lua_getfield(L, package_ix, "preload");
     preload_ix = lua_gettop(L);
-    chunk2library( L, &kollos_chunk_strict, preload_ix);
-    chunk2library( L, &kollos_chunk_inspect, preload_ix);
+    /* (void)chunk2library( L, &kollos_chunk_strict, preload_ix); */
+    (void)chunk2library( L, &kollos_chunk_inspect, preload_ix);
 
     /* Restore top of stack when called */
     lua_settop (L, top_of_stack);
