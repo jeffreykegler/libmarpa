@@ -232,10 +232,10 @@ static int dolibrary (lua_State *L, char *globname) {
   return report(L, status);
 }
 
-/* === Start of custom hacks for KOLLOS ==
+/* === Start of custom hacks for KOLLOS == */
 static void kollos_hook( lua_State *L) {
 }
-/* === End of custom hacks for KOLLOS ==
+/* === End of custom hacks for KOLLOS == */
 
 /*
 ** Push on the stack the contents of table 'arg' from 1 to #arg

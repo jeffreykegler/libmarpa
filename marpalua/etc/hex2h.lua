@@ -91,6 +91,7 @@ local header = [[
  */
 
 #include "lua.h"
+#include "kollos.h"
 
 ]]
 
@@ -104,7 +105,7 @@ function write_hex_line(piece)
 end
 
 output_fh:write(header)
-output_fh:write(string.format("static char %s_loader[] =\n", string_name))
+output_fh:write(string.format("static const char loader[] =\n", string_name))
 -- write_quoted_line(string.format("-- %q loaded by string2h\n", string_name))
 local loader_length = 0
 while true do
@@ -115,8 +116,10 @@ while true do
 end
 output_fh:write("  ;\n")
 output_fh:write(string.format(
-    "  static const size_t %s_loader_length = %d;\n", string_name, loader_length))
+    "  static const size_t loader_length = %d;\n", loader_length))
 output_fh:write(string.format(
-    "  void kollos_load_%s(lua_State *L) {}\n", string_name))
+    [[  const struct kollos_chunk_data kollos_chunk_%s = {loader, loader_length, "%s"};]],
+        string_name, string_name))
+output_fh:write("\n")
 
 -- vim: expandtab shiftwidth=4:

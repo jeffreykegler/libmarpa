@@ -19,8 +19,10 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-void kollos_hook();
-void kollos_load_strict(lua_State *L);
-void kollos_load_inspect(lua_State *L);
+struct kollos_chunk_data {
+    const char * const buffer;
+    const int length;
+    const char * const name;
+};
 
 /* vim: set expandtab shiftwidth=4: */

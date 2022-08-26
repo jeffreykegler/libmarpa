@@ -54,6 +54,7 @@ timestamp/ac_dist.stamp: timestamp/stage.stamp
 
 timestamp/cm_dist.stamp: timestamp/stage.stamp
 	@echo cm_dist Out of date wrt ac_dist
+	rm -r cm_dist || true
 	cd cmake; make
 	perl ./etc/copier.pl --verbose < cmake/copier.list
 	date > timestamp/cm_dist.stamp

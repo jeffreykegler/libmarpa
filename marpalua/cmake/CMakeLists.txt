@@ -98,7 +98,7 @@ install(
   COMPONENT dev
 )
 
-set(KOLLOS_SRCS ${PROJECT_SOURCE_DIR}/marpalua/kollos/kollos_hook.c)
+set(MARPALUAI_SRCS ${PROJECT_SOURCE_DIR}/marpalua/src/marpalua.c)
 function(chunk2c input_file name)
   set(output ${PROJECT_BINARY_DIR}/marpalua/lib/${name}_lua.c)
   set(bytes ${PROJECT_BINARY_DIR}/marpalua/lib/${name}_lua.bytes)
@@ -112,8 +112,8 @@ function(chunk2c input_file name)
 	    ${name} ${bytes} ${output}
       DEPENDS luac luai ${input_file}
   )
-  list(APPEND KOLLOS_SRCS ${output})
-  set (KOLLOS_SRCS  ${KOLLOS_SRCS} PARENT_SCOPE)
+  list(APPEND MARPALUAI_SRCS ${output})
+  set (MARPALUAI_SRCS  ${MARPALUAI_SRCS} PARENT_SCOPE)
 endfunction()
 
 chunk2c(${PROJECT_SOURCE_DIR}/marpalua/lib/inspect.lua inspect)
@@ -135,9 +135,7 @@ target_link_libraries(luai PRIVATE marpalua)
 set_target_properties(luai PROPERTIES OUTPUT_NAME lua PDB_NAME luai)
 
 # marpalua interpreter
-add_executable(marpaluai ${PROJECT_SOURCE_DIR}/marpalua/src/marpalua.c
-      ${KOLLOS_SRCS}
-)
+add_executable(marpaluai ${MARPALUAI_SRCS})
 target_compile_options(marpaluai PUBLIC -Wall -Wextra)
 target_compile_definitions(marpaluai PUBLIC LUA_COMPAT_5_3)
 target_compile_definitions(marpaluai PUBLIC PROGNAME=marpalua)
