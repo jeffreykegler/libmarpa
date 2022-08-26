@@ -25,4 +25,7 @@ struct kollos_chunk_data {
     const char * const name;
 };
 
+extern const struct kollos_chunk_data kollos_chunk_strict;
+extern const struct kollos_chunk_data kollos_chunk_inspect;
+
 /* vim: set expandtab shiftwidth=4: */

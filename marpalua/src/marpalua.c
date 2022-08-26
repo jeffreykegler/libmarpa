@@ -234,6 +234,17 @@ static int dolibrary (lua_State *L, char *globname) {
 
 /* === Start of custom hacks for KOLLOS == */
 
+static void chunk2library(
+  lua_State *L, const struct kollos_chunk_data* const chunk, const int preload_ix)
+{
+    if (luaL_loadbuffer(L, chunk->buffer, chunk->length, chunk->name)
+      != LUA_OK) {
+      const char* msg = lua_tostring(L, -1);
+      l_message(progname, msg);
+    }
+    lua_setfield(L, preload_ix, chunk->name);
+}
+
 /* Stack hygiene in this hook is sloppy.  Little attempt is
  * made to release stack as we go.  Instead, we record the
  * top of stack, get some extra stack to allow for "leaks",
@@ -242,8 +253,6 @@ static int dolibrary (lua_State *L, char *globname) {
 static void kollos_hook( lua_State *L) {
     int preload_ix;
     int package_ix;
-    int loaded_ix;
-    int status;
 
     const int top_of_stack = lua_gettop(L);
 
@@ -258,8 +267,8 @@ static void kollos_hook( lua_State *L) {
     package_ix = lua_gettop(L);
     lua_getfield(L, package_ix, "preload");
     preload_ix = lua_gettop(L);
-    lua_getfield(L, package_ix, "loaded");
-    loaded_ix = lua_gettop(L);
+    chunk2library( L, &kollos_chunk_strict, preload_ix);
+    chunk2library( L, &kollos_chunk_inspect, preload_ix);
 
     /* Restore top of stack when called */
     lua_settop (L, top_of_stack);
