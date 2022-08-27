@@ -1,0 +1,700 @@
+-- Copyright 2018 Jeffrey Kegler
+-- Permission is hereby granted, free of charge, to any person obtaining a
+-- copy of this software and associated documentation files (the "Software"),
+-- to deal in the Software without restriction, including without limitation
+-- the rights to use, copy, modify, merge, publish, distribute, sublicense,
+-- and/or sell copies of the Software, and to permit persons to whom the
+-- Software is furnished to do so, subject to the following conditions:
+--
+-- The above copyright notice and this permission notice shall be included
+-- in all copies or substantial portions of the Software.
+--
+-- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+-- IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+-- FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+-- THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+-- OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+-- ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+-- OTHER DEALINGS IN THE SOFTWARE.
+--
+-- [ MIT license: http://www.opensource.org/licenses/mit-license.php ]
+
+-- The following is the description of the intended full argument syntax,
+-- almost, all of which is *not* implement at present.  Arguments
+-- have the form `key=value`, where key and value have no
+-- internal spaces.  Allowed keys include
+--     `in` -- where the value is an input file.
+--     `out:section` -- where `section` is the name of a section
+--          and the value is an output file.
+--
+-- If an argument does not contain an equal sign (`=`), the key `in`
+-- is assumed and the argument is considered to be "abbreviated".  All
+-- arguments after the first abbreviated argument are treated as abbreviated.
+-- If an abbreviated argument contains an equal sign, so that it is
+-- `section=file_name`, it is treated as if it was `out:section=file_name`.
+--
+-- The portion now implemented allows only "abbreviated" arguments,
+-- and only one input argument.
+
+require 'strict'
+require 'inspect'
+
+local file_ids = {}
+
+local outputs = {}
+local inputs = {}
+
+local user_code_env = {}
+setmetatable(user_code_env, { __index = _G })
+
+local exec_phase_sequence = {}
+
+function exec_user_code(instruction)
+    local code = instruction.code
+    local tag = instruction.tag
+    -- print('exec_user_code: phase, tag', instruction.phase, tag)
+    local user_code_f, error_msg = load(code, tag, 't', user_code_env)
+    if not user_code_f then
+        error(string.format(
+            'Load error for code in "exec" command at line %d\n%s',
+            instruction:first_line(), error_msg))
+    end
+    local ok, result = pcall(user_code_f)
+    if not ok then
+        error(string.format(
+            'Error in "exec" command at line %d\n%s',
+            instruction:first_line(), result))
+    end
+    local result_type = type(result)
+    -- print('tag, type, result', tag, result_type, result)
+    if result_type == 'nil' then
+        instruction.text = ''
+        return
+    end
+    if result_type == 'string' then
+        instruction.text = result
+        return
+    end
+    if result_type == 'table' then
+        error(string.format(
+            '"exec" command returned a table at line %d\n'
+            .. '    table returns values are not yet implemented\n',
+            instruction:first_line()))
+    end
+    error(string.format(
+        '"exec" command returned a value of type "%s" at line %d\n'
+        .. '    return value must be nil or a string\n',
+        result_type, instruction:first_line()))
+end
+
+for arg_ix = 1,#arg do
+    local this_arg = arg[arg_ix]
+    if not this_arg:find("=") then
+        inputs[#inputs+1] = this_arg
+        goto NEXT_ARG
+    end
+    local section, file_name = this_arg:match("^([^=]+)%=(.*)") -- no space around =
+    if not section or not file_name
+            or #section < 1 or #file_name < 1 then
+        error("Bad option: " .. this_arg)
+    end
+    outputs[section] = file_name
+    ::NEXT_ARG::
+end
+
+local sections = {}
+local lines = {}
+local first_line_by_file = {}
+
+for ix = 1,#inputs do
+    local input_file_name = inputs[ix]
+    local input_handle
+    input_handle, error_message = io.open(input_file_name)
+    if not input_handle then error(error_message) end
+
+    local first_line_of_this_file = #lines+1
+
+    -- We need random access to the input, so we incur the
+    -- cost of reading the entire input into memory.
+    for line in input_handle:lines() do
+        if line:find('\t') then error("line contains tab: " .. line) end
+        if line:find(' $') then error("line has trailing space: " .. line) end
+        lines[#lines+1] = line
+    end
+    if (#lines < first_line_of_this_file) then
+        error("Empty input file: " .. input_file_name);
+    end
+    first_line_by_file[input_file_name] = first_line_of_this_file
+end
+
+-- not terribly efficient for a large number of input files,
+-- but at this point I expect only a few
+local function show_file_line(line)
+   local closest_first_line = math.maxinteger()
+   local file_name = "???"
+   for this_file, this_first_line in pairs(first_line_by_file) do
+       if line < this_first_line then goto NEXT_FILE end
+       if this_first_line < closest_first_line then
+           closest_first_line = this_first_line
+           file_name = this_file
+       end
+       ::NEXT_FILE::
+    end
+    return file_name .. ':' .. (line - closest_first_line + 1)
+end
+
+local function problem_in_line(line_no)
+     return string.format("Problem in line %d: %s\n", line_no, lines[line_no])
+end
+
+-- Morphemes are the smallest meaningful pieces.  They
+-- are instructions (which may be multi-line) and, otherwise,
+-- individual lines.
+local function instruction_iter()
+    return  coroutine.wrap(
+        function()
+            local line_no = 0
+                while true do
+                    line_no = line_no+1
+                    local line = lines[line_no]
+                    if not line then return end
+                    local prefix, equals = line:match('^(%s*)[-][-]%[(=*)%[ *miranda:')
+                    if prefix then
+                        if prefix:find('[^ ]') then
+                            error(string.format(
+                                'Problem in line %d: %s\n    Prefix must be all spaces',
+                                line_no, line)
+                            )
+                        end
+                        local first_line_no = line_no
+                        while line_no do
+                            local line = lines[line_no]
+                            -- print('#prefix', #prefix)
+                            -- print(string.format('line: %q', line))
+                            -- print(string.format('prefix: %q', prefix))
+                            if #line > 0 and line:sub(1, #prefix) ~= prefix then
+                                error(string.format(
+                                    'Problem in line %d: %s\n'
+                                    .. '    Lines does not have prefix of %d spaces\n'
+                                    .. '    All lines of a long instruction must have its prefix\n',
+                                    line_no, line, #prefix
+                                    )
+                                )
+                            end
+                            if line:match('%]' .. equals .. '%]') then
+                                local instruction = parse_instruction(first_line_no, line_no)
+                                coroutine.yield(instruction)
+                                goto NEXT_LINE
+                            end
+                            line_no = line_no+1
+                        end
+                    end
+                    prefix = line:find('^(%s*)[-][-] *miranda:')
+                    if prefix then
+                        local instruction = parse_instruction(line_no)
+                        coroutine.yield(instruction)
+                        goto NEXT_LINE
+                    end
+                ::NEXT_LINE::
+            end
+        end
+    )
+end
+
+-- Also used to parse phase names
+function parse_section_name(raw_name)
+    local text = raw_name:lower():gsub(' $', '', 1):gsub('^ ', '', 1):gsub('[^%w_]+', ' ')
+    return text
+end
+
+function parse_language_name(raw_name)
+    local text = raw_name:lower():gsub(' $', '', 1):gsub('^ ', '', 1):gsub('[^%w%p_]+', ' ')
+    return text
+end
+
+local mt_instruction = {
+     last_line = function(instruction) return instruction[2] or instruction[1] end,
+     first_line = function(instruction) return instruction[1] end
+}
+mt_instruction.__index = mt_instruction
+
+-- Rewrite non-alphanumerics to single space; remove initial space;
+-- remove final space and lowercase the string
+function parse_instruction(first_line_no, last_line_no)
+    local raw_instruction = table.concat(lines, '', first_line_no, last_line_no)
+    local prefix, body
+    if last_line_no then
+        local raw_instruction = table.concat(lines, '\n', first_line_no, last_line_no)
+        -- print(string.format('raw_instruction: %q', raw_instruction))
+        local equals
+        prefix, equals, body = raw_instruction:match('^( *)--%[(=*)%[ *miranda: *(.*)$')
+        -- print(string.format('prefix: %q', prefix))
+        -- print(string.format('equals: %q', equals))
+        -- print(string.format('body: %q', body))
+        body = body:gsub('%]' .. equals .. '%]$', '', 1)
+    else
+        local raw_instruction = lines[first_line_no]
+        prefix, body = raw_instruction:match('^( *)-- *miranda: *(.*)$')
+    end
+    -- print('raw_instruction', first_line_no, last_line_no, raw_instruction)
+    local words = {}
+    for word in body:gmatch('[%w%p]+') do
+        words[#words+1] = word
+    end
+    local instruction = { first_line_no, last_line_no, prefix = #prefix }
+    setmetatable(instruction, mt_instruction)
+    if words[1] == 'section' then
+        instruction.type = words[1]
+        instruction.name = parse_section_name(table.concat(words, ' ', 2))
+        return instruction
+    end
+    if words[1] == 'section+' then
+        instruction.type = words[1]
+        instruction.name = parse_section_name(table.concat(words, ' ', 2))
+        return instruction
+    end
+    if words[1] == 'insert' then
+        instruction.type = words[1]
+        instruction.name = parse_section_name(table.concat(words, ' ', 2))
+        return instruction
+    end
+    if words[1] == 'end' and words[2] == 'section' then
+        instruction.type = table.concat(words, ' ', 1, 2)
+        return instruction
+    end
+    if words[1] == 'language' then
+        instruction.type = words[1]
+        instruction.name = parse_language_name(table.concat(words, ' ', 2))
+        local language = instruction.name
+        if language ~= 'c' and language ~= 'lua' then
+            error(string.format(
+                'Problem in "language" instruction starting at line %d\n'
+                .. '    Unknown language specified: "%s"\n',
+                first_line_no, language))
+        end
+        return instruction
+    end
+    if words[1] == 'exec' then
+        instruction.type = words[1]
+        local line_iter = body:gmatch('[^\n]+')
+        local phase = line_iter()
+        phase = phase:match('^[ ]*exec[%s](.*)$')
+        phase = phase and parse_section_name(phase) or ''
+        instruction.phase = phase
+        local code_lines = {}
+        while true do
+            local line = line_iter()
+            if not line then break end
+            code_lines[#code_lines+1] = line:sub(#prefix+1)
+        end
+        local tag
+        for line_no = 2, #code_lines do
+            local line = code_lines[line_no]
+            if line:find('[^%s]') then
+                tag = line:gsub('^[%s]*', '', 1)
+                break
+            end
+        end
+        if not tag then
+            error(string.format(
+                'Exec command contains no code at line %d\n',
+                first_line_no))
+        end
+        local code = table.concat(code_lines, '\n');
+        instruction.tag = tag
+        instruction.code = code
+        return instruction
+    end
+    if words[1] == 'sequence-exec' then
+        instruction.type = words[1]
+        local line_iter = body:gmatch('[^\n]+')
+        local first_line = line_iter()
+        local phase = first_line:match('^[ ]*sequence[-]exec[%s](.*)$')
+        if not phase then
+            error(string.format(
+                'sequence-exec command has bad format at line %d\n'
+                .. '   sequence-exec command must specify phase\n'
+                .. '   command was %q\n',
+                first_line_no,
+                first_line
+            ))
+        end
+        instruction.phase = phase
+        exec_phase_sequence[#exec_phase_sequence+1] = phase
+        -- print('sequence-exec:', phase)
+        return instruction
+    end
+    error(string.format(
+        'Cannot parse instruction starting at line %d\n'
+        .. '    Instruction begins: %s',
+        first_line_no, lines[first_line_no]
+    ))
+end
+
+-- In a pass over the input file, gather the instructions into
+-- an array, and perform their 'exec' commands
+local instructions = {}
+do
+    local instructions_by_phase = {}
+    for instruction in instruction_iter() do
+        -- print(inspect(instruction))
+        instructions[#instructions+1] = instruction
+        if instruction.type == 'exec' then
+            local phase = instruction.phase
+            local phase_instructions = instructions_by_phase[phase] or {}
+            phase_instructions[#phase_instructions+1] = instruction
+            instructions_by_phase[phase] = phase_instructions
+        end
+    end
+    -- execute instructions which had their order specified in
+    -- a 'sequence-exec' command
+    for phase_ix = 1, #exec_phase_sequence do
+        local phase = exec_phase_sequence[phase_ix]
+        local phase_instructions = instructions_by_phase[phase]
+        for ix = 1, #phase_instructions do
+            local instruction = phase_instructions[ix]
+            exec_user_code(instruction)
+        end
+        -- delete phases once executed
+        instructions_by_phase[phase] = nil
+    end
+    -- now execute the instructions in the remaining phases,
+    -- in lexical order
+    local sorted_instructions = {}
+    for phase, phase_instructions in pairs(instructions_by_phase) do
+        for ix = 1, #phase_instructions do
+            sorted_instructions[#sorted_instructions+1] = phase_instructions[ix]
+        end
+    end
+    table.sort(sorted_instructions, function (a, b) return a:first_line() < b:first_line() end)
+    for ix = 1, #sorted_instructions do
+        local instruction = sorted_instructions[ix]
+        exec_user_code(instruction)
+    end
+end
+
+local function next_run_find(instruction_ix)
+    while true do
+        local instruction = instructions[instruction_ix]
+        -- print('instruction_ix', instruction_ix)
+        if not instruction then return nil end
+        local itype = instruction.type
+        -- print('itype=', itype)
+        if itype == 'section' then
+            local run_name = instruction.name
+            local section = sections[run_name]
+            if not section then
+                sections[run_name] = {}
+                return instruction_ix
+            end
+            error(problem_in_line(instruction:first_line())
+                .. "   'section' command, but section already exists\n"
+                .. "   A 'section' command must start a new section\n"
+            )
+        end
+        if itype == 'section+' then
+            local run_name = instruction.name
+            local section = sections[run_name]
+            if not section then
+                sections[run_name] = {}
+            end
+            return instruction_ix
+        end
+
+        if itype == 'exec' then
+            goto NEXT_INSTRUCTION
+        end
+        if itype == 'sequence-exec' then
+            goto NEXT_INSTRUCTION
+        end
+
+        -- Currently only 'exec' instruction is allowed outside a run --
+        -- other instructions must either start a run or occur within one.
+        -- print('error instruction', inspect(instruction))
+        error(problem_in_line(instruction:first_line())
+            .. string.format("   '%s' command is only allowed inside a run\n",
+                 itype)
+        )
+        ::NEXT_INSTRUCTION::
+        instruction_ix = instruction_ix + 1
+    end
+    return nil
+end
+
+
+-- A "run" is a series of consecutive lines which end up in a
+-- section.  A section consists of 1 or more runs.
+--
+-- This is an iterator that uses coroutines.  When called it returns
+-- a function which, when called, yields for every "run", passing
+-- the start instruction index and the number of lines.
+local function run_iter()
+    return  coroutine.wrap(
+        function()
+            local run_prefix = nil
+            local current_line_no = nil
+            local start_instruction_ix = 1
+            -- while we can find start instructions
+            while true do
+                -- print('run_iter: start_instruction_ix=', start_instruction_ix)
+                start_instruction_ix = next_run_find(start_instruction_ix)
+                if not start_instruction_ix then return nil end
+                local start_instruction = instructions[start_instruction_ix]
+                local run_prefix = start_instruction.prefix
+                local current_instruction_ix = start_instruction_ix
+                while true do
+                    local current_instruction = instructions[current_instruction_ix]
+                    local next_instruction = instructions[current_instruction_ix+1]
+                    local first_text_line = current_instruction:last_line() + 1
+                    local last_text_line = next_instruction and next_instruction:first_line()-1 or #lines
+                    local end_of_run = nil
+                    for text_line_no = first_text_line, last_text_line do
+                        local line = lines[text_line_no]
+                        -- print('text line:', line)
+                        if #line > 0 and line:sub(1, run_prefix) ~= string.rep(' ', run_prefix) then
+                            end_of_run = text_line_no - 1
+                            break
+                        end
+                    end
+                    if end_of_run then
+                        coroutine.yield(start_instruction_ix, end_of_run)
+                        start_instruction_ix = current_instruction_ix + 1
+                        goto NEXT_RUN
+                    end
+                    if not next_instruction then
+                        coroutine.yield(start_instruction_ix, #lines)
+                        goto NEXT_RUN
+                    end
+                    local next_instruction_line_no = next_instruction:first_line()
+                    local next_instruction_first_line = lines[next_instruction_line_no]
+                    if next_instruction_first_line:sub(1, run_prefix) ~= string.rep(' ', run_prefix) then
+                        coroutine.yield(start_instruction_ix, next_instruction_line_no-1)
+                        start_instruction_ix = current_instruction_ix + 1
+                        goto NEXT_RUN
+                    end
+                    if next_instruction.type == "end section" then
+                        coroutine.yield(start_instruction_ix, next_instruction:last_line())
+                        start_instruction_ix = current_instruction_ix + 2
+                        goto NEXT_RUN
+                    end
+                    if next_instruction.type == "section"
+                        or next_instruction.type == "section+"
+                    then
+                        coroutine.yield(start_instruction_ix, next_instruction_line_no-1)
+                        start_instruction_ix = current_instruction_ix + 1
+                        goto NEXT_RUN
+                    end
+                    current_instruction_ix = current_instruction_ix + 1
+                end
+                start_instruction_ix = current_instruction_ix
+                ::NEXT_RUN::
+            end
+        end
+    )
+end
+
+local Run = {}
+function Run:new(o)
+    local o = o or {}
+    setmetatable(o, self)
+    self.__index = self
+    return o
+end
+
+function Run:first_instruction_ix()
+    return self[1]
+end
+
+function Run:last_line_no()
+    return self[2]
+end
+
+for start_instruction_ix, end_line in run_iter() do
+    local instruction = instructions[start_instruction_ix]
+    local section = sections[instruction.name]
+    section[#section+1] = Run:new{ start_instruction_ix, end_line } 
+    -- print(inspect(instruction), end_line)
+end
+
+-- Returns an iterator of the instructions in a section.
+-- The optional second arg is the last line of the text run
+-- following the instruction
+local function section_instructions(section)
+    return  coroutine.wrap(
+        function()
+     for _, run in ipairs(section) do
+          -- print('Starting run')
+          local instruction_ix = run:first_instruction_ix()
+          local instruction = instructions[instruction_ix]
+          local instruction_last_line_no = instruction:last_line()
+          local run_last_line_no = run:last_line_no()
+
+          -- run prefix is prefix of 1st instruction in run
+          local run_prefix = instruction.prefix
+
+          -- For every "subrun" of this run.
+          -- A subrun consists of one instruction,
+          -- followed by zero or more non-instruction ("text") lines.
+          while instruction_last_line_no <= run_last_line_no do
+
+              if instruction_last_line_no == run_last_line_no then
+                  coroutine.yield(instruction, run_prefix, run_last_line_no)
+                  goto NEXT_RUN
+              end
+              local next_instruction = instructions[instruction_ix+1]
+              if not next_instruction then
+                  coroutine.yield(instruction, run_prefix, run_last_line_no)
+                  goto NEXT_RUN
+              end
+              local next_instruction_first_line_no = next_instruction:first_line()
+              local pre_next_instruction_line_no = next_instruction_first_line_no - 1
+              if pre_next_instruction_line_no >= run_last_line_no then
+                  coroutine.yield(instruction, run_prefix, run_last_line_no)
+                  goto NEXT_RUN
+              end
+              coroutine.yield(instruction, run_prefix, pre_next_instruction_line_no)
+
+              -- Set up the next instruction
+              instruction = next_instruction
+              instruction_last_line_no = next_instruction:last_line()
+              instruction_ix = instruction_ix + 1
+              -- print('Ending subrun')
+          end
+          ::NEXT_RUN::
+          -- print('Ending run')
+     end
+        end
+    )
+end
+
+local section_on_stack = {}
+
+-- Figure out per-section values
+for section_name,section in pairs(sections) do
+    local language = nil
+    local last_language_instruction = nil
+    for instruction, run_prefix, last_text_line_no in section_instructions(section) do
+        if instruction.type == 'language' then
+             language = instruction.name
+             if last_language_instruction
+                 and last_language_instruction.name ~= language
+             then
+                 local instruction_line_no_1 = last_language_instruction:first_line()
+                 local instruction_line_no_2 = instruction:first_line()
+                 error(
+                     string.format('Inconsistent language instructions for section "%s"',
+                         section_name)
+                     .. string.format('   First instruction, line %d: %s\n',
+                         instruction_line_no_1, lines[instruction_line_no_1])
+                     .. string.format('   Second instruction, line %d: %s\n',
+                         instruction_line_no_2, lines[instruction_line_no_2])
+                 )
+             end
+             section.language = language
+             last_language_instruction = instruction
+        end
+    end
+end
+
+function section_output(fh, language_arg, name, prefix_arg)
+     if section_on_stack[name] then
+         error(string.format('Section "%s" used inside itself', name)
+            .. '   This would cause an infinite recursion and is not allowed\n'
+        )
+     end
+     section_on_stack[name] = true
+     -- print('sections on stack:', inspect(section_on_stack))
+     local section = sections[name]
+     if not section then
+         error(string.format('Cannot find section name "%s"\n', name))
+     end
+     local language = section.language or language_arg
+     if language ~= 'c' and language ~= 'lua' then
+         error(string.format('Bad language ("%s") for section "%s"', language, name))
+     end
+     local current_prefix = prefix_arg or 0
+     if not section then
+         error(string.format('Attempt to output missing section "%s"', name))
+     end
+     for instruction, run_prefix, last_text_line_no in section_instructions(section) do
+              -- We first deal with outputing the instruction.
+          local instruction_first_line_no = instruction:first_line()
+          local instruction_last_line_no = instruction:last_line()
+          if instruction.type == 'insert' then
+              local insertion_prefix = current_prefix + (instruction.prefix - run_prefix)
+              -- print(string.format("section_output: %s %d", instruction.name, instruction:first_line()))
+              section_output(fh, language, instruction.name, insertion_prefix)
+          elseif instruction.type == 'exec' then
+              local raw_instruction = {}
+              if language == 'lua' then
+                   raw_instruction[#raw_instruction+1] = string.rep(' ', current_prefix)
+                   raw_instruction[#raw_instruction+1] = '-- exec '
+                   raw_instruction[#raw_instruction+1] = instruction.tag
+                   raw_instruction[#raw_instruction+1] = '\n'
+              else -- c language
+                   raw_instruction[#raw_instruction+1] = string.rep(' ', current_prefix)
+                   raw_instruction[#raw_instruction+1] = '/* exec '
+                   raw_instruction[#raw_instruction+1] = instruction.tag
+                   raw_instruction[#raw_instruction+1] = ' */'
+                   raw_instruction[#raw_instruction+1] = '\n'
+              end
+              local exec_text = instruction.text
+              -- print('exec_text:', exec_text)
+              raw_instruction[#raw_instruction+1] = exec_text
+              if exec_text:match('[^\n]$') then
+                  raw_instruction[#raw_instruction+1] = '\n'
+              end
+              if language == 'lua' then
+                   raw_instruction[#raw_instruction+1] = string.rep(' ', current_prefix)
+                   raw_instruction[#raw_instruction+1] = '-- end exec '
+                   raw_instruction[#raw_instruction+1] = instruction.tag
+                   raw_instruction[#raw_instruction+1] = '\n'
+              else -- c language
+                   raw_instruction[#raw_instruction+1] = string.rep(' ', current_prefix)
+                   raw_instruction[#raw_instruction+1] = '/* end exec '
+                   raw_instruction[#raw_instruction+1] = instruction.tag
+                   raw_instruction[#raw_instruction+1] = ' */'
+                   raw_instruction[#raw_instruction+1] = '\n'
+              end
+              local raw_instruction = table.concat(raw_instruction, '')
+              fh:write(raw_instruction)
+          else
+              local raw_instruction = {}
+              for line_no = instruction_first_line_no, instruction_last_line_no do
+                   raw_instruction[#raw_instruction+1] = string.rep(' ', current_prefix)
+                   raw_instruction[#raw_instruction+1] = lines[line_no]:sub(run_prefix+1)
+                   raw_instruction[#raw_instruction+1] = '\n'
+              end
+              local raw_instruction = table.concat(raw_instruction, '')
+              if language == 'lua' then
+                  fh:write(raw_instruction)
+              else -- c language
+                  local long_bracket_start, long_bracket_end = raw_instruction:match('^ *()[-][-]%[=*%[()')
+                  if long_bracket_start then
+                      fh:write(raw_instruction:sub(1, long_bracket_start-1))
+                      fh:write('/*')
+                      raw_instruction:gsub('%]=*%]$', '*/', 1)
+                      fh:write(raw_instruction:sub(long_bracket_end))
+                  else
+                      raw_instruction = raw_instruction:gsub('[-][-]', '/*', 1)
+                      raw_instruction = raw_instruction:gsub(' ?\n$', ' */\n', 1)
+                      fh:write(raw_instruction)
+                  end
+              end
+          end
+          for line_no = instruction_last_line_no+1, last_text_line_no do
+              fh:write(string.rep(' ', current_prefix) .. lines[line_no]:sub(run_prefix+1), '\n')
+          end
+          -- print('Ending run')
+     end
+     section_on_stack[name] = nil
+end
+
+for section_name, filename in pairs(outputs) do
+        -- print('section_name,filename ', section_name,filename)
+        local handle, error_message = io.open(filename, 'w')
+        if not handle then  error(error_message) end
+        section_output(handle, 'lua', section_name)
+end
+
+-- vim: expandtab shiftwidth=4:
