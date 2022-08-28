@@ -274,7 +274,7 @@ static void kollos_hook( lua_State *L) {
     package_ix = lua_gettop(L);
     lua_getfield(L, package_ix, "preload");
     preload_ix = lua_gettop(L);
-    /* (void)chunk2library( L, &kollos_chunk_strict, preload_ix); */
+    (void)chunk2library( L, &kollos_chunk_strict, preload_ix);
     (void)chunk2library( L, &kollos_chunk_inspect, preload_ix);
 
     /* Restore top of stack when called */
