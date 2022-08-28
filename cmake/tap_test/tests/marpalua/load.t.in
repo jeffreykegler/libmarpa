@@ -1,9 +1,10 @@
 require 'Test.More'
+strict.on()
 plan(6)
 
 ok(1, "Trivial test")
 is(_VERSION,"Lua 5.4","Lua version is 5.4")
 ok(package.loaded["inspect"], "Inspect is loaded")
 is(inspect(1), "1", [[Inspect test of 1]])
-is(inspect("Hello"), '"Hello"', [[Inspect test of "Hello]])
+is(inspect("Hello"), '"Hello"', [[Inspect test of "Hello"]])
 is(inspect({1,2,3,4}), "{ 1, 2, 3, 4 }", "Inspect test of table")
