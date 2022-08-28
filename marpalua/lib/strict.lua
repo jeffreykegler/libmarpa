@@ -1,4 +1,4 @@
--- strict.lua
+-- My revision of strict.lua
 -- checks uses of undeclared global variables
 -- All global variables must be 'declared' through a regular assignment
 -- (even assigning nil will do) in a main chunk before being used
@@ -8,33 +8,59 @@
 local getinfo, error, rawset, rawget = debug.getinfo, error, rawset, rawget
 
 local mt = getmetatable(_G)
-if mt == nil then
-  mt = {}
-  setmetatable(_G, mt)
-end
+local strict_mt = {}
+-- Initialize with "strict off"
+-- if mt == nil then
+  -- mt = {}
+  -- setmetatable(_G, mt)
+-- end
 
-mt.__declared = {}
+strict_mt.__declared = {
+   _G = true,
+   _M = true,
+   strict = true,
+}
 
 local function what ()
   local d = getinfo(3, "S")
   return d and d.what or "C"
 end
 
-mt.__newindex = function (t, n, v)
-  if not mt.__declared[n] then
-    local w = what()
-    if w ~= "main" and w ~= "C" then
-      error("assign to undeclared variable '"..n.."'", 2)
-    end
-    mt.__declared[n] = true
+strict_mt.__newindex = function (t, n, v)
+  if not strict_mt.__declared[n] then
+    error("assign to undeclared variable '"..n.."'", 2)
   end
   rawset(t, n, v)
 end
-  
-mt.__index = function (t, n)
-  if not mt.__declared[n] and what() ~= "C" then
+
+strict_mt.__index = function (t, n)
+  if not strict_mt.__declared[n] then
     error("variable '"..n.."' is not declared", 2)
   end
   return rawget(t, n)
 end
+
+local function strict_on()
+    local G_mt = getmetatable(_G)
+    if G_mt == nil then
+      setmetatable(_G, strict_mt)
+    end
+end
+
+local function strict_off()
+    local G_mt = getmetatable(_G)
+    if G_mt == strict_mt then
+      setmetatable(_G, nil)
+    end
+end
+
+local function strict_declare(name, boolean)
+    strict_mt.__declared[name] = boolean
+end
+
+return {
+    on = strict_on,
+    off = strict_off,
+    declare = strict_declare,
+}
 

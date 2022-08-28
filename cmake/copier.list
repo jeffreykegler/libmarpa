@@ -158,7 +158,7 @@ cm_dist/include/luaconf.h: marpalua/lua-5.4.4/src/luaconf.h
 cm_dist/marpalua/lib/Test/Builder.lua: marpalua/lib_orig/Test/Builder.lua
 cm_dist/marpalua/lib/Test/More.lua: marpalua/lib_orig/Test/More.lua
 cm_dist/marpalua/lib/inspect.lua: marpalua/lib_orig/inspect.lua
-cm_dist/marpalua/lib/strict.lua: marpalua/lib_orig/strict.lua
+cm_dist/marpalua/lib/strict.lua: marpalua/lib/strict.lua
 cm_dist/marpalua/etc/hex2h.lua: marpalua/etc/hex2h.lua
 
 cm_dist/include/kollos.h: marpalua/kollos/kollos.h
