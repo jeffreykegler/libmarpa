@@ -234,6 +234,20 @@ static int dolibrary (lua_State *L, char *globname) {
 
 /* === Start of custom hacks for KOLLOS == */
 
+static int strict_switch(lua_State *L, const int boolean)
+{
+  int strict_ix;
+  int status;
+  lua_getglobal(L, "strict");
+  strict_ix = lua_gettop(L);
+  lua_getfield(L, strict_ix, (boolean) ? "on" : "off");
+  status = docall (L, 1, 0);  /* call strict.on or strict.off */
+  return report (L, status);
+}
+
+static void strict_on(lua_State *L) { return strict_switch(L, 1); }
+static void strict_off(lua_State *L) { return strict_switch(L, 0); }
+
 static int chunk2library(
   lua_State *L, const struct kollos_chunk_data* const chunk, const int preload_ix)
 {
@@ -243,12 +257,16 @@ static int chunk2library(
         const char *msg = lua_tostring (L, -1);
         l_message (progname, msg);
     }
+    /* Stack: [loadedChunk] */
     lua_setfield (L, preload_ix, chunk->name);
+    /* package.preload[chunk->name] = loadedChunk */
+    /* Stack: [] */
     lua_getglobal (L, "require");
     lua_pushstring (L, chunk->name);
-    status = docall (L, 1, 1);  /* call 'require(modname)' */
+    /* Stack: [require, chunkName] */
+    status = docall (L, 1, 1);  /* call 'require(chunkName)' */
     if (status == LUA_OK)
-        lua_setglobal (L, chunk->name); /* globname = require(modname) */
+        lua_setglobal (L, chunk->name); /* chunkName = require(chunkName) */
     return report (L, status);
 }
 
