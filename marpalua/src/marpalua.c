@@ -234,9 +234,8 @@ static int dolibrary (lua_State *L, char *globname) {
 
 /* === Start of custom hacks for KOLLOS == */
 
-static int strict_declare(lua_State *L, char *name, int boolean)
+static void strict_declare(lua_State *L, char *name, int boolean)
 {
-  int status;
   const int base_of_stack = lua_gettop(L);
   lua_getglobal(L, "strict");
   /* Stack: [strict] */
