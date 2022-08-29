@@ -234,19 +234,40 @@ static int dolibrary (lua_State *L, char *globname) {
 
 /* === Start of custom hacks for KOLLOS == */
 
+static int strict_declare(lua_State *L, char *name, int boolean)
+{
+  int status;
+  const int base_of_stack = lua_gettop(L);
+  lua_getglobal(L, "strict");
+  /* Stack: [strict] */
+  lua_getfield(L, -1, "declared");
+  /* Stack: [strict, strict.declared] */
+  lua_pushboolean(L, (boolean ? 1 : 0));
+  /* Stack: [strict, strict.declared, boolean] */
+  lua_setfield(L, -2, name); /* strict.declared[name] = boolean] */
+  /* Stack: [strict, strict.declared] */
+  lua_settop(L, base_of_stack);
+  /* Stack: [] */
+}
+
+/* Calling the Lua function is not the most efficient,
+ * but it is the most flexible, and we should not be
+ * call this function a lot.
+ */
 static int strict_switch(lua_State *L, const int boolean)
 {
   int strict_ix;
   int status;
   lua_getglobal(L, "strict");
   strict_ix = lua_gettop(L);
-  lua_getfield(L, strict_ix, (boolean) ? "on" : "off");
-  status = docall (L, 1, 0);  /* call strict.on or strict.off */
+  lua_getfield(L, strict_ix, ((boolean) ? "on" : "off"));
+  status = docall (L, 0, 0);  /* call strict.on or strict.off */
+  lua_remove(L, strict_ix);  /* remove table from the stack */
   return report (L, status);
 }
 
-static void strict_on(lua_State *L) { return strict_switch(L, 1); }
-static void strict_off(lua_State *L) { return strict_switch(L, 0); }
+static void strict_on(lua_State *L) { (void)strict_switch(L, 1); }
+static void strict_off(lua_State *L) { (void) strict_switch(L, 0); }
 
 static int chunk2library(
   lua_State *L, const struct kollos_chunk_data* const chunk, const int preload_ix)
@@ -293,7 +314,10 @@ static void kollos_hook( lua_State *L) {
     lua_getfield(L, package_ix, "preload");
     preload_ix = lua_gettop(L);
     (void)chunk2library( L, &kollos_chunk_strict, preload_ix);
+    strict_on(L);
+    strict_declare(L, "inspect", 1);
     (void)chunk2library( L, &kollos_chunk_inspect, preload_ix);
+    strict_off(L);
 
     /* Restore top of stack when called */
     lua_settop (L, top_of_stack);

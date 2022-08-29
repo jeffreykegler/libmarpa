@@ -15,7 +15,7 @@ local strict_mt = {}
   -- setmetatable(_G, mt)
 -- end
 
-strict_mt.__declared = {
+local declared = {
    _G = true,
    _M = true,
    strict = true,
@@ -27,14 +27,14 @@ local function what ()
 end
 
 strict_mt.__newindex = function (t, n, v)
-  if not strict_mt.__declared[n] then
+  if not declared[n] then
     error("assign to undeclared variable '"..n.."'", 2)
   end
   rawset(t, n, v)
 end
 
 strict_mt.__index = function (t, n)
-  if not strict_mt.__declared[n] then
+  if not declared[n] then
     error("variable '"..n.."' is not declared", 2)
   end
   return rawget(t, n)
@@ -55,12 +55,13 @@ local function strict_off()
 end
 
 local function strict_declare(name, boolean)
-    strict_mt.__declared[name] = boolean
+    declared[name] = boolean
 end
 
 return {
     on = strict_on,
     off = strict_off,
     declare = strict_declare,
+    declared = declared
 }
 
