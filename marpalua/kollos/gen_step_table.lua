@@ -19,7 +19,8 @@
 --
 -- [ MIT license: http://www.opensource.org/licenses/mit-license.php ]
 
-require 'strict'
+strict = require 'strict'
+strict.on() -- delete after development
 require 'inspect' -- delete after development
 
 local input_file_name = arg[1]

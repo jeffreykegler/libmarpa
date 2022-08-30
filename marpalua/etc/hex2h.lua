@@ -24,7 +24,8 @@
   with that string as a string constant
 ]]
 
-require 'strict'
+strict = require 'strict'
+strict.on() -- delete after development
 require 'inspect'
 
 local prog_name = "hex2h.lua"
@@ -95,7 +96,7 @@ local header = [[
 
 ]]
 
-function write_hex_line(piece)
+local function write_hex_line(piece)
     local line_out = piece:gsub('.',
         function (str)
             return string.format("\\x%02x", str:byte())
