@@ -823,24 +823,29 @@ as described for the standard model.
 
 A terminal symbol is a symbol that
 may appear in the input.
-Traditionally,
-all LHS symbols, as well as
-the start symbol, must be non-terminals.
-This is Marpa's behavior, by default.
+In Marpa, by default, a symbol is a terminal,
+and therefore may appear in the input iff
+both of the following are true:
+@itemize
+@item The symbol is non-nulling.
+It is a logical contradiction for a nulling symbol
+to appear in the input.
+For this reason, Marpa does not allow it.
+@item The symbol does not appear on the
+LHS of any rule.
+@end itemize
 
-Marpa allows the user to eliminate the distinction
-between terminals and non-terminals.
-In this, it
-differs from traditional parsers.
-Libmarpa
-can arrange for a terminal
-to appear on the LHS of one or more rules,
-or for a terminal to be the start symbol.
-However,
-since terminals can never be zero length,
-it is a logical contradiction for a nulling
-symbol to also be a terminal
-and Marpa does not allow it.
+Marpa's default behavior follows tradition.
+A now-deprecated feature of
+Marpa allowed for LHS terminals.
+Most readers will want to stick to
+Marpa's default behavior,
+and can and should ignore the possibility
+of LHS terminals.
+For readers who need to know more about LHS terminals,
+@pxref{LHS terminals}.
+Even when LHS terminals are allowed,
+terminals can never be zero length.
 
 Token values are @code{int}'s.
 Libmarpa does nothing with token values except accept
@@ -1838,13 +1843,6 @@ and
 @code{marpa_g_sequence_new()}
 methods.
 
-For non-trivial parsing,
-one or more of the symbols must be terminals.
-To mark a symbol as a terminal,
-use the
-@code{marpa_g_symbol_is_terminal_set()}
-method.
-
 To be precomputed,
 a grammar must have exactly one start symbol.
 To mark a symbol as the start symbol,
@@ -2118,61 +2116,11 @@ in the
 method,
 a symbol must be a terminal.
 
-By default, a symbol is a terminal if and only if it
-does not appear on the LHS of any rule.
-The terminal status can be set explicitly with the
-@code{marpa_g_symbol_is_terminal_set()} method.
-@xref{marpa_g_symbol_is_terminal_set, marpa_g_symbol_is_terminal_set()}.
-
 Soft fails if @var{sym_id} is well-formed (a non-negative integer),
 but a symbol with that ID does not exist.
 
 @strong{Return value}:
 On success, 1 or 0.
-On soft failure, @minus{}1.
-On hard failure, @minus{}2.
-
-@end deftypefn
-
-@anchor{marpa_g_symbol_is_terminal_set}
-@deftypefn {Mutator function} @
-int marpa_g_symbol_is_terminal_set ( @
-    Marpa_Grammar @var{g}, @
-    Marpa_Symbol_ID @var{sym_id}, @
- int @var{value})
-
-Sets the ``terminal status'' of a symbol.
-This function flags symbol @var{sym_id} as a terminal if
-@var{value} is 1,
-or flags it as a non-terminal if @var{value} is 0.
-To be used as an input symbol
-in the
-@code{marpa_r_alternative()}
-method,
-a symbol must be a terminal.
-On success, this method returns @var{value}.
-
-Once set to a value with this method,
-the terminal status of a symbol is ``locked'' at that value.
-A subsequent call to this method
-that attempts
-to change the terminal status
-of @var{sym_id} to a value different from its current one
-will hard fail
-with error code @code{MARPA_ERR_TERMINAL_IS_LOCKED}.
-Other hard failures include
-when @var{value} is not 0 or 1;
-and
-when the grammar @var{g} is precomputed.
-
-By default, a symbol is a terminal if and only if it
-does not appear on the LHS of any rule.
-An attempt to flag a nulling symbol
-as a terminal will cause a failure,
-but this is not necessarily detected before precomputation.
-
-@strong{Return value}:
-On success, @var{value}, which will be 1 or 0.
 On soft failure, @minus{}1.
 On hard failure, @minus{}2.
 
@@ -6982,29 +6930,6 @@ that the lack of safe validity checking
 is far too high a price to pay
 for the difference in speed.
 
-@node LHS Terminals
-@section LHS terminals
-
-Marpa's idea
-in losing the sharp division between terminals
-and non-terminals is that the distinction,
-while helpful for proving theorems,
-is not essential in practice.
-LHS symbols
-in the input might be useful for
-``short circuiting'' the rules in which they occur.
-This may
-prove helpful in debugging, or have other applications.
-
-However,
-it also can be useful,
-for checking input validity as well as for efficiency,
-to follow tradition and distinguish
-non-terminals from terminals.
-For this reason,
-the traditional behavior is the default
-in Libmarpa.
-
 @node Trap representations
 @section Trap representations
 
@@ -7446,6 +7371,108 @@ The methods in this section provide that capability.
 @node Deprecated techniques and methods
 @chapter Deprecated techniques and methods
 
+@node LHS terminals
+@section LHS terminals
+
+@node What LHS terminals were
+@subsection What LHS terminals were
+
+Recall that a terminal symbol is a symbol that
+may appear in the input.
+Traditionally,
+all LHS symbols, as well as
+the start symbol, must be non-terminals.
+By default, this is Marpa's behavior.
+
+In a departure from tradition,
+Marpa had a feature that allowed the user to eliminate the distinction
+between terminals and non-terminals.
+This feature is now deprecated.
+
+When LHS terminals are in use,
+a terminal
+can appear on the LHS of one or more rules,
+and can be be the start symbol.
+Note however,
+that terminals can never be zero length.
+
+The basis of the LHS terminals feature
+was that,
+while sharp division between terminals
+and non-terminals was
+a useful simplification for proving theorems,
+it was not essential in practice.
+In the UNIX "toolkit" tradition,
+the practice has been to include even awkward,
+dangerous tools with no known use in the toolkit.
+This was done in the belief that empowering the user who
+discovers new techniques is more important
+than playing nanny to the toolkit's users.
+
+LHS symbols
+could be used to bypass,
+or ``short circuit'', the rules on whose LHS they occur.
+Short circuiting rules, it was thought,
+might prove helpful in debugging, or have other applications.
+
+But, a decade after the release of Libmarpa,
+no uses for LHS symbols have
+emerged.
+And they do introduce many new corner cases
+into the code and complicate the API documentation.
+
+@node LHS terminal methods
+@subsection LHS terminal methods
+
+For non-trivial parsing,
+one or more of the symbols must be terminals.
+To mark a symbol as a terminal,
+use the
+@code{marpa_g_symbol_is_terminal_set()}
+method.
+
+@anchor{marpa_g_symbol_is_terminal_set}
+@deftypefn {Mutator function} @
+int marpa_g_symbol_is_terminal_set ( @
+    Marpa_Grammar @var{g}, @
+    Marpa_Symbol_ID @var{sym_id}, @
+ int @var{value})
+
+Sets the ``terminal status'' of a symbol.
+This function flags symbol @var{sym_id} as a terminal if
+@var{value} is 1,
+or flags it as a non-terminal if @var{value} is 0.
+To be used as an input symbol
+in the
+@code{marpa_r_alternative()}
+method,
+a symbol must be a terminal.
+On success, this method returns @var{value}.
+
+Once set to a value with this method,
+the terminal status of a symbol is ``locked'' at that value.
+A subsequent call to this method
+that attempts
+to change the terminal status
+of @var{sym_id} to a value different from its current one
+will hard fail
+with error code @code{MARPA_ERR_TERMINAL_IS_LOCKED}.
+Other hard failures include
+when @var{value} is not 0 or 1;
+and
+when the grammar @var{g} is precomputed.
+
+An attempt to flag a nulling symbol
+as a terminal will cause a failure,
+but this is not necessarily detected before precomputation.
+
+@strong{Return value}:
+On success, @var{value}, which will be 1 or 0.
+On soft failure, @minus{}1.
+On hard failure, @minus{}2.
+
+@end deftypefn
+
 @node Valued and unvalued symbols
 @section Valued and unvalued symbols
 
@@ -7495,19 +7522,22 @@ and cannot be changed later.
 
 The valued status of terminals is marked the first
 time they are read.
+
+Unvalued symbols may be used in combination with
+another deprecated feature, LHS terminals.
+@xref{LHS terminals}.
 The valued status of LHS symbols must be explicitly
 marked by the application when initializing the
 valuator --- this is Libmarpa's equivalent of
 registering a callback.
 
-LHS terminals are disabled by default.
-If allowed, the user should be aware that the valued
-status of a LHS terminal
+The valued status of a LHS terminal
 will be locked in the recognizer
 if it is used as a terminal,
 and the symbol's use as a rule LHS
 in the valuator must be
-consistent with the recognizer's marking.
+consistent with the recognizer's valued marking.
+LHS terminals are disabled by default.
 
 Marpa reports an error when a symbol's use
 conflicts with its locked valued status.
