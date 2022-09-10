@@ -838,12 +838,11 @@ LHS of any rule.
 Marpa's default behavior follows tradition.
 A now-deprecated feature of
 Marpa allowed for LHS terminals.
+@xref{LHS terminals}.
 Most readers will want to stick to
 Marpa's default behavior,
 and can and should ignore the possibility
 of LHS terminals.
-For readers who need to know more about LHS terminals,
-@pxref{LHS terminals}.
 Even when LHS terminals are allowed,
 terminals can never be zero length.
 
@@ -7358,7 +7357,7 @@ On success, returns previous default value of the assertion.
 @subsection Methods for revising parses
 
 Marpa allows an application to ``change its mind'' about a parse,
-rejected rule previously recognized or predicted,
+rejecting rules previously recognized or predicted,
 and terminals previously scanned.
 The methods in this section provide that capability.
 
