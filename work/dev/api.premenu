@@ -175,6 +175,45 @@ Our use of this term is consistent with its use in the C99 standard.
 @dfn{Libmarpa method}, or just @dfn{method} means a C function
 or a function-like macro of the Libmarpa library.
 @item
+@dfindex nullable rule
+@dfindex rule, nullable
+A rule is @dfn{nullable} if it sometimes produces the empty string.
+@item
+@dfindex nulled symbol instance
+@dfindex symbol instance, nulled
+In a parse,
+an instance of a symbol is @dfn{nulled} iff it produces the empty string.
+When no confusion arises,
+we may say that the symbol is nulled 
+to indicate that an instance of the symbol is nulled.
+@item
+@dfindex nullable symbol
+@dfindex symbol, nullable
+A symbol is @dfn{nullable} if it sometimes produces the empty string.
+The LHS of a nullable rule is always a nullable symbol.
+@item
+@dfindex nulling rule
+@dfindex rule, nulling
+A rule is @dfn{nulling} if it sometimes produces the empty string.
+Every nulling rule is a nullable rule,
+but not every nullable rule is a nulling rule.
+@item
+@dfindex nulling symbol
+@dfindex symbol, nulling
+A symbol is @dfn{nulling} if it sometimes produces the empty string.
+Every nulling symbol is a nullable symbol,
+but not every nullable symbol is a nulling symbol.
+The LHS of a nulling rule is always a nulling symbol.
+@item
+@dfindex non-nullable rule
+@dfindex rule, non-nullable
+A rule is @dfn{non-nullable} iff it is not a nullable rule.
+@item
+@dfindex non-nullable symbol
+@dfindex symbol, non-nullable
+A symbol is @dfn{non-nullable} iff it is not a nullable symbol.
+The LHS of a non-nullable rule is always a non-nullable symbol.
+@item
 @dfindex trap value
 A @dfn{trap value},
 also called a @dfn{trap representation},
@@ -5470,7 +5509,7 @@ On success, if @var{value} is 0,
 @item returns 0.
 @end itemize
 
-A symbol instance can never generated both a nulled
+A symbol instance can never generate both a nulled
 and a prediction event at the same location.
 Also, a symbol instance can never generate both a nulled
 and a completion event at the same location.
