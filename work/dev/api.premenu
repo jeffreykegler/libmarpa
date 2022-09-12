@@ -2169,6 +2169,16 @@ On hard failure, @minus{}2.
 Marpa_Symbol_ID marpa_g_symbol_new (Marpa_Grammar @var{g})
 
 When successful, creates a new symbol in grammar @var{g}.
+The symbol ID's are non-negative integers.
+Within each grammar, a symbol's ID is unique to that symbol.
+
+Symbols are numbered consecutively, starting at 0.
+That is, the first successful call of this method for a grammar returns the symbol
+with ID 0.
+The @var{n}'th successful call returns the symbol for a grammar
+with ID @code{@var{n}@minus{}1}.
+This makes it convenient for applications to store additional information
+about the symbols in an array.
 
 @strong{Return value}: On success, the ID of the new symbol,
 which will be a non-negative integer.
@@ -2363,19 +2373,36 @@ Marpa_Rule_ID marpa_g_rule_new (Marpa_Grammar @var{g}, @
      int @var{length})
 
 On success, creates a new external BNF rule in grammar @var{g}.
-The ID of the new rule will be a non-negative integer,
-which will be unique to that rule.
 In addition to BNF rules, Marpa also allows sequence rules,
 which are created by
 the
 @code{marpa_g_sequence_new()} method.
 @xref{marpa_g_sequence_new,marpa_g_sequence_new()}.
+We call
+@code{marpa_g_rule_new()} and
+@code{marpa_g_sequence_new()}
+@dfn{rule creation methods}.
 
 Sequence rules and BNF rules are both rules:
 They share the same series of rule IDs,
 and are accessed and manipulated by the same methods,
 with the only differences being as noted
 in the descriptions of those methods.
+
+Each grammar's rule ID's are a consecutive sequence of non-negative integers,
+starting at 0.
+This is intended to make it convenient for applications to store additional information
+about a grammar's rules in an array.
+Within each grammar, the following is true:
+@itemize
+@item A rule's ID is unique to that rule.
+@item
+The first successful call of a rule creation method returns the rule
+with ID 0.
+@item
+The @var{n}'th successful call of a rule creation method
+returns the rule with ID @code{@var{n}@minus{}1}.
+@end itemize
 
 The LHS symbol is @var{lhs_id},
 and there are @var{length} symbols on the RHS.
@@ -2513,12 +2540,38 @@ Marpa_Rule_ID marpa_g_sequence_new (Marpa_Grammar @var{g}, @
 
 When successful,
 adds a new sequence rule to grammar @var{g},
-and return its ID.
-The ID of the sequence rule will be a non-negative integer,
-which is unique to that rule.
-All rules are numbered in the same series,
-so that a BNF rule will never have the same rule ID as a sequence
-rule, and vice versa.
+and returns its ID.
+In addition to sequence rules, Marpa also allows BNF rules,
+which are created by
+the
+@code{marpa_g_rule_new()} method.
+@xref{marpa_g_rule_new,marpa_g_rule_new()}.
+We call
+@code{marpa_g_rule_new()} and
+@code{marpa_g_sequence_new()}
+@dfn{rule creation methods}.
+
+Sequence rules and BNF rules are both rules:
+They share the same series of rule IDs,
+and are accessed and manipulated by the same methods,
+with the only differences being as noted
+in the descriptions of those methods.
+
+Each grammar's rule ID's are a consecutive sequence of non-negative integers,
+starting at 0.
+This is intended to make it convenient for applications to store additional information
+about a grammar's rules in an array.
+Within each grammar, the following is true:
+@itemize
+@item A rule's ID is unique to that rule.
+@item
+The first successful call of a rule creation method returns the rule
+with ID 0.
+@item
+The @var{n}'th successful call of a rule creation method
+returns the rule with ID @code{@var{n}@minus{}1}.
+@end itemize
+
 
 Sequence rules are ``sugar'' ---
 their presence in the Libmarpa interface does not extend its power.

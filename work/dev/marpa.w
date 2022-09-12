@@ -106,21 +106,24 @@
 @s xor normal
 
 @s error normal
+
 @s MARPA_LINKAGE static
+
+@s BITFIELD int
+@s Bit_Matrix int
+@s DAND int
+@s IRL int
+@s LBV int
 @s MARPA_AVL_TRAV int
 @s MARPA_AVL_TRAV int
 @s MARPA_AVL_TREE int
-@s Bit_Matrix int
-@s BITFIELD int
-@s DAND int
-@s MARPA_DSTACK int
-@s LBV int
 @s Marpa_Bocage int
+@s MARPA_DSTACK int
 @s Marpa_Earleme int
+@s Marpa_Error_Code int
 @s Marpa_IRL_ID int
 @s Marpa_Rule_ID int
 @s Marpa_Symbol_ID int
-@s Marpa_Error_Code int
 @s NOOKID int
 @s NOOK_Object int
 @s OR int
@@ -130,10 +133,11 @@
 @s PSAR int
 @s PSAR_Object int
 @s PSL int
-@s RULE int
 @s RULEID int
+@s RULE int
 @s XRL int
-@s IRL int
+@s NSYID int
+@s XSYID int
 
 @** License.
 \bigskip\noindent
