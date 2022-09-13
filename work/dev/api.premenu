@@ -171,6 +171,13 @@ An @dfn{indeterminate value}
 is either an unspecified value or a trap value.
 Our use of this term is consistent with its use in the C99 standard.
 @item
+@dfindex symbol instance
+@dfindex instance, symbol
+A @dfn{symbol instance}, intuitively, is a symbol's
+occurrence at a specific parse location.
+More precisely, it is a pair of symbol and parse location.
+For more about parse location, @pxref{Earlemes}.
+@item
 @dfindex method
 @dfn{Libmarpa method}, or just @dfn{method} means a C function
 or a function-like macro of the Libmarpa library.
