@@ -191,7 +191,7 @@ A rule is @dfn{nullable} if it sometimes produces the empty string.
 In a parse,
 an instance of a symbol is @dfn{nulled} iff it produces the empty string.
 When no confusion arises,
-we may say that the symbol is nulled 
+we may say that the symbol is nulled
 to indicate that an instance of the symbol is nulled.
 @item
 @dfindex nullable symbol
@@ -1416,7 +1416,7 @@ in order to clear memory of problematic objects.
 An example of a library-recoverable hard failure is
 the @code{MARPA_ERR_COUNTED_NULLABLE} error
 in the @code{marpa_g_precompute} method.
-@xref{marpa_g_precompute,marpa_g_precompute()}.
+@xref{marpa_g_precompute, marpa_g_precompute()}.
 
 @node Ancestry-recoverable hard failure
 @section Ancestry-recoverable hard failure
@@ -1465,7 +1465,7 @@ As an example,
 users calling @code{marpa_g_precompute()}
 will often want to treat a @code{MARPA_EVENT_EARLEY_ITEM_THRESHOLD} event
 as if it were an ancestry-recoverable hard failure.
-@xref{marpa_g_precompute,marpa_g_precompute()}.
+@xref{marpa_g_precompute, marpa_g_precompute()}.
 
 Library-recoverable failure is a special case of ancestry-recoverable
 failure.
@@ -3042,20 +3042,15 @@ An application may use these events to inform the user
 of the problematic symbols,
 and this detail may help the user fix the grammar.
 
-The error code item @code{MARPA_ERR_NULLING_TERMINAL}
+The error code @code{MARPA_ERR_NULLING_TERMINAL}
+occurs only if LHS terminals are enabled.
+The LHS terminals feature is deprecated.
+@xref{LHS terminals}.
+Error code @code{MARPA_ERR_NULLING_TERMINAL}
 is library-recoverable.
-This failure occurs when a nulling
-symbol is also flagged as a terminal.
-Since terminals cannot be of zero length, this is a logical
-impossibility,
-and Libmarpa does not allow nulling terminals in a grammar.
-Error code item @code{MARPA_ERR_NULLING_TERMINAL} occurs iff
-one or more @code{MARPA_EVENT_NULLING_TERMINAL} events occur.
-There is one @code{MARPA_EVENT_NULLING_TERMINAL} events
-for every nulling terminal in the grammar.
-An application may use these events to inform the user
-of the problematic symbols,
-and this detail may help the user fix the grammar.
+One or more @code{MARPA_EVENT_NULLING_TERMINAL} events will occur iff
+this method fails with error code @code{MARPA_ERR_NULLING_TERMINAL}.
+@xref{Nulling terminals}.
 
 Among the other error codes that may case this
 method to fail
@@ -5903,7 +5898,9 @@ Suggested message: "Grammar contains a infinite loop".
 @end deftypevr
 
 @deftypevr {Accessor macro} int MARPA_EVENT_NULLING_TERMINAL
-A nulling symbol is also a terminal.
+This event occurs only if LHS terminals feature is in use.
+The LHS terminals feature is deprecated.
+@xref{LHS terminals}.
 Event value: The ID of the symbol.
 Suggested message: "This symbol is a nulling terminal".
 @end deftypevr
@@ -6387,8 +6384,9 @@ Suggested message: "Rule is not a sequence".
 @end deftypevr
 
 @deftypevr {Accessor macro} int MARPA_ERR_NULLING_TERMINAL
-Marpa does not allow a symbol to be both nulling
-and a terminal.
+This error occurs only if LHS terminals feature is in use.
+The LHS terminals feature is deprecated.
+@xref{LHS terminals}.
 Numeric value: 49.
 Suggested message: "A symbol is both terminal and nulling".
 @end deftypevr
@@ -7570,6 +7568,42 @@ On soft failure, @minus{}1.
 On hard failure, @minus{}2.
 
 @end deftypefn
+
+@node Nulling terminals
+@subsection Nulling terminals
+
+When LHS terminals are not in use, nulling terminals
+cannot occur,
+and applications need not take them in account.
+This is because, in order to be nullable,
+a symbol must appear on the LHS of a nullable rule.
+Without LHS terminals, therefore, no terminals can
+ever be either nullable or nulling.
+
+Things become more complicated if LHS terminals are allowed.
+In that case nulling terminals can be created,
+and Libmarpa must take measure to prevent a recognizer from being
+created for a grammar with nulling terminals.
+Libmarpa will not allow a recognizer to be created from a grammar
+with nulling terminals because they are a logical contradiction.
+A terminal is (by definition) a symbol which can appear in the input,
+and a nulling symbol, by definition, cannot appear in the input.
+
+Libmarpa's @code{marpa_g_precompute} method
+fails with the error code @code{MARPA_ERR_NULLING_TERMINAL}
+if it detects nulling terminals during precomputation.
+The error code @code{MARPA_ERR_NULLING_TERMINAL}
+is library-recoverable.
+@xref{marpa_g_precompute, marpa_g_precompute()}.
+
+Libmarpa's @code{marpa_g_precompute} method
+also triggers
+one @code{MARPA_EVENT_NULLING_TERMINAL} event
+for every nulling terminal in the grammar,
+so that one or more @code{MARPA_EVENT_NULLING_TERMINAL} events
+occur iff
+@code{marpa_g_precompute} fails
+with error code @code{MARPA_ERR_NULLING_TERMINAL}.
 
 @node Valued and unvalued symbols
 @section Valued and unvalued symbols
