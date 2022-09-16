@@ -32,7 +32,12 @@ VERSION=$(MAJOR).$(MINOR).$(MICRO)
     realclean tag test cm_test install_test
 
 dummy:
-	@echo The target to make the distribution is '"dist"'
+	@echo The target to make the Autoconf distribution is '"ac_dist"'
+	@echo The target to make the Cmake distribution is '"cm_dist"'
+	@echo The target to make both distributions is '"dist"'
+	@echo The target to test Libmarpa is '"test"'
+
+dist: ac_dist cm_dist
 
 timestamp/stage.stamp:
 	$(MAKE) libmarpa_version.sh
