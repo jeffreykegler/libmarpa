@@ -7475,8 +7475,24 @@ The methods in this section provide that capability.
 @node LHS terminals
 @section LHS terminals
 
-@node What LHS terminals were
-@subsection What LHS terminals were
+@node Overview of LHS terminals
+@subsection Overview of LHS terminals
+
+The user creates LHS terminals with the
+@code{marpa_g_symbol_is_terminal_set()}
+method.
+@xref{marpa_g_symbol_is_terminal_set, marpa_g_symbol_is_terminal_set()}.
+If the @code{marpa_g_symbol_is_terminal_set()}
+method is never called for a grammar,
+then LHS terminals are not
+@dfindex LHS terminals in use
+@dfindex in use (LHS terminals)
+@dfn{in use}
+for any time object with that grammar as its
+base grammar.
+
+@node Motivation of LHS terminals
+@subsection Motivation of LHS terminals
 
 Recall that a terminal symbol is a symbol that
 may appear in the input.
@@ -7525,12 +7541,16 @@ into the code and complicate the API documentation.
 @node LHS terminal methods
 @subsection LHS terminal methods
 
-For non-trivial parsing,
-one or more of the symbols must be terminals.
-To mark a symbol as a terminal,
-use the
-@code{marpa_g_symbol_is_terminal_set()}
-method.
+The
+@dfindex terminal status (of a symbol)
+@dfn{terminal status}
+of a symbol
+is a boolean, which is true iff the symbol
+is a terminal.
+The terminal status of a symbol is
+@dfindex locked terminal status
+@dfn{locked}
+iff the terminal status of that cannot be changed.
 
 @anchor{marpa_g_symbol_is_terminal_set}
 @deftypefn {Mutator function} @
@@ -7539,10 +7559,7 @@ int marpa_g_symbol_is_terminal_set ( @
     Marpa_Symbol_ID @var{sym_id}, @
  int @var{value})
 
-Sets the ``terminal status'' of a symbol.
-This function flags symbol @var{sym_id} as a terminal if
-@var{value} is 1,
-or flags it as a non-terminal if @var{value} is 0.
+Sets the terminal status of a symbol to @var{value}.
 To be used as an input symbol
 in the
 @code{marpa_r_alternative()}
@@ -7551,21 +7568,17 @@ a symbol must be a terminal.
 On success, this method returns @var{value}.
 
 Once set to a value with this method,
-the terminal status of a symbol is ``locked'' at that value.
+the terminal status of a symbol is locked.
 A subsequent call to this method
 that attempts
 to change the terminal status
 of @var{sym_id} to a value different from its current one
 will hard fail
 with error code @code{MARPA_ERR_TERMINAL_IS_LOCKED}.
-Other hard failures include
-when @var{value} is not 0 or 1;
+Other hard failures occure
+when @var{value} is not a boolean
 and
 when the grammar @var{g} is precomputed.
-
-An attempt to flag a nulling symbol
-as a terminal will cause a failure,
-but this is not necessarily detected before precomputation.
 
 @strong{Return value}:
 On success, @var{value}, which will be 1 or 0.
@@ -7573,6 +7586,41 @@ On soft failure, @minus{}1.
 On hard failure, @minus{}2.
 
 @end deftypefn
+
+@node Precomputation and LHS terminals
+@subsection Precomputation and LHS terminals
+
+On success,
+@code{marpa_g_precompute()} will sets
+and locks the terminal status of every symbol.
+More precisely,
+let the symbol be @var{x},
+let the terminal status of @var{x} when
+@code{marpa_g_precompute()} was called
+be @var{v_before},
+and let the terminal status of @var{x} when
+@code{marpa_g_precompute()} returns success
+be @var{v_after}.
+The effect of the successful call of
+@code{marpa_g_precompute()} will be as follows:
+@itemize
+@item If terminal status of @var{x}
+is locked when
+@code{marpa_g_precompute()} was called,
+then @code{@var{v_after} = @var{v_before}}.
+@item If terminal status of @var{x}
+is not locked, and @var{x} appears on
+the LHS of some rule
+then @var{v_after} is false.
+@item If terminal status of @var{x}
+is not locked, and @var{x} does not appear on
+the LHS of any rule
+then @var{v_after} is true.
+@end itemize
+The terminal status of all symbols is locked
+after a successful call to
+@code{marpa_g_precompute()}.
+@xref{marpa_g_precompute, marpa_g_precompute()}.
 
 @node Nulling terminals
 @subsection Nulling terminals
@@ -7587,7 +7635,7 @@ ever be either nullable or nulling.
 
 Things become more complicated if LHS terminals are allowed.
 In that case nulling terminals can be created,
-and Libmarpa must take measure to prevent a recognizer from being
+and Libmarpa must take measures to prevent a recognizer from being
 created for a grammar with nulling terminals.
 Libmarpa will not allow a recognizer to be created from a grammar
 with nulling terminals because they are a logical contradiction.
@@ -7604,8 +7652,9 @@ is library-recoverable.
 Libmarpa's @code{marpa_g_precompute} method
 also triggers
 one @code{MARPA_EVENT_NULLING_TERMINAL} event
-for every nulling terminal in the grammar,
-so that one or more @code{MARPA_EVENT_NULLING_TERMINAL} events
+for every nulling terminal in the grammar.
+This implies that
+one or more @code{MARPA_EVENT_NULLING_TERMINAL} events
 occur iff
 @code{marpa_g_precompute} fails
 with error code @code{MARPA_ERR_NULLING_TERMINAL}.
