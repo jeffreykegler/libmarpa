@@ -7521,8 +7521,8 @@ a useful simplification for proving theorems,
 it was not essential in practice.
 In the UNIX "toolkit" tradition,
 the practice has been to include even awkward,
-dangerous tools with no known use in the toolkit.
-This was done in the belief that empowering the user who
+dangerous tools with no known use, in the toolkit.
+The philosophy was that empowering the user who
 discovers new techniques is more important
 than playing nanny to the toolkit's users.
 
@@ -7550,7 +7550,7 @@ is a terminal.
 The terminal status of a symbol is
 @dfindex locked terminal status
 @dfn{locked}
-iff the terminal status of that cannot be changed.
+iff the terminal status of that symbol cannot be changed.
 
 @anchor{marpa_g_symbol_is_terminal_set}
 @deftypefn {Mutator function} @
@@ -7559,26 +7559,30 @@ int marpa_g_symbol_is_terminal_set ( @
     Marpa_Symbol_ID @var{sym_id}, @
  int @var{value})
 
-Sets the terminal status of a symbol to @var{value}.
+On success, does the following:
+@itemize
+@item Sets the terminal status of the symbol
+in grammar @var{g}
+with symbol ID @var{sym_id}
+to @var{value}.
 To be used as an input symbol
 in the
 @code{marpa_r_alternative()}
 method,
 a symbol must be a terminal.
-On success, this method returns @var{value}.
+@item Locks
+the terminal status of symbol @var{sym_id}.
+@item Returns @var{value}.
+@end itemize
 
-Once set to a value with this method,
-the terminal status of a symbol is locked.
-A subsequent call to this method
-that attempts
-to change the terminal status
-of @var{sym_id} to a value different from its current one
-will hard fail
-with error code @code{MARPA_ERR_TERMINAL_IS_LOCKED}.
-Other hard failures occure
-when @var{value} is not a boolean
-and
-when the grammar @var{g} is precomputed.
+Hard fails with error code @code{MARPA_ERR_TERMINAL_IS_LOCKED}
+if the symbol with @var{sym_id}
+is locked,
+and the terminal status
+of the symbol with @var{sym_id}
+is not equal to @var{value}.
+Also hard fails if
+@var{value} is not a boolean or if @var{g} is precomputed.
 
 @strong{Return value}:
 On success, @var{value}, which will be 1 or 0.
