@@ -1,4 +1,4 @@
-export LUA_PATH=../lib_orig/?.lua
+export LUA_PATH='../lib/?.lua;../lib_orig/?.lua'
 lua gen_error_table.lua error_codes.table > error_table.md
 lua gen_event_table.lua events.table > event_table.md
 lua gen_step_table.lua steps.table > step_table.md
