@@ -1102,216 +1102,125 @@ that most users will not notice the absense of nulling
 rules,
 must less miss them.
 
-[ TODO: Finish this chapter ]
+[ TODO: Rewrite chapter from here ]
 
-@c When evaluating a parse, nulled rules and symbols are
-@c assigned values as described
-@c L<in the semantics document|Marpa::R2::Semantics>.
-@c This document provides additional detail on the assignment
-@c of values to nulled symbols.
-@c
-@c =head1 Description
-@c
-@c =head2 Null values come from rules
-@c
-@c Nulled subtrees are pruned back to their topmost symbol.
-@c Lexemes are never nulled, so a nulled symbol is always the LHS of a rule instance,
-@c and the action is determined from the rule alternative.
-@c
-@c A complication arises if the symbol appears on the LHS of more than one
-@c nullable rule alternative.  Because the symbol is nulled, the input is no help in determining
-@c which rule alternative to use.  The rule alternative whose semantics are used for a nulled symbol
-@c is determined as follows:
-@c
-@c =over 4
-@c
-@c =item * If all nullable rule alternatives have the same semantics, that semantics is used.
-@c
-@c =item * If one of the nullable rule alternatives
-@c is empty (that is, has a zero-length RHS),
-@c then the empty alternative's semantics are used.
-@c
-@c =item * 
-@c In the remaining case,
-@c two or more of the rule alternatives have different action names,
-@c but none of the alternatives has a zero-length RHS.
-@c When this happens, Marpa throws an exception.
-@c One easy way
-@c to fix the issue,
-@c is to add an empty rule with the intended semantics.
-@c
-@c =back
-@c
-@c In determining whether the semantics of two nullable rule alternatives
-@c is "the same",
-@c the blessing is taken into account.
-@c Two rule alternatives are considered to have different semantics if
-@c they are blessed differently.
-@c
-@c The "lost" semantics of the non-topmost symbols and rules
-@c of null subtrees are usually not missed.
-@c Nulled subtrees cannot contain input,
-@c and therefore do not contain token symbols.
-@c So no token values are lost when
-@c nulled subtrees are pruned.
-@c As bushy as a null subtree might be,
-@c all of its symbols and rules are nulled.
-@c
-@c Since nulled symbols and rules correspond to zero-length strings,
-@c so we are literally dealing here with
-@c the "semantics of nothing".
-@c In theory the semantics of nothing can be arbitrarily complex.
-@c In practice it should be possible to keep them simple.
-@c
-@c =head1 Example
-@c
-@c As already stated,
-@c Marpa prunes every null subtree back to its topmost
-@c null symbol.
-@c Here is an example:
-@c
-@c =for Marpa::R2::Display
-@c name: SLIF null value example
-@c normalize-whitespace: 1
-@c
-@c     sub do_L {
-@c         shift;
-@c         return 'L(' . ( join q{;}, map { $_ // '[ERROR!]' } @_ ) . ')';
-@c     }
-@c
-@c     sub do_R {
-@c         return 'R(): I will never be called';
-@c     }
-@c
-@c     sub do_S {
-@c         shift;
-@c         return 'S(' . ( join q{;}, map { $_ // '[ERROR!]' } @_ ) . ')';
-@c     }
-@c
-@c     sub do_X { return 'X(' . $_[1] . ')'; }
-@c     sub do_Y { return 'Y(' . $_[1] . ')'; }
-@c
-@c     ## no critic (Variables::ProhibitPackageVars)
-@c     our $null_A = 'null A';
-@c     our $null_B = 'null B';
-@c     our $null_L = 'null L';
-@c     our $null_R = 'null R';
-@c     our $null_X = 'null X';
-@c     our $null_Y = 'null Y';
-@c     ## use critic
-@c
-@c     my $slg = Marpa::R2::Scanless::G->new(
-@c         {   source => \<<'END_OF_DSL',
-@c     :start ::= S
-@c     S ::= L R     action => do_S
-@c     L ::= A B X   action => do_L
-@c     L ::=         action => null_L
-@c     R ::= A B Y   action => do_R
-@c     R ::=         action => null_R
-@c     A ::=         action => null_A
-@c     B ::=         action => null_B
-@c     X ::=         action => null_X
-@c     X ::= 'x'     action => do_X
-@c     Y ::=         action => null_Y
-@c     Y ::= 'y'     action => do_Y
-@c     END_OF_DSL
-@c         }
-@c     );
-@c
-@c     my $slr = Marpa::R2::Scanless::R->new(
-@c         {   grammar           => $slg,
-@c             semantics_package => 'main',
-@c         }
-@c     );
-@c
-@c     $slr->read( \'x' );
-@c
-@c =for Marpa::R2::Display::End
-@c
-@c If we write the unpruned parse tree
-@c in pre-order, depth-first, indenting children
-@c below their parents, we get something like this:
-@c
-@c =for Marpa::R2::Display
-@c ignore: 1
-@c
-@c         0: Visible Rule: S := L R
-@c              1: Visible Rule L := A B X
-@c                  1.1: Nulled Symbol A
-@c                  1.2: Nulled Symbol B
-@c                  1.3: Token, Value is 'x'
-@c              2: Nulled Rule, Rule R := A B Y
-@c                  2.1: Nulled Symbol A
-@c                  2.2: Nulled Symbol B
-@c                  2.3: Nulled Symbol Y
-@c
-@c =for Marpa::R2::Display::End
-@c
-@c In this example, five symbols and a rule are nulled.
-@c The rule and three of the symbols are in a single subtree: 2, 2.1, 2.2 and 2.3.
-@c Marpa prunes every null subtree back to its topmost symbol,
-@c which in this case is the LHS of the rule numbered 2.
-@c
-@c The pruned tree looks like this
-@c
-@c =for Marpa::R2::Display
-@c ignore: 1
-@c
-@c         0: Visible Rule: S := L R
-@c              1: Visible Rule L := A B X
-@c                  1.1: Nulled Symbol A
-@c                  1.2: Nulled Symbol B
-@c                  1.3: Token, Value is 'x'
-@c              2: LHS of Nulled Rule, Symbol R
-@c
-@c =for Marpa::R2::Display::End
-@c
-@c Nulled nodes 1.1, 1.2 and 2 were all kept, because they are topmost in their
-@c nulled subtree.
-@c All the other nulled nodes were discarded.
-@c
-@c Here is the output:
-@c
-@c =for Marpa::R2::Display
-@c name: SLIF null value example output
-@c normalize-whitespace: 1
-@c
-@c     S(L(null A;null B;X(x));null R)
-@c
-@c =for Marpa::R2::Display::End
-@c
-@c In the output we see
-@c
-@c =over
-@c
-@c =item * The null value for symbol 1.1: "C<null A>".
-@c This comes from the empty rule for C<A>.
-@c
-@c =item * The null value for symbol 1.2: "C<null B>".
-@c This comes from the empty rule for C<B>.
-@c
-@c =item * The token value for symbol 1.3: "C<x>".
-@c
-@c =item * An application of the rule evaluation closure for the rule
-@c C<L := A B X>.
-@c
-@c =item * The null value for rule 2: "C<null R>".
-@c This comes from the empty rule for C<R>.
-@c
-@c =item * An application of the rule evaluation closure for the rule
-@c C<S := L R>
-@c
-@c =back
-@c
-@c We B<do not> see any output
-@c for symbols
-@c 2.1 (C<A>),
-@c 2.2 (C<B>),
-@c or 2.3 (C<Y>)
-@c because they were not topmost
-@c in the pruned subtree.
-@c We B<do not> see an application of the rule evaluation closure for rule C<R := A B Y>,
-@c because there is an empty rule for C<R>, and that takes priority.
+Nulled subtrees are pruned back to their topmost symbol.
+Lexemes are never nulled, so a nulled symbol is always the LHS of a rule instance,
+and the action is determined from the rule alternative.
+
+Semantics are outside the scope of this document,
+because Libmarpa
+leaves the semantics to an upper layer.
+Nonetheless, we will offer the writers of upper layers
+some hints.
+
+Most upper layers will assign the semantics by rule.
+When nulled symbols are dealt with, however,
+the rules have been pruned, so that semantics of a nulled
+symbol must come from that symbol.
+One solution is the one which is implemented in @code{Marpa::R2}.
+Called the nulled symbol @var{x}
+and call a rules with @var{x} on its LHS,
+a ``@var{x} rule''.
+@code{Marpa::R2} takes the semantics of @var{x}
+from the first of following guidelines that applies:
+@itemize
+@item If all the @var{x} rules
+have the same semantics,
+@code{Marpa::R2} uses that shared semantics as
+the semantics of @var{x}.
+@item
+If there is an empty @var{x} rule,
+@code{Marpa::R2}
+is to take the semantics of @var{x} from that empty rule.
+@item
+If none of the previous guidelines apply,
+@code{Marpa::R2} reports an error.
+@end itemize
+
+A complication arises if the symbol appears on the LHS of more than one
+nullable rule alternative.  Because the symbol is nulled, the input is no help in determining
+which rule alternative to use.  The rule alternative whose semantics are used for a nulled symbol
+is determined as follows:
+
+The "lost" semantics of the non-topmost symbols and rules
+of null subtrees are usually not missed.
+Nulled subtrees cannot contain input,
+and therefore do not contain token symbols.
+So no token values are lost when
+nulled subtrees are pruned.
+As bushy as a null subtree might be,
+all of its symbols and rules are nulled.
+
+Since nulled symbols and rules correspond to zero-length strings,
+so we are literally dealing here with
+the "semantics of nothing".
+In theory the semantics of nothing can be arbitrarily complex.
+In practice it should be possible to keep them simple.
+
+@node Nulled subtree example
+@section Nulled subtree example
+
+As already stated,
+Marpa prunes every null subtree back to its topmost
+null symbol.
+Here is an example grammar, with @var{S} as the start
+symbol.
+
+@verbatim
+    :start ::= S
+    S ::= L R
+    L ::= A B X
+    L ::=
+    R ::= A B Y
+    R ::=
+    A ::=
+    B ::=
+    X ::=
+    X ::= 'x'
+    Y ::=
+    Y ::= 'y'
+@end verbatim
+
+If we write the unpruned parse tree
+in pre-order, depth-first, indenting children
+below their parents, we get something like this:
+
+@verbatim
+
+        0: Visible Rule: S := L R
+             1: Visible Rule L := A B X
+                 1.1: Nulled Symbol A
+                 1.2: Nulled Symbol B
+                 1.3: Token, Value is 'x'
+             2: Nulled Rule, Rule R := A B Y
+                 2.1: Nulled Symbol A
+                 2.2: Nulled Symbol B
+                 2.3: Nulled Symbol Y
+
+@end verbatim
+
+In this example, five symbols and a rule are nulled.
+The rule and three of the symbols are in a single subtree: 2, 2.1, 2.2 and 2.3.
+Marpa prunes every null subtree back to its topmost symbol,
+which in this case is the LHS of the rule numbered 2.
+
+The pruned tree looks like this
+
+@verbatim
+
+         0: Visible Rule: S := L R
+              1: Visible Rule L := A B X
+                  1.1: Nulled Symbol A
+                  1.2: Nulled Symbol B
+                  1.3: Token, Value is 'x'
+              2: LHS of Nulled Rule, Symbol R
+
+@end verbatim
+
+Nulled nodes 1.1, 1.2 and 2 were all kept, because they are topmost in their
+nulled subtree.
+All the other nulled nodes were discarded.
 
 @node Failure
 @chapter Failure
