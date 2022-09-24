@@ -6,7 +6,9 @@
 - [Marpa::R2::ASF](https://metacpan.org/dist/Marpa-R2/view/pod/ASF.pod)
 - [Marpa::R2::BNF](https://metacpan.org/dist/Marpa-R2/view/pod/BNF.pod)
 
-- From [Marpa::R2::Changes](https://metacpan.org/dist/Marpa-R2/view/pod/Changes.pod):
+- Nothing to use from [Marpa::R2::Changes](https://metacpan.org/dist/Marpa-R2/view/pod/Changes.pod)
+except this wrt ranks:
+
 > This is implemented-defined, except that the magnitudes of the ends
 > of the range will always be at least the 28th power of 2, less 1.
 > That is, numbers in the range between -134,217,727 and 134,217,727 will always be allowed as ranks.
