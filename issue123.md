@@ -7,8 +7,9 @@
 - [Marpa::R2::BNF](https://metacpan.org/dist/Marpa-R2/view/pod/BNF.pod)
 
 - From [Marpa::R2::Changes](https://metacpan.org/dist/Marpa-R2/view/pod/Changes.pod):
-This is implemented-defined, except that the magnitudes of the ends of the range will always be at least the 28th power of 2, less 1.
-That is, numbers in the range between -134,217,727 and 134,217,727 will always be allowed as ranks.
+> This is implemented-defined, except that the magnitudes of the ends
+> of the range will always be at least the 28th power of 2, less 1.
+> That is, numbers in the range between -134,217,727 and 134,217,727 will always be allowed as ranks.
 
 - [Marpa::R2::Event](https://metacpan.org/dist/Marpa-R2/view/pod/Event.pod)
 - [Marpa::R2::Exhaustion](https://metacpan.org/dist/Marpa-R2/view/pod/Exhaustion.pod)
