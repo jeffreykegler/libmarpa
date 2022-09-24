@@ -1075,9 +1075,13 @@ time objects.
 
 In Libmarpa,
 there is no direct way to mark a symbol nullable or nulling.
-In Libmarpa, all terminal symbols are non-nullable,
-and non-terminal symbols are nullable or nulling depending
+All Libmarpa's terminal symbols are non-nullable.
+By default,
+Libmarpa's non-terminal symbols are nullable or nulling depending
 on the rules in which they appear on the LHS.
+The default behavior for non-terminals can be changed,
+but this is deprecated.
+@xref{LHS terminals}.
 
 To make a symbol @var{x} nullable,
 a user must create an nulling rule whose LHS is @var{x}.
@@ -1089,77 +1093,101 @@ If every rule with @var{x} on the LHS is nulling,
 but nulling as well.
 
 @node Nullability and the valuator
-@section Nullability and the valuator
+@section Nullability in the valuator
 
 In the valuator, there are no nulling rules,
 only nulling symbols.
-In other words, the valuator ignores nulling rules.
 This means that every nulling tree is pruned back to its
 topmost nulling symbol.
+For an example of how this works,
+@pxref{Example of nulled symbol}.
+
 While this may sound draconian,
-in fact this feature of Libmarpa is so intuitive
-that most users will not notice the absense of nulling
-rules,
-must less miss them.
+the ``lost'' semantics of the
+nulled rules and
+non-topmost nulled symbols
+are almost never missed.
+Nulled subtrees cannot contain input,
+and therefore do not contain token symbols.
+So no token values are lost when
+nulled subtrees are pruned,
+and we are dealing with the semantics
+of the empty string.
+@xref{Evaluating nulled symbols}.
 
-[ TODO: Rewrite chapter from here ]
+@node Assigning semantics to nulled symbols
+@section Assigning semantics to nulled symbols
 
-Nulled subtrees are pruned back to their topmost symbol.
-Lexemes are never nulled, so a nulled symbol is always the LHS of a rule instance,
-and the action is determined from the rule alternative.
-
-Semantics are outside the scope of this document,
-because Libmarpa
-leaves the semantics to an upper layer.
-Nonetheless, we will offer the writers of upper layers
+Libmarpa leaves the semantics to an upper layer,
+so that we usually treat
+semantics as outside the scope of this document.
+But most upper layers will find that
+nulled symbols are a corner case
+for their semantics,
+and we therefore
+offer the writers of upper layers
 some hints.
 
-Most upper layers will assign the semantics by rule.
+Typically, upper layers will assign the semantics by rule.
 When nulled symbols are dealt with, however,
 the rules have been pruned, so that semantics of a nulled
 symbol must come from that symbol.
-One solution is the one which is implemented in @code{Marpa::R2}.
-Called the nulled symbol @var{x}
-and call a rules with @var{x} on its LHS,
-a ``@var{x} rule''.
+One method of making this assignment
+is the one which is implemented in @code{Marpa::R2}.
+Call the nulled symbol @var{x}
+and call a rule with @var{x} on its LHS,
+an ``@var{x} LHS rule''.
 @code{Marpa::R2} takes the semantics of @var{x}
 from the first of following guidelines that applies:
 @itemize
-@item If all the @var{x} rules
+@item If all the @var{x} LHS rules
 have the same semantics,
 @code{Marpa::R2} uses that shared semantics as
 the semantics of @var{x}.
 @item
-If there is an empty @var{x} rule,
+If there is an empty @var{x} LHS rule,
 @code{Marpa::R2}
-is to take the semantics of @var{x} from that empty rule.
+uses the semantics of @var{x} from that empty rule
+as the semantics of @var{x}.
 @item
 If none of the previous guidelines apply,
 @code{Marpa::R2} reports an error.
 @end itemize
 
-A complication arises if the symbol appears on the LHS of more than one
-nullable rule alternative.  Because the symbol is nulled, the input is no help in determining
-which rule alternative to use.  The rule alternative whose semantics are used for a nulled symbol
-is determined as follows:
+@node Evaluating nulled symbols
+@section Evaluating nulled symbols
 
-The "lost" semantics of the non-topmost symbols and rules
-of null subtrees are usually not missed.
-Nulled subtrees cannot contain input,
-and therefore do not contain token symbols.
-So no token values are lost when
-nulled subtrees are pruned.
-As bushy as a null subtree might be,
-all of its symbols and rules are nulled.
+In theory, the semantics of nulled symbols,
+like any semantics,
+can be arbitrarily complex.
+In practice,
+we are dealing with the semantics of the empty string,
+which is literally the ``semantics of nothing''.
+If the problem we dealing with is truly a parsing problem,
+we can usually expect that the semantics of nothing will be simple.
 
-Since nulled symbols and rules correspond to zero-length strings,
-so we are literally dealing here with
-the "semantics of nothing".
-In theory the semantics of nothing can be arbitrarily complex.
-In practice it should be possible to keep them simple.
+The possible subtrees below a nulled symbol can be seen
+as a set,
+and that set is a constant that depends on the grammar.
+Since the input corresponding to the nulled symbol
+is also a constant (the empty string)
+the semantics of a nulled symbol will also be constant,
+with a few exceptions:
+@itemize
+@item The semantics are non-deterministic.
+@item The semantics depend on parse location.
+For example, the nulled symbol @var{x} at location 5
+might mean something different
+from an instance of @var{x} at location 50.
+@item The semantics take into account, not just the input, but its context.
+@end itemize
+All of these exceptions are unusual or rare.
+When then do occur, the upper layer can
+implement the semantics of the nulled
+symbols with a closure.
 
-@node Nulled subtree example
-@section Nulled subtree example
+@node Example of nulled symbol
+@section Example of nulled symbol
 
 As already stated,
 Marpa prunes every null subtree back to its topmost
@@ -1168,21 +1196,21 @@ Here is an example grammar, with @var{S} as the start
 symbol.
 
 @verbatim
-    :start ::= S
-    S ::= L R
-    L ::= A B X
-    L ::=
-    R ::= A B Y
-    R ::=
-    A ::=
-    B ::=
-    X ::=
-    X ::= 'x'
-    Y ::=
-    Y ::= 'y'
+        S ::= L R
+        L ::= A B X
+        L ::=
+        R ::= A B Y
+        R ::=
+        A ::=
+        B ::=
+        X ::=
+        X ::= 'x'
+        Y ::=
+        Y ::= 'y'
 @end verbatim
 
-If we write the unpruned parse tree
+If we let the input be ``@samp{x}'',
+and write the unpruned parse tree
 in pre-order, depth-first, indenting children
 below their parents, we get something like this:
 
