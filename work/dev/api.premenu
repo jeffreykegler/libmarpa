@@ -1184,7 +1184,7 @@ from an instance of @var{x} at location 50.
 All of these exceptions are unusual or rare.
 When then do occur, the upper layer can
 implement the semantics of the nulled
-symbols with a closure.
+symbols with a function or closure.
 
 @node Example of nulled symbol
 @section Example of nulled symbol

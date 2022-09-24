@@ -1,14 +1,15 @@
 # Issue 123 TODO
-- [html_fmt](https://metacpan.org/dist/Marpa-R2/view/html/pod/html_fmt.pod)
-- [html_score](https://metacpan.org/dist/Marpa-R2/view/html/pod/html_score.pod)
-- [html/t/examples.t](https://metacpan.org/release/JKEGL/Marpa-R2-10.000000/source/html/t/examples.t)
 - [Marpa::R2::Acknowledgements](https://metacpan.org/dist/Marpa-R2/view/pod/Acknowledgements.pod)
 - [Marpa::R2::Advanced::Bibliography](https://metacpan.org/dist/Marpa-R2/view/pod/Advanced/Bibliography.pod)
 - [Marpa::R2::Advanced::Models](https://metacpan.org/dist/Marpa-R2/view/pod/Advanced/Models.pod)
 - [Marpa::R2::Advanced::Thin](https://metacpan.org/dist/Marpa-R2/view/pod/Advanced/Thin.pod)
 - [Marpa::R2::ASF](https://metacpan.org/dist/Marpa-R2/view/pod/ASF.pod)
 - [Marpa::R2::BNF](https://metacpan.org/dist/Marpa-R2/view/pod/BNF.pod)
-- [Marpa::R2::Changes](https://metacpan.org/dist/Marpa-R2/view/pod/Changes.pod)
+
+- From [Marpa::R2::Changes](https://metacpan.org/dist/Marpa-R2/view/pod/Changes.pod):
+This is implemented-defined, except that the magnitudes of the ends of the range will always be at least the 28th power of 2, less 1.
+That is, numbers in the range between -134,217,727 and 134,217,727 will always be allowed as ranks.
+
 - [Marpa::R2::Event](https://metacpan.org/dist/Marpa-R2/view/pod/Event.pod)
 - [Marpa::R2::Exhaustion](https://metacpan.org/dist/Marpa-R2/view/pod/Exhaustion.pod)
 - [Marpa::R2::Glade](https://metacpan.org/dist/Marpa-R2/view/pod/Glade.pod)
