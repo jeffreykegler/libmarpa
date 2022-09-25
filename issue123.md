@@ -1,6 +1,4 @@
 # Issue 123 TODO
-- [Marpa::R2::Acknowledgements](https://metacpan.org/dist/Marpa-R2/view/pod/Acknowledgements.pod)
-- [Marpa::R2::Advanced::Bibliography](https://metacpan.org/dist/Marpa-R2/view/pod/Advanced/Bibliography.pod)
 - [Marpa::R2::Advanced::Models](https://metacpan.org/dist/Marpa-R2/view/pod/Advanced/Models.pod)
 - [Marpa::R2::Advanced::Thin](https://metacpan.org/dist/Marpa-R2/view/pod/Advanced/Thin.pod)
 - [Marpa::R2::ASF](https://metacpan.org/dist/Marpa-R2/view/pod/ASF.pod)
@@ -24,7 +22,6 @@ except this wrt ranks:
 - [Marpa::R2::Scanless](https://metacpan.org/dist/Marpa-R2/view/pod/Scanless.pod)
 - [Marpa::R2::Scanless::R](https://metacpan.org/dist/Marpa-R2/view/pod/Scanless/R.pod)
 - [Marpa::R2::Semantics](https://metacpan.org/dist/Marpa-R2/view/pod/Semantics.pod)
-- [Marpa::R2::Semantics::Null](https://metacpan.org/dist/Marpa-R2/view/pod/Semantics/Null.pod)
 - [Marpa::R2::Semantics::Order](https://metacpan.org/dist/Marpa-R2/view/pod/Semantics/Order.pod)
 - [Marpa::R2::Semantics::Phases](https://metacpan.org/dist/Marpa-R2/view/pod/Semantics/Phases.pod)
 - [Marpa::R2::Semantics::Rank](https://metacpan.org/dist/Marpa-R2/view/pod/Semantics/Rank.pod)
@@ -32,3 +29,5 @@ except this wrt ranks:
 - [Marpa::R2::Tracing](https://metacpan.org/dist/Marpa-R2/view/pod/Tracing.pod)
 - [Marpa::R2::Tutorial2](https://metacpan.org/dist/Marpa-R2/view/pod/Tutorial2.pod)
 - [Marpa::R2::Vocabulary](https://metacpan.org/dist/Marpa-R2/view/pod/Vocabulary.pod)
+- [Marpa::R2::Acknowledgements](https://metacpan.org/dist/Marpa-R2/view/pod/Acknowledgements.pod)
+- [Marpa::R2::Advanced::Bibliography](https://metacpan.org/dist/Marpa-R2/view/pod/Advanced/Bibliography.pod)
