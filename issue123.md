@@ -1,8 +1,9 @@
 # Issue 123 TODO
 
-- Create an updates page
+- Create an UPDATES page
 
 Include the Support information in it.
+Refer to the UDPATES page from the API doc.
 
 - Add a "Parsing Theory" section to the API doc
 
