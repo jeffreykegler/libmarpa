@@ -7,7 +7,7 @@ Include the Support information in it.
 - Add a "Parsing Theory" section to the API doc
 
 Use
-- [Marpa::R2::Vocabulary](https://metacpan.org/dist/Marpa-R2/view/pod/Vocabulary.pod)
+[Marpa::R2::Vocabulary](https://metacpan.org/dist/Marpa-R2/view/pod/Vocabulary.pod)
 and the first grafs of the "semantics" section in the Marpa::R2 pod.
 
 - Nothing to use from [Marpa::R2::Changes](https://metacpan.org/dist/Marpa-R2/view/pod/Changes.pod)
