@@ -74,6 +74,28 @@ that Libmarpa is free software and has no warranty.
 No statement in this document should be construed
 as providing any kind of warranty.
 
+@node Updates
+@section Updates
+
+For important information
+that has changed since the last stable release,
+there is an ``updates'' document
+(@url{https://github.com/jeffreykegler/libmarpa/blob/master/UPDATES.md}).
+The updates document includes
+@itemize
+item descriptions of bugs in the latest stable release;
+@item notices which are useful to current users,
+but which do not justify a full new stable distribution; and
+@item other information that we want to be able to update
+without issuing a new stable release.
+@end itemize
+
+To allow that information to be kept current
+without issuing a new stable release,
+we describe how to obtain
+support in the updates document.
+@xref{Support}.
+
 @node About this document
 @chapter About this document
 
@@ -7453,6 +7475,14 @@ the lastest and current earlemes will have different values.
 In a  parse that never calls @code{marpa_r_earleme_complete()}
 for an empty earleme,
 the lastest and current earlemes will always be the same.
+
+@node Support
+@chapter Support
+
+The ``updates''
+(@url{https://github.com/jeffreykegler/libmarpa/blob/master/UPDATES.md}).
+document contains instructions for reporting
+bugs, getting answers to questions, and other support.
 
 @node Futures
 @chapter Futures
