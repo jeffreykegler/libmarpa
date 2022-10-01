@@ -80,7 +80,7 @@ as providing any kind of warranty.
 For important information
 that has changed since the last stable release,
 there is an ``updates'' document
-(@url{https://github.com/jeffreykegler/libmarpa/blob/master/UPDATES.md}).
+(@url{https://github.com/jeffreykegler/libmarpa/blob/updated/UPDATES.md}).
 The updates document includes
 @itemize
 item descriptions of bugs in the latest stable release;
@@ -7480,7 +7480,7 @@ the lastest and current earlemes will always be the same.
 @chapter Support
 
 The ``updates''
-(@url{https://github.com/jeffreykegler/libmarpa/blob/master/UPDATES.md}).
+(@url{https://github.com/jeffreykegler/libmarpa/blob/updated/UPDATES.md}).
 document contains instructions for reporting
 bugs, getting answers to questions, and other support.
 

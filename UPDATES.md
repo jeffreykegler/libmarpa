@@ -19,6 +19,10 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 -->
 
+<!-- After any change, remember to update the "updated" branch of
+the git repo with the commit containing the changes to this file.
+-->
+
 # Libmarpa Updates
 
 ## About this page
