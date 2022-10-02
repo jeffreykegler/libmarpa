@@ -8483,6 +8483,14 @@ value, which will never be
 @node History of the Marpa algorithm
 @chapter History of the Marpa algorithm
 
+This chapter is a quick summary of the most important
+events in Marpa's development.
+My ``timeline'' of the major events in parsing theory
+has a much broader scope,
+and also includes more detail
+about Marpa's development.
+@xref{Timeline}.
+
 @itemize
 @item @strong{1970}:
 Jay Earley invents the algorithm that now bears his
@@ -8533,7 +8541,7 @@ implementation issues.
 @section Aho and Ullman 1972
 @anchor{Bibliography-Aho-and-Ullman-1972}
 
-I<The Theory of Parsing, Translation and Compiling, Volume I: Parsing>
+@emph{The Theory of Parsing, Translation and Compiling, Volume I: Parsing}
 by Alfred Aho and Jeffrey Ullman
 (Prentice-Hall: Englewood Cliffs, New Jersey, 1972).
 I think this was the
@@ -8547,7 +8555,7 @@ The account of Earley's algorithm is on pages 320-330.
 
 Marpa is based on ideas from
 John Aycock and R.
-Nigel Horspool's "Practical Earley Parsing", I<The Computer Journal>,
+Nigel Horspool's "Practical Earley Parsing", @emph{The Computer Journal},
 Vol. 45, No. 6, 2002, pp. 620-630.
 The idea of doing LR(0)
 precomputation for
@@ -8569,7 +8577,7 @@ and nonetheless found this paper very heavy going.
 @anchor{Bibliography-Dominus-2005}
 
 Although my approach to parsing is not influenced
-by Mark Jason Dominus's I<Higher Order Perl>,
+by Mark Jason Dominus's @emph{Higher Order Perl},
 Mark's treatment of parsing is an excellent introduction to parsing,
 especially in a Perl context.
 His focus on just about every other technique B<except>
@@ -8597,7 +8605,7 @@ Of
 Jay Earley's papers on his general parsing algorithm,
 the most readily available
 is "An efficient context-free parsing algorithm",
-I<Communications of the Association for Computing Machinery>,
+@emph{Communications of the Association for Computing Machinery},
 13:2:94-102, 1970.
 
 Ordinarily, I'd not bother pointing out 35-year old nits
@@ -8633,7 +8641,7 @@ so I am taking Tomita's word on this one.
 @section Grune and Jacobs 1990
 @anchor{Bibliography-Grune-and-Jacobs-1990}
 
-I<Parsing Techniques: A Practical Guide>,
+@emph{Parsing Techniques: A Practical Guide},
 by Dick Grune and
 Ceriel Jacobs,
 (Ellis Horwood Limited: Chichester, West Sussex, England,
@@ -8644,7 +8652,7 @@ This book is available on the Web: L<http://dickgrune.com/Books/PTAPG_1st_Editio
 @section Grune and Jacobs 2008
 @anchor{Bibliography-Grune-and-Jacobs-2008}
 
-I<Parsing Techniques: A Practical Guide>,
+@emph{Parsing Techniques: A Practical Guide},
 by Dick Grune and
 Ceriel Jacobs,
 2nd Edition.
@@ -8673,6 +8681,16 @@ with proofs of correctness and of my complexity claims
 is available online:
 L<https://docs.google.com/file/d/0B9_mR_M2zOc4Ni1zSW5IYzk3TGc/edit?usp=sharing>.
 
+@node Timeline
+@section Timeline
+@anchor{Bibliography-Timeline}
+
+Far more popular than my Marpa theory paper is my
+@emph{Parsing: a timeline}.
+This is a detailed history of parsing theory,
+and is available online:
+@url{https://jeffreykegler.github.io/personal/timeline_v3}.
+
 @node Leo 1991
 @section Leo 1991
 @anchor{Bibliography-Leo-1991}
@@ -8681,7 +8699,7 @@ Marpa's handling of right-recursion uses the ideas in
 Joop M.I.M. Leo's
 "A General Context-Free Parsing Algorithm Running in Linear
 Time on Every LR(k) Grammar Without Using Lookahead",
-I<Theoretical Computer Science>,
+@emph{Theoretical Computer Science},
 Vol. 82, No. 1, 1991, pp 165-176.
 This is a difficult paper.
 It is available online at 
