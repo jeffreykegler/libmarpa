@@ -223,14 +223,6 @@ becomes the B<symbol string input>
 seen by the recognizer.
 The B<symbol string input> is more often called the B<input sentence>.
 
-By default, Marpa uses the token stream model of input.
-Marpa also allows alternative input models.
-These are new to Marpa, so that their terminology is
-of necessity non-standard.
-The terminology needed for alternative input models
-is explained in L<the document that introduces
-them|Marpa::R2::Advanced::Models>.
-
 =head2 Rules
 
 A standard way of describing rules is Backus-Naur Form, or B<BNF>.
@@ -8559,14 +8551,16 @@ Nigel Horspool's "Practical Earley Parsing", @emph{The Computer Journal},
 Vol. 45, No. 6, 2002, pp. 620-630.
 The idea of doing LR(0)
 precomputation for
-L<Earley's general parsing algorithm|"Earley 1970">,
+Earley's general parsing algorithm
+(@pxref{Bibliography-Earley-1970}),
 and Marpa's approach to handling nullable symbols and rules,
 both came from this article.
 
 The Aycock and Horspool paper
 summarizes Earley's very nicely and is
-available on the web: L<http://www.cs.uvic.ca/~nigelh/Publications/PracticalEarleyParsing.pdf>.
-Unlike L<"Earley 1970">,
+available on the web: @url{http://www.cs.uvic.ca/~nigelh/Publications/PracticalEarleyParsing.pdf}.
+Unlike Earley's 1970 paper
+(@pxref{Bibliography-Earley-1970}),
 Aycock and Horspool 2002 is B<not> easy reading.
 I have been following
 this particular topic on and off for years
@@ -8594,8 +8588,8 @@ I wish I'd bought his book earlier in my coding.
 Mark's book is available on-line.
 You can download chapter-by-chapter or the whole thing at once,
 and you can take your pick of his original sources or PDF,
-at L<http://hop.perl.plover.com/book/>.
-A PDF of the parsing chapter is at L<http://hop.perl.plover.com/book/pdf/08Parsing.pdf>.
+at @url{http://hop.perl.plover.com/book/}.
+A PDF of the parsing chapter is at @url{http://hop.perl.plover.com/book/pdf/08Parsing.pdf}.
 
 @node Earley 1970
 @section Earley 1970
@@ -8621,17 +8615,18 @@ There's an easy fix, but one that greatly slows down an algorithm
 whose main problem, in its original form, was speed.
 This issue is well laid out by
 Aycock and Horspool
-L<in their article|"Aycock and Horspool 2002">.
+in their article.
+@xref{Bibliography-Aycock-and-Horspool-2002}.
 
 Second,
 according to Tomita there is a mistake in the parse
 tree representation.
-See page 153 of L<"Grune and Jacobs 1990">,
-page 210 of L<"Grune and Jacobs 2008">,
-and the bibliography entry for Earley 1970 in L<"Grune and Jacobs 2008">.
+See page 153 of @ref{Bibliography-Grune-and-Jacobs-1990},
+page 210 of @ref{Bibliography-Grune-and-Jacobs-2008},
+and the bibliography entry for Earley 1970 in @ref{Bibliography-Grune-and-Jacobs-2008}.
 In the printed edition of the 2008 bibliography, the entry is on page 578,
 and on the web
-(L<ftp://ftp.cs.vu.nl/pub/dick/PTAPG_2nd_Edition/CompleteList.pdf>),
+(@url{ftp://ftp.cs.vu.nl/pub/dick/PTAPG_2nd_Edition/CompleteList.pdf}),
 it's on pp. 583-584.
 My methods for producing parse results
 from Earley sets do not come from Earley 1970,
@@ -8646,7 +8641,7 @@ by Dick Grune and
 Ceriel Jacobs,
 (Ellis Horwood Limited: Chichester, West Sussex, England,
 1990).
-This book is available on the Web: L<http://dickgrune.com/Books/PTAPG_1st_Edition/>
+This book is available on the Web: @url{http://dickgrune.com/Books/PTAPG_1st_Edition/}
 
 @node Grune and Jacobs 2008
 @section Grune and Jacobs 2008
@@ -8662,9 +8657,10 @@ to parsing I know of.
 In theory it requires no mathematics, only a programming background,
 but even so it is moderately difficult reading.
 
-This is L<Grune and Jacobs 1990> updated.
+This is @ref{Bibliography-Grune-and-Jacobs-1990},
+updated.
 The bibliography for this book is available in enlarged form
-on the web: L<ftp://ftp.cs.vu.nl/pub/dick/PTAPG_2nd_Edition/CompleteList.pdf>.
+on the web: @url{ftp://ftp.cs.vu.nl/pub/dick/PTAPG_2nd_Edition/CompleteList.pdf}.
 
 @node Kegler 2022
 @section Kegler 2022
@@ -8674,12 +8670,7 @@ My writeup of the theory behind Marpa,
 with proofs of correctness and of my complexity claims,
 was first made public in 2013.
 It was updated in 2022,
-and can be found on C<arxiv.org> (L<https://arxiv.org/abs/1910.08129>).
-
-My writeup of the theory behind Marpa,
-with proofs of correctness and of my complexity claims
-is available online:
-L<https://docs.google.com/file/d/0B9_mR_M2zOc4Ni1zSW5IYzk3TGc/edit?usp=sharing>.
+and can be found on C<arxiv.org> (@url{https://arxiv.org/abs/1910.08129}).
 
 @node Timeline
 @section Timeline
@@ -8703,7 +8694,7 @@ Time on Every LR(k) Grammar Without Using Lookahead",
 Vol. 82, No. 1, 1991, pp 165-176.
 This is a difficult paper.
 It is available online at 
-L<http://www.sciencedirect.com/science/article/pii/030439759190180A>,
+@url{http://www.sciencedirect.com/science/article/pii/030439759190180A},
 click the PDF icon at the top left.
 
 @anchor{Bibliography-Wikipedia}
@@ -8711,7 +8702,7 @@ click the PDF icon at the top left.
 @section Wikipedia
 
 Wikipedia's article on Backus-Naur form is
-L<http://en.wikipedia.org/wiki/Backus-Naur_form>.
+@url{http://en.wikipedia.org/wiki/Backus-Naur_form}.
 It's a great place to start if you don't know the
 basics of grammars and parsing.
 As Wikipedia points out,
