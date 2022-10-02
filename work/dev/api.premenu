@@ -128,42 +128,435 @@ As of this writing, the only such layer is @code{Marpa::R2}
 or @code{Marpa::R3},
 in Perl.
 @item
-The reader knows some parsing theory
-(@ref{Parsing theory}).
-@end itemize
-
-@node Parsing theory
-@section Parsing theory
-
-This document assumes some acquaintance
-with parsing theory.
-The reader's
-level of knowledge is probably adequate
-if he can
-answer the following questions,
-either immediately or after a little reflection.
-@itemize @bullet
-@item
-What is a BNF rule?
-@item
-What is a Marpa sequence rule?
-@item
-As a reminder,
-Marpa's sequence rules are implemented
-as left recursions.
-What does that mean?
-@item
-Take a Marpa sequence rule at random.
-What does it look like when rewritten in BNF?
-@item
-What does the sequence look like when rewritten
-in BNF as a right-recursion?
+The reader knows some parsing theory.
+@xref{Parsing theory}.
 @end itemize
 
 @node Terms, definitions and notation
 @chapter Terms, definitions and notation
 
-The following definitions apply in this document:
+@node Parsing theory
+@section Parsing theory
+
+This document assumes the reader is familiar with parsing
+theory.
+The following is @strong{not} an attempt to provide
+an introduction to parsing theory.
+Instead, it is intended to serve as a guide to the definitions
+of parsing terms as used in this document.
+
+Where a narrow
+or specialized sense of the term is the one that applies
+within Marpa, that is the only definition given.
+Marpa also sometimes uses a standard term
+with a definition which is slightly different from
+the standard one.
+("Ambiguous grammar" is one example, and "grammar" itself is
+another.)
+When this is the case, it is explicitly pointed out.
+
+Readers who want a textbook or tutorial in parsing theory
+can look at
+Mark Jason Dominus's
+excellent chapter on parsing in the Perl context.
+@xref{Bibliography-Dominus-2005}.
+It is available on-line.
+Wikipedia is also an excellent place to start.
+@xref{Bibliography-Wikipedia}.
+
+=head2 Basic
+
+A B<grammar> is a set of rules,
+associated with a set of symbols,
+one of which is distinguished as the start symbol.
+A B<symbol string>, or simply B<string> where the meaning is clear,
+is an ordered series of symbols.
+The B<length> of a string is the number of symbols in it.
+
+A B<language> is a set of B<symbol strings>.
+A grammar defines a B<language>,
+as will be described later.
+
+It is important to note that the term language, as it is
+used in parsing theory, means something very different
+from what it means in ordinary use.
+The meaning of the strings is an essential part
+of the ordinary idea of what a language is.
+In ordinary use, the word "language" means
+far more than a unordered list of its sentences.
+In parsing terminology, meaning (or B<semantics> as it is
+called) is a separate issue.
+For parsing theory a
+language is exactly a set of strings --
+that and nothing more.
+
+The Marpa definition of a grammar differs slightly from the various
+standard ones.  Standard definitions usually sharply distinguish terminal symbols
+from non-terminals.  Marpa does not.
+
+=head2 Stages of parsing
+
+A B<recognizer> is a program that determines whether its B<input>
+is in the language of a grammar and a start symbol.
+A B<parser> is a program which finds the structure of that input.
+
+The term B<parsing> is used in a strict and a loose sense.
+B<Parsing in the loose sense> is all phases of finding a grammar's structure,
+including a separate recognition phase if the parser has one.  (Marpa does.)
+If a parser has phases,
+B<parsing in the strict sense> refers specifically to the phase that finds the structure of the input.
+When the Marpa documents use the term B<parsing> in its strict sense, they will
+speak explicitly of "parsing in the strict sense".
+Otherwise, B<parsing> will mean parsing in the loose sense.
+
+Parsers often use a
+B<lexical analyzer> to convert B<raw input>,
+usually B<input text>,
+into a B<token stream>,
+which is a series of B<tokens>.
+Each token represents a B<symbol> of the grammar and has a B<value>.
+A lexical analyzer is often called a B<lexer> or a B<scanner>,
+and B<lexical analysis> is often called B<lexing> or B<scanning>.
+
+The series of symbols represented by the series of tokens
+becomes the B<symbol string input>
+seen by the recognizer.
+The B<symbol string input> is more often called the B<input sentence>.
+
+By default, Marpa uses the token stream model of input.
+Marpa also allows alternative input models.
+These are new to Marpa, so that their terminology is
+of necessity non-standard.
+The terminology needed for alternative input models
+is explained in L<the document that introduces
+them|Marpa::R2::Advanced::Models>.
+
+=head2 Rules
+
+A standard way of describing rules is Backus-Naur Form, or B<BNF>.
+A rule of a grammar is also often called a B<production>.
+In one common way of writing BNF, a production looks like this:
+
+=for Marpa::R2::Display:
+ignore: 1
+
+    Expression ::= Term Factor
+
+=for Marpa::R2::Display::End
+
+In the production above, C<Expression>, C<Term> and C<Factor> are symbols.
+A production consists of a B<left hand side> and a B<right hand side>.
+In a B<context-free grammar>,
+like those Marpa parses,
+the left hand side of a production
+is always a symbol string of length 1.
+The right hand side of a production is a symbol string of zero or more symbols.
+In the example, C<Expression> is the left hand side, and
+C<Term> and C<Factor> are right hand side symbols.
+
+Left hand side and right hand side are often abbreviated as B<RHS> and B<LHS>.
+If the RHS of a production has no symbols,
+the production is called an B<empty production>
+or an B<empty rule>.
+
+Any symbol which is allowed to occur
+in the symbol string input is called a B<terminal> symbol.
+If the symbols in a symbol string are all terminals,
+that symbol string is also called a B<sentence>.
+
+=head2 Derivations
+
+A B<step> of a derivation, or B<derivation step>, is a change made to a symbol string
+by applying one of the productions from the grammar.
+The production must be one of those with a LHS that occurs in the symbol string.
+The result of the derivation step is another symbol string,
+one in which every occurence of the LHS symbol from the production is
+replaced by the RHS of the production.
+For example, if C<A>, C<B>, C<C>, C<D>, and C<X> are symbols,
+and
+
+=for Marpa::R2::Display:
+ignore: 1
+
+    X ::= B C
+
+=for Marpa::R2::Display::End
+
+is a production, then
+
+=for Marpa::R2::Display:
+ignore: 1
+
+    A X D -> A B C D
+
+=for Marpa::R2::Display::End
+
+is a derivation step, with "C<A X D>" as its beginning and "C<A B C D>" as its end or result.
+We say that the symbol string "C<A X D>"
+B<derives> the symbol string
+"C<A B C D>".
+
+A B<derivation> is a sequence of derivation steps.
+The B<length> of a derivation is its length in steps.
+
+=over
+
+=item *
+We say that
+a first symbol string B<directly
+derives> a second symbol string if and only if there is a derivation of length 1 from the first symbol
+string to the second symbol string.
+
+=item *
+Every symbol string is said to derive itself in a derivation
+of length 0.  A zero length derivation is a B<trivial derivation>.
+
+=item * A derivation which is not trivial
+(that is,
+a derivation which has one or more steps)
+is a B<non-trivial> derivation.
+
+=item *
+A non-trivial derivation of a symbol string from itself
+is called a B<cycle>.
+Grammars which contain cycles are traditionally considered useless,
+but Marpa will parse with such grammars.
+
+=item * If a derivation is not trivial or direct, that is, if it has more than one step,
+then it is an B<indirect> derivation.
+
+=back
+
+Technically, a symbol C<X> and a string
+that consists of only that symbol
+are two different things.
+But we often say "the symbol C<X>"
+as shorthand for "the string
+of length 1
+whose only symbol is C<X>".
+For example, if the string containing only the
+symbol C<X> derives a string C<Y>,
+we will usually say simply that "C<X> derives C<Y>".
+
+Wherever symbol or string C<X> derives C<Y>,
+we may also say C<X> B<produces> C<Y>.
+Derivations are often described as symbol matches.
+Wherever symbol or string C<X> derives C<Y>,
+we may also say that C<Y> B<matches> C<X>
+or that C<X> B<matches> C<Y>.
+It is particularly common to say that
+C<X> matches C<Y> when C<X> or C<Y> is a sentence.
+
+The parse of an input by a grammar is B<successful>
+if and only if,
+according to the grammar,
+the start symbol produces the input sentence.
+The set of all input sentences that
+a grammar
+will successfully parse is
+the B<language> of
+the grammar.
+
+=head2 Nulling
+
+The zero length symbol string is called the B<empty string>.
+The empty string can be considered to be a sentence, in which
+case it is the B<empty sentence>.
+A string of one or more symbols is B<non-empty>.
+A derivation which produces the empty string is a B<null derivation>.
+A derivation from the start symbol which produces the empty string
+is a B<null parse>.
+
+If in a particular grammar, a symbol has a null derivation,
+it is a B<nullable symbol>.
+If, in a particular grammar,
+the only sentence produced by a symbol is the empty sentence,
+it is a B<nulling symbol>.
+All nulling symbols are nullable symbols.
+
+If a symbol is not nullable, it is B<non-nullable>.
+If a symbol is not nulling, it is B<non-nulling>.
+In any instance where a symbol produces the empty string,
+it is said to be B<nulled>,
+or to be a B<null symbol>.
+
+=head2 Useless rules
+
+If any derivation from the start symbol uses a rule,
+that rule is called B<reachable> or B<accessible>.
+A rule that is not accessible
+is called B<unreachable> or B<inaccessible>.
+If any derivation which results in a sentence uses a rule,
+that rule is said to be B<productive>.
+A rule that is not productive is called B<unproductive>.
+For example, a rule is unproductive unless every symbol on
+its RHS either is a terminal or is the LHS of some other rule.
+A rule which is inaccessible or unproductive is called a
+B<useless> rule.
+Marpa can handle grammars with useless rules.
+
+A symbol is B<reachable> or B<accessible> if it appears in a reachable production.
+If a symbol is not reachable, it is B<unreachable> or B<inaccessible>.
+A symbol is B<productive> if it appears on the LHS of a productive rule,
+or if it is a nullable symbol.
+If a symbol is not productive, it is B<unproductive>.
+A symbol which is inaccessible or unproductive is called a
+B<useless> symbol.
+Marpa can handle grammars with useless symbols.
+
+=head2 Recursion and cycles
+
+If any symbol in the grammar non-trivially produces a symbol string containing itself,
+the grammar is said to be B<recursive>.
+If any symbol non-trivially produces a symbol string with itself on the left,
+the grammar is said to be B<left-recursive>.
+If any symbol non-trivially produces a symbol string with itself on the right,
+the grammar is said to be B<right-recursive>.
+Marpa can handle all recursive grammars,
+including
+grammars which are left-recursive,
+grammars which are right-recursive,
+and grammars
+which contain both left- and right-recursion.
+
+A B<cycle> is a non-trivial derivation
+of a string of symbols from itself.
+If it is not possible for any derivation using a grammar
+to contain a cycle,
+then that grammar is said to be B<cycle-free>.
+Traditionally, a grammar is
+considered useless
+if it is not cycle-free.
+
+The traditional deprecation of cycles is well-founded.
+A cycle is
+the parsing equivalent of an infinite loop.
+Once a cycle appears, it can be
+repeated over and over again.
+Even a very short input sentence can have an
+infinite number of parses when the grammar is not
+cycle-free.
+
+For that reason,
+a grammar which contains a cycle is also
+called B<infinitely ambiguous>.
+Marpa can parse with grammars which are not
+cycle-free,
+and will
+even parse inputs that cause cycles.
+When a parse is infinitely ambiguous, Marpa
+limits cycles to a single loop,
+so that only a finite number of parses is returned.
+
+=head2 Parse structure
+
+The structure of a parse can be represented as a series of derivation steps from
+the start symbol to the input.
+Another way to represent structure is as a B<parse tree>.
+Every symbol used in the parse is
+represented by a B<node> of the parse tree.
+Wherever a production is used in the parse,
+its LHS is represented by a B<parent node>
+and the RHS symbols are represented by B<child nodes>.
+The start symbol is the B<root> of the tree.
+The node at the root of the tree is called the B<start node>.
+
+Traditionally,
+grammars divide all symbols sharply into terminals
+and non-terminals.
+A terminal symbol must ALWAYS be used as a terminal.
+A non-terminal symbol can NEVER be used as a terminal.
+
+Marpa's use of terminals is non-traditional,
+and its terminology is different accordingly.
+As in the traditional approach,
+Marpa's non-terminals can never be used as terminals.
+But Marpa terminals can be used anywhere,
+even in places where
+the traditional approach requires a
+a non-terminal symbol.
+In particular, a Marpa terminal can be the LHS
+of a rule.
+
+Traditionally, and in Marpa as well,
+every node is either a
+B<inner node> or a
+B<leaf node>.
+In Marpa,
+B<leaf nodes> are of
+two kinds:
+
+=over
+
+=item *
+
+Nodes for nulled symbols.
+A node for a nulled symbol is called
+a B<nulled node>.
+
+=item *
+
+Nodes for symbols being used as terminals.
+
+=back
+
+=head2 Ambiguity
+
+Marpa allows ambiguous grammars.
+Traditionally
+we say that a parse is B<ambiguous> if,
+for a given grammar and a given input,
+more than one derivation tree is possible.
+However, Marpa allows ambiguous input tokens,
+which the traditional definition does not take
+into account.
+If Marpa used
+the traditional definition,
+all grammars would be
+ambiguous except those grammars which allowed only
+the null parse.
+
+It is easiest if the Marpa definition and the
+traditional definition were extensionally
+equivalent ---
+that is, if Marpa's set of ambiguous grammars
+was exactly the same as the set of traditionally
+ambiguous grammars.
+This can be accomplished by using a slightly
+altered definition.
+In the Marpa context, a grammar
+is B<ambiguous> if and only if,
+for some UNAMBIGUOUS stream of input tokens,
+that grammar produces
+more than one parse tree.
+
+=head2 Semantics
+
+In real life, the structure of a parse is usually a means to an end.
+Grammars usually have a B<semantics> associated with them,
+and what the user actually wants is the B<value> of the parse
+according to the semantics.
+
+The tree representation is especially useful when evaluating a parse.
+In the traditional method of evaluating a parse tree,
+every node which represents a terminal symbol
+has a value associated with it on input.
+Non-null inner nodes
+take their semantics from the production whose LHS they represent.
+Nulled nodes are dealt with as special cases.
+
+The semantics for a production
+describe how to calculate the value of the node which represents the LHS
+(the parent node)
+from the values of zero or more of the nodes which represent the RHS symbols
+(child nodes).
+Values are computed recursively, bottom-up.
+The value of a parse is the value of its start symbol.
+@node Other definitions
+@section Other definitions
+
+In addition to those we have already introduced,
+the following definitions apply in this document:
 
 @itemize
 @item
@@ -8086,6 +8479,229 @@ value, which will never be
 @code{MARPA_ERR_NONE}.
 
 @end deftypefun
+
+@node History of the Marpa algorithm
+@chapter History of the Marpa algorithm
+
+@itemize
+@item @strong{1970}:
+Jay Earley invents the algorithm that now bears his
+name
+@xref{Bibliography-Earley-1970}.
+
+@item @strong{1991}:
+Joop Leo describes a way to modify Earley's algorithm so that it
+runs in O(n) time for all LR-regular
+grammars.
+@xref{Bibliography-Leo-1991}.
+LR-regular is a vast class of grammars, including all the
+LR(k) grammars, all grammars parseable with recursive descent,
+and regular expressions.
+LR-regular can safely be thought of as including all grammars
+in practical use today, and then some.
+
+@item @strong{2002}:
+Aycock and Horspool describe a way to do LR(0)
+precomputation
+@xref{Bibliography-Aycock-and-Horspool-2002}.
+for Earley's algorithm.
+Their method makes Earley's faster in most
+practical situations, but not all.
+In particular, right-recursion remains quadratic in
+the Aycock and Horspool algorithm.
+Worst case is no better than Earley's.
+Leo is unaware of Aycock and Horspool's work
+and Aycock and Horspool seem unaware of Leo.
+
+@item @strong{2010}:
+Marpa combines the Leo and Aycock-Horspool
+algorithms
+in the process making significant
+changes to both of them.
+@xref{Bibliography-Kegler-2022}.
+The result preserves the
+best features of both.
+Marpa also tackles the many remaining
+implementation issues.
+
+@end itemize
+
+@node Annotated bibliography
+@chapter Annotated bibliography
+
+@node Aho and Ullman 1972
+@section Aho and Ullman 1972
+@anchor{Bibliography-Aho-and-Ullman-1972}
+
+I<The Theory of Parsing, Translation and Compiling, Volume I: Parsing>
+by Alfred Aho and Jeffrey Ullman
+(Prentice-Hall: Englewood Cliffs, New Jersey, 1972).
+I think this was the
+standard source for Earley's algorithm for decades.
+It certainly was B<my> standard source.
+The account of Earley's algorithm is on pages 320-330.
+
+@node Aycock and Horspool 2002
+@section Aycock and Horspool 2002
+@anchor{Bibliography-Aycock-and-Horspool-2002}
+
+Marpa is based on ideas from
+John Aycock and R.
+Nigel Horspool's "Practical Earley Parsing", I<The Computer Journal>,
+Vol. 45, No. 6, 2002, pp. 620-630.
+The idea of doing LR(0)
+precomputation for
+L<Earley's general parsing algorithm|"Earley 1970">,
+and Marpa's approach to handling nullable symbols and rules,
+both came from this article.
+
+The Aycock and Horspool paper
+summarizes Earley's very nicely and is
+available on the web: L<http://www.cs.uvic.ca/~nigelh/Publications/PracticalEarleyParsing.pdf>.
+Unlike L<"Earley 1970">,
+Aycock and Horspool 2002 is B<not> easy reading.
+I have been following
+this particular topic on and off for years
+and nonetheless found this paper very heavy going.
+
+@node Dominus 2005
+@section Dominus 2005
+@anchor{Bibliography-Dominus-2005}
+
+Although my approach to parsing is not influenced
+by Mark Jason Dominus's I<Higher Order Perl>,
+Mark's treatment of parsing is an excellent introduction to parsing,
+especially in a Perl context.
+His focus on just about every other technique B<except>
+general BNF parsing is pretty much standard, and
+will help a beginner understand how unconventional
+Marpa's approach is.
+
+Both Mark's Perl and his English are examples of good writing,
+and the book is dense with insights.
+Mark's discussion on memoization in Chapter 3 is the
+best I've seen.
+I wish I'd bought his book earlier in my coding.
+
+Mark's book is available on-line.
+You can download chapter-by-chapter or the whole thing at once,
+and you can take your pick of his original sources or PDF,
+at L<http://hop.perl.plover.com/book/>.
+A PDF of the parsing chapter is at L<http://hop.perl.plover.com/book/pdf/08Parsing.pdf>.
+
+@node Earley 1970
+@section Earley 1970
+@anchor{Bibliography-Earley-1970}
+
+Of
+Jay Earley's papers on his general parsing algorithm,
+the most readily available
+is "An efficient context-free parsing algorithm",
+I<Communications of the Association for Computing Machinery>,
+13:2:94-102, 1970.
+
+Ordinarily, I'd not bother pointing out 35-year old nits
+in a brilliant and historically important article.
+But more than a few people treat this article as not just the first word in Earley
+parsing, but the last as well.
+Many implementations of Earley's algorithm come, directly and
+unaltered, from his paper.
+These implementers and their users need to be aware of two issues.
+
+First, the recognition engine itself, as described, has a serious bug.
+There's an easy fix, but one that greatly slows down an algorithm
+whose main problem, in its original form, was speed.
+This issue is well laid out by
+Aycock and Horspool
+L<in their article|"Aycock and Horspool 2002">.
+
+Second,
+according to Tomita there is a mistake in the parse
+tree representation.
+See page 153 of L<"Grune and Jacobs 1990">,
+page 210 of L<"Grune and Jacobs 2008">,
+and the bibliography entry for Earley 1970 in L<"Grune and Jacobs 2008">.
+In the printed edition of the 2008 bibliography, the entry is on page 578,
+and on the web
+(L<ftp://ftp.cs.vu.nl/pub/dick/PTAPG_2nd_Edition/CompleteList.pdf>),
+it's on pp. 583-584.
+My methods for producing parse results
+from Earley sets do not come from Earley 1970,
+so I am taking Tomita's word on this one.
+
+@node Grune and Jacobs 1990
+@section Grune and Jacobs 1990
+@anchor{Bibliography-Grune-and-Jacobs-1990}
+
+I<Parsing Techniques: A Practical Guide>,
+by Dick Grune and
+Ceriel Jacobs,
+(Ellis Horwood Limited: Chichester, West Sussex, England,
+1990).
+This book is available on the Web: L<http://dickgrune.com/Books/PTAPG_1st_Edition/>
+
+@node Grune and Jacobs 2008
+@section Grune and Jacobs 2008
+@anchor{Bibliography-Grune-and-Jacobs-2008}
+
+I<Parsing Techniques: A Practical Guide>,
+by Dick Grune and
+Ceriel Jacobs,
+2nd Edition.
+(Springer: New York NY, 2008).
+This is the most authoritative and comprehensive introduction
+to parsing I know of.
+In theory it requires no mathematics, only a programming background,
+but even so it is moderately difficult reading.
+
+This is L<Grune and Jacobs 1990> updated.
+The bibliography for this book is available in enlarged form
+on the web: L<ftp://ftp.cs.vu.nl/pub/dick/PTAPG_2nd_Edition/CompleteList.pdf>.
+
+@node Kegler 2022
+@section Kegler 2022
+@anchor{Bibliography-Kegler-2022}
+
+My writeup of the theory behind Marpa,
+with proofs of correctness and of my complexity claims,
+was first made public in 2013.
+It was updated in 2022,
+and can be found on C<arxiv.org> (L<https://arxiv.org/abs/1910.08129>).
+
+My writeup of the theory behind Marpa,
+with proofs of correctness and of my complexity claims
+is available online:
+L<https://docs.google.com/file/d/0B9_mR_M2zOc4Ni1zSW5IYzk3TGc/edit?usp=sharing>.
+
+@node Leo 1991
+@section Leo 1991
+@anchor{Bibliography-Leo-1991}
+
+Marpa's handling of right-recursion uses the ideas in
+Joop M.I.M. Leo's
+"A General Context-Free Parsing Algorithm Running in Linear
+Time on Every LR(k) Grammar Without Using Lookahead",
+I<Theoretical Computer Science>,
+Vol. 82, No. 1, 1991, pp 165-176.
+This is a difficult paper.
+It is available online at 
+L<http://www.sciencedirect.com/science/article/pii/030439759190180A>,
+click the PDF icon at the top left.
+
+@anchor{Bibliography-Wikipedia}
+@node Wikipedia
+@section Wikipedia
+
+Wikipedia's article on Backus-Naur form is
+L<http://en.wikipedia.org/wiki/Backus-Naur_form>.
+It's a great place to start if you don't know the
+basics of grammars and parsing.
+As Wikipedia points out,
+BNF might better be called Panini-Backus Form.
+The grammarian Panini
+gave a precise description of Sanskrit
+more than 23 centuries earlier in India
+using a similar notation.
 
 @node Index of terms
 @unnumbered Index of terms
