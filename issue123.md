@@ -46,3 +46,5 @@ Adapt this into a doc into the "notes/" directory.
 - [Marpa::R2::Semantics::Phases](https://metacpan.org/dist/Marpa-R2/view/pod/Semantics/Phases.pod)
 - [Marpa::R2::Semantics::Rank](https://metacpan.org/dist/Marpa-R2/view/pod/Semantics/Rank.pod)
 - [Marpa::R2::Tracing](https://metacpan.org/dist/Marpa-R2/view/pod/Tracing.pod)
+
+- Once done, rewrite prerequisites to reflect self-containment.
