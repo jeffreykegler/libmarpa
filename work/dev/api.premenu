@@ -236,15 +236,15 @@ ignore: 1
 
 =for Marpa::R2::Display::End
 
-In the production above, C<Expression>, C<Term> and C<Factor> are symbols.
+In the production above, @var{Expression}, @var{Term} and @var{Factor} are symbols.
 A production consists of a B<left hand side> and a B<right hand side>.
 In a B<context-free grammar>,
 like those Marpa parses,
 the left hand side of a production
 is always a symbol string of length 1.
 The right hand side of a production is a symbol string of zero or more symbols.
-In the example, C<Expression> is the left hand side, and
-C<Term> and C<Factor> are right hand side symbols.
+In the example, @var{Expression} is the left hand side, and
+@var{Term} and @var{Factor} are right hand side symbols.
 
 Left hand side and right hand side are often abbreviated as B<RHS> and B<LHS>.
 If the RHS of a production has no symbols,
@@ -264,7 +264,7 @@ The production must be one of those with a LHS that occurs in the symbol string.
 The result of the derivation step is another symbol string,
 one in which every occurence of the LHS symbol from the production is
 replaced by the RHS of the production.
-For example, if C<A>, C<B>, C<C>, C<D>, and C<X> are symbols,
+For example, if @var{A}, @var{B}, @var{C}, @var{D}, and @var{X} are symbols,
 and
 
 =for Marpa::R2::Display:
@@ -283,10 +283,10 @@ ignore: 1
 
 =for Marpa::R2::Display::End
 
-is a derivation step, with "C<A X D>" as its beginning and "C<A B C D>" as its end or result.
-We say that the symbol string "C<A X D>"
+is a derivation step, with "@code{A X D}" as its beginning and "@code{A B C D}" as its end or result.
+We say that the symbol string "@code{A X D}"
 B<derives> the symbol string
-"C<A B C D>".
+"@code{A B C D}".
 
 A B<derivation> is a sequence of derivation steps.
 The B<length> of a derivation is its length in steps.
@@ -319,25 +319,25 @@ then it is an B<indirect> derivation.
 
 =back
 
-Technically, a symbol C<X> and a string
+Technically, a symbol @var{X} and a string
 that consists of only that symbol
 are two different things.
-But we often say "the symbol C<X>"
+But we often say "the symbol @var{X}"
 as shorthand for "the string
 of length 1
-whose only symbol is C<X>".
+whose only symbol is @var{X}".
 For example, if the string containing only the
-symbol C<X> derives a string C<Y>,
-we will usually say simply that "C<X> derives C<Y>".
+symbol @var{X} derives a string @var{Y},
+we will usually say simply that "@var{X} derives @var{Y}".
 
-Wherever symbol or string C<X> derives C<Y>,
-we may also say C<X> B<produces> C<Y>.
+Wherever symbol or string @var{X} derives @var{Y},
+we may also say @var{X} B<produces> @var{Y}.
 Derivations are often described as symbol matches.
-Wherever symbol or string C<X> derives C<Y>,
-we may also say that C<Y> B<matches> C<X>
-or that C<X> B<matches> C<Y>.
+Wherever symbol or string @var{X} derives @var{Y},
+we may also say that @var{Y} B<matches> @var{X}
+or that @var{X} B<matches> @var{Y}.
 It is particularly common to say that
-C<X> matches C<Y> when C<X> or C<Y> is a sentence.
+@var{X} matches @var{Y} when @var{X} or @var{Y} is a sentence.
 
 The parse of an input by a grammar is B<successful>
 if and only if,
@@ -8670,7 +8670,7 @@ My writeup of the theory behind Marpa,
 with proofs of correctness and of my complexity claims,
 was first made public in 2013.
 It was updated in 2022,
-and can be found on C<arxiv.org> (@url{https://arxiv.org/abs/1910.08129}).
+and can be found on @code{arxiv.org} (@url{https://arxiv.org/abs/1910.08129}).
 
 @node Timeline
 @section Timeline
