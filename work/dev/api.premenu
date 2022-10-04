@@ -164,7 +164,8 @@ It is available on-line.
 Wikipedia is also an excellent place to start.
 @xref{Bibliography-Wikipedia}.
 
-=head2 Basic
+@node Basic
+@subsection Basic
 
 A B<grammar> is a set of rules,
 associated with a set of symbols,
@@ -194,7 +195,8 @@ The Marpa definition of a grammar differs slightly from the various
 standard ones.  Standard definitions usually sharply distinguish terminal symbols
 from non-terminals.  Marpa does not.
 
-=head2 Stages of parsing
+@node Stages of parsing
+@subsection Stages of parsing
 
 A B<recognizer> is a program that determines whether its B<input>
 is in the language of a grammar and a start symbol.
@@ -223,18 +225,16 @@ becomes the B<symbol string input>
 seen by the recognizer.
 The B<symbol string input> is more often called the B<input sentence>.
 
-=head2 Rules
+@node Rules
+@subsection Rules
 
 A standard way of describing rules is Backus-Naur Form, or B<BNF>.
 A rule of a grammar is also often called a B<production>.
 In one common way of writing BNF, a production looks like this:
 
-=for Marpa::R2::Display:
-ignore: 1
-
+@verbatim
     Expression ::= Term Factor
-
-=for Marpa::R2::Display::End
+@end verbatim
 
 In the production above, @var{Expression}, @var{Term} and @var{Factor} are symbols.
 A production consists of a B<left hand side> and a B<right hand side>.
@@ -256,7 +256,8 @@ in the symbol string input is called a B<terminal> symbol.
 If the symbols in a symbol string are all terminals,
 that symbol string is also called a B<sentence>.
 
-=head2 Derivations
+@node Derivations
+@subsection Derivations
 
 A B<step> of a derivation, or B<derivation step>, is a change made to a symbol string
 by applying one of the productions from the grammar.
@@ -267,21 +268,15 @@ replaced by the RHS of the production.
 For example, if @var{A}, @var{B}, @var{C}, @var{D}, and @var{X} are symbols,
 and
 
-=for Marpa::R2::Display:
-ignore: 1
-
+@verbatim
     X ::= B C
-
-=for Marpa::R2::Display::End
+@end verbatim
 
 is a production, then
 
-=for Marpa::R2::Display:
-ignore: 1
-
+@verbatim
     A X D -> A B C D
-
-=for Marpa::R2::Display::End
+@end verbatim
 
 is a derivation step, with "@code{A X D}" as its beginning and "@code{A B C D}" as its end or result.
 We say that the symbol string "@code{A X D}"
@@ -291,33 +286,24 @@ B<derives> the symbol string
 A B<derivation> is a sequence of derivation steps.
 The B<length> of a derivation is its length in steps.
 
-=over
-
-=item *
-We say that
+@itemize
+@item We say that
 a first symbol string B<directly
 derives> a second symbol string if and only if there is a derivation of length 1 from the first symbol
 string to the second symbol string.
-
-=item *
-Every symbol string is said to derive itself in a derivation
+@item Every symbol string is said to derive itself in a derivation
 of length 0.  A zero length derivation is a B<trivial derivation>.
-
-=item * A derivation which is not trivial
+@item A derivation which is not trivial
 (that is,
 a derivation which has one or more steps)
 is a B<non-trivial> derivation.
-
-=item *
-A non-trivial derivation of a symbol string from itself
+@item A non-trivial derivation of a symbol string from itself
 is called a B<cycle>.
 Grammars which contain cycles are traditionally considered useless,
 but Marpa will parse with such grammars.
-
-=item * If a derivation is not trivial or direct, that is, if it has more than one step,
+@item If a derivation is not trivial or direct, that is, if it has more than one step,
 then it is an B<indirect> derivation.
-
-=back
+@end itemize
 
 Technically, a symbol @var{X} and a string
 that consists of only that symbol
@@ -349,7 +335,8 @@ will successfully parse is
 the B<language> of
 the grammar.
 
-=head2 Nulling
+@node Nulling
+@subsection Nulling
 
 The zero length symbol string is called the B<empty string>.
 The empty string can be considered to be a sentence, in which
@@ -372,7 +359,8 @@ In any instance where a symbol produces the empty string,
 it is said to be B<nulled>,
 or to be a B<null symbol>.
 
-=head2 Useless rules
+@node Useless rules
+@subsection Useless rules
 
 If any derivation from the start symbol uses a rule,
 that rule is called B<reachable> or B<accessible>.
@@ -396,7 +384,8 @@ A symbol which is inaccessible or unproductive is called a
 B<useless> symbol.
 Marpa can handle grammars with useless symbols.
 
-=head2 Recursion and cycles
+@node Recursion and cycles
+@subsection Recursion and cycles
 
 If any symbol in the grammar non-trivially produces a symbol string containing itself,
 the grammar is said to be B<recursive>.
@@ -440,7 +429,8 @@ When a parse is infinitely ambiguous, Marpa
 limits cycles to a single loop,
 so that only a finite number of parses is returned.
 
-=head2 Parse structure
+@node Parse structure
+@subsection Parse structure
 
 The structure of a parse can be represented as a series of derivation steps from
 the start symbol to the input.
@@ -478,21 +468,16 @@ In Marpa,
 B<leaf nodes> are of
 two kinds:
 
-=over
-
-=item *
-
-Nodes for nulled symbols.
+@itemize
+@item Nodes for nulled symbols.
 A node for a nulled symbol is called
 a B<nulled node>.
-
-=item *
-
+@item
 Nodes for symbols being used as terminals.
+@end itemize
 
-=back
-
-=head2 Ambiguity
+@node Ambiguity
+@subsection Ambiguity
 
 Marpa allows ambiguous grammars.
 Traditionally
@@ -522,7 +507,8 @@ for some UNAMBIGUOUS stream of input tokens,
 that grammar produces
 more than one parse tree.
 
-=head2 Semantics
+@node Semantics terms
+@subsection Semantics terms
 
 In real life, the structure of a parse is usually a means to an end.
 Grammars usually have a B<semantics> associated with them,
