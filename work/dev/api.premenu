@@ -174,21 +174,27 @@ is a set of rules,
 associated with a set of symbols,
 one of which is distinguished as the start symbol.
 A
-B<symbol string>,
+@dfindex symbol string
+@dfn{symbol string},
 or simply
-B<string>
+@dfindex string
+@dfn{string}
 where the meaning is clear,
 is an ordered series of symbols.
 The
-B<length>
+@dfindex length
+@dfn{length}
 of a string is the number of symbols in it.
 
 A
-B<language>
+@dfindex language
+@dfn{language}
 is a set of
-B<symbol strings>.
+@dfindex symbol strings
+@dfn{symbol strings}.
 A grammar defines a
-B<language>,
+@dfindex language
+@dfn{language},
 as will be described later.
 
 It is important to note that the term language, as it is
@@ -199,7 +205,8 @@ of the ordinary idea of what a language is.
 In ordinary use, the word "language" means
 far more than a unordered list of its sentences.
 In parsing terminology, meaning (or
-B<semantics>
+@dfindex semantics
+@dfn{semantics}
 as it is
 called) is a separate issue.
 For parsing theory a
@@ -214,72 +221,97 @@ from non-terminals.  Marpa does not.
 @subsection Stages of parsing
 
 A
-B<recognizer>
+@dfindex recognizer
+@dfn{recognizer}
 is a program that determines whether its
-B<input>
+@dfindex input
+@dfn{input}
 is in the language of a grammar and a start symbol.
 A
-B<parser>
+@dfindex parser
+@dfn{parser}
 is a program which finds the structure of that input.
 
 The term
-B<parsing>
+@dfindex parsing
+@dfn{parsing}
 is used in a strict and a loose sense.
-B<Parsing in the loose sense>
+@dfindex Parsing in the loose sense
+@dfn{Parsing in the loose sense}
 is all phases of finding a grammar's structure,
 including a separate recognition phase if the parser has one.  (Marpa does.)
 If a parser has phases,
-B<parsing in the strict sense>
+@dfindex parsing in the strict sense
+@dfn{parsing in the strict sense}
 refers specifically to the phase that finds the structure of the input.
 When the Marpa documents use the term
-B<parsing>
+@dfindex parsing
+@dfn{parsing}
 in its strict sense, they will
 speak explicitly of "parsing in the strict sense".
 Otherwise,
-B<parsing>
+@dfindex parsing
+@dfn{parsing}
 will mean parsing in the loose sense.
 
 Parsers often use a
-B<lexical analyzer>
+@dfindex lexical analyzer
+@dfn{lexical analyzer}
 to convert
-B<raw input>,
+@dfindex raw input
+@dfn{raw input},
 usually
-B<input text>,
+@dfindex input text
+@dfn{input text},
 into a
-B<token stream>,
+@dfindex token stream
+@dfn{token stream},
 which is a series of
-B<tokens>.
+@dfindex tokens
+@dfn{tokens}.
 Each token represents a
-B<symbol>
+@dfindex symbol
+@dfn{symbol}
 of the grammar and has a
-B<value>.
+@dfindex value
+@dfn{value}.
 A lexical analyzer is often called a
-B<lexer>
+@dfindex lexer
+@dfn{lexer}
 or a
-B<scanner>,
+@dfindex scanner
+@dfn{scanner},
 and
-B<lexical analysis>
+@dfindex lexical analysis
+@dfn{lexical analysis}
 is often called
-B<lexing>
+@dfindex lexing
+@dfn{lexing}
 or
-B<scanning>.
+@dfindex scanning
+@dfn{scanning}.
 
 The series of symbols represented by the series of tokens
 becomes the
-B<symbol string input>
+@dfindex symbol string input
+@dfn{symbol string input}
 seen by the recognizer.
 The
-B<symbol string input>
+@dfindex symbol string input
+@dfn{symbol string input}
 is more often called the
-B<input sentence>.
+@dfindex input sentence
+@dfn{input sentence}.
 
 @node Rules
 @subsection Rules
 
 A standard way of describing rules is Backus-Naur Form, or
-B<BNF>.
+@dfindex BNF
+@dfn{BNF}.
 A rule of a grammar is also often called a
-B<production>.
+@dfindex production
+@dfn{production}.
 In one common way of writing BNF, a production looks like this:
 
 @verbatim
@@ -288,11 +320,14 @@ In one common way of writing BNF, a production looks like this:
 
 In the production above, @var{Expression}, @var{Term} and @var{Factor} are symbols.
 A production consists of a
-B<left hand side>
+@dfindex left hand side
+@dfn{left hand side}
 and a
-B<right hand side>.
+@dfindex right hand side
+@dfn{right hand side}.
 In a
-B<context-free grammar>,
+@dfindex context-free grammar
+@dfn{context-free grammar},
 like those Marpa parses,
 the left hand side of a production
 is always a symbol string of length 1.
@@ -301,30 +336,38 @@ In the example, @var{Expression} is the left hand side, and
 @var{Term} and @var{Factor} are right hand side symbols.
 
 Left hand side and right hand side are often abbreviated as
-B<RHS>
+@dfindex RHS
+@dfn{RHS}
 and
-B<LHS>.
+@dfindex LHS
+@dfn{LHS}.
 If the RHS of a production has no symbols,
 the production is called an
-B<empty production>
+@dfindex empty production
+@dfn{empty production}
 or an
-B<empty rule>.
+@dfindex empty rule
+@dfn{empty rule}.
 
 Any symbol which is allowed to occur
 in the symbol string input is called a
-B<terminal>
+@dfindex terminal
+@dfn{terminal}
 symbol.
 If the symbols in a symbol string are all terminals,
 that symbol string is also called a
-B<sentence>.
+@dfindex sentence
+@dfn{sentence}.
 
 @node Derivations
 @subsection Derivations
 
 A
-B<step>
+@dfindex step
+@dfn{step}
 of a derivation, or
-B<derivation step>, is a change made to a symbol string
+@dfindex derivation step
+@dfn{derivation step}, is a change made to a symbol string
 by applying one of the productions from the grammar.
 The production must be one of those with a LHS that occurs in the symbol string.
 The result of the derivation step is another symbol string,
@@ -345,40 +388,49 @@ is a production, then
 
 is a derivation step, with "@code{A X D}" as its beginning and "@code{A B C D}" as its end or result.
 We say that the symbol string "@code{A X D}"
-B<derives>
+@dfindex derives
+@dfn{derives}
 the symbol string
 "@code{A B C D}".
 
 A
-B<derivation>
+@dfindex derivation
+@dfn{derivation}
 is a sequence of derivation steps.
 The
-B<length>
+@dfindex length
+@dfn{length}
 of a derivation is its length in steps.
 
 @itemize
 @item We say that
 a first symbol string
-B<directly
-derives> a second symbol string if and only if there is a derivation of length 1 from the first symbol
+@dfindex directly derives
+@dfindex derives, directly
+@dfn{directly derives}
+a second symbol string if and only if there is a derivation of length 1 from the first symbol
 string to the second symbol string.
 @item Every symbol string is said to derive itself in a derivation
 of length 0.  A zero length derivation is a
-B<trivial derivation>.
+@dfindex trivial derivation
+@dfn{trivial derivation}.
 @item A derivation which is not trivial
 (that is,
 a derivation which has one or more steps)
 is a
-B<non-trivial>
+@dfindex non-trivial
+@dfn{non-trivial}
 derivation.
 @item A non-trivial derivation of a symbol string from itself
 is called a
-B<cycle>.
+@dfindex cycle
+@dfn{cycle}.
 Grammars which contain cycles are traditionally considered useless,
 but Marpa will parse with such grammars.
 @item If a derivation is not trivial or direct, that is, if it has more than one step,
 then it is an
-B<indirect>
+@dfindex indirect
+@dfn{indirect}
 derivation.
 @end itemize
 
@@ -395,21 +447,25 @@ we will usually say simply that "@var{X} derives @var{Y}".
 
 Wherever symbol or string @var{X} derives @var{Y},
 we may also say @var{X}
-B<produces>
+@dfindex produces
+@dfn{produces}
 @var{Y}.
 Derivations are often described as symbol matches.
 Wherever symbol or string @var{X} derives @var{Y},
 we may also say that @var{Y}
-B<matches>
+@dfindex matches
+@dfn{matches}
 @var{X}
 or that @var{X}
-B<matches>
+@dfindex matches
+@dfn{matches}
 @var{Y}.
 It is particularly common to say that
 @var{X} matches @var{Y} when @var{X} or @var{Y} is a sentence.
 
 The parse of an input by a grammar is
-B<successful>
+@dfindex successful
+@dfn{successful}
 if and only if,
 according to the grammar,
 the start symbol produces the input sentence.
@@ -417,7 +473,8 @@ The set of all input sentences that
 a grammar
 will successfully parse is
 the
-B<language>
+@dfindex language
+@dfn{language}
 of
 the grammar.
 
@@ -425,79 +482,104 @@ the grammar.
 @subsection Nulling
 
 The zero length symbol string is called the
-B<empty string>.
+@dfindex empty string
+@dfn{empty string}.
 The empty string can be considered to be a sentence, in which
 case it is the
-B<empty sentence>.
+@dfindex empty sentence
+@dfn{empty sentence}.
 A string of one or more symbols is
-B<non-empty>.
+@dfindex non-empty
+@dfn{non-empty}.
 A derivation which produces the empty string is a
-B<null derivation>.
+@dfindex null derivation
+@dfn{null derivation}.
 A derivation from the start symbol which produces the empty string
 is a
-B<null parse>.
+@dfindex null parse
+@dfn{null parse}.
 
 If in a particular grammar, a symbol has a null derivation,
 it is a
-B<nullable symbol>.
+@dfindex nullable symbol
+@dfn{nullable symbol}.
 If, in a particular grammar,
 the only sentence produced by a symbol is the empty sentence,
 it is a
-B<nulling symbol>.
+@dfindex nulling symbol
+@dfn{nulling symbol}.
 All nulling symbols are nullable symbols.
 
 If a symbol is not nullable, it is
-B<non-nullable>.
+@dfindex non-nullable
+@dfn{non-nullable}.
 If a symbol is not nulling, it is
-B<non-nulling>.
+@dfindex non-nulling
+@dfn{non-nulling}.
 In any instance where a symbol produces the empty string,
 it is said to be
-B<nulled>,
+@dfindex nulled
+@dfn{nulled},
 or to be a
-B<null symbol>.
+@dfindex null symbol
+@dfn{null symbol}.
 
 @node Useless rules
 @subsection Useless rules
 
 If any derivation from the start symbol uses a rule,
 that rule is called
-B<reachable>
+@dfindex reachable
+@dfn{reachable}
 or
-B<accessible>.
+@dfindex accessible
+@dfn{accessible}.
 A rule that is not accessible
 is called
-B<unreachable>
+@dfindex unreachable
+@dfn{unreachable}
 or
-B<inaccessible>.
+@dfindex inaccessible
+@dfn{inaccessible}.
 If any derivation which results in a sentence uses a rule,
 that rule is said to be
-B<productive>.
+@dfindex productive
+@dfn{productive}.
 A rule that is not productive is called
-B<unproductive>.
+@dfindex unproductive
+@dfn{unproductive}.
 For example, a rule is unproductive unless every symbol on
 its RHS either is a terminal or is the LHS of some other rule.
 A rule which is inaccessible or unproductive is called a
-B<useless>
+@dfindex useless
+@dfn{useless}
 rule.
 Marpa can handle grammars with useless rules.
 
 A symbol is
-B<reachable>
+@dfindex reachable
+@dfn{reachable}
 or
-B<accessible>
+@dfindex accessible
+@dfn{accessible}
 if it appears in a reachable production.
 If a symbol is not reachable, it is
-B<unreachable>
+@dfindex unreachable
+@dfn{unreachable}
 or
-B<inaccessible>.
+@dfindex inaccessible
+@dfn{inaccessible}.
 A symbol is
-B<productive>
+@dfindex productive
+@dfn{productive}
 if it appears on the LHS of a productive rule,
 or if it is a nullable symbol.
 If a symbol is not productive, it is
-B<unproductive>.
+@dfindex unproductive
+@dfn{unproductive}.
 A symbol which is inaccessible or unproductive is called a
-B<useless>
+@dfindex useless
+@dfn{useless}
 symbol.
 Marpa can handle grammars with useless symbols.
 
@@ -506,13 +588,16 @@ Marpa can handle grammars with useless symbols.
 
 If any symbol in the grammar non-trivially produces a symbol string containing itself,
 the grammar is said to be
-B<recursive>.
+@dfindex recursive
+@dfn{recursive}.
 If any symbol non-trivially produces a symbol string with itself on the left,
 the grammar is said to be
-B<left-recursive>.
+@dfindex left-recursive
+@dfn{left-recursive}.
 If any symbol non-trivially produces a symbol string with itself on the right,
 the grammar is said to be
-B<right-recursive>.
+@dfindex right-recursive
+@dfn{right-recursive}.
 Marpa can handle all recursive grammars,
 including
 grammars which are left-recursive,
@@ -521,13 +606,15 @@ and grammars
 which contain both left- and right-recursion.
 
 A
-B<cycle>
+@dfindex cycle
+@dfn{cycle}
 is a non-trivial derivation
 of a string of symbols from itself.
 If it is not possible for any derivation using a grammar
 to contain a cycle,
 then that grammar is said to be
-B<cycle-free>.
+@dfindex cycle-free
+@dfn{cycle-free}.
 Traditionally, a grammar is
 considered useless
 if it is not cycle-free.
@@ -544,7 +631,8 @@ cycle-free.
 For that reason,
 a grammar which contains a cycle is also
 called
-B<infinitely ambiguous>.
+@dfindex infinitely ambiguous
+@dfn{infinitely ambiguous}.
 Marpa can parse with grammars which are not
 cycle-free,
 and will
@@ -559,21 +647,27 @@ so that only a finite number of parses is returned.
 The structure of a parse can be represented as a series of derivation steps from
 the start symbol to the input.
 Another way to represent structure is as a
-B<parse tree>.
+@dfindex parse tree
+@dfn{parse tree}.
 Every symbol used in the parse is
 represented by a
-B<node>
+@dfindex node
+@dfn{node}
 of the parse tree.
 Wherever a production is used in the parse,
 its LHS is represented by a
-B<parent node>
+@dfindex parent node
+@dfn{parent node}
 and the RHS symbols are represented by
-B<child nodes>.
+@dfindex child nodes
+@dfn{child nodes}.
 The start symbol is the
-B<root>
+@dfindex root
+@dfn{root}
 of the tree.
 The node at the root of the tree is called the
-B<start node>.
+@dfindex start node
+@dfn{start node}.
 
 Traditionally,
 grammars divide all symbols sharply into terminals
@@ -594,11 +688,14 @@ of a rule.
 
 Traditionally, and in Marpa as well,
 every node is either a
-B<inner node>
+@dfindex inner node
+@dfn{inner node}
 or a
-B<leaf node>.
+@dfindex leaf node
+@dfn{leaf node}.
 In Marpa,
-B<leaf nodes>
+@dfindex leaf nodes
+@dfn{leaf nodes}
 are of
 two kinds:
 
@@ -606,7 +703,8 @@ two kinds:
 @item Nodes for nulled symbols.
 A node for a nulled symbol is called
 a
-B<nulled node>.
+@dfindex nulled node
+@dfn{nulled node}.
 @item
 Nodes for symbols being used as terminals.
 @end itemize
@@ -617,7 +715,8 @@ Nodes for symbols being used as terminals.
 Marpa allows ambiguous grammars.
 Traditionally
 we say that a parse is
-B<ambiguous>
+@dfindex ambiguous
+@dfn{ambiguous}
 if,
 for a given grammar and a given input,
 more than one derivation tree is possible.
@@ -640,7 +739,8 @@ This can be accomplished by using a slightly
 altered definition.
 In the Marpa context, a grammar
 is
-B<ambiguous>
+@dfindex ambiguous
+@dfn{ambiguous}
 if and only if,
 for some UNAMBIGUOUS stream of input tokens,
 that grammar produces
@@ -651,10 +751,12 @@ more than one parse tree.
 
 In real life, the structure of a parse is usually a means to an end.
 Grammars usually have a
-B<semantics>
+@dfindex semantics
+@dfn{semantics}
 associated with them,
 and what the user actually wants is the
-B<value>
+@dfindex value
+@dfn{value}
 of the parse
 according to the semantics.
 
