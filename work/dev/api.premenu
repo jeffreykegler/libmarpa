@@ -168,18 +168,24 @@ Wikipedia is also an excellent place to start.
 @subsection Basic
 
 A
-B<grammar> is a set of rules,
+@dfindex grammar
+@dfn{grammar}
+is a set of rules,
 associated with a set of symbols,
 one of which is distinguished as the start symbol.
 A
-B<symbol string>, or simply
-B<string> where the meaning is clear,
+B<symbol string>,
+or simply
+B<string>
+where the meaning is clear,
 is an ordered series of symbols.
 The
-B<length> of a string is the number of symbols in it.
+B<length>
+of a string is the number of symbols in it.
 
 A
-B<language> is a set of
+B<language>
+is a set of
 B<symbol strings>.
 A grammar defines a
 B<language>,
@@ -193,7 +199,8 @@ of the ordinary idea of what a language is.
 In ordinary use, the word "language" means
 far more than a unordered list of its sentences.
 In parsing terminology, meaning (or
-B<semantics> as it is
+B<semantics>
+as it is
 called) is a separate issue.
 For parsing theory a
 language is exactly a set of strings --
@@ -207,26 +214,34 @@ from non-terminals.  Marpa does not.
 @subsection Stages of parsing
 
 A
-B<recognizer> is a program that determines whether its
+B<recognizer>
+is a program that determines whether its
 B<input>
 is in the language of a grammar and a start symbol.
 A
-B<parser> is a program which finds the structure of that input.
+B<parser>
+is a program which finds the structure of that input.
 
 The term
-B<parsing> is used in a strict and a loose sense.
-B<Parsing in the loose sense> is all phases of finding a grammar's structure,
+B<parsing>
+is used in a strict and a loose sense.
+B<Parsing in the loose sense>
+is all phases of finding a grammar's structure,
 including a separate recognition phase if the parser has one.  (Marpa does.)
 If a parser has phases,
-B<parsing in the strict sense> refers specifically to the phase that finds the structure of the input.
+B<parsing in the strict sense>
+refers specifically to the phase that finds the structure of the input.
 When the Marpa documents use the term
-B<parsing> in its strict sense, they will
+B<parsing>
+in its strict sense, they will
 speak explicitly of "parsing in the strict sense".
 Otherwise,
-B<parsing> will mean parsing in the loose sense.
+B<parsing>
+will mean parsing in the loose sense.
 
 Parsers often use a
-B<lexical analyzer> to convert
+B<lexical analyzer>
+to convert
 B<raw input>,
 usually
 B<input text>,
@@ -235,14 +250,18 @@ B<token stream>,
 which is a series of
 B<tokens>.
 Each token represents a
-B<symbol> of the grammar and has a
+B<symbol>
+of the grammar and has a
 B<value>.
 A lexical analyzer is often called a
-B<lexer> or a
+B<lexer>
+or a
 B<scanner>,
 and
-B<lexical analysis> is often called
-B<lexing> or
+B<lexical analysis>
+is often called
+B<lexing>
+or
 B<scanning>.
 
 The series of symbols represented by the series of tokens
@@ -250,7 +269,8 @@ becomes the
 B<symbol string input>
 seen by the recognizer.
 The
-B<symbol string input> is more often called the
+B<symbol string input>
+is more often called the
 B<input sentence>.
 
 @node Rules
@@ -268,7 +288,8 @@ In one common way of writing BNF, a production looks like this:
 
 In the production above, @var{Expression}, @var{Term} and @var{Factor} are symbols.
 A production consists of a
-B<left hand side> and a
+B<left hand side>
+and a
 B<right hand side>.
 In a
 B<context-free grammar>,
@@ -280,7 +301,8 @@ In the example, @var{Expression} is the left hand side, and
 @var{Term} and @var{Factor} are right hand side symbols.
 
 Left hand side and right hand side are often abbreviated as
-B<RHS> and
+B<RHS>
+and
 B<LHS>.
 If the RHS of a production has no symbols,
 the production is called an
@@ -290,7 +312,8 @@ B<empty rule>.
 
 Any symbol which is allowed to occur
 in the symbol string input is called a
-B<terminal> symbol.
+B<terminal>
+symbol.
 If the symbols in a symbol string are all terminals,
 that symbol string is also called a
 B<sentence>.
@@ -299,7 +322,8 @@ B<sentence>.
 @subsection Derivations
 
 A
-B<step> of a derivation, or
+B<step>
+of a derivation, or
 B<derivation step>, is a change made to a symbol string
 by applying one of the productions from the grammar.
 The production must be one of those with a LHS that occurs in the symbol string.
@@ -321,13 +345,16 @@ is a production, then
 
 is a derivation step, with "@code{A X D}" as its beginning and "@code{A B C D}" as its end or result.
 We say that the symbol string "@code{A X D}"
-B<derives> the symbol string
+B<derives>
+the symbol string
 "@code{A B C D}".
 
 A
-B<derivation> is a sequence of derivation steps.
+B<derivation>
+is a sequence of derivation steps.
 The
-B<length> of a derivation is its length in steps.
+B<length>
+of a derivation is its length in steps.
 
 @itemize
 @item We say that
@@ -342,7 +369,8 @@ B<trivial derivation>.
 (that is,
 a derivation which has one or more steps)
 is a
-B<non-trivial> derivation.
+B<non-trivial>
+derivation.
 @item A non-trivial derivation of a symbol string from itself
 is called a
 B<cycle>.
@@ -350,7 +378,8 @@ Grammars which contain cycles are traditionally considered useless,
 but Marpa will parse with such grammars.
 @item If a derivation is not trivial or direct, that is, if it has more than one step,
 then it is an
-B<indirect> derivation.
+B<indirect>
+derivation.
 @end itemize
 
 Technically, a symbol @var{X} and a string
@@ -366,13 +395,16 @@ we will usually say simply that "@var{X} derives @var{Y}".
 
 Wherever symbol or string @var{X} derives @var{Y},
 we may also say @var{X}
-B<produces> @var{Y}.
+B<produces>
+@var{Y}.
 Derivations are often described as symbol matches.
 Wherever symbol or string @var{X} derives @var{Y},
 we may also say that @var{Y}
-B<matches> @var{X}
+B<matches>
+@var{X}
 or that @var{X}
-B<matches> @var{Y}.
+B<matches>
+@var{Y}.
 It is particularly common to say that
 @var{X} matches @var{Y} when @var{X} or @var{Y} is a sentence.
 
@@ -385,7 +417,8 @@ The set of all input sentences that
 a grammar
 will successfully parse is
 the
-B<language> of
+B<language>
+of
 the grammar.
 
 @node Nulling
@@ -428,11 +461,13 @@ B<null symbol>.
 
 If any derivation from the start symbol uses a rule,
 that rule is called
-B<reachable> or
+B<reachable>
+or
 B<accessible>.
 A rule that is not accessible
 is called
-B<unreachable> or
+B<unreachable>
+or
 B<inaccessible>.
 If any derivation which results in a sentence uses a rule,
 that rule is said to be
@@ -442,22 +477,28 @@ B<unproductive>.
 For example, a rule is unproductive unless every symbol on
 its RHS either is a terminal or is the LHS of some other rule.
 A rule which is inaccessible or unproductive is called a
-B<useless> rule.
+B<useless>
+rule.
 Marpa can handle grammars with useless rules.
 
 A symbol is
-B<reachable> or
-B<accessible> if it appears in a reachable production.
+B<reachable>
+or
+B<accessible>
+if it appears in a reachable production.
 If a symbol is not reachable, it is
-B<unreachable> or
+B<unreachable>
+or
 B<inaccessible>.
 A symbol is
-B<productive> if it appears on the LHS of a productive rule,
+B<productive>
+if it appears on the LHS of a productive rule,
 or if it is a nullable symbol.
 If a symbol is not productive, it is
 B<unproductive>.
 A symbol which is inaccessible or unproductive is called a
-B<useless> symbol.
+B<useless>
+symbol.
 Marpa can handle grammars with useless symbols.
 
 @node Recursion and cycles
@@ -480,7 +521,8 @@ and grammars
 which contain both left- and right-recursion.
 
 A
-B<cycle> is a non-trivial derivation
+B<cycle>
+is a non-trivial derivation
 of a string of symbols from itself.
 If it is not possible for any derivation using a grammar
 to contain a cycle,
@@ -520,14 +562,16 @@ Another way to represent structure is as a
 B<parse tree>.
 Every symbol used in the parse is
 represented by a
-B<node> of the parse tree.
+B<node>
+of the parse tree.
 Wherever a production is used in the parse,
 its LHS is represented by a
 B<parent node>
 and the RHS symbols are represented by
 B<child nodes>.
 The start symbol is the
-B<root> of the tree.
+B<root>
+of the tree.
 The node at the root of the tree is called the
 B<start node>.
 
@@ -550,10 +594,12 @@ of a rule.
 
 Traditionally, and in Marpa as well,
 every node is either a
-B<inner node> or a
+B<inner node>
+or a
 B<leaf node>.
 In Marpa,
-B<leaf nodes> are of
+B<leaf nodes>
+are of
 two kinds:
 
 @itemize
@@ -571,7 +617,8 @@ Nodes for symbols being used as terminals.
 Marpa allows ambiguous grammars.
 Traditionally
 we say that a parse is
-B<ambiguous> if,
+B<ambiguous>
+if,
 for a given grammar and a given input,
 more than one derivation tree is possible.
 However, Marpa allows ambiguous input tokens,
@@ -593,7 +640,8 @@ This can be accomplished by using a slightly
 altered definition.
 In the Marpa context, a grammar
 is
-B<ambiguous> if and only if,
+B<ambiguous>
+if and only if,
 for some UNAMBIGUOUS stream of input tokens,
 that grammar produces
 more than one parse tree.
@@ -603,9 +651,11 @@ more than one parse tree.
 
 In real life, the structure of a parse is usually a means to an end.
 Grammars usually have a
-B<semantics> associated with them,
+B<semantics>
+associated with them,
 and what the user actually wants is the
-B<value> of the parse
+B<value>
+of the parse
 according to the semantics.
 
 The tree representation is especially useful when evaluating a parse.
