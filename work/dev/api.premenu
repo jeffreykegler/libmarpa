@@ -746,6 +746,90 @@ for some UNAMBIGUOUS stream of input tokens,
 that grammar produces
 more than one parse tree.
 
+@node Semantics from R2 pod
+@subsection Semantics R2 pod
+
+[ Merge this with the semantics terms section. ]
+
+@node What is semantics?
+@subsubsection What is semantics?
+
+A parser is an algorithm
+that takes a string of symbols (tokens or characters) and finds a structure
+in it.
+Traditionally, that structure is a tree.
+
+Rarely is an application interested only in the tree.
+Usually the idea is that the string "means" something:
+the idea is that the string has a
+@dfindex semantics
+@dfn{semantics}.
+Traditionally and most often, the tree
+is an intermediate step in producing a value,
+a value which represents the "meaning" or "semantics" of the string.
+
+"Evaluating" a tree means finding its semantics.
+The rest of this document describes Marpa's methods for evaluating trees.
+Those of you who have dealt with other traditional parsers, such as yacc and bison,
+will find Marpa's approach familiar.
+
+@node Instances
+@subsubsection Instances
+
+At the start of evaluation, semantics is associated with instances
+of rule alternatives or of lexemes.
+An
+@dfindex instance
+@dfn{instance}
+is another name for a node in the parse tree.
+The term ``instance'' is usually used in the context of a particular
+parse.
+[ Terminology for individual parses, vs "parse" producing a forest ].
+Nodes and instances have start locations and end locations.
+Start and end location implies length.
+Locations may be in either earleme or Earley set terms.
+@xref{Input}.
+Every instance has two locations: a start location and
+an end location.
+
+
+@node Nodes
+@subsubsection Nodes
+
+In a parse tree, nodes are points where the tree branches or terminates.
+Tree terminations are also called terminals or "leaves".
+
+Every rule instance in a Marpa parse is represented by a branch point (or "node")
+in the tree.
+The topmost node of a tree is its "root node".
+(Trees are easiest to draw upside down, so traditionally in programming,
+the top of a tree is its root.)
+
+A node, or branch point, "branches" into zero or more "child nodes".
+The node just above a child node,
+the one from which the child node branches out,
+is called its parent node.
+
+If the node is for a non-quantified rule instance,
+the parent node is the LHS of the rule,
+and the child nodes are the RHS of the rule alternative.
+If the node is for a quantified rule,
+the parent node is the LHS of the quantified rule,
+and the child nodes are the items of the sequence of symbols on the
+right hand side.
+If the node is for a lexeme,
+the node represents the lexeme's symbol
+and there will be no child nodes.
+
+A parent node can have zero or more children.
+Rule instances with zero children are nulled rule instances,
+and are "leaf nodes".
+Leaf nodes are also called
+@dfindex terminal (node)
+@dfn{terminals}.
+In Marpa's parse trees, every terminal is either
+a lexeme or a nulled rule instance.
+
 @node Semantics terms
 @subsection Semantics terms
 
@@ -5624,6 +5708,7 @@ zero.
 @deftypefn {Mutator function} @
 Marpa_Step_Type marpa_v_step ( Marpa_Value @var{v})
 
+Steps through the tree in depth-first, left-to-right order.
 On success, does the following:
 @itemize
 @item Takes the valuator to the next

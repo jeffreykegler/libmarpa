@@ -1,10 +1,6 @@
 # Issue 123 TODO
 
-- Add a "Parsing Theory" section to the API doc
-
-Use
-[Marpa::R2::Vocabulary](https://metacpan.org/dist/Marpa-R2/view/pod/Vocabulary.pod)
-and the first grafs of the "semantics" section in the Marpa::R2 pod.
+- Finish revising the new "Parsing Theory" section in the API doc
 
 - Nothing to use from [Marpa::R2::Changes](https://metacpan.org/dist/Marpa-R2/view/pod/Changes.pod)
 except this wrt ranks:
@@ -27,10 +23,6 @@ API doc.   (Where?)
 
 Include these in the Libmarpa acknowledgements doc.
 
-- [Marpa::R2::Advanced::Bibliography](https://metacpan.org/dist/Marpa-R2/view/pod/Advanced/Bibliography.pod)
-
-Adapt this into a doc into the "notes/" directory.
-
 - [Marpa::R2::Advanced::Models](https://metacpan.org/dist/Marpa-R2/view/pod/Advanced/Models.pod)
 - [Marpa::R2::Advanced::Thin](https://metacpan.org/dist/Marpa-R2/view/pod/Advanced/Thin.pod)
 - [Marpa::R2::Event](https://metacpan.org/dist/Marpa-R2/view/pod/Event.pod)
@@ -41,7 +33,6 @@ Adapt this into a doc into the "notes/" directory.
 - [Marpa::R2::Scanless::G](https://metacpan.org/dist/Marpa-R2/view/pod/Scanless/G.pod)
 - [Marpa::R2::Scanless](https://metacpan.org/dist/Marpa-R2/view/pod/Scanless.pod)
 - [Marpa::R2::Scanless::R](https://metacpan.org/dist/Marpa-R2/view/pod/Scanless/R.pod)
-- [Marpa::R2::Semantics](https://metacpan.org/dist/Marpa-R2/view/pod/Semantics.pod)
 - [Marpa::R2::Semantics::Order](https://metacpan.org/dist/Marpa-R2/view/pod/Semantics/Order.pod)
 - [Marpa::R2::Semantics::Phases](https://metacpan.org/dist/Marpa-R2/view/pod/Semantics/Phases.pod)
 - [Marpa::R2::Semantics::Rank](https://metacpan.org/dist/Marpa-R2/view/pod/Semantics/Rank.pod)
