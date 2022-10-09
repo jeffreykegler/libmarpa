@@ -216,6 +216,34 @@ that and nothing more.
 The Marpa definition of a grammar differs slightly from the various
 standard ones.  Standard definitions usually sharply distinguish terminal symbols
 from non-terminals.  Marpa does not.
+Further discussion of Marpa's handling of terminal is below
+(@pxref{terminal discussion}).
+
+@node Forests, trees and parses
+@subsection Forests, trees and parses
+
+The output of the Marpa parser
+is a
+@dfindex forest (output of a parser)
+@dfn{forest}.
+A forest contains one or more
+@dfindex tree
+@dfn{trees}.
+Each tree represents a
+@dfindex parse (output of a parser)
+@dfn{parse}.
+
+In some contexts, the terms ``forest''
+and ''parse'' occur more or less interchangeably.
+For example, we say Marpa succeeds at a location
+iff it finds a parse at that location.
+But a parse exists at a location iff
+a forest exists at a location,
+since a structure is a forest iff it is a tree containing
+a least one parse.
+So we could equally well say that
+Marpa succeeds at a location
+iff it finds a @strong{forest} at that location.
 
 @node Stages of parsing
 @subsection Stages of parsing
@@ -669,11 +697,14 @@ The node at the root of the tree is called the
 @dfindex start node
 @dfn{start node}.
 
+@anchor{terminal discussion}
 Traditionally,
-grammars divide all symbols sharply into terminals
-and non-terminals.
-A terminal symbol must ALWAYS be used as a terminal.
-A non-terminal symbol can NEVER be used as a terminal.
+@itemize
+@item grammars divide all symbols sharply into terminals
+and non-terminals;
+@item a terminal symbol must @strong{always} be used as a terminal; and
+@item a non-terminal symbol can @strong{never} be used as a terminal.
+@end itemize
 
 Marpa's use of terminals is non-traditional,
 and its terminology is different accordingly.
@@ -767,11 +798,9 @@ the idea is that the string has a
 Traditionally and most often, the tree
 is an intermediate step in producing a value,
 a value which represents the "meaning" or "semantics" of the string.
-
-"Evaluating" a tree means finding its semantics.
-The rest of this document describes Marpa's methods for evaluating trees.
-Those of you who have dealt with other traditional parsers, such as yacc and bison,
-will find Marpa's approach familiar.
+@dfindex Evaluating (a tree)
+@dfn{Evaluating}
+a tree means finding its semantics.
 
 @node Instances
 @subsubsection Instances
@@ -782,16 +811,31 @@ An
 @dfindex instance
 @dfn{instance}
 is another name for a node in the parse tree.
-The term ``instance'' is usually used in the context of a particular
+We usually use the term ``instance'' in the context of a particular
 parse.
-[ Terminology for individual parses, vs "parse" producing a forest ].
-Nodes and instances have start locations and end locations.
+We more often use the term ``node'' when we are thinking in terms
+of trees or forests.
+
+Nodes (and therefore instances) have start locations and end locations.
 Start and end location implies length.
 Locations may be in either earleme or Earley set terms.
 @xref{Input}.
 Every instance has two locations: a start location and
 an end location.
-
+A node or instance is
+@dfindex nulled (node)
+@dfindex nulled (instance)
+@dfindex nulled (symbol)
+@dfn{nulled}
+iff it is zero length.
+A node is zero length in earlemes iff it is zero length
+in terms of Earley set items,
+so that when we can refer to a node as nulled
+we make no assumption about how we are measuring location.
+The terminology is a little loose,
+but when we expect no confusion to arise,
+we often say that ``a symbol is nulled''
+to mean that a node or instance with that symbol is nulled.
 
 @node Nodes
 @subsubsection Nodes
@@ -858,7 +902,7 @@ describe how to calculate the value of the node which represents the LHS
 from the values of zero or more of the nodes which represent the RHS symbols
 (child nodes).
 Values are computed recursively, bottom-up.
-The value of a parse is the value of its start symbol.
+The value of a parse tree is the value of its start symbol.
 @node Other definitions
 @section Other definitions
 
@@ -1048,10 +1092,10 @@ John Aycock and Nigel Horspool.
 Libmarpa implements the entire Marpa algorithm.
 This library does
 the necessary grammar preprocessing, recognizes the input,
-and produces parse trees.
+and produces a parse forest.
 It also supports the ordering, iteration
 and evaluation of the parse
-trees.
+trees in the forest.
 
 Libmarpa is very low-level.
 For example, it has no strings.
@@ -1118,7 +1162,7 @@ A recognizer object reads input.
 Bocage:
 A bocage object is a collection of
 parse trees, as found by a recognizer.
-Bocages are similar to parse forests.
+A bocages is a way of representing a parse forest.
 @item
 Ordering:
 An ordering object
@@ -5076,8 +5120,8 @@ On hard failure, @minus{}2.
 @node Ordering overview
 @section Overview
 
-Before iterating the parses in the bocage,
-they must be ordered.
+Before iterating through the parse trees in the bocage,
+the parse trees must be ordered.
 To create an ordering, use the
 @code{marpa_o_new()}
 method.
@@ -5412,7 +5456,7 @@ The archetypal application needs
 a value object (or
 @dfindex valuator
 @dfn{valuator}) to produce
-the value of the parse.
+the value of the parse tree.
 To create a valuator, use the
 @code{marpa_v_new()}
 method.
@@ -5612,7 +5656,7 @@ instructions literally, using a physical stack,
 it must make sure that all locations in the stack are initialized.
 The range of locations that must be initialized is from
 stack location 0 to the ``end of stack'' location.
-The result of the parse is always stored in stack location 0,
+The result of the parse tree is always stored in stack location 0,
 so that a stack location 0 is always needed.
 Therefore, the end of stack location is always a specified value, and greater than or equal to 0.
 The end of stack location must also be greater than or equal to
@@ -5821,7 +5865,7 @@ stack location @code{marpa_v_result(v)}.
 @deftypevr {Accessor macro} Marpa_Step_Type MARPA_STEP_INACTIVE
 When this is the step type, the valuator has gone through all of its steps
 and is now inactive.
-The value of the parse will be in stack location 0.
+The value of the parse tree will be in stack location 0.
 Because of optimizations,
 it is possible for valuator to immediately
 became inactive --- @code{MARPA_STEP_INACTIVE} could
@@ -5932,7 +5976,7 @@ Always succeeds.
 @section Step location accessors
 
 This section describes step accessors that are not basic to stack manipulation.
-They provide Earley set location information about the parse.
+They provide Earley set location information about the parse tree.
 
 A step's location in terms of Earley sets is called its ES location.
 Every ES location is the ID of an Earley set.
@@ -5951,7 +5995,7 @@ The start ES location is the first ES location of
 that parse node.
 
 The end ES location of a leaf is the ES location where
-the next leaf symbol in the fringe of the current parse would start.
+the next leaf symbol in the fringe of the current parse tree would start.
 Typically, this is the location where a leaf node actually starts but,
 toward the end of a parse, there may not be an actual next leaf node.
 
@@ -7214,7 +7258,7 @@ Suggested message: "This grammar is not precomputed".
 
 @deftypevr {Accessor macro} int MARPA_ERR_NO_PARSE
 The application attempted to create a bocage
-from a recognizer without a parse.
+from a recognizer with no parse tree.
 Applications will often want to treat this as
 a soft error.
 Numeric value: 41.
@@ -7585,7 +7629,7 @@ Suggested message: "Token is too long".
 @deftypevr {Accessor macro} int MARPA_ERR_TREE_EXHAUSTED
 A Libmarpa parse tree iterator
 is ``exhausted'', that is,
-it has no more parses.
+it has no more parse trees.
 Numeric value: 79.
 Suggested message: "Tree iterator is exhausted".
 @end deftypevr
@@ -7876,7 +7920,7 @@ ordering object.
 In many cases, the ordering is trivial.
 Either the parse is unambiguous, or the
 application does not care about the order in
-which parses are returned.
+which parse trees are returned.
 But while it would be easy to add an option
 to bypass creation of an ordering object,
 there is little to be gained from it.
@@ -8173,7 +8217,7 @@ to
 After a call to @code{marpa_r_earleme_complete()}
 for an empty earleme,
 the lastest and current earlemes will have different values.
-In a  parse that never calls @code{marpa_r_earleme_complete()}
+In a parse that never calls @code{marpa_r_earleme_complete()}
 for an empty earleme,
 the lastest and current earlemes will always be the same.
 
