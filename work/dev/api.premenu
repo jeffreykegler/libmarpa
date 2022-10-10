@@ -129,19 +129,113 @@ or @code{Marpa::R3},
 in Perl.
 @item
 The reader knows some parsing theory.
-@xref{Parsing theory}.
+@xref{Parsing theory preliminaries}.
 @end itemize
 
 @node Terms, definitions and notation
 @chapter Terms, definitions and notation
 
-@node Parsing theory
-@section Parsing theory
+@node Miscellaneous definitions
+@section Miscellaneous definitions
+
+@itemize
+@item
+@dfindex application
+@dfn{application} means an ``application'' of Libmarpa.
+In this document,
+a Libmarpa application is not necessarily an application program.
+For our purposes, an ``application''
+might be another library that uses Libmarpa.
+@item A
+@dfindex value, boolean
+@dfindex boolean
+@dfindex boolean value
+@dfn{boolean} value, or @dfn{boolean},
+is an integer that is 0 or 1.
+@item
+@dfindex iff
+@dfn{iff} abbreviates ``if and only if''.
+@item
+@dfindex max(x,y)
+@code{max(x,y)} is the maximum of
+@code{x} and @code{y},
+where @code{x} and @code{y} are two numbers.
+@item
+@dfindex indeterminate value
+An @dfn{indeterminate value}
+is either an unspecified value or a trap value.
+Our use of this term is consistent with its use in the C99 standard.
+@item
+@dfindex symbol instance
+@dfindex instance, symbol
+A @dfn{symbol instance}, intuitively, is a symbol's
+occurrence at a specific parse location.
+More precisely, it is a pair of symbol and parse location.
+For more about parse location, @pxref{Earlemes}.
+@item
+@dfindex method
+@dfn{Libmarpa method}, or just @dfn{method} means a C function
+or a function-like macro of the Libmarpa library.
+@item
+@dfindex nulled symbol instance
+@dfindex symbol instance, nulled
+In a parse,
+an instance of a symbol is @dfn{nulled} iff it produces the empty string.
+When no confusion arises,
+we may say that the symbol is nulled
+to indicate that an instance of the symbol is nulled.
+@item
+@dfindex trap value
+A @dfn{trap value},
+also called a @dfn{trap representation},
+is a value that when accessed causes undefined behavior.
+Our use of this term is consistent with its use in the C99 standard.
+@xref{Trap representations}
+@item
+@dfindex undefined behavior
+An @dfn{undefined behavior}
+is a behavior that this document does not specify.
+One implication is that this behavior might be problematic.
+Our use of this term is consistent with its use in the C99 standard.
+@item
+@dfindex unspecified behavior
+An @dfn{unspecified behavior}
+is a behavior that, within a range of possibilities,
+is not further specified by this document.
+This is usually not problematic.
+Our use of this term is consistent with its use in the C99 standard.
+@item
+@dfindex unspecified value
+An @dfn{unspecified value}
+is a value on which this document imposes no restrictions,
+except that it cannot be a trap value.
+Our use of this term is consistent with its use in the C99 standard.
+@item
+@dfindex user
+@dfn{User} means a ``user'' of the Libmarpa library.
+A user of the library is also a programmer,
+so that in this documents, ``user''
+and ``programmer'' are essentially synonyms.
+@item
+@dfindex we
+@dfindex us
+@dfindex our
+@dfn{We} (and ``us'' and ''our'') refer to the authors.
+As of this writing, there is a primary author,
+but the plural is traditional, and our ``we''
+is intended to include the reader
+and everyone
+we are joining on the millenia-old voyage of discovery
+into mathematics and language.
+@end itemize
+
+@node Parsing theory preliminaries
+@section Parsing theory preliminaries
 
 This document assumes the reader is familiar with parsing
 theory.
-The following is @strong{not} an attempt to provide
-an introduction to parsing theory.
+The following exposition is @strong{not} intended
+an introduction or a reference.
 Instead, it is intended to serve as a guide to the definitions
 of parsing terms as used in this document.
 
@@ -151,9 +245,12 @@ within Marpa, that is the only definition given.
 Marpa also sometimes uses a standard term
 with a definition which is slightly different from
 the standard one.
-("Ambiguous grammar" is one example, and "grammar" itself is
-another.)
-When this is the case, it is explicitly pointed out.
+``Ambiguous grammar'' is one example:
+@xref{Ambiguity}.
+The term ``grammar'' itself is
+another.
+@xref{grammar-non-standard}
+When a definition is non-standard, this is explicitly pointed out.
 
 Readers who want a textbook or tutorial in parsing theory
 can look at
@@ -163,9 +260,6 @@ excellent chapter on parsing in the Perl context.
 It is available on-line.
 Wikipedia is also an excellent place to start.
 @xref{Bibliography-Wikipedia}.
-
-@node Basic
-@subsection Basic
 
 A
 @dfindex grammar
@@ -213,6 +307,7 @@ For parsing theory a
 language is exactly a set of strings --
 that and nothing more.
 
+@anchor{grammar-non-standard}
 The Marpa definition of a grammar differs slightly from the various
 standard ones.  Standard definitions usually sharply distinguish terminal symbols
 from non-terminals.  Marpa does not.
@@ -220,7 +315,7 @@ Further discussion of Marpa's handling of terminal is below
 (@pxref{terminal discussion}).
 
 @node Forests, trees and parses
-@subsection Forests, trees and parses
+@section Forests, trees and parses
 
 The output of the Marpa parser
 is a
@@ -246,7 +341,7 @@ Marpa succeeds at a location
 iff it finds a @strong{forest} at that location.
 
 @node Stages of parsing
-@subsection Stages of parsing
+@section Stages of parsing
 
 A
 @dfindex recognizer
@@ -332,7 +427,7 @@ is more often called the
 @dfn{input sentence}.
 
 @node Rules
-@subsection Rules
+@section Rules
 
 A standard way of describing rules is Backus-Naur Form, or
 @dfindex BNF
@@ -388,7 +483,7 @@ that symbol string is also called a
 @dfn{sentence}.
 
 @node Derivations
-@subsection Derivations
+@section Derivations
 
 A
 @dfindex step
@@ -408,18 +503,24 @@ and
     X ::= B C
 @end verbatim
 
-is a production, then
+is a production (aka rule), then
 
 @verbatim
     A X D -> A B C D
 @end verbatim
 
-is a derivation step, with "@code{A X D}" as its beginning and "@code{A B C D}" as its end or result.
+is a derivation step,
+@itemize
+@item with "@code{A X D}" as its beginning,
+@item "@code{A B C D}" as its end or result, and
+@item @verb{|X ::= B C|} as its rule.
+@end itemize
 We say that the symbol string "@code{A X D}"
 @dfindex derives
 @dfn{derives}
 the symbol string
 "@code{A B C D}".
+or the step.
 
 A
 @dfindex derivation
@@ -507,7 +608,7 @@ of
 the grammar.
 
 @node Nulling
-@subsection Nulling
+@section Nulling
 
 The zero length symbol string is called the
 @dfindex empty string
@@ -527,11 +628,11 @@ is a
 @dfindex null parse
 @dfn{null parse}.
 
-If in a particular grammar, a symbol has a null derivation,
+If a symbol has a null derivation,
 it is a
 @dfindex nullable symbol
 @dfn{nullable symbol}.
-If, in a particular grammar,
+If
 the only sentence produced by a symbol is the empty sentence,
 it is a
 @dfindex nulling symbol
@@ -552,8 +653,33 @@ or to be a
 @dfindex null symbol
 @dfn{null symbol}.
 
+A rule is
+@dfindex nullable rule
+@dfindex rule, nullable
+@dfn{nullable}
+iff it is the rule of the first step of
+a null derivation.
+A rule is
+nullable iff its LHS symbol is nullable.
+
+A rule @var{R} is
+@dfindex nulling rule
+@dfindex rule, nulling
+@dfn{nulling}
+iff every derivation whose first step has @var{R}
+as its rule is a null derivation.
+A rule is
+nulling iff its LHS symbol is nulling.
+
+If a rule is not nullable, it is
+@dfindex non-nullable
+@dfn{non-nullable}.
+If a rule is not nulling, it is
+@dfindex non-nulling
+@dfn{non-nulling}.
+
 @node Useless rules
-@subsection Useless rules
+@section Useless rules
 
 If any derivation from the start symbol uses a rule,
 that rule is called
@@ -612,7 +738,7 @@ symbol.
 Marpa can handle grammars with useless symbols.
 
 @node Recursion and cycles
-@subsection Recursion and cycles
+@section Recursion and cycles
 
 If any symbol in the grammar non-trivially produces a symbol string containing itself,
 the grammar is said to be
@@ -670,7 +796,7 @@ limits cycles to a single loop,
 so that only a finite number of parses is returned.
 
 @node Parse structure
-@subsection Parse structure
+@section Parse structure
 
 The structure of a parse can be represented as a series of derivation steps from
 the start symbol to the input.
@@ -741,7 +867,7 @@ Nodes for symbols being used as terminals.
 @end itemize
 
 @node Ambiguity
-@subsection Ambiguity
+@section Ambiguity
 
 Marpa allows ambiguous grammars.
 Traditionally
@@ -778,12 +904,12 @@ that grammar produces
 more than one parse tree.
 
 @node Semantics from R2 pod
-@subsection Semantics R2 pod
+@section Semantics R2 pod
 
 [ Merge this with the semantics terms section. ]
 
 @node What is semantics?
-@subsubsection What is semantics?
+@subsection What is semantics?
 
 A parser is an algorithm
 that takes a string of symbols (tokens or characters) and finds a structure
@@ -803,7 +929,7 @@ a value which represents the "meaning" or "semantics" of the string.
 a tree means finding its semantics.
 
 @node Instances
-@subsubsection Instances
+@subsection Instances
 
 At the start of evaluation, semantics is associated with instances
 of rule alternatives or of lexemes.
@@ -838,7 +964,7 @@ we often say that ``a symbol is nulled''
 to mean that a node or instance with that symbol is nulled.
 
 @node Nodes
-@subsubsection Nodes
+@subsection Nodes
 
 In a parse tree, nodes are points where the tree branches or terminates.
 Tree terminations are also called terminals or "leaves".
@@ -875,7 +1001,7 @@ In Marpa's parse trees, every terminal is either
 a lexeme or a nulled rule instance.
 
 @node Semantics terms
-@subsection Semantics terms
+@section Semantics terms
 
 In real life, the structure of a parse is usually a means to an end.
 Grammars usually have a
@@ -903,133 +1029,6 @@ from the values of zero or more of the nodes which represent the RHS symbols
 (child nodes).
 Values are computed recursively, bottom-up.
 The value of a parse tree is the value of its start symbol.
-@node Other definitions
-@section Other definitions
-
-In addition to those we have already introduced,
-the following definitions apply in this document:
-
-@itemize
-@item
-@dfindex application
-@dfn{application} means an ``application'' of Libmarpa.
-In this document,
-a Libmarpa application is not necessarily an application program.
-For our purposes, an ``application''
-might be another library that uses Libmarpa.
-@item A
-@dfindex value, boolean
-@dfindex boolean
-@dfindex boolean value
-@dfn{boolean} value, or @dfn{boolean},
-is an integer that is 0 or 1.
-@item
-@dfindex iff
-@dfn{iff} abbreviates ``if and only if''.
-@item
-@dfindex max(x,y)
-@code{max(x,y)} is the maximum of
-@code{x} and @code{y},
-where @code{x} and @code{y} are two numbers.
-@item
-@dfindex indeterminate value
-An @dfn{indeterminate value}
-is either an unspecified value or a trap value.
-Our use of this term is consistent with its use in the C99 standard.
-@item
-@dfindex symbol instance
-@dfindex instance, symbol
-A @dfn{symbol instance}, intuitively, is a symbol's
-occurrence at a specific parse location.
-More precisely, it is a pair of symbol and parse location.
-For more about parse location, @pxref{Earlemes}.
-@item
-@dfindex method
-@dfn{Libmarpa method}, or just @dfn{method} means a C function
-or a function-like macro of the Libmarpa library.
-@item
-@dfindex nullable rule
-@dfindex rule, nullable
-A rule is @dfn{nullable} if it sometimes produces the empty string.
-@item
-@dfindex nulled symbol instance
-@dfindex symbol instance, nulled
-In a parse,
-an instance of a symbol is @dfn{nulled} iff it produces the empty string.
-When no confusion arises,
-we may say that the symbol is nulled
-to indicate that an instance of the symbol is nulled.
-@item
-@dfindex nullable symbol
-@dfindex symbol, nullable
-A symbol is @dfn{nullable} if it sometimes produces the empty string.
-The LHS of a nullable rule is always a nullable symbol.
-@item
-@dfindex nulling rule
-@dfindex rule, nulling
-A rule is @dfn{nulling} if it sometimes produces the empty string.
-Every nulling rule is a nullable rule,
-but not every nullable rule is a nulling rule.
-@item
-@dfindex nulling symbol
-@dfindex symbol, nulling
-A symbol is @dfn{nulling} if it sometimes produces the empty string.
-Every nulling symbol is a nullable symbol,
-but not every nullable symbol is a nulling symbol.
-The LHS of a nulling rule is always a nulling symbol.
-@item
-@dfindex non-nullable rule
-@dfindex rule, non-nullable
-A rule is @dfn{non-nullable} iff it is not a nullable rule.
-@item
-@dfindex non-nullable symbol
-@dfindex symbol, non-nullable
-A symbol is @dfn{non-nullable} iff it is not a nullable symbol.
-The LHS of a non-nullable rule is always a non-nullable symbol.
-@item
-@dfindex trap value
-A @dfn{trap value},
-also called a @dfn{trap representation},
-is a value that when accessed causes undefined behavior.
-Our use of this term is consistent with its use in the C99 standard.
-@xref{Trap representations}
-@item
-@dfindex undefined behavior
-An @dfn{undefined behavior}
-is a behavior that this document does not specify.
-One implication is that this behavior might be problematic.
-Our use of this term is consistent with its use in the C99 standard.
-@item
-@dfindex unspecified behavior
-An @dfn{unspecified behavior}
-is a behavior that, within a range of possibilities,
-is not further specified by this document.
-This is usually not problematic.
-Our use of this term is consistent with its use in the C99 standard.
-@item
-@dfindex unspecified value
-An @dfn{unspecified value}
-is a value on which this document imposes no restrictions,
-except that it cannot be a trap value.
-Our use of this term is consistent with its use in the C99 standard.
-@item
-@dfindex user
-@dfn{User} means a ``user'' of the Libmarpa library.
-A user of the library is also a programmer,
-so that in this documents, ``user''
-and ``programmer'' are essentially synonyms.
-@item
-@dfindex we
-@dfindex us
-@dfindex our
-@dfn{We} (and ``us'' and ''our'') refer to the authors.
-As of this writing, there is a primary author,
-but the plural is traditional, and our ``we''
-is intended to include the reader
-and everyone
-we are joining on the millenia-old voyage of discovery
-into mathematics and language.
-@end itemize
 
 @node Application and diagnostic behavior
 @section Application and diagnostic behavior
