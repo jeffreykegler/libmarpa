@@ -336,7 +336,7 @@ But a parse exists at a location iff
 a forest exists at a location,
 since a structure is a forest iff it is a tree containing
 a least one parse.
-So we could equally well say that
+So we can equally well say that
 Marpa succeeds at a location
 iff it finds a @strong{forest} at that location.
 
