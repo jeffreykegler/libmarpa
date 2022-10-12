@@ -166,24 +166,9 @@ An @dfn{indeterminate value}
 is either an unspecified value or a trap value.
 Our use of this term is consistent with its use in the C99 standard.
 @item
-@dfindex symbol instance
-@dfindex instance, symbol
-A @dfn{symbol instance}, intuitively, is a symbol's
-occurrence at a specific parse location.
-More precisely, it is a pair of symbol and parse location.
-For more about parse location, @pxref{Earlemes}.
-@item
 @dfindex method
 @dfn{Libmarpa method}, or just @dfn{method} means a C function
 or a function-like macro of the Libmarpa library.
-@item
-@dfindex nulled symbol instance
-@dfindex symbol instance, nulled
-In a parse,
-an instance of a symbol is @dfn{nulled} iff it produces the empty string.
-When no confusion arises,
-we may say that the symbol is nulled
-to indicate that an instance of the symbol is nulled.
 @item
 @dfindex trap value
 A @dfn{trap value},
@@ -314,32 +299,6 @@ from non-terminals.  Marpa does not.
 Further discussion of Marpa's handling of terminal is below
 (@pxref{terminal discussion}).
 
-@node Forests, trees and parses
-@section Forests, trees and parses
-
-The output of the Marpa parser
-is a
-@dfindex forest (output of a parser)
-@dfn{forest}.
-A forest contains one or more
-@dfindex tree
-@dfn{trees}.
-Each tree represents a
-@dfindex parse (output of a parser)
-@dfn{parse}.
-
-In some contexts, the terms ``forest''
-and ''parse'' occur more or less interchangeably.
-For example, we say Marpa succeeds at a location
-iff it finds a parse at that location.
-But a parse exists at a location iff
-a forest exists at a location,
-since a structure is a forest iff it is a tree containing
-a least one parse.
-So we can equally well say that
-Marpa succeeds at a location
-iff it finds a @strong{forest} at that location.
-
 @node Stages of parsing
 @section Stages of parsing
 
@@ -426,23 +385,29 @@ is more often called the
 @dfindex input sentence
 @dfn{input sentence}.
 
+The output of the Marpa parser
+is a
+@dfindex forest (output of a parser)
+@dfn{forest}.
+@xref{Forests}.
+
 @node Rules
 @section Rules
 
 A standard way of describing rules is Backus-Naur Form, or
 @dfindex BNF
 @dfn{BNF}.
-A rule of a grammar is also often called a
-@dfindex production
-@dfn{production}.
-In one common way of writing BNF, a production looks like this:
+A rule of a grammar is sometimes called a
+@dfindex rule
+@dfn{rule}.
+In one common way of writing BNF, a rule looks like this:
 
 @verbatim
     Expression ::= Term Factor
 @end verbatim
 
-In the production above, @var{Expression}, @var{Term} and @var{Factor} are symbols.
-A production consists of a
+In the rule above, @var{Expression}, @var{Term} and @var{Factor} are symbols.
+A rule consists of a
 @dfindex left hand side
 @dfn{left hand side}
 and a
@@ -452,9 +417,9 @@ In a
 @dfindex context-free grammar
 @dfn{context-free grammar},
 like those Marpa parses,
-the left hand side of a production
+the left hand side of a rule
 is always a symbol string of length 1.
-The right hand side of a production is a symbol string of zero or more symbols.
+The right hand side of a rule is a symbol string of zero or more symbols.
 In the example, @var{Expression} is the left hand side, and
 @var{Term} and @var{Factor} are right hand side symbols.
 
@@ -464,10 +429,10 @@ Left hand side and right hand side are often abbreviated as
 and
 @dfindex LHS
 @dfn{LHS}.
-If the RHS of a production has no symbols,
-the production is called an
-@dfindex empty production
-@dfn{empty production}
+If the RHS of a rule has no symbols,
+the rule is called an
+@dfindex empty rule
+@dfn{empty rule}
 or an
 @dfindex empty rule
 @dfn{empty rule}.
@@ -491,11 +456,12 @@ A
 of a derivation, or
 @dfindex derivation step
 @dfn{derivation step}, is a change made to a symbol string
-by applying one of the productions from the grammar.
-The production must be one of those with a LHS that occurs in the symbol string.
+by applying one of the rules from the grammar.
+The rule must be one of those with a LHS that occurs in the symbol string.
 The result of the derivation step is another symbol string,
-one in which every occurence of the LHS symbol from the production is
-replaced by the RHS of the production.
+one in which every occurence of the LHS symbol from the rule is
+replaced by the RHS of the rule.
+@anchor{derivation-example}
 For example, if @var{A}, @var{B}, @var{C}, @var{D}, and @var{X} are symbols,
 and
 
@@ -503,7 +469,7 @@ and
     X ::= B C
 @end verbatim
 
-is a production (aka rule), then
+is a rule, then
 
 @verbatim
     A X D -> A B C D
@@ -515,13 +481,6 @@ is a derivation step,
 @item "@code{A B C D}" as its end or result, and
 @item @verb{|X ::= B C|} as its rule.
 @end itemize
-We say that the symbol string "@code{A X D}"
-@dfindex derives
-@dfn{derives}
-the symbol string
-"@code{A B C D}".
-or the step.
-
 A
 @dfindex derivation
 @dfn{derivation}
@@ -532,6 +491,20 @@ The
 of a derivation is its length in steps.
 
 @itemize
+@item
+A string @var{X}
+@dfindex derives
+@dfn{derives}
+a string @var{Y}
+iff
+there is a derivation of zero or more steps
+which begins with the string
+@var{X} and ends in the string @var{Y}.
+In the example above (@pxref{derivation-example}),
+we say that the symbol string "@code{A X D}"
+derives
+the symbol string
+"@code{A B C D}" in one step.
 @item We say that
 a first symbol string
 @dfindex directly derives
@@ -539,6 +512,11 @@ a first symbol string
 @dfn{directly derives}
 a second symbol string if and only if there is a derivation of length 1 from the first symbol
 string to the second symbol string.
+In the example above (@pxref{derivation-example}),
+we say that the symbol string "@code{A X D}"
+directly derives
+the symbol string
+"@code{A B C D}".
 @item Every symbol string is said to derive itself in a derivation
 of length 0.  A zero length derivation is a
 @dfindex trivial derivation
@@ -716,7 +694,7 @@ A symbol is
 or
 @dfindex accessible
 @dfn{accessible}
-if it appears in a reachable production.
+if it appears in a reachable rule.
 If a symbol is not reachable, it is
 @dfindex unreachable
 @dfn{unreachable}
@@ -795,9 +773,48 @@ When a parse is infinitely ambiguous, Marpa
 limits cycles to a single loop,
 so that only a finite number of parses is returned.
 
-@node Parse structure
-@section Parse structure
+@node Trees
+@section Trees
 
+[Fragment 1]:
+@node Nodes
+@subsection Nodes
+
+In a parse tree, nodes are points where the tree branches or terminates.
+Tree terminations are also called terminals or "leaves".
+
+Every rule instance in a Marpa parse is represented by a branch point (or "node")
+in the tree.
+The topmost node of a tree is its "root node".
+(Trees are easiest to draw upside down, so traditionally in programming,
+the top of a tree is its root.)
+
+A node, or branch point, "branches" into zero or more "child nodes".
+The node just above a child node,
+the one from which the child node branches out,
+is called its parent node.
+
+If the node is for a non-quantified rule instance,
+the parent node is the LHS of the rule,
+and the child nodes are the RHS of the rule alternative.
+If the node is for a quantified rule,
+the parent node is the LHS of the quantified rule,
+and the child nodes are the items of the sequence of symbols on the
+right hand side.
+If the node is for a lexeme,
+the node represents the lexeme's symbol
+and there will be no child nodes.
+
+A parent node can have zero or more children.
+Rule instances with zero children are nulled rule instances,
+and are "leaf nodes".
+Leaf nodes are also called
+@dfindex terminal (node)
+@dfn{terminals}.
+In Marpa's parse trees, every terminal is either
+a lexeme or a nulled rule instance.
+
+[Fragment 2]:
 The structure of a parse can be represented as a series of derivation steps from
 the start symbol to the input.
 Another way to represent structure is as a
@@ -808,7 +825,7 @@ represented by a
 @dfindex node
 @dfn{node}
 of the parse tree.
-Wherever a production is used in the parse,
+Wherever a rule is used in the parse,
 its LHS is represented by a
 @dfindex parent node
 @dfn{parent node}
@@ -865,6 +882,28 @@ a
 @item
 Nodes for symbols being used as terminals.
 @end itemize
+
+@node Forests
+@section Forests
+
+A forest contains one or more
+@dfindex tree
+@dfn{trees}.
+Each tree represents a
+@dfindex parse (output of a parser)
+@dfn{parse}.
+
+In some contexts, the terms ``forest''
+and ''parse'' occur more or less interchangeably.
+For example, we say Marpa succeeds at a location
+iff it finds a parse at that location.
+But a parse exists at a location iff
+a forest exists at a location,
+since a structure is a forest iff it is a tree containing
+a least one parse.
+So we can equally well say that
+Marpa succeeds at a location
+iff it finds a @strong{forest} at that location.
 
 @node Ambiguity
 @section Ambiguity
@@ -931,6 +970,23 @@ a tree means finding its semantics.
 @node Instances
 @subsection Instances
 
+[Fragment 1]:
+@dfindex symbol instance
+@dfindex instance, symbol
+A @dfn{symbol instance}, intuitively, is a symbol's
+occurrence at a specific parse location.
+More precisely, it is a pair of symbol and parse location.
+For more about parse location, @pxref{Earlemes}.
+
+@dfindex nulled symbol instance
+@dfindex symbol instance, nulled
+In a parse,
+an instance of a symbol is @dfn{nulled} iff it produces the empty string.
+When no confusion arises,
+we may say that the symbol is nulled
+to indicate that an instance of the symbol is nulled.
+
+[Fragment 2]:
 At the start of evaluation, semantics is associated with instances
 of rule alternatives or of lexemes.
 An
@@ -963,43 +1019,6 @@ but when we expect no confusion to arise,
 we often say that ``a symbol is nulled''
 to mean that a node or instance with that symbol is nulled.
 
-@node Nodes
-@subsection Nodes
-
-In a parse tree, nodes are points where the tree branches or terminates.
-Tree terminations are also called terminals or "leaves".
-
-Every rule instance in a Marpa parse is represented by a branch point (or "node")
-in the tree.
-The topmost node of a tree is its "root node".
-(Trees are easiest to draw upside down, so traditionally in programming,
-the top of a tree is its root.)
-
-A node, or branch point, "branches" into zero or more "child nodes".
-The node just above a child node,
-the one from which the child node branches out,
-is called its parent node.
-
-If the node is for a non-quantified rule instance,
-the parent node is the LHS of the rule,
-and the child nodes are the RHS of the rule alternative.
-If the node is for a quantified rule,
-the parent node is the LHS of the quantified rule,
-and the child nodes are the items of the sequence of symbols on the
-right hand side.
-If the node is for a lexeme,
-the node represents the lexeme's symbol
-and there will be no child nodes.
-
-A parent node can have zero or more children.
-Rule instances with zero children are nulled rule instances,
-and are "leaf nodes".
-Leaf nodes are also called
-@dfindex terminal (node)
-@dfn{terminals}.
-In Marpa's parse trees, every terminal is either
-a lexeme or a nulled rule instance.
-
 @node Semantics terms
 @section Semantics terms
 
@@ -1019,10 +1038,10 @@ In the traditional method of evaluating a parse tree,
 every node which represents a terminal symbol
 has a value associated with it on input.
 Non-null inner nodes
-take their semantics from the production whose LHS they represent.
+take their semantics from the rule whose LHS they represent.
 Nulled nodes are dealt with as special cases.
 
-The semantics for a production
+The semantics for a rule
 describe how to calculate the value of the node which represents the LHS
 (the parent node)
 from the values of zero or more of the nodes which represent the RHS symbols
