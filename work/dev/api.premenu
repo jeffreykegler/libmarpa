@@ -776,6 +776,102 @@ so that only a finite number of parses is returned.
 @node Trees
 @section Trees
 
+In this document,
+unless otherwise stated,
+@itemize
+@item by
+@dfindex tree
+@dfn{tree},
+we mean a
+@dfindex labeled ordered tree
+@dfindex tree, labeled ordered
+@dfn{labeled ordered tree}; and
+@item by
+@dfindex tree node
+@dfn{tree node},
+we mean a
+@dfindex labeled ordered tree node
+@dfindex node, labeled ordered tree
+@dfindex tree node, labeled ordered
+@dfn{labeled ordered tree node}.
+For brevity,
+in contexts where the meaning is clear,
+we refer to a tree node simply as a
+@dfindex node (of a tree)
+@dfn{node}.
+
+A node is a pair of tuples:
+@itemize
+@item The first element of a node is
+a ``label tuple''.
+The label tuple is a triple
+of symbol ID,
+start Earley set ID, and
+end Earley set ID.
+For more about the Earley set IDs,
+@pxref{Input}.
+@item The second element of a node is
+a list (ordered set) of nodes.
+@end itemize
+We note that this definition of a tree node is recursive.
+
+Let a tree node be
+@verbatim
+     nd = [ [ sym,  start, end ], children ]
+@end verbatim
+We say that
+@itemize
+@item
+that @var{S} is the symbol of @var{T},
+@item
+that @var{T} is an
+@dfindex instance (of a symbol)
+@dfn{instance} of the symbol with ID @var{sym}
+starting at @var{start} and ending at @var{end}, and
+@item
+that @var{T} is an
+@dfindex instance (of a symbol)
+@dfn{instance} of the symbol with ID @var{sym} at location @var{end}, and
+@item
+that the elements of @var{children}
+are the
+@dfindex children (of a node)
+@dfn{children},
+@item
+so that every element of @var{children}
+is a
+@dfindex child (of a node)
+@dfn{child}
+of @var{nd}.
+@end itemize
+We also say, for brevity,
+that the symbol @var{sym} is
+@dfindex at (a location, wrt a symbol)
+@dfn(at)
+@var{end}.
+We note that we consider the location of a symbol
+to be where it ends.
+
+Let @var{nd1} and @var{nd2} be two nodes.
+If @var{nd2} is a child of @var{nd1},
+then @var{nd1} is the
+@dfindex parent (wrt a node)
+@dfn{parent} of @var{nd2}.
+[ Get from Knuth, terminology for descendants, etc. ]
+
+A tree is its own
+@dfindex root node
+@dfn{root node}.
+That is, tree and node are two different terms for the
+same thing.
+We usually speak of trees, when we are thinking of the nodes/trees
+as a collection of nodes,
+and we
+speak of nodes, when we are more focused on the individual nodes.
+
+[ Rewrite just previous when we have settled terminology. ]
+
+
 [Fragment 1]:
 @node Nodes
 @subsection Nodes
@@ -966,17 +1062,6 @@ a value which represents the "meaning" or "semantics" of the string.
 @dfindex Evaluating (a tree)
 @dfn{Evaluating}
 a tree means finding its semantics.
-
-@node Instances
-@subsection Instances
-
-[Fragment 1]:
-@dfindex symbol instance
-@dfindex instance, symbol
-A @dfn{symbol instance}, intuitively, is a symbol's
-occurrence at a specific parse location.
-More precisely, it is a pair of symbol and parse location.
-For more about parse location, @pxref{Earlemes}.
 
 @dfindex nulled symbol instance
 @dfindex symbol instance, nulled
