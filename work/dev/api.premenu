@@ -794,6 +794,7 @@ we mean a
 @dfindex node, labeled ordered tree
 @dfindex tree node, labeled ordered
 @dfn{labeled ordered tree node}.
+@end itemize
 For brevity,
 in contexts where the meaning is clear,
 we refer to a tree node simply as a
@@ -847,7 +848,7 @@ of @var{nd}.
 We also say, for brevity,
 that the symbol @var{sym} is
 @dfindex at (a location, wrt a symbol)
-@dfn(at)
+@dfn{at}
 @var{end}.
 We note that we consider the location of a symbol
 to be where it ends.
@@ -857,7 +858,52 @@ If @var{nd2} is a child of @var{nd1},
 then @var{nd1} is the
 @dfindex parent (wrt a node)
 @dfn{parent} of @var{nd2}.
-[ Get from Knuth, terminology for descendants, etc. ]
+
+We define
+@dfindex ancestor
+@dfn{ancestor}
+recursively
+such that
+@var{nd1} is the ancestor
+of a node @var{nd2}
+iff one of the following are true:
+@itemize
+@item @var{nd1} and @var{nd2}} are the same node.
+In this case we say that @var{nd1} is the
+@dfindex trivial ancestor
+@dfindex ancestor, trivial
+@dfn{trivial ancestor}.
+of @var{nd2}.
+@item @var{nd1} is the parent of an ancestor of @var{nd2}.
+In this case we say that @var{nd1} is a
+@dfindex proper ancestor
+@dfindex ancestor, proper
+@dfn{proper ancestor}.
+of @var{nd2}.
+@end itemize
+
+Simlarly, we define
+@dfindex descendant
+@dfn{descendant}
+recursively
+such that
+@var{nd1} is the descendant
+of a node @var{nd2}
+iff one of the following are true:
+@itemize
+@item @var{nd1} and @var{nd2}} are the same node.
+In this case we say that @var{nd1} is the
+@dfindex trivial descendant
+@dfindex descendant, trivial
+@dfn{trivial descendant}.
+of @var{nd2}.
+@item @var{nd1} is the parent of an descendant of @var{nd2}.
+In this case we say that @var{nd1} is a
+@dfindex proper descendant
+@dfindex descendant, proper
+@dfn{proper descendant}.
+of @var{nd2}.
+@end itemize
 
 A tree is its own
 @dfindex root node
@@ -9156,7 +9202,7 @@ Time on Every LR(k) Grammar Without Using Lookahead",
 @emph{Theoretical Computer Science},
 Vol. 82, No. 1, 1991, pp 165-176.
 This is a difficult paper.
-It is available online at 
+It is available online at
 @url{http://www.sciencedirect.com/science/article/pii/030439759190180A},
 click the PDF icon at the top left.
 
