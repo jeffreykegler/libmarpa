@@ -868,7 +868,7 @@ such that
 of a node @var{nd2}
 iff one of the following are true:
 @itemize
-@item @var{nd1} and @var{nd2}} are the same node.
+@item @var{nd1} and @var{nd2} are the same node.
 In this case we say that @var{nd1} is the
 @dfindex trivial ancestor
 @dfindex ancestor, trivial
@@ -891,7 +891,7 @@ such that
 of a node @var{nd2}
 iff one of the following are true:
 @itemize
-@item @var{nd1} and @var{nd2}} are the same node.
+@item @var{nd1} and @var{nd2} are the same node.
 In this case we say that @var{nd1} is the
 @dfindex trivial descendant
 @dfindex descendant, trivial
@@ -908,33 +908,30 @@ of @var{nd2}.
 A tree is its own
 @dfindex root node
 @dfn{root node}.
-That is, tree and node are two different terms for the
+That implies that, in fact, tree and node are just two different terms for the
 same thing.
 We usually speak of trees, when we are thinking of the nodes/trees
 as a collection of nodes,
 and we
 speak of nodes, when we are more focused on the individual nodes.
 
-[ Rewrite just previous when we have settled terminology. ]
 
-
-[Fragment 1]:
-@node Nodes
-@subsection Nodes
-
-In a parse tree, nodes are points where the tree branches or terminates.
-Tree terminations are also called terminals or "leaves".
-
-Every rule instance in a Marpa parse is represented by a branch point (or "node")
-in the tree.
-The topmost node of a tree is its "root node".
-(Trees are easiest to draw upside down, so traditionally in programming,
-the top of a tree is its root.)
-
-A node, or branch point, "branches" into zero or more "child nodes".
-The node just above a child node,
-the one from which the child node branches out,
-is called its parent node.
+A nodes with no children is called a
+@dfindex terminal node
+@dfindex node, terminal
+@dfn{terminal node}
+or a
+@dfindex leaf node
+@dfindex node, leaf
+@dfn{leaf node}.
+A leaf node is also called a
+@dfindex leaf.
+@dfn{leaf}.
+A node that is not a leaf node
+is called an
+@dfindex inner node
+@dfindex node, inner
+@dfn{inner node}.
 
 If the node is for a non-quantified rule instance,
 the parent node is the LHS of the rule,
@@ -946,39 +943,14 @@ right hand side.
 If the node is for a lexeme,
 the node represents the lexeme's symbol
 and there will be no child nodes.
-
-A parent node can have zero or more children.
-Rule instances with zero children are nulled rule instances,
-and are "leaf nodes".
-Leaf nodes are also called
-@dfindex terminal (node)
 @dfn{terminals}.
+
 In Marpa's parse trees, every terminal is either
 a lexeme or a nulled rule instance.
 
-[Fragment 2]:
 The structure of a parse can be represented as a series of derivation steps from
 the start symbol to the input.
-Another way to represent structure is as a
-@dfindex parse tree
-@dfn{parse tree}.
-Every symbol used in the parse is
-represented by a
-@dfindex node
-@dfn{node}
-of the parse tree.
-Wherever a rule is used in the parse,
-its LHS is represented by a
-@dfindex parent node
-@dfn{parent node}
-and the RHS symbols are represented by
-@dfindex child nodes
-@dfn{child nodes}.
-The start symbol is the
-@dfindex root
-@dfn{root}
-of the tree.
-The node at the root of the tree is called the
+The node at the root of the tree is also called the
 @dfindex start node
 @dfn{start node}.
 
@@ -1002,13 +974,6 @@ a non-terminal symbol.
 In particular, a Marpa terminal can be the LHS
 of a rule.
 
-Traditionally, and in Marpa as well,
-every node is either a
-@dfindex inner node
-@dfn{inner node}
-or a
-@dfindex leaf node
-@dfn{leaf node}.
 In Marpa,
 @dfindex leaf nodes
 @dfn{leaf nodes}
