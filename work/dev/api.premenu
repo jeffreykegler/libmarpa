@@ -800,6 +800,12 @@ in contexts where the meaning is clear,
 we refer to a tree node simply as a
 @dfindex node (of a tree)
 @dfn{node}.
+Especially when looked at from the point of view
+of its labels,
+a node
+is often called an
+@dfindex instance
+@dfn{instance}.
 
 A node is a pair of tuples:
 @itemize
@@ -832,7 +838,15 @@ starting at @var{start} and ending at @var{end}, and
 @item
 that @var{T} is an
 @dfindex instance (of a symbol)
-@dfn{instance} of the symbol with ID @var{sym} at location @var{end}, and
+@dfn{instance} of the symbol with ID @var{sym} at location @var{end},
+@item
+that the
+@dfindex length (of a node)
+@dfindex node length
+@dfn{length} of @var{T} is the
+difference between its start and end,
+that is @code{@var{end}@minus\@var{start}},
+and
 @item
 that the elements of @var{children}
 are the
@@ -915,12 +929,7 @@ as a collection of nodes,
 and we
 speak of nodes, when we are more focused on the individual nodes.
 
-
 A nodes with no children is called a
-@dfindex terminal node
-@dfindex node, terminal
-@dfn{terminal node}
-or a
 @dfindex leaf node
 @dfindex node, leaf
 @dfn{leaf node}.
@@ -932,27 +941,45 @@ is called an
 @dfindex inner node
 @dfindex node, inner
 @dfn{inner node}.
+In Marpa,
+@dfindex leaf nodes
+@dfn{leaf nodes}
+are of
+two kinds:
 
-If the node is for a non-quantified rule instance,
-the parent node is the LHS of the rule,
-and the child nodes are the RHS of the rule alternative.
-If the node is for a quantified rule,
-the parent node is the LHS of the quantified rule,
-and the child nodes are the items of the sequence of symbols on the
-right hand side.
-If the node is for a lexeme,
-the node represents the lexeme's symbol
-and there will be no child nodes.
-@dfn{terminals}.
+@itemize
+@item Nodes for nulled symbols.
+A zero-length leaf node is called a
+@dfindex nulled node
+@dfn{nulled node}.
+@item
+A non-zero-length leaf node is a
+@dfindex terminal node
+@dfn{terminal node}.
+@end itemize
 
-In Marpa's parse trees, every terminal is either
-a lexeme or a nulled rule instance.
-
-The structure of a parse can be represented as a series of derivation steps from
-the start symbol to the input.
-The node at the root of the tree is also called the
-@dfindex start node
-@dfn{start node}.
+@dfindex nulled symbol instance
+@dfindex symbol instance, nulled
+When @var{sym} is the symbol of a node @var{nd},
+we say that @var{nd} is a
+@dfindex symbol instance
+@dfn{symbol instance}
+of @var{sym} or,
+abusing our terminology slightly,
+that @var{nd} is an
+@dfindex instance
+@dfn{instance}
+of the symbol @var{sym}.
+Accordingly,
+if @var{nd} ends at location @var{end},
+we say that
+that @var{sym} is
+@dfindex nulled (of a symbol)
+@dfn{nulled} at location @var{end} or,
+more briefly that @var{sym} is nulled at @var{end}.
+When no confusion arises,
+we say that the symbol is nulled
+to indicate that an instance of the symbol is nulled.
 
 @anchor{terminal discussion}
 Traditionally,
@@ -974,26 +1001,27 @@ a non-terminal symbol.
 In particular, a Marpa terminal can be the LHS
 of a rule.
 
-In Marpa,
-@dfindex leaf nodes
-@dfn{leaf nodes}
-are of
-two kinds:
+If the node is for a non-quantified rule instance,
+the parent node is the LHS of the rule,
+and the child nodes are the RHS of the rule alternative.
+If the node is for a quantified rule,
+the parent node is the LHS of the quantified rule,
+and the child nodes are the items of the sequence of symbols on the
+right hand side.
+If the node is for a lexeme,
+the node represents the lexeme's symbol
+and there will be no child nodes.
 
-@itemize
-@item Nodes for nulled symbols.
-A node for a nulled symbol is called
-a
-@dfindex nulled node
-@dfn{nulled node}.
-@item
-Nodes for symbols being used as terminals.
-@end itemize
+The structure of a parse can be represented as a series of derivation steps from
+the start symbol to the input.
+The node at the root of the tree is also called the
+@dfindex start node
+@dfn{start node}.
 
 @node Forests
 @section Forests
 
-A forest contains one or more
+A forest is a set of one or more
 @dfindex tree
 @dfn{trees}.
 Each tree represents a
@@ -1049,13 +1077,8 @@ for some UNAMBIGUOUS stream of input tokens,
 that grammar produces
 more than one parse tree.
 
-@node Semantics from R2 pod
-@section Semantics R2 pod
-
-[ Merge this with the semantics terms section. ]
-
-@node What is semantics?
-@subsection What is semantics?
+@node Evaluating a parse
+@section Evaluating a parse
 
 A parser is an algorithm
 that takes a string of symbols (tokens or characters) and finds a structure
@@ -1074,46 +1097,6 @@ a value which represents the "meaning" or "semantics" of the string.
 @dfn{Evaluating}
 a tree means finding its semantics.
 
-@dfindex nulled symbol instance
-@dfindex symbol instance, nulled
-In a parse,
-an instance of a symbol is @dfn{nulled} iff it produces the empty string.
-When no confusion arises,
-we may say that the symbol is nulled
-to indicate that an instance of the symbol is nulled.
-
-[Fragment 2]:
-At the start of evaluation, semantics is associated with instances
-of rule alternatives or of lexemes.
-An
-@dfindex instance
-@dfn{instance}
-is another name for a node in the parse tree.
-We usually use the term ``instance'' in the context of a particular
-parse.
-We more often use the term ``node'' when we are thinking in terms
-of trees or forests.
-
-Nodes (and therefore instances) have start locations and end locations.
-Start and end location implies length.
-Locations may be in either earleme or Earley set terms.
-@xref{Input}.
-Every instance has two locations: a start location and
-an end location.
-A node or instance is
-@dfindex nulled (node)
-@dfindex nulled (instance)
-@dfindex nulled (symbol)
-@dfn{nulled}
-iff it is zero length.
-A node is zero length in earlemes iff it is zero length
-in terms of Earley set items,
-so that when we can refer to a node as nulled
-we make no assumption about how we are measuring location.
-The terminology is a little loose,
-but when we expect no confusion to arise,
-we often say that ``a symbol is nulled''
-to mean that a node or instance with that symbol is nulled.
 
 @node Semantics terms
 @section Semantics terms
@@ -1133,6 +1116,11 @@ The tree representation is especially useful when evaluating a parse.
 In the traditional method of evaluating a parse tree,
 every node which represents a terminal symbol
 has a value associated with it on input.
+Recall that nodes are often called ``instances'' of their
+symbols or rules.
+Semantics is associated with instances
+of rules or of lexemes.
+
 Non-null inner nodes
 take their semantics from the rule whose LHS they represent.
 Nulled nodes are dealt with as special cases.
