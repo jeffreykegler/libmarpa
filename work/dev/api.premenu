@@ -234,7 +234,7 @@ the standard one.
 @xref{Ambiguity}.
 The term ``grammar'' itself is
 another.
-@xref{grammar-non-standard}
+@xref{grammar-non-standard}.
 When a definition is non-standard, this is explicitly pointed out.
 
 Readers who want a textbook or tutorial in parsing theory
@@ -281,7 +281,7 @@ used in parsing theory, means something very different
 from what it means in ordinary use.
 The meaning of the strings is an essential part
 of the ordinary idea of what a language is.
-In ordinary use, the word "language" means
+In ordinary use, the word ``language'' means
 far more than a unordered list of its sentences.
 In parsing terminology, meaning (or
 @dfindex semantics
@@ -330,7 +330,7 @@ When the Marpa documents use the term
 @dfindex parsing
 @dfn{parsing}
 in its strict sense, they will
-speak explicitly of "parsing in the strict sense".
+speak explicitly of ``parsing in the strict sense''.
 Otherwise,
 @dfindex parsing
 @dfn{parsing}
@@ -477,8 +477,8 @@ is a rule, then
 
 is a derivation step,
 @itemize
-@item with "@code{A X D}" as its beginning,
-@item "@code{A B C D}" as its end or result, and
+@item with ``@code{A X D}'' as its beginning,
+@item ``@code{A B C D}'' as its end or result, and
 @item @verb{|X ::= B C|} as its rule.
 @end itemize
 A
@@ -501,10 +501,10 @@ there is a derivation of zero or more steps
 which begins with the string
 @var{X} and ends in the string @var{Y}.
 In the example above (@pxref{derivation-example}),
-we say that the symbol string "@code{A X D}"
+we say that the symbol string ``@code{A X D}''
 derives
 the symbol string
-"@code{A B C D}" in one step.
+``@code{A B C D}'' in one step.
 @item We say that
 a first symbol string
 @dfindex directly derives
@@ -513,10 +513,10 @@ a first symbol string
 a second symbol string if and only if there is a derivation of length 1 from the first symbol
 string to the second symbol string.
 In the example above (@pxref{derivation-example}),
-we say that the symbol string "@code{A X D}"
+we say that the symbol string ``@code{A X D}''
 directly derives
 the symbol string
-"@code{A B C D}".
+``@code{A B C D}''.
 @item Every symbol string is said to derive itself in a derivation
 of length 0.  A zero length derivation is a
 @dfindex trivial derivation
@@ -544,13 +544,13 @@ derivation.
 Technically, a symbol @var{X} and a string
 that consists of only that symbol
 are two different things.
-But we often say "the symbol @var{X}"
-as shorthand for "the string
+But we often say ``the symbol @var{X}''
+as shorthand for ``the string
 of length 1
-whose only symbol is @var{X}".
+whose only symbol is @var{X}''.
 For example, if the string containing only the
 symbol @var{X} derives a string @var{Y},
-we will usually say simply that "@var{X} derives @var{Y}".
+we will usually say simply that ``@var{X} derives @var{Y}''.
 
 Wherever symbol or string @var{X} derives @var{Y},
 we may also say @var{X}
@@ -1086,13 +1086,13 @@ in it.
 Traditionally, that structure is a tree.
 
 Rarely is an application interested only in the tree.
-Usually the idea is that the string "means" something:
+Usually the idea is that the string ``means'' something:
 the idea is that the string has a
 @dfindex semantics
 @dfn{semantics}.
 Traditionally and most often, the tree
 is an intermediate step in producing a value,
-a value which represents the "meaning" or "semantics" of the string.
+a value which represents the ``meaning'' or ``semantics'' of the string.
 @dfindex Evaluating (a tree)
 @dfn{Evaluating}
 a tree means finding its semantics.
@@ -1361,7 +1361,7 @@ The following three statements are mutually exclusive:
 @item Object @code{X} has an ancestor of class @code{C}.
 @item Object @code{X} has a descendant of class @code{C}.
 @end itemize
-It follows from the definitions of "parent" and "ancestor" that,
+It follows from the definitions of ``parent'' and ``ancestor'' that,
 for any time object class, an
 object can have at most one ancestor of that class.
 On the other hand, if an object has descendants in a class,
@@ -2155,7 +2155,7 @@ was assembly language.
 In that context, C was radical in its willingness to
 incur a price in efficiency in order to protect the programmer
 from themself.
-C was considered to take a excessively "hand holding"
+C was considered to take a excessively ``hand holding''
 approach which very much flew in the face of consensus.
 
 The decades have made a large difference in the trade-offs,
@@ -2737,13 +2737,13 @@ that the reader has the following in mind while reading them:
 @itemize
 @item Each method description begins with the signature
 of its ``topic method''.
-@item In the method description, the phrase "this method"
+@item In the method description, the phrase ``this method''
 always refers to the topic method.
-@item Whenever "this method" is the subject of a sentence
+@item Whenever ``this method'' is the subject of a sentence
 in the method description, it may be elided,
 so that, for example,
-"This method returns 42" becomes
-"Returns 42".
+``This method returns 42'' becomes
+``returns 42''.
 @item If the return type of a method is not @code{void},
 the last paragraph of its method description is a
 ``return value summary''.
@@ -4888,7 +4888,7 @@ This method is not usually needed.
 Its effect is to leave the traverser in the same state as it is
 immediately after the
 @code{marpa_r_progress_report_start()} method.
-Loosely speaking, it allows the traversal to "start over".
+Loosely speaking, it allows the traversal to ``start over''.
 
 Hard fails if the recognizer is not started,
 or if no progress report traverser is active.
@@ -5042,14 +5042,14 @@ This method sets the current vertex to @code{c_after}.
 In this method description, we will write @code{current} as an alias for @code{c_after}.
 @item @code{current} will be a report item vertex and therefore there will
 be an Earley item corresponding to @code{current}.
-@item Writes the "cooked dot position" of the Earley item corresponding to @code{current}
+@item Writes the ``cooked dot position'' of the Earley item corresponding to @code{current}
 to the location pointed to by the @var{position} argument.
 @item Writes the origin of the Earley item corresponding to @code{current}
 to the location pointed to by the @var{origin} argument.
 @item Returns the rule ID of the Earley item corresponding to @code{current}.
 @end itemize
 
-The "cooked dot position" is
+The ``cooked dot position'' is
 @itemize
 @item the standard 0-based start-relative
 dot position, if the dotted rule is @strong{not} a completion; and
@@ -7859,7 +7859,7 @@ Numeric value: 7.
 @end deftypevr
 
 @deftypevr {Accessor macro} int MARPA_ERR_DEVELOPMENT
-"Development" errors were used heavily during
+``Development'' errors were used heavily during
 Libmarpa's development,
 when it was not yet clear how precisely
 to classify every error condition.
@@ -7980,12 +7980,12 @@ but which may be helpful or interesting.
 @node Elizabeth Scott's SPPFs
 @section Elizabeth Scott's SPPFs
 
-One of our most important data structures is what we call a "bocage".
+One of our most important data structures is what we call a ``bocage''.
 Prof. Scott's work preceded ours,
 and her SPPF structure is our bocage in all essential respects,
 so much so that her excellent writeup serves perfectly
 as documentation for the bocage:
-Scott, Elizabeth. "SPPF-style parsing from Earley recognisers." Electronic Notes in Theoretical Computer Science 203.2 (2008): 53-67,
+Scott, Elizabeth. ``SPPF-style parsing from Earley recognisers.'' Electronic Notes in Theoretical Computer Science 203.2 (2008): 53-67,
 @url{https://dinhe.net/~aredridel/.notmine/PDFs/Parsing/SCOTT%2C%20Elizabeth%20-%20SPPF-Style%20Parsing%20From%20Earley%20Recognizers.pdf}.
 
 @node Data types used by Libmarpa
@@ -8357,7 +8357,7 @@ for one approach.
 Some of the events interfaces are unnecessarily
 complex.
 Activation in the grammar is unnecessary,
-as is the ability to "unmark" an event
+as is the ability to ``unmark'' an event
 for a symbol
 before precomputation.
 @xref{Completion events},
@@ -8375,7 +8375,7 @@ Preliminary notes are in the CWeb code.
 @node Report item traverser should be a time object
 @section Report item traverser should be a time object
 
-Right now, a report item traverser is a kind of "subobject"
+Right now, a report item traverser is a kind of ``subobject''
 of a recognizer.
 It should be made into a full-fledged time object.
 This will allow multiple report item traversers to be in
@@ -8577,7 +8577,7 @@ while sharp division between terminals
 and non-terminals was
 a useful simplification for proving theorems,
 it was not essential in practice.
-In the UNIX "toolkit" tradition,
+In the UNIX ``toolkit'' tradition,
 the practice has been to include even awkward,
 dangerous tools with no known use, in the toolkit.
 The philosophy was that empowering the user who
@@ -9009,7 +9009,7 @@ The account of Earley's algorithm is on pages 320-330.
 
 Marpa is based on ideas from
 John Aycock and R.
-Nigel Horspool's "Practical Earley Parsing", @emph{The Computer Journal},
+Nigel Horspool's ``Practical Earley Parsing'', @emph{The Computer Journal},
 Vol. 45, No. 6, 2002, pp. 620-630.
 The idea of doing LR(0)
 precomputation for
@@ -9060,7 +9060,7 @@ A PDF of the parsing chapter is at @url{http://hop.perl.plover.com/book/pdf/08Pa
 Of
 Jay Earley's papers on his general parsing algorithm,
 the most readily available
-is "An efficient context-free parsing algorithm",
+is ``An efficient context-free parsing algorithm'',
 @emph{Communications of the Association for Computing Machinery},
 13:2:94-102, 1970.
 
@@ -9150,8 +9150,8 @@ and is available online:
 
 Marpa's handling of right-recursion uses the ideas in
 Joop M.I.M. Leo's
-"A General Context-Free Parsing Algorithm Running in Linear
-Time on Every LR(k) Grammar Without Using Lookahead",
+``A General Context-Free Parsing Algorithm Running in Linear
+Time on Every LR(k) Grammar Without Using Lookahead'',
 @emph{Theoretical Computer Science},
 Vol. 82, No. 1, 1991, pp 165-176.
 This is a difficult paper.
