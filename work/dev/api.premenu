@@ -6966,7 +6966,7 @@ a symbol is completed
 using its
 @code{marpa_g_symbol_is_completion_event_set()}
 method.
-(A symbol is "completed" if and only if any rule with that symbol
+(A symbol is ``completed'' if and only if any rule with that symbol
 as its LHS is completed.)
 This event code indicates that one of those events
 occurred.
@@ -7225,7 +7225,7 @@ Suggested message: "Internal error: Libmarpa was built incorrectly"
 @end deftypevr
 
 @deftypevr {Accessor macro} int MARPA_ERR_I_AM_NOT_OK
-The Libmarpa base grammar is in a "not ok"
+The Libmarpa base grammar is in a ``not ok''
 state.
 Currently, the only way this can happen
 is if Libmarpa memory is being overwritten.
