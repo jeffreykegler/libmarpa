@@ -845,7 +845,7 @@ that the
 @dfindex node length
 @dfn{length} of @var{T} is the
 difference between its start and end,
-that is @code{@var{end}@minus\@var{start}},
+that is @code{@var{end}@minus{}@var{start}},
 and
 @item
 that the elements of @var{children}
