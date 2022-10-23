@@ -175,7 +175,7 @@ A @dfn{trap value},
 also called a @dfn{trap representation},
 is a value that when accessed causes undefined behavior.
 Our use of this term is consistent with its use in the C99 standard.
-@xref{Trap representations}
+@xref{Trap representations}.
 @item
 @dfindex undefined behavior
 An @dfn{undefined behavior}
@@ -199,14 +199,14 @@ Our use of this term is consistent with its use in the C99 standard.
 @dfindex user
 @dfn{User} means a ``user'' of the Libmarpa library.
 A user of the library is also a programmer,
-so that in this documents, ``user''
+so that in this document, ``user''
 and ``programmer'' are essentially synonyms.
 @item
 @dfindex we
 @dfindex us
 @dfindex our
 @dfn{We} (and ``us'' and ''our'') refer to the authors.
-As of this writing, there is a primary author,
+As of this writing, there is a one primary author,
 but the plural is traditional, and our ``we''
 is intended to include the reader
 and everyone
@@ -437,6 +437,15 @@ or an
 @dfindex empty rule
 @dfn{empty rule}.
 
+In a standard grammar, all rules are BNF rules,
+as just described.
+Marpa grammars differ from standard grammars
+in allowing a second kind of rule:
+@dfindex quantified rule
+@dfn{quantified rules}.
+Quantified rules are described below:
+@pxref{Quantified rules}.
+
 Any symbol which is allowed to occur
 in the symbol string input is called a
 @dfindex terminal
@@ -528,12 +537,6 @@ is a
 @dfindex non-trivial
 @dfn{non-trivial}
 derivation.
-@item A non-trivial derivation of a symbol string from itself
-is called a
-@dfindex cycle
-@dfn{cycle}.
-Grammars which contain cycles are traditionally considered useless,
-but Marpa will parse with such grammars.
 @item If a derivation is not trivial or direct, that is, if it has more than one step,
 then it is an
 @dfindex indirect
@@ -623,13 +626,6 @@ If a symbol is not nullable, it is
 If a symbol is not nulling, it is
 @dfindex non-nulling
 @dfn{non-nulling}.
-In any instance where a symbol produces the empty string,
-it is said to be
-@dfindex nulled
-@dfn{nulled},
-or to be a
-@dfindex null symbol
-@dfn{null symbol}.
 
 A rule is
 @dfindex nullable rule
@@ -680,8 +676,10 @@ that rule is said to be
 A rule that is not productive is called
 @dfindex unproductive
 @dfn{unproductive}.
-For example, a rule is unproductive unless every symbol on
-its RHS either is a terminal or is the LHS of some other rule.
+A rule is productive iff every symbol on
+its RHS is productive.
+A symbol is productive iff
+it is a terminal or it is the LHS of a productive rule.
 A rule which is inaccessible or unproductive is called a
 @dfindex useless
 @dfn{useless}
@@ -851,7 +849,8 @@ and
 that the elements of @var{children}
 are the
 @dfindex children (of a node)
-@dfn{children},
+@dfn{children}
+of @var{nd},
 @item
 so that every element of @var{children}
 is a
@@ -886,13 +885,13 @@ iff one of the following are true:
 In this case we say that @var{nd1} is the
 @dfindex trivial ancestor
 @dfindex ancestor, trivial
-@dfn{trivial ancestor}.
+@dfn{trivial ancestor}
 of @var{nd2}.
 @item @var{nd1} is the parent of an ancestor of @var{nd2}.
 In this case we say that @var{nd1} is a
 @dfindex proper ancestor
 @dfindex ancestor, proper
-@dfn{proper ancestor}.
+@dfn{proper ancestor}
 of @var{nd2}.
 @end itemize
 
@@ -909,13 +908,13 @@ iff one of the following are true:
 In this case we say that @var{nd1} is the
 @dfindex trivial descendant
 @dfindex descendant, trivial
-@dfn{trivial descendant}.
+@dfn{trivial descendant}
 of @var{nd2}.
 @item @var{nd1} is the parent of an descendant of @var{nd2}.
 In this case we say that @var{nd1} is a
 @dfindex proper descendant
 @dfindex descendant, proper
-@dfn{proper descendant}.
+@dfn{proper descendant}
 of @var{nd2}.
 @end itemize
 
@@ -924,12 +923,12 @@ A tree is its own
 @dfn{root node}.
 That implies that, in fact, tree and node are just two different terms for the
 same thing.
-We usually speak of trees, when we are thinking of the nodes/trees
+We usually speak of trees when we are thinking of the nodes/trees
 as a collection of nodes,
 and we
-speak of nodes, when we are more focused on the individual nodes.
+speak of nodes when we are more focused on the individual nodes.
 
-A nodes with no children is called a
+A node with no children is called a
 @dfindex leaf node
 @dfindex node, leaf
 @dfn{leaf node}.
@@ -978,8 +977,8 @@ that @var{sym} is
 @dfn{nulled} at location @var{end} or,
 more briefly that @var{sym} is nulled at @var{end}.
 When no confusion arises,
-we say that the symbol is nulled
-to indicate that an instance of the symbol is nulled.
+we say that the symbol @var{sym} is nulled
+to indicate that an instance of @var{sym} is nulled.
 
 @anchor{terminal discussion}
 Traditionally,
@@ -1000,6 +999,8 @@ the traditional approach requires a
 a non-terminal symbol.
 In particular, a Marpa terminal can be the LHS
 of a rule.
+
+[ CHECKED TO HERE.  Define "rule instance somewhere". ]
 
 If the node is for a non-quantified rule instance,
 the parent node is the LHS of the rule,
@@ -1077,6 +1078,12 @@ for some UNAMBIGUOUS stream of input tokens,
 that grammar produces
 more than one parse tree.
 
+@node Quantified rules
+@section Quantified rules
+
+@node Traversal
+@section Traversal
+
 @node Evaluating a parse
 @section Evaluating a parse
 
@@ -1096,7 +1103,6 @@ a value which represents the ``meaning'' or ``semantics'' of the string.
 @dfindex Evaluating (a tree)
 @dfn{Evaluating}
 a tree means finding its semantics.
-
 
 @node Semantics terms
 @section Semantics terms
