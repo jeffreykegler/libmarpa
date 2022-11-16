@@ -980,6 +980,20 @@ When no confusion arises,
 we say that the symbol @var{sym} is nulled
 to indicate that an instance of @var{sym} is nulled.
 
+A node is
+@itemize
+@item a terminal node iff its symbol is a terminal
+and it has no chidren;
+@item a BNF node iff its symbol is the LHS of a BNF rule,
+and its children are the RHS of the same BNF rule;
+@item a sequence node iff symbol is the LHS of a sequence
+rule.
+@end itemize
+The three options above (terminal node, BNF node
+and sequence node) are mutually exclusive because the
+LHS of a sequence rule must be unique to that rule.
+[ CHECK THIS ]
+
 @anchor{terminal discussion}
 Traditionally,
 @itemize
