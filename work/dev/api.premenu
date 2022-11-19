@@ -807,7 +807,7 @@ is often called an
 
 A node is a pair of tuples:
 @itemize
-@item The first element of a node is
+@item The first element tuple of a node is
 a ``label tuple''.
 The label tuple is a triple
 of symbol ID,
@@ -815,56 +815,93 @@ start Earley set ID, and
 end Earley set ID.
 For more about the Earley set IDs,
 @pxref{Input}.
-@item The second element of a node is
+@item The second element tuple of a node is
 a list (ordered set) of nodes.
 @end itemize
 We note that this definition of a tree node is recursive.
 
-Let a tree node be
+In the following list of definitions and assertions, let
 @verbatim
      nd = [ [ sym,  start, end ], children ]
 @end verbatim
-We say that
+be a tree node:
 @itemize
 @item
-that @var{S} is the symbol of @var{T},
+We say that
+that @var{sym} is the symbol of @var{nd}.
 @item
-that @var{T} is an
+We say that @var{nd} is an
 @dfindex instance (of a symbol)
 @dfn{instance} of the symbol with ID @var{sym}
-starting at @var{start} and ending at @var{end}, and
+starting at @var{start} and ending at @var{end}.
 @item
-that @var{T} is an
+We say that @var{T} is an
 @dfindex instance (of a symbol)
-@dfn{instance} of the symbol with ID @var{sym} at location @var{end},
+@dfn{instance} of the symbol with ID @var{sym} at location @var{end}.
 @item
-that the
+We say that the
 @dfindex length (of a node)
 @dfindex node length
 @dfn{length} of @var{T} is the
 difference between its start and end,
-that is @code{@var{end}@minus{}@var{start}},
-and
+that is @code{@var{end}@minus{}@var{start}}.
 @item
-that the elements of @var{children}
+We say that the elements of @var{children}
 are the
 @dfindex children (of a node)
 @dfn{children}
-of @var{nd},
+of @var{nd}.
 @item
-so that every element of @var{children}
+We say that every element of @var{children}
 is a
 @dfindex child (of a node)
 @dfn{child}
 of @var{nd}.
-@end itemize
-We also say, for brevity,
+@item
+For brevity, we say
 that the symbol @var{sym} is
 @dfindex at (a location, wrt a symbol)
 @dfn{at}
 @var{end}.
-We note that we consider the location of a symbol
+Note that this means we consider the location of a symbol
 to be where it ends.
+@item We say that @var{nd} is a
+@dfindex terminal node
+@dfn{terminal node}
+iff @var{sym} is a terminal
+and @var{children} is the empty list.
+@item We say that @var{nd} is a
+@dfindex nulled node
+@dfn{nulled node}
+iff @var{sym} is not a terminal
+and @var{children} is the empty list.
+@item Every node where @var{children} is the empty list
+is either a nulled node or a terminal nodes.
+But, because nullable LHS terminals are not allowed,
+no node is both nulled and terminal.
+@item We say that @var{nd}
+is a
+@dfindex BNF node
+@dfn{BNF node}
+iff
+@var{nd} is not a terminal node
+and @var{sym} is the LHS of a BNF rule.
+@item We say that @var{nd}
+is a
+@dfindex sequence node
+@dfn{sequence node}
+iff
+@var{nd} is not a terminal node
+and @var{sym} is the LHS of a sequence rule.
+@item
+Every node is a terminal node, a BNF node
+or a sequence node.
+But no node is more
+than one of the these three.
+This is because sequence rules never share a
+LHS with a BNF rule,
+and no BNF node or sequence node is a terminal node.
+@end itemize
 
 Let @var{nd1} and @var{nd2} be two nodes.
 If @var{nd2} is a child of @var{nd1},
@@ -979,20 +1016,6 @@ more briefly that @var{sym} is nulled at @var{end}.
 When no confusion arises,
 we say that the symbol @var{sym} is nulled
 to indicate that an instance of @var{sym} is nulled.
-
-A node is
-@itemize
-@item a terminal node iff its symbol is a terminal
-and it has no chidren;
-@item a BNF node iff its symbol is the LHS of a BNF rule,
-and its children are the RHS of the same BNF rule;
-@item a sequence node iff symbol is the LHS of a sequence
-rule.
-@end itemize
-The three options above (terminal node, BNF node
-and sequence node) are mutually exclusive because the
-LHS of a sequence rule must be unique to that rule.
-[ CHECK THIS ]
 
 @anchor{terminal discussion}
 Traditionally,
@@ -5982,6 +6005,13 @@ nullable symbol,
 and will simply copy this fixed value to
 stack location @code{marpa_v_result(v)}.
 @end itemize
+The use of the word "nulling" in
+the step type name @code{MARPA_STEP_NULLING_SYMBOL}
+is problematic:
+While the node must be zero-length (nulled or nulling),
+the node's symbol need not be nulling:
+it may be nullable.
+@xref{Nulling versus nulled}.
 @end deftypevr
 
 @deftypevr {Accessor macro} Marpa_Step_Type MARPA_STEP_INACTIVE
@@ -8359,6 +8389,20 @@ Instead, it discusses
 changes or additions that might be made
 to this document or
 to the external interface in the future.
+
+@node Nulling versus nulled
+@section Nulling versus nulled
+
+Currently we call a zero-length instance (aka tree node)
+either a nulling instance or a nulled instance.
+The use of ``nulling'' is for historic reasons and
+arguably is confusing.
+The symbol of a nulling instance is not necessarily
+a nulling symbol --- it might be a nullable symbol.
+Usage of the term ``nulled'' is less confusing.
+At this time, we continue to allow zero-length instances
+to be called nulling instances because that terminology
+is embedded in a lot of code and documents.
 
 @node Document pre-conditions more formally
 @section Document pre-conditions more formally
