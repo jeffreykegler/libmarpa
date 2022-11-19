@@ -935,16 +935,26 @@ that the symbol @var{sym} is
 @var{end}.
 Note that this means we consider the location of a symbol
 to be where it ends.
+@item @var{nd} is a
+@dfindex leaf node
+@dfn{leaf node} iff @var{children}
+is the empty list.
+A leaf node is also call a
+@dfindex leaf (node)
+@dfn{leaf}.
+@item @var{nd} is an
+@dfindex inner node
+@dfn{inner node} iff it is not a leaf node.
 @item We say that @var{nd} is a
 @dfindex terminal node
 @dfn{terminal node}
-iff @var{sym} is a terminal
-and @var{children} is the empty list.
+iff @var{nd} is a leaf node
+and @var{sym} is a terminal.
 @item We say that @var{nd} is a
 @dfindex nulled node
 @dfn{nulled node}
-iff @var{sym} is not a terminal
-and @var{children} is the empty list.
+iff @var{nd} is a leaf node
+and @var{sym} is @strong{not} a terminal.
 @item Every node where @var{children} is the empty list
 is either a nulled node or a terminal nodes.
 But, because nullable LHS terminals are not allowed,
@@ -1037,35 +1047,6 @@ We usually speak of trees when we are thinking of the nodes/trees
 as a collection of nodes,
 and we
 speak of nodes when we are more focused on the individual nodes.
-
-A node with no children is called a
-@dfindex leaf node
-@dfindex node, leaf
-@dfn{leaf node}.
-A leaf node is also called a
-@dfindex leaf.
-@dfn{leaf}.
-A node that is not a leaf node
-is called an
-@dfindex inner node
-@dfindex node, inner
-@dfn{inner node}.
-In Marpa,
-@dfindex leaf nodes
-@dfn{leaf nodes}
-are of
-two kinds:
-
-@itemize
-@item Nodes for nulled symbols.
-A zero-length leaf node is called a
-@dfindex nulled node
-@dfn{nulled node}.
-@item
-A non-zero-length leaf node is a
-@dfindex terminal node
-@dfn{terminal node}.
-@end itemize
 
 @dfindex nulled symbol instance
 @dfindex symbol instance, nulled
