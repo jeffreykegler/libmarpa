@@ -132,6 +132,70 @@ The reader knows some parsing theory.
 @xref{Parsing theory preliminaries}.
 @end itemize
 
+@node Overview of Libmarpa
+@chapter Overview of Libmarpa
+
+This chapter contains a quick overview of Libmarpa,
+using standard parsing terminology.
+It is intended to help a prospective reader of
+the whole document to know what to
+expect.
+Details and careful definitions will be provided
+in later chapters.
+
+Libmarpa implements the Marpa parsing algorithm.
+Marpa is named
+after the legendary 11th century Tibetan translator,
+Marpa Lotsawa.
+In creating Marpa,
+I depended heavily on previous work by Jay Earley,
+Joop Leo,
+John Aycock and Nigel Horspool.
+
+Libmarpa implements the entire Marpa algorithm.
+This library does
+the necessary grammar preprocessing, recognizes the input,
+and produces
+a ``bocage'', which is
+an optimized parse forest.
+Libmarpa also supports the ordering, iteration
+and evaluation of the parse trees in the bocage.
+
+Libmarpa is very low-level.
+For example, it has no strings.
+Rules, symbols, and token values are all represented
+by integers.
+This, of course, will not suffice for many applications.
+Users will very often want
+names for the symbols, non-integer values for
+tokens, or both.
+Typically, applications will use arrays to
+translate Libmarpa's integer ID's to strings or other
+values as required.
+
+Libmarpa also does @strong{not} implement most of the semantics.
+Libmarpa does have an evaluator (called a ``valuator''),
+but it does @strong{not}
+manipulate the stack directly.
+Instead, Libmarpa,
+based on its traversal of the parse tree,
+passes optimized step by step stack manipulation
+instructions to the upper layer.
+These instructions indicate the token or rule involved,
+and the proper location for the true token value or
+the result of the rule evaluation.
+For rule evaluations, the instructions include the stack location
+of the arguments.
+
+Marpa requires most semantics to be
+implemented in the application.
+This allows the application total flexibility.
+It also puts
+the application is in a much better position to prevent errors,
+to catch errors at runtime or,
+failing all else,
+to successfully debug the logic.
+
 @node Terms, definitions and notation
 @chapter Terms, definitions and notation
 
@@ -835,16 +899,22 @@ We say that @var{nd} is an
 @dfn{instance} of the symbol with ID @var{sym}
 starting at @var{start} and ending at @var{end}.
 @item
-We say that @var{T} is an
+We say that @var{nd} is an
 @dfindex instance (of a symbol)
 @dfn{instance} of the symbol with ID @var{sym} at location @var{end}.
 @item
 We say that the
 @dfindex length (of a node)
 @dfindex node length
-@dfn{length} of @var{T} is the
+@dfn{length} of @var{nd} is the
 difference between its start and end,
 that is @code{@var{end}@minus{}@var{start}}.
+@item
+The length of @var{nd} is zero iff
+@var{start} is the same as @var{end}.
+Put another way,
+the length of @var{nd} is zero iff
+@code{@var{start} = @var{end}}.
 @item
 We say that the elements of @var{children}
 are the
@@ -901,6 +971,9 @@ than one of the these three.
 This is because sequence rules never share a
 LHS with a BNF rule,
 and no BNF node or sequence node is a terminal node.
+@item
+All nulled nodes are zero-length.
+No terminal node is zero-length.
 @end itemize
 
 Let @var{nd1} and @var{nd2} be two nodes.
@@ -1221,61 +1294,6 @@ Applications should not be designed to rely
 on diagnostic behaviors.
 We sometimes say that ``diagnostics may attempt'' a certain behavior
 to emphasize that that behavior is a diagnostic behavior.
-
-@node About Libmarpa
-@chapter About Libmarpa
-
-Libmarpa implements the Marpa parsing algorithm.
-Marpa is named
-after the legendary 11th century Tibetan translator,
-Marpa Lotsawa.
-In creating Marpa,
-I depended heavily on previous work by Jay Earley,
-Joop Leo,
-John Aycock and Nigel Horspool.
-
-Libmarpa implements the entire Marpa algorithm.
-This library does
-the necessary grammar preprocessing, recognizes the input,
-and produces a parse forest.
-It also supports the ordering, iteration
-and evaluation of the parse
-trees in the forest.
-
-Libmarpa is very low-level.
-For example, it has no strings.
-Rules, symbols, and token values are all represented
-by integers.
-This, of course, will not suffice for many applications.
-Users will very often want
-names for the symbols, non-integer values for
-tokens, or both.
-Typically, applications will use arrays to
-translate Libmarpa's integer ID's to strings or other
-values as required.
-
-Libmarpa also does @strong{not} implement most of the semantics.
-Libmarpa does have an evaluator (called a ``valuator''),
-but it does @strong{not}
-manipulate the stack directly.
-Instead, Libmarpa,
-based on its traversal of the parse tree,
-passes optimized step by step stack manipulation
-instructions to the upper layer.
-These instructions indicate the token or rule involved,
-and the proper location for the true token value or
-the result of the rule evaluation.
-For rule evaluations, the instructions include the stack location
-of the arguments.
-
-Marpa requires most semantics to be
-implemented in the application.
-This allows the application total flexibility.
-It also puts
-the application is in a much better position to prevent errors,
-to catch errors at runtime or,
-failing all else,
-to successfully debug the logic.
 
 @node Architecture
 @chapter Architecture
