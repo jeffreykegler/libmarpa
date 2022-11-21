@@ -943,8 +943,10 @@ A leaf node is also call a
 @dfindex leaf (node)
 @dfn{leaf}.
 @item @var{nd} is an
-@dfindex inner node
-@dfn{inner node} iff it is not a leaf node.
+@dfindex rule node
+@dfn{rule node} iff it is not a leaf node.
+@item Every node is either a leaf node or a rule node,
+but no node is both a leaf and a rule node.
 @item We say that @var{nd} is a
 @dfindex terminal node
 @dfn{terminal node}
@@ -955,8 +957,10 @@ and @var{sym} is a terminal.
 @dfn{nulled node}
 iff @var{nd} is a leaf node
 and @var{sym} is @strong{not} a terminal.
-@item Every node where @var{children} is the empty list
-is either a nulled node or a terminal nodes.
+A nulled node is also called a
+@dfindex nulling node
+@dfn{nulling node}.
+@item Every leaf node is either a nulled node or a terminal node.
 But, because nullable LHS terminals are not allowed,
 no node is both nulled and terminal.
 @item We say that @var{nd}
@@ -985,6 +989,8 @@ and no BNF node or sequence node is a terminal node.
 All nulled nodes are zero-length.
 No terminal node is zero-length.
 @end itemize
+
+[ CHECKED TO HERE.  Define "rule instance somewhere". ]
 
 Let @var{nd1} and @var{nd2} be two nodes.
 If @var{nd2} is a child of @var{nd1},
@@ -1091,8 +1097,6 @@ a non-terminal symbol.
 In particular, a Marpa terminal can be the LHS
 of a rule.
 
-[ CHECKED TO HERE.  Define "rule instance somewhere". ]
-
 If the node is for a non-quantified rule instance,
 the parent node is the LHS of the rule,
 and the child nodes are the RHS of the rule alternative.
@@ -1151,6 +1155,10 @@ the traditional definition,
 all grammars would be
 ambiguous except those grammars which allowed only
 the null parse.
+
+[ TODO: Rewrtie two reasons to differ from traditional
+definition -- ambiguous tokens and pruned null
+forests.  Def is that cardinality of forest > 1. ]
 
 It is easiest if the Marpa definition and the
 traditional definition were extensionally
