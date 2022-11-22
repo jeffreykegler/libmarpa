@@ -952,6 +952,9 @@ but no node is both a leaf and a rule node.
 @dfn{terminal node}
 iff @var{nd} is a leaf node
 and @var{sym} is a terminal.
+A terminal node is also called a
+@dfindex token node
+@dfn{token node}.
 @item We say that @var{nd} is a
 @dfindex nulled node
 @dfn{nulled node}
@@ -6141,10 +6144,7 @@ A step's location in terms of Earley sets is called its ES location.
 Every ES location is the ID of an Earley set.
 
 ES location is only relevant for parse nodes.
-A parse node is either a leaf node or a rule node.
 The step type for a rule node is MARPA_STEP_RULE.
-A leaf node is either a nulled node,
-or a token node.
 The step type for a nulled node is MARPA_STEP_NULLING_SYMBOL.
 The step type for a token node is MARPA_STEP_TOKEN.
 
