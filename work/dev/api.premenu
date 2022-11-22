@@ -5951,6 +5951,7 @@ On hard failure, @minus{}2.
 @section Valuator step types
 
 @deftypevr {Accessor macro} Marpa_Step_Type MARPA_STEP_RULE
+MARPA_STEP_RULE is the step type for for a rule node.
 The application should perform its equivalent
 of rule execution.
 @itemize
@@ -5978,6 +5979,7 @@ be equal to
 @end deftypevr
 
 @deftypevr {Accessor macro} Marpa_Step_Type MARPA_STEP_TOKEN
+MARPA_STEP_TOKEN is the step type for a token node.
 The application's equivalent of the evaluation
 of the semantics of a non-null token should be performed.
 @itemize
@@ -6000,6 +6002,7 @@ to stack location @code{marpa_v_result(v)}.
 @end deftypevr
 
 @deftypevr {Accessor macro} Marpa_Step_Type MARPA_STEP_NULLING_SYMBOL
+MARPA_STEP_RULE is the step type for for a nulled node.
 The application's equivalent of the evaluation
 of the semantics of a nulling token should be performed.
 @itemize
@@ -6142,13 +6145,9 @@ They provide Earley set location information about the parse tree.
 
 A step's location in terms of Earley sets is called its ES location.
 Every ES location is the ID of an Earley set.
+ES location is only relevant for steps that correspond to tree nodes.
 
-ES location is only relevant for parse nodes.
-The step type for a rule node is MARPA_STEP_RULE.
-The step type for a nulled node is MARPA_STEP_NULLING_SYMBOL.
-The step type for a token node is MARPA_STEP_TOKEN.
-
-Every parse node has both a start ES location
+Every tree node has both a start ES location
 and an end ES location.
 The start ES location is the first ES location of
 that parse node.
