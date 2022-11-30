@@ -989,11 +989,50 @@ This is because sequence rules never share a
 LHS with a BNF rule,
 and no BNF node or sequence node is a terminal node.
 @item
+If @var{nd} is a rule node, its
+@dfindex LHS (of a rule node)
+@dfn{LHS} is @var{sym}.
+@item
+If @var{nd} is a rule node, its
+@dfindex RHS (of a rule node)
+@dfn{RHS} is the concatenation,
+from first to last,
+of the symbols of the nodes in @var{children}.
+@item
 All nulled nodes are zero-length.
 No terminal node is zero-length.
+@item We say that @var{nd} is an instance of
+@var{sym} starting at @var{start} and ending
+at @var{end}.
+We also say that @var{nd} is an instance of
+@var{sym} at @var{end} or, simply,
+that @var{nd} is an instance of @var{sym}.
+@item
+Let @var{r} be the rule whose LHS
+is equal to the LHS of @var{nd},
+and whose RHS is equal to the RHS of @var{nd}.
+If @var{nd} is a BNF rule node,
+there must be such a rule.
+In that case,
+We say that @var{nd} is an instance of
+@var{r} starting at @var{start} and ending
+at @var{end}.
+We also say that @var{nd} is an instance of
+@var{r} at @var{end} or, simply,
+that @var{nd} is an instance of @var{r}.
+@item
+Let @var{r} be the sequence rule whose LHS
+is equal to the LHS of @var{nd}.
+If @var{nd} is a sequence rule node,
+there must be such a rule.
+In that case,
+We say that @var{nd} is an instance of
+@var{r} starting at @var{start} and ending
+at @var{end}.
+We also say that @var{nd} is an instance of
+@var{r} at @var{end} or, simply,
+that @var{nd} is an instance of @var{r}.
 @end itemize
-
-[ CHECKED TO HERE.  Define "rule instance somewhere". ]
 
 Let @var{nd1} and @var{nd2} be two nodes.
 If @var{nd2} is a child of @var{nd1},
