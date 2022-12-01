@@ -1032,6 +1032,14 @@ at @var{end}.
 We also say that @var{nd} is an instance of
 @var{r} at @var{end} or, simply,
 that @var{nd} is an instance of @var{r}.
+@item
+@dfindex nulled symbol instance
+@dfindex symbol instance, nulled
+If @var{nd} is a nulled instance,
+that @var{sym} is
+@dfindex nulled (of a symbol)
+@dfn{nulled} at location @var{end} or, simply,
+say that the symbol @var{sym} is nulled.
 @end itemize
 
 Let @var{nd1} and @var{nd2} be two nodes.
@@ -1096,28 +1104,7 @@ as a collection of nodes,
 and we
 speak of nodes when we are more focused on the individual nodes.
 
-@dfindex nulled symbol instance
-@dfindex symbol instance, nulled
-When @var{sym} is the symbol of a node @var{nd},
-we say that @var{nd} is a
-@dfindex symbol instance
-@dfn{symbol instance}
-of @var{sym} or,
-abusing our terminology slightly,
-that @var{nd} is an
-@dfindex instance
-@dfn{instance}
-of the symbol @var{sym}.
-Accordingly,
-if @var{nd} ends at location @var{end},
-we say that
-that @var{sym} is
-@dfindex nulled (of a symbol)
-@dfn{nulled} at location @var{end} or,
-more briefly that @var{sym} is nulled at @var{end}.
-When no confusion arises,
-we say that the symbol @var{sym} is nulled
-to indicate that an instance of @var{sym} is nulled.
+[ TO HERE ]
 
 @anchor{terminal discussion}
 Traditionally,
