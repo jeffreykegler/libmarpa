@@ -328,17 +328,23 @@ The
 @dfindex length
 @dfn{length}
 of a string is the number of symbols in it.
+A symbol string is also called a
+@dfindex sentential form
+@dfn{sentential form}.
 
-A
+Some of the symbols are terminals.
+For the purposes of this subsection, a terminal is a symbol
+which may occur in an input to a parse of a grammar.
+In a parse, an input is either accepted or rejected.
+A potential input string,
+that is, a sentential form which is made up entirely of terminal symbols,
+is called a
+@dfindex sentence
+@dfn{sentence}.
+The set of sentences that a grammar accepts is the
 @dfindex language
 @dfn{language}
-is a set of
-@dfindex symbol strings
-@dfn{symbol strings}.
-A grammar defines a
-@dfindex language
-@dfn{language},
-as will be described later.
+of the grammar.
 
 It is important to note that the term language, as it is
 used in parsing theory, means something very different
@@ -509,16 +515,6 @@ in allowing a second kind of rule:
 @dfn{quantified rules}.
 Quantified rules are described below:
 @pxref{Quantified rules}.
-
-Any symbol which is allowed to occur
-in the symbol string input is called a
-@dfindex terminal
-@dfn{terminal}
-symbol.
-If the symbols in a symbol string are all terminals,
-that symbol string is also called a
-@dfindex sentence
-@dfn{sentence}.
 
 @node Derivations
 @section Derivations
