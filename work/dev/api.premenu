@@ -2018,12 +2018,15 @@ For example, a comma-separated sequence of numbers
 may be recognized
 by specifying the rule @verb{|Seq ::= num|} and
 the separator @verb{|comma ::= ','|}.
-By default, an optional terminal separator,
+By default, an optional final separator,
 as shown in the example above,
 is recognized,
 but ``proper separation'' may also be specified.
-Proper separation is so called because, properly,
-separators should separate symbols.
+In proper separation separators must,
+in fact,
+come between (``separate'') items of the sequence.
+A final separator is not a separator in the strict sense,
+and therefore is not recognized when proper separation is in effect.
 For more on specifying sequence rules,
 @pxref{marpa_g_sequence_new}.
 
@@ -2043,7 +2046,7 @@ ambiguous grammar.
 
 Libmarpa allows highly ambiquous grammars
 and a programmer who wants a grammar
-with sequences containing nullable items or separators can
+with sequences containing nullable items or separators
 can write that grammar using BNF rules.
 The use of BNF rules
 make it clearer that ambiguity is what the programmer
