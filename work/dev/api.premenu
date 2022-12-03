@@ -2001,12 +2001,15 @@ time objects.
 @chapter Sequence rules
 
 Traditionally, grammars only allow BNF rules.
-Libmarpa allows sequence rules, which conveniently express situations
-where a symbol is to be repeated on the RHS.
+Libmarpa allows sequence rules, which express sequences
+by allowing
+a single RHS symbol to be repeated.
 
 A sequence rule consists of a LHS and a RHS symbol.
 Additionally, the application must indicate the minimum number
-of repetitions (currently, only 0 or 1 are allowed).
+of repetitions.
+The minimum count must be 0 or 1.
+
 Optionally, a separator symbol may be specified.
 For example, a comma-separated sequence of numbers
 @verbatim
@@ -2029,8 +2032,9 @@ their presence in the Libmarpa interface does not extend its power.
 Every Libmarpa grammar that can be written using sequence rules
 can be rewritten as a grammar without sequence rules.
 
-Nullables on the RHS of sequence rules are prohibited
-because it is not completely clear what
+The RHS symbol and the separator, if there is one,
+must not be nullable.
+This is because it is not completely clear what
 an application intends
 when it asks for a sequence of items,
 some of which are nullable ---
@@ -2044,6 +2048,37 @@ can write that grammar using BNF rules.
 The use of BNF rules
 make it clearer that ambiguity is what the programmer
 intended, and allows the programmer more flexibility.
+
+A sequence rule must have a dedicated LHS ---
+that is, the LHS of a sequence rule must not be the LHS of
+any other rule.
+This implies that the LHS of a sequence rule can
+never be the LHS of a BNF rule.
+
+The requirement that the LHS of a sequence rule be
+unique is imposed for reasons similar to those
+for the
+prohibition against RHS and separator nullables.
+Often reuse of the LHS of a sequence rule
+is simply a mistake.
+Even when deliberate,
+reuse of the LHS results in a complex grammar,
+one which often parses in ways that the programmer
+did not intend.
+
+A programmer who believes they know what they
+are doing, and really does want alternative sequences starting
+at the same input location, can specify this behavior indirectly.
+They can do this by creating two sequence rules with distinct LHS's:
+@verbatim
+     Seq1 ::= Item1
+     Seq2 ::= Item2
+@end verbatim
+and adding a new ``parent'' LHS which recognizes the sequences as alternatives.
+@verbatim
+     SeqChoice ::= Seq1
+     SeqChoice ::= Seq2
+@end verbatim
 
 [ TODO: Finish this ]
 
