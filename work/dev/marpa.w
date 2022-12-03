@@ -2815,10 +2815,6 @@ practice is to be ``liberal"
 and to allow a separator to come after the last list
 item.
 Liberal separation is the default in Marpa.
-\par
-There is not bitfield for this, because proper separation is
-a completely syntactic matter,
-taken care of in the rewrite itself.
 @d XRL_is_Proper_Separation(rule) ((rule)->t_is_proper_separation)
 @<Public defines@> =
 #define MARPA_PROPER_SEPARATION @| @[0x2@]@/

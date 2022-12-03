@@ -515,7 +515,7 @@ The RHS of a sequence rules is a single symbol,
 which is repeated zero or more times.
 Libmarpa allows the application to specify other parameters,
 including a separator symbol.
-@xref{Sequence Rules}.
+@xref{Sequence rules}.
 
 @node Derivations
 @section Derivations
@@ -1997,10 +1997,55 @@ Libmarpa could allow thread-safe
 cloning of grammars and other
 time objects.
 
-@node Sequence Rules
-@chapter Sequence Rules
+@node Sequence rules
+@chapter Sequence rules
 
-[ TODO: Write this ]
+Traditionally, grammars only allow BNF rules.
+Libmarpa allows sequence rules, which conveniently express situations
+where a symbol is to be repeated on the RHS.
+
+A sequence rule consists of a LHS and a RHS symbol.
+Additionally, the application must indicate the minimum number
+of repetitions (currently, only 0 or 1 are allowed).
+Optionally, a separator symbol may be specified.
+For example, a comma-separated sequence of numbers
+@verbatim
+     1,42,7192,711,
+@end verbatim
+may be recognized
+by specifying the rule @verb{|Seq ::= num|} and
+the separator @verb{|comma ::= ','|}.
+By default, an optional terminal separator,
+as shown in the example above,
+is recognized,
+but ``proper separation'' may also be specified.
+Proper separation is so called because, properly,
+separators should separate symbols.
+For more on specifying sequence rules,
+@pxref{marpa_g_sequence_new}.
+
+Sequence rules are ``sugar'' ---
+their presence in the Libmarpa interface does not extend its power.
+Every Libmarpa grammar that can be written using sequence rules
+can be rewritten as a grammar without sequence rules.
+
+Nullables on the RHS of sequence rules are prohibited
+because it is not completely clear what
+an application intends
+when it asks for a sequence of items,
+some of which are nullable ---
+the most natural interpretation of this usually results in a highly
+ambiguous grammar.
+
+Libmarpa allows highly ambiquous grammars
+and a programmer who wants a grammar
+with sequences containing nullable items or separators can
+can write that grammar using BNF rules.
+The use of BNF rules
+make it clearer that ambiguity is what the programmer
+intended, and allows the programmer more flexibility.
+
+[ TODO: Finish this ]
 
 [ https://metacpan.org/dist/Marpa-R2/view/pod/Scanless/DSL.pod#Quantified-rule ]
 
@@ -3677,6 +3722,8 @@ We call
 @code{marpa_g_rule_new()} and
 @code{marpa_g_sequence_new()}
 @dfn{rule creation methods}.
+For details on the use of sequence rules,
+@pxref{Sequence rules}.
 
 Sequence rules and BNF rules are both rules:
 They share the same series of rule IDs,
@@ -3699,12 +3746,6 @@ The @var{n}'th successful call of a rule creation method
 returns the rule with ID @code{@var{n}@minus{}1}.
 @end itemize
 
-
-Sequence rules are ``sugar'' ---
-their presence in the Libmarpa interface does not extend its power.
-Every Libmarpa grammar that can be written using sequence rules
-can be rewritten as a grammar without sequence rules.
-
 The LHS of the sequence is @var{lhs_id},
 and the item to be repeated on the RHS of the sequence is @var{rhs_id}.
 The sequence must be repeated at least @var{min} times,
@@ -3725,39 +3766,11 @@ is restricted to a single symbol,
 and that symbol cannot be nullable.
 If @var{separator_id} is a symbol, it also cannot
 be a nullable symbol.
-Nullables on the RHS of sequence rules are prohibited
-because it is not completely clear what
-an application intends
-when it asks for a sequence of items,
-some of which are nullable ---
-the most natural interpretation of this usually results in a highly
-ambiguous grammar.
-
-Libmarpa allows highly ambiquous grammars
-and a programmer who wants a grammar
-with sequences containing nullable items or separators can
-can write that grammar using BNF rules.
-The use of BNF rules
-make it clearer that ambiguity is what the programmer
-intended, and allows the programmer more flexibility.
 
 If @code{flags & MARPA_PROPER_SEPARATION} is non-zero,
-separation is ``proper'', that is,
-a trailing separator is not allowed.
-The term
-@dfindex proper separation
-@dfindex separation, proper
-@dfn{proper}
-is based on the idea that
-properly-speaking, separators should actually separate items.
-Proper separation has no effect at the Libmarpa level ---
-it is tracked as a convenience for the higher-level interfaces to
-Libmarpa,
-which may want to offer the ability to
-discard separators in the semantics.
-(Some higher-level interfaces, in fact, may choose to discard separation by default.)
-At the Libmarpa level, sequences always ``keep
-separators''.
+separation is ``proper''
+Proper separation means the the rule does
+not recognize a trailing separator.
 
 @strong{Return value}:  On success, the ID of the newly added
 sequence rule, which is always non-negative.
