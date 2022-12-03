@@ -3750,8 +3750,23 @@ The LHS of the sequence is @var{lhs_id},
 and the item to be repeated on the RHS of the sequence is @var{rhs_id}.
 The sequence must be repeated at least @var{min} times,
 where @var{min} is 0 or 1.
+The sequence RHS, or item,
+is restricted to a single symbol,
+and that symbol cannot be nullable.
 If @var{separator_id} is non-negative,
-it is a separator symbol.
+it is a separator symbol,
+which cannot be nullable.
+@var{flags} is a bit vector.
+Use of any other bit except @code{MARPA_PROPER_SEPARATION}
+results in undefined behavior.
+
+By default, a sequence rule recognizes a trailing separator.
+If @code{flags & MARPA_PROPER_SEPARATION} is non-zero,
+separation is ``proper''.
+Proper separation means the the rule does
+not recognize a trailing separator.
+Specifying proper separation has no effect unless
+a separator symbol has also been specified.
 
 The LHS symbol cannot be the LHS of any other rule,
 whether a BNF rule or a sequence rule.
@@ -3760,17 +3775,6 @@ LHS,
 this method hard fails,
 with an error code of
 @code{MARPA_ERR_SEQUENCE_LHS_NOT_UNIQUE}.
-
-The sequence RHS, or item,
-is restricted to a single symbol,
-and that symbol cannot be nullable.
-If @var{separator_id} is a symbol, it also cannot
-be a nullable symbol.
-
-If @code{flags & MARPA_PROPER_SEPARATION} is non-zero,
-separation is ``proper''
-Proper separation means the the rule does
-not recognize a trailing separator.
 
 @strong{Return value}:  On success, the ID of the newly added
 sequence rule, which is always non-negative.
