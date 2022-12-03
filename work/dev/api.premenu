@@ -367,7 +367,7 @@ The Marpa definition of a grammar differs slightly from the various
 standard ones.  Standard definitions usually sharply distinguish terminal symbols
 from non-terminals.  Marpa does not.
 Further discussion of Marpa's handling of terminal is below
-(@pxref{terminal discussion}).
+(@pxref{Terminals}).
 
 @node Stages of parsing
 @section Stages of parsing
@@ -456,10 +456,8 @@ is more often called the
 @dfn{input sentence}.
 
 The output of the Marpa parser
-is a
-@dfindex forest (output of a parser)
-@dfn{forest}.
-@xref{Forests}.
+is a parse forest.
+@xref{def-forest}.
 
 @node Rules
 @section Rules
@@ -510,11 +508,14 @@ or an
 In a standard grammar, all rules are BNF rules,
 as just described.
 Marpa grammars differ from standard grammars
-in allowing a second kind of rule:
-@dfindex quantified rule
-@dfn{quantified rules}.
-Quantified rules are described below:
-@pxref{Quantified rules}.
+in allowing a second kind of rule: a
+@dfindex sequence rule
+@dfn{sequence rule}.
+The RHS of a sequence rules is a single symbol,
+which is repeated zero or more times.
+Libmarpa allows the application to specify other parameters,
+including a separator symbol.
+@xref{Sequence Rules}.
 
 @node Derivations
 @section Derivations
@@ -1100,66 +1101,46 @@ as a collection of nodes,
 and we
 speak of nodes when we are more focused on the individual nodes.
 
-[ TO HERE ]
 
-@anchor{terminal discussion}
-Traditionally,
+@anchor{def-forest}
+A
+@dfindex parse (forest)
+@dfindex parse forest
+@dfindex forest
+@dfn{parse forest}
+is a set of one or more
+parse trees.
+Each tree represents a
+@dfindex parse (output of a parser)
+@dfn{parse}.
+
+We have used ``parse'' as a noun in several senses.
+Depending on context a ``parse'' may be
 @itemize
-@item grammars divide all symbols sharply into terminals
-and non-terminals;
-@item a terminal symbol must @strong{always} be used as a terminal; and
-@item a non-terminal symbol can @strong{never} be used as a terminal.
+@item the process of
+parsing an input using a grammar,
+@item a parse tree, or
+@item a parse forest.
 @end itemize
+When the meaning of ``parse'' is not clear in context,
+we will be explicit about which sense is intended.
 
-Marpa's use of terminals is non-traditional,
-and its terminology is different accordingly.
-As in the traditional approach,
-Marpa's non-terminals can never be used as terminals.
-But Marpa terminals can be used anywhere,
-even in places where
-the traditional approach requires a
-a non-terminal symbol.
-In particular, a Marpa terminal can be the LHS
-of a rule.
+[ TODO: give example of tree ]
+[ TODO: define path ]
+[ TODO: define left vs. right ]
+[ TODO: define cut ]
+[ TODO: define frontier ]
+[ TODO: define top-down traversal ]
+[ TODO: define bottom-down traversal ]
 
-If the node is for a non-quantified rule instance,
-the parent node is the LHS of the rule,
-and the child nodes are the RHS of the rule alternative.
-If the node is for a quantified rule,
-the parent node is the LHS of the quantified rule,
-and the child nodes are the items of the sequence of symbols on the
-right hand side.
-If the node is for a lexeme,
-the node represents the lexeme's symbol
-and there will be no child nodes.
+@node Traversal
+@section Traversal
 
 The structure of a parse can be represented as a series of derivation steps from
 the start symbol to the input.
 The node at the root of the tree is also called the
 @dfindex start node
 @dfn{start node}.
-
-@node Forests
-@section Forests
-
-A forest is a set of one or more
-@dfindex tree
-@dfn{trees}.
-Each tree represents a
-@dfindex parse (output of a parser)
-@dfn{parse}.
-
-In some contexts, the terms ``forest''
-and ''parse'' occur more or less interchangeably.
-For example, we say Marpa succeeds at a location
-iff it finds a parse at that location.
-But a parse exists at a location iff
-a forest exists at a location,
-since a structure is a forest iff it is a tree containing
-a least one parse.
-So we can equally well say that
-Marpa succeeds at a location
-iff it finds a @strong{forest} at that location.
 
 @node Ambiguity
 @section Ambiguity
@@ -1181,7 +1162,7 @@ all grammars would be
 ambiguous except those grammars which allowed only
 the null parse.
 
-[ TODO: Rewrtie two reasons to differ from traditional
+[ TODO: Rewrite two reasons to differ from traditional
 definition -- ambiguous tokens and pruned null
 forests.  Def is that cardinality of forest > 1. ]
 
@@ -1201,12 +1182,6 @@ if and only if,
 for some UNAMBIGUOUS stream of input tokens,
 that grammar produces
 more than one parse tree.
-
-@node Quantified rules
-@section Quantified rules
-
-@node Traversal
-@section Traversal
 
 @node Evaluating a parse
 @section Evaluating a parse
@@ -1810,9 +1785,16 @@ as described for the standard model.
 @node Terminals
 @section Terminals
 
-A terminal symbol is a symbol that
+Traditionally,
+a terminal symbol is a symbol that
 may appear in the input.
-In Marpa, by default, a symbol is a terminal,
+Traditional grammars
+divide all symbols sharply into terminals
+and non-terminals:
+A terminal symbol must @strong{always} be used as a terminal.
+A non-terminal symbol can @strong{never} be used as a terminal.
+
+In Libmarpa, by default, a symbol is a terminal,
 and therefore may appear in the input iff
 both of the following are true:
 @itemize
@@ -1835,6 +1817,8 @@ of LHS terminals.
 Even when LHS terminals are allowed,
 terminals can never be zero length.
 
+In Libmarpa,
+every terminal instance has a token value associated with it.
 Token values are @code{int}'s.
 Libmarpa does nothing with token values except accept
 them from the application and return them during
@@ -2012,6 +1996,13 @@ If there is sufficient interest, future versions of
 Libmarpa could allow thread-safe
 cloning of grammars and other
 time objects.
+
+@node Sequence Rules
+@chapter Sequence Rules
+
+[ TODO: Write this ]
+
+[ https://metacpan.org/dist/Marpa-R2/view/pod/Scanless/DSL.pod#Quantified-rule ]
 
 @node Nullability
 @chapter Nullability
