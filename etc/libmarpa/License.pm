@@ -609,8 +609,13 @@ my %files_by_type = (
 
     # Short and not  very significant
     'notes/HOWTO' => \&trivial,
-    'test/TESTS' => \&trivial,
-    'test/json/make_test_in.pl' => \&trivial,
+
+    # Lists of tests are short and trivial
+    'work/test/tap/TESTS' => \&trivial,
+    'ac_dist/tests/TESTS' => \&trivial,
+    'cmake/tap_test/TESTS.cm' => \&trivial,
+    'cm_dist/tap_test/TESTS.ac' => \&trivial,
+    'cm_dist/tap_test/TESTS.cm' => \&trivial,
 
     # MS .def file -- contents trivial
     'work/win32/marpa.def' => \&ignored,
@@ -648,6 +653,8 @@ for my $distlib (
 {
     for my $file (
         qw(
+        libtap.sh
+        runtests.c
         tap/ABOUT.txt
         tap/basic.c
         tap/basic.h
