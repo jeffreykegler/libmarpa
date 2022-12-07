@@ -267,6 +267,9 @@ and development.
 @deftypefun Marpa_AHM_ID _marpa_r_leo_base_state (Marpa_Recognizer @var{r})
 @end deftypefun
 
+@deftypefun Marpa_AHM_ID _marpa_r_leo_top_ahm (Marpa_Recognizer @var{r})
+@end deftypefun
+
 @deftypefun Marpa_Symbol_ID _marpa_r_postdot_symbol_trace (Marpa_Recognizer r, Marpa_Symbol_ID @var{symid})
 @end deftypefun
 

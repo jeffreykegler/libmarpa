@@ -182,12 +182,10 @@ some typing, at a very high cost in readability.
 In |libmarpa|, however, spelling things out usually does
 {\bf not} make them more readable.
 To be sure, when I say
-$$|To_AHFA_of_YIM_by_NSYID|$$
+$$|To_AHM_of_YIM_by_NSYID|$$
 that is pretty incomprehensible.
 But is
-$$Aycock\_Horspool\_FA\_To\_State\_of\_Earley\_Item\_by\_Internal\_Symbol\_ID$$,
-where "Finite Automaton" must still be abbreviated as "FA"
-to allow the line to fit into 80 characters,
+$$Aycock\_Horspool\_Item\_To\_Element\_of\_Earley\_Item\_by\_Internal\_Symbol\_ID$$
 really any better?
 My experience say no.
 @ I have a lot of practice coming back to pages of both, cold,
@@ -452,7 +450,6 @@ this section is
 very incomplete and possibly obsolete.
 @
 \li alloc: Allocate.
-\li AHFA: Aycock-Horspool Finite Automaton.
 \li AHM: Aycock-Horspool item.
 \li AIMID: a legacy term for AHM ID, preserved for backward compatibility.
 \li assign: Find something, creating it when necessary.
@@ -10130,14 +10127,13 @@ for example, scholars who believe that Shakespeare's
 call this play the ur-Hamlet.
 My ur-nodes are precursors of and-nodes and or-nodes.
 
-The ur-nodes are temporary,
-created as the accessbile
-Earley items are being traversed for the purpose of adding
-them to the PSI's.
+The ur-nodes are temporary residents of a stack which
+is created for the purpose of intermediating the traversal
+of the accessible Earley items with the creation of the PSI's.
 During the ur-node processing the following is accomplished:
 \li We eliminate inaccessible Earley items, as a by-product
 of the traversal.
-\li We eliminate predictions, which the bocage will not need.
+\li We explicitly eliminate predictions, which the bocage will not need.
 \li We sort the Earley items by Earley set id,
 as a by-product of recording them in the PSI's.
 
@@ -11442,9 +11438,9 @@ struct s_bocage_setup_per_ys* per_ys_data = NULL;
   }
 }
 
-@ Predicted AHFA states can be skipped since they
+@ Predicted AHM states can be skipped since they
 contain no completions.
-Note that AHFA state 0 is not marked as a predicted AHFA state,
+Note that AHM state 0 is not marked as a predicted AHM state,
 even though it can contain a predicted AHM.
 @ The search for the start Earley item is done once
 per parse ---
@@ -15545,7 +15541,7 @@ Marpa_Earley_Set_ID _marpa_r_leo_base_origin(Marpa_Recognizer r)
   return Origin_Ord_of_YIM(base_earley_item);
 }
 
-@ Actually return AHM ID, not the obsolete AHFA ID.
+@
 @<Function definitions@> =
 MARPA_LINKAGE
 Marpa_AHM_ID _marpa_r_leo_base_state(Marpa_Recognizer r)
@@ -15563,6 +15559,24 @@ Marpa_AHM_ID _marpa_r_leo_base_state(Marpa_Recognizer r)
   if (YIM_of_PIM(postdot_item)) return pim_is_not_a_leo_item;
   base_earley_item = Trailhead_YIM_of_LIM(LIM_of_PIM(postdot_item));
   return AHMID_of_YIM(base_earley_item);
+}
+
+@
+@<Function definitions@> =
+MARPA_LINKAGE
+Marpa_AHM_ID _marpa_r_leo_top_ahm(Marpa_Recognizer r)
+{
+  const JEARLEME pim_is_not_a_leo_item = -1;
+  @<Return |-2| on failure@>@;
+  PIM postdot_item = r->t_trace_postdot_item;
+  @<Unpack recognizer objects@>@;
+  @<Fail if not trace-safe@>@;
+  if (!postdot_item) {
+      MARPA_ERROR(MARPA_ERR_NO_TRACE_PIM);
+      return failure_indicator;
+  }
+  if (YIM_of_PIM(postdot_item)) return pim_is_not_a_leo_item;
+  return ID_of_AHM(Top_AHM_of_LIM(LIM_of_PIM(postdot_item)));
 }
 
 @*0 PIM Trace functions.
@@ -15807,8 +15821,7 @@ Marpa_Symbol_ID _marpa_r_next_token_link_trace(Marpa_Recognizer r)
 @*1 Trace first completion link.
 @ Set the trace source link to a completion link,
 if there is one, otherwise clear the completion source link.
-Returns the AHM ID
-(not the obsolete AHFA state ID) of the cause
+Returns the AHM ID of the cause
 if there was a completion source link,
 |-1| if there was none,
 and |-2| on some other kind of failure.
@@ -15880,8 +15893,7 @@ Marpa_Symbol_ID _marpa_r_next_completion_link_trace(Marpa_Recognizer r)
 @*1 Trace first Leo link.
 @ Set the trace source link to a Leo link,
 if there is one, otherwise clear the Leo source link.
-Returns the AHM ID (not
-the obsolete AHFA state ID) of the cause
+Returns the AHM ID  of the cause
 if there was a Leo source link,
 |-1| if there was none,
 and |-2| on some other kind of failure.
