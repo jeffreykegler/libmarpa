@@ -370,15 +370,218 @@ my %files_by_type = (
     'work/tavl/test.c'       => \&ignored,
     'work/tavl/test.h'       => \&ignored,
 
+    # Various Lua utilities -- leave licensing as is
+    'cm_dist/marpalua/lib/inspect.lua' => \&ignored,
+    'cm_dist/marpalua/lib/strict.lua' => \&ignored,
+    'cm_dist/marpalua/lib/Test/Builder.lua' => \&ignored,
+    'cm_dist/marpalua/lib/Test/More.lua' => \&ignored,
+    'marpalua/lib_orig/inspect.lua' => \&ignored,
+    'marpalua/lib_orig/Test/Builder.lua' => \&ignored,
+    'marpalua/lib_orig/Test/More.lua' => \&ignored,
+    'marpalua/lib/strict.lua' => \&ignored,
+
     # Leave Russ Allbery's licensing as is
-    'test/tap/ABOUT.txt' => \&ignored,
-    'test/tap/basic.c' => \&ignored,
-    'test/tap/basic.h' => \&ignored,
-    'test/tap/float.c' => \&ignored,
-    'test/tap/float.h' => \&ignored,
-    'test/tap/libtap.sh' => \&ignored,
-    'test/tap/macros.h' => \&ignored,
-    'test/tap/runtests.c' => \&ignored,
+    'work/test/tap/c-tap-harness/.clang-format' => \&ignored,
+    'work/test/tap/c-tap-harness/.github/workflows/build.yaml' => \&ignored,
+    'work/test/tap/c-tap-harness/.gitignore' => \&ignored,
+    'work/test/tap/c-tap-harness/LICENSE' => \&ignored,
+    'work/test/tap/c-tap-harness/Makefile.am' => \&ignored,
+    'work/test/tap/c-tap-harness/NEWS' => \&ignored,
+    'work/test/tap/c-tap-harness/README' => \&ignored,
+    'work/test/tap/c-tap-harness/README.md' => \&ignored,
+    'work/test/tap/c-tap-harness/TODO' => \&ignored,
+    'work/test/tap/c-tap-harness/bootstrap' => \&ignored,
+    'work/test/tap/c-tap-harness/ci/README' => \&ignored,
+    'work/test/tap/c-tap-harness/ci/install' => \&ignored,
+    'work/test/tap/c-tap-harness/ci/test' => \&ignored,
+    'work/test/tap/c-tap-harness/configure.ac' => \&ignored,
+    'work/test/tap/c-tap-harness/docs/api/bail.pod' => \&ignored,
+    'work/test/tap/c-tap-harness/docs/api/bcalloc_type.pod' => \&ignored,
+    'work/test/tap/c-tap-harness/docs/api/bmalloc.pod' => \&ignored,
+    'work/test/tap/c-tap-harness/docs/api/breallocarray.pod' => \&ignored,
+    'work/test/tap/c-tap-harness/docs/api/diag.pod' => \&ignored,
+    'work/test/tap/c-tap-harness/docs/api/diag_file_add.pod' => \&ignored,
+    'work/test/tap/c-tap-harness/docs/api/is_int.pod' => \&ignored,
+    'work/test/tap/c-tap-harness/docs/api/ok.pod' => \&ignored,
+    'work/test/tap/c-tap-harness/docs/api/plan.pod' => \&ignored,
+    'work/test/tap/c-tap-harness/docs/api/skip.pod' => \&ignored,
+    'work/test/tap/c-tap-harness/docs/api/skip_all.pod' => \&ignored,
+    'work/test/tap/c-tap-harness/docs/api/test_cleanup_register.pod' => \&ignored,
+    'work/test/tap/c-tap-harness/docs/api/test_file_path.pod' => \&ignored,
+    'work/test/tap/c-tap-harness/docs/api/test_tmpdir.pod' => \&ignored,
+    'work/test/tap/c-tap-harness/docs/docknot.yaml' => \&ignored,
+    'work/test/tap/c-tap-harness/docs/runtests.pod' => \&ignored,
+    'work/test/tap/c-tap-harness/docs/writing-tests' => \&ignored,
+    'work/test/tap/c-tap-harness/m4/cc-flags.m4' => \&ignored,
+    'work/test/tap/c-tap-harness/m4/clang.m4' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/TESTS' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/data/cppcheck.supp' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/data/perl.conf' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/docs/pod-spelling-t' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/docs/pod-t' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/docs/spdx-license-t' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/harness/basic-t' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/harness/basic/abort-one.list' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/harness/basic/abort-one.output' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/harness/basic/abort.list' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/harness/basic/abort.output' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/harness/basic/abort.t' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/harness/basic/badnum-delay.t' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/harness/basic/badnum.t' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/harness/basic/bail-silent.t' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/harness/basic/bail.t' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/harness/basic/duplicate.t' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/harness/basic/empty.list' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/harness/basic/empty.output' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/harness/basic/fail-count.t' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/harness/basic/fail.list' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/harness/basic/fail.output' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/harness/basic/fail.t' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/harness/basic/hup.t' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/harness/basic/missing.t' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/harness/basic/nocount.t' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/harness/basic/order.t' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/harness/basic/pass.list' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/harness/basic/pass.output' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/harness/basic/pass.t' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/harness/basic/plan-last.t' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/harness/basic/plan-long.t' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/harness/basic/plan-middle.t' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/harness/basic/plan-order.t' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/harness/basic/plan-twice.t' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/harness/basic/segv.t' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/harness/basic/skip-all-case.t' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/harness/basic/skip-all-late.t' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/harness/basic/skip-all-quiet.t' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/harness/basic/skip-all.t' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/harness/basic/skip.list' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/harness/basic/skip.output' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/harness/basic/skip.t' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/harness/basic/status.t' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/harness/basic/todo.t' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/harness/basic/too-many.t' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/harness/basic/zero.t' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/harness/env-t' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/harness/env/env.list' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/harness/env/env.output' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/harness/env/env.t.in' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/harness/multiple-t' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/harness/multiple/output' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/harness/options-t' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/harness/options/bad-option.list' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/harness/options/bad-option.output' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/harness/options/executable.t' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/harness/options/libtool' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/harness/options/lt-executable.t' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/harness/options/no-valgrind.output' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/harness/options/simple.t' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/harness/options/valgrind' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/harness/options/valgrind-fail.output' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/harness/options/valgrind.list' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/harness/options/valgrind.output' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/harness/search-t.in' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/harness/search/build/build-no-ext.tap' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/harness/search/build/build-t' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/harness/search/relative-no-ext' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/harness/search/relative.t' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/harness/search/search.list' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/harness/search/search.output' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/harness/search/source/source-no-ext' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/harness/search/source/source.t' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/harness/single-t' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/harness/single/test.output' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/harness/single/test.t' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/harness/verbose-t' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/harness/verbose/list.output' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/harness/verbose/multiple.output' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/libtap/basic-t' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/libtap/basic/c-bail.c' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/libtap/basic/c-bail.output' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/libtap/basic/c-basic.c' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/libtap/basic/c-basic.output' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/libtap/basic/c-bstrndup.c' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/libtap/basic/c-bstrndup.output' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/libtap/basic/c-diag-file.c' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/libtap/basic/c-diag-file.output' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/libtap/basic/c-diag.c' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/libtap/basic/c-extra-one.c' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/libtap/basic/c-extra-one.output' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/libtap/basic/c-extra.c' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/libtap/basic/c-extra.output' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/libtap/basic/c-file.c' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/libtap/basic/c-lazy.c' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/libtap/basic/c-lazy.output' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/libtap/basic/c-missing-one.c' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/libtap/basic/c-missing-one.output' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/libtap/basic/c-missing.c' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/libtap/basic/c-missing.output' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/libtap/basic/c-skip-reason.c' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/libtap/basic/c-skip-reason.output' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/libtap/basic/c-skip.c' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/libtap/basic/c-skip.output' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/libtap/basic/c-success-one.c' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/libtap/basic/c-success-one.output' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/libtap/basic/c-success.c' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/libtap/basic/c-success.output' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/libtap/basic/c-sysbail.c' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/libtap/basic/c-tmpdir.c' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/libtap/basic/sh-bail' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/libtap/basic/sh-bail.output' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/libtap/basic/sh-basic' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/libtap/basic/sh-basic.output' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/libtap/basic/sh-diag' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/libtap/basic/sh-diag.output' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/libtap/basic/sh-extra' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/libtap/basic/sh-extra-one' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/libtap/basic/sh-extra-one.output' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/libtap/basic/sh-extra.output' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/libtap/basic/sh-file' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/libtap/basic/sh-lazy' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/libtap/basic/sh-lazy.output' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/libtap/basic/sh-missing' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/libtap/basic/sh-missing-one' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/libtap/basic/sh-missing-one.output' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/libtap/basic/sh-missing.output' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/libtap/basic/sh-skip' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/libtap/basic/sh-skip.output' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/libtap/basic/sh-strip-colon' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/libtap/basic/sh-strip-colon.output' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/libtap/basic/sh-success' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/libtap/basic/sh-success-one' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/libtap/basic/sh-success-one.output' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/libtap/basic/sh-success.output' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/libtap/basic/sh-tmpdir' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/libtap/cleanup-t' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/libtap/cleanup/c-bail-lazy.c' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/libtap/cleanup/c-bail-lazy.output' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/libtap/cleanup/c-bail.c' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/libtap/cleanup/c-bail.output' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/libtap/cleanup/c-fork.c' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/libtap/cleanup/c-fork.output' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/libtap/cleanup/c-lazy.c' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/libtap/cleanup/c-lazy.output' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/libtap/cleanup/c-many-fail.c' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/libtap/cleanup/c-many-fail.output' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/libtap/cleanup/c-many.c' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/libtap/cleanup/c-many.output' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/libtap/cleanup/c-one-fail.c' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/libtap/cleanup/c-one-fail.output' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/libtap/cleanup/c-one-with-data.c' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/libtap/cleanup/c-one-with-data.output' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/libtap/cleanup/c-one.c' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/libtap/cleanup/c-one.output' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/runtests.c' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/style/obsolete-strings-t' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/tap/basic.c' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/tap/basic.h' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/tap/float.c' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/tap/float.h' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/tap/libtap.sh' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/tap/macros.h' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/tap/perl/Test/RRA.pm' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/tap/perl/Test/RRA/Automake.pm' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/tap/perl/Test/RRA/Config.pm' => \&ignored,
+    'work/test/tap/c-tap-harness/tests/valgrind/logs-t' => \&ignored,
 
     # Leave GNU license as is
     'work/avl/COPYING.LESSER' => \&ignored,
@@ -432,6 +635,107 @@ my %files_by_type = (
     'ac_dist/README'     => \&license_problems_in_text_file,
     'cm_dist/README'     => \&license_problems_in_text_file,
 );
+
+# Files from Russ Allbery
+for my $distlib (
+    qw(
+    cm_dist/marpalua/src
+    cm_dist/tap_test/tests
+    ac_dist/tests
+    test
+    )
+  )
+{
+    for my $file (
+        qw(
+        tap/ABOUT.txt
+        tap/basic.c
+        tap/basic.h
+        tap/float.c
+        tap/float.h
+        tap/libtap.sh
+        tap/macros.h
+        tap/runtests.c
+        )
+      )
+    {
+        # Leave Russ Allbery's licensing as is
+        $files_by_type{"$distlib/$file"} = \&ignored;
+    }
+}
+
+# Common files in the Lua distribution
+for my $distlib (qw( cm_dist/include cm_dist/marpalua/src marpalua/lua-5.4.4/src )) {
+    for my $file ( qw(
+        lua.h
+        luaconf.h
+        loslib.c
+        lstate.c
+        ltable.c
+        lfunc.h
+        lprefix.h
+        llimits.h
+        ldo.c
+        lstring.h
+        lparser.c
+        lmathlib.c
+        lapi.c
+        ldblib.c
+        ldo.h
+        lopnames.h
+        lctype.c
+        lobject.h
+        ljumptab.h
+        lauxlib.c
+        llex.c
+        lgc.h
+        lcorolib.c
+        lmem.c
+        ldebug.h
+        ltablib.c
+        ltable.h
+        lobject.c
+        lbaselib.c
+        lzio.h
+        lutf8lib.c
+        linit.c
+        lopcodes.h
+        lgc.c
+        lfunc.c
+        lua.c
+        lzio.c
+        ltm.c
+        lstate.h
+        marpalua.c
+        lmem.h
+        ltm.h
+        lcode.h
+        liolib.c
+        loadlib.c
+        luac.c
+        lctype.h
+        luaconf.h
+        lauxlib.h
+        lopcodes.c
+        lvm.h
+        lcode.c
+        ldebug.c
+        lualib.h
+        lvm.c
+        lstring.c
+        lparser.h
+        lstrlib.c
+        lundump.h
+        llex.h
+        lundump.c
+        lapi.h
+        ldump.c
+        ))
+    {
+        ## Lua has its own license language
+        $files_by_type{"$distlib/$file"} = \&ignored;
+    }
+}
 
 # Common files in the GNU distributions
 for my $distlib (
