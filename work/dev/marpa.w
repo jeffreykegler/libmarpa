@@ -10029,7 +10029,7 @@ on their LHS.
 \li The number of sources of a Leo path item is therefore limited
 by a constant that depends on the grammar.
 
-@ {\bf To Do}: @^To Do@>
+@ {\bf Research topic}: @^To Do@>
 Determine exactly when Leo path items may come from multiple
 souces.
 \li When can a Leo path item also be an item from a non-Leo
@@ -10129,6 +10129,18 @@ for example, scholars who believe that Shakespeare's
 {\it Hamlet} is based on another, now lost, play,
 call this play the ur-Hamlet.
 My ur-nodes are precursors of and-nodes and or-nodes.
+
+The ur-nodes are temporary,
+created as the accessbile
+Earley items are being traversed for the purpose of adding
+them to the PSI's.
+During the ur-node processing the following is accomplished:
+\li We eliminate inaccessible Earley items, as a by-product
+of the traversal.
+\li We eliminate predictions, which the bocage will not need.
+\li We sort the Earley items by Earley set id,
+as a by-product of recording them in the PSI's.
+
 @<Private incomplete structures@> =
 struct s_ur_node_stack;
 struct s_ur_node;
@@ -10577,10 +10589,6 @@ Top_ORID_of_B(b) = -1;
         @<Add main or-node@>@;
           @<Add nulling token or-nodes@>@;
     }
-    @t}\comment{@>
-    /* The following assertion is now not necessarily true.
-    it is kept for documentation, but eventually should be removed */
-    MARPA_OFF_ASSERT (psi_or_node)@;
 
     @t}\comment{@>
     /* Replace the dummy or-node with
