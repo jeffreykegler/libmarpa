@@ -2083,10 +2083,6 @@ and adding a new ``parent'' LHS which recognizes the sequences as alternatives.
      SeqChoice ::= Seq2
 @end verbatim
 
-[ TODO: Finish this ]
-
-[ https://metacpan.org/dist/Marpa-R2/view/pod/Scanless/DSL.pod#Quantified-rule ]
-
 @node Nullability
 @chapter Nullability
 
