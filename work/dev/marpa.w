@@ -15563,7 +15563,6 @@ Marpa_AHM_ID _marpa_r_leo_base_state(Marpa_Recognizer r)
 
 @
 @<Function definitions@> =
-MARPA_LINKAGE
 Marpa_AHM_ID _marpa_r_leo_top_ahm(Marpa_Recognizer r)
 {
   const JEARLEME pim_is_not_a_leo_item = -1;
