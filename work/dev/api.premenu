@@ -2585,7 +2585,7 @@ more precisely, let
 the ``failure grammar'' be the base grammar
 of the method that detected the library-recoverable hard failure.
 After a library-recoverable hard failure,
-the following behaviors are no longer applcation
+the following behaviors are no longer application
 behaviors:
 @itemize
 @item Libmarpa mutator and constructor method calls where the base grammar is the
@@ -2632,7 +2632,7 @@ More precisely, let
 the ``failure object'' be the object that detected
 the ancestry-recoverable hard failure.
 After an ancestry-recoverable hard failure,
-the following behaviors are no longer applcation
+the following behaviors are no longer application
 behaviors:
 @itemize
 @item Libmarpa mutator and constructor method calls where the object is the
