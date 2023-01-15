@@ -1122,27 +1122,20 @@ we will be explicit about which sense is intended.
 @verbatim
      < < "S", 0, 7 >, [
          < < "A", 0, 2 >, [
-             < < "T", 0, 1 >, [
-             ] >,
-             < < "U", 1, 2 >, [
-             ] >
+             < < "T", 0, 1 >, [ ] >,
+             < < "U", 1, 2 >, [ ] >
          ] >,
          < < "B", 2, 2 >, [ ] >,
          < < "C", 2, 3 >, [
-             < < "V", 2, 3 >, [
-             ] >
+             < < "V", 2, 3 >, [ ] >
          ] >,
          < < "D", 3, 5 >, [
-             < < "W", 3, 4 >, [
-             ] >,
-             < < "X", 4, 5 >, [
-             ] >
+             < < "W", 3, 4 >, [ ] >,
+             < < "X", 4, 5 >, [ ] >
          ] >,
          < < "E", 5, 7 >, [
-             < < "Y", 5, 6 >, [
-             ] >,
-             < < "Z", 6, 7 >, [
-             ] >
+             < < "Y", 5, 6 >, [ ] >,
+             < < "Z", 6, 7 >, [ ] >
          ] >
       ] >
 @end verbatim
@@ -1154,7 +1147,54 @@ refer to a node by its symbol name.
 In practical parses, symbols usually occur many times.
 
 Node @code{S} has 5 children.
+Node @code{A} has 2 children.
 Node @code{B} has no children and is a nulled node.
+Nodes @code{T}, @code{U}, @code{V}, @code{W}, @code{X},
+@code{Y}, and @code{Z}
+are terminal nodes.
+Nodes
+@code{S},
+@code{A},
+@code{C},
+@code{D}, and
+@code{E}
+are BNF rule nodes and imply a grammar with at least
+the following rules:
+@verbatim
+    S ::= A B C D E
+    A ::= T U
+    B ::=
+    C ::= V
+    D ::= W X
+    E ::= Y Z
+@end verbatim
+
+The tree derives the sentence
+@verbatim
+      T U V W X Y X
+@end verbatim
+and can do in several ways.
+One is these is its rightmost derviation:
+@verbatim
+    S -> A B C D E
+      -> A B C D Y X
+      -> A B C W X Y X
+      -> A B V W X Y X
+      -> A V W X Y X
+      -> T U V W X Y X
+@end verbatim
+This is called a \dfn{rightmost derviation}
+because at each derivation step the symbol
+that is expand is the rightmost symbol possible.
+There is also a leftmost derivation:
+@verbatim
+    S -> A B C D E
+      -> T U B C D E
+      -> T U C D E
+      -> T U V D E
+      -> T U V W X E
+      -> T U V W X Y X
+@end verbatim
 
 [ TODO: give example of tree ]
 [ TODO: define path ]
