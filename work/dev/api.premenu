@@ -1116,9 +1116,46 @@ parsing an input using a grammar,
 When the meaning of ``parse'' is not clear in context,
 we will be explicit about which sense is intended.
 
+@node An example tree
+@section An example tree
+
 @verbatim
-     <<
+     < < "S", 0, 7 >, [
+         < < "A", 0, 2 >, [
+             < < "T", 0, 1 >, [
+             ] >,
+             < < "U", 1, 2 >, [
+             ] >
+         ] >,
+         < < "B", 2, 2 >, [ ] >,
+         < < "C", 2, 3 >, [
+             < < "V", 2, 3 >, [
+             ] >
+         ] >,
+         < < "D", 3, 5 >, [
+             < < "W", 3, 4 >, [
+             ] >,
+             < < "X", 4, 5 >, [
+             ] >
+         ] >,
+         < < "E", 5, 7 >, [
+             < < "Y", 5, 6 >, [
+             ] >,
+             < < "Z", 6, 7 >, [
+             ] >
+         ] >
+      ] >
 @end verbatim
+
+In the tree above, we use symbols names (for example, @code{"S"})
+as symbol IDs.
+Since we have not used the same symbol twice, we will be able to
+refer to a node by its symbol name.
+In practical parses, symbols usually occur many times.
+
+Node @code{S} has 5 children.
+Node @code{B} has no children and is a nulled node.
+
 [ TODO: give example of tree ]
 [ TODO: define path ]
 [ TODO: define left vs. right ]
