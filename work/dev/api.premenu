@@ -205,7 +205,7 @@ to successfully debug the logic.
 @itemize
 @item
 @dfindex application
-@dfn{application} means an ``application'' of Libmarpa.
+@dfn{Application} means an ``application'' of Libmarpa.
 In this document,
 a Libmarpa application is not necessarily an application program.
 For our purposes, an ``application''
@@ -218,7 +218,7 @@ might be another library that uses Libmarpa.
 is an integer that is 0 or 1.
 @item
 @dfindex iff
-@dfn{iff} abbreviates ``if and only if''.
+The lexeme @dfn{iff} is an abbreviation for ``if and only if''.
 @item
 @dfindex max(x,y)
 @code{max(x,y)} is the maximum of
@@ -269,13 +269,12 @@ and ``programmer'' are essentially synonyms.
 @dfindex we
 @dfindex us
 @dfindex our
-@dfn{We} (and ``us'' and ''our'') refer to the authors.
-As of this writing, there is a one primary author,
-but the plural is traditional, and our ``we''
-is intended to include the reader
-and everyone
-we are joining on the millenia-old voyage of discovery
+@dfn{We} (as well as ``us'' and ''our'') refers to the authors,
+but is also intended to suggest that the reader
+is joining the authors
+on the millenia-old voyage of discovery
 into mathematics and language.
+As of this writing, there is a one primary author.
 @end itemize
 
 @node Parsing theory preliminaries
@@ -296,9 +295,9 @@ with a definition which is slightly different from
 the standard one.
 ``Ambiguous grammar'' is one example:
 @xref{Ambiguity}.
-The term ``grammar'' itself is
+The term ``terminal'' is
 another.
-@xref{grammar-non-standard}.
+@xref{Terminals}.
 When a definition is non-standard, this is explicitly pointed out.
 
 Readers who want a textbook or tutorial in parsing theory
@@ -333,8 +332,10 @@ A symbol string is also called a
 @dfn{sentential form}.
 
 Some of the symbols are terminals.
-For the purposes of this subsection, a terminal is a symbol
+For the the moment, we will say that a terminal is a symbol
 which may occur in an input to a parse of a grammar.
+A careful definition, and one approprate specifically to Marpa
+is below (@pxref{Terminals}).
 In a parse, an input is either accepted or rejected.
 A potential input string,
 that is, a sentential form which is made up entirely of terminal symbols,
@@ -351,8 +352,6 @@ used in parsing theory, means something very different
 from what it means in ordinary use.
 The meaning of the strings is an essential part
 of the ordinary idea of what a language is.
-In ordinary use, the word ``language'' means
-far more than a unordered list of its sentences.
 In parsing terminology, meaning (or
 @dfindex semantics
 @dfn{semantics}
@@ -361,13 +360,6 @@ called) is a separate issue.
 For parsing theory a
 language is exactly a set of strings --
 that and nothing more.
-
-@anchor{grammar-non-standard}
-The Marpa definition of a grammar differs slightly from the various
-standard ones.  Standard definitions usually sharply distinguish terminal symbols
-from non-terminals.  Marpa does not.
-Further discussion of Marpa's handling of terminal is below
-(@pxref{Terminals}).
 
 @node Stages of parsing
 @section Stages of parsing
@@ -511,7 +503,7 @@ Marpa grammars differ from standard grammars
 in allowing a second kind of rule: a
 @dfindex sequence rule
 @dfn{sequence rule}.
-The RHS of a sequence rules is a single symbol,
+The RHS of a sequence rule is a single symbol,
 which is repeated zero or more times.
 Libmarpa allows the application to specify other parameters,
 including a separator symbol.
@@ -580,7 +572,7 @@ a first symbol string
 @dfindex directly derives
 @dfindex derives, directly
 @dfn{directly derives}
-a second symbol string if and only if there is a derivation of length 1 from the first symbol
+a second symbol string iff there is a derivation of length 1 from the first symbol
 string to the second symbol string.
 In the example above (@pxref{derivation-example}),
 we say that the symbol string ``@code{A X D}''
@@ -637,8 +629,7 @@ It is particularly common to say that
 The parse of an input by a grammar is
 @dfindex successful
 @dfn{successful}
-if and only if,
-according to the grammar,
+iff, according to the grammar,
 the start symbol produces the input sentence.
 The set of all input sentences that
 a grammar
@@ -859,12 +850,6 @@ in contexts where the meaning is clear,
 we refer to a tree node simply as a
 @dfindex node (of a tree)
 @dfn{node}.
-Especially when looked at from the point of view
-of its labels,
-a node
-is often called an
-@dfindex instance
-@dfn{instance}.
 
 A node is a pair of tuples:
 @itemize
@@ -881,6 +866,12 @@ a list (ordered set) of nodes.
 @end itemize
 We note that this definition of a tree node is recursive.
 
+When looked at from the point of view
+of its labels,
+a node
+is often called an
+@dfindex instance
+@dfn{instance}.
 In the following list of definitions and assertions, let
 @verbatim
      nd = [ [ sym,  start, end ], children ]
@@ -1136,6 +1127,8 @@ we will be explicit about which sense is intended.
 @node Traversal
 @section Traversal
 
+[ TODO: Rewrite this section ]
+
 The structure of a parse can be represented as a series of derivation steps from
 the start symbol to the input.
 The node at the root of the tree is also called the
@@ -1144,6 +1137,8 @@ The node at the root of the tree is also called the
 
 @node Ambiguity
 @section Ambiguity
+
+[ TODO: Rewrite this section ]
 
 Marpa allows ambiguous grammars.
 Traditionally
@@ -1186,6 +1181,8 @@ more than one parse tree.
 @node Evaluating a parse
 @section Evaluating a parse
 
+[ TODO: Rewrite this section ]
+
 A parser is an algorithm
 that takes a string of symbols (tokens or characters) and finds a structure
 in it.
@@ -1205,6 +1202,8 @@ a tree means finding its semantics.
 
 @node Semantics terms
 @section Semantics terms
+
+[ TODO: Rewrite this section ]
 
 In real life, the structure of a parse is usually a means to an end.
 Grammars usually have a
