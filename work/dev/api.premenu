@@ -1147,7 +1147,7 @@ we will be explicit about which sense is intended.
       ] >
 @end verbatim
 
-In the tree above, we use symbols names (for example, @code{"S"})
+In the tree above, we use symbol names (for example, @code{"S"})
 as symbol IDs.
 Since we have not used the same symbol twice, we will be able to
 refer to a node by its symbol name.
