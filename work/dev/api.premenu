@@ -334,7 +334,7 @@ A symbol string is also called a
 Some of the symbols are terminals.
 For the the moment, we will say that a terminal is a symbol
 which may occur in an input to a parse of a grammar.
-A careful definition, and one approprate specifically to Marpa
+A careful definition, and one appropriate specifically to Marpa
 is below (@pxref{Terminals}).
 In a parse, an input is either accepted or rejected.
 A potential input string,
@@ -862,7 +862,7 @@ end Earley set ID.
 For more about the Earley set IDs,
 @pxref{Input}.
 @item The second element tuple of a node is
-a list (ordered set) of nodes.
+a sequence of nodes.
 @end itemize
 We note that this definition of a tree node is recursive.
 
@@ -874,7 +874,7 @@ is often called an
 @dfn{instance}.
 In the following list of definitions and assertions, let
 @verbatim
-     nd = [ [ sym,  start, end ], children ]
+     nd = < < sym,  start, end >, children >
 @end verbatim
 be a tree node:
 @itemize
@@ -1116,6 +1116,9 @@ parsing an input using a grammar,
 When the meaning of ``parse'' is not clear in context,
 we will be explicit about which sense is intended.
 
+@verbatim
+     <<
+@end verbatim
 [ TODO: give example of tree ]
 [ TODO: define path ]
 [ TODO: define left vs. right ]
@@ -2267,6 +2270,34 @@ The pruned tree looks like this:
 Nulled nodes 1.1, 1.2 and 2 were all kept, because they are topmost in their
 nulled subtree.
 All the other nulled nodes were discarded.
+
+@node Duplicate nulled nodes
+@section Duplicate nulled nodes
+
+A non-nulled node can never appear twice in the same tree.
+But duplicate nulled nodes in the same tree are quite possible.
+The start and end locations of a nulled node are the same,
+and other nodes can share the same start and end locations,
+so location information does not necessarily made a nulled node
+unique.
+Since a nulled node also always has no children,
+if two nulled nodes at the same location differ,
+they must differ in the symbol.
+
+It is quite possible in a grammar to allow sequences of the
+same nulled symbol.
+All the nodes in this sequence will be equal to each other.
+These nodes represent multiple nulled symbol instances.
+The context (specifically, the position of the nulled node in the tree)
+is required to distinguish these instances.
+
+Libmarpa could distinguish nulled nodes by including a ``instance number''
+in the node and,
+from a set-theoretic point of view,
+this would be more appropriate.
+But, in the implementation, the context of a node is always
+available, and allowing for an ``instance number'' with each node
+would consume a considerable amount of space.
 
 @node Failure
 @chapter Failure
@@ -6753,7 +6784,7 @@ events can never be zero length.
 However, prediction and nulled events for the
 same symbol can trigger at the same location.
 This is because
-The same location can be the location of a nulled instance
+the same location can be the location of a nulled instance
 of a symbol,
 and the start of an non-nulled instance of the same symbol.
 
