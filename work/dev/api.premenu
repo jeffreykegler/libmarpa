@@ -1084,6 +1084,7 @@ of @var{nd2}.
 
 A tree is its own
 @dfindex root node
+@dfindex node, root
 @dfn{root node}.
 That implies that, in fact, tree and node are just two different terms for the
 same thing.
@@ -1092,6 +1093,12 @@ as a collection of nodes,
 and we
 speak of nodes when we are more focused on the individual nodes.
 
+We sometimes call a root node, a
+@dfindex node, start
+@dfindex start node
+@dfn{start node}
+We do this especially in contexts where a tree is ``top-level'',
+that is, not the child of any other tree under discussion.
 
 @anchor{def-forest}
 A
@@ -1158,7 +1165,8 @@ Nodes
 @code{C},
 @code{D}, and
 @code{E}
-are BNF rule nodes and imply a grammar with at least
+are BNF rule nodes.
+The tree implies a grammar with at least
 the following rules:
 @verbatim
     S ::= A B C D E
@@ -1177,11 +1185,11 @@ and can do in several ways.
 One is these is its rightmost derviation:
 @verbatim
     S -> A B C D E
-      -> A B C D Y X
-      -> A B C W X Y X
-      -> A B V W X Y X
-      -> A V W X Y X
-      -> T U V W X Y X
+      -> A B C D Y Z
+      -> A B C W X Y Z
+      -> A B V W X Y Z
+      -> A V W X Y Z
+      -> T U V W X Y Z
 @end verbatim
 This is called the
 @dfindex rightmost derivation
@@ -1200,22 +1208,44 @@ There is also a
       -> T U C D E
       -> T U V D E
       -> T U V W X E
-      -> T U V W X Y X
+      -> T U V W X Y Z
 @end verbatim
 
 
 @node Traversal
 @section Traversal
 
-[ TODO: Rewrite this section ]
-[ TODO: define top-down traversal ]
-[ TODO: define bottom-down traversal ]
-
-The structure of a parse can be represented as a series of derivation steps from
-the start symbol to the input.
-The node at the root of the tree is also called the
-@dfindex start node
-@dfn{start node}.
+We often want to ``visit'' all the nodes of a tree in a sequence,
+or
+@dfindex traverse
+@dfn{traverse}
+the tree.
+In the semantics phase,
+it is often necessary to visit all the children of a node
+before the node itself.
+We can do this using a
+@dfindex postorder traversal
+@dfn{postorder traversal}
+traversal.
+Here is a recursive procedure for a postorder traversal
+of the tree @code{nd}:
+@verbatim
+         If nd is not well-defined, return
+         Traverse the first child of nd
+         Visit nd
+         Traverse the other children of nd, in order
+@end verbatim
+A postorder traversal is also often called a
+@dfindex depth-first traversal
+@dfn{depth-first traversal},
+or a
+@dfindex bottom-up traversal
+@dfn{bottom-up traversal}.
+A postorder traversal of our example tree (@pxref{An example tree})
+visits the nodes in the following order:
+@verbatim
+    T U A B V C W X D Y Z E S
+@end verbatim
 
 @node Ambiguity
 @section Ambiguity
@@ -2311,7 +2341,7 @@ symbol.
 
 If we let the input be @samp{x},
 we can write the unpruned parse tree
-in pre-order, depth-first, indenting children
+in preorder (depth-first), indenting children
 below their parents, like this:
 
 @verbatim
