@@ -1183,10 +1183,10 @@ One is these is its rightmost derviation:
       -> A V W X Y X
       -> T U V W X Y X
 @end verbatim
-This is called a \dfn{rightmost derviation}
-because at each derivation step the symbol
-that is expand is the rightmost symbol possible.
-There is also a leftmost derivation:
+This is called the @dfn{rightmost derviation} because,
+at each derivation step,
+the symbol that is expanded is the rightmost symbol possible.
+There is also a @dfn{leftmost derivation}:
 @verbatim
     S -> A B C D E
       -> T U B C D E
@@ -1196,7 +1196,6 @@ There is also a leftmost derivation:
       -> T U V W X Y X
 @end verbatim
 
-[ TODO: give example of tree ]
 [ TODO: define path ]
 [ TODO: define left vs. right ]
 [ TODO: define cut ]
