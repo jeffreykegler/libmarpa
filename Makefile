@@ -25,7 +25,7 @@
 
 MAJOR=11
 MINOR=0
-MICRO=3
+MICRO=4
 VERSION=$(MAJOR).$(MINOR).$(MICRO)
 
 .PHONY: ac_dist asan clean cm_dist dist distcheck dummy \
