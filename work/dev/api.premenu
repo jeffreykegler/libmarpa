@@ -1247,6 +1247,75 @@ visits the nodes in the following order:
     T U A B V C W X D Y Z E S
 @end verbatim
 
+@node Semantics terms
+@section Semantics terms
+
+Rarely is an application interested only in the tree.
+Traditionally and most often, the tree
+is an intermediate step in producing the ``value'' of the parse.
+The value of the parse is what the input string ``means''.
+Grammars almost always have a
+@dfindex semantics
+@dfn{semantics}
+associated with them.
+The purpose of parsing is to use the
+grammar to find the
+@dfindex value
+@dfn{value}
+of the input string.
+Finding the value of the parse,
+given the tree, is called
+@dfindex evaluate (a tree)
+@dfn{evaluating a tree}.
+More loosely,
+we also speak of
+@dfindex evaluate (a parse)
+@dfn{evaluating the parse},
+or
+@dfindex evaluate (an input string)
+@dfn{evaluating the input string}.
+
+We recall that Libmarpa provides instructions for stack manipulation.
+@xref{Value methods}.
+Libmarpa does not directly do evalation because it is usually used
+together with a higher-level language,
+and the semantics is known,
+and the evaluation must be performed,
+in the higher-level language.
+
+In the most common method of evaluating a parse tree,
+every node
+has a value associated with it.
+An application might determine the value of a terminal node from
+@itemize
+@item the node's symbol;
+@item a ``token value'', which Libmarpa allows the user
+to specify for
+each input symbol at the time the input symbol is recognized;
+@item context information, including the node's location information; or
+@item any combination of the above.
+@end itemize
+
+In determining the value of nulled nodes, the application may also
+consider the node's symbol and context information.
+Libmarpa prunes pulled subtrees back to their root,
+which usually is what the application expects.
+@xref{Nullability}.
+
+To find the value of a rule node, an application
+may use the rule, context information, and the values of the
+rule node's children.
+Frequently, the semantics of a rule node, call it @code{nd}, are implemented as
+functions,
+where the arguments of the function are the values of the children of @code{nd},
+and the return value of the function becomes the value of @code{nd}.
+
+Implementing this traditional method of tree evaluation requires
+a bottom-up traversal of the parse tree.
+In the final step of a bottom-up traversal,
+the start node is evaluated,
+and the value of the start node becomes the value of the parse.
+
 @node Ambiguity
 @section Ambiguity
 
@@ -1289,65 +1358,6 @@ if and only if,
 for some UNAMBIGUOUS stream of input tokens,
 that grammar produces
 more than one parse tree.
-
-@node Evaluating a parse
-@section Evaluating a parse
-
-[ TODO: Rewrite this section ]
-
-A parser is an algorithm
-that takes a string of symbols (tokens or characters) and finds a structure
-in it.
-Traditionally, that structure is a tree.
-
-Rarely is an application interested only in the tree.
-Usually the idea is that the string ``means'' something:
-the idea is that the string has a
-@dfindex semantics
-@dfn{semantics}.
-Traditionally and most often, the tree
-is an intermediate step in producing a value,
-a value which represents the ``meaning'' or ``semantics'' of the string.
-@dfindex Evaluating (a tree)
-@dfn{Evaluating}
-a tree means finding its semantics.
-
-@node Semantics terms
-@section Semantics terms
-
-[ TODO: Rewrite this section ]
-
-In real life, the structure of a parse is usually a means to an end.
-Grammars usually have a
-@dfindex semantics
-@dfn{semantics}
-associated with them,
-and what the user actually wants is the
-@dfindex value
-@dfn{value}
-of the parse
-according to the semantics.
-
-The tree representation is especially useful when evaluating a parse.
-In the traditional method of evaluating a parse tree,
-every node which represents a terminal symbol
-has a value associated with it on input.
-Recall that nodes are often called ``instances'' of their
-symbols or rules.
-Semantics is associated with instances
-of rules or of lexemes.
-
-Non-null inner nodes
-take their semantics from the rule whose LHS they represent.
-Nulled nodes are dealt with as special cases.
-
-The semantics for a rule
-describe how to calculate the value of the node which represents the LHS
-(the parent node)
-from the values of zero or more of the nodes which represent the RHS symbols
-(child nodes).
-Values are computed recursively, bottom-up.
-The value of a parse tree is the value of its start symbol.
 
 @node Application and diagnostic behavior
 @section Application and diagnostic behavior
