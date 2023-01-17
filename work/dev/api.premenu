@@ -819,9 +819,9 @@ Marpa can parse with grammars which are not
 cycle-free,
 and will
 even parse inputs that cause cycles.
-When a parse is infinitely ambiguous, Marpa
+When a parse run is infinitely ambiguous, Marpa
 limits cycles to a single loop,
-so that only a finite number of parses is returned.
+so that only a finite number of parse trees is returned.
 
 @node Trees
 @section Trees
@@ -1125,9 +1125,9 @@ Each tree represents a
 We have used ``parse'' as a noun in several senses.
 Depending on context a ``parse'' may be
 @itemize
-@item the process of
-parsing an input using a grammar,
-@item a parse tree, or
+@item a parse run, that is, an instance of running parser on
+an input using a grammar;
+@item a parse tree; or
 @item a parse forest.
 @end itemize
 When the meaning of ``parse'' is not clear in context,
@@ -1161,7 +1161,7 @@ In the tree above, we use symbol names (for example, @code{"S"})
 as symbol IDs.
 Since we have not used the same symbol twice, we will be able to
 refer to a node by its symbol name.
-In practical parses, symbols usually occur many times.
+In practical parse trees, symbols usually occur many times.
 
 Node @code{S} has 5 children.
 Node @code{A} has 2 children.
@@ -1262,8 +1262,8 @@ visits the nodes in the following order:
 
 Rarely is an application interested only in the tree.
 Traditionally and most often, the tree
-is an intermediate step in producing the ``value'' of the parse.
-The value of the parse is what the input string ``means''.
+is an intermediate step in producing the ``value'' of the parse run.
+A value of a parse run is a ``meaning'' of the input string.
 Grammars almost always have a
 @dfindex semantics
 @dfn{semantics}
@@ -1273,14 +1273,14 @@ grammar to find the
 @dfindex value
 @dfn{value}
 of the input string.
-Finding the value of the parse,
-given the tree, is called
+Finding the value of a parse tree,
+is called
 @dfindex evaluate (a tree)
 @dfn{evaluating a tree}.
 More loosely,
 we also speak of
-@dfindex evaluate (a parse)
-@dfn{evaluating the parse},
+@dfindex evaluate (a parse run)
+@dfn{evaluating the parse run},
 or
 @dfindex evaluate (an input string)
 @dfn{evaluating the input string}.
@@ -1324,22 +1324,21 @@ Implementing this traditional method of tree evaluation requires
 a bottom-up traversal of the parse tree.
 In the final step of a bottom-up traversal,
 the start node is evaluated,
-and the value of the start node becomes the value of the parse.
+and the value of the start node becomes the value of the parse run.
 
 @node Ambiguity
 @section Ambiguity
 
 In our discussion of evaluation above
-(pxref{Semantics terms}),
-we spoke of evaluting trees.
-In fact, the result of a successful Libmarpa parse is a parse forest.
-Most applications are interested in only one parse.
-We say that a Libmarpa parse is
+(@pxref{Semantics terms}),
+we spoke of evaluating trees.
+In fact, the result of a successful Libmarpa parse run is a parse forest.
+We say that a Libmarpa parse run is
 @dfindex ambiguous
 @dfn{ambiguous}
-iff the parse returns
+iff the parse run returns
 a forest containing more than one parse tree.
-We say that a succcessful Libmarpa parse is
+We say that a succcessful Libmarpa parse run is
 @dfindex unambiguous
 @dfn{unambiguous}
 iff
@@ -1348,14 +1347,14 @@ it contains exactly one parse tree.
 Most applications care only about one parse tree.
 An application is free to decide what to do in case a parse
 forest is ambiguous.
-Among the applications options are picking one tree and evaluating that tree,
+Among the applications options are picking one tree and evaluating that tree;
 iterating through the parse trees;
 or treating the ambiguity as an error.
 
 Libmarpa's treatment of ambiguity differs somewhat
-from the traditional one, for two reduces.
+from the traditional one, for two reasons.
 First, Libmarpa allows ambiguous tokens,
-which is a source of ambiguity not present in traditional
+which are a source of ambiguity not present in traditional
 parsing.
 Second, Libmarpa prunes nulled subtrees back to their topmost
 nulled symbol,
@@ -2088,7 +2087,7 @@ are called ``steps''.
 For example, a Libmarpa step might tell the application that the value
 of a token needs to go into a certain stack position.
 Or a Libmarpa step might tell the application that a rule is to be evaluated.
-For rule evalution, Libmarpa will tell the application where the operands
+For rule evaluation, Libmarpa will tell the application where the operands
 are to be found,
 and where the result must go.
 
@@ -5887,7 +5886,7 @@ This leaves the upper layer in total control of the
 stack and the values that are placed on it.
 
 As example may make this clearer.
-Suppose the evalution is at a place in the parse tree
+Suppose the evaluation is at a place in the parse tree
 where an addition is being performed.
 Libmarpa does not know that the operation
 is an addition.
@@ -5941,7 +5940,7 @@ step-driven valuator
 will be significantly faster than the
 traditional stack evaluation algorithm.
 
-Step-driven evalution has another advantage.
+Step-driven evaluation has another advantage.
 To illustrate this,
 consider what is a very common case:
 The semantics are implemented in a higher-level language,
