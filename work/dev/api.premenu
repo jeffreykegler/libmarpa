@@ -1100,6 +1100,16 @@ We sometimes call a root node, a
 We do this especially in contexts where a tree is ``top-level'',
 that is, not the child of any other tree under discussion.
 
+If @code{t1} and @code{t2} are trees,
+and @code{t2} (considered as a node) is a descendant
+of @code{t1},
+then we say @code{t2} is a
+@dfindex subtree
+@dfn{subtree}
+of @code{t1}.
+By this definition, every tree is a subtree
+of itself.
+
 @anchor{def-forest}
 A
 @dfindex parse (forest)
@@ -1319,24 +1329,38 @@ and the value of the start node becomes the value of the parse.
 @node Ambiguity
 @section Ambiguity
 
-[ TODO: Rewrite this section ]
-
-Marpa allows ambiguous grammars.
-Traditionally
-we say that a parse is
+In our discussion of evaluation above
+(pxref{Semantics terms}),
+we spoke of evaluting trees.
+In fact, the result of a successful Libmarpa parse is a parse forest.
+Most applications are interested in only one parse.
+We say that a Libmarpa parse is
 @dfindex ambiguous
 @dfn{ambiguous}
-if,
-for a given grammar and a given input,
-more than one derivation tree is possible.
-However, Marpa allows ambiguous input tokens,
-which the traditional definition does not take
-into account.
-If Marpa used
-the traditional definition,
-all grammars would be
-ambiguous except those grammars which allowed only
-the null parse.
+iff the parse returns
+a forest containing more than one parse tree.
+We say that a succcessful Libmarpa parse is
+@dfindex unambiguous
+@dfn{unambiguous}
+iff
+it contains exactly one parse tree.
+
+Most applications care only about one parse tree.
+An application is free to decide what to do in case a parse
+forest is ambiguous.
+Among the applications options are picking one tree and evaluating that tree,
+iterating through the parse trees;
+or treating the ambiguity as an error.
+
+Libmarpa's treatment of ambiguity differs somewhat
+from the traditional one, for two reduces.
+First, Libmarpa allows ambiguous tokens,
+which is a source of ambiguity not present in traditional
+parsing.
+Second, Libmarpa prunes nulled subtrees back to their topmost
+nulled symbol,
+which eliminates one source of the ambiguities
+that traditional parsers find.
 
 [ TODO: Rewrite two reasons to differ from traditional
 definition -- ambiguous tokens and pruned null
