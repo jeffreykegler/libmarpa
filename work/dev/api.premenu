@@ -1347,40 +1347,38 @@ it contains exactly one parse tree.
 Most applications care only about one parse tree.
 An application is free to decide what to do in case a parse
 forest is ambiguous.
-Among the applications options are picking one tree and evaluating that tree;
+Among the application's options are picking one tree and evaluating that tree;
 iterating through the parse trees;
 or treating the ambiguity as an error.
 
 Libmarpa's treatment of ambiguity differs somewhat
 from the traditional one, for two reasons.
-First, Libmarpa allows ambiguous tokens,
-which are a source of ambiguity not present in traditional
-parsing.
+First, Libmarpa allows ambiguous tokens.
 Second, Libmarpa prunes nulled subtrees back to their topmost
-nulled symbol,
-which eliminates one source of the ambiguities
-that traditional parsers find.
+nulled symbol.
 
-[ TODO: Rewrite two reasons to differ from traditional
-definition -- ambiguous tokens and pruned null
-forests.  Def is that cardinality of forest > 1. ]
+An ambiguous token occurs when the same lexeme can be
+recognized as more than one token symbol.
+Traditionally, parsers do not allow this,
+but it is the most natural way of parsing some real-life applications.
+In particular, natural languages often allow words to be
+used as more than one part of speech.
+For example, in this document, the English word ``parse''
+is used as an adjective, a verb and a noun,
+and each of these uses is common.
+Ambiguous tokens are
+a source of ambiguity not present in traditional
+parsing.
+@xref{Ambiguous input}.
 
-It is easiest if the Marpa definition and the
-traditional definition were extensionally
-equivalent ---
-that is, if Marpa's set of ambiguous grammars
-was exactly the same as the set of traditionally
-ambiguous grammars.
-This can be accomplished by using a slightly
-altered definition.
-In the Marpa context, a grammar
-is
-@dfindex ambiguous
-@dfn{ambiguous}
-if and only if,
-for some UNAMBIGUOUS stream of input tokens,
-that grammar produces
-more than one parse tree.
+On the other hand, the pruning of nulled subtrees
+eliminates a source of the ambiguities
+that is present in traditional parsing.
+Libmarpa prunes nulled subtrees back to their topmost nulled symbol.
+This topmost symbol may have been nulled in more than one
+way, creating an ambiguity in the parse.
+This ambiguity is removed when the subtrees are pruned.
+@xref{Nullability}.
 
 @node Application and diagnostic behavior
 @section Application and diagnostic behavior
