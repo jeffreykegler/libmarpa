@@ -1364,7 +1364,7 @@ but it is the most natural way of parsing some real-life applications.
 In particular, natural languages often allow words to be
 used as more than one part of speech.
 For example, in this document, the English word ``parse''
-is used as an adjective, a verb and a noun,
+is used as an adjective, a verb, and a noun,
 and each of these uses is common.
 Ambiguous tokens are
 a source of ambiguity not present in traditional
@@ -1372,12 +1372,11 @@ parsing.
 @xref{Ambiguous input}.
 
 On the other hand, the pruning of nulled subtrees
-eliminates a source of the ambiguities
+eliminates a source of ambiguity
 that is present in traditional parsing.
-Libmarpa prunes nulled subtrees back to their topmost nulled symbol.
-This topmost symbol may have been nulled in more than one
-way, creating an ambiguity in the parse.
-This ambiguity is removed when the subtrees are pruned.
+Multiple nulled subtrees may share their topmost nulled symbol.
+When the subtrees are pruned to their shared root,
+ambiguity is removed.
 @xref{Nullability}.
 
 @node Application and diagnostic behavior
