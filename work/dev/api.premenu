@@ -595,7 +595,7 @@ or that @var{X}
 @dfn{matches}
 @var{Y}.
 It is particularly common to say that
-@var{X} matches @var{Y} when @var{X} or @var{Y} is a sentence.
+@var{X} matches @var{Y} when @var{Y} is a sentence.
 
 The parse of an input by a grammar is
 @dfindex successful
@@ -692,23 +692,6 @@ is called
 or
 @dfindex inaccessible
 @dfn{inaccessible}.
-If any derivation which results in a sentence uses a rule,
-that rule is said to be
-@dfindex productive
-@dfn{productive}.
-A rule that is not productive is called
-@dfindex unproductive
-@dfn{unproductive}.
-A rule is productive iff every symbol on
-its RHS is productive.
-A symbol is productive iff
-it is a terminal or it is the LHS of a productive rule.
-A rule which is inaccessible or unproductive is called a
-@dfindex useless
-@dfn{useless}
-rule.
-Marpa can handle grammars with useless rules.
-
 A symbol is
 @dfindex reachable
 @dfn{reachable}
@@ -722,19 +705,33 @@ If a symbol is not reachable, it is
 or
 @dfindex inaccessible
 @dfn{inaccessible}.
-A symbol is
+
+If any derivation which results in a sentence uses a rule,
+that rule is said to be
 @dfindex productive
-@dfn{productive}
-if it appears on the LHS of a productive rule,
-or if it is a nullable symbol.
-If a symbol is not productive, it is
+@dfn{productive}.
+A rule that is not productive is called
 @dfindex unproductive
 @dfn{unproductive}.
+A rule is productive iff every symbol on
+its RHS is productive.
+An empty rule is productive, vacuously.
+
+A symbol is productive iff
+it is a terminal or it is the LHS of a productive rule.
+These definitions imply that all nullable rules are productive.
+They also imply that every nullable symbol is productive,
+because every nullable symbol must be on the LHS of a nullable rule.
+
+A rule which is inaccessible or unproductive is called a
+@dfindex useless
+@dfn{useless}
+rule.
 A symbol which is inaccessible or unproductive is called a
 @dfindex useless
 @dfn{useless}
 symbol.
-Marpa can handle grammars with useless symbols.
+Marpa can handle grammars with useless rules and symbols.
 
 @node Recursion and cycles
 @section Recursion and cycles
