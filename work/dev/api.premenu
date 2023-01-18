@@ -231,7 +231,7 @@ is either an unspecified value or a trap value.
 Our use of this term is consistent with its use in the C99 standard.
 @item
 @dfindex method
-@dfn{Libmarpa method}, or just @dfn{method} means a C function
+@dfn{Libmarpa method}, or just @dfn{method}, means a C function
 or a function-like macro of the Libmarpa library.
 @item
 @dfindex trap value
@@ -361,42 +361,17 @@ For parsing theory a
 language is exactly a set of strings --
 that and nothing more.
 
-@node Stages of parsing
-@section Stages of parsing
-
 A
 @dfindex recognizer
 @dfn{recognizer}
 is a program that determines whether its
 @dfindex input
 @dfn{input}
-is in the language of a grammar and a start symbol.
+is in the language of a grammar.
 A
 @dfindex parser
 @dfn{parser}
 is a program which finds the structure of that input.
-
-The term
-@dfindex parsing
-@dfn{parsing}
-is used in a strict and a loose sense.
-@dfindex Parsing in the loose sense
-@dfn{Parsing in the loose sense}
-is all phases of finding a grammar's structure,
-including a separate recognition phase if the parser has one.  (Marpa does.)
-If a parser has phases,
-@dfindex parsing in the strict sense
-@dfn{parsing in the strict sense}
-refers specifically to the phase that finds the structure of the input.
-When the Marpa documents use the term
-@dfindex parsing
-@dfn{parsing}
-in its strict sense, they will
-speak explicitly of ``parsing in the strict sense''.
-Otherwise,
-@dfindex parsing
-@dfn{parsing}
-will mean parsing in the loose sense.
 
 Parsers often use a
 @dfindex lexical analyzer
@@ -447,10 +422,6 @@ is more often called the
 @dfindex input sentence
 @dfn{input sentence}.
 
-The output of the Marpa parser
-is a parse forest.
-@xref{def-forest}.
-
 @node Rules
 @section Rules
 
@@ -466,7 +437,7 @@ In one common way of writing BNF, a rule looks like this:
     Expression ::= Term Factor
 @end verbatim
 
-In the rule above, @var{Expression}, @var{Term} and @var{Factor} are symbols.
+In the rule above, @code{Expression}, @code{Term} and @code{Factor} are symbols.
 A rule consists of a
 @dfindex left hand side
 @dfn{left hand side}
@@ -480,8 +451,8 @@ like those Marpa parses,
 the left hand side of a rule
 is always a symbol string of length 1.
 The right hand side of a rule is a symbol string of zero or more symbols.
-In the example, @var{Expression} is the left hand side, and
-@var{Term} and @var{Factor} are right hand side symbols.
+In the example, @code{Expression} is the left hand side, and
+@code{Term} and @code{Factor} are right hand side symbols.
 
 Left hand side and right hand side are often abbreviated as
 @dfindex RHS
@@ -1110,7 +1081,6 @@ of @code{t1}.
 By this definition, every tree is a subtree
 of itself.
 
-@anchor{def-forest}
 A
 @dfindex parse (forest)
 @dfindex parse forest
