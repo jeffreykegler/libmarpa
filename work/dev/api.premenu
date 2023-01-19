@@ -842,100 +842,100 @@ is often called an
 @dfn{instance}.
 In the following list of definitions and assertions, let
 @verbatim
-     nd = < < sym,  start, end >, children >
+     nd = < < sym, start, end >, children >
 @end verbatim
 be a tree node:
 @itemize
 @item
 We say that
-that @var{sym} is the symbol of @var{nd}.
+that @code{sym} is the symbol of @code{nd}.
 @item
-We say that @var{nd} is an
+We say that @code{nd} is an
 @dfindex instance (of a symbol)
-@dfn{instance} of the symbol with ID @var{sym}
-starting at @var{start} and ending at @var{end}.
+@dfn{instance} of the symbol with ID @code{sym}
+starting at @code{start} and ending at @code{end}.
 @item
-We say that @var{nd} is an
+We say that @code{nd} is an
 @dfindex instance (of a symbol)
-@dfn{instance} of the symbol with ID @var{sym} at location @var{end}.
+@dfn{instance} of the symbol with ID @code{sym} at location @code{end}.
 @item
 We say that the
 @dfindex length (of a node)
 @dfindex node length
-@dfn{length} of @var{nd} is the
+@dfn{length} of @code{nd} is the
 difference between its start and end,
-that is @code{@var{end}@minus{}@var{start}}.
+that is @code{end@minus{}start}.
 @item
-The length of @var{nd} is zero iff
-@var{start} is the same as @var{end}.
+The length of @code{nd} is zero iff
+@code{start} is the same as @code{end}.
 Put another way,
-the length of @var{nd} is zero iff
-@code{@var{start} = @var{end}}.
+the length of @code{nd} is zero iff
+@code{start = end}.
 @item
-We say that the elements of @var{children}
+We say that the elements of @code{children}
 are the
 @dfindex children (of a node)
 @dfn{children}
-of @var{nd}.
+of @code{nd}.
 @item
-We say that every element of @var{children}
+We say that every element of @code{children}
 is a
 @dfindex child (of a node)
 @dfn{child}
-of @var{nd}.
+of @code{nd}.
 @item
 For brevity, we say
-that the symbol @var{sym} is
+that the symbol @code{sym} is
 @dfindex at (a location, wrt a symbol)
 @dfn{at}
-@var{end}.
-Note that this means we consider the location of a symbol
+@code{end}.
+We note that this means we consider the location of a symbol
 to be where it ends.
-@item @var{nd} is a
+@item @code{nd} is a
 @dfindex leaf node
-@dfn{leaf node} iff @var{children}
+@dfn{leaf node} iff @code{children}
 is the empty list.
-A leaf node is also call a
+A leaf node is also called a
 @dfindex leaf (node)
 @dfn{leaf}.
-@item @var{nd} is an
+@item @code{nd} is an
 @dfindex rule node
 @dfn{rule node} iff it is not a leaf node.
-@item Every node is either a leaf node or a rule node,
-but no node is both a leaf and a rule node.
-@item We say that @var{nd} is a
+@item Every node is either a leaf node or a rule node.
+No node is both a leaf and a rule node.
+@item We say that @code{nd} is a
 @dfindex terminal node
 @dfn{terminal node}
-iff @var{nd} is a leaf node
-and @var{sym} is a terminal.
+iff @code{nd} is a leaf node
+and @code{sym} is a terminal.
 A terminal node is also called a
 @dfindex token node
 @dfn{token node}.
-@item We say that @var{nd} is a
+@item We say that @code{nd} is a
 @dfindex nulled node
 @dfn{nulled node}
-iff @var{nd} is a leaf node
-and @var{sym} is @strong{not} a terminal.
+iff @code{nd} is a leaf node
+and @code{sym} is @strong{not} a terminal.
 A nulled node is also called a
 @dfindex nulling node
 @dfn{nulling node}.
 @item Every leaf node is either a nulled node or a terminal node.
 But, because nullable LHS terminals are not allowed,
 no node is both nulled and terminal.
-@item We say that @var{nd}
+@item We say that @code{nd}
 is a
 @dfindex BNF node
 @dfn{BNF node}
 iff
-@var{nd} is not a terminal node
-and @var{sym} is the LHS of a BNF rule.
-@item We say that @var{nd}
+@code{nd} is not a terminal node
+and @code{sym} is the LHS of a BNF rule.
+@item We say that @code{nd}
 is a
 @dfindex sequence node
 @dfn{sequence node}
 iff
-@var{nd} is not a terminal node
-and @var{sym} is the LHS of a sequence rule.
+@code{nd} is not a terminal node
+and @code{sym} is the LHS of a sequence rule.
 @item
 Every node is a terminal node, a BNF node
 or a sequence node.
@@ -945,57 +945,57 @@ This is because sequence rules never share a
 LHS with a BNF rule,
 and no BNF node or sequence node is a terminal node.
 @item
-If @var{nd} is a rule node, its
+If @code{nd} is a rule node, its
 @dfindex LHS (of a rule node)
-@dfn{LHS} is @var{sym}.
+@dfn{LHS} is @code{sym}.
 @item
-If @var{nd} is a rule node, its
+If @code{nd} is a rule node, its
 @dfindex RHS (of a rule node)
 @dfn{RHS} is the concatenation,
 from first to last,
-of the symbols of the nodes in @var{children}.
+of the symbols of the nodes in @code{children}.
 @item
 All nulled nodes are zero-length.
 No terminal node is zero-length.
-@item We say that @var{nd} is an instance of
-@var{sym} starting at @var{start} and ending
-at @var{end}.
-We also say that @var{nd} is an instance of
-@var{sym} at @var{end} or, simply,
-that @var{nd} is an instance of @var{sym}.
+@item We say that @code{nd} is an instance of
+@code{sym} starting at @code{start} and ending
+at @code{end}.
+We also say that @code{nd} is an instance of
+@code{sym} at @code{end} or, simply,
+that @code{nd} is an instance of @code{sym}.
 @item
 Let @var{r} be the rule whose LHS
-is equal to the LHS of @var{nd},
-and whose RHS is equal to the RHS of @var{nd}.
-If @var{nd} is a BNF rule node,
+is equal to the LHS of @code{nd},
+and whose RHS is equal to the RHS of @code{nd}.
+If @code{nd} is a BNF rule node,
 there must be such a rule.
 In that case,
-We say that @var{nd} is an instance of
-@var{r} starting at @var{start} and ending
-at @var{end}.
-We also say that @var{nd} is an instance of
-@var{r} at @var{end} or, simply,
-that @var{nd} is an instance of @var{r}.
+We say that @code{nd} is an instance of
+@var{r} starting at @code{start} and ending
+at @code{end}.
+We also say that @code{nd} is an instance of
+@var{r} at @code{end} or, simply,
+that @code{nd} is an instance of @var{r}.
 @item
 Let @var{r} be the sequence rule whose LHS
-is equal to the LHS of @var{nd}.
-If @var{nd} is a sequence rule node,
+is equal to the LHS of @code{nd}.
+If @code{nd} is a sequence rule node,
 there must be such a rule.
 In that case,
-We say that @var{nd} is an instance of
-@var{r} starting at @var{start} and ending
-at @var{end}.
-We also say that @var{nd} is an instance of
-@var{r} at @var{end} or, simply,
-that @var{nd} is an instance of @var{r}.
+We say that @code{nd} is an instance of
+@var{r} starting at @code{start} and ending
+at @code{end}.
+We also say that @code{nd} is an instance of
+@var{r} at @code{end} or, simply,
+that @code{nd} is an instance of @var{r}.
 @item
 @dfindex nulled symbol instance
 @dfindex symbol instance, nulled
-If @var{nd} is a nulled instance,
-that @var{sym} is
+If @code{nd} is a nulled instance,
+that @code{sym} is
 @dfindex nulled (of a symbol)
-@dfn{nulled} at location @var{end} or, simply,
-say that the symbol @var{sym} is nulled.
+@dfn{nulled} at location @code{end} or, simply,
+say that the symbol @code{sym} is nulled.
 @end itemize
 
 Let @var{nd1} and @var{nd2} be two nodes.
