@@ -844,11 +844,11 @@ In the following list of definitions and assertions, let
 @verbatim
      nd = < < sym, start, end >, children >
 @end verbatim
-be a tree node:
+be a tree node.
 @itemize
 @item
 We say that
-that @code{sym} is the symbol of @code{nd}.
+@code{sym} is the symbol of @code{nd}.
 @item
 We say that @code{nd} is an
 @dfindex instance (of a symbol)
@@ -970,7 +970,7 @@ and whose RHS is equal to the RHS of @code{nd}.
 If @code{nd} is a BNF rule node,
 there must be such a rule.
 In that case,
-We say that @code{nd} is an instance of
+we say that @code{nd} is an instance of
 @var{r} starting at @code{start} and ending
 at @code{end}.
 We also say that @code{nd} is an instance of
@@ -982,7 +982,7 @@ is equal to the LHS of @code{nd}.
 If @code{nd} is a sequence rule node,
 there must be such a rule.
 In that case,
-We say that @code{nd} is an instance of
+we say that @code{nd} is an instance of
 @var{r} starting at @code{start} and ending
 at @code{end}.
 We also say that @code{nd} is an instance of
@@ -992,10 +992,10 @@ that @code{nd} is an instance of @var{r}.
 @dfindex nulled symbol instance
 @dfindex symbol instance, nulled
 If @code{nd} is a nulled instance,
-that @code{sym} is
+we say that @code{sym} is
 @dfindex nulled (of a symbol)
 @dfn{nulled} at location @code{end} or, simply,
-say that the symbol @code{sym} is nulled.
+that the symbol @code{sym} is nulled.
 @end itemize
 
 Let @var{nd1} and @var{nd2} be two nodes.
@@ -1064,7 +1064,7 @@ speak of nodes when we are more focused on the individual nodes.
 We sometimes call a root node, a
 @dfindex node, start
 @dfindex start node
-@dfn{start node}
+@dfn{start node}.
 We do this especially in contexts where a tree is ``top-level'',
 that is, not the child of any other tree under discussion.
 
@@ -1158,7 +1158,7 @@ The tree derives the sentence
 @verbatim
       T U V W X Y X
 @end verbatim
-and can do in several ways.
+and can do so in several ways.
 One is these is its rightmost derviation:
 @verbatim
     S -> A B C D E
@@ -1231,6 +1231,7 @@ Rarely is an application interested only in the tree.
 Traditionally and most often, the tree
 is an intermediate step in producing the ``value'' of the parse run.
 A value of a parse run is a ``meaning'' of the input string.
+
 Grammars almost always have a
 @dfindex semantics
 @dfn{semantics}
@@ -1240,7 +1241,7 @@ grammar to find the
 @dfindex value
 @dfn{value}
 of the input string.
-Finding the value of a parse tree,
+Finding the value of a parse tree
 is called
 @dfindex evaluate (a tree)
 @dfn{evaluating a tree}.
@@ -1254,10 +1255,11 @@ or
 
 We recall that Libmarpa provides instructions for stack manipulation.
 @xref{Value methods}.
-Libmarpa does not directly do evalation because it is usually used
+Libmarpa does not directly do evaluation
+because Libmarpa is usually used
 together with a higher-level language,
-and the semantics is known,
-and the evaluation must be performed,
+and the semantics is first known,
+and the evaluation is most easily performed,
 in the higher-level language.
 
 In the most common method of evaluating a parse tree,
@@ -1275,7 +1277,7 @@ each input symbol at the time the input symbol is recognized;
 
 In determining the value of nulled nodes, the application may also
 consider the node's symbol and context information.
-Libmarpa prunes pulled subtrees back to their root,
+Libmarpa prunes nulled subtrees back to their root,
 which usually is what the application expects.
 @xref{Nullability}.
 
@@ -1377,7 +1379,7 @@ A
 @dfn{diagnostic behavior}
 is a behavior that this document suggests
 that the programmer may attempt in the face of an irrecoverable failure,
-for purpose of testing, diagnostics and debugging.
+for purposes of testing, diagnostics and debugging.
 Diagnostic behaviors are hoped for, rather than expected,
 and intended
 to allow the programmer to deal with irrecoverable
@@ -1389,7 +1391,7 @@ a behavior is a diagnostic behavior only if that is specifically
 indicated.
 Applications should not be designed to rely
 on diagnostic behaviors.
-We sometimes say that ``diagnostics may attempt'' a certain behavior
+We sometimes say that the application ``may attempt'' a certain behavior
 to emphasize that that behavior is a diagnostic behavior.
 
 @node Architecture
