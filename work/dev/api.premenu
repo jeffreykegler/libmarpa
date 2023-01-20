@@ -283,22 +283,23 @@ except that it cannot be a trap value.
 This document assumes the reader is familiar with parsing
 theory.
 The following exposition is @strong{not} intended
-an introduction or a reference.
+as either an introduction or a reference.
 Instead, it is intended to serve as a guide to the definitions
 of parsing terms as used in this document.
 
-Where a narrow
-or specialized sense of the term is the one that applies
-within Marpa, that is the only definition given.
-Marpa also sometimes uses a standard term
-with a definition which is slightly different from
-the standard one.
+The definitions given are intended to be applicable within Libmarpa,
+rather than to reflect general usage.
+For example,
+Marpa sometimes uses a standard term
+with a definition that is different from
+the standard definition.
 ``Ambiguous grammar'' is one example:
 @xref{Ambiguity}.
 The term ``terminal'' is
 another.
 @xref{Terminals}.
-When a definition is non-standard, this is explicitly pointed out.
+When a standard term is defined in a non-standard way.
+this is explicitly pointed out.
 
 Readers who want a textbook or tutorial in parsing theory
 can look at
@@ -312,7 +313,9 @@ Wikipedia is also an excellent place to start.
 A
 @dfindex grammar
 @dfn{grammar}
-is a set of rules,
+is a set of
+@dfindex rule
+@dfn{rules},
 associated with a set of symbols,
 one of which is distinguished as the start symbol.
 A
@@ -436,9 +439,6 @@ or simply the
 A standard way of describing rules is Backus-Naur Form, or
 @dfindex BNF
 @dfn{BNF}.
-A rule of a grammar is sometimes called a
-@dfindex rule
-@dfn{rule}.
 In one common way of writing BNF, a rule looks like this:
 
 @verbatim
@@ -501,7 +501,7 @@ of a derivation, or
 by applying one of the rules from the grammar.
 The rule must be one of those with a LHS that occurs in the symbol string.
 The result of the derivation step is another symbol string,
-one in which every occurence of the LHS symbol from the rule is
+one in which an occurrence of the LHS symbol from the rule is
 replaced by the RHS of the rule.
 @anchor{derivation-example}
 For example, if @var{A}, @var{B}, @var{C}, @var{D}, and @var{X} are symbols,
@@ -580,7 +580,8 @@ derivation.
 Pedantically, a symbol @var{X} and a string
 that consists of only that symbol
 are two different things.
-But we often say ``the symbol @var{X}''
+But we often say ``the symbol @var{X}'',
+or ``@var{X}'',
 as shorthand for ``the string
 of length 1
 whose only symbol is @var{X}''.
@@ -641,7 +642,7 @@ is a
 @dfindex null parse
 @dfn{null parse}.
 
-If a symbol has a null derivation,
+If a symbol produces the empty string,
 it is a
 @dfindex nullable symbol
 @dfn{nullable symbol}.
@@ -668,11 +669,11 @@ a null derivation.
 A rule is
 nullable iff its LHS symbol is nullable.
 
-A rule @var{R} is
+A rule @var{r} is
 @dfindex nulling rule
 @dfindex rule, nulling
 @dfn{nulling}
-iff every derivation whose first step has @var{R}
+iff every derivation whose first step has @var{r}
 as its rule is a null derivation.
 A rule is
 nulling iff its LHS symbol is nulling.
@@ -749,11 +750,11 @@ If any symbol in the grammar non-trivially produces a symbol string containing i
 the grammar is said to be
 @dfindex recursive
 @dfn{recursive}.
-If any symbol non-trivially produces a symbol string with itself on the left,
+If any symbol non-trivially produces a symbol string in which it is the leftmost symbol,
 the grammar is said to be
 @dfindex left-recursive
 @dfn{left-recursive}.
-If any symbol non-trivially produces a symbol string with itself on the right,
+If any symbol non-trivially produces a symbol string in which it is the rightmost symbol,
 the grammar is said to be
 @dfindex right-recursive
 @dfn{right-recursive}.
@@ -906,7 +907,7 @@ is the empty list.
 A leaf node is also called a
 @dfindex leaf (node)
 @dfn{leaf}.
-@item @code{nd} is an
+@item @code{nd} is a
 @dfindex rule node
 @dfn{rule node} iff it is not a leaf node.
 @item Every node is either a leaf node or a rule node.
@@ -972,7 +973,7 @@ We also say that @code{nd} is an instance of
 @code{sym} at @code{end} or, simply,
 that @code{nd} is an instance of @code{sym}.
 @item
-Let @var{r} be the rule whose LHS
+Let @var{r} be the BNF rule whose LHS
 is equal to the LHS of @code{nd},
 and whose RHS is equal to the RHS of @code{nd}.
 If @code{nd} is a BNF rule node,
@@ -1102,7 +1103,7 @@ Depending on context a
 @dfn{parse}
 may be
 @itemize
-@item a parse run, that is, an instance of running parser on
+@item a parse run, that is, an instance of running a parser on
 an input using a grammar;
 @item a parse tree; or
 @item a parse forest.
