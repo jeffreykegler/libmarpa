@@ -225,40 +225,9 @@ The lexeme @dfn{iff} is an abbreviation for ``if and only if''.
 @code{x} and @code{y},
 where @code{x} and @code{y} are two numbers.
 @item
-@dfindex indeterminate value
-An @dfn{indeterminate value}
-is either an unspecified value or a trap value.
-Our use of this term is consistent with its use in the C99 standard.
-@item
 @dfindex method
 @dfn{Libmarpa method}, or just @dfn{method}, means a C function
 or a function-like macro of the Libmarpa library.
-@item
-@dfindex trap value
-A @dfn{trap value},
-also called a @dfn{trap representation},
-is a value that when accessed causes undefined behavior.
-Our use of this term is consistent with its use in the C99 standard.
-@xref{Trap representations}.
-@item
-@dfindex undefined behavior
-An @dfn{undefined behavior}
-is a behavior that this document does not specify.
-One implication is that this behavior might be problematic.
-Our use of this term is consistent with its use in the C99 standard.
-@item
-@dfindex unspecified behavior
-An @dfn{unspecified behavior}
-is a behavior that, within a range of possibilities,
-is not further specified by this document.
-This is usually not problematic.
-Our use of this term is consistent with its use in the C99 standard.
-@item
-@dfindex unspecified value
-An @dfn{unspecified value}
-is a value on which this document imposes no restrictions,
-except that it cannot be a trap value.
-Our use of this term is consistent with its use in the C99 standard.
 @item
 @dfindex user
 @dfn{User} means a ``user'' of the Libmarpa library.
@@ -275,6 +244,37 @@ is joining the authors
 on the millenia-old voyage of discovery
 into mathematics and language.
 As of this writing, there is a one primary author.
+@end itemize
+
+The following terms are used in a way that is consistent
+with their use in the C99 standard:
+@itemize
+@item
+@dfindex indeterminate value
+An @dfn{indeterminate value}
+is either an unspecified value or a trap value.
+@item
+@dfindex trap value
+A @dfn{trap value},
+also called a @dfn{trap representation},
+is a value that when accessed causes undefined behavior.
+@xref{Trap representations}.
+@item
+@dfindex undefined behavior
+An @dfn{undefined behavior}
+is a behavior that this document does not specify.
+One implication is that this behavior might be problematic.
+@item
+@dfindex unspecified behavior
+An @dfn{unspecified behavior}
+is a behavior that, within a range of possibilities,
+is not further specified by this document.
+This is usually not problematic.
+@item
+@dfindex unspecified value
+An @dfn{unspecified value}
+is a value on which this document imposes no restrictions,
+except that it cannot be a trap value.
 @end itemize
 
 @node Parsing theory preliminaries
@@ -334,7 +334,7 @@ A symbol string is also called a
 Some of the symbols are terminals.
 For the the moment, we will say that a terminal is a symbol
 which may occur in an input to a parse of a grammar.
-A careful definition, and one appropriate specifically to Marpa
+A careful definition appropriate specifically to Marpa
 is below (@pxref{Terminals}).
 In a parse, an input is either accepted or rejected.
 A potential input string,
@@ -394,6 +394,9 @@ Each token represents a
 of the grammar and has a
 @dfindex value
 @dfn{value}.
+A token is also sometimes called a
+@dfindex lexeme
+@dfn{lexeme}.
 A lexical analyzer is often called a
 @dfindex lexer
 @dfn{lexer}
@@ -420,7 +423,10 @@ The
 @dfn{symbol string input}
 is more often called the
 @dfindex input sentence
-@dfn{input sentence}.
+@dfn{input sentence},
+or simply the
+@dfindex input
+@dfn{input}.
 
 @node Rules
 @section Rules
