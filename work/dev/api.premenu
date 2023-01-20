@@ -1288,6 +1288,8 @@ In determining the value of nulled nodes, the application may also
 consider the node's symbol and context information.
 Libmarpa prunes nulled subtrees back to their root,
 which usually is what the application expects.
+The evaluation of nulled nodes is discussed in detail
+in the chapter on nullability.
 @xref{Nullability}.
 
 To find the value of a rule node, an application
