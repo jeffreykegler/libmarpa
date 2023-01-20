@@ -388,12 +388,14 @@ into a
 which is a series of
 @dfindex tokens
 @dfn{tokens}.
-Each token represents a
+Each token represents one or more
 @dfindex symbol
-@dfn{symbol}
+@dfn{symbols}
 of the grammar and has a
 @dfindex value
 @dfn{value}.
+(Libmarpa tokens may be ambiguous.
+@xref{Ambiguous input}.)
 A token is also sometimes called a
 @dfindex lexeme
 @dfn{lexeme}.
@@ -482,7 +484,8 @@ in allowing a second kind of rule: a
 @dfn{sequence rule}.
 The RHS of a sequence rule is a single symbol,
 which is repeated zero or more times.
-Libmarpa allows the application to specify other parameters,
+Libmarpa allows the application to specify other parameters
+for sequence rules,
 including a separator symbol.
 @xref{Sequence rules}.
 
@@ -574,7 +577,7 @@ then it is an
 derivation.
 @end itemize
 
-Technically, a symbol @var{X} and a string
+Pedantically, a symbol @var{X} and a string
 that consists of only that symbol
 are two different things.
 But we often say ``the symbol @var{X}''
@@ -825,9 +828,9 @@ we refer to a tree node simply as a
 @dfindex node (of a tree)
 @dfn{node}.
 
-A node is a pair of tuples:
+A node is a pair:
 @itemize
-@item The first element tuple of a node is
+@item The first element of a node is
 a ``label tuple''.
 The label tuple is a triple
 of symbol ID,
@@ -835,10 +838,10 @@ start Earley set ID, and
 end Earley set ID.
 For more about the Earley set IDs,
 @pxref{Input}.
-@item The second element tuple of a node is
+@item The second element of a node is
 a sequence of nodes.
+Our definition of a tree node is therefore recursive.
 @end itemize
-We note that this definition of a tree node is recursive.
 
 When looked at from the point of view
 of its labels,
