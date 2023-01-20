@@ -827,7 +827,6 @@ in contexts where the meaning is clear,
 we refer to a tree node simply as a
 @dfindex node (of a tree)
 @dfn{node}.
-
 A node is a pair:
 @itemize
 @item The first element of a node is
@@ -1094,12 +1093,14 @@ A
 @dfn{parse forest}
 is a set of one or more
 parse trees.
-Each tree represents a
-@dfindex parse (output of a parser)
-@dfn{parse}.
 
-We have used ``parse'' as a noun in several senses.
-Depending on context a ``parse'' may be
+We use ``parse'' as a noun in several senses.
+Depending on context a
+@dfindex parse (aka parse run)
+@dfindex parse (aka parse tree)
+@dfindex parse (aka parse forest)
+@dfn{parse}
+may be
 @itemize
 @item a parse run, that is, an instance of running parser on
 an input using a grammar;
@@ -1217,9 +1218,8 @@ Here is a recursive procedure for a postorder traversal
 of the tree @code{nd}:
 @verbatim
          If nd is not well-defined, return
-         Traverse the first child of nd
+         Traverse the children of nd, in order
          Visit nd
-         Traverse the other children of nd, in order
 @end verbatim
 A postorder traversal is also often called a
 @dfindex depth-first traversal
