@@ -41,8 +41,7 @@ the "Marpa parser" mailing list.
 A list of the other contributions to Marpa that Ron, Peter, and Ruslan Z. made
 over the years would be very long.
 
-Larry Wall has always made himself available
-to provide wise and experienced advice which saved us much trouble.
+Larry Wall provided wise and experienced advice which saved us much trouble.
 Larry's openness to new ideas has been
 a major encouragement,
 and his insight into the relationship between
@@ -85,6 +84,17 @@ Aria Stewart,
 Flaviu Tomas,
 and David Whitten.
 
+Finally, my thanks to all those who participated
+in the discussions on perlmonk.org,
+on the "Marpa parser" mailing list,
+and on the #marpa IRC channel.
+It is hard to describe how important
+informed and constructive feedback
+is to a lone laborer on
+a complex and large project like Marpa,
+and I greatly appreciate all
+those who participated.
+
 ## Acks from Marpa::R2
 
 ```
@@ -117,15 +127,6 @@ and my documentation.
 Andrew Rodland's TAP parser, with one Marpa grammar layered on
 another, was another major inspiration
 for the SLIF.
-
-Finally, my thanks to all those who participated on
-the "Marpa parser" mailing list.
-It is hard to describe how important
-informed and constructive feedback
-is to a lone laborer on
-a complex and large project like Marpa,
-and I greatly appreciate all the
-contributors to the list.
 
 ```
 
