@@ -22,7 +22,7 @@ http://www.gnu.org/licenses/.
 > --- Hamlet, Act 2, scene 2
 
 This section is to thank those who have assisted us,
-not just with this repository,
+not just with Libmarpa,
 but with the Marpa project as a whole.
 Many people have helped us in many ways,
 and it is risky
@@ -67,7 +67,7 @@ Jean-Damien Durand's assistance included several ambitious
 Marpa applications,
 as well as the Windows port of Marpa.
 Deyan Ginev provided advice on LaTeX and
-on deeper matters which proved essential for this book.
+on deeper matters which proved essential.
 Lenz Moritz quietly and effectively maintained our IRC channel.
 Andrew Rodland stood in for Jeffrey Kegler as the face of Marpa
 when it was needed,
