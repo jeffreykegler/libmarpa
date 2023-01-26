@@ -124,7 +124,7 @@ in Marpa's IRC channel,
 thinking that we could use the channel's backlog
 as a source for this chapter.
 
-The European Union (EU) had other plans.
+The European Union (EU) had other ideas.
 In 2018, the EU passed the
 General Data Protection Regulation (GDPR),
 which suddenly brought our plans to nought.
@@ -147,13 +147,13 @@ GDPR's highly discriminatory effects
 when it was being drafted,
 the realization of the GDPR's practical implications
 for volunteer-driven open source effort
-came to that community very abruptly,
+came to our community very abruptly,
 and after it was already in effect.
 Our backlogging was done in EU jurisdiction,
 and no measure to save our IRC backlogs
 could be taken
 without exposing innocent and generous volunteers
-to ruinous legal action.
-And my notes for these acknkowledgements
+to almost certainly disastrous legal action.
+My notes for these acknkowledgements
 needed to be cobbled together from other sources.
 
