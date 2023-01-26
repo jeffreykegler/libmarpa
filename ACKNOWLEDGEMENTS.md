@@ -41,6 +41,16 @@ the "Marpa parser" mailing list.
 A list of the other contributions to Marpa that Ron, Peter, and Ruslan Z. made
 over the years would be very long.
 
+Larry Wall has always made himself available
+to provide wise and experienced advice which saved us much trouble.
+Larry's openness to new ideas has been
+a major encouragement,
+and his insight into the relationship between
+"natural language" and computer language
+has been a major influence.
+Randal Schwartz, Allison Randal and Patrick Michaud were also generous with their
+very valuable time.
+
 Jean-Damien Durand's assistance included several ambitious
 Marpa applications.
 Deyan Ginev provided advice on LaTeX and
@@ -57,8 +67,6 @@ saving Jeffrey time,
 and the channel's other users from having to put up with Jeffrey,
 who could be too heavy-handed,
 as a moderator.
-Larry Wall has always made himself available,
-and his wise and experienced advice saved us much trouble.
 An anonymous member of the Hoon community was generous
 financially.
 
@@ -80,20 +88,6 @@ and David Whitten.
 ## Acks from Marpa::R2
 
 ```
-I'm grateful to Randal Schwartz for his support over the years that
-I've been working on Marpa.
-My chats with
-Larry Wall have been few and brief,
-but his openness to new ideas has been
-a major encouragement
-and his insight into the relationship between
-"natural language" and computer language
-has been a major influence.
-More recently,
-Allison Randal and Patrick Michaud have been generous with their
-very valuable time.
-They might have preferred that I volunteered as a Parrot cage-cleaner,
-but if so, they were too polite to say.
 
 Many at perlmonks.org answered questions for me.
 I used answers from
