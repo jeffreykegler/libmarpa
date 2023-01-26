@@ -72,6 +72,78 @@ Aria Stewart,
 Flaviu Tomas,
 and David Whitten.
 
+## Acks from Marpa::R2
+
+```
+I'm grateful to Randal Schwartz for his support over the years that
+I've been working on Marpa.
+My chats with
+Larry Wall have been few and brief,
+but his openness to new ideas has been
+a major encouragement
+and his insight into the relationship between
+"natural language" and computer language
+has been a major influence.
+More recently,
+Allison Randal and Patrick Michaud have been generous with their
+very valuable time.
+They might have preferred that I volunteered as a Parrot cage-cleaner,
+but if so, they were too polite to say.
+
+Many at perlmonks.org answered questions for me.
+I used answers from
+chromatic, Corion, dragonchild,
+jdporter, samtregar and Juerd,
+among others,
+in writing this module.
+I'm just as grateful to those whose answers I didn't use.
+My inquiries were made while I was thinking out the code and
+it wasn't always 100% clear what I was after.
+If the butt is moved after the round,
+it shouldn't count against the archer.
+
+In writing the Pure Perl version of Marpa, I benefited from studying
+the work of Francois Desarmenien (C<Parse::Yapp>),
+Damian Conway (C<Parse::RecDescent>) and
+Graham Barr (C<Scalar::Util>).
+Adam Kennedy patiently instructed me
+in module writing,
+both on the finer points and
+on issues about which I really should have known better.
+
+I am very grateful to a handful of early contributors,
+whose contributions were made when I desperately needed help.
+I am especially grateful to Ron Savage,
+who has been a very aggressive early adopter
+of all Marpa's versions.
+Ruslan Zakirov generously
+started, and agreed to moderate,
+the "Marpa parser" mailing list.
+Peter Stuifzand invented the "Stuifzand interface",
+which was the original inspiration for the SLIF.
+
+Ron, Peter and Ruslan Z. have since gone on to contribute
+in ways too numerous to mention,
+and others have joined in.
+Jean-Damien Durand's numerous contributions include
+the Windows port of Marpa.
+Ruslan Shvedov helped with ASF's
+and my documentation.
+Andrew Rodland's TAP parser, with one Marpa grammar layered on
+another, was another major inspiration
+for the SLIF.
+
+Finally, my thanks to all those who participated on
+the "Marpa parser" mailing list.
+It is hard to describe how important
+informed and constructive feedback
+is to a lone laborer on
+a complex and large project like Marpa,
+and I greatly appreciate all the
+contributors to the list.
+
+```
+
 ## An apology
 
 We feared that these acknowledgements would
