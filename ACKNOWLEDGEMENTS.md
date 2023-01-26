@@ -50,17 +50,35 @@ has been a major influence.
 Randal Schwartz, Allison Randal and Patrick Michaud were also generous with their
 very valuable time.
 
+At perlmonks.org,
+answers from
+chromatic, Corion, dragonchild,
+jdporter, samtregar and Juerd were helpful.
+In writing an early, "pure Perl" version of Marpa, I benefited from studying
+the work of Francois Desarmenien (C<Parse::Yapp>),
+Damian Conway (C<Parse::RecDescent>) and
+Graham Barr (C<Scalar::Util>).
+Adam Kennedy patiently instructed me
+in module writing,
+both on the finer points and
+on issues about which I really should have known better.
+
 Jean-Damien Durand's assistance included several ambitious
-Marpa applications.
+Marpa applications,
+as well as the Windows port of Marpa.
 Deyan Ginev provided advice on LaTeX and
 on deeper matters which proved essential for this book.
 Lenz Moritz quietly and effectively maintained our IRC channel.
 Andrew Rodland stood in for Jeffrey Kegler as the face of Marpa
 when it was needed,
-and he pioneered the use of one Marpa grammar
-to feed another.
+and his TAP parser, which used one Marpa grammar that fed
+another, was a major inspiration for the SLIF.
 Ruslan Shvedov provided many hours of assistance,
-ranging from linguistic insights to details of code testing.
+including contributing linguistic insights into details of code testing,
+creating a test suite for Libmarpa,
+making major contributions to the Perl test suite,
+helping with my implementation of ASF's,
+and assisting me in writing documentation.
 Luc St-Louis moderated the Marpa IRC channel,
 saving Jeffrey time,
 and the channel's other users from having to put up with Jeffrey,
@@ -95,57 +113,21 @@ a complex and large project like Marpa,
 and I greatly appreciate all
 those who participated.
 
-## Acks from Marpa::R2
-
-```
-
-Many at perlmonks.org answered questions for me.
-I used answers from
-chromatic, Corion, dragonchild,
-jdporter, samtregar and Juerd,
-among others,
-in writing this module.
-I'm just as grateful to those whose answers I didn't use.
-My inquiries were made while I was thinking out the code and
-it wasn't always 100% clear what I was after.
-If the butt is moved after the round,
-it shouldn't count against the archer.
-
-In writing the Pure Perl version of Marpa, I benefited from studying
-the work of Francois Desarmenien (C<Parse::Yapp>),
-Damian Conway (C<Parse::RecDescent>) and
-Graham Barr (C<Scalar::Util>).
-Adam Kennedy patiently instructed me
-in module writing,
-both on the finer points and
-on issues about which I really should have known better.
-
-Jean-Damien Durand's numerous contributions include
-the Windows port of Marpa.
-Ruslan Shvedov helped with ASF's
-and my documentation.
-Andrew Rodland's TAP parser, with one Marpa grammar layered on
-another, was another major inspiration
-for the SLIF.
-
-```
-
 ## An apology
 
 We feared that these acknowledgements would
 become an exhibition of our negligence and ingratitude,
 and at least to some degree this has turned out to be the case.
-But we assure the reader,
-despite appearances,
-there were plans for it to be otherwise.
+There were plans for things to be better.
 We took care to thank those who helped us
 in Marpa's IRC channel,
-expecting to use its backlog
+thinking that we could use the channel's backlog
 as a source for this chapter.
 
-However, in 2018, the European Union (EU),
-via its General Data Protection Regulation (GDPR),
-suddenly brought these plans to nought.
+The European Union (EU) had other plans.
+In 2018, the EU passed the
+General Data Protection Regulation (GDPR),
+which suddenly brought our plans to nought.
 Under the GDPR,
 logs like that for Marpa's IRC channel could not possibly be made
 conformant in a way that kept their administrators safe from
