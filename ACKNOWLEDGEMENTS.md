@@ -27,9 +27,19 @@ but with the Marpa project as a whole.
 Many people have helped us in many ways,
 and it is risky
 to single out one of them.
-But, from almost its beginning,
-Ron Savage has been unstinting in
-his support.
+But
+Ron Savage was a very aggressive early adopter of Marpa,
+went on to maintain a Marpa web site and FAQ,
+and provided generous financial support.
+
+Two other very early supporters were
+Peter Stuifzand and Ruslan Zakirov.
+Peter Stuifzand invented the "Stuifzand interface",
+the prototype on which Marpa's SLIF interface is based.
+Ruslan Zakirov started, and agreed to moderate,
+the "Marpa parser" mailing list.
+A list of the other contributions to Marpa that Ron, Peter, and Ruslan Z. made
+over the years would be very long.
 
 Jean-Damien Durand's assistance included several ambitious
 Marpa applications.
@@ -47,11 +57,6 @@ saving Jeffrey time,
 and the channel's other users from having to put up with Jeffrey,
 who could be too heavy-handed,
 as a moderator.
-Peter Stuifzand wrote the prototype on which Marpa's
-SLIF interface is based.
-Ruslan Zakirov was a very early Marpa supporter
-who made many useful suggestions
-that are incorporated in this book.
 Larry Wall has always made himself available,
 and his wise and experienced advice saved us much trouble.
 An anonymous member of the Hoon community was generous
@@ -111,20 +116,6 @@ in module writing,
 both on the finer points and
 on issues about which I really should have known better.
 
-I am very grateful to a handful of early contributors,
-whose contributions were made when I desperately needed help.
-I am especially grateful to Ron Savage,
-who has been a very aggressive early adopter
-of all Marpa's versions.
-Ruslan Zakirov generously
-started, and agreed to moderate,
-the "Marpa parser" mailing list.
-Peter Stuifzand invented the "Stuifzand interface",
-which was the original inspiration for the SLIF.
-
-Ron, Peter and Ruslan Z. have since gone on to contribute
-in ways too numerous to mention,
-and others have joined in.
 Jean-Damien Durand's numerous contributions include
 the Windows port of Marpa.
 Ruslan Shvedov helped with ASF's
