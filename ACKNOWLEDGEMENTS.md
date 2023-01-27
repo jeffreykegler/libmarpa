@@ -122,7 +122,7 @@ There were plans for things to be better.
 We took care to thank those who helped us
 in Marpa's IRC channel,
 thinking that we could use the channel's backlog
-as a source for this chapter.
+as a source for these notices.
 
 The European Union (EU) had other ideas.
 In 2018, the EU passed the
