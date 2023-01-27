@@ -81,9 +81,9 @@ helping with my implementation of ASF's,
 and assisting me in writing documentation.
 Luc St-Louis moderated the Marpa IRC channel,
 saving Jeffrey time,
-and the channel's other users from having to put up with Jeffrey,
-who could be too heavy-handed,
-as a moderator.
+and the channel's other users from having to put up with Jeffrey who,
+as a moderator,
+could be too heavy-handed.
 An anonymous member of the Hoon community was generous
 financially.
 
