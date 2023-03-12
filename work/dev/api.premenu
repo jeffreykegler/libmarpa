@@ -795,11 +795,8 @@ called
 @dfn{infinitely ambiguous}.
 Marpa can parse with grammars which are not
 cycle-free,
-and will
-even parse inputs that cause cycles.
-When a parse run is infinitely ambiguous, Marpa
-limits cycles to a single loop,
-so that only a finite number of parse trees is returned.
+but use of this feature is deprecated.
+@xref{Cycles}.
 
 @node Trees
 @section Trees
@@ -3632,19 +3629,17 @@ On hard failure, @minus{}2.
 int marpa_g_rule_is_loop (Marpa_Grammar @var{g}, @
     Marpa_Rule_ID @var{rule_id})
 
-A rule is a loop rule if it non-trivially
+A rule is a loop rule iff it non-trivially
 produces the string of length one
 that consists only of its LHS symbol.
-Such a derivation takes the parse back to where
-it started, hence the term ``loop''.
-``Non-trivially'' means the zero-step derivation does not count --- the
-derivation must have at least one step.
-
-The presence of a loop rule makes a grammar infinitely ambiguous,
-and applications will typically want to treat them as fatal errors.
-But nothing forces an application to do this,
-and Marpa will successfully parse and evaluate grammars with
-loop rules.
+The presence of a loop rule indicates that @var{g}
+contains a cycle.
+Parsing with grammars that contain cycles is deprecated.
+@code{marpa_g_rule_is_loop} should only be used
+for diagnostic purposes,
+to allow a user to find the rules which cause the
+cycle and change the grammar to be cycle-free.
+@xref{Cycles}.
 
 Soft fails if @var{rule_id} is well-formed (a non-negative integer),
 but a rule with that ID does not exist.
@@ -4279,16 +4274,13 @@ int marpa_g_has_cycle (Marpa_Grammar @var{g})
 
 On success, returns a boolean which is 1 iff
 @var{g} has a cycle.
-Cycles make a grammar infinitely ambiguous,
-and are considered useless in current
-practice.
-Cycles make processing the grammar less
-efficient, sometimes considerably so.
-Applications will almost always want to treat cycles
-as mistakes on the part of the writer of the grammar.
-To determine which rules are in the cycle,
-@code{marpa_g_rule_is_loop()}
-can be used.
+Parsing with a grammar that contains a cycle is deprecated.
+@xref{Cycles}.
+
+For diagnostic purposes,
+it is useful to determine which rules are in the cycle.
+@code{marpa_g_rule_is_loop()} can be used for for this purpose.
+@xref{marpa_g_rule_is_loop}.
 
 @strong{Return value}: On success, a boolean.
 On hard failure, @minus{}2.
@@ -4338,16 +4330,17 @@ Events may be queried using the
 
 The fully recoverable hard failure is
 @code{MARPA_ERR_GRAMMAR_HAS_CYCLE}.
-Recall that for fully recoverable hard failures
-this method precomputes the grammar.
-Most appplications, however, will want to treat
+While this method precomputes the grammar
+for fully recoverable hard failures,
+parsing with a grammar which has a cycle is deprecated.
+Applications should treat
 a grammar with cycles as if it were
 a library-recoverable error.
 A @code{MARPA_ERR_GRAMMAR_HAS_CYCLE} error occurs
 iff
 a @code{MARPA_EVENT_LOOP_RULES} event occurs.
 For more details on cycles,
-@pxref{marpa_g_has_cycle,marpa_g_has_cycle()}.
+@pxref{Cycles}.
 
 The error code @code{MARPA_ERR_COUNTED_NULLABLE}
 is library-recoverable.
@@ -7208,16 +7201,13 @@ Event value: Unspecified.
 Suggested message: "Recognizer is exhausted".
 @end deftypevr
 
+@anchor{MARPA_EVENT_LOOP_RULES}
 @deftypevr {Accessor macro} int MARPA_EVENT_LOOP_RULES
 One or more rules are loop rules --- rules
 that are part of a cycle.
-Cycles are pathological cases of recursion,
-in which the same symbol string derives itself
-a potentially infinite number of times.
-Nonetheless, Marpa parses in the presence of these,
-and it is up to the application to treat these
-as fatal errors,
-something they almost always will wish to do.
+Parsing with a grammar than contains a loop rule
+is deprecated.
+@xref{Cycles}.
 Event value: The count of loop rules.
 Suggested message: "Grammar contains a infinite loop".
 @end deftypevr
@@ -7472,6 +7462,7 @@ Numeric value: 16.
 Suggested message: "No event at that index".
 @end deftypevr
 
+@anchor{MARPA_ERR_GRAMMAR_HAS_CYCLE}
 @deftypevr {Accessor macro} int MARPA_ERR_GRAMMAR_HAS_CYCLE
 The grammar has a cycle --- one or more loop
 rules.
@@ -9217,6 +9208,34 @@ value, which will never be
 @code{MARPA_ERR_NONE}.
 
 @end deftypefun
+
+@node Cycles
+@section Cycles
+
+A cycle is a case in a grammar where a string
+non-trvially derives itself.
+Marpa will parse grammars with cycles,
+but this is deprecated.
+Applications should treat cycles
+as mistakes on the part of the writer of the grammar,
+and not attempt to parse with grammars that contain cycles.
+
+If Marpa is used to parse an input that causes a cycle,
+it will limit the cycle to a single loop,
+so that only a finite number of parse trees is returned.
+Again, parsing with cycles is deprecated.
+
+For more on cycles, see
+@itemize
+@item @ref{marpa_g_has_cycle,marpa_g_has_cycle()};
+@item @ref{marpa_g_rule_is_loop, marpa_g_rule_is_loop()};
+@item the discussion on the
+@code{MARPA_ERR_GRAMMAR_HAS_CYCLE}
+and @code{MARPA_EVENT_LOOP_RULES} events
+in @ref{marpa_g_precompute, marpa_g_precompute()};
+@item @ref{MARPA_EVENT_LOOP_RULES}; and
+@item @ref{MARPA_ERR_GRAMMAR_HAS_CYCLE}.
+@end itemize
 
 @node History of the Marpa algorithm
 @chapter History of the Marpa algorithm
