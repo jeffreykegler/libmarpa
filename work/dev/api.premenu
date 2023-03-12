@@ -3634,11 +3634,11 @@ produces the string of length one
 that consists only of its LHS symbol.
 The presence of a loop rule indicates that @var{g}
 contains a cycle.
-Parsing with grammars that contain cycles is deprecated.
+Parsing with a grammar that contains a cycle is deprecated.
 @code{marpa_g_rule_is_loop} should only be used
 for diagnostic purposes,
 to allow a user to find the rules which cause the
-cycle and change the grammar to be cycle-free.
+cycle and to change the grammar to be cycle-free.
 @xref{Cycles}.
 
 Soft fails if @var{rule_id} is well-formed (a non-negative integer),
@@ -4332,10 +4332,10 @@ The fully recoverable hard failure is
 @code{MARPA_ERR_GRAMMAR_HAS_CYCLE}.
 While this method precomputes the grammar
 for fully recoverable hard failures,
-parsing with a grammar which has a cycle is deprecated.
+parsing with a grammar that has a cycle is deprecated.
 Applications should treat
-a grammar with cycles as if it were
-a library-recoverable error.
+@code{MARPA_ERR_GRAMMAR_HAS_CYCLE}
+as a library-recoverable error.
 A @code{MARPA_ERR_GRAMMAR_HAS_CYCLE} error occurs
 iff
 a @code{MARPA_EVENT_LOOP_RULES} event occurs.
@@ -7464,12 +7464,9 @@ Suggested message: "No event at that index".
 
 @anchor{MARPA_ERR_GRAMMAR_HAS_CYCLE}
 @deftypevr {Accessor macro} int MARPA_ERR_GRAMMAR_HAS_CYCLE
-The grammar has a cycle --- one or more loop
-rules.
-This is a recoverable error,
-although most applications will want to treat
-it as fatal.
-For more see the description of @ref{marpa_g_precompute}.
+The grammar has a cycle.
+Parsing using a grammar that contains a cycle is deprecated.
+@xref{Cycles}.
 Numeric value: 17.
 Suggested message: "Grammar has cycle".
 @end deftypevr
