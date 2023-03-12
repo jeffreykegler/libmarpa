@@ -83,7 +83,7 @@ there is an ``updates'' document
 (@url{https://github.com/jeffreykegler/libmarpa/blob/updated/UPDATES.md}).
 The updates document includes
 @itemize
-item descriptions of bugs in the latest stable release;
+@item descriptions of bugs in the latest stable release;
 @item notices which are useful to current users,
 but which do not justify a full new stable distribution; and
 @item other information that we want to be able to update
