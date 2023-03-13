@@ -20,11 +20,12 @@ http://www.gnu.org/licenses/.
 An online parser parses
 piece by piece, without waiting to have the whole input
 available.
-(Modern programmers often call this SAX-ish parser.)
+(Modern programmers often call this a SAX-ish parser.)
 An offline parser assumes that
 all of the input will be available before evaluation
 begins.
-(Modern programmers often call this DOM-ish parser.)
+(Modern programmers often call this a DOM-ish parser.)
+
 The current Marpa implementation, while it does have
 an event mechanism, is based on an offline parser.
 This means that even an application using Marpa's event mechanism
@@ -34,10 +35,17 @@ must incur the storage costs of a non-online parser.
 The essential idea is to track the causations (aka confluences)
 of each Earley item.
 (Marpa currently does this.)
-Any Earley item not "upstream" from an Earley item in the last two
-Earley items,
-may have its memory released.
-This may easily be done if a garbage collection mechanism is available
+We then track those Earley items which are "upstream" from
+any Earley item in the last two Earley sets.
+An Earley item `eimUp` is upstream from another Earley item `eim1` iff it
+* is `eim1`, or
+* is an inflow (part of a confluence) of an Earley item upstream from `eim1`.
+
+Any Earley item that is **not** upstream from an Earley item in the last two
+Earley sets may have its memory released.
+This marking of Earley items for release
+can be done almost effortlessly
+if the environment makes available a garbage collection mechanism
 for managing memory.
 
 Additionally,
@@ -45,8 +53,10 @@ applications may specify certain rules
 ("online evaluation rules" or "online rules")
 to be evaluated as they are completed.
 When an "online rule" is completed,
-it can converted from an Earley item to a "value node",
-and all of its upstream storage can be completed.
-This can allow those application which lend themselves to
-online parsing to parse arbitrary length inputs in fixed storage.
+its completed Earley item can stored as a special kind of Earley item ---
+an "evaluated Earley item".
+Evaluated Earley items do not have confluences,
+and therefore release all of their upstream storage.
+The use of evaluated EIMS can allow those application which lend themselves to
+online parsing to parse arbitrary length inputs using a fixed amount of space.
 
