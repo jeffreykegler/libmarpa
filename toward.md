@@ -33,18 +33,22 @@ to do online parsing,
 must incur the storage costs of a non-online parser.
 
 The essential idea is to track the causations (aka confluences)
-of each Earley item (EIM),
-something Marpa currently does.
-We then track those EIMs which are "upstream" from
-any EIM in the last two Earley sets.
+of each Earley item (EIM).
+Marpa currently does for most EIMs.
+
+We then mark those EIMs which are "upstream" from
+any EIM in the "working Earley set window".
+The working Earley set window is the Earley set (ES) currently
+being worked on and one or more previous ESs.
 An EIM `eimUp` is upstream from another EIM `eim1` iff it
 * is `eim1`, or
 * is an inflow (part of a confluence) of an EIM upstream from `eim1`.
 
-Any EIM that is **not** upstream from an EIM in the last two
-Earley sets may have its memory released.
-This marking of EIMs for release
-can be done almost effortlessly
+Any EIM that is **not** marked upstream from an EIM in the working ES window
+may have its memory released.
+Almost all of the work of
+marking of EIMs for release
+can be done for Marpa
 if the environment makes available a garbage collection mechanism
 for managing memory.
 
@@ -56,7 +60,16 @@ When an "online rule" is completed,
 its completed EIM can stored as a special kind of EIM ---
 an "evaluated EIM".
 Evaluated EIMs do not have confluences,
-and therefore release all of their upstream storage.
+and therefore a garbage collector will release all of their upstream storage
+outside of the working ES window.
 The use of evaluated EIMs can allow those application which lend themselves to
 online parsing to parse arbitrary length inputs using a fixed amount of space.
 
+## The working ES window
+
+The working ES window should be at least two ESes in length.
+If variable length tokens are used, it should be the size of the longest token,
+plus one.
+Additionally, retaining the EIMs in the last few ESes is useful for debugging
+and tracing,
+and a larger working ES window may be specified for those purposes.
