@@ -73,3 +73,13 @@ plus one.
 Additionally, retaining the EIMs in the last few ESes is useful for debugging
 and tracing,
 and a larger working ES window may be specified for those purposes.
+
+## Complexity
+
+The worse case is a highly ambiguous grammar with no
+online evaluation rules.
+In this case, the online version of Marpa offers no improvements.
+But in many real-life cases, the savings in storage may make the
+difference in whether an application is a practical candidate
+for a Marpa implementation,
+or not.
