@@ -76,7 +76,7 @@ and a larger working ES window may be specified for those purposes.
 
 ## Complexity
 
-The worse case is a highly ambiguous grammar with no
+The worst case is a highly ambiguous grammar with no
 online evaluation rules.
 In this case, the online version of Marpa offers no improvements.
 But in many real-life cases, the savings in storage may make the
