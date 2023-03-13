@@ -2597,7 +2597,7 @@ In order of severity, these are
 @item @strong{memory allocation failures},
 @item @strong{undetected failures},
 @item @strong{irrecoverable hard failures},
-@item @strong{partially recoverable hard failures}, and
+@item @strong{partially recoverable hard failures},
 @item @strong{fully recoverable hard failures}, and
 @item @strong{soft failures}.
 @end itemize
@@ -2607,19 +2607,22 @@ In order of severity, these are
 
 Failure to allocate memory is the most irrecoverable of irrecoverable
 errors.
-Even effective error handling assumes the ability to allocate memory,
-so that the practice has been, in the event of a memory allocation failure,
-to take Draconian action.
 On
-@dfindex memory allocation failur
+@dfindex memory allocation failure
 @dfindex failure, memory allocation
 @dfn{memory allocation failure},
 as with all irrecoverable failures,
-Libmarpa's behavior in undefined,
-but Libmarpa attempts to terminate the current program abnormally by calling @code{abort()}.
+Libmarpa's behavior is undefined.
+Libmarpa attempts to terminate the current program abnormally by calling @code{abort()},
+but a component of many modern operating systems is
+an out-of-memory (OOM) killer,
+which takes the decision out of the hands
+of both Libmarpa and the user.
+@xref{Out-of-memory handling}.
 
-Memory allocation failure is the only case in which Libmarpa
-terminates the program.
+Memory allocation failure is the only case in which
+the decision to terminate the program is made for
+the user.
 In all other cases,
 Libmarpa leaves the decision to terminate the program,
 whether normally or abnormally,
@@ -8375,6 +8378,17 @@ an application must initialize all locations that might be read
 to non-trap values.
 For a stack implementation, this means that, as a practical matter,
 all locations on the stack must be initialized.
+
+@node Out-of-memory handling
+@section Out-of-memory handling
+
+Modern operating systems
+usually have an out-of-memory (OOM) killer as a component.
+When an OOM is in use,
+if an application or library is unable to allocate memory,
+it usually will not be given an opportunity to handle this error.
+See ``When malloc() Never Returns NULL --- Reliability as an Illusion'',
+@url{https://arxiv.org/pdf/2208.08484.pdf}.
 
 @node Advanced input models
 @chapter Advanced input models
