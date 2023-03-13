@@ -32,18 +32,19 @@ This means that even an application using Marpa's event mechanism
 to do online parsing,
 must incur the storage costs of a non-online parser.
 
-The essential idea is to track the causations (aka confluences)
+## The idea
+
+An online parser needs is to track the causations (aka confluences)
 of each Earley item (EIM).
 Marpa currently does for most EIMs.
-
-We then mark those EIMs which are "upstream" from
+We mark those EIMs which are "upstream" from
 any EIM in the "working Earley set window".
 The working Earley set window is the Earley set (ES) currently
 being worked on and one or more previous ESs.
+
 An EIM `eimUp` is upstream from another EIM `eim1` iff it
 * is `eim1`, or
 * is an inflow (part of a confluence) of an EIM upstream from `eim1`.
-
 Any EIM that is **not** marked upstream from an EIM in the working ES window
 may have its memory released.
 Almost all of the work of
