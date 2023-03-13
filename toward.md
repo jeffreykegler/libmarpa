@@ -40,7 +40,7 @@ Marpa currently does for most EIMs.
 We mark those EIMs which are "upstream" from
 any EIM in the "working Earley set window".
 The working Earley set window is the Earley set (ES) currently
-being worked on and one or more previous ESs.
+being worked on and one or more previous ESes.
 
 An EIM `eimUp` is upstream from another EIM `eim1` iff it
 * is `eim1`, or
@@ -63,7 +63,7 @@ an "evaluated EIM".
 Evaluated EIMs do not have confluences,
 and therefore a garbage collector will release all of their upstream storage
 outside of the working ES window.
-The use of evaluated EIMs can allow those application which lend themselves to
+The use of evaluated EIMs can allow those applications which lend themselves to
 online parsing to parse arbitrary length inputs using a fixed amount of space.
 
 ## The working ES window
