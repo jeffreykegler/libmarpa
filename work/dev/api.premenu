@@ -1244,7 +1244,7 @@ Grammars almost always have a
 @dfn{semantics}
 associated with them.
 The purpose of parsing is to use the
-grammar to find the
+grammar and its semantics to find the
 @dfindex value
 @dfn{value}
 of the input string.
@@ -1293,10 +1293,19 @@ in the chapter on nullability.
 To find the value of a rule node, an application
 may use the rule, context information, and the values of the
 rule node's children.
-Frequently, the semantics of a rule node, call it @code{nd}, are implemented as
-functions,
-where the arguments of the function are the values of the children of @code{nd},
-and the return value of the function becomes the value of @code{nd}.
+Let @code{nd} be a rule node,
+and let @code{childCount} be the number of children of @code{nd}.
+Frequently, the semantics of @code{nd} is implemented as
+a ``semantic function''.
+The arguments of the semantic function are typically a scratchpad variable, call it @code{scratch},
+followed by the values of the children of @code{nd},
+so that the number of arguments for the function is @code{childCount+1}.
+The return value of the semantic function becomes the value of @code{nd}.
+
+Semantic functions often have side effects.
+For example, a grammar for a language often wants its semantic functions
+to build and refer to a symbol table.
+The @code{scratch} variable allows for this.
 
 Implementing this traditional method of tree evaluation requires
 a bottom-up traversal of the parse tree.
@@ -1339,7 +1348,7 @@ An ambiguous token occurs when the same lexeme can be
 recognized as more than one token symbol.
 Traditionally, parsers do not allow this,
 but it is the most natural way of parsing some real-life applications.
-In particular, natural languages often allow words to be
+For example, natural languages often allow words to be
 used as more than one part of speech.
 For example, in this document, the English word ``parse''
 is used as an adjective, a verb, and a noun,
