@@ -2313,17 +2313,17 @@ and that set is a constant that depends on the grammar.
 Since the input corresponding to the nulled symbol
 is also a constant (the empty string),
 the semantics of a nulled symbol will also be constant,
-with a few exceptions:
+unless one of the following is true:
 @itemize
-@item The semantics are non-deterministic.
-@item The semantics depend on parse location.
-For example, the nulled symbol instance
+@item The semantics is non-deterministic.
+@item The semantics takes into account, not just the input, but its context.
+For example, the semantics might depend on parse location,
+in which case the nulled symbol instance
 of @var{x} at location 5
 might mean something different
 from an nulled instance of @var{x} at location 50.
-@item The semantics take into account, not just the input, but its context.
 @end itemize
-All of these exceptions are unusual or rare.
+Both of these exceptions are unusual.
 When they do occur, the upper layer can
 implement the semantics of the nulled
 symbols with
