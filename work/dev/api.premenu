@@ -2275,10 +2275,10 @@ forcing the application to determine the semantics
 of a nulled symbol instance based on its symbol.
 One method of making this determination
 is the one which is implemented in @code{Marpa::R2}.
-Call a grammar @var{g};
-let @var{x} be a symbol that
-is nulled in a parse that uses @var{g};
-and call a rule in @var{g} with @var{x} on its LHS,
+Let @var{g} be a grammar;
+and let @var{x} be a symbol that
+is nulled in a parse that uses @var{g}.
+Call a rule in @var{g} with @var{x} on its LHS,
 an ``@var{x} LHS rule''.
 @code{Marpa::R2} assigns a semantics to @var{x}
 using the first of following guidelines that applies:
