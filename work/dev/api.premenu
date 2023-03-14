@@ -1350,7 +1350,7 @@ Traditionally, parsers do not allow this,
 but it is the most natural way of parsing some real-life applications.
 For example, natural languages often allow words to be
 used as more than one part of speech.
-For example, in this document, the English word ``parse''
+In this document, the English word ``parse''
 is used as an adjective, a verb, and a noun,
 and each of these uses is common.
 Ambiguous tokens are
@@ -1378,8 +1378,6 @@ the design of applications
 will be based.
 In this document,
 a behavior is an application behavior unless otherwise stated.
-Most of the behaviors specified in this document are application
-behaviors.
 We sometimes say that ``applications may expect'' a certain behavior
 to emphasize that that behavior is an application behavior.
 
@@ -1442,7 +1440,7 @@ A recognizer object reads input.
 Bocage:
 A bocage object is a collection of
 parse trees, as found by a recognizer.
-A bocages is a way of representing a parse forest.
+A bocage is a way of representing a parse forest.
 @item
 Ordering:
 An ordering object
@@ -1454,7 +1452,7 @@ A tree object is a bocage iterator.
 @item
 Value:
 A value object is a tree iterator.
-Iteration of tree using a value object
+Iteration of a tree using a value object
 produces ``steps''.
 These ``steps'' are
 instructions to
@@ -1490,11 +1488,10 @@ Value: V
 
 All of Libmarpa's major classes,
 except the configuration class,
-are ``time'' classes.
+are @dfn{time classes}.
+An object in a time class is a @dfn{time object}.
 Except for objects in the grammar class,
-all time objects are created from another time
-object.
-Each time object is created from a time object
+all time objects are created from a time object
 of the class before it in the sequence.
 A recognizer cannot be created without a precomputed grammar;
 a bocage cannot be created without a recognizer;
@@ -1517,9 +1514,8 @@ Grammars have no parent object.
 Every other time object has exactly one parent object.
 Value objects have no child objects.
 All other time objects can have any number of children,
-from zero up to
-some machine-determined limit,
-such as memory.
+from zero up to a maximum determined by memory capacity
+or some other limit imposed by the environment.
 
 An object is the
 @dfindex ancestor (object)
