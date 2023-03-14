@@ -1776,7 +1776,7 @@ after each
 call is sufficient to process
 all inputs,
 and the furthest earleme's value
-can be typically be ignored.
+can be ignored.
 In alternative input models,
 where tokens have lengths greater than 1,
 calling @code{marpa_r_earleme_complete()}
@@ -1859,7 +1859,7 @@ if @var{c} is the value  of the current earleme before the call,
 @itemize
 @item the current earleme will remain unchanged and therefore
   will be @var{c}; and
-@item the furthest earleme be @var{c}+1.
+@item the furthest earleme will be @var{c}+1.
 @end itemize
 
 In the standard model,
