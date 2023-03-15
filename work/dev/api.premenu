@@ -10,9 +10,8 @@
 This manual (@value{UPDATED})
 is for Libmarpa @value{VERSION}.
 
-Copyright @copyright{} 2022 Jeffrey Kegler.
+Copyright @copyright{} 2023 Jeffrey Kegler.
 
-@anchor{license}
 @quotation
 Permission is hereby granted, free of charge, to any person obtaining a
 copy of this software and associated documentation files (the ``Software''),
@@ -64,18 +63,13 @@ Published @value{UPDATED} by Jeffrey Kegler
 @insertcopying
 @end ifnottex
 
-@node No warranty
-@chapter No warranty
+@node License
+@chapter License
 
-The Libmarpa license takes precedence over the
-statements in this document.
-In particular, the license states
-that Libmarpa is free software and has no warranty.
-No statement in this document should be construed
-as providing any kind of warranty.
+@insertcopying
 
 @node Updates
-@section Updates
+@chapter Updates
 
 For important information
 that has changed since the last stable release,
@@ -210,12 +204,37 @@ In this document,
 a Libmarpa application is not necessarily an application program.
 For our purposes, an ``application''
 might be another library that uses Libmarpa.
+@item
+The components of the
+@dfindex application environment
+@dfindex environment, application
+@dfn{application environment}
+are the system components other than Libmarpa and
+the application itself.
+Application environments vary,
+but their components often include an operating system,
+system libraries,
+a C compiler and its libraries,
+and hardware.
 @item A
 @dfindex value, boolean
 @dfindex boolean
 @dfindex boolean value
 @dfn{boolean} value, or @dfn{boolean},
 is an integer that is 0 or 1.
+@item
+An
+@dfindex application environment limit
+@dfindex limit, application environment
+@dfn{application environment limit},
+more often called simply an
+@dfindex environment limit
+@dfindex limit, environment
+@dfn{environment limit},
+is a limit imposed by the application
+enviroment.
+For our purposes, the most important environment limit
+is usually available memory.
 @item
 @dfindex iff
 The lexeme @dfn{iff} is an abbreviation for ``if and only if''.
@@ -1514,8 +1533,8 @@ Grammars have no parent object.
 Every other time object has exactly one parent object.
 Value objects have no child objects.
 All other time objects can have any number of children,
-from zero up to a maximum determined by memory capacity
-or some other limit imposed by the environment.
+from zero up to a maximum determined by memory availability
+or some other environment limit.
 
 An object is the
 @dfindex ancestor (object)
@@ -2430,28 +2449,26 @@ no language in this chapter
 should be read as providing,
 or suggesting the existence of,
 a warranty.
-@xref{license}.
-Also, @pxref{No warranty}.
+@xref{License}.
 
 @node Libmarpa's approach to failure
 @section Libmarpa's approach to failure
 
 Libmarpa is a C language library,
 and inherits the traditional C language approach to
-avoiding and handling user programming errors.
-This approach will strike readers unfamiliar with this
-tradition as putting an appallingly large
-portion of the burden of avoiding application
-programmer error
-on the application programmer themself.
+avoiding and handling application programming errors.
+The burden this C tradition
+puts on the application programmer
+might strike readers unfamiliar with that tradition
+as appallingly large.
 
 But in the early 1970's, when the C language first stabilized,
 the alternative,
-and the consensus choice for its target applications
+and the consensus choice for its target applications,
 was assembly language.
 In that context, C was radical in its willingness to
-incur a price in efficiency in order to protect the programmer
-from themself.
+incur a price in efficiency in order to protect programmers
+from themselves.
 C was considered to take a excessively ``hand holding''
 approach which very much flew in the face of consensus.
 
@@ -2471,8 +2488,8 @@ and Libmarpa's efforts to protect the application programmer go well
 beyond what
 would have been considered best practice in the past.
 But it remains a C language library.
-But, on the whole, the Libmarpa application programmer must be prepared to exercise
-the high degree of carefulness traditionally required by its C language environment.
+The Libmarpa application programmer must be prepared to exercise
+the high degree of carefulness traditionally required for C language programming.
 Libmarpa
 places the burden of avoiding irrecoverable failures,
 and of handling recoverable failures,
@@ -2484,7 +2501,7 @@ largely on the application programmer.
 This document specifies many behaviors
 for Libmarpa application programs to follow,
 such as the nature of the arguments to each method.
-The C language environment specifies
+The C language and the application environment impose
 many more behaviors,
 such as proper memory management.
 When a non-conformity to specified behavior is unintentional
@@ -2753,8 +2770,9 @@ The application behaviors
 remaining after a library-recoverable hard failure
 are the following:
 @itemize
-@item All non-Libmarpa interfaces, including calls to other libraries
-and the C language environment.
+@item All non-Libmarpa interfaces,
+including calls to libraries
+in the application and in the application environment.
 @item All Libmarpa static method calls.
 @item All Libmarpa accessor and destructor method calls.
 @item All Libmarpa mutator and constructor method calls
@@ -2800,8 +2818,9 @@ The application behaviors
 remaining after a ancestry-recoverable hard failure
 are the following:
 @itemize
-@item All non-Libmarpa interfaces, including calls to other libraries
-and the C language environment.
+@item All non-Libmarpa interfaces,
+including calls to libraries
+in the application and in the application environment.
 @item All Libmarpa static method calls.
 @item All Libmarpa accessor and destructor method calls.
 @item All Libmarpa mutator and constructor method calls
@@ -5998,7 +6017,7 @@ First, this will be the intended use
 for many readers.
 Second, standard-conformant C89 is
 a ``worst case''.
-Any issue faced by a programmer of another environment
+Any issue faced by a programmer in another environment
 is likely to also be one that must be solved
 by the C programmer.
 
