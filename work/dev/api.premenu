@@ -2874,12 +2874,12 @@ fully and efficiently,
 @node Soft failure
 @section Soft failure
 
-An
+A
 @dfindex soft failure
 @dfindex failure, soft
 @dfn{soft failure}
 is
-an recoverable Libmarpa application programming failure that has no
+a recoverable Libmarpa application programming failure that has no
 error code associated with it.
 Hard errors are assigned error codes in order to tell them apart.
 Error codes are not necessary or useful for soft errors,
@@ -2896,13 +2896,13 @@ In the phrase ``soft failure'', the word ``failure'' is used
 in the same sense that its cognate ``fail'' is used
 when we say that a loop terminates when it ``fails'' its
 loop condition.
-That ''failure'' is of a condition necessary to continue on
+That ''failure'' is the failure of a condition necessary to continue on
 a main branch of processing, and a signal to proceed on another branch.
 
 It is expected that Libmarpa applications will be designed
 such that successful execution
-is based on the handling specified for soft failures.
-In fact, a non-trival Libmarpa application can hardly be designed
+requires handling soft failures.
+In fact, a non-trivial Libmarpa application can hardly be designed
 except on that basis.
 
 @node Error codes
@@ -2917,12 +2917,12 @@ are given in their own section
 How the error code is accessed depends on the method
 that detects the hard failure associated with that error code.
 Methods for time objects always set the error code in the base grammar,
-from which it may be accessed using the error methods described below
-(@ref{Error methods}).
+from which it may be accessed using the error methods described below.
+@xref{Error methods}.
 If a method has no base grammar,
-the way in which the error code for the hard failures that it detects
-can be accessed will be stated in the
-description of that method.
+the description of that method
+will state how to access the error code for a hard failure
+detected by that method.
 
 Since the error of a time object is set in the base grammar,
 it follows that every object with the same base grammar
