@@ -3033,19 +3033,28 @@ But in contexts where our meaning is clear we will usually
 abbreviate ``method success'' and ``method failure'' to
 ``success'' and ``failure'', respectively.
 
+While these general conventions are a memory aid,
+there are exceptions,
+and the programmer must look at the return value summary
+in the description of every method they use.
 
-The Libmarpa programmer should not overly rely on the general
-conventions for return values.
-In particular, @minus{}2 may sometimes be ambiguous ---
-both a valid return value
+As one example of an exception,
+for certain methods,
+a return value of @minus{}2 is ambiguous:
+@minus{}2 can be both a valid return value
 for method success, and a potential indication of hard method failure.
-In this case, the programmer must distinguish the two return statuses
-based on the error code,
-and a programmer who is relying too heavily on the general
-conventions will fall into a trap.
-For a the description of the return values of
-@code{marpa_g_rule_rank_set()},
-@pxref{Rank methods}.
+An example of a method where @minus{}2 is ambiguous is
+@code{marpa_g_rule_rank_set()}.
+@xref{marpa_g_rule_rank_set}.
+In cases like @code{marpa_g_rule_rank_set()},
+the programmer must distinguish the two return statuses
+based on the error code.
+
+Whenever a method departs from the general return value conventions,
+the departure will be detailed in the description of that method.
+Any departure by a method from the general return value conventions
+will always be indicated
+in the return value summary for that method.
 
 @node How to read the method descriptions
 @section How to read the method descriptions
