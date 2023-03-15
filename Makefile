@@ -28,7 +28,7 @@ MINOR=0
 MICRO=4
 VERSION=$(MAJOR).$(MINOR).$(MICRO)
 
-.PHONY: ac_dist asan clean cm_dist dist distcheck dummy \
+.PHONY: ac_dist aspell asan clean cm_dist dist distcheck dummy \
     realclean tag test cm_test install_test
 
 dummy:
@@ -123,6 +123,9 @@ test_install: timestamp/cm_dist.stamp
 	(cd test_install; tgt=`pwd`; cd ..; echo "TARGET $$tgt"; \
 	  cmake -DCMAKE_INSTALL_PREFIX:PATH=$$tgt -S cm_dist -B cm_build)
 	cd cm_build && $(MAKE) VERBOSE=1 && $(MAKE) install
+
+aspell:
+	(cd aspell; $(MAKE) all)
 
 clean:
 	-rm libmarpa_version.sh
