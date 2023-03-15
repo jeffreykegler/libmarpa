@@ -2604,7 +2604,7 @@ A failure is called a
 @dfindex hard failure
 @dfindex failure, hard
 @dfn{hard failure}
-is it has an error code
+if it has an error code
 associated with it.
 A recoverable failure is called a
 @dfindex soft failure
