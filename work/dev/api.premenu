@@ -3148,12 +3148,13 @@ given version. Generally, the application programmer will pass in the constants
 @code{MARPA_MICRO_VERSION}
 as the three arguments,
 to check that their application was compiled with headers
-the match the version of Libmarpa that they
+that match the version of Libmarpa that they
 are using.
 
 If @var{required_major}.@var{required_minor}.@var{required_micro}
-is an exact match with @value{VERSION},
+is an exact match with the version of Libmarpa,
 the method succeeds.
+The version of Libmarpa described in this manual is @value{VERSION}.
 Otherwise the return status is an irrecoverable
 hard failure.
 
