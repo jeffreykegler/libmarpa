@@ -3181,10 +3181,6 @@ The return value is unspecified.
 @chapter Configuration methods
 
 The configuration object is intended for future extensions.
-These may
-allow the application to override Libmarpa's memory allocation
-and fatal error handling without resorting to global
-variables, and therefore in a thread-safe way.
 Currently, the only function of the @code{Marpa_Config}
 class is to give
 @code{marpa_g_new()}
@@ -3198,10 +3194,11 @@ before use.
 Aside from its own accessor,
 @code{Marpa_Config} objects are only used by
 @code{marpa_g_new()}
-and no reference to their location is not kept
+and no reference to their location is kept
 in any of Libmarpa's time objects.
-The intent is to that it be convenient
-to have them in memory that might be deallocated
+The intent is that it be convenient
+to have @code{Marpa_Config} objects
+in memory that might be deallocated
 soon after
 @code{marpa_g_new()}
 returns.
