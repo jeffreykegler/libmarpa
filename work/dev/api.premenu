@@ -3070,8 +3070,13 @@ always refers to the topic method.
 @item Whenever ``this method'' is the subject of a sentence
 in the method description, it may be elided,
 so that, for example,
-``This method returns 42'' becomes
-``returns 42''.
+@quotation
+This method returns 42.
+@end quotation
+becomes
+@quotation
+Returns 42.
+@end quotation
 @item If the return type of a method is not @code{void},
 the last paragraph of its method description is a
 ``return value summary''.
@@ -3095,7 +3100,7 @@ with the methods described below.
 @item If a method allows a recoverable hard failure, this is explicitly stated
 in its return value summary,
 along with the associated error code.
-The method description with state
+The method description will state
 the circumstances under which the recoverable hard failure occurs,
 and what the application must do to recover.
 @item A return status of soft failure indicates that the method detected
