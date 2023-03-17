@@ -3430,11 +3430,6 @@ On hard failure, @minus{}2.
 int marpa_g_symbol_is_accessible (Marpa_Grammar @var{g}, @
     Marpa_Symbol_ID @var{sym_id})
 
-A symbol is
-@dfindex accessible symbol
-@dfindex symbol, accessible
-@dfn{accessible}
-if it can be reached from the start symbol.
 Soft fails if @var{sym_id} is well-formed (a non-negative integer),
 but a symbol with that ID does not exist.
 A common hard failure is calling this method with
@@ -3451,13 +3446,6 @@ On hard failure, @minus{}2.
 int marpa_g_symbol_is_nullable ( @
   Marpa_Grammar g, Marpa_Symbol_ID sym_id)
 
-A symbol is
-@dfindex nullable symbol
-@dfindex symbol, nullable
-@dfn{nullable}
-if it sometimes produces the empty string.
-A @strong{nulling} symbol is always a @strong{nullable} symbol,
-but not all @strong{nullable} symbols are @strong{nulling} symbols.
 Soft fails if @var{sym_id} is well-formed (a non-negative integer),
 but a symbol with that ID does not exist.
 A common hard failure is calling this method with
@@ -3474,11 +3462,6 @@ On hard failure, @minus{}2.
 int marpa_g_symbol_is_nulling (Marpa_Grammar @var{g}, @
     Marpa_Symbol_ID @var{sym_id})
 
-A symbol is
-@dfindex nulling symbol
-@dfindex symbol, nulling
-@dfn{nulling}
-if it always produces the empty string.
 Soft fails if @var{sym_id} is well-formed (a non-negative integer),
 but a symbol with that ID does not exist.
 A common hard failure is calling this method with
