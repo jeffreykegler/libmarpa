@@ -3301,7 +3301,7 @@ and will have no symbols and rules.
 Its reference count will be 1.
 
 Unless the application calls
-@code{marpa_c_error()}
+@code{marpa_c_error()},
 Libmarpa will not reference the location
 pointed to by the @var{configuration}
 argument after
@@ -3334,14 +3334,15 @@ grammar constructor.
 It turns off a deprecated feature.
 
 The
-@code{marpa_g_force_valued()}
+@code{marpa_g_force_valued()} method
 forces all the
 symbols in a grammar to be ``valued''.
-The opposite of a valued symbol is one about whose value
-you do not care.
-This distinction has been made in the past in hope
-of gaining efficiencies at evaluation time.
-Current thinking is that the gains do not repay the extra
+The parse cares about the value of the symbol iff
+the symbol is ``valued''.
+In the past, symbols were allowed to be ``unvalued''
+in the hope of gaining efficiencies at evaluation time.
+Use of unvalued symbols is now deprecated,
+because current thinking is that the gains do not repay the extra
 complexity.
 
 @strong{Return value}: On success, a non-negative integer, whose value is otherwise unspecified.
