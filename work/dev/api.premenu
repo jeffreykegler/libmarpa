@@ -495,6 +495,14 @@ or an
 @dfindex empty rule
 @dfn{empty rule}.
 
+The
+@dfindex rule length
+@dfindex length, rule
+@dfn{length}
+of a rule is the length of its RHS string.
+This implies that the length of an empty rule
+is zero.
+
 In a standard grammar, all rules are BNF rules,
 as just described.
 Marpa grammars differ from standard grammars
@@ -3696,25 +3704,18 @@ On hard failure, @minus{}2.
 int marpa_g_rule_is_productive (Marpa_Grammar @var{g}, @
     Marpa_Rule_ID @var{rule_id})
 
-A rule is
-@dfindex productive rule
-@dfindex rule, productive
-@dfn{productive}
-if it can produce a string of terminals.
-A rule is productive if and only if all the symbols on
-its RHS are productive.
-The empty string counts as a string of terminals,
-so that a nullable rule is always a productive rule.
-For that same reason,
-an empty rule is considered productive.
+On success, does the following:
+@itemize
+@item If the rule whose ID is @var{rule_id} is productive, returns 1.
+@item If the rule whose ID is @var{rule_id} is unproductive, returns 0.
+@end itemize
 
 Soft fails if @var{rule_id} is well-formed (a non-negative integer),
 but a rule with that ID does not exist.
 A common hard failure is calling this method with
 a grammar that is not precomputed.
 
-@strong{Return value}: On success 1 or 0:
-1 if the rule with ID @var{rule_id} is productive, 0 if not.
+@strong{Return value}: On success, 1 or 0.
 On soft failure, @minus{}1.
 On hard failure, @minus{}2.
 
@@ -3726,13 +3727,15 @@ int marpa_g_rule_length ( @
     Marpa_Grammar @var{g}, @
     Marpa_Rule_ID @var{rule_id})
 
-The length of a rule is the number of symbols on its RHS.
+On success, returns the length of the rule with ID @var{rule_id}.
+The length of a rule is the length of its RHS.
 
 Soft fails if @var{rule_id} is well-formed (a non-negative integer),
 but a rule with that ID does not exist.
 
 @strong{Return value}: On success,
-the length of the rule with ID @var{rule_id}.
+the length of the rule with ID @var{rule_id},
+which is always a non-negative integer.
 On soft failure, @minus{}1.
 On hard failure, @minus{}2.
 
@@ -3747,8 +3750,10 @@ Marpa_Symbol_ID marpa_g_rule_lhs ( @
 Soft fails if @var{rule_id} is well-formed (a non-negative integer),
 but a rule with that ID does not exist.
 
-@strong{Return value}: On success, the ID of the LHS
-symbol of the rule with ID @var{rule_id}.
+@strong{Return value}:
+On success, returns the ID of the LHS symbol of the rule with ID @var{rule_id}
+in grammar @var{g}.
+A symbol ID is always a non-negative integer.
 On soft failure, @minus{}1.
 On hard failure, @minus{}2.
 
@@ -3761,7 +3766,32 @@ Marpa_Rule_ID marpa_g_rule_new (Marpa_Grammar @var{g}, @
  Marpa_Symbol_ID *@var{rhs_ids}, @
      int @var{length})
 
-On success, creates a new external BNF rule in grammar @var{g}.
+@code{marpa_g_rule_new()} is one of the
+@dfindex rule creation methods
+@dfn{rule creation methods}.
+On success, the following are true:
+@itemize
+@item This method creates a new BNF rule in grammar @var{g}.
+@item This method gives the new rule an ID.
+@item The ID of the new rule is a non-negative integer,
+which is unique to that rule.
+@item
+If this is the first successful call
+of a rule creation method for grammar @var{g},
+returns the rule with ID 0.
+@item
+If this is not the first successful call
+of a rule creation method for grammar @var{g},
+returns the rule ID @code{@var{n}+1},
+where @code{@var{n}} is the rule ID returned by the previous successful call of
+@code{marpa_g_rule_new()}.
+@item The ID of the LHS symbol of the new rule will be @var{lhs_id}.
+@item The length of the RHS of the new rule will be @var{length}.
+@item The ID's of the RHS symbols are taken from the array
+pointed to by @var{rhs_ids}.
+@item The return value of this method is the ID of the new rule.
+@end itemize
+
 In addition to BNF rules, Marpa also allows sequence rules,
 which are created by
 the
@@ -3771,7 +3801,6 @@ We call
 @code{marpa_g_rule_new()} and
 @code{marpa_g_sequence_new()}
 @dfn{rule creation methods}.
-
 Sequence rules and BNF rules are both rules:
 They share the same series of rule IDs,
 and are accessed and manipulated by the same methods,
@@ -3780,23 +3809,9 @@ in the descriptions of those methods.
 
 Each grammar's rule ID's are a consecutive sequence of non-negative integers,
 starting at 0.
-This is intended to make it convenient for applications to store additional information
+The consecutive numbering of rule ID's
+is intended to make it convenient for applications to store additional information
 about a grammar's rules in an array.
-Within each grammar, the following is true:
-@itemize
-@item A rule's ID is unique to that rule.
-@item
-The first successful call of a rule creation method returns the rule
-with ID 0.
-@item
-The @var{n}'th successful call of a rule creation method
-returns the rule with ID @code{@var{n}@minus{}1}.
-@end itemize
-
-The LHS symbol is @var{lhs_id},
-and there are @var{length} symbols on the RHS.
-The RHS symbols are in an array
-pointed to by @var{rhs_ids}.
 
 Possible hard failures, with their error codes, include:
 @itemize
@@ -3811,7 +3826,8 @@ and if its RHS symbols match one for one those
 in the array of symbols @var{rhs_ids}.
 @end itemize
 
-@strong{Return value}:  On success, the ID of the new external rule.
+@strong{Return value}:  On success, the ID of the new rule,
+which is always a non-negative integer.
 On hard failure, @minus{}2.
 
 @end deftypefn
@@ -3927,9 +3943,13 @@ Marpa_Rule_ID marpa_g_sequence_new (Marpa_Grammar @var{g}, @
     int @var{min}, @
  int @var{flags} )
 
+@code{marpa_g_sequence_new()} is one of the
+@dfindex rule creation methods
+@dfn{rule creation methods}.
 When successful,
 adds a new sequence rule to grammar @var{g},
 and returns its ID.
+
 In addition to sequence rules, Marpa also allows BNF rules,
 which are created by
 the
