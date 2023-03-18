@@ -3776,15 +3776,16 @@ On success, the following are true:
 @item The ID of the new rule is a non-negative integer,
 which is unique to that rule.
 @item
-If this is the first successful call
-of a rule creation method for grammar @var{g},
-returns the rule with ID 0.
+If grammar @var{g} had no rules when
+this method was called,
+the new rule will have ID 0.
 @item
-If this is not the first successful call
-of a rule creation method for grammar @var{g},
-returns the rule ID @code{@var{n}+1},
-where @code{@var{n}} is the rule ID returned by the previous successful call of
-@code{marpa_g_rule_new()}.
+If grammar @var{g} had one or more rules when
+this method was called,
+let @code{@var{n}} be the numerically largest rule ID
+in grammar @var{g} when this method was called.
+Then the new rule will have
+rule ID @code{@var{n}+1}.
 @item The ID of the LHS symbol of the new rule will be @var{lhs_id}.
 @item The length of the RHS of the new rule will be @var{length}.
 @item The ID's of the RHS symbols are taken from the array
