@@ -3596,21 +3596,18 @@ On hard failure, @minus{}2.
 int marpa_g_rule_is_accessible (Marpa_Grammar @var{g}, @
     Marpa_Rule_ID @var{rule_id})
 
-A rule is
-@dfindex accessible rule
-@dfindex rule, accessible
-@dfn{accessible}
-if it can be reached from the start symbol.
-A rule is accessible if and only if its LHS symbol is accessible.
-The start rule is always an accessible rule.
+On success, does the following:
+@itemize
+@item If the rule whose ID is @var{rule_id} is accessible, returns 1.
+@item If the rule whose ID is @var{rule_id} is inaccessible, returns 0.
+@end itemize
 
 Soft fails if @var{rule_id} is well-formed (a non-negative integer),
 but a rule with that ID does not exist.
 A common hard failure is calling this method with
 a grammar that is not precomputed.
 
-@strong{Return value}: On success 1 or 0:
-1 if rule with ID @var{rule_id} is accessible, 0 if not.
+@strong{Return value}: On success, 1 or 0.
 On soft failure, @minus{}1.
 On hard failure, @minus{}2.
 
@@ -3621,21 +3618,18 @@ On hard failure, @minus{}2.
 int marpa_g_rule_is_nullable ( @
   Marpa_Grammar @var{g}, Marpa_Rule_ID @var{ruleid})
 
-A rule is
-@dfindex nullable rule
-@dfindex rule, nullable
-@dfn{nullable}
-if it sometimes produces the empty string.
-A @strong{nulling} rule is always a @strong{nullable} rule,
-but not all @strong{nullable} rules are @strong{nulling} rules.
+On success, does the following:
+@itemize
+@item If the rule whose ID is @var{rule_id} is nullable, returns 1.
+@item If the rule whose ID is @var{rule_id} is non-nullable, returns 0.
+@end itemize
 
 Soft fails if @var{rule_id} is well-formed (a non-negative integer),
 but a rule with that ID does not exist.
 A common hard failure is calling this method with
 a grammar that is not precomputed.
 
-@strong{Return value}: On success 1 or 0:
-1 if the rule with ID @var{rule_id} is nullable, 0 if not.
+@strong{Return value}: On success, 1 or 0.
 On soft failure, @minus{}1.
 On hard failure, @minus{}2.
 
@@ -3646,19 +3640,18 @@ On hard failure, @minus{}2.
 int marpa_g_rule_is_nulling (Marpa_Grammar @var{g}, @
     Marpa_Rule_ID @var{ruleid})
 
-A rule is
-@dfindex nulling rule
-@dfindex rule, nulling
-@dfn{nulling}
-if it always produces the empty string.
+On success, does the following:
+@itemize
+@item If the rule whose ID is @var{rule_id} is nulling, returns 1.
+@item If the rule whose ID is @var{rule_id} is non-nulling, returns 0.
+@end itemize
 
 Soft fails if @var{rule_id} is well-formed (a non-negative integer),
 but a rule with that ID does not exist.
 A common hard failure is calling this method with
 a grammar that is not precomputed.
 
-@strong{Return value}: On success 1 or 0:
-1 if the rule with ID @var{rule_id} is nulling, 0 if not.
+@strong{Return value}: On success, 1 or 0.
 On soft failure, @minus{}1.
 On hard failure, @minus{}2.
 
@@ -3668,6 +3661,12 @@ On hard failure, @minus{}2.
 @deftypefn {Accessor function} @
 int marpa_g_rule_is_loop (Marpa_Grammar @var{g}, @
     Marpa_Rule_ID @var{rule_id})
+
+On success, does the following:
+@itemize
+@item If the rule whose ID is @var{rule_id} is a loop rule, returns 1.
+@item If the rule whose ID is @var{rule_id} is not a loop rule, returns 0.
+@end itemize
 
 A rule is a loop rule iff it non-trivially
 produces the string of length one
@@ -3686,8 +3685,7 @@ but a rule with that ID does not exist.
 A common hard failure is calling this method with
 a grammar that is not precomputed.
 
-@strong{Return value}: On success 1 or 0:
-1 if the rule with ID @var{rule_id} is a loop rule, 0 if not.
+@strong{Return value}: On success, 1 or 0.
 On soft failure, @minus{}1.
 On hard failure, @minus{}2.
 
