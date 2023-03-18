@@ -709,55 +709,77 @@ If a rule is not nulling, it is
 
 If any derivation from the start symbol uses a rule,
 that rule is called
-@dfindex reachable
+@dfindex reachable rule
+@dfindex rule, reachable
 @dfn{reachable}
 or
-@dfindex accessible
+@dfindex accessible rule
+@dfindex rule, accessible
 @dfn{accessible}.
 A rule that is not accessible
 is called
-@dfindex unreachable
+@dfindex unreachable rule
+@dfindex rule, unreachable
 @dfn{unreachable}
 or
-@dfindex inaccessible
+@dfindex inaccessible rule
+@dfindex rule, inaccessible
 @dfn{inaccessible}.
 A symbol is
-@dfindex reachable
+@dfindex reachable symbol
+@dfindex symbol, reachable
 @dfn{reachable}
 or
-@dfindex accessible
+@dfindex accessible symbol
+@dfindex symbol, accessible
 @dfn{accessible}
-if it appears in a reachable rule.
-If a symbol is not reachable, it is
+iff it appears in a accessible rule.
+If a symbol is not accessible, it is
+@dfindex unreachable symbol
+@dfindex symbol, unreachable
 @dfindex unreachable
 @dfn{unreachable}
 or
-@dfindex inaccessible
+@dfindex inaccessible symbol
+@dfindex symbol, inaccessible
 @dfn{inaccessible}.
 
 If any derivation which results in a sentence uses a rule,
 that rule is said to be
-@dfindex productive
+@dfindex productive rule
+@dfindex rule, productive
 @dfn{productive}.
 A rule that is not productive is called
-@dfindex unproductive
+@dfindex unproductive rule
+@dfindex rule, unproductive
 @dfn{unproductive}.
 A rule is productive iff every symbol on
 its RHS is productive.
 An empty rule is productive, vacuously.
 
-A symbol is productive iff
+A symbol is
+@dfindex productive symbol
+@dfindex symbol, productive
+@dfn{productive}
+iff
 it is a terminal or it is the LHS of a productive rule.
+A symbol that is not productive is called
+@dfindex unproductive symbol
+@dfindex symbol, unproductive
+@dfn{unproductive}.
+
 These definitions imply that all nullable rules are productive.
 They also imply that every nullable symbol is productive,
 because every nullable symbol must be on the LHS of a nullable rule.
 
 A rule which is inaccessible or unproductive is called a
-@dfindex useless
+@dfindex useless rule
+@dfindex rule, useless
 @dfn{useless}
 rule.
 A symbol which is inaccessible or unproductive is called a
-@dfindex useless
+@dfindex useless symbol
+@dfindex symbol, useless
 @dfn{useless}
 symbol.
 Marpa can handle grammars with useless rules and symbols.
@@ -3478,12 +3500,6 @@ On hard failure, @minus{}2.
 int marpa_g_symbol_is_productive (Marpa_Grammar @var{g}, @
     Marpa_Symbol_ID @var{sym_id})
 
-A symbol is
-@dfindex productive symbol
-@dfindex symbol, productive
-@dfn{productive}
-if it can produce a string of terminals.
-All nullable symbols are considered productive.
 Soft fails if @var{sym_id} is well-formed (a non-negative integer),
 but a symbol with that ID does not exist.
 A common hard failure is calling this method with
@@ -3503,7 +3519,6 @@ int marpa_g_symbol_is_start ( Marpa_Grammar @var{g}, @
 On success, if @var{sym_id} is the start symbol, returns 1.
 On success, if @var{sym_id} is not the start symbol, returns 0.
 On success, if no start symbol has been set, returns 0.
-is the start symbol.
 
 Soft fails if @var{sym_id} is well-formed (a non-negative integer),
 but a symbol with that ID does not exist.
@@ -3521,9 +3536,8 @@ int marpa_g_symbol_is_terminal ( @
     Marpa_Grammar @var{g}, @
     Marpa_Symbol_ID @var{sym_id})
 
-On succcess, returns the ``terminal status'' of a @var{sym_id}.
-The terminal status is 1 if @var{sym_id} is a terminal,
-0 otherwise.
+On success, if @var{sym_id} is a terminal symbol, returns 1.
+On success, if @var{sym_id} is not a terminal symbol, returns 0.
 To be used as an input symbol
 in the
 @code{marpa_r_alternative()}
@@ -3544,15 +3558,18 @@ On hard failure, @minus{}2.
 @deftypefn {Mutator function} @
 Marpa_Symbol_ID marpa_g_symbol_new (Marpa_Grammar @var{g})
 
-When successful, creates a new symbol in grammar @var{g}.
+When successful, creates a new symbol in grammar @var{g},
+and returns the ID of the new symbol.
 The symbol ID's are non-negative integers.
 Within each grammar, a symbol's ID is unique to that symbol.
 
 Symbols are numbered consecutively, starting at 0.
 That is, the first successful call of this method for a grammar returns the symbol
-with ID 0.
-The @var{n}'th successful call returns the symbol for a grammar
-with ID @code{@var{n}@minus{}1}.
+ID 0.
+The second and later successful calls of @code{marpa_g_symbol_new()},
+return the symbol ID @code{@var{n}+1},
+where @var{n} is the symbol ID returned by the previous successful call of
+@code{marpa_g_symbol_new()}.
 This makes it convenient for applications to store additional information
 about the symbols in an array.
 
