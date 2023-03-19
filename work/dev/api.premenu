@@ -3948,9 +3948,45 @@ Marpa_Rule_ID marpa_g_sequence_new (Marpa_Grammar @var{g}, @
 @code{marpa_g_sequence_new()} is one of the
 @dfindex rule creation methods
 @dfn{rule creation methods}.
-When successful,
-adds a new sequence rule to grammar @var{g},
-and returns its ID.
+On success, the following are true:
+@itemize
+@item This method creates a new sequence rule in grammar @var{g}.
+@item This method gives the new rule an ID.
+@item The ID of the new rule is a non-negative integer,
+which is unique to that rule.
+@item
+If grammar @var{g} had no rules when
+this method was called,
+the new rule will have ID 0.
+@item
+If grammar @var{g} had one or more rules when
+this method was called,
+let @code{@var{n}} be the maximum rule ID
+in grammar @var{g} when this method was called.
+Then the new rule will have
+rule ID @code{@var{n}+1}.
+@item The ID of the LHS symbol of the new rule will be @var{lhs_id}.
+@item The ID of the symbol to be repeated on the RHS of the sequence will be @var{rhs_id}.
+It is a irrecoverable hard error if @var{rhs_id} is the ID of a nullable symbol.
+@item The sequence must be repeated at least @var{min} times.
+@var{min} must be 0 or 1.
+@item
+If @var{separator_id} is a non-negative integer,
+it is the ID of a separator symbol.
+It is a irrecoverable hard error if @var{separator_id} is the ID of a nullable symbol.
+@item
+@var{flags} is treated as a bit vector.
+The behavior when any bit other than @code{MARPA_PROPER_SEPARATION}
+is set is undefined.
+@item By default, the sequence rule recognizes a trailing separator.
+If @code{flags & MARPA_PROPER_SEPARATION} is non-zero,
+separation is ``proper''.
+Proper separation means the the rule does
+not recognize a trailing separator.
+Specifying proper separation has no effect if
+a separator symbol has not been specified.
+@item The return value of this method is the ID of the new rule.
+@end itemize
 
 In addition to sequence rules, Marpa also allows BNF rules,
 which are created by
@@ -3972,40 +4008,9 @@ in the descriptions of those methods.
 
 Each grammar's rule ID's are a consecutive sequence of non-negative integers,
 starting at 0.
-This is intended to make it convenient for applications to store additional information
+The consecutive numbering of rule ID's
+is intended to make it convenient for applications to store additional information
 about a grammar's rules in an array.
-Within each grammar, the following is true:
-@itemize
-@item A rule's ID is unique to that rule.
-@item
-The first successful call of a rule creation method returns the rule
-with ID 0.
-@item
-The @var{n}'th successful call of a rule creation method
-returns the rule with ID @code{@var{n}@minus{}1}.
-@end itemize
-
-The LHS of the sequence is @var{lhs_id},
-and the item to be repeated on the RHS of the sequence is @var{rhs_id}.
-The sequence must be repeated at least @var{min} times,
-where @var{min} is 0 or 1.
-The sequence RHS, or item,
-is restricted to a single symbol,
-and that symbol cannot be nullable.
-If @var{separator_id} is non-negative,
-it is a separator symbol,
-which cannot be nullable.
-@var{flags} is a bit vector.
-Use of any other bit except @code{MARPA_PROPER_SEPARATION}
-results in undefined behavior.
-
-By default, a sequence rule recognizes a trailing separator.
-If @code{flags & MARPA_PROPER_SEPARATION} is non-zero,
-separation is ``proper''.
-Proper separation means the the rule does
-not recognize a trailing separator.
-Specifying proper separation has no effect unless
-a separator symbol has also been specified.
 
 The LHS symbol cannot be the LHS of any other rule,
 whether a BNF rule or a sequence rule.
