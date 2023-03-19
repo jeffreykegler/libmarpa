@@ -3450,7 +3450,7 @@ On hard failure, @minus{}2.
 @deftypefn {Accessor function} @
 int marpa_g_highest_symbol_id (Marpa_Grammar @var{g})
 
-@strong{Return value}: On success, the numerically largest symbol ID
+@strong{Return value}: On success, the maximum symbol ID
 of @var{g}.
 On hard failure, @minus{}2.
 @end deftypefn
@@ -3594,7 +3594,7 @@ On hard failure, @minus{}2.
 @deftypefn {Accessor function} @
 int marpa_g_highest_rule_id (Marpa_Grammar @var{g})
 
-@strong{Return value}: On success, the numerically largest rule ID
+@strong{Return value}: On success, the maximum rule ID
 of @var{g}.
 On hard failure, @minus{}2.
 @end deftypefn
@@ -3782,14 +3782,15 @@ the new rule will have ID 0.
 @item
 If grammar @var{g} had one or more rules when
 this method was called,
-let @code{@var{n}} be the numerically largest rule ID
+let @code{@var{n}} be the maximum rule ID
 in grammar @var{g} when this method was called.
 Then the new rule will have
 rule ID @code{@var{n}+1}.
 @item The ID of the LHS symbol of the new rule will be @var{lhs_id}.
 @item The length of the RHS of the new rule will be @var{length}.
-@item The ID's of the RHS symbols are taken from the array
-pointed to by @var{rhs_ids}.
+@item For @code{0 <= i < length},
+the ID of the RHS symbol with index @code{i} will be
+@code{rhs_ids[i]}.
 @item The return value of this method is the ID of the new rule.
 @end itemize
 
