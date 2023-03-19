@@ -4089,6 +4089,7 @@ For more about the default rank of a grammar,
 
 @strong{Return value}: On success, returns
 the default rank of the grammar,
+which will be an integer,
 and sets the error code to
 @code{MARPA_ERR_NONE}.
 On hard failure, returns @minus{}2,
@@ -4126,7 +4127,8 @@ the grammar's default rank can be used to,
 in effect, assign ranks to groups of rules and symbols.
 Applications may find this behavior useful.
 
-@strong{Return value}: On success, returns @var{rank}
+@strong{Return value}: On success, returns @var{rank},
+which will be an integer,
 and sets the error code to
 @code{MARPA_ERR_NONE}.
 On failure, returns @minus{}2,
@@ -4156,6 +4158,7 @@ is initialized to the default rank of the grammar.
 
 @strong{Return value}:
 On success, returns a symbol rank,
+which will be an integer,
 and sets the error code to
 @code{MARPA_ERR_NONE}.
 On hard failure, returns @minus{}2,
@@ -4182,11 +4185,10 @@ Marpa_Rank marpa_g_symbol_rank_set ( @
 When successful,
 sets
 the rank of the symbol with ID @var{sym_id} to @var{rank}.
-When a symbol is created, its rank
-is initialized to the default rank of the grammar.
 
 @strong{Return value}:
 On success, returns @var{rank},
+which will be an integer,
 and sets the error code to
 @code{MARPA_ERR_NONE}.
 On hard failure, returns @minus{}2,
@@ -4210,14 +4212,12 @@ Marpa_Rank marpa_g_rule_rank ( @
 
 When successful, returns
 the rank of the rule with ID @var{rule_id}.
-When a rule is created, its rank
-is initialized to the default rank of the grammar.
 
 @strong{Return value}:
 On success, returns a rule rank,
+which will be an integer,
 and sets the error code to
 @code{MARPA_ERR_NONE}.
-The rule rank is an integer.
 On hard failure, returns @minus{}2,
 and sets the error code to an appropriate
 value, which will never be
@@ -4282,9 +4282,9 @@ Soft fails iff @var{rule_id} is well-formed (a non-negative integer),
 but a rule with that ID does not exist.
 
 @strong{Return value}:
-On success, a boolean.
-On soft failure, @minus{}1.
-On hard failure, @minus{}2.
+On success, returns a boolean.
+On soft failure, returns @minus{}1.
+On hard failure, returns @minus{}2.
 
 @end deftypefn
 
@@ -4324,9 +4324,9 @@ Hard fails if
 the grammar has been precomputed.
 
 @strong{Return value}:
-On success, a boolean.
-On soft failure, @minus{}1.
-On hard failure, @minus{}2.
+On success, returns a boolean.
+On soft failure, returns @minus{}1.
+On hard failure, returns @minus{}2.
 
 @end deftypefn
 
