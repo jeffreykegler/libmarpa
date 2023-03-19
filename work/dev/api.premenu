@@ -3848,8 +3848,8 @@ The indexing of RHS symbols is zero-based.
 Soft fails if @var{rule_id} is well-formed (a non-negative integer),
 but a rule with that ID does not exist.
 
-A common hard failure is for @var{ix}
-not to be a valid index of the RHS.
+Hard fails if @var{ix}
+is not a valid index of the RHS.
 This happens if @var{ix}
 is less than zero,
 or or if @var{ix}  is greater than or equal to the length of
