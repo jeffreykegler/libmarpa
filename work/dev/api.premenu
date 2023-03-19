@@ -4153,8 +4153,6 @@ Marpa_Rank marpa_g_symbol_rank ( @
 
 When successful, returns
 the rank of the symbol with ID @var{sym_id}.
-When a symbol is created, its rank
-is initialized to the default rank of the grammar.
 
 @strong{Return value}:
 On success, returns a symbol rank,
