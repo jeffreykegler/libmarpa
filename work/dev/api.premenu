@@ -4239,8 +4239,7 @@ Marpa_Rank marpa_g_rule_rank_set ( @
 
 When successful,
 sets
-the rank of the rule with ID @var{rule_id} to @var{rank}
-and returns @var{rank}.
+the rank of the rule with ID @var{rule_id} to @var{rank}.
 
 @strong{Return value}:
 On success, returns @var{rank},
@@ -4311,7 +4310,7 @@ Such a pattern is called a ``null variant''.
 
 If the ``null ranks high'' is set,
 nulled symbols rank high.
-If the ``null ranks high'' is unset is the default),
+If the ``null ranks high'' is unset (the default),
 nulled symbols rank low.
 Ranking of a null variants is done from left-to-right.
 
