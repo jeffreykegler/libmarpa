@@ -3852,7 +3852,7 @@ Hard fails if @var{ix}
 is not a valid index of the RHS.
 This happens if @var{ix}
 is less than zero,
-or or if @var{ix}  is greater than or equal to the length of
+or if @var{ix}  is greater than or equal to the length of
 the rule.
 
 @strong{Return value}: On success, a symbol ID,
