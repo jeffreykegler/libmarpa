@@ -4035,10 +4035,10 @@ int marpa_g_sequence_separator ( @
 On success, returns the symbol ID of the separator
 of the sequence rule with ID @var{rule_id}.
 Soft fails if there is no separator.
-The causes of hard failure include
-@var{rule_id} not being well-formed;
-@var{rule_id} not being the ID of a rule that exists; and
-@var{rule_id} not being the ID a sequence rule.
+Hard fails
+if @var{rule_id} is a negative integer;
+if @var{rule_id} is not the ID of a rule that exists; or
+if @var{rule_id} is not the ID a sequence rule.
 
 @strong{Return value}:
 On success, a symbol ID, which is always non-negative.
@@ -4091,7 +4091,7 @@ For more about the default rank of a grammar,
 the default rank of the grammar,
 and sets the error code to
 @code{MARPA_ERR_NONE}.
-On failure, returns @minus{}2,
+On hard failure, returns @minus{}2,
 and sets the error code to an appropriate
 value, which will never be
 @code{MARPA_ERR_NONE}.
