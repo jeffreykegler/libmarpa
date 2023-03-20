@@ -4376,9 +4376,6 @@ On hard failure, @minus{}2.
 @deftypefn {Mutator function} @
 int marpa_g_precompute (Marpa_Grammar @var{g})
 
-On success,
-and on fully recoverable hard failure,
-precomputes the grammar @var{g}.
 Precomputation involves running a series of grammar checks
 and ``precomputing'' some useful information which is kept
 internally to save repeated calculations.
@@ -4388,17 +4385,24 @@ will cause hard failures after precomputation.
 Precomputation is necessary for a recognizer to be generated
 from a grammar.
 
-When called, clears any events already in the event queue.
-May return one or more events.
+On success,
+and on fully recoverable hard failure,
+does the following:
+@itemize
+@item Precomputes the grammar @var{g}.
+@item Clears any events that were in the event queue
+at the beginning of this method call.
+@item Returns zero or more events.
+@item Returns a value as described in this method's
+return value summary.
+@end itemize
+
 The types of event that this method may return
 are
-A @code{MARPA_EVENT_LOOP_RULES},
-@code{MARPA_EVENT_COUNTED_NULLABLE},
+@code{MARPA_EVENT_LOOP_RULES},
+@code{MARPA_EVENT_COUNTED_NULLABLE}, and
 @code{MARPA_EVENT_NULLING_TERMINAL}.
 All of these events occur only on failure.
-Applications must be prepared for this method
-to return additional events,
-including events that occur on success.
 Events may be queried using the
 @code{marpa_g_event()} method.
 @xref{marpa_g_event,marpa_g_event()}.
@@ -4413,7 +4417,7 @@ Applications should treat
 as a library-recoverable error.
 A @code{MARPA_ERR_GRAMMAR_HAS_CYCLE} error occurs
 iff
-a @code{MARPA_EVENT_LOOP_RULES} event occurs.
+at least one @code{MARPA_EVENT_LOOP_RULES} event occurs.
 For more details on cycles,
 @pxref{Cycles}.
 
