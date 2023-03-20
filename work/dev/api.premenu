@@ -4613,7 +4613,7 @@ before the call:
 Reads a new token into @var{r}.
 The symbol ID of the token will be
 @var{token_id}.
-The token will start at @var{current}
+The token will start at @code{current}
 and end at @code{@var{current}+@var{length}}.
 @item
 Sets the value of the furthest earleme to
@@ -4697,7 +4697,7 @@ The Ruby Slippers are used in several
 applications.
 
 @strong{Return value}:  On success, @code{MARPA_ERR_NONE}.
-On failure, an error code other than @code{MARPA_ERR_NONE}.
+On hard failure, an error code other than @code{MARPA_ERR_NONE}.
 The hard failure for @code{MARPA_ERR_UNEXPECTED_TOKEN_ID}
 is fully recoverable.
 
