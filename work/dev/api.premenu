@@ -4604,9 +4604,9 @@ The @var{length} argument is the length of the token, which must
 be greater than zero.
 
 On success, does the following,
-where @var{current} is the value of the current earleme
+where @code{current} is the value of the current earleme
 before the call and
-@var{furthest} is the value of the furthest earleme
+@code{furthest} is the value of the furthest earleme
 before the call:
 @itemize
 @item
