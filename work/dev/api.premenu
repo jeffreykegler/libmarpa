@@ -3107,6 +3107,19 @@ becomes
 @quotation
 Returns 42.
 @end quotation
+@item In a time object method,
+    the instance, sometimes called the ``self argument'',
+    is always the first argument of the method.
+    In the descriptions of time object methods,
+    references to the base objects of the instance
+    are often left implied.
+    For example, rather than write
+    ``the rule with ID @var{id} in the base grammar'',
+    we will usually write
+    ``the rule with ID @var{id}''.
+    References to time objects other than base objects
+    of the instance are always explicitly stated,
+    as are references to multiple time objects.
 @item If the return type of a method is not @code{void},
 the last paragraph of its method description is a
 ``return value summary''.
