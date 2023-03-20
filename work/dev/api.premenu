@@ -4707,12 +4707,11 @@ is fully recoverable.
 @deftypefn {Mutator function} @
 int marpa_r_earleme_complete (Marpa_Recognizer @var{r})
 
-
 For the purposes of this method description, we define the following:
 @itemize
-@item @var{current} is the value of the current earleme before the call of
+@item @code{current} is the value of the current earleme before the call of
 @code{marpa_r_earleme_complete}.
-@item @var{latest} is the value of the latest earleme before the call of
+@item @code{latest} is the value of the latest earleme before the call of
 @code{marpa_r_earleme_complete}.
 @item An ``expected'' terminal is one expected at a current earleme,
 in the same sense that
@@ -4735,21 +4734,21 @@ the following:
 @item
 Advances the current earleme,
 incrementing its value by 1.
-That is, sets the current earleme to @code{@var{current}+1}.
+That is, sets the current earleme to @code{current+1}.
 @item
-If any token was accepted at @var{current},
+If any token was accepted at @code{current},
 creates a new Earley set,
 which will be the latest Earley set.
 After the call, the latest
 earleme will be equal to the new current earleme,
-@code{@var{current}+1}.
+@code{current+1}.
 @item
-    If no token was accepted at @var{current},
+    If no token was accepted at @code{current},
     no Earley set is created.
     After the call,
     the value of the latest earleme will be unchanged ---
-    that is, it will remain at @var{latest}.
-    Success when no tokens were accepted at @var{current}
+    that is, it will remain at @code{latest}.
+    Success when no tokens were accepted at @code{current}
     can only occur if the application is using an advanced model of input.
     @xref{Advanced input models}.
 @item
@@ -4777,22 +4776,22 @@ triggers a
 Exhaustion on success only occurs if no terminals
 are expected at the current earleme after
 the call to this method
-(that is, at @code{@var{current}+1})
+(that is, at @code{current+1})
 and no terminals are anticipated
-after @code{@var{current}+1}.
+after @code{current+1}.
 @end itemize
 
 On hard failure
 with the code @code{MARPA_ERR_PARSE_EXHAUSTED}, does the following:
 @itemize
-@item Leaves the current earleme at @var{current}.
+@item Leaves the current earleme at @code{current}.
 The current earleme will be the same as the furthest earleme.
 @item
 The value of the furthest earleme is never changed by
 a call to
 @code{marpa_r_earleme_complete()}.
 @item
-Leaves the value of the latest earleme at @var{latest}.
+Leaves the value of the latest earleme at @code{latest}.
 No new Earley set is created.
 @item Sets the parse exhausted, so that no more tokens
 will be accepted.  @xref{Exhaustion}.
@@ -4838,9 +4837,9 @@ as a parse error.
 Depending on the application, exhaustion on success at the end of input
 might be ignored.
 @item An exhaustion-loving application that does not know the length of
-its input will often want terminate the parse in case of exhaustion on method
+its input will often want to terminate the parse in case of exhaustion on method
 success, treating exhaustion as an end-of-input indicator.
-These application will usually want to treat exhaustion on method failure
+These applications will usually want to treat exhaustion on method failure
 as a parse error.
 @item Occasionally, an exhaustion-hating application may not know
 the length of its input in advance.
