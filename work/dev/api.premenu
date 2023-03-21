@@ -5080,8 +5080,10 @@ On hard failure, returns @minus{}2.
 @deftypefn {Accessor function} @
 int marpa_r_earley_item_warning_threshold (Marpa_Recognizer @var{r})
 
-For details about the ``earley item warning threshold'',
-@pxref{marpa_r_earley_item_warning_threshold_set,marpa_r_earley_item_warning_threshold_set()}.
+Details about the ``earley item warning threshold'' are
+in the description of the
+@code{marpa_r_earley_item_warning_threshold_set()} method.
+@xref{marpa_r_earley_item_warning_threshold_set,marpa_r_earley_item_warning_threshold_set()}.
 
 @strong{Return value}:
 The Earley item warning threshold.
