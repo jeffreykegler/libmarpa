@@ -4728,6 +4728,11 @@ an advanced model of input.
 @xref{Advanced input models}.
 @end itemize
 
+In this method description,
+we will frequently refer to parse exhaustion.
+Parse exhaustion is discussed in detail in its own section.
+@xref{Exhaustion}.
+
 On success, does the final processing for the current earleme, including
 the following:
 @itemize
@@ -4794,7 +4799,7 @@ a call to
 Leaves the value of the latest earleme at @code{latest}.
 No new Earley set is created.
 @item Sets the parse exhausted, so that no more tokens
-will be accepted.  @xref{Exhaustion}.
+will be accepted.
 @item Leaves the parse in a state where no terminals
 are expected or anticipated.
 @item Clears the event queue of any events that
