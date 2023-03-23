@@ -5456,7 +5456,7 @@ It is related to a parse forest,
 but is in a form that is more compact and easily traversable.
 ``Bocage'' is our term, and we discovered this structure
 independently,
-but our work was preceded by Elizabeth Scott.
+but we were preceded in the discovery by Elizabeth Scott.
 And, unlike us,
 Prof. Scott did the all-important
 work of documenting it and providing the
