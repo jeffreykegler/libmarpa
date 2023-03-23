@@ -5378,8 +5378,8 @@ In the event of success:
 @itemize
 @item Advances the current vertex to the next vertex.
 More precisely, let @code{c_before} be the vertex
-that is the current vertex immediately
-before the call to this method.
+that was the current vertex when
+this method was called.
 The report item traverser has exactly one edge such that @code{c_before}
 is its first element.
 Let this edge be @code{(c_before,c_after)}.
@@ -5398,12 +5398,16 @@ The ``cooked dot position'' is
 @itemize
 @item the standard 0-based start-relative
 dot position, if the dotted rule is @strong{not} a completion; and
-@item the end-relative dot position, where the last position is
+@item
 @minus{}1, if the dotted rule @strong{is} a completion.
+This has the advantage of making it easy for the application
+to determine if the dotted rule
+is a completion.
+An application that prefers the ``raw'' 0-based start-relative dot position
+may convert
+a @minus{}1 to the rule length.
+@xref{marpa_g_rule_length,marpa_g_rule_length()}
 @end itemize
-Use of the cooked dot position allows an application to quickly
-determine if the dotted rule is a completion.
-The cooked dot position is @minus{}1 iff the dotted rule is a completion.
 
 In the event of soft failure:
 @itemize
