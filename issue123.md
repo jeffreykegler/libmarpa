@@ -1,7 +1,5 @@
 # Issue 123 TODO
 
-- Finish revising the new "Parsing Theory" section in the API doc
-
 - Nothing to use from [Marpa::R2::Changes](https://metacpan.org/dist/Marpa-R2/view/pod/Changes.pod)
 except this wrt ranks:
 
@@ -27,7 +25,6 @@ Include these in the Libmarpa acknowledgements doc.
 - [Marpa::R2::Advanced::Thin](https://metacpan.org/dist/Marpa-R2/view/pod/Advanced/Thin.pod)
 - [Marpa::R2::Event](https://metacpan.org/dist/Marpa-R2/view/pod/Event.pod)
 - [Marpa::R2::Exhaustion](https://metacpan.org/dist/Marpa-R2/view/pod/Exhaustion.pod)
-- [Marpa::R2::HTML](https://metacpan.org/dist/Marpa-R2/view/html/pod/HTML.pod)
 - [Marpa::R2::Progress](https://metacpan.org/dist/Marpa-R2/view/pod/Progress.pod)
 - [Marpa::R2::Scanless::DSL](https://metacpan.org/dist/Marpa-R2/view/pod/Scanless/DSL.pod)
 - [Marpa::R2::Scanless::G](https://metacpan.org/dist/Marpa-R2/view/pod/Scanless/G.pod)
