@@ -5268,7 +5268,7 @@ or, when the meaning is clear, the
 @dfindex report item
 @dfn{report item}.
 In this method description,
-we will say the the number of report items is @code{n},
+we will say that the number of report items is @code{n},
 and we will write @code{ritem[i]}
 for the @code{i}'th report item.
 @item A special vertex, called the
