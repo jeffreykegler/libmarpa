@@ -5668,16 +5668,21 @@ In particular, a ``high rank only'' ordering
 may be unambiguous even if its base bocage is ambiguous.
 But note also,
 because multiple parses choices may have the same rank,
-a ``high rank only'' ordering may be ambiguous.
+it is quite possible for
+a ``high rank only'' ordering to be ambiguous.
 
 If the ordering is not already frozen,
 it will be frozen on return from
 @code{marpa_o_ambiguity_metric()}.
-For our purposes,
-@code{marpa_o_ambiguity_metric()}
-is considered an ``accessor'',
-because it treats its ordering as if it was frozen
-before the call to @code{marpa_o_ambiguity_metric()}.
+Note that, despite this, we classify
+@code{marpa_o_ambiguity_metric()} as an ``accessor''.
+Our classification of methods into accessors,
+mutators, etc. is for the purpose of
+specifying diagnostic behaviors.
+When diagnostic behaviors proscribe the use of mutators on a ordering,
+they treat the orderings as if they were frozen,
+so that, from the point of view of the diagnostic behaviors,
+the ``freezing'' of an ordering does not change its state.
 
 @strong{Return value}:
 On success, the ambiguity metric, which is non-negative.
@@ -5734,7 +5739,8 @@ method.
 
 Hards fails if the ordering is frozen.
 
-Return value:  On success, a boolean which is the value of the
+@strong{Return value}:
+On success, a boolean which is the value of the
 ``high rank only'' flag @strong{after}
 the call.
 On hard failure, @minus{}2.
