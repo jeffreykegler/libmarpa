@@ -6042,7 +6042,9 @@ In the system described above,
 by the time a return value is finally consumed,
 a language boundary will have been crossed four times.
 The ability to debug can make the difference between
-code that works and code that does not work.
+code that works and code that does not work,
+and callbacks put far too many hurdles
+in the way of debugging.
 
 So, while step-driven valuation seems
 a roundabout approach,
