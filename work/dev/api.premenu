@@ -6021,7 +6021,7 @@ for the callbacks in the higher level language.
 The implementation that results is this:
 The higher level language would need to wrap each callback in C.
 When calling Libmarpa, it would pass the wrappered callback.
-Libmarpa would then need to call the C language ``wrappered'' callback.
+Libmarpa would then need to call the C language ``wrapper''.
 Next, the wrapper would call the higher-level language callback.
 The return value,
 which would be data native to the higher-level language,
