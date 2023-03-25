@@ -6306,15 +6306,15 @@ to stack location @code{marpa_v_result(v)}.
 @end deftypevr
 
 @deftypevr {Accessor macro} Marpa_Step_Type MARPA_STEP_NULLING_SYMBOL
-MARPA_STEP_RULE is the step type for for a nulled node.
+MARPA_STEP_NULLING_SYMBOL is the step type for a nulled node.
 The application's equivalent of the evaluation
-of the semantics of a nulling token should be performed.
+of the semantics of a nulled token should be performed.
 @itemize
 @item
-The ID of the nulling symbol is
+The ID of the nulled symbol will be
 at stack location @code{marpa_v_symbol(v)}.
 @item
-The application's value for this nulling symbol instance
+The application's value for this nulled symbol instance
 should be placed in
 stack location @code{marpa_v_result(v)}.
 Often, an application will assign a fixed value to each
@@ -6325,9 +6325,12 @@ stack location @code{marpa_v_result(v)}.
 The use of the word ``nulling'' in
 the step type name @code{MARPA_STEP_NULLING_SYMBOL}
 is problematic.
-While the node must be zero-length (nulled or nulling),
+While the node must be zero-length (nulled),
 the node's symbol need not be nulling:
-it may be nullable.
+it may be a proper nullable.
+The name of the step type would more correctly
+be ``MARPA_STEP_NULLED_SYMBOL'',
+but it is left as is for backward compatibility.
 @xref{Nulling versus nulled}.
 @end deftypevr
 
