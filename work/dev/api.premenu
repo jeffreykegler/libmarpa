@@ -3436,7 +3436,7 @@ call.
 
 @strong{Return value}:
 On success, the ID of the start symbol,
-which is always a non-negative number.
+which is always a non-negative integer.
 On soft failure, @minus{}1.
 On hard failure, @minus{}2.
 @end deftypefn
@@ -3449,11 +3449,11 @@ Marpa_Symbol_ID marpa_g_start_symbol_set ( @
 
 When successful,
 sets the start symbol of grammar @var{g} to symbol @var{sym_id}.
-Soft fails if @var{sym_id} is well-formed (a non-negative integer),
+Soft fails iff @var{sym_id} is well-formed (a non-negative integer),
 but a symbol with that ID does not exist.
 
 @strong{Return value}: On success, @var{sym_id},
-which will always be a non-negative number.
+which will always be a non-negative integer.
 On soft failure, @minus{}1.
 On hard failure, @minus{}2.
 
@@ -3473,7 +3473,7 @@ On hard failure, @minus{}2.
 int marpa_g_symbol_is_accessible (Marpa_Grammar @var{g}, @
     Marpa_Symbol_ID @var{sym_id})
 
-Soft fails if @var{sym_id} is well-formed (a non-negative integer),
+Soft fails iff @var{sym_id} is well-formed (a non-negative integer),
 but a symbol with that ID does not exist.
 A common hard failure is calling this method with
 a grammar that is not precomputed.
@@ -3489,7 +3489,7 @@ On hard failure, @minus{}2.
 int marpa_g_symbol_is_nullable ( @
   Marpa_Grammar g, Marpa_Symbol_ID sym_id)
 
-Soft fails if @var{sym_id} is well-formed (a non-negative integer),
+Soft fails iff @var{sym_id} is well-formed (a non-negative integer),
 but a symbol with that ID does not exist.
 A common hard failure is calling this method with
 a grammar that is not precomputed.
@@ -3505,7 +3505,7 @@ On hard failure, @minus{}2.
 int marpa_g_symbol_is_nulling (Marpa_Grammar @var{g}, @
     Marpa_Symbol_ID @var{sym_id})
 
-Soft fails if @var{sym_id} is well-formed (a non-negative integer),
+Soft fails iff @var{sym_id} is well-formed (a non-negative integer),
 but a symbol with that ID does not exist.
 A common hard failure is calling this method with
 a grammar that is not precomputed.
@@ -3521,7 +3521,7 @@ On hard failure, @minus{}2.
 int marpa_g_symbol_is_productive (Marpa_Grammar @var{g}, @
     Marpa_Symbol_ID @var{sym_id})
 
-Soft fails if @var{sym_id} is well-formed (a non-negative integer),
+Soft fails iff @var{sym_id} is well-formed (a non-negative integer),
 but a symbol with that ID does not exist.
 A common hard failure is calling this method with
 a grammar that is not precomputed.
@@ -3541,7 +3541,7 @@ On success, if @var{sym_id} is the start symbol, returns 1.
 On success, if @var{sym_id} is not the start symbol, returns 0.
 On success, if no start symbol has been set, returns 0.
 
-Soft fails if @var{sym_id} is well-formed (a non-negative integer),
+Soft fails iff @var{sym_id} is well-formed (a non-negative integer),
 but a symbol with that ID does not exist.
 
 @strong{Return value}:
@@ -3565,7 +3565,7 @@ in the
 method,
 a symbol must be a terminal.
 
-Soft fails if @var{sym_id} is well-formed (a non-negative integer),
+Soft fails iff @var{sym_id} is well-formed (a non-negative integer),
 but a symbol with that ID does not exist.
 
 @strong{Return value}:
@@ -3623,7 +3623,7 @@ On success, does the following:
 @item If the rule whose ID is @var{rule_id} is inaccessible, returns 0.
 @end itemize
 
-Soft fails if @var{rule_id} is well-formed (a non-negative integer),
+Soft fails iff @var{rule_id} is well-formed (a non-negative integer),
 but a rule with that ID does not exist.
 A common hard failure is calling this method with
 a grammar that is not precomputed.
@@ -3645,7 +3645,7 @@ On success, does the following:
 @item If the rule whose ID is @var{rule_id} is non-nullable, returns 0.
 @end itemize
 
-Soft fails if @var{rule_id} is well-formed (a non-negative integer),
+Soft fails iff @var{rule_id} is well-formed (a non-negative integer),
 but a rule with that ID does not exist.
 A common hard failure is calling this method with
 a grammar that is not precomputed.
@@ -3667,7 +3667,7 @@ On success, does the following:
 @item If the rule whose ID is @var{rule_id} is non-nulling, returns 0.
 @end itemize
 
-Soft fails if @var{rule_id} is well-formed (a non-negative integer),
+Soft fails iff @var{rule_id} is well-formed (a non-negative integer),
 but a rule with that ID does not exist.
 A common hard failure is calling this method with
 a grammar that is not precomputed.
@@ -3701,7 +3701,7 @@ to allow a user to find the rules which cause the
 cycle and to change the grammar to be cycle-free.
 @xref{Cycles}.
 
-Soft fails if @var{rule_id} is well-formed (a non-negative integer),
+Soft fails iff @var{rule_id} is well-formed (a non-negative integer),
 but a rule with that ID does not exist.
 A common hard failure is calling this method with
 a grammar that is not precomputed.
@@ -3723,7 +3723,7 @@ On success, does the following:
 @item If the rule whose ID is @var{rule_id} is unproductive, returns 0.
 @end itemize
 
-Soft fails if @var{rule_id} is well-formed (a non-negative integer),
+Soft fails iff @var{rule_id} is well-formed (a non-negative integer),
 but a rule with that ID does not exist.
 A common hard failure is calling this method with
 a grammar that is not precomputed.
@@ -3743,7 +3743,7 @@ int marpa_g_rule_length ( @
 On success, returns the length of the rule with ID @var{rule_id}.
 The length of a rule is the length of its RHS.
 
-Soft fails if @var{rule_id} is well-formed (a non-negative integer),
+Soft fails iff @var{rule_id} is well-formed (a non-negative integer),
 but a rule with that ID does not exist.
 
 @strong{Return value}: On success,
@@ -3760,7 +3760,7 @@ Marpa_Symbol_ID marpa_g_rule_lhs ( @
     Marpa_Grammar @var{g}, @
     Marpa_Rule_ID @var{rule_id})
 
-Soft fails if @var{rule_id} is well-formed (a non-negative integer),
+Soft fails iff @var{rule_id} is well-formed (a non-negative integer),
 but a rule with that ID does not exist.
 
 @strong{Return value}:
@@ -3858,7 +3858,7 @@ When successful, returns the ID of the symbol at index @var{ix}
 in the RHS of the rule with ID @var{rule_id}.
 The indexing of RHS symbols is zero-based.
 
-Soft fails if @var{rule_id} is well-formed (a non-negative integer),
+Soft fails iff @var{rule_id} is well-formed (a non-negative integer),
 but a rule with that ID does not exist.
 
 Hard fails if @var{ix}
@@ -3906,7 +3906,7 @@ can use
 @code{marpa_g_sequence_min()} to do this.
 @xref{marpa_g_sequence_min,marpa_g_sequence_min()}.
 
-Soft fails if @var{rule_id} is well-formed (a non-negative integer),
+Soft fails iff @var{rule_id} is well-formed (a non-negative integer),
 but a rule with that ID does not exist.
 
 @strong{Return value}:
@@ -3923,13 +3923,13 @@ int marpa_g_sequence_min ( @
     Marpa_Rule_ID @var{rule_id})
 
 On success, returns the mininum length of a sequence rule.
-Soft fails if a rule with ID @var{rule_id} exists,
+Soft fails iff a rule with ID @var{rule_id} exists,
 but is not a sequence rule.
 This soft failure can used to test whether
 or not a rule is a sequence rule.
 
 Hard fails irrecoverably if
-@var{rule_id} is not well-formed (a non-negative number).
+@var{rule_id} is not well-formed (a non-negative integer).
 Also, hard fails irrecoverably if no rule with ID @var{rule_id} exists,
 even when @var{rule_id} is well formed.
 Note that,
@@ -4047,7 +4047,7 @@ int marpa_g_sequence_separator ( @
 
 On success, returns the symbol ID of the separator
 of the sequence rule with ID @var{rule_id}.
-Soft fails if there is no separator.
+Soft fails iff there is no separator.
 Hard fails
 if @var{rule_id} is a negative integer;
 if @var{rule_id} is not the ID of a rule that exists; or
@@ -4462,7 +4462,7 @@ More details of these can be found under the
 description of the appropriate code.
 @xref{External error codes}.
 
-@strong{Return value}: On success, a non-negative number,
+@strong{Return value}: On success, a non-negative integer,
 whose value is otherwise unspecified.
 On hard failure, @minus{}2.
 For the error code @code{MARPA_ERR_GRAMMAR_HAS_CYCLE},
@@ -6752,7 +6752,7 @@ as a completion event symbol in @var{g}.
 For more about completion events,
 @pxref{marpa_g_symbol_is_completion_event_set,marpa_g_symbol_is_completion_event_set()}.
 
-Soft fails if @var{sym_id} is well-formed (a non-negative integer), but there is no
+Soft fails iff @var{sym_id} is well-formed (a non-negative integer), but there is no
 such symbol.
 
 Hard fails if @var{g} is precomputed.
@@ -6815,7 +6815,7 @@ Note that this implies that no completion event will
 ever be generated at earleme 0,
 the start of parsing.
 
-Soft fails if @var{sym_id} is well-formed (a non-negative integer), but there is no
+Soft fails iff @var{sym_id} is well-formed (a non-negative integer), but there is no
 such symbol.
 
 Hards fails if
@@ -6832,7 +6832,7 @@ On hard failure, @minus{}2.
 
 Libmarpa can set up to generate
 an @code{MARPA_EVENT_SYMBOL_NULLED}
-event whenever the symbol is nulled.
+event whenever a symbol is nulled.
 A symbol is said to be @strong{nulled}
 when a zero length instance of that symbol
 is recognized.
@@ -6932,7 +6932,7 @@ as a nulled event symbol in @var{g}.
 For more about nulled events,
 @pxref{marpa_g_symbol_is_nulled_event_set,marpa_g_symbol_is_nulled_event_set()}.
 
-On soft failure, @var{sym_id} is well-formed, but there is no
+Soft fails iff @var{sym_id} is well-formed (a non-negative integer), but there is no
 such symbol.
 
 Hard fails if @var{g} is precomputed.
@@ -7025,8 +7025,8 @@ the
 @code{marpa_g_symbol_is_nullable()}
 method.
 
-If @var{sym_id} is well-formed, but there is no
-such symbol, soft fails.
+Soft fails iff @var{sym_id} is well-formed (a non-negative integer), but there is no
+such symbol.
 
 Hards fails if
 the grammar is precomputed.
@@ -7145,7 +7145,7 @@ as a prediction event symbol in @var{g}.
 For more about prediction events,
 @pxref{marpa_g_symbol_is_prediction_event_set,marpa_g_symbol_is_prediction_event_set()}.
 
-On soft failure, @var{sym_id} is well-formed, but there is no
+Soft fails iff @var{sym_id} is well-formed (a non-negative integer), but there is no
 such symbol.
 
 Hard fails if @var{g} is precomputed.
@@ -7199,8 +7199,8 @@ On success, if @var{value} is 0,
 @item returns 0.
 @end itemize
 
-If @var{sym_id} is well-formed, but there is no
-such symbol, soft fails.
+Soft fails iff @var{sym_id} is well-formed (a non-negative integer), but there is no
+such symbol.
 
 Hards fails if
 the grammar is precomputed.
@@ -7745,21 +7745,21 @@ Suggested message: "This grammar has no start symbol".
 @end deftypevr
 
 @deftypevr {Accessor macro} int MARPA_ERR_NO_SUCH_ASSERTION_ID
-A method was called with an assertion ID that is well-formed,
+A method was called with an assertion ID that is well-formed (a non-negative integer),
 but the assertion does not exist.
 Numeric value: 97.
 Suggested message: "No assertion with this ID exists".
 @end deftypevr
 
 @deftypevr {Accessor macro} int MARPA_ERR_NO_SUCH_RULE_ID
-A method was called with a rule ID that is well-formed,
+A method was called with a rule ID that is well-formed (a non-negative integer),
 but the rule does not exist.
 Numeric value: 89.
 Suggested message: "No rule with this ID exists".
 @end deftypevr
 
 @deftypevr {Accessor macro} int MARPA_ERR_NO_SUCH_SYMBOL_ID
-A method was called with a symbol ID that is well-formed,
+A method was called with a symbol ID that is well-formed (a non-negative integer),
 but the symbol does not exist.
 Numeric value: 90.
 Suggested message: "No symbol with this ID exists".
@@ -9309,7 +9309,7 @@ the grammar's symbols already is locked at a valued
 status of 0,
 failure is returned.
 
-Return value: On success, a non-negative number.
+Return value: On success, a non-negative integer.
 On failure, returns @minus{}2,
 and sets the error code to an appropriate
 value, which will never be
