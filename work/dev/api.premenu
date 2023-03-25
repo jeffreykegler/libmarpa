@@ -7045,7 +7045,7 @@ to generate a
 @code{MARPA_EVENT_SYMBOL_PREDICTED}
 event when a non-nulled symbol is predicted.
 A non-nulled symbol is said to be @strong{predicted}
-when a instance of it
+when an instance of it
 is acceptable at the current
 earleme according to the grammar.
 Nulled symbols do not generate predictions.
