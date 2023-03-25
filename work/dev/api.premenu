@@ -7016,14 +7016,14 @@ even if the symbol is non-nullable.
 This is convenient, for example,
 for automatically generated grammars.
 Applications that wish to treat
-it as a failure if there is an
-attempt to
-mark a non-nullable symbol
+it as a failure when
+a non-nullable symbol is marked
 as a nulled event symbol,
-can check for this case using
-the
+can check for this after precomputation,
+using the
+@code{marpa_g_symbol_is_nulled_event()} and
 @code{marpa_g_symbol_is_nullable()}
-method.
+methods.
 
 Soft fails iff @var{sym_id} is well-formed (a non-negative integer), but there is no
 such symbol.
