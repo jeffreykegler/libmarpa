@@ -29,7 +29,7 @@ MICRO=4
 VERSION=$(MAJOR).$(MINOR).$(MICRO)
 
 .PHONY: ac_dist aspell asan clean cm_dist dist distcheck dummy \
-    realclean tag test cm_test install_test
+    realclean tag test cm_test install_test touch
 
 dummy:
 	@echo The target to make the Autoconf distribution is '"ac_dist"'
@@ -126,6 +126,11 @@ test_install: timestamp/cm_dist.stamp
 
 aspell:
 	(cd aspell; $(MAKE) all)
+
+# This is used to allow me to make a commit even when
+# there are no actual changes.  I find this useful.
+touch:
+	date > TOUCH
 
 clean:
 	-rm libmarpa_version.sh
