@@ -6402,7 +6402,7 @@ Always succeeds.
 @end deftypefn
 
 @deftypefn {Accessor macro} Marpa_Step_Type marpa_v_step_type (Marpa_Value @var{v})
-This macro is usually not needed since its return value
+This macro is rarely needed since its return value
 is the same as the value that @code{marpa_v_step()} returns on success.
 
 @strong{Return value}:
@@ -6462,11 +6462,11 @@ that parse node.
 The end ES location of a leaf is the ES location where
 the next leaf symbol in the fringe of the current parse tree would start.
 Typically, this is the location where a leaf node actually starts but,
-toward the end of a parse, there may not be an actual next leaf node.
+at the end of a parse, there is not an actual next leaf node.
 
-The start ES location of a MARPA_RULE_STEP is the start ES location
+The start ES location of a MARPA_RULE_STEP step is the start ES location
 of its first child node in the current parse tree.
-The end ES location of a MARPA_RULE_STEP is the end ES location
+The end ES location of a MARPA_RULE_STEP step is the end ES location
 of its last child node in the current parse tree.
 
 @deftypefn {Accessor macro} @
