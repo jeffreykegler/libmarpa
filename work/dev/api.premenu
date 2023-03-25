@@ -6752,7 +6752,7 @@ as a completion event symbol in @var{g}.
 For more about completion events,
 @pxref{marpa_g_symbol_is_completion_event_set,marpa_g_symbol_is_completion_event_set()}.
 
-On soft failure, @var{sym_id} is well-formed, but there is no
+Soft fails if @var{sym_id} is well-formed (a non-negative integer), but there is no
 such symbol.
 
 Hard fails if @var{g} is precomputed.
@@ -6815,8 +6815,8 @@ Note that this implies that no completion event will
 ever be generated at earleme 0,
 the start of parsing.
 
-If @var{sym_id} is well-formed, but there is no
-such symbol, soft fails.
+Soft fails if @var{sym_id} is well-formed (a non-negative integer), but there is no
+such symbol.
 
 Hards fails if
 the grammar is precomputed.
