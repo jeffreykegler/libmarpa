@@ -6287,7 +6287,7 @@ MARPA_STEP_TOKEN is the step type for a token node.
 The application's equivalent of the evaluation
 of the semantics of a non-null token should be performed.
 @itemize
-@item The application's value for the token whose ID is
+@item The symbol ID of the token will be
 at stack location @code{marpa_v_token(v)}.
 @item
 Libmarpa will already have a``token value'' for the token
