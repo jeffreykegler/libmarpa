@@ -8172,6 +8172,7 @@ which may be avoided with
 the
 @code{marpa_g_force_valued()}
 method.
+@xref{marpa_g_force_valued,marpa_g_force_valued()}.
 This error code
 indicates that the valued status of a symbol is locked,
 and an attempt was made
@@ -8187,8 +8188,7 @@ symbol that is not allowed.
 For example,
 the ID of a nulling symbol cannot be an argument
 to
-@code{marpa_r_expected_symbol_event_set()}
----
+@code{marpa_r_expected_symbol_event_set()},
 because it is not possible to create an ``expected symbol'' event
 for a nulling symbol.
 @strong{Numeric value}: 87.
@@ -8201,8 +8201,7 @@ An ``unused'' symbol is a inaccessible or unproductive symbol.
 For example,
 the ID of a unused symbol cannot be an argument
 to
-@code{marpa_r_expected_symbol_event_set()}
----
+@code{marpa_r_expected_symbol_event_set()},
 because it is not possible to create an ``expected symbol'' event
 for an unused symbol.
 @strong{Numeric value}: 88.
