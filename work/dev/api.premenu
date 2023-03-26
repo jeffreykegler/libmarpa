@@ -7998,10 +7998,10 @@ right hand side symbols.
 The limit on the RHS symbol count is implementation
 dependent, but it is very large,
 at least 500,000,000 symbols.
-This is
-far beyond what is required in any current practical grammar.
-An application with rules of this length is almost
-certain to run into memory and other limits.
+Libmarpa's use of memory
+would almost certainly exceed the
+limit imposed by the application environment
+before this error could occur.
 @strong{Numeric value}: 65.
 @strong{Suggested message}: "The RHS is too long".
 @end deftypevr
