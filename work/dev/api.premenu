@@ -7763,8 +7763,6 @@ created from a grammar until it is precomputed.
 @deftypevr {Accessor macro} int MARPA_ERR_NO_PARSE
 The application attempted to create a bocage
 from a recognizer with no parse tree.
-Applications will often want to treat this as
-a soft error.
 @strong{Numeric value}: 41.
 @strong{Suggested message}: "No parse".
 @end deftypevr
