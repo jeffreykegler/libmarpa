@@ -8734,7 +8734,7 @@ to
 @chapter Support
 
 The ``updates''
-(@url{https://github.com/jeffreykegler/libmarpa/blob/updated/UPDATES.md}).
+(@url{https://github.com/jeffreykegler/libmarpa/blob/updated/UPDATES.md})
 document contains instructions for reporting
 bugs, getting answers to questions, and other support.
 
@@ -8851,12 +8851,15 @@ been initialized when the recognizer was created,
 which is another non-orthogonality with
 @code{marpa_r_current_earleme}.
 
-All this might be fine, if something were gained, but in fact in the furthest
-earleme, unless there is a problem, always becomes the current earleme,
+All this might be fine, if something were gained, but in fact
+nothing ever is gained.
+The furthest
+earleme, unless the parse fails, always becomes the current earleme,
 and no use cases for extremely long variable-length tokens are envisioned,
-so that the two should never be far apart.
+so that current and furthest earleme should never be far apart.
 Additionally, the additional values for the furthest earleme only come into
-play if the parse is to large for the computer memories as of this writing.
+play if the length of parse causes the application to exceed
+the memory limit imposed by modern application environments.
 Summarizing, @code{marpa_r_furthest_earleme},
 should return an @code{int},
 like @code{marpa_r_current_earleme},
