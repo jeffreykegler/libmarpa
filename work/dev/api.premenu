@@ -7808,20 +7808,10 @@ but the symbol does not exist.
 @end deftypevr
 
 @deftypevr {Accessor macro} int MARPA_ERR_NO_TOKEN_EXPECTED_HERE
-This error code indicates that
-no tokens at all were expected at this earleme
-location.
+An attempt was made to read a token using @code{marpa_r_alternative},
+but no tokens were expected at this earleme location.
 This can only happen in alternative input models.
-
-Typically, this indicates an application programming
-error.
-Retrying input at this location will always fail.
-But if the application is able to leave this
-earleme empty, a retry at a later location,
-using this or another token,
-may succeed.
-At this writing,
-the author knows of no uses of this technique.
+@xref{marpa_r_alternative,marpa_r_alternative()}
 
 @strong{Numeric value}: 44.
 @strong{Suggested message}: "No token is expected at this earleme location".
