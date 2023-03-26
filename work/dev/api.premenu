@@ -8483,9 +8483,10 @@ This is because C89 allows
 A trap representation is a byte pattern in memory
 that is not a valid value of some object type.
 When read, the trap representation causes undefined behavior
-according to the C89 standard,
-making the application that allowed the read non-conformant
-to the C89 standard.
+according to the C89 standard.
+Because of this undefined behavior
+the application that allowed the read
+is non-conformant to the C89 standard.
 Trap representations are carefully defined and discussed in the C99 standard.
 
 In real life, trap representations can occur when floating point values are
@@ -8493,7 +8494,7 @@ used: Some byte patterns that can occur in memory are not valid floating point
 values, and can cause undefined behavior when read.
 
 Pointers raise the same issue although,
-since it can be safely read as an integer,
+since pointers can be safely read as an integer,
 some insist that an invalid pointer is not,
 strictly speaking, a trap representation.
 But there is no portable c89-conformant way of
@@ -8513,7 +8514,7 @@ all locations on the stack must be initialized.
 
 Modern operating systems
 usually have an out-of-memory (OOM) killer as a component.
-When an OOM is in use,
+When an OOM killer is in use,
 if an application or library is unable to allocate memory,
 it usually will not be given an opportunity to handle this error.
 See ``When malloc() Never Returns NULL --- Reliability as an Illusion'',
