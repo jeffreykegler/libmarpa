@@ -8580,13 +8580,13 @@ the earleme variables are as follows:
 @itemize
 @item
 The furthest earleme will be
-@code{max(@var{old_f}, @var{old_c}+@var{length})},
+@code{max(old_f, old_c+length)},
     @itemize
-    @item where @var{old_f} is the furthest earleme
+    @item where @code{old_f} is the furthest earleme
         before the call to @code{marpa_r_alternative()},
-    @item @var{old_c} is the value of the current earleme
+    @item @code{old_c} is the value of the current earleme
         before the call to @code{marpa_r_alternative()}, and
-    @item @var{length} is the length of the token read.
+    @item @code{length} is the length of the token read.
     @end itemize
 @item
 @code{marpa_r_alternative()} never changes the
@@ -8594,20 +8594,23 @@ latest or current earleme.
 @end itemize
 
 In the dense variable-length model of input,
-the effect of the
+the following are also true:
+
+@itemize
+@item The effect of the
 @code{marpa_r_earleme_complete()}
 mutator on the earleme variables
 is the same as for the
 basic models of input.
 @xref{The standard model of input}.
 
-In the dense model of input,
-the latest earleme is always the same as
+@item the latest earleme is always the same as
 the current earleme.
 In fact,
 the latest earleme and the current earleme
 are always the same,
 except in the fully general model of input.
+@end itemize
 
 @node The fully general input model
 @section The fully general input model
