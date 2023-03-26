@@ -7863,17 +7863,21 @@ The limit on the length of a parse is implementation
 dependent, but it is very large,
 at least 500,000,000 earlemes.
 
-This error code is unlikely in the standard input model.
-Almost certainly memory would be exceeded
-before it could occur.
+In the standard input model,
+Libmarpa's use of memory
+would almost certainly exceed the
+limit imposed by the application environment
+before this error could occur.
 If an application sees this error,
 it almost certainly using one of the non-standard
 input models.
 
-Most often this message will occur because
-of a request to add a single extremely long token,
+In the non-standard
+input models,
+this message will occur most often because
+of an attempt to add a single extremely long token,
 perhaps as a result of an application error.
-But it is also possible this error condition will
+It is also possible this error condition will
 occur after the input of a large number
 of long tokens.
 
