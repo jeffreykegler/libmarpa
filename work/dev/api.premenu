@@ -7583,14 +7583,14 @@ an optional limit on the number
 of Earley items in an Earley set,
 which can be set by the application.
 
-The implementation defined-limit is very large,
-at least 500,000,000 earlemes.
+The implementation-defined limit is very large,
+at least 500,000,000 Earley items.
 An application is unlikely ever to see this
 error.
 Libmarpa's use of memory
 would almost certainly exceed the
 limit imposed by the application environment
-before this error occurs
+before this error occurs.
 @strong{Numeric value}: 13.
 @strong{Suggested message}: "Maximum number of Earley items exceeded".
 @end deftypevr
@@ -7644,13 +7644,8 @@ is if Libmarpa memory is being overwritten.
 This error code indicates that
 the token symbol is an inaccessible symbol --- one that
 cannot be reached from the start symbol.
-
 Since the inaccessibility of a symbol is a property of the grammar,
 this error code typically indicates an application error.
-Nevertheless, a retry at this location, using another token ID,
-may succeed.
-At this writing,
-the author knows of no uses of this technique.
 
 @strong{Numeric value}: 18.
 @strong{Suggested message}: "Token symbol is inaccessible".
