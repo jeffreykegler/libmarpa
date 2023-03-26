@@ -8044,8 +8044,7 @@ a symbol that is not set up as a completion event.
 An attempt was made to use a symbol in
 a way that requires it to be
 set up for nulled events,
-but the symbol was not set
-set up for nulled events.
+but the symbol was not set up for nulled events.
 This error can occur when
 the application attempts to activate a nulled symbol
 event in the recognizer for
@@ -8058,13 +8057,11 @@ a symbol that is not set up as a nulled event.
 An attempt was made to use a symbol in
 a way that requires it to be
 set up for prediction events,
-but the symbol was not set
-set up for prediction events.
+but the symbol was not set up for prediction events.
 This error can occur when
 the application attempts to activate a prediction
 event in the recognizer for
-a symbol that is not set up as a
-a prediction event.
+a symbol that is not set up as a prediction event.
 @strong{Numeric value}: 94.
 @strong{Suggested message}: "Symbol is not set up for prediction events".
 @end deftypevr
@@ -8113,9 +8110,10 @@ The token length is too long.
 The limit on the length of a token
 is implementation dependent, but it
 is at least 500,000,000 earlemes.
-An application using a token that long
-is almost certain to run into some other
-limit.
+Libmarpa's use of memory
+would almost certainly exceed the
+limit imposed by the application environment
+before this error could occur.
 @strong{Numeric value}: 78.
 @strong{Suggested message}: "Token is too long".
 @end deftypevr
