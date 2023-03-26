@@ -7945,15 +7945,10 @@ ranks in the range between
 @end deftypevr
 
 @deftypevr {Accessor macro} int MARPA_ERR_RECCE_IS_INCONSISTENT
-The recognizer is ``inconsistent'',
-usually because the user has rejected one or
-more rules or terminals,
-and has not yet called
-the
-@code{marpa_r_consistent()}
-method.
+This is an internal error.
+An application should never see it.
 @strong{Numeric value}: 95.
-@strong{Suggested message}: "The recognizer is inconsistent.
+@strong{Suggested message}: "The recognizer is inconsistent".
 @end deftypevr
 
 @deftypevr {Accessor macro} int MARPA_ERR_RECCE_NOT_ACCEPTING_INPUT
