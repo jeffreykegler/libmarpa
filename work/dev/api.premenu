@@ -8153,7 +8153,8 @@ at a location where no token is expected.
 The start symbol is unproductive.
 That means it could never match any possible input,
 not even the null string.
-Presumably, an error in writing the grammar.
+This is likely to be a mistake in writing the grammar,
+which can be fixed by rewriting the grammar.
 @strong{Numeric value}: 82.
 @strong{Suggested message}: "Unproductive start symbol".
 @end deftypevr
