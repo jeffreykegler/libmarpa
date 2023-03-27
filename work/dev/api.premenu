@@ -9419,8 +9419,8 @@ in practical use today, and then some.
 @item @strong{2002}:
 Aycock and Horspool describe a way to do LR(0)
 precomputation
-@xref{Bibliography-Aycock-and-Horspool-2002}.
 for Earley's algorithm.
+@xref{Bibliography-Aycock-and-Horspool-2002}.
 Their method makes Earley's faster in most
 practical situations, but not all.
 In particular, right-recursion remains quadratic in
@@ -9436,8 +9436,8 @@ in the process making significant
 changes to both of them.
 @xref{Bibliography-Kegler-2022}.
 The result preserves the
-best features of both.
-Marpa also tackles the many remaining
+best features of both
+and tackles the many remaining
 implementation issues.
 
 @end itemize
