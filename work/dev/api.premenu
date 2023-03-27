@@ -9245,7 +9245,7 @@ for the same @var{sym_id} will fail,
 leaving @var{sym_id}'s valued status unchanged,
 unless @var{value} is the same as the locked-in value.
 
-Return value: On success, 1 if the symbol @var{symbol_id}
+@strong{Return value}: On success, 1 if the symbol @var{symbol_id}
 is valued after the call, 0 if not.
 If the valued status is locked and @var{value}
 is different from the current status, @minus{}2.
@@ -9296,7 +9296,7 @@ an attempt to change to a status different from the
 current one will fail
 (error code @code{MARPA_ERR_VALUED_IS_LOCKED}).
 
-Return value:  On success, the valued status @strong{after}
+@strong{Return value}:  On success, the valued status @strong{after}
 the call.
 If @var{value} is not either 0 or 1,
 or on other hard failure, @minus{}2.
@@ -9324,9 +9324,9 @@ of its @var{status} argument.
 A valued status of 1 indicates that the symbol is valued.
 A valued status of 0 indicates that the symbol is unvalued.
 If the valued status is locked,
-an attempt to change to a status different from the
+an attempt to change it to a status different from the
 current one will fail
-(error code @code{MARPA_ERR_VALUED_IS_LOCKED}).
+with error code @code{MARPA_ERR_VALUED_IS_LOCKED}.
 
 Rules have no valued status of their own.
 The valued status of a rule
@@ -9335,7 +9335,7 @@ These methods are conveniences --- they
 save the application the trouble of looking
 up the rule's LHS.
 
-Return value:  On success, the valued status of the
+@strong{Return value}:  On success, the valued status of the
 rule @var{rule_id}'s LHS symbol @strong{after}
 the call.
 If @var{value} is not either 0 or 1,
@@ -9347,13 +9347,12 @@ or on other hard failure, @minus{}2.
     Marpa_Value @var{v})
 
 This methods locks the valued status of all symbols
-to 1, indicated that the symbol is valued.
+to 1, so that all symbols will always be valued.
 Hard fails if this is not possible, for example because one of
 the grammar's symbols already is locked at a valued
 status of 0.
-failure is returned.
 
-Return value: On success, a non-negative integer.
+@strong{Return value}: On success, a non-negative integer.
 On hard failure, returns @minus{}2,
 and sets the error code to an appropriate
 value, which will never be
