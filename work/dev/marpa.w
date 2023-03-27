@@ -1708,7 +1708,7 @@ marpa_g_nulled_symbol_activate (Marpa_Grammar g,
         if (!XSYID_is_Nulled_Event( xsy_id)) {
           /* An attempt to activate a nulled event on a symbol which
           was not set up for them. */
-          MARPA_ERROR (MARPA_ERR_SYMBOL_IS_NOT_COMPLETION_EVENT);
+          MARPA_ERROR (MARPA_ERR_SYMBOL_IS_NOT_NULLED_EVENT);
         }
         XSYID_Nulled_Event_Starts_Active (xsy_id)
           = Boolean(reactivate);
@@ -1778,7 +1778,7 @@ marpa_g_prediction_symbol_activate (Marpa_Grammar g,
         if (!XSYID_is_Prediction_Event( xsy_id)) {
           /* An attempt to activate a prediction event on a symbol which
           was not set up for them. */
-          MARPA_ERROR (MARPA_ERR_SYMBOL_IS_NOT_COMPLETION_EVENT);
+          MARPA_ERROR (MARPA_ERR_SYMBOL_IS_NOT_PREDICTION_EVENT);
         }
         XSYID_Prediction_Event_Starts_Active (xsy_id)
         = Boolean(reactivate);
