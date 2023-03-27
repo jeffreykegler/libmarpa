@@ -8940,14 +8940,14 @@ On success, returns previous default value of the assertion.
 @node Methods for revising parses
 @subsection Methods for revising parses
 
-Marpa allows an application to ``change its mind'' about a parse,
-rejecting rules previously recognized or predicted,
-and terminals previously scanned.
-The methods in this section provide that capability.
-
 @anchor{marpa_r_clean}
 @deftypefun Marpa_Earleme marpa_r_clean ( @
     Marpa_Recognizer @var{r})
+
+Allows an application to ``change its mind'' about a parse,
+rejecting rules previously recognized or predicted,
+and terminals previously scanned.
+This method is untested and its fate is uncertain.
 
 @end deftypefun
 
