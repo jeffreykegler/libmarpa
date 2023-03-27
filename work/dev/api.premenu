@@ -9077,31 +9077,34 @@ On hard failure, @minus{}2.
 @subsection Precomputation and LHS terminals
 
 On success,
-@code{marpa_g_precompute()} will sets
-and locks the terminal status of every symbol.
+@code{marpa_g_precompute()}
+sets and locks the terminal status of every symbol.
 More precisely,
-let the symbol be @var{x},
-let the terminal status of @var{x} when
+@itemize
+@item let the symbol be @code{x};
+@item let the terminal status of @code{x} when
 @code{marpa_g_precompute()} was called
-be @var{v_before},
-and let the terminal status of @var{x} when
+be @code{v_before}; and
+@item let the terminal status of @code{x} when
 @code{marpa_g_precompute()} returns success
-be @var{v_after}.
+be @code{v_after}.
+@end itemize
+
 The effect of the successful call of
 @code{marpa_g_precompute()} will be as follows:
 @itemize
-@item If terminal status of @var{x}
+@item If terminal status of @code{x}
 is locked when
 @code{marpa_g_precompute()} was called,
-then @code{@var{v_after} = @var{v_before}}.
-@item If terminal status of @var{x}
-is not locked, and @var{x} appears on
+then @code{v_after = v_before}.
+@item If terminal status of @code{x}
+is not locked, and @code{x} appears on
 the LHS of some rule
-then @var{v_after} is false.
-@item If terminal status of @var{x}
-is not locked, and @var{x} does not appear on
+then @code{v_after} is false.
+@item If terminal status of @code{x}
+is not locked, and @code{x} does not appear on
 the LHS of any rule
-then @var{v_after} is true.
+then @code{v_after} is true.
 @end itemize
 The terminal status of all symbols is locked
 after a successful call to
