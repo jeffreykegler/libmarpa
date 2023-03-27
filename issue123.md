@@ -31,8 +31,6 @@ API doc.   (Where?)
 - [Marpa::R2::Semantics::Rank](https://metacpan.org/dist/Marpa-R2/view/pod/Semantics/Rank.pod)
 - [Marpa::R2::Tracing](https://metacpan.org/dist/Marpa-R2/view/pod/Tracing.pod)
 
-- Add C89, C99, Scott to bibliography.
-
 - Deal with prerequisites for argument?
 
 - Once done, rewrite prerequisites to reflect self-containment.

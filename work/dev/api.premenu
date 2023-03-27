@@ -2136,6 +2136,7 @@ given circumstances as described below.
 The Libmarpa methods are not reentrant.
 
 Libmarpa is C89-compliant.
+@xref{Bibliography-C89}.
 It uses no global data,
 and calls only the routines
 that are defined in the C89 standard
@@ -5461,7 +5462,7 @@ And, unlike us,
 Prof. Scott did the all-important
 work of documenting it and providing the
 appropriate mathematical apparatus.
-@xref{Elizabeth Scott's SPPFs}.
+@xref{Bibliography-Scott-2008}.
 
 The bocage contains the data for the parse trees whose root is
 an instance of the start symbol that begins at Earley set 0
@@ -8364,17 +8365,6 @@ This section contains technical notes that are
 not necessary for the main presentation,
 but which may be helpful or interesting.
 
-@node Elizabeth Scott's SPPFs
-@section Elizabeth Scott's SPPFs
-
-One of our most important data structures is what we call a ``bocage''.
-Prof. Scott's work preceded ours,
-and her SPPF structure is our bocage in all essential respects,
-so much so that her excellent writeup serves perfectly
-as documentation for the bocage:
-Scott, Elizabeth. ``SPPF-style parsing from Earley recognisers.'' Electronic Notes in Theoretical Computer Science 203.2 (2008): 53-67,
-@url{https://dinhe.net/~aredridel/.notmine/PDFs/Parsing/SCOTT%2C%20Elizabeth%20-%20SPPF-Style%20Parsing%20From%20Earley%20Recognizers.pdf}.
-
 @node Data types used by Libmarpa
 @section Data types used by Libmarpa
 
@@ -8485,6 +8475,7 @@ Because of this undefined behavior
 the application that allowed the read
 is non-conformant to the C89 standard.
 Trap representations are carefully defined and discussed in the C99 standard.
+@xref{Bibliography-C99}
 
 In real life, trap representations can occur when floating point values are
 used: Some byte patterns that can occur in memory are not valid floating point
@@ -9479,6 +9470,22 @@ I have been following
 this particular topic on and off for years
 and nonetheless found this paper very heavy going.
 
+@node C89
+@section C89 standard
+@anchor{Bibliography-C89}
+
+Libmarpa is written to conform to the C89 standard.
+This can be found online at
+@url{https://web.archive.org/web/20200909074736/https://www.pdf-archive.com/2014/10/02/ansi-iso-9899-1990-1/ansi-iso-9899-1990-1.pdf}.
+
+@node C99
+@section C99 standard
+@anchor{Bibliography-C99}
+
+The C99 standard clarifies the C89 standard in many respects.
+It can be found online at
+@url{https://www.open-std.org/jtc1/sc22/wg14/www/docs/n1256.pdf}.
+
 @node Dominus 2005
 @section Dominus 2005
 @anchor{Bibliography-Dominus-2005}
@@ -9609,6 +9616,20 @@ This is a difficult paper.
 It is available online at
 @url{http://www.sciencedirect.com/science/article/pii/030439759190180A},
 click the PDF icon at the top left.
+
+@node Scott 2008
+@section Elizabeth Scott's SPPF paper
+@anchor{Bibliography-Scott-2008}
+
+One of our most important data structures is what we call a ``bocage''.
+Prof. Scott's work preceded ours,
+and her SPPF structure is our bocage in all essential respects,
+so much so that her excellent writeup serves perfectly
+as documentation for the bocage:
+Scott, Elizabeth.
+``SPPF-style parsing from Earley recognisers.''
+Electronic Notes in Theoretical Computer Science 203.2 (2008): 53-67,
+@url{https://dinhe.net/~aredridel/.notmine/PDFs/Parsing/SCOTT%2C@/%20Elizabeth%20-%20SPPF-Style@/%20Parsing@/%20From@/%20Earley@/%20Recognizers.pdf}.
 
 @anchor{Bibliography-Wikipedia}
 @node Wikipedia
