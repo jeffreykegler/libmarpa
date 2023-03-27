@@ -9250,7 +9250,7 @@ is valued after the call, 0 if not.
 If the valued status is locked and @var{value}
 is different from the current status, @minus{}2.
 If @var{value} is not 0 or 1;
-or on other failure, @minus{}2.
+or on other hard failure, @minus{}2.
 
 @end deftypefun
 
@@ -9299,7 +9299,7 @@ current one will fail
 Return value:  On success, the valued status @strong{after}
 the call.
 If @var{value} is not either 0 or 1,
-or on other failure, @minus{}2.
+or on other hard failure, @minus{}2.
 @end deftypefun
 
 @anchor{marpa_v_rule_is_valued_set}
@@ -9339,7 +9339,7 @@ Return value:  On success, the valued status of the
 rule @var{rule_id}'s LHS symbol @strong{after}
 the call.
 If @var{value} is not either 0 or 1,
-or on other failure, @minus{}2.
+or on other hard failure, @minus{}2.
 @end deftypefun
 
 @anchor{marpa_v_valued_force}
@@ -9348,13 +9348,13 @@ or on other failure, @minus{}2.
 
 This methods locks the valued status of all symbols
 to 1, indicated that the symbol is valued.
-If this is not possible, for example because one of
+Hard fails if this is not possible, for example because one of
 the grammar's symbols already is locked at a valued
-status of 0,
+status of 0.
 failure is returned.
 
 Return value: On success, a non-negative integer.
-On failure, returns @minus{}2,
+On hard failure, returns @minus{}2,
 and sets the error code to an appropriate
 value, which will never be
 @code{MARPA_ERR_NONE}.
