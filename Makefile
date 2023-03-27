@@ -22,10 +22,9 @@
 
 # Releases with even major numbers, beginning with major number 10, are
 # stable releases
-
 MAJOR=11
 MINOR=0
-MICRO=4
+MICRO=5
 VERSION=$(MAJOR).$(MINOR).$(MICRO)
 
 .PHONY: ac_dist aspell asan clean cm_dist dist distcheck dummy \

@@ -159,7 +159,7 @@ LINE: while ( my $line = <STDIN> ) {
 
     if ( defined $current_error_number ) {
         my ($documented_value) =
-            ( $line =~ /^Numeric \s* value [:] \s (\d+) [.] $/xms );
+            ( $line =~ /^[@] strong { Numeric \s* value } [:] \s (\d+) [.] $/xms );
         if ( defined $documented_value ) {
             if ( $documented_value != $current_error_number ) {
                 die
@@ -168,7 +168,7 @@ LINE: while ( my $line = <STDIN> ) {
             $error_number_matches[$current_error_number]++;
         } ## end if ( defined $documented_value )
         my ($message) =
-            ( $line =~ /Suggested \s* message [:] \s " ([^"]*) " /xms );
+            ( $line =~ /^ [@] strong{ Suggested \s* message } [:] \s " ([^"]*) " /xms );
         if ($message) {
             $error_suggested_messages[$current_error_number] = $message;
             $current_error_number = undef;
