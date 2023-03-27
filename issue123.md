@@ -1,21 +1,9 @@
 # Issue 123 TODO
 
-- Nothing to use from [Marpa::R2::Changes](https://metacpan.org/dist/Marpa-R2/view/pod/Changes.pod)
-except this wrt ranks:
-
-> This is implemented-defined, except that the magnitudes of the ends
-> of the range will always be at least the 28th power of 2, less 1.
-> That is, numbers in the range between -134,217,727 and 134,217,727 will always be allowed as ranks.
-
 - Adapt
 [Marpa::R2](https://metacpan.org/dist/Marpa-R2/view/pod/Marpa_R2.pod)'s
 Description/Overview section into the
 "About Libmarpa" chapter (in a "Capabilites" section?).
-
-- Adapt
-[Marpa::R2](https://metacpan.org/dist/Marpa-R2/view/pod/Marpa_R2.pod)'s
-Author section into the
-API doc.   (Where?)
 
 - [Marpa::R2::Advanced::Models](https://metacpan.org/dist/Marpa-R2/view/pod/Advanced/Models.pod)
 - [Marpa::R2::Advanced::Thin](https://metacpan.org/dist/Marpa-R2/view/pod/Advanced/Thin.pod)

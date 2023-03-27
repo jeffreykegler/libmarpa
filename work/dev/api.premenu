@@ -7928,9 +7928,9 @@ items have been iterated through.
 @deftypevr {Accessor macro} int MARPA_ERR_RANK_TOO_LOW
 A symbol or rule rank was specified that
 was less than an implementation-defined minimum.
-Implementations will always allow at least those
+Implementations will always allow
 ranks in the range between
-@minus{}134,217,727 and 134,217,727.
+@minus{}500,000,000 and 500,000,000.
 @strong{Numeric value}: 85.
 @strong{Suggested message}: "Rule or symbol rank too low".
 @end deftypevr
@@ -7938,9 +7938,9 @@ ranks in the range between
 @deftypevr {Accessor macro} int MARPA_ERR_RANK_TOO_HIGH
 A symbol or rule rank was specified that
 was greater than an implementation-defined maximum.
-Implementations will always allow at least those
+Implementations will always allow
 ranks in the range between
-@minus{}134,217,727 and 134,217,727.
+@minus{}500,000,000 and 500,000,000.
 @strong{Numeric value}: 86.
 @strong{Suggested message}: "Rule or symbol rank too high".
 @end deftypevr
