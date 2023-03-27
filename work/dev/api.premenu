@@ -7621,8 +7621,8 @@ Parsing using a grammar that contains a cycle is deprecated.
 @end deftypevr
 
 @deftypevr {Accessor macro} int MARPA_ERR_HEADERS_DO_NOT_MATCH
-This is an internal error, and indicates that
-Libmarpa was wrongly built.
+This error indicates that
+Libmarpa was incorrectly built.
 Libmarpa was compiled with headers that do not
 match the rest of the code.
 The solution is to find a correctly built
@@ -7942,13 +7942,6 @@ ranks in the range between
 @minus{}134,217,727 and 134,217,727.
 @strong{Numeric value}: 86.
 @strong{Suggested message}: "Rule or symbol rank too high".
-@end deftypevr
-
-@deftypevr {Accessor macro} int MARPA_ERR_RECCE_IS_INCONSISTENT
-This is an internal error.
-An application should never see it.
-@strong{Numeric value}: 95.
-@strong{Suggested message}: "The recognizer is inconsistent".
 @end deftypevr
 
 @deftypevr {Accessor macro} int MARPA_ERR_RECCE_NOT_ACCEPTING_INPUT
@@ -8358,6 +8351,10 @@ be kept for backward compatibility.
 @end deftypevr
 @deftypevr {Accessor macro} int MARPA_ERR_SOURCE_TYPE_IS_UNKNOWN
 @strong{Numeric value}: 72.
+@end deftypevr
+@deftypevr {Accessor macro} int MARPA_ERR_RECCE_IS_INCONSISTENT
+@strong{Numeric value}: 95.
+@strong{Suggested message}: "The recognizer is inconsistent".
 @end deftypevr
 
 @node Technical notes
