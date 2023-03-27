@@ -17,10 +17,6 @@ Description/Overview section into the
 Author section into the
 API doc.   (Where?)
 
-- [Marpa::R2::Acknowledgements](https://metacpan.org/dist/Marpa-R2/view/pod/Acknowledgements.pod)
-
-Include these in the Libmarpa acknowledgements doc.
-
 - [Marpa::R2::Advanced::Models](https://metacpan.org/dist/Marpa-R2/view/pod/Advanced/Models.pod)
 - [Marpa::R2::Advanced::Thin](https://metacpan.org/dist/Marpa-R2/view/pod/Advanced/Thin.pod)
 - [Marpa::R2::Event](https://metacpan.org/dist/Marpa-R2/view/pod/Event.pod)
