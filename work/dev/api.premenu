@@ -324,10 +324,10 @@ Readers who want a textbook or tutorial in parsing theory
 can look at
 Mark Jason Dominus's
 excellent chapter on parsing in the Perl context.
-@xref{Bibliography-Dominus-2005}.
+@xref{Dominus 2005}.
 It is available on-line.
 Wikipedia is also an excellent place to start.
-@xref{Bibliography-Wikipedia}.
+@xref{Wikipedia BNF article}.
 
 A
 @dfindex grammar
@@ -2136,7 +2136,7 @@ given circumstances as described below.
 The Libmarpa methods are not reentrant.
 
 Libmarpa is C89-compliant.
-@xref{Bibliography-C89}.
+@xref{C89}.
 It uses no global data,
 and calls only the routines
 that are defined in the C89 standard
@@ -5462,7 +5462,7 @@ And, unlike us,
 Prof. Scott did the all-important
 work of documenting it and providing the
 appropriate mathematical apparatus.
-@xref{Bibliography-Scott-2008}.
+@xref{Scott 2008}.
 
 The bocage contains the data for the parse trees whose root is
 an instance of the start symbol that begins at Earley set 0
@@ -8475,7 +8475,7 @@ Because of this undefined behavior
 the application that allowed the read
 is non-conformant to the C89 standard.
 Trap representations are carefully defined and discussed in the C99 standard.
-@xref{Bibliography-C99}
+@xref{C99}
 
 In real life, trap representations can occur when floating point values are
 used: Some byte patterns that can occur in memory are not valid floating point
@@ -9385,19 +9385,19 @@ My ``timeline'' of the major events in parsing theory
 has a much broader scope,
 and also includes more detail
 about Marpa's development.
-@xref{Timeline}.
+@xref{Parsing timeline}.
 
 @itemize
 @item @strong{1970}:
 Jay Earley invents the algorithm that now bears his
 name
-@xref{Bibliography-Earley-1970}.
+@xref{Earley 1970}.
 
 @item @strong{1991}:
 Joop Leo describes a way to modify Earley's algorithm so that it
 runs in O(n) time for all LR-regular
 grammars.
-@xref{Bibliography-Leo-1991}.
+@xref{Leo 1991}.
 LR-regular is a vast class of grammars, including all the
 LR(k) grammars, all grammars parseable with recursive descent,
 and regular expressions.
@@ -9408,7 +9408,7 @@ in practical use today, and then some.
 Aycock and Horspool describe a way to do LR(0)
 precomputation
 for Earley's algorithm.
-@xref{Bibliography-Aycock-and-Horspool-2002}.
+@xref{Aycock and Horspool 2002}.
 Their method makes Earley's faster in most
 practical situations, but not all.
 In particular, right-recursion remains quadratic in
@@ -9422,7 +9422,7 @@ Marpa combines the Leo and Aycock-Horspool
 algorithms
 in the process making significant
 changes to both of them.
-@xref{Bibliography-Kegler-2022}.
+@xref{Marpa theory paper}.
 The result preserves the
 best features of both
 and tackles the many remaining
@@ -9435,7 +9435,6 @@ implementation issues.
 
 @node Aho and Ullman 1972
 @section Aho and Ullman 1972
-@anchor{Bibliography-Aho-and-Ullman-1972}
 
 @emph{The Theory of Parsing, Translation and Compiling, Volume I: Parsing}
 by Alfred Aho and Jeffrey Ullman
@@ -9447,7 +9446,6 @@ The account of Earley's algorithm is on pages 320-330.
 
 @node Aycock and Horspool 2002
 @section Aycock and Horspool 2002
-@anchor{Bibliography-Aycock-and-Horspool-2002}
 
 Marpa is based on ideas from
 John Aycock and R.
@@ -9456,7 +9454,7 @@ Vol. 45, No. 6, 2002, pp. 620-630.
 The idea of doing LR(0)
 precomputation for
 Earley's general parsing algorithm
-(@pxref{Bibliography-Earley-1970}),
+(@pxref{Earley 1970}),
 and Marpa's approach to handling nullable symbols and rules,
 both came from this article.
 
@@ -9464,7 +9462,7 @@ The Aycock and Horspool paper
 summarizes Earley's very nicely and is
 available on the web: @url{http://www.cs.uvic.ca/~nigelh/Publications/PracticalEarleyParsing.pdf}.
 Unlike Earley's 1970 paper
-(@pxref{Bibliography-Earley-1970}),
+(@pxref{Earley 1970}),
 Aycock and Horspool 2002 is @strong{not} easy reading.
 I have been following
 this particular topic on and off for years
@@ -9472,7 +9470,6 @@ and nonetheless found this paper very heavy going.
 
 @node C89
 @section C89 standard
-@anchor{Bibliography-C89}
 
 Libmarpa is written to conform to the C89 standard.
 This can be found online at
@@ -9480,7 +9477,6 @@ This can be found online at
 
 @node C99
 @section C99 standard
-@anchor{Bibliography-C99}
 
 The C99 standard clarifies the C89 standard in many respects.
 It can be found online at
@@ -9488,7 +9484,6 @@ It can be found online at
 
 @node Dominus 2005
 @section Dominus 2005
-@anchor{Bibliography-Dominus-2005}
 
 Although my approach to parsing is not influenced
 by Mark Jason Dominus's @emph{Higher Order Perl},
@@ -9513,7 +9508,6 @@ A PDF of the parsing chapter is at @url{http://hop.perl.plover.com/book/pdf/08Pa
 
 @node Earley 1970
 @section Earley 1970
-@anchor{Bibliography-Earley-1970}
 
 Of
 Jay Earley's papers on his general parsing algorithm,
@@ -9536,14 +9530,14 @@ whose main problem, in its original form, was speed.
 This issue is well laid out by
 Aycock and Horspool
 in their article.
-@xref{Bibliography-Aycock-and-Horspool-2002}.
+@xref{Aycock and Horspool 2002}.
 
 Second,
 according to Tomita there is a mistake in the parse
 tree representation.
-See page 153 of @ref{Bibliography-Grune-and-Jacobs-1990},
-page 210 of @ref{Bibliography-Grune-and-Jacobs-2008},
-and the bibliography entry for Earley 1970 in @ref{Bibliography-Grune-and-Jacobs-2008}.
+See page 153 of @ref{Grune and Jacobs 1990},
+page 210 of @ref{Grune and Jacobs 2008},
+and the bibliography entry for Earley 1970 in @ref{Grune and Jacobs 2008}.
 In the printed edition of the 2008 bibliography, the entry is on page 578,
 and on the web
 (@url{ftp://ftp.cs.vu.nl/pub/dick/PTAPG_2nd_Edition/CompleteList.pdf}),
@@ -9554,7 +9548,6 @@ so I am taking Tomita's word on this one.
 
 @node Grune and Jacobs 1990
 @section Grune and Jacobs 1990
-@anchor{Bibliography-Grune-and-Jacobs-1990}
 
 @emph{Parsing Techniques: A Practical Guide},
 by Dick Grune and
@@ -9565,7 +9558,6 @@ This book is available on the Web: @url{http://dickgrune.com/Books/PTAPG_1st_Edi
 
 @node Grune and Jacobs 2008
 @section Grune and Jacobs 2008
-@anchor{Bibliography-Grune-and-Jacobs-2008}
 
 @emph{Parsing Techniques: A Practical Guide},
 by Dick Grune and
@@ -9577,24 +9569,34 @@ to parsing I know of.
 In theory it requires no mathematics, only a programming background,
 but even so it is moderately difficult reading.
 
-This is @ref{Bibliography-Grune-and-Jacobs-1990},
-updated.
+This is the second edition of Grune and Jacobs's survey
+of parsing methods.
+@xref{Grune and Jacobs 1990}.
 The bibliography for this book is available in enlarged form
 on the web: @url{ftp://ftp.cs.vu.nl/pub/dick/PTAPG_2nd_Edition/CompleteList.pdf}.
 
-@node Kegler 2022
-@section Kegler 2022
-@anchor{Bibliography-Kegler-2022}
+@node Marpa theory paper
+@section Marpa theory paper
 
 My writeup of the theory behind Marpa,
 with proofs of correctness and of my complexity claims,
 was first made public in 2013.
-It was updated in 2022,
+It was updated in 2023,
 and can be found on @code{arxiv.org} (@url{https://arxiv.org/abs/1910.08129}).
 
-@node Timeline
-@section Timeline
-@anchor{Bibliography-Timeline}
+@node Kegler 2023
+@section Kegler 2023
+
+This theory-oriented paper expands on
+the Marpa theory paper (@pxref{Marpa theory paper}).
+It gives a detailed treatment of Marpa's
+use of the Aycock-Horspool algorithm,
+and Marpa's handling of nullables
+It was originally announced in 2023,
+and can be found on @code{arxiv.org} (@url{https://arxiv.org/abs/2303.04093}).
+
+@node Parsing timeline
+@section Parsing timeline
 
 Far more popular than my Marpa theory paper is my
 @emph{Parsing: a timeline}.
@@ -9604,7 +9606,6 @@ and is available online:
 
 @node Leo 1991
 @section Leo 1991
-@anchor{Bibliography-Leo-1991}
 
 Marpa's handling of right-recursion uses the ideas in
 Joop M.I.M. Leo's
@@ -9618,8 +9619,7 @@ It is available online at
 click the PDF icon at the top left.
 
 @node Scott 2008
-@section Elizabeth Scott's SPPF paper
-@anchor{Bibliography-Scott-2008}
+@section Scott 2008
 
 One of our most important data structures is what we call a ``bocage''.
 Prof. Scott's work preceded ours,
@@ -9631,9 +9631,8 @@ Scott, Elizabeth.
 Electronic Notes in Theoretical Computer Science 203.2 (2008): 53-67,
 @url{https://dinhe.net/~aredridel/.notmine/PDFs/Parsing/SCOTT%2C@/%20Elizabeth%20-%20SPPF-Style@/%20Parsing@/%20From@/%20Earley@/%20Recognizers.pdf}.
 
-@anchor{Bibliography-Wikipedia}
-@node Wikipedia
-@section Wikipedia
+@node Wikipedia BNF article
+@section Wikipedia BNF article
 
 Wikipedia's article on Backus-Naur form is
 @url{http://en.wikipedia.org/wiki/Backus-Naur_form}.
