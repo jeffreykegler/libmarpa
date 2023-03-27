@@ -21,10 +21,10 @@
 # with odd major numbers are development releases
 
 # Releases with even major numbers, beginning with major number 10, are
-# stable releases
+# gold releases
 MAJOR=11
 MINOR=0
-MICRO=5
+MICRO=6
 VERSION=$(MAJOR).$(MINOR).$(MICRO)
 
 .PHONY: ac_dist aspell asan clean cm_dist dist distcheck dummy \
