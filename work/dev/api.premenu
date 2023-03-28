@@ -142,9 +142,16 @@ Marpa is named
 after the legendary 11th century Tibetan translator,
 Marpa Lotsawa.
 In creating Marpa,
-I depended heavily on previous work by Jay Earley,
+we depended heavily on previous work by Jay Earley,
 Joop Leo,
 John Aycock and Nigel Horspool.
+
+Marpa parses any language whose grammar can be written in BNF. That
+includes recursive grammars, ambiguous grammars, infinitely ambiguous
+grammars and grammars with useless or empty productions. Marpa does both
+left- and right-recursion in linear time -- in fact if a grammar is in
+any class currently in practical use, Marpa will parse it in linear time.
+@xref{Marpa theory paper}.
 
 Libmarpa implements the entire Marpa algorithm.
 This library does

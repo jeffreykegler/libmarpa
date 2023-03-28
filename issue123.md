@@ -1,12 +1,8 @@
 # Issue 123 TODO
 
-- Adapt
-[Marpa::R2](https://metacpan.org/dist/Marpa-R2/view/pod/Marpa_R2.pod)'s
-Description/Overview section into the
-"About Libmarpa" chapter (in a "Capabilites" section?).
+- Ensure example from [Marpa::R2::Advanced::Thin](https://metacpan.org/dist/Marpa-R2/view/pod/Advanced/Thin.pod), or an equivalent, is in the test suite.
 
 - [Marpa::R2::Advanced::Models](https://metacpan.org/dist/Marpa-R2/view/pod/Advanced/Models.pod)
-- [Marpa::R2::Advanced::Thin](https://metacpan.org/dist/Marpa-R2/view/pod/Advanced/Thin.pod)
 - [Marpa::R2::Event](https://metacpan.org/dist/Marpa-R2/view/pod/Event.pod)
 - [Marpa::R2::Exhaustion](https://metacpan.org/dist/Marpa-R2/view/pod/Exhaustion.pod)
 - [Marpa::R2::Progress](https://metacpan.org/dist/Marpa-R2/view/pod/Progress.pod)
@@ -18,7 +14,5 @@ Description/Overview section into the
 - [Marpa::R2::Semantics::Phases](https://metacpan.org/dist/Marpa-R2/view/pod/Semantics/Phases.pod)
 - [Marpa::R2::Semantics::Rank](https://metacpan.org/dist/Marpa-R2/view/pod/Semantics/Rank.pod)
 - [Marpa::R2::Tracing](https://metacpan.org/dist/Marpa-R2/view/pod/Tracing.pod)
-
-- Deal with prerequisites for argument?
 
 - Once done, rewrite prerequisites to reflect self-containment.
