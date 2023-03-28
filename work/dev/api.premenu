@@ -6581,6 +6581,22 @@ A Libmarpa method or macro is
 iff it does not change the events queue.
 All Libmarpa accessors are event-safe.
 
+Events are either
+@dfindex global event
+@dfindex event, global
+@dfn{global}
+or
+@dfindex per-symbol event
+@dfindex event, per-symbol
+@dfn{per-symbol}.
+If an event is global
+only one instances of the event may trigger in a method call.
+If an event is per-symbol,
+several instances of the event may trigger in a method call,
+one for each symbol in grammar.
+Per-symbol events are also declared and activated
+on a symbol-by-symbol basis.
+
 Regardless of the event-safety of the methods calls
 between event triggering and event access,
 it is good practice to access events
