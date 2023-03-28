@@ -4997,13 +4997,14 @@ and an arbitrary pointer.
 Libmarpa never examines them
 and the application is free to
 use them for its own purposes.
-In an application with a character-per-earleme input model, for example,
+In an application with a codepoint-per-earleme input model, for example,
 the integer value of the Earley set
-can used to store the codepoint of the current character.
+can used to store the current codepoint.
 In a traditional token-per-earleme input model,
 the integer and pointer values could be used to track the string value of the token --
 the pointer could point to the start of the string,
 and the integer could indicate its length.
+@xref{The codepoint-per-earleme model}.
 
 The Earley set integer value defaults to @minus{}1,
 and the pointer value defaults to @code{NULL}.
@@ -8724,6 +8725,43 @@ The furthest earleme is never changed by a call
 to
 @code{marpa_r_earleme_complete()}.
 @end itemize
+
+@node The codepoint-per-earleme model
+@section The codepoint-per-earleme model
+
+One variation of the fully general model is
+the
+@dfindex one-codepoint-per-earleme input model
+@dfn{one-codepoint-per-earleme input model},
+usually called the
+@dfindex codepoint-per-earleme input model
+@dfn{codepoint-per-earleme input model}.
+
+Most input models may be called
+@dfindex token-per-earleme input models
+@dfn{token-per-earleme input models}.
+That is, they are models in which every token
+is exactly one earleme long.
+
+In the codepoint-per-earleme model, every codepoint will be treated as
+being exactly one earleme in length.
+If a token is more than one codepoint
+in length, that token will span earlemes.
+In the codepoint-per-earleme model,
+tokens may be ambiguous, and they may overlap.
+
+When a codepoint-per-earleme model of input is used, there may be
+many earlemes at which no tokens start. For example, in a straightforward
+codepoint-per-earleme implementation of a grammar for a language that
+allows comments, no tokens will start at any earlemes which correspond
+to character locations inside a comment.
+
+Codepoint-per-earleme input model have seen a lot of use,
+but mainly for experimental and toy grammars.
+Their disadvantage is efficiency --- the requirement of one call
+of @code{marpa_r_alternative()} for each codepoint can make them
+substantially more expensive than input models which allow multiple
+codepoints per earleme.
 
 @node Support
 @chapter Support
