@@ -6629,7 +6629,7 @@ the application.
 @dfindex explicit declaration of event subtype
 @dfn{Explicitly declared}
 event subtypes must be declared by the user,
-using a method call provided for
+using a method call provided
 for that purpose.
 Once declared, an event subtype remains declared:
 there is no way to remove or undo the declaration
