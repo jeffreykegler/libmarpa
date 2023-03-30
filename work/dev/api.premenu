@@ -6688,12 +6688,15 @@ To find out how many events are in the event queue,
 use the
 @code{marpa_g_event_count()}
 method.
+@xref{marpa_g_event_count,marpa_g_event_count()}.
 
 To access specific events,
 use the
 @code{marpa_g_event()}
+(@pxref{marpa_g_event,marpa_g_event()})
 and
 @code{marpa_g_event_value()}
+(@pxref{marpa_g_event_value,marpa_g_event_value()})
 methods.
 
 @node Event codes
@@ -6916,6 +6919,7 @@ On success, the number of events, which is always non-negative.
 On hard failure, @minus{}2.
 @end deftypefn
 
+@anchor{marpa_g_event_value}
 @deftypefn {Accessor macro} int marpa_g_event_value (Marpa_Event* @var{event})
 Returns the ``value'' of the event.
 The semantics of the value varies according to the type
