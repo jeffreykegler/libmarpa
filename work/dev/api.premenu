@@ -4524,11 +4524,17 @@ Marpa_Recognizer marpa_r_new ( Marpa_Grammar @var{g} )
 On success, creates a new recognizer and
 increments the reference count of @var{g},
 the base grammar, by one.
-In the new recognizer,
+In the new recognizer, the following will be true:
 @itemize
-@item the reference count will be 1;
-@item the furthest earleme will be 0; and
-@item the values of the latest and current earleme will be unspecified.
+@item The reference count will be 1.
+@item The furthest earleme will be 0.
+@item The values of the latest and current earleme will be unspecified.
+@item The declaration status of all events will be inherited from
+@var{g}, so that the event in the recognizer is declared iff
+the event in @var{g} is declared.
+@item The activation status of all events will be inherited from
+@var{g}, so that the event in the recognizer is activated iff
+the event in @var{g} is activated.
 @end itemize
 
 @strong{Return value}:
@@ -6581,6 +6587,62 @@ A Libmarpa method or macro is
 iff it does not change the events queue.
 All Libmarpa accessors are event-safe.
 
+For an event instance to trigger,
+its event subtype must first be
+@dfindex declaration of event subtype
+@dfn{declared}.
+Depending on the event type,
+event subtypes are declared either explicitly or
+implicitly.
+@dfindex implicit declaration of event subtype
+@dfn{Implicitly declared}
+event subtypes are always
+declared, and this cannot be controlled by
+the application.
+@dfindex explicit declaration of event subtype
+@dfn{Explicitly declared}
+event subtypes must be declared by the user,
+using a method call provided for
+for that purpose.
+Once declared, and event subtype remain declared:
+there is no way to remove or undo the declaration
+of an event subtype.
+Details of event declaration are provided,
+by event code,
+in the section on event codes.
+@xref{Event codes}.
+
+For an event instance to trigger,
+its event subtype must first be
+@dfindex activation of event subtype
+@dfn{activated}.
+Depending on the event type,
+event subtypes are activated either explicitly or
+implicitly.
+@dfindex implicit activation of event subtype
+@dfn{Implicitly activated}
+event subtypes are always
+activated, and this cannot be controlled by
+the application.
+@dfn{Explicitly activated}
+event subtypes must be activated by the user,
+using a method call provided for
+for that purpose.
+Implicitly activated event subtypes cannot be deactivated.
+But typically,
+if an event subtype explicitly activated,
+it can also be explicitly deactivated, using a method call.
+Details of event activation are provided,
+by event code,
+in the section on event codes.
+@xref{Event codes}.
+
+When a recognizer is created,
+the event subtypes of a recognizer inherit their declaration
+and activation status from the events of the base
+grammar.
+@xref{marpa_r_new,marpa_r_new()}.
+
 Events are either
 @dfindex global event
 @dfindex event, global
@@ -6621,35 +6683,46 @@ methods.
 @section Event codes
 
 @deftypevr {Accessor macro} int MARPA_EVENT_NONE
-Applications should never see this event.
+This is a global event which is always automatically declared
+and activated.
+It is a reserved event code,
+and no method triggers and event with this code
+so that applications should never see this event.
+
 @strong{Event value}: Unspecified.
 @strong{Suggested message}: "No event".
 @end deftypevr
 
 @deftypevr {Accessor macro} int MARPA_EVENT_COUNTED_NULLABLE
-A nullable symbol was used as either the separator
+This is a per-symbol event.
+For every symbol,
+this event is always automatically declared and activated
+
+This event is triggered by the
+@code{marpa_g_precompute()} method
+(@pxref{marpa_g_precompute,marpa_g_precompute()}),
+when a nullable symbol was used as either the separator
 for, or the right hand side of, a sequence.
 This is not allowed.
 
-This event is triggered by the
-@code{marpa_g_precompute()} method.
-@xref{marpa_g_precompute,marpa_g_precompute()}.
 @strong{Event value}: The ID of the symbol.
 @strong{Suggested message}: "This symbol is a counted nullable".
 @end deftypevr
 
 @anchor{MARPA_EVENT_EARLEY_ITEM_THRESHOLD}
 @deftypevr {Accessor macro} int MARPA_EVENT_EARLEY_ITEM_THRESHOLD
-The @code{MARPA_EVENT_EARLEY_ITEM_THRESHOLD}
-event
-indicates that an application-settable threshold
+This is a global event,
+which is always automatically declared and activated.
+
+This event is triggered by the
+@code{marpa_r_earleme_complete()} method
+(@pxref{marpa_r_earleme_complete,marpa_r_earleme_complete()}),
+when
+an application-settable threshold
 on the number of Earley items has been reached or exceeded.
 @xref{marpa_r_earley_item_warning_threshold_set,
 marpa_r_earley_item_warning_threshold_set()}.
 
-This event is triggered by the
-@code{marpa_r_earleme_complete()} method.
-@xref{marpa_r_earleme_complete,marpa_r_earleme_complete()}.
 @strong{Event value}: The current Earley item count.
 @strong{Suggested message}: "Too many Earley items".
 @end deftypevr
