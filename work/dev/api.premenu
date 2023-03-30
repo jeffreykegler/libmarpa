@@ -5422,7 +5422,7 @@ is a completion.
 An application that prefers the ``raw'' 0-based start-relative dot position
 may convert
 a @minus{}1 to the rule length.
-@xref{marpa_g_rule_length,marpa_g_rule_length()}
+@xref{marpa_g_rule_length,marpa_g_rule_length()}.
 @end itemize
 
 In the event of soft failure:
@@ -6653,7 +6653,7 @@ activated, and this cannot be controlled by
 the application.
 @dfn{Explicitly activated}
 event subtypes must be activated by the user,
-using a method call provided for
+using a method call provided
 for that purpose.
 Implicitly activated event subtypes cannot be deactivated.
 But
@@ -6676,7 +6676,7 @@ A Libmarpa method or macro is
 iff it does not change the events queue.
 All Libmarpa accessors are event-safe.
 
-Regardless of the event-safety of the methods calls
+Regardless of the event-safety of the method calls
 between event triggering and event access,
 it is good practice to access event instances
 as soon as reasonable after the method that triggered them.
@@ -6797,7 +6797,7 @@ when a symbol is completed.
 as its LHS is completed.)
 To set a completed symbol event, use the
 @code{marpa_g_symbol_is_completion_event_set()} method.
-@xref{marpa_g_symbol_is_completion_event_set,marpa_g_symbol_is_completion_event_set()}
+@xref{marpa_g_symbol_is_completion_event_set,marpa_g_symbol_is_completion_event_set()}.
 
 This event is triggered by the
 @code{marpa_r_earleme_complete()} method.
@@ -7940,7 +7940,7 @@ but the symbol does not exist.
 An attempt was made to read a token using @code{marpa_r_alternative},
 but no tokens were expected at this earleme location.
 This can only happen in alternative input models.
-@xref{marpa_r_alternative,marpa_r_alternative()}
+@xref{marpa_r_alternative,marpa_r_alternative()}.
 
 @strong{Numeric value}: 44.
 @strong{Suggested message}: "No token is expected at this earleme location".
