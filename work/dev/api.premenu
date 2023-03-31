@@ -40,6 +40,10 @@ OTHER DEALINGS IN THE SOFTWARE.
   * Marpa R2: (marpa-r2).                Marpa R2 parser library
 @end direntry
 
+@macro instance{name,start,end}
+\name\@@\start\-\end\
+@end macro
+
 @titlepage
 @title Libmarpa
 @subtitle Version @value{VERSION}
@@ -6815,11 +6819,11 @@ More than one symbol instance may trigger the
 same
 MARPA_EVENT_SYMBOL_COMPLETED event instance.
 For example,
-if @verb{|x@40-42|} and
-@verb{|x@38-42|} are symbol instances,
+if @instance{@code{x},40,42} and
+@instance{@code{x},38,42} are symbol instances,
 they will trigger only one event instance ---
 the MARPA_EVENT_SYMBOL_COMPLETED event instance
-at location 42 with symbol @verb{|x|}.
+at location 42 with symbol @code{x}.
 
 To declare a completed symbol event, use the
 @code{marpa_g_symbol_is_completion_event_set()} method.
