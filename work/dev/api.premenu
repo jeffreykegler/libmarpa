@@ -6713,27 +6713,21 @@ methods.
 @section Event codes
 
 @deftypevr {Accessor macro} int MARPA_EVENT_NONE
-This is a global event which is always automatically declared
-and activated.
-It is a reserved event code,
-and no method triggers and event with this code
-so that applications should never see this event.
+This is an implicit global event.
+This event code is reserved.
+No method triggers an event with this code.
 
 @strong{Event value}: Unspecified.
 @strong{Suggested message}: "No event".
 @end deftypevr
 
 @deftypevr {Accessor macro} int MARPA_EVENT_COUNTED_NULLABLE
-This is a per-symbol event.
-For every symbol,
-this event is always automatically declared and activated
-
+This is an implicit per-symbol event.
 This event is triggered by the
 @code{marpa_g_precompute()} method
 (@pxref{marpa_g_precompute,marpa_g_precompute()}),
 when a nullable symbol was used as either the separator
 for, or the right hand side of, a sequence.
-This is not allowed.
 
 @strong{Event value}: The ID of the symbol.
 @strong{Suggested message}: "This symbol is a counted nullable".
@@ -6741,9 +6735,7 @@ This is not allowed.
 
 @anchor{MARPA_EVENT_EARLEY_ITEM_THRESHOLD}
 @deftypevr {Accessor macro} int MARPA_EVENT_EARLEY_ITEM_THRESHOLD
-This is a global event,
-which is always automatically declared and activated.
-
+This is an implicit global event.
 This event is triggered by the
 @code{marpa_r_earleme_complete()} method
 (@pxref{marpa_r_earleme_complete,marpa_r_earleme_complete()}),
@@ -6758,60 +6750,88 @@ marpa_r_earley_item_warning_threshold_set()}.
 @end deftypevr
 
 @deftypevr {Accessor macro} int MARPA_EVENT_EXHAUSTED
-This event occurs when the parse is exhausted.
-
+This is an implicit global event.
 This event is triggered by the
 @code{marpa_r_earleme_complete()}
 (@pxref{marpa_r_earleme_complete})
 and
 @code{marpa_r_start_input()}
 (@pxref{marpa_r_start_input})
-methods.
+methods,
+when the parse is exhausted.
+@xref{Exhaustion}.
+
 @strong{Event value}: Unspecified.
 @strong{Suggested message}: "Recognizer is exhausted".
 @end deftypevr
 
 @anchor{MARPA_EVENT_LOOP_RULES}
 @deftypevr {Accessor macro} int MARPA_EVENT_LOOP_RULES
-One or more rules are loop rules --- rules
-that are part of a cycle.
+This is an implicit global event.
+This event is triggered by the
+@code{marpa_g_precompute()} method,
+when one or more rules are loop rules.
+(@xref{marpa_g_precompute,marpa_g_precompute()}.
+
+A rule is a loop rule iff it is part of a cycle.
+@xref{Cycles}.
 Parsing with a grammar than contains a loop rule
 is deprecated.
-@xref{Cycles}.
 
-This event is triggered by the
-@code{marpa_g_precompute()} method.
-@xref{marpa_g_precompute,marpa_g_precompute()}.
 @strong{Event value}: The count of loop rules.
 @strong{Suggested message}: "Grammar contains a infinite loop".
 @end deftypevr
 
 @deftypevr {Accessor macro} int MARPA_EVENT_NULLING_TERMINAL
-The
-@code{MARPA_EVENT_NULLING_TERMINAL}
-event occurs only if the LHS terminals feature is in use.
-The LHS terminals feature is deprecated.
-@xref{LHS terminals}.
-
+This is an implicit per-symbol event.
 This event is triggered by the
 @code{marpa_g_precompute()} method.
 @xref{marpa_g_precompute,marpa_g_precompute()}.
+It only occurs if the LHS terminals feature is in use.
+The LHS terminals feature is deprecated.
+@xref{LHS terminals}.
+
 @strong{Event value}: The ID of the symbol.
 @strong{Suggested message}: "This symbol is a nulling terminal".
 @end deftypevr
 
 @deftypevr {Accessor macro} int MARPA_EVENT_SYMBOL_COMPLETED
-The recognizer can be set to trigger an event
-when a symbol is completed.
-(A symbol is ``completed'' iff any rule with that symbol
-as its LHS is completed.)
-To set a completed symbol event, use the
-@code{marpa_g_symbol_is_completion_event_set()} method.
-@xref{marpa_g_symbol_is_completion_event_set,marpa_g_symbol_is_completion_event_set()}.
+This is an explicit per-symbol event.
+Intuitively, it triggers when a non-nulled symbol is
+fully recognized.
 
+More precisely,
+MARPA_EVENT_SYMBOL_COMPLETED triggers when an Earley set
+with a completed Earley item is created.
+The LHS of the rule of the completed Earley item
+will be the event's symbol.
 This event is triggered by the
 @code{marpa_r_earleme_complete()} method.
 @xref{marpa_r_earleme_complete,marpa_r_earleme_complete()}.
+
+We recall that a symbol instance is a symbol,
+together with start and end parse locations.
+More than one symbol instance may trigger the
+same
+MARPA_EVENT_SYMBOL_COMPLETED event instance.
+For example,
+if @verb{|x@40-42|} and
+@verb{|x@38-42|} are symbol instances,
+they will trigger only one event instance ---
+the MARPA_EVENT_SYMBOL_COMPLETED event instance
+at location 42 with symbol @verb{|x|}.
+
+To declare a completed symbol event, use the
+@code{marpa_g_symbol_is_completion_event_set()} method.
+@xref{marpa_g_symbol_is_completion_event_set,marpa_g_symbol_is_completion_event_set()}.
+To activate or deactivate a completed symbol event,
+use the
+@code{marpa_g_completion_symbol_activate} method
+(@pxref{marpa_g_completion_symbol_activate,marpa_g_completion_symbol_activate()}),
+or the
+@code{marpa_r_completion_symbol_activate} method
+(@pxref{marpa_r_completion_symbol_activate,marpa_r_completion_symbol_activate()}).
+
 @strong{Event value}: The ID of the completed symbol.
 @strong{Suggested message}: "Completed symbol".
 @end deftypevr
