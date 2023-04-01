@@ -920,6 +920,9 @@ We say that @code{nd} is an
 @dfindex instance (of a symbol)
 @dfn{instance} of the symbol with ID @code{sym}
 starting at @code{start} and ending at @code{end}.
+We often write this as
+@dfindex @@-notation for symbol instance
+@instance{@code{sym},@code{start},@code{end}}.
 @item
 We say that @code{nd} is an
 @dfindex instance (of a symbol)
@@ -1039,6 +1042,9 @@ In that case,
 we say that @code{nd} is an instance of
 @var{r} starting at @code{start} and ending
 at @code{end}.
+We often write this as
+@dfindex @@-notation for rule instance
+@instance{@code{r},@code{start},@code{end}}.
 We also say that @code{nd} is an instance of
 @var{r} at @code{end} or, simply,
 that @code{nd} is an instance of @var{r}.
@@ -1051,6 +1057,9 @@ In that case,
 we say that @code{nd} is an instance of
 @var{r} starting at @code{start} and ending
 at @code{end}.
+We often write this as
+@dfindex @@-notation for sequence instance
+@instance{@code{r},@code{start},@code{end}}.
 We also say that @code{nd} is an instance of
 @var{r} at @code{end} or, simply,
 that @code{nd} is an instance of @var{r}.
@@ -1062,6 +1071,9 @@ we say that @code{sym} is
 @dfindex nulled (of a symbol)
 @dfn{nulled} at location @code{end} or, simply,
 that the symbol @code{sym} is nulled.
+We can write this as
+@dfindex @@-notation for nulled instance
+@instance{@code{nulled},@code{end},@code{end}}.
 @end itemize
 
 Let @var{nd1} and @var{nd2} be two nodes.
