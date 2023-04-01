@@ -1438,6 +1438,88 @@ When the subtrees are pruned to their shared root,
 ambiguity is removed.
 @xref{Nullability}.
 
+@node Earley items
+@section Earley items
+
+We assume knowledge of Earley's algorithm.
+This section is intended as a reminder,
+and to set out our choices for notation and
+terminology.
+
+A
+@dfindex dotted rule
+@dfn{dotted rule}
+is a duple of rule and
+position in the rule.
+The position must be an non-negative integer
+that is not greater than the length of the rule.
+For example,
+@display
+     [ [ A ::= X Y Z ], 2 ]      (DR1)
+@end display
+is a dotted rule.
+More often a dotted rule is written
+with the position marked in the RHS of the rule.
+Here we use ``@bullet{}'' as our marker, so that
+in @code{(DR1)} the ``@bullet{}'' would come after
+the 2nd symbol on the RHS,
+and @code{(DR1)} would be written
+@display
+     [ A ::= X Y @bullet{} Z ].
+@end display
+Traditionally the marker is a raised dot,
+and this is where the term ``dotted rule''
+comes from.
+The position of the dotted rule is almost always
+called the
+@dfindex dot position
+@dfn{dot position}.
+
+An
+@dfindex Earley item
+@dfn{Earley item}
+is a triple of dotted rule, origin
+and current parse location.
+The Earley item makes a statement about the progress
+of a parse.
+The
+@dfindex origin (in an Earley item)
+@dfn{origin}
+is the parse location where recognition of the
+dotted rule begins.
+The
+@dfindex current location (in an Earley item)
+@dfn{current location}
+is the parse location which recognition of the dotted rule
+has reached.
+Symbols before the dot position of the dotted rule have been
+recognized,
+and symbols after the dot position of the dotted rule have yet
+to be recognized.
+For example,
+in the Earley item
+@display
+     [ [ A ::= X Y @bullet{} Z ], 7, 42],
+@end display
+The dotted rule @code{[ A ::= X Y @bullet{} Z ]} was recognized
+as far as the dot position, starting at parse location 7
+and ending at parse location 42.
+More precisely,
+@itemize
+@item the rule @code{[ A ::= X Y Z ]} was expected
+    beginning at parse location 7;
+@item the string of symbols ``@code{X Y}'' has been recognized
+    starting at parse location 7,
+    which implies that the symbol @code{X} has been recognized
+    starting at parse location 7;
+@item the string of symbols ``@code{X Y}'' has been recognized
+    ending at parse location 42,
+    which implies that the symbol @code{Y} has been recognized
+    ending at parse location 42; and
+@item the symbol @code{Z} has yet to recognized,
+    but is expected starting at parse location 42.
+@end itemize
+
 @node Application and diagnostic behavior
 @section Application and diagnostic behavior
 
