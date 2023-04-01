@@ -1457,7 +1457,9 @@ For example,
 @display
      [ [ A ::= X Y Z ], 2 ]      (DR1)
 @end display
-is a dotted rule.
+@noindent is a dotted rule
+whose rule is
+@code{[ A ::= X Y Z ]} and whose position is 2.
 More often a dotted rule is written
 with the position marked in the RHS of the rule.
 Here we use ``@bullet{}'' as our marker, so that
@@ -1467,7 +1469,7 @@ and @code{(DR1)} would be written
 @display
      [ A ::= X Y @bullet{} Z ].
 @end display
-Traditionally the marker is a raised dot,
+@noindent Traditionally the marker is a raised dot,
 and this is where the term ``dotted rule''
 comes from.
 The position of the dotted rule is almost always
@@ -1501,7 +1503,7 @@ in the Earley item
 @display
      [ [ A ::= X Y @bullet{} Z ], 7, 42],
 @end display
-The dotted rule @code{[ A ::= X Y @bullet{} Z ]} was recognized
+@noindent the dotted rule @code{[ A ::= X Y @bullet{} Z ]} was recognized
 as far as the dot position, starting at parse location 7
 and ending at parse location 42.
 More precisely,
@@ -1519,6 +1521,46 @@ More precisely,
 @item the symbol @code{Z} has yet to recognized,
     but is expected starting at parse location 42.
 @end itemize
+
+We say that a dotted rule is
+@dfindex completed dotted rule
+@dfn{completed}
+iff its dot position is after the last symbol.
+We say that an Earley item is
+@dfindex completed Earley item
+@dfn{completed}
+iff its dotted rule is completed.
+For example, the Earley item
+@display
+     [ [ A ::= X Y Z @bullet{} ], 7, 50],
+@end display
+@noindent is completed.
+A completed dotted rule is also called a
+@dfindex completion (dotted rule)
+@dfn{completion}.
+Similarly, a completed Earley item is also called a
+@dfindex completion (Earley item)
+@dfn{completion}.
+
+We say that a dotted rule is
+@dfindex predicted dotted rule
+@dfn{predicted}
+iff its dot position is before the first symbol.
+We say that an Earley item is
+@dfindex predicted Earley item
+@dfn{predicted}
+iff its dotted rule is predicted.
+For example, the Earley item
+@display
+     [ [ A ::= @bullet{} X Y Z ], 7, 7],
+@end display
+@noindent is predicted.
+A predicted dotted rule is also called a
+@dfindex prediction (dotted rule)
+@dfn{prediction}.
+Similarly, a predicted Earley item is also called a
+@dfindex prediction (Earley item)
+@dfn{prediction}.
 
 @node Application and diagnostic behavior
 @section Application and diagnostic behavior
