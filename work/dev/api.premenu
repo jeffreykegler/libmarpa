@@ -6948,7 +6948,7 @@ The LHS terminals feature is deprecated.
 
 @deftypevr {Accessor macro} int MARPA_EVENT_SYMBOL_COMPLETED
 This is an explicit per-symbol event.
-Intuitively, it triggers when a non-nulled symbol is
+Intuitively, it triggers when a non-nulled non-terminal symbol is
 fully recognized.
 
 More precisely,
@@ -6998,16 +6998,23 @@ or the
 @end deftypevr
 
 @deftypevr {Accessor macro} int MARPA_EVENT_SYMBOL_EXPECTED
-The recognizer can be set to trigger an event when a
-symbol is expected as a terminal.
-To set an expected terminal event, use the
-@code{marpa_r_expected_symbol_event_set()} method.
-@xref{marpa_r_expected_symbol_event_set}.
-Note that this event only triggers if the symbol is
-expected as a terminal.
-Predicted symbols that are not expected as terminals
-do not trigger this event.
+This is an explicit per-symbol event.
+Intuitively, it triggers when a terminal symbol
+is expected.
 
+More precisely,
+when an Earley set is completed at earleme @code{j},
+the MARPA_EVENT_SYMBOL_EXPECTED event instance
+for symbol @code{sym}
+triggers iff
+@itemize
+@item the event subtype of
+MARPA_EVENT_SYMBOL_EXPECTED for @code{sym}
+is activated; and
+@item
+The symbol @code{sym} is expected as a terminal
+at earleme @code{j}.
+@end itemize
 This event is triggered by the
 @code{marpa_r_earleme_complete()}
 (@pxref{marpa_r_earleme_complete})
@@ -7015,6 +7022,19 @@ and
 @code{marpa_r_start_input()}
 (@pxref{marpa_r_start_input})
 methods.
+
+Note that
+MARPA_EVENT_SYMBOL_EXPECTED events
+only trigger if their symbol is expected as a terminal.
+Predicted symbols that are not expected as terminals
+do not trigger this event.
+
+To declare an expected terminal event, use the
+@code{marpa_r_expected_symbol_event_set()} method.
+The @code{marpa_r_expected_symbol_event_set()} method
+is also used to activate or deactivate an expected terminal event.
+@xref{marpa_r_expected_symbol_event_set}.
+
 @strong{Event value}: The ID of the expected symbol.
 @strong{Suggested message}: "Expecting symbol".
 @end deftypevr
@@ -7722,20 +7742,24 @@ but is not acceptable as a terminal,
 an expected symbol event will not be triggered
 at the current earleme.
 
-On success, if @var{value} is 1,
+On success, if @var{value} is 1, does the following:
 @itemize
+@item Declares
+the symbol expected event for
+the symbol with ID @var{symbol_id},
+if it is not already declared.
 @item
-activates the symbol expected event for
-the symbol with ID @var{symbol_id} in recognizer @var{r}; and
-@item returns 1.
+Activates the symbol expected event for
+the symbol with ID @var{symbol_id}.
+@item Returns 1.
 @end itemize
 
-On success, if @var{value} is 0,
+On success, if @var{value} is 0, does the following:
 @itemize
 @item
-deactivates the symbol expected event for
-the symbol with ID @var{symbol_id} in recognizer @var{r}; and
-@item returns 0.
+Deactivates the symbol expected event for
+the symbol with ID @var{symbol_id}.
+@item Returns 0.
 @end itemize
 
 Hard fails if @var{value} is not a boolean.
