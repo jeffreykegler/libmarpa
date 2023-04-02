@@ -1481,7 +1481,17 @@ An
 @dfindex Earley item
 @dfn{Earley item}
 is a triple of dotted rule, origin
-and current parse location.
+and current parse location.@footnote{
+    Those interested in details of notation
+    may notice that we
+    include current location in the Earley item
+    tuple, contrary to the tradition.
+    We develop our notation more formally,
+    and explain our reasons
+    for the deviation from tradition,
+    on pages 5-7 of
+    @url{https://arxiv.org/abs/2303.04093v1}.
+}
 The Earley item makes a statement about the progress
 of a parse.
 The
