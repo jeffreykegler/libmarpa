@@ -6805,13 +6805,14 @@ by event code,
 in the section on event codes.
 @xref{Event codes}.
 
-For an event instance to trigger,
-its event subtype must first be
+A declared event subtype can be activated.
+An event instance will not trigger,
+unless its event subtype is
 @dfindex activated event subtype
 @dfn{activated}.
 Subtypes of implicit event are always
 activated ---
-declaring them requires no action on the part
+activating them requires no action on the part
 of the user.
 Subtypes of explicit event types must be activated by the user,
 using a method call provided
@@ -6951,11 +6952,21 @@ Intuitively, it triggers when a non-nulled symbol is
 fully recognized.
 
 More precisely,
-MARPA_EVENT_SYMBOL_COMPLETED triggers when an Earley set
-with a completed Earley item is created.
-The LHS of the rule of the completed Earley item
-will be the event's symbol.
-This event is triggered by the
+when an Earley set is completed at earleme @code{j},
+the MARPA_EVENT_SYMBOL_COMPLETED event instance
+for symbol @code{sym}
+triggers iff
+@itemize
+@item the event subtype of
+MARPA_EVENT_SYMBOL_COMPLETED for @code{sym}
+is activated; and
+@item
+the Earley set at earleme @code{j} contains
+a completed Earley item for a rule whose
+LHS is @code{sym}.
+@end itemize
+The MARPA_EVENT_SYMBOL_COMPLETED
+is triggered by the
 @code{marpa_r_earleme_complete()} method.
 @xref{marpa_r_earleme_complete,marpa_r_earleme_complete()}.
 
