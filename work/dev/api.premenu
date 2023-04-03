@@ -1508,6 +1508,7 @@ Symbols before the dot position of the dotted rule have been
 recognized,
 and symbols after the dot position of the dotted rule have yet
 to be recognized.
+
 For example,
 in the Earley item
 @display
@@ -1531,6 +1532,12 @@ More precisely,
 @item the symbol @code{Z} has yet to recognized,
     but is expected starting at parse location 42.
 @end itemize
+
+The Earley set at location @code{j}
+is the set of Earley items whose current location is @code{j}.
+For example, the Earley item
+@code{[ [ A ::= X Y @bullet{} Z ], 7, 42]}
+is in the Earley set at location 42.
 
 We say that a dotted rule is
 @dfindex completed dotted rule
@@ -1571,6 +1578,46 @@ A predicted dotted rule is also called a
 Similarly, a predicted Earley item is also called a
 @dfindex prediction (Earley item)
 @dfn{prediction}.
+
+The
+@dfindex postdot symbol (of a dotted rule)
+@dfn{postdot symbol}
+of a dotted rule is the RHS symbol after the
+dot position.
+For example, in the dotted rule,
+@display
+     [ A ::= X Y @bullet{} Z ]
+@end display
+@noindent the postdot symbol is @code{Z}.
+If the dotted rule is a completion,
+its postdot symbol is not defined.
+
+The
+@dfindex postdot symbol (of an Earley item)
+@dfn{postdot symbol}
+of an Earley item
+is the postdot symbol of its dotted rule.
+The postdot symbol of an Earley item is an
+@dfindex expected symbol
+@dfn{expected symbol}
+at its current location.
+For example,
+the Earley item
+@display
+     [ [ A ::= X Y @bullet{} Z ], 7, 42],
+@end display
+@noindent indicates that the symbol @code{Z}
+is expected at location 42.
+
+Let @code{sym} be a symbol,
+and let @code{j} be a parse location.
+Unless @code{sym} is expected at @code{j},
+that is, unless @code{sym} is a postdot symbol of some Earley
+item in the Earley set at @code{j},
+@code{sym} will be rejected by the
+@code{marpa_r_alternative()} method
+at current location @code{j}.
+@xref{marpa_r_alternative}.
 
 @node Application and diagnostic behavior
 @section Application and diagnostic behavior
