@@ -1884,7 +1884,7 @@ Numbered objects do not have lifetimes of their own.
 Every numbered object belongs to a time object,
 and is destroyed with it.
 Rules and symbols are numbered objects.
-Tokens values are another class of numbered
+Token values are another class of numbered
 objects.
 
 @node Input
@@ -7057,12 +7057,14 @@ triggers iff
 @itemize
 @item the event subtype of
 MARPA_EVENT_SYMBOL_EXPECTED for @code{sym}
-is activated; and
+is activated;
 @item
-The symbol @code{sym} is expected as a terminal
-at earleme @code{j}.
+@code{sym} is a terminal; and
+@item
+@code{sym} is the postdot symbol of an Earley item
+whose current location is @code{j}.
 @end itemize
-This event is triggered by the
+@noindent This event is triggered by the
 @code{marpa_r_earleme_complete()}
 (@pxref{marpa_r_earleme_complete})
 and
@@ -7070,7 +7072,18 @@ and
 (@pxref{marpa_r_start_input})
 methods.
 
-Note that
+More than one symbol instance may trigger the same
+MARPA_EVENT_SYMBOL_@/EXPECTED event instance.
+For example, if
+@display
+    @code{[ [ X ::= B @bullet{} x ], 0, 42 ]} and
+    @code{[ [ Y ::= C @bullet{} x ], 7, 42 ]}
+@end display
+@noindent are Earley items,
+they will trigger only one event instance ---
+the MARPA_EVENT_SYMBOL_EXPECTED event instance at location 42
+with symbol @code{x}.
+
 MARPA_EVENT_SYMBOL_EXPECTED events
 only trigger if their symbol is expected as a terminal.
 Predicted symbols that are not expected as terminals
