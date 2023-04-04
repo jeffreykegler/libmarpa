@@ -7100,7 +7100,6 @@ is also used to activate or deactivate an expected terminal event.
 @end deftypevr
 
 @deftypevr {Accessor macro} int MARPA_EVENT_SYMBOL_NULLED
-
 This is an explicit per-symbol event.
 Intuitively,
 this event triggers when a nulled instance of a symbol
@@ -7153,26 +7152,63 @@ or the
 @end deftypevr
 
 @deftypevr {Accessor macro} int MARPA_EVENT_SYMBOL_PREDICTED
-The recognizer can be set to trigger an event when a
-symbol is predicted.
-To set an predicted symbol event,
-use the recognizer's
-@code{marpa_g_symbol_is_prediction_event_set()}
-method.
-@xref{marpa_g_symbol_is_prediction_event_set,marpa_g_symbol_is_prediction_event_set()}.
+This is an explicit per-symbol event.
+Intuitively,
+this event triggers when a symbol is predicted.
 Unlike the
 @code{MARPA_EVENT_SYMBOL_EXPECTED} event,
 the @code{MARPA_EVENT_SYMBOL_PREDICTED} event
 triggers for predictions of both
 non-terminals and terminals.
 
-This event is triggered by the
+More precisely,
+when an Earley set is completed at earleme @code{j},
+the MARPA_EVENT_SYMBOL_PREDICTED event instance
+for symbol @code{sym}
+triggers iff
+@itemize
+@item the event subtype of
+MARPA_EVENT_SYMBOL_PREDICTED for @code{sym}
+is activated; and
+@item
+the Earley set at earleme @code{j} contains an Earley item
+whose postdot symbol is @code{sym}.
+@end itemize
+@noindent This event is triggered by the
 @code{marpa_r_earleme_complete()}
 (@pxref{marpa_r_earleme_complete})
 and
 @code{marpa_r_start_input()}
 (@pxref{marpa_r_start_input})
 methods.
+
+In an Earley set,
+multiple Earley items may have the same
+postdot symbol,
+but they will trigger only one event instance.
+For example, if
+@display
+    @code{[ [ X ::= B @bullet{} X ], 0, 42 ]} and
+    @code{[ [ Y ::= C @bullet{} X ], 7, 42 ]}
+@end display
+@noindent are Earley items,
+they will trigger only one event instance ---
+the MARPA_EVENT_SYMBOL_EXPECTED event instance at location 42
+with symbol @code{X}.
+
+To declare an predicted symbol event,
+use the recognizer's
+@code{marpa_g_symbol_is_prediction_event_set()}
+method.
+@xref{marpa_g_symbol_is_prediction_event_set}.
+To activate or deactivate a predicted symbol event,
+use the
+@code{marpa_g_prediction_symbol_activate} method
+(@pxref{marpa_g_prediction_symbol_activate}),
+or the
+@code{marpa_r_prediction_symbol_activate} method
+(@pxref{marpa_r_prediction_symbol_activate}).
+
 @strong{Event value}: The ID of the predicted symbol.
 @strong{Suggested message}: "Symbol was predicted".
 @end deftypevr
