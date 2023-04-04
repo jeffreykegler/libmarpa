@@ -7100,22 +7100,54 @@ is also used to activate or deactivate an expected terminal event.
 @end deftypevr
 
 @deftypevr {Accessor macro} int MARPA_EVENT_SYMBOL_NULLED
-The recognizer can be set to trigger an event when a
-symbol is nulled -- that is, recognized as a
-zero-length symbol.
-To set an nulled symbol event,
-use the recognizer's
-@code{marpa_g_symbol_is_nulled_event_set()}
-method.
-@xref{marpa_g_symbol_is_nulled_event_set}.
 
-This event is triggered by the
+This is an explicit per-symbol event.
+Intuitively,
+this event triggers when a nulled instance of a symbol
+is recognized.
+
+More precisely,
+when an Earley set is completed at earleme @code{j},
+the MARPA_EVENT_SYMBOL_NULLED event instance
+for symbol @code{sym}
+triggers iff
+@itemize
+@item the event subtype of
+MARPA_EVENT_SYMBOL_NULLED for @code{sym}
+is activated; and
+@item
+@instance{@code{sym},@code{j},@code{j}}
+is a symbol instance.
+@end itemize
+@noindent This event is triggered by the
 @code{marpa_r_earleme_complete()}
 (@pxref{marpa_r_earleme_complete})
 and
 @code{marpa_r_start_input()}
 (@pxref{marpa_r_start_input})
 methods.
+
+Duplicate nulled nodes may occur.
+@xref{Duplicate nulled nodes}.
+Even if there are duplicate nulled nodes
+for symbol @code{sym} at location @code{j},
+only one
+MARPA_EVENT_SYMBOL_NULLED event instance for @code{sym}
+will be triggered at location @code{j}.
+
+To declare an nulled symbol event,
+use the recognizer's
+@code{marpa_g_symbol_is_nulled_event_set()}
+method.
+@xref{marpa_g_symbol_is_nulled_event_set}.
+To activate or deactivate a nulled symbol event,
+use the
+@code{marpa_g_nulled_symbol_activate} method
+(@pxref{marpa_g_nulled_symbol_activate}),
+or the
+@code{marpa_r_nulled_symbol_activate} method
+(@pxref{marpa_r_nulled_symbol_activate}).
+
 @strong{Event value}: The ID of the nulled symbol.
 @strong{Suggested message}: "Symbol was nulled".
 @end deftypevr
