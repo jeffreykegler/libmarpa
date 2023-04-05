@@ -7886,8 +7886,10 @@ On hard failure,
 We say that two event instances ``coincide''
 if they occur at the same parse location.
 
-@itemize
-@item A symbol instance cannot trigger both
+@node Nulled and completed symbol instances
+@subsection Nulled and completed symbol instances
+
+A symbol instance cannot trigger both
 a @code{MARPA_EVENT_SYMBOL_NULLED}
 and a @code{MARPA_EVENT_SYMBOL_COMPLETED} event
 at the same location.
@@ -7907,7 +7909,10 @@ event
 can trigger
 only if @code{start < end}.
 
-@item A symbol instance cannot trigger both
+@node Nulled and predicted symbol instances
+@subsection Nulled and predicted symbol instances
+
+A symbol instance cannot trigger both
 a @code{MARPA_EVENT_SYMBOL_NULLED}
 and a @code{MARPA_EVENT_SYMBOL_PREDICTED}
 event at the same location.
@@ -7929,10 +7934,13 @@ only if @code{start < end}.
 We note that
 the symbol instance for the @code{MARPA_EVENT_SYMBOL_PREDICTED} is predicted,
 and that there may never be an actual symbol instance
-corresponding to the 
+corresponding to the
 @code{MARPA_EVENT_SYMBOL_PREDICTED} event.
 
-@item A symbol instance cannot trigger both
+@node Nulled and expected symbol instances
+@subsection Nulled and expected symbol instances
+
+A symbol instance cannot trigger both
 a @code{MARPA_EVENT_SYMBOL_NULLED}
 and a @code{MARPA_EVENT_SYMBOL_EXPECTED}
 event at the same location.
@@ -7952,13 +7960,16 @@ while the
 event
 will trigger
 only if @code{start < end}.
-We note that, 
+We note that,
 while the symbol instance @code{MARPA_EVENT_SYMBOL_EXPECTED} is expected,
 there may never be an actual symbol instance
-corresponding to the 
+corresponding to the
 @code{MARPA_EVENT_SYMBOL_EXPECTED} event.
 
-@item A symbol instance cannot trigger both
+@node Completed and predicted symbol instances
+@subsection Completed and predicted symbol instances
+
+A symbol instance cannot trigger both
 a @code{MARPA_EVENT_SYMBOL_COMPLETED}
 and a @code{MARPA_EVENT_SYMBOL_PREDICTED}
 event at the same location.
@@ -7981,10 +7992,10 @@ we must have all of
 @itemize
 @item @code{c1<c2}, because the length of
 @code{MARPA_EVENT_SYMBOL_COMPLETED} symbol instance is non-zero;
-@item @code{c2=j}, because the 
+@item @code{c2=j}, because the
 @code{MARPA_EVENT_SYMBOL_COMPLETED} symbol instance must end at
 @code{j}; and
-@item @code{j=p1}, because the 
+@item @code{j=p1}, because the
 @code{MARPA_EVENT_SYMBOL_PREDICTED} symbol instance must start at
 @code{j}.
 @end itemize
@@ -7996,16 +8007,21 @@ must be distinct.
 We note that
 the symbol instance for @code{MARPA_EVENT_SYMBOL_PREDICTED} is predicted,
 and there may never be an actual symbol instance
-corresponding to the 
+corresponding to the
 @code{MARPA_EVENT_SYMBOL_PREDICTED} event instance.
 
-@item A symbol instance cannot trigger both
+@node Completed and expected symbol instances
+@subsection Completed and expected symbol instances
+
+A symbol instance cannot trigger both
 a @code{MARPA_EVENT_SYMBOL_COMPLETED}
 and a @code{MARPA_EVENT_SYMBOL_EXPECTED}
 event at the same location.
 The reasoning is much the same as for the
 case of @code{MARPA_EVENT_SYMBOL_COMPLETED}
 and @code{MARPA_EVENT_SYMBOL_PREDICTED} events.
+@xref{Completed and predicted symbol instances}.
+
 Call the location, @code{j}.
 This is because the symbol instances
 for @code{MARPA_EVENT_SYMBOL_COMPLETED}
@@ -8025,10 +8041,10 @@ we must have all of
 @itemize
 @item @code{c1<c2}, because the length of
 @code{MARPA_EVENT_SYMBOL_COMPLETED} symbol instance is non-zero;
-@item @code{c2=j}, because the 
+@item @code{c2=j}, because the
 @code{MARPA_EVENT_SYMBOL_COMPLETED} symbol instance must end at
 @code{j}; and
-@item @code{j=e1}, because the 
+@item @code{j=e1}, because the
 @code{MARPA_EVENT_SYMBOL_EXPECTED} symbol instance must start at
 @code{j}.
 @end itemize
@@ -8040,13 +8056,16 @@ must be distinct.
 We note that
 the symbol instance for @code{MARPA_EVENT_SYMBOL_EXPECTED} is expected,
 so that there may never be an actual symbol instance
-corresponding to the 
+corresponding to the
 @code{MARPA_EVENT_SYMBOL_EXPECTED} event instance.
 
-@item The one case where a single symbol instance can trigger
+@node Predicted and expected symbol instances
+@subsection Predicted and expected symbol instances
+
+The one case where a single symbol instance can trigger
 events of two different types at the same parse location is
 that of the @code{MARPA_EVENT_SYMBOL_PREDICTED}
-@code{MARPA_EVENT_SYMBOL_EXPECTED} events.
+and @code{MARPA_EVENT_SYMBOL_EXPECTED} events.
 That is,
 if @instance{@code{sym},@code{start},@code{end}} is
 a symbol instance,
@@ -8061,8 +8080,6 @@ the symbol instance for @code{MARPA_EVENT_SYMBOL_PREDICTED} is predicted,
 and the symbol instance for @code{MARPA_EVENT_SYMBOL_EXPECTED} is expected,
 so that @instance{@code{sym},@code{start},@code{end}} may never appear
 as an actual symbol instance in the parse.
-
-@end itemize
 
 @node Error methods macros and codes
 @chapter Error methods, macros and codes
