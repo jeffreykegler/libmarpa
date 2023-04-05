@@ -6993,6 +6993,7 @@ The LHS terminals feature is deprecated.
 @strong{Suggested message}: "This symbol is a nulling terminal".
 @end deftypevr
 
+@anchor{MARPA_EVENT_SYMBOL_COMPLETED}
 @deftypevr {Accessor macro} int MARPA_EVENT_SYMBOL_COMPLETED
 This is an explicit per-symbol event.
 Intuitively, it triggers when a non-nulled non-terminal symbol is
@@ -7044,6 +7045,7 @@ or the
 @strong{Suggested message}: "Completed symbol".
 @end deftypevr
 
+@anchor{MARPA_EVENT_SYMBOL_EXPECTED}
 @deftypevr {Accessor macro} int MARPA_EVENT_SYMBOL_EXPECTED
 This is an explicit per-symbol event.
 Intuitively, it triggers when a terminal symbol
@@ -7099,6 +7101,7 @@ is also used to activate or deactivate an expected terminal event.
 @strong{Suggested message}: "Expecting symbol".
 @end deftypevr
 
+@anchor{MARPA_EVENT_SYMBOL_NULLED}
 @deftypevr {Accessor macro} int MARPA_EVENT_SYMBOL_NULLED
 This is an explicit per-symbol event.
 Intuitively,
@@ -7151,6 +7154,7 @@ or the
 @strong{Suggested message}: "Symbol was nulled".
 @end deftypevr
 
+@anchor{MARPA_EVENT_SYMBOL_PREDICTED}
 @deftypevr {Accessor macro} int MARPA_EVENT_SYMBOL_PREDICTED
 This is an explicit per-symbol event.
 Intuitively,
@@ -7273,31 +7277,12 @@ Always succeeds.
 @node Completion events
 @section Completion events
 
-Libmarpa can be set up to trigger
-a @code{MARPA_EVENT_SYMBOL_COMPLETED} event
-whenever the symbol is completed.
-A symbol is said to be @dfn{completed}
-when a non-nulling rule with
-that symbol on its LHS is completed.
-In Earley item terms,
-a rule is @dfn{completed} when an Earley item
-with a dotted rule whose rule is that rule,
-and whose dot position is after the end
-of that rule,
-is added to an Earley set.
-Intuitively,
-a rule is said to be @dfn{completed}
-at a parse location where it is fully recognized by the parser.
+This section contains methods
+for dealing with MARPA_EVENT_SYMBOL_COMPLETED
+events.
+@xref{MARPA_EVENT_SYMBOL_COMPLETED}.
 
-For a completion event to be triggered,
-the symbol must be
-@dfindex mark (as a completion event symbol)
-@dfn{marked},
-and the event must be
-@dfindex activate (a completion symbol event)
-@dfn{activated}.
-
-To mark a symbol as a completion event symbol
+To declare a symbol as a completion event symbol
 use the @code{marpa_g_symbol_is_completion_event_set()}
 method.
 The event will be activated by default.
@@ -7325,7 +7310,7 @@ The activation status of a completion event in the grammar becomes the initial
 activation status of a completion event in all of its child recognizers.
 
 This method is seldom needed.
-When a symbol is marked as a completion event symbol in
+When a symbol is declared as a completion event symbol in
 the grammar,
 it is activated by default.
 @xref{marpa_g_symbol_is_completion_event_set, marpa_g_symbol_is_completion_event_set()}.
@@ -7336,7 +7321,7 @@ using the
 @xref{marpa_r_completion_symbol_activate,marpa_r_completion_symbol_activate()}.
 
 Hard fails
-if the @var{sym_id} is not marked as a completion event symbol
+if the @var{sym_id} is not declared as a completion event symbol
 in the grammar,
 or if the grammar has not been precomputed.
 
@@ -7366,7 +7351,7 @@ is initialized to the activation status of the symbol completion event
 for @var{sym_id} in the base grammar.
 
 Hard fails if
-@var{sym_id} was not marked for completion events in the base grammar.
+@var{sym_id} was not declared for completion events in the base grammar.
 
 @strong{Return value}:
 On success, the value of @var{reactivate}, which is a boolean.
@@ -7379,7 +7364,7 @@ int marpa_g_symbol_is_completion_event ( @
     Marpa_Grammar @var{g}, @
     Marpa_Symbol_ID @var{sym_id})
 
-On success, returns a boolean which is 1 iff @var{sym_id} is marked
+On success, returns a boolean which is 1 iff @var{sym_id} is declared
 as a completion event symbol in @var{g}.
 For more about completion events,
 @pxref{marpa_g_symbol_is_completion_event_set,marpa_g_symbol_is_completion_event_set()}.
@@ -7409,7 +7394,7 @@ A symbol is said to be @strong{completed}
 when a non-nulling rule with
 that symbol on its LHS is completed.
 
-For completion events for @var{sym_id} to occur, @var{sym_id} must be marked
+For completion events for @var{sym_id} to occur, @var{sym_id} must be declared
 as a completion event symbol,
 and the completion event for @var{sym_id} must be activated in the recognizer.
 Event activation also occurs in the grammar,
@@ -7422,25 +7407,25 @@ the grammar event activation status for @var{sym_id}.
 
 On success, if @var{value} is 1,
 @itemize
-@item marks symbol @var{sym_id} as a completion event symbol,
+@item declares symbol @var{sym_id} as a completion event symbol,
 @item activates the completion event for @var{sym_id} in @var{g}, and
 @item returns 1.
 @end itemize
 
 On success, if @var{value} is 0,
 @itemize
-@item unmarks symbol @var{sym_id} as a completion event symbol,
+@item declares symbol @var{sym_id} as a completion event symbol,
 @item deactivates the completion event for @var{sym_id} in @var{g}, and
 @item returns 0.
 @end itemize
 
 Nulled rules and symbols will never cause completion events.
 Nullable symbols
-may be marked as completion event symbols,
+may be declared as completion event symbols,
 but this will have an effect only when the symbol
 is not nulled.
 Nulling symbols
-may be marked as completion event symbols,
+may be declared as completion event symbols,
 but no completion events will ever be triggered
 for a nulling symbol.
 Note that this implies that no completion event will
@@ -7462,6 +7447,11 @@ On hard failure, @minus{}2.
 @node Symbol nulled events
 @section Symbol nulled events
 
+This section contains methods
+for dealing with MARPA_EVENT_SYMBOL_NULLED
+events.
+@xref{MARPA_EVENT_SYMBOL_NULLED}.
+
 Libmarpa can set up to trigger
 an @code{MARPA_EVENT_SYMBOL_NULLED}
 event whenever a symbol is nulled.
@@ -7469,15 +7459,7 @@ A symbol is said to be @strong{nulled}
 when a zero length instance of that symbol
 is recognized.
 
-For a nulled event to be triggered,
-the symbol must be
-@dfindex mark (as a nulled event symbol)
-@dfn{marked},
-and the event must be
-@dfindex activate (a nulled symbol event)
-@dfn{activated}.
-
-To mark a symbol as a nulled event symbol
+To declare a symbol as a nulled event symbol
 use the @code{marpa_g_symbol_is_nulled_event_set()}
 method.
 The event will be activated by default.
@@ -7505,7 +7487,7 @@ The activation status of a nulled event in the grammar becomes the initial
 activation status of a nulled event in all of its child recognizers.
 
 This method is seldom needed.
-When a symbol is marked as a nulled event symbol in
+When a symbol is declared as a nulled event symbol in
 the grammar,
 it is activated by default.
 @xref{marpa_g_symbol_is_nulled_event_set, marpa_g_symbol_is_nulled_event_set()}.
@@ -7516,7 +7498,7 @@ using the
 @xref{marpa_r_nulled_symbol_activate,marpa_r_nulled_symbol_activate()}.
 
 Hard fails
-if the @var{sym_id} is not marked as a nulled event symbol
+if the @var{sym_id} is not declared as a nulled event symbol
 in the grammar,
 or if the grammar has not been precomputed.
 
@@ -7546,7 +7528,9 @@ is initialized to the activation status of the symbol nulled event
 for @var{sym_id} in the base grammar.
 
 Hard fails if
-@var{sym_id} was not marked for nulled events in the base grammar.
+the subtype @var{sym_id} of
+the @code{MARPA_EVENT_SYMBOL_NULLED} event
+is not declared.
 
 @strong{Return value}:
 On success, the value of @var{reactivate}, which is a boolean.
@@ -7671,6 +7655,11 @@ On hard failure, @minus{}2.
 
 @node Prediction events
 @section Prediction events
+
+This section contains methods
+for dealing with MARPA_EVENT_SYMBOL_PREDICTED
+events.
+@xref{MARPA_EVENT_SYMBOL_PREDICTED}.
 
 Libmarpa can be set up
 to trigger a
@@ -7852,6 +7841,11 @@ int marpa_r_expected_symbol_event_set ( @
   Marpa_Recognizer @var{r}, @
   Marpa_Symbol_ID @var{symbol_id}, @
   int @var{value})
+
+This section contains methods
+for dealing with MARPA_EVENT_SYMBOL_EXPECTED
+events.
+@xref{MARPA_EVENT_SYMBOL_EXPECTED}.
 
 Libmarpa can be set up
 to trigger an
