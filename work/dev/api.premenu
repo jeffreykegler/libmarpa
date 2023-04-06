@@ -7880,6 +7880,49 @@ On hard failure,
 @minus{}2.
 @end deftypefn
 
+@node Recognizer per-symbol events
+@section Recognizer per-symbol events
+
+The
+@dfindex events, recognizer per-symbol
+@dfindex recognizer per-symbol events
+@dfn{recognizer per-symbol events}
+are those which
+trigger in the recognizer,
+and which are per-symbol.
+All recognizer per-symbol event instances are triggered by the
+@code{marpa_r_earleme_complete()}
+(@pxref{marpa_r_earleme_complete})
+or
+@code{marpa_r_start_input()}
+(@pxref{marpa_r_start_input})
+methods.
+Recognizer per-symbol events have one
+of the event types
+@code{MARPA_EVENT_SYMBOL_COMPLETED},
+@code{MARPA_EVENT_SYMBOL_EXPECTED},
+@code{MARPA_EVENT_SYMBOL_NULLED}, and
+@code{MARPA_EVENT_SYMBOL_PREDICTED}.
+
+@node Tentative events
+@section Tentative events
+
+Recognizer per-symbol events are tentative.
+The symbol instance that triggers them may not actually occur
+in the parse.
+
+Right of the location of the event,
+Libmarpa is totally unaware of what the actual input will be
+--- there is no
+"lookahead".
+Therefore, if end location of the symbol instance for the event
+is after the triggering parse location,
+the symbol instance will reflect a @strong{possible} input,
+usually one of many @strong{possible} inputs.
+Of these possible outputs,
+only one will become the actual output,
+and that only if the parse is allowed to run that far.
+
 @node Event coincidence of symbol instances
 @section Event coincidence of symbol instances
 
@@ -7892,14 +7935,8 @@ Since every event triggered by a single
 symbol instance will be for the same symbol,
 coincident events triggered by a single
 symbol instance can differ only in their event type.
-
-Event instances with parse locations are triggered
-only by the per-symbol recognizer events.
-The possible event types are therefore
-@code{MARPA_EVENT_SYMBOL_COMPLETED},
-@code{MARPA_EVENT_SYMBOL_EXPECTED},
-@code{MARPA_EVENT_SYMBOL_NULLED}, and
-@code{MARPA_EVENT_SYMBOL_PREDICTED}.
+This event type will always be one of the
+recognizer per-symbol events.
 
 @node Nulled and completed symbol instances
 @subsection Nulled and completed symbol instances
@@ -7946,11 +7983,6 @@ while the
 event
 can trigger
 only if @code{start < end}.
-We note that
-the symbol instance for the @code{MARPA_EVENT_SYMBOL_PREDICTED} is predicted,
-and that there may never be an actual symbol instance
-corresponding to the
-@code{MARPA_EVENT_SYMBOL_PREDICTED} event.
 
 @node Nulled and expected symbol instances
 @subsection Nulled and expected symbol instances
@@ -7975,11 +8007,6 @@ while the
 event
 will trigger
 only if @code{start < end}.
-We note that,
-while the symbol instance @code{MARPA_EVENT_SYMBOL_EXPECTED} is expected,
-there may never be an actual symbol instance
-corresponding to the
-@code{MARPA_EVENT_SYMBOL_EXPECTED} event.
 
 @node Completed and predicted symbol instances
 @subsection Completed and predicted symbol instances
@@ -8023,11 +8050,6 @@ the two instances
 @instance{@code{sym},@code{c1},@code{c2}} and
 @instance{@code{sym},@code{p1},@code{p2}}
 must be distinct.
-We note that
-the symbol instance for @code{MARPA_EVENT_SYMBOL_PREDICTED} is predicted,
-and there may never be an actual symbol instance
-corresponding to the
-@code{MARPA_EVENT_SYMBOL_PREDICTED} event instance.
 
 @node Completed and expected symbol instances
 @subsection Completed and expected symbol instances
@@ -8076,11 +8098,6 @@ the two instances
 @instance{@code{sym},@code{c1},@code{c2}} and
 @instance{@code{sym},@code{e1},@code{e2}}
 must be distinct.
-We note that
-the symbol instance for @code{MARPA_EVENT_SYMBOL_EXPECTED} is expected,
-so that there may never be an actual symbol instance
-corresponding to the
-@code{MARPA_EVENT_SYMBOL_EXPECTED} event instance.
 
 @node Predicted and expected symbol instances
 @subsection Predicted and expected symbol instances
@@ -8098,11 +8115,6 @@ both a
 @code{MARPA_EVENT_SYMBOL_PREDICTED}
 and a @code{MARPA_EVENT_SYMBOL_EXPECTED} event
 will trigger at location @code{start}.
-We note that
-the symbol instance for @code{MARPA_EVENT_SYMBOL_PREDICTED} is predicted,
-and the symbol instance for @code{MARPA_EVENT_SYMBOL_EXPECTED} is expected,
-so that @instance{@code{sym},@code{start},@code{end}} may never appear
-as an actual symbol instance in the parse.
 
 @node Error methods macros and codes
 @chapter Error methods, macros and codes
