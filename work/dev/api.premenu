@@ -7880,11 +7880,26 @@ On hard failure,
 @minus{}2.
 @end deftypefn
 
-@node Coincidence of per-symbol event instances
-@section Coincidence of per-symbol event instances
+@node Event coincidence of symbol instances
+@section Event coincidence of symbol instances
 
 We say that two event instances ``coincide''
 if they occur at the same parse location.
+This section details the possible coincidences of
+distinct events triggered
+by the same symbol instance.
+Since every event triggered by a single
+symbol instance will be for the same symbol,
+coincident events triggered by a single
+symbol instance can differ only in their event type.
+
+Event instances with parse locations are triggered
+only by the per-symbol recognizer events.
+The possible event types are therefore
+@code{MARPA_EVENT_SYMBOL_COMPLETED},
+@code{MARPA_EVENT_SYMBOL_EXPECTED},
+@code{MARPA_EVENT_SYMBOL_NULLED}, and
+@code{MARPA_EVENT_SYMBOL_PREDICTED}.
 
 @node Nulled and completed symbol instances
 @subsection Nulled and completed symbol instances
@@ -7974,7 +7989,11 @@ a @code{MARPA_EVENT_SYMBOL_COMPLETED}
 and a @code{MARPA_EVENT_SYMBOL_PREDICTED}
 event at the same location.
 Call the location, @code{j}.
-This is because the symbol instances
+Coincident events with the types
+@code{MARPA_EVENT_SYMBOL_COMPLETED}
+and @code{MARPA_EVENT_SYMBOL_PREDICTED}
+cannot be triggered by a single symbol instance
+because the symbol instances
 for @code{MARPA_EVENT_SYMBOL_COMPLETED}
 and @code{MARPA_EVENT_SYMBOL_PREDICTED}
 cannot be zero-length;
@@ -7999,7 +8018,7 @@ we must have all of
 @code{MARPA_EVENT_SYMBOL_PREDICTED} symbol instance must start at
 @code{j}.
 @end itemize
-so that @code{c1 < p1} and
+@noindent so that @code{c1 < p1} and
 the two instances
 @instance{@code{sym},@code{c1},@code{c2}} and
 @instance{@code{sym},@code{p1},@code{p2}}
@@ -8023,7 +8042,11 @@ and @code{MARPA_EVENT_SYMBOL_PREDICTED} events.
 @xref{Completed and predicted symbol instances}.
 
 Call the location, @code{j}.
-This is because the symbol instances
+Coincident events with the types
+@code{MARPA_EVENT_SYMBOL_COMPLETED}
+and @code{MARPA_EVENT_SYMBOL_PREDICTED}
+cannot be triggered by a single symbol instance
+because the symbol instances
 for @code{MARPA_EVENT_SYMBOL_COMPLETED}
 and @code{MARPA_EVENT_SYMBOL_EXPECTED}
 cannot be zero-length;
@@ -8048,7 +8071,7 @@ we must have all of
 @code{MARPA_EVENT_SYMBOL_EXPECTED} symbol instance must start at
 @code{j}.
 @end itemize
-so that @code{c1 < e1} and
+@noindent so that @code{c1 < e1} and
 the two instances
 @instance{@code{sym},@code{c1},@code{c2}} and
 @instance{@code{sym},@code{e1},@code{e2}}
