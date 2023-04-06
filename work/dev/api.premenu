@@ -8025,9 +8025,9 @@ for @code{MARPA_EVENT_SYMBOL_COMPLETED}
 and @code{MARPA_EVENT_SYMBOL_PREDICTED}
 cannot be zero-length;
 the symbol instance for the @code{MARPA_EVENT_SYMBOL_COMPLETED}
-must start at @code{j}; and
+must end at @code{j}; and
 the symbol instance for the @code{MARPA_EVENT_SYMBOL_PREDICTED}
-must end at @code{j}.
+must start at @code{j}.
 That is, if the
 @code{MARPA_EVENT_SYMBOL_COMPLETED} symbol instance is
 @instance{@code{sym},@code{c1},@code{c2}}
@@ -8073,9 +8073,9 @@ for @code{MARPA_EVENT_SYMBOL_COMPLETED}
 and @code{MARPA_EVENT_SYMBOL_EXPECTED}
 cannot be zero-length;
 the symbol instance for the @code{MARPA_EVENT_SYMBOL_COMPLETED}
-must start at @code{j}; and
+must end at @code{j}; and
 the symbol instance for the @code{MARPA_EVENT_SYMBOL_EXPECTED}
-must end at @code{j}.
+must start at @code{j}.
 That is, if the
 @code{MARPA_EVENT_SYMBOL_COMPLETED} symbol instance is
 @instance{@code{sym},@code{c1},@code{c2}}
@@ -8107,11 +8107,14 @@ events of two different types at the same parse location is
 that of the @code{MARPA_EVENT_SYMBOL_PREDICTED}
 and @code{MARPA_EVENT_SYMBOL_EXPECTED} events.
 That is,
-if @instance{@code{sym},@code{start},@code{end}} is
-a symbol instance,
-and @code{sym} is a terminal,
-and both event subtypes are activated,
-both a
+@itemize
+@item if @code{j} is a parse location;
+@item @code{sym} is the postdot symbol in an
+Earley item in the Earley set at @code{j};
+@item @code{sym} is a terminal; and
+@item both event subtypes are activated,
+@end itemize
+then both a
 @code{MARPA_EVENT_SYMBOL_PREDICTED}
 and a @code{MARPA_EVENT_SYMBOL_EXPECTED} event
 will trigger at location @code{start}.
