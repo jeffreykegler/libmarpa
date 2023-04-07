@@ -7928,9 +7928,10 @@ and that only if the parse is allowed to run that far.
 
 We say that two event instances ``coincide''
 if they occur at the same parse location.
-This section details the possible coincidences of
-distinct events triggered
-by the same symbol instance.
+We say the two event instances are
+@dfn{coincident same-symbol-instance event instances}
+iff both event instances trigger at the same parse location
+and both event instances are for the same symbol instance.
 Since every event triggered by a single
 symbol instance will be for the same symbol,
 coincident events triggered by a single
@@ -8118,6 +8119,116 @@ then both a
 @code{MARPA_EVENT_SYMBOL_PREDICTED}
 and a @code{MARPA_EVENT_SYMBOL_EXPECTED} event
 will trigger at location @code{start}.
+
+@node Event coincidence of symbols
+@section Event coincidence of symbols
+
+We say the two event instances are
+@dfn{coincident same-symbol event instances}
+iff both event instances trigger at the same parse location
+and both event instances are for the same symbol.
+Above (@pxref{Event coincidence of symbol instances})
+we looked at event instances which
+trigger at the same parse location
+and were for the same @strong{symbol instance}.
+In this section we have loosened the requirement,
+so they events instances can be triggered by
+multiple symbol instances,
+as long as all the symbol instances
+share the same symbol.
+
+Obviously every
+coincident same-symbol event instance
+is for the same symbol,
+and therefore
+coincident same-symbol event instances
+can differ only in their event type.
+This event type will always be one of the
+recognizer per-symbol events.
+
+Same-symbol event instances can coincide
+@itemize
+@item
+if one is of type @code{MARPA_EVENT_SYMBOL_PREDICTED} and
+the other is of type @code{MARPA_EVENT_SYMBOL_COMPLETED};
+@item
+if one of of type @code{MARPA_EVENT_SYMBOL_PREDICTED} and
+the other is of type @code{MARPA_EVENT_SYMBOL_NULLED};
+@item
+if one of of type @code{MARPA_EVENT_SYMBOL_COMPLETED} and
+the other is of type @code{MARPA_EVENT_SYMBOL_NULLED}.
+@end itemize
+In fact, three same-symbol event instances can
+coincide, where they are of types
+@code{MARPA_EVENT_SYMBOL_PREDICTED},
+@code{MARPA_EVENT_SYMBOL_COMPLETED} and
+@code{MARPA_EVENT_SYMBOL_NULLED}.
+An example of the triggers for such a triple coincidence
+is the set of symbol instances
+@instance{@code{sym},41,42},
+@instance{@code{sym},42,42}, and
+@instance{@code{sym},42,43},
+where
+@itemize
+@item
+@instance{@code{sym},41,42} can trigger
+a @code{MARPA_EVENT_SYMBOL_COMPLETED} event
+for symbol @code{sym} at parse location 42;
+@item
+@instance{@code{sym},42,42} can trigger
+a @code{MARPA_EVENT_SYMBOL_NULLED} event
+for symbol @code{sym} at parse location 42;
+@item
+@instance{@code{sym},42,43} can trigger
+a @code{MARPA_EVENT_SYMBOL_PREDICTED} event
+for symbol @code{sym} at parse location 42.
+@end itemize
+
+Earlier
+(@pxref{Predicted and expected symbol instances}),
+we saw that a single symbol instance
+can trigger both
+a @code{MARPA_EVENT_SYMBOL_EXPECTED} event instance and
+a @code{MARPA_EVENT_SYMBOL_PREDICTED} event instance
+at the same parse location.
+Obviously then, the same symbol
+can trigger
+a @code{MARPA_EVENT_SYMBOL_EXPECTED} event instance and
+a @code{MARPA_EVENT_SYMBOL_PREDICTED} event instance
+at the same parse location.
+
+If the deprecated LHS terminals feature is not in use,
+a @code{MARPA_EVENT_SYMBOL_EXPECTED} event instance and
+a @code{MARPA_EVENT_SYMBOL_COMPLETED} event instance
+cannot be same-symbol coincident.
+This is because the symbol for the
+@code{MARPA_EVENT_SYMBOL_COMPLETED} event instance
+must be the LHS of a rule;
+the symbol for the @code{MARPA_EVENT_SYMBOL_EXPECTED} event instance
+must be a terminal;
+and terminals cannot be the LHS of a rule.
+Libmarpa has a feature that allows LHS terminals,
+but use of this is strongly discouraged.
+@xref{LHS terminals}.
+
+There are no circumstances under which
+a @code{MARPA_EVENT_SYMBOL_EXPECTED} event instance and
+a @code{MARPA_EVENT_SYMBOL_NULLED} event instance
+can be same-symbol coincident.
+This is because
+the symbol for the @code{MARPA_EVENT_SYMBOL_NULLED} event instance
+must be nulled;
+the symbol for the @code{MARPA_EVENT_SYMBOL_EXPECTED} event instance
+must be a terminal;
+and terminals can never be nulled.
+Not only can
+a @code{MARPA_EVENT_SYMBOL_EXPECTED} event instance
+not coincide with a same-symbol @code{MARPA_EVENT_SYMBOL_NULLED} event instance,
+the two cannot occur in the same parse.
+In fact,
+a @code{MARPA_EVENT_SYMBOL_EXPECTED} event instance
+and a same-symbol @code{MARPA_EVENT_SYMBOL_NULLED} event instance
+cannot occur in any parse with the same base grammar.
 
 @node Error methods macros and codes
 @chapter Error methods, macros and codes
