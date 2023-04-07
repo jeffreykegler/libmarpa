@@ -7713,34 +7713,17 @@ On hard failure, @minus{}2.
 @node Symbol expected events
 @section Symbol expected events
 
+This section contains methods
+for dealing with MARPA_EVENT_SYMBOL_EXPECTED
+events.
+@xref{MARPA_EVENT_SYMBOL_EXPECTED}.
+
 @anchor{marpa_r_expected_symbol_event_set}
 @deftypefn {Mutator function} @
 int marpa_r_expected_symbol_event_set ( @
   Marpa_Recognizer @var{r}, @
   Marpa_Symbol_ID @var{symbol_id}, @
   int @var{value})
-
-This section contains methods
-for dealing with MARPA_EVENT_SYMBOL_EXPECTED
-events.
-@xref{MARPA_EVENT_SYMBOL_EXPECTED}.
-
-Libmarpa can be set up
-to trigger an
-@dfindex expected symbol event
-@dfindex event, expected symbol
-@dfn{expected symbol event}
-(@code{MARPA_EVENT_SYMBOL_EXPECTED})
-when the symbol with ID @var{symbol_id}
-is acceptable as a terminal at the current earleme.
-Note that the symbol expected event is only triggered if
-the symbol with ID @var{symbol_id} is acceptable as terminal.
-If the symbol with ID @var{symbol_id} is expected
-at the current earleme
-as a non-terminal,
-but is not acceptable as a terminal,
-an expected symbol event will not be triggered
-at the current earleme.
 
 On success, if @var{value} is 1, does the following:
 @itemize
@@ -7761,6 +7744,24 @@ Deactivates the symbol expected event for
 the symbol with ID @var{symbol_id}.
 @item Returns 0.
 @end itemize
+
+Expected symbol events only trigger if
+the symbol with ID @var{symbol_id} is expected as terminal.
+This method will succeed if
+the symbol with ID @var{symbol_id} is not a terminal,
+but the event subtype
+that this method declared will never trigger.
+
+The same symbol may be acceptable as both a
+terminal and a non-terminal if the
+deprecated LHS terminals feature is in use.
+If the symbol with ID @var{symbol_id} is expected
+at the current earleme
+as a non-terminal,
+but is not acceptable as a terminal,
+an expected symbol event will not be triggered
+at the current earleme.
+@xref{LHS terminals}.
 
 Hard fails if @var{value} is not a boolean.
 Hard fails if @var{value} is 1,
