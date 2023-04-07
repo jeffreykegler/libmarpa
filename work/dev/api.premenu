@@ -7583,16 +7583,6 @@ for dealing with MARPA_EVENT_SYMBOL_PREDICTED
 events.
 @xref{MARPA_EVENT_SYMBOL_PREDICTED}.
 
-Libmarpa can be set up
-to trigger a
-@code{MARPA_EVENT_SYMBOL_PREDICTED}
-event when a non-nulled symbol is predicted.
-A non-nulled symbol is said to be @strong{predicted}
-when an instance of it
-is acceptable at the current
-earleme according to the grammar.
-Nulled symbols do not trigger predictions.
-
 To declare a symbol as a prediction event symbol
 use the @code{marpa_g_symbol_is_prediction_event_set()}
 method.
@@ -7655,11 +7645,6 @@ On success, does the following:
 @item If @var{reactivate} is zero, deactivates the event in the recognizer.
 @item If @var{reactivate} is one, activates the event in the recognizer.
 @end itemize
-
-When a recognizer is created,
-the activation status of its symbol prediction event for @var{sym_id}
-is initialized to the activation status of the symbol prediction event
-for @var{sym_id} in the base grammar.
 
 Hard fails if
 @var{sym_id} was not declared for prediction events in the base grammar.
