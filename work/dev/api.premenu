@@ -7610,13 +7610,13 @@ and the end of one or more non-nulled instances of the same symbol.
 The
 @code{marpa_g_symbol_is_nulled_event_set()}
 method will
-mark a symbol as a nulled event symbol,
+declare a symbol as a nulled event symbol,
 even if the symbol is non-nullable.
 This is convenient, for example,
 for automatically generated grammars.
 Applications that wish to treat
 it as a failure when
-a non-nullable symbol is marked
+a non-nullable symbol is declared
 as a nulled event symbol,
 can check for this after precomputation,
 using the
@@ -7654,15 +7654,7 @@ is acceptable at the current
 earleme according to the grammar.
 Nulled symbols do not trigger predictions.
 
-For a prediction event to be triggered,
-the symbol must be
-@dfindex mark (as a prediction event symbol)
-@dfn{marked},
-and the event must be
-@dfindex activate (a prediction symbol event)
-@dfn{activated}.
-
-To mark a symbol as a prediction event symbol
+To declare a symbol as a prediction event symbol
 use the @code{marpa_g_symbol_is_prediction_event_set()}
 method.
 The event will be activated by default.
@@ -7690,7 +7682,7 @@ The activation status of a prediction event in the grammar becomes the initial
 activation status of a prediction event in all of its child recognizers.
 
 This method is seldom needed.
-When a symbol is marked as a prediction event symbol in
+When a symbol is declared as a prediction event symbol in
 the grammar,
 it is activated by default.
 @xref{marpa_g_symbol_is_prediction_event_set, marpa_g_symbol_is_prediction_event_set()}.
@@ -7701,7 +7693,7 @@ using the
 @xref{marpa_r_prediction_symbol_activate,marpa_r_prediction_symbol_activate()}.
 
 Hard fails
-if the @var{sym_id} is not marked as a prediction event symbol
+if the @var{sym_id} is not declared as a prediction event symbol
 in the grammar,
 or if the grammar has not been precomputed.
 
@@ -7731,7 +7723,7 @@ is initialized to the activation status of the symbol prediction event
 for @var{sym_id} in the base grammar.
 
 Hard fails if
-@var{sym_id} was not marked for prediction events in the base grammar.
+@var{sym_id} was not declared for prediction events in the base grammar.
 
 @strong{Return value}:
 On success, the value of @var{reactivate}, which is a boolean.
@@ -7744,10 +7736,10 @@ int marpa_g_symbol_is_prediction_event ( @
     Marpa_Grammar @var{g}, @
     Marpa_Symbol_ID @var{sym_id})
 
-On success, returns a boolean which is 1 iff @var{sym_id} is marked
-as a prediction event symbol in @var{g}.
+On success, returns a boolean which is 1 iff @var{sym_id} is declared
+as a prediction event symbol.
 For more about prediction events,
-@pxref{marpa_g_symbol_is_prediction_event_set,marpa_g_symbol_is_prediction_event_set()}.
+@pxref{marpa_g_symbol_is_prediction_event_set}.
 
 Soft fails iff @var{sym_id} is well-formed (a non-negative integer), but there is no
 such symbol.
@@ -7768,37 +7760,16 @@ int marpa_g_symbol_is_prediction_event_set ( @
     Marpa_Symbol_ID @var{sym_id}, @
  int @var{value})
 
-Libmarpa can be set up
-to trigger a
-@code{MARPA_EVENT_SYMBOL_PREDICTED}
-event when a non-nulled symbol is predicted.
-A non-nulled symbol is said to be @strong{predicted}
-when a instance of it
-is acceptable at the current
-earleme according to the grammar.
-Nulled symbols do not trigger predictions.
-
-For prediction events for @var{sym_id} to occur, @var{sym_id} must be marked
-as a prediction event symbol,
-and the prediction event for @var{sym_id} must be activated in the recognizer.
-Event activation also occurs in the grammar,
-and the recognizer event activation status for @var{sym_id}
-is initialized
-from
-the grammar event activation status for @var{sym_id}.
-@xref{marpa_g_prediction_symbol_activate,marpa_g_prediction_symbol_activate()}, and
-@pxref{marpa_r_prediction_symbol_activate,marpa_r_prediction_symbol_activate()}.
-
 On success, if @var{value} is 1,
 @itemize
-@item marks symbol @var{sym_id} as a prediction event symbol,
+@item declares symbol @var{sym_id} as a prediction event symbol,
 @item activates the prediction event for @var{sym_id} in @var{g}, and
 @item returns 1.
 @end itemize
 
 On success, if @var{value} is 0,
 @itemize
-@item unmarks symbol @var{sym_id} as a prediction event symbol,
+@item declares symbol @var{sym_id} as a prediction event symbol,
 @item deactivates the prediction event for @var{sym_id} in @var{g}, and
 @item returns 0.
 @end itemize
@@ -9598,15 +9569,13 @@ for one approach.
 @node Simpler events interface
 @section Simpler events interface
 
-Some of the events interfaces are unnecessarily
-complex.
-Activation in the grammar is unnecessary,
-as is the ability to ``unmark'' an event
-for a symbol
-before precomputation.
-@xref{Completion events},
-@pxref{Symbol nulled events}, and
-@pxref{Prediction events}.
+The events interface is unnecessarily complex.
+A separate grammar method
+for the activation and deactivation
+of each event type is unnecessary.
+@xref{Completion events}.
+@xref{Symbol nulled events}.
+@xref{Prediction events}.
 
 @node Better defined ambiguity metric
 @section Better defined ambiguity metric
