@@ -3,7 +3,7 @@
 - Ensure example from [Marpa::R2::Advanced::Thin](https://metacpan.org/dist/Marpa-R2/view/pod/Advanced/Thin.pod), or an equivalent, is in the test suite.
 
 - [Marpa::R2::Event](https://metacpan.org/dist/Marpa-R2/view/pod/Event.pod),
-Incorporated up to "Types of parse event"
+Incorporated up to " External scanning"
 
 - [Marpa::R2::Exhaustion](https://metacpan.org/dist/Marpa-R2/view/pod/Exhaustion.pod)
 - [Marpa::R2::Progress](https://metacpan.org/dist/Marpa-R2/view/pod/Progress.pod)
