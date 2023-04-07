@@ -7345,11 +7345,6 @@ On success, does the following:
 @item If @var{reactivate} is one, activates the event in the recognizer.
 @end itemize
 
-When a recognizer is created,
-the activation status of its symbol completion event for @var{sym_id}
-is initialized to the activation status of the symbol completion event
-for @var{sym_id} in the base grammar.
-
 Hard fails if
 @var{sym_id} was not declared for completion events in the base grammar.
 
@@ -7386,24 +7381,6 @@ int marpa_g_symbol_is_completion_event_set ( @
     Marpa_Grammar @var{g}, @
     Marpa_Symbol_ID @var{sym_id}, @
  int @var{value})
-
-Libmarpa can be set up to trigger an
-@code{MARPA_EVENT_SYMBOL_COMPLETED}
-event whenever the symbol is completed.
-A symbol is said to be @strong{completed}
-when a non-nulling rule with
-that symbol on its LHS is completed.
-
-For completion events for @var{sym_id} to occur, @var{sym_id} must be declared
-as a completion event symbol,
-and the completion event for @var{sym_id} must be activated in the recognizer.
-Event activation also occurs in the grammar,
-and the recognizer event activation status for @var{sym_id}
-is initialized
-from
-the grammar event activation status for @var{sym_id}.
-@xref{marpa_g_completion_symbol_activate,marpa_g_completion_symbol_activate()}, and
-@pxref{marpa_r_completion_symbol_activate,marpa_r_completion_symbol_activate()}.
 
 On success, if @var{value} is 1,
 @itemize
