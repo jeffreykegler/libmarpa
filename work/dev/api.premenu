@@ -7429,13 +7429,6 @@ for dealing with MARPA_EVENT_SYMBOL_NULLED
 events.
 @xref{MARPA_EVENT_SYMBOL_NULLED}.
 
-Libmarpa can set up to trigger
-an @code{MARPA_EVENT_SYMBOL_NULLED}
-event whenever a symbol is nulled.
-A symbol is said to be @strong{nulled}
-when a zero length instance of that symbol
-is recognized.
-
 To declare a symbol as a nulled event symbol
 use the @code{marpa_g_symbol_is_nulled_event_set()}
 method.
@@ -7499,11 +7492,6 @@ On success, does the following:
 @item If @var{reactivate} is one, activates the event in the recognizer.
 @end itemize
 
-When a recognizer is created,
-the activation status of its symbol nulled event for @var{sym_id}
-is initialized to the activation status of the symbol nulled event
-for @var{sym_id} in the base grammar.
-
 Hard fails if
 the subtype @var{sym_id} of
 the @code{MARPA_EVENT_SYMBOL_NULLED} event
@@ -7557,32 +7545,6 @@ On success, if @var{value} is 0,
 @item deactivates the nulled event for @var{sym_id} in @var{g}, and
 @item returns 0.
 @end itemize
-
-A symbol instance can never trigger both a nulled
-and a prediction event at the same location.
-Also, a symbol instance can never trigger both a nulled
-and a completion event at the same location.
-(As a reminder, a symbol instance is a symbol
-starting at a specific location in the input,
-and with a specific length.)
-This is because the symbol instance for a nulled
-event must be zero length,
-and the symbol instance for prediction and completion
-events can never be zero length.
-
-However, prediction and nulled events for the
-same symbol can trigger at the same location.
-This is because
-the same location can be the location of a nulled instance
-of a symbol,
-and the start of an non-nulled instance of the same symbol.
-
-Also, completion and nulled events for the
-same symbol can trigger at the same location.
-This is because
-the same location can be the location of a nulled instance
-of a symbol,
-and the end of one or more non-nulled instances of the same symbol.
 
 The
 @code{marpa_g_symbol_is_nulled_event_set()}
