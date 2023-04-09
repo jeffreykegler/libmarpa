@@ -8165,6 +8165,58 @@ a @code{MARPA_EVENT_SYMBOL_EXPECTED} event instance
 and a same-symbol @code{MARPA_EVENT_SYMBOL_NULLED} event instance
 cannot occur in any parse with the same base grammar.
 
+@node Marker symbols
+@section Marker symbols
+
+A marker symbol is a nulling symbol introduced for
+the sole purpose of ``marking'' a position in a rule.
+If a @code{MARPA_EVENT_SYMBOL_NULLED} event is
+activated for the marker symbol,
+an event instance will be triggered whenever that
+position in the rule is reached.
+
+For example, consider the rule
+@anchor{Rule R1}
+@display
+     [ A ::= Y Z ].                  (R1)
+@end display
+@noindent If we replace @code{(R1)} with the following
+rules
+@display
+     [ Mk0 ::= ]
+     [ Mk1 ::= ]
+     [ Mk2 ::= ]
+     [ A ::= Mk0 Y Mk1 Z Mk2 ].      (R2)
+@end display
+@noindent and activate
+@code{MARPA_EVENT_SYMBOL_NULLED} events
+for the marker symbols
+(@code{Mk1}, @code{Mk2}, and @code{Mk3}),
+then a @code{MARPA_EVENT_SYMBOL_NULLED} event instance
+@itemize
+@item for @code{Mk0} will trigger at every location where @code{(R2)} is predicted;
+@item for @code{Mk1} will trigger at every location where the symbol @code{Y}
+in rule @code{(R2)} has been recognized,
+and the symbol @code{Z} is predicted;
+@item for @code{Mk2} will trigger at every location where @code{(R2)}
+has been fully recognized, so that the entire RHS,
+including both symbols @code{Y} and @code{Z}, has been recognized.
+@end itemize
+We can note that use of the marker @code{Mk0}
+can be replaced by 
+declaring  @code{MARPA_EVENT_SYMBOL_PREDICTED} event
+for symbol @code{A}.
+Similarly,
+use of the marker @code{Mk2}
+can be replaced by 
+declaring  @code{MARPA_EVENT_SYMBOL_COMPLETED} event
+for symbol @code{A}.
+We discuss this more below.
+@xref{Per-rule events}.
+
+@node Per-rule events
+@section Per-rule events
+
 @node Error methods macros and codes
 @chapter Error methods, macros and codes
 
