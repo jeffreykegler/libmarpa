@@ -2483,7 +2483,7 @@ If every rule with @var{x} on the LHS is nulling,
 @var{x} will be not just nullable,
 but nulling as well.
 
-@node Nullability and the valuator
+@node Nullability in the valuator
 @section Nullability in the valuator
 
 In the valuator,
@@ -7818,6 +7818,45 @@ usually one of many @strong{possible} inputs.
 Of these possible outputs,
 only one will become the actual output,
 and that only if the parse is allowed to run that far.
+
+@node Ambiguous parses and events
+@section Ambiguous parses and events
+
+In an ambiguous parse,
+tentative events
+(@pxref{Tentative events})
+trigger for all of the parse trees.
+User thinking in terms of only one of the parse trees,
+perhaps because they are unaware of the
+ambiguity, will sometimes find this unexpected.
+
+@node Nulled subtrees and events
+@section Nulled subtrees and events
+
+As mentioned above
+(@pxref{Nullability in the valuator}),
+nulled subforests are,
+for evaluation purposes,
+pruned back to their topmost symbol.
+This is @strong{not} the case for events.
+Events for every nulled symbol in the subforest
+will trigger,
+even if these symbols are pruned in the evaluation phase.
+More precisely,
+if
+@itemize
+@item @instance{@code{X},@code{j},@code{j}} is a nulled symbol instance,
+@item @instance{@code{X},@code{j},@code{j}} derives
+@instance{@code{Y},@code{j},@code{j}} 
+(in which case @instance{@code{Y},@code{j},@code{j}} 
+must also be a nulled symbol instance), and
+@item the event 
+@code{MARPA_EVENT_SYMBOL_NULLED} for symbol @code{Y}
+is activated,
+@end itemize
+@noindent then 
+a @code{MARPA_EVENT_SYMBOL_NULLED} for symbol @code{Y}
+will trigger at parse location @code{j}.
 
 @node Event coincidence of symbol instances
 @section Event coincidence of symbol instances
