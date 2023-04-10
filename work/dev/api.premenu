@@ -7847,14 +7847,14 @@ if
 @itemize
 @item @instance{@code{X},@code{j},@code{j}} is a nulled symbol instance,
 @item @instance{@code{X},@code{j},@code{j}} derives
-@instance{@code{Y},@code{j},@code{j}} 
-(in which case @instance{@code{Y},@code{j},@code{j}} 
+@instance{@code{Y},@code{j},@code{j}}
+(in which case @instance{@code{Y},@code{j},@code{j}}
 must also be a nulled symbol instance), and
-@item the event 
+@item the event
 @code{MARPA_EVENT_SYMBOL_NULLED} for symbol @code{Y}
 is activated,
 @end itemize
-@noindent then 
+@noindent then
 a @code{MARPA_EVENT_SYMBOL_NULLED} for symbol @code{Y}
 will trigger at parse location @code{j}.
 
@@ -8169,7 +8169,7 @@ cannot occur in any parse with the same base grammar.
 @section Marker symbols
 
 A marker symbol is a nulling symbol introduced for
-the sole purpose of ``marking'' a position in a rule.
+the purpose of ``marking'' a position in a rule.
 If a @code{MARPA_EVENT_SYMBOL_NULLED} event is
 activated for the marker symbol,
 an event instance will be triggered whenever that
@@ -8203,12 +8203,12 @@ has been fully recognized, so that the entire RHS,
 including both symbols @code{Y} and @code{Z}, has been recognized.
 @end itemize
 We can note that use of the marker @code{Mk0}
-can be replaced by 
+can be replaced by
 declaring  @code{MARPA_EVENT_SYMBOL_PREDICTED} event
 for symbol @code{A}.
 Similarly,
 use of the marker @code{Mk2}
-can be replaced by 
+can be replaced by
 declaring  @code{MARPA_EVENT_SYMBOL_COMPLETED} event
 for symbol @code{A}.
 We discuss this more below.
@@ -8216,6 +8216,91 @@ We discuss this more below.
 
 @node Per-rule events
 @section Per-rule events
+
+The event types are either global or per-symbol ---
+there are no per-rule events.
+Nonetheless, the user can get the equivalent of per-rule
+events in two ways,
+both discussed previously
+(@pxref{Marker symbols}).
+The competely general way is to use marker symbols.
+
+The other way is to
+declare @code{MARPA_EVENT_SYMBOL_PREDICTED} and
+@code{MARPA_EVENT_SYMBOL_COMPLETED} events
+for the LHS of the rule.
+This has two limitations:
+First, it can only trigger events before the first RHS
+symbol of the rule,
+or after the rule's last RHS symbol.
+Second,
+the @code{MARPA_EVENT_SYMBOL_PREDICTED} and
+@code{MARPA_EVENT_SYMBOL_COMPLETED} events
+will trigger events for all rules with the same
+LHS, which may not be what is wanted.
+
+Most users will fix this second limitation by falling back
+on marker symbols.
+For those users who for some reason prefer wish to avoid this,
+there is a workaround which based around a simple grammar rewrite.
+The remainder of this section discusses this workaround.
+
+We first illustrate the second limitation, with an example we
+will call @code{origG}.
+In @code{origG}, we have the following:
+@itemize
+@item The grammar includes these two rules:
+@display
+     [ A ::= W X ]              (R3)
+     [ A ::= Y Z ]              (R4)
+@end display
+@item A @code{MARPA_EVENT_SYMBOL_COMPLETED} event
+is declared for symbol @code{A}.
+@end itemize
+
+In @code{origG},
+a @code{MARPA_EVENT_SYMBOL_COMPLETED} event
+will trigger at the end of both rules @code{(R3)}
+and @code{(R4)}.
+Let's assume ths is problematic:
+that we are interested in an event at the end of
+@code{(R3)}, but not @code{(R4)}.
+
+We can fix this with a grammar rewrite.
+Let the example that represents the fix to @code{origG}
+be @code{fixG}, and let
+@code{fixG} be
+the same as @code{origG} with
+the following exceptions:
+@itemize
+@item Rule @code{(R3)}
+in @code{origG} is replaced with the following rules:
+@display
+     [ A ::= A1 ]               (R3a)
+     [ A1 ::= W X ]             (R3b)
+@end display
+@item A @code{MARPA_EVENT_SYMBOL_COMPLETED} event
+is declared for symbol @code{A1},
+instead of for symbol @code{A}.
+@item Rule @code{(R3a)} has pass-through semantics.
+@item Rule @code{(R3b)} has the same semantics as
+rule @code{(R3)} had in @code{origG}.
+@item The application code must be changed to look for
+a @code{MARPA_EVENT_SYMBOL_COMPLETED} event
+for symbol @code{A1},
+instead of symbol @code{A}.
+@end itemize
+@noindent @code{fixG} will accept the same language
+as @code{origG},
+with the same semantics as @code{origG}.
+A @code{MARPA_EVENT_SYMBOL_COMPLETED} event
+will trigger at the end of @code{(R3b)},
+this time for symbol @code{A1},
+but at exactly the same parse location as it did
+for symbol @code{A} in @code{origG}.
+And a @code{MARPA_EVENT_SYMBOL_COMPLETED} event
+will no longer trigger at the end of @code{(R4)},
+which is the fix we were looking for.
 
 @node Error methods macros and codes
 @chapter Error methods, macros and codes
