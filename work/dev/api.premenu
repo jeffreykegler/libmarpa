@@ -8239,15 +8239,10 @@ the @code{MARPA_EVENT_SYMBOL_PREDICTED} and
 will trigger events for all rules with the same
 LHS, which may not be what is wanted.
 
-Most users will fix this second limitation by falling back
-on marker symbols.
-For those users who for some reason prefer to avoid this,
-there is a workaround that is based around a simple grammar rewrite.
-The remainder of this section discusses this workaround.
-
-We first illustrate the second limitation, with an example we
-will call @code{origG}.
-In @code{origG}, we have the following:
+@anchor{lim2Ex}
+We illustrate the second limitation with an example,
+which we will call @code{lim2Ex}.
+In @code{lim2Ex}, we have the following:
 @itemize
 @item The grammar includes these two rules:
 @display
@@ -8255,49 +8250,74 @@ In @code{origG}, we have the following:
      [ A ::= Y Z ]              (R4)
 @end display
 @item A @code{MARPA_EVENT_SYMBOL_COMPLETED} event
-is declared for symbol @code{A}.
+is activated for symbol @code{A}.
 @end itemize
 
-In @code{origG},
-a @code{MARPA_EVENT_SYMBOL_COMPLETED} event
-will trigger at the end of both rules @code{(R3)}
+Suppose we want an event to
+trigger at, and only at, the place when rule @code{(R3)}
+is fully recognized.
+In @code{lim2Ex},
+the @code{MARPA_EVENT_SYMBOL_COMPLETED} event
+for symbol @code{A}
+triggers at the end of both rules @code{(R3)}
 and @code{(R4)}.
-Let's assume ths is problematic:
-that we are interested in an event at the end of
-@code{(R3)}, but not @code{(R4)}.
+The triggering at the end of rule @code{(R4)}
+is problematic.
 
-We can fix this with a grammar rewrite.
-Let the example that represents the fix to @code{origG}
-be @code{fixG}, and let
-@code{fixG} be
-the same as @code{origG} with
+@node Workaround with a dedicated LHS symbol
+@subsection Workaround with a dedicated LHS symbol
+
+Most users will fix the second limitation
+(@pxref{lim2Ex})
+by falling back
+on marker symbols.
+For those users who for some reason prefer to avoid this,
+in this section we present
+a workaround that is based on introducing a new symbol,
+one dedicated to acting as the LHS of @code{(R3)}
+of @code{lim2Ex}.
+
+We show the fix as another example,
+one which we will call
+@code{fixEx}.
+@code{fixEx} is identical to
+@code{lim2Ex} with
 the following exceptions:
 @itemize
 @item Rule @code{(R3)}
-in @code{origG} is replaced with the following rules:
+in @code{lim2Ex} is replaced with the following rules:
 @display
-     [ A ::= A1 ]               (R3a)
-     [ A1 ::= W X ]             (R3b)
+     [ A1 ::= W X ]             (R3a)
+     [ A ::= A1 ]               (R3b)
 @end display
+@noindent
+In these two rules,
+rule @code{(R3a)} is the replacement rule
+for rule @code{(R3)} in @code{lim2Ex},
+and @code{A1} is the new LHS symbol,
+which is dedicated to serving as the LHS
+of rule @code{(R3a)}.
 @item A @code{MARPA_EVENT_SYMBOL_COMPLETED} event
-is declared for symbol @code{A1},
+is activated for symbol @code{A1},
 instead of for symbol @code{A}.
-@item Rule @code{(R3a)} has pass-through semantics.
-@item Rule @code{(R3b)} has the same semantics as
-rule @code{(R3)} had in @code{origG}.
+@item Rule @code{(R3a)} 
+has the same semantics
+as rule @code{(R3)} in @code{lim2Ex},
+the rule that it replaced.
+@item Rule @code{(R3b)} has pass-through semantics.
 @item The application code must be changed to look for
 a @code{MARPA_EVENT_SYMBOL_COMPLETED} event
 for symbol @code{A1},
 instead of symbol @code{A}.
 @end itemize
-@noindent @code{fixG} will accept the same language
-as @code{origG},
-with the same semantics as @code{origG}.
+@noindent @code{fixEx} will accept the same language
+as @code{lim2Ex},
+with the same semantics as @code{lim2Ex}.
 A @code{MARPA_EVENT_SYMBOL_COMPLETED} event
-will trigger at the end of @code{(R3b)},
+will trigger at the end of @code{(R3a)},
 this time for symbol @code{A1},
 but at exactly the same parse location as it did
-for symbol @code{A} in @code{origG}.
+for symbol @code{A} in @code{lim2Ex}.
 And a @code{MARPA_EVENT_SYMBOL_COMPLETED} event
 will no longer trigger at the end of @code{(R4)},
 which is the fix we were looking for.
