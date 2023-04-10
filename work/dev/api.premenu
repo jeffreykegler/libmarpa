@@ -2306,6 +2306,94 @@ with the
 @code{marpa_r_is_exhausted()} method.
 @xref{marpa_r_is_exhausted,marpa_r_is_exhausted()}.
 
+@node End of parsing
+@chapter End of parsing
+
+Users accustomed to certain applications
+may believe that the question of when to end parsing
+is almost too trivial to ask.
+And, for many applications this is the case.
+But the general question of determining the end of parse is
+decidably non-trivial.
+For a broad theoretical overview,
+see "When are we done parsing?",
+pp. 93-94 in the 2nd edition of
+Grune and Jacobs,
+(@pxref{Grune and Jacobs 2008}).
+This chapter discusses determination of the
+@dfindex end of parse
+@dfn{end of parse}
+@dfindex EOP
+(@dfn{EOP})
+from the Libmarpa point of view.
+
+@node Determining EOP from EOI
+@section Determining EOP from EOI
+
+In many applications the EOP is always the
+@dfindex end of input
+@dfn{end of input}
+@dfindex EOI
+(@dfn{EOI}).
+That is, parsing ends at a known parse location.
+The length of the input may be ``known'' in advance,
+there may be an
+@dfindex end of file
+@dfn{end of file}
+@dfindex EOF
+(@dfn{EOF})
+or an
+@dfindex end of string
+@dfn{end of string}
+@dfindex EOS
+(@dfn{EOS}),
+or the application may have some other means of knowing
+that is has hit the EOI.
+
+If the EOI is the EOP,
+the application will treat exhaustion before the EOI,
+or exhaustion on failure
+of @code{marpa_r_start_input()}
+or @code{marpa_r_earleme_complete()}
+at the EOI,
+as a parse error.
+How parse exhaustion on success
+at the EOI is handled will
+depend on the application.
+Exhaustion on success at the end of input can be
+handled in any of the following ways:
+@itemize
+@item Exhaustion might be ignored.
+The will very often be what the application wants to do.
+@item Exhaustion might be,
+if the application is exhaustion-loving,
+required,
+and its absense treated as an error.
+@item Rarely, if the application is exhaustion-hating,
+exhaustion, even on success,
+might be treated as an error.
+@end itemize
+
+@itemize
+@item An exhaustion-loving application that does not know the length of
+its input will often want to terminate the parse in case of exhaustion on method
+success, treating exhaustion as an end-of-input indicator.
+These applications will usually want to treat exhaustion on method failure
+as a parse error.
+@item Occasionally, an exhaustion-hating application may not know
+the length of its input in advance.
+Since these applications will not know from the length of the input,
+or from exhaustion, that they are at end of input,
+they will need some other way of determining this.
+One way they may do this is with a
+@code{MARPA_EVENT_SYMBOL_COMPLETED} event.
+Typically, these applications will treat exhaustion on method
+failure and exhaustion before the end of input
+as parse errors.
+They may wish to ignore exhaustion on method success
+at the end of input.
+@end itemize
+
 @node Semantics
 @chapter Semantics
 
@@ -5045,31 +5133,14 @@ and only in very unusual circumstances will an application wish
 to ignore these.
 
 How an application reacts to exhaustion will depend on the kind of
-parsing it is doing:
-@itemize
-@item Very often an application knows the length of its input in advance.
-In this case, the application will treat exhaustion before the end of input
-as a parse error.
-Depending on the application, exhaustion on success at the end of input
-might be ignored.
-@item An exhaustion-loving application that does not know the length of
-its input will often want to terminate the parse in case of exhaustion on method
-success, treating exhaustion as an end-of-input indicator.
-These applications will usually want to treat exhaustion on method failure
-as a parse error.
-@item Occasionally, an exhaustion-hating application may not know
-the length of its input in advance.
-Since these applications will not know from the length of the input,
-or from exhaustion, that they are at end of input,
-they will need some other way of determining this.
-One way they may do this is with a
-@code{MARPA_EVENT_SYMBOL_COMPLETED} event.
-Typically, these applications will treat exhaustion on method
-failure and exhaustion before the end of input
-as parse errors.
-They may wish to ignore exhaustion on method success
-at the end of input.
-@end itemize
+parsing it is doing.
+@xref{Exhaustion}.
+
+It is often up to
+the logic immediately around this method
+to detect end of parsing.
+@xref{End of parsing}.
+
 @strong{Return value}:  On success, the number of events
 in the event queue when the method call returns.
 On hard failure, @minus{}2.
