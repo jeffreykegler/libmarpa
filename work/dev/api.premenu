@@ -8241,8 +8241,8 @@ LHS, which may not be what is wanted.
 
 Most users will fix this second limitation by falling back
 on marker symbols.
-For those users who for some reason prefer wish to avoid this,
-there is a workaround which based around a simple grammar rewrite.
+For those users who for some reason prefer to avoid this,
+there is a workaround that is based around a simple grammar rewrite.
 The remainder of this section discusses this workaround.
 
 We first illustrate the second limitation, with an example we
