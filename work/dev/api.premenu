@@ -2357,18 +2357,19 @@ In many applications the EOP is always the
 @dfindex EOI
 (@dfn{EOI}).
 That is, parsing ends at a known parse location.
-The length of the input may be ``known'' in advance;
+The length of the input may be known
+because it was fixed in advance;
 there may be an
 @dfindex end of file
 @dfn{end of file}
 @dfindex EOF
 (@dfn{EOF}) indication;
-or an
+there may be an
 @dfindex end of string
 @dfn{end of string}
 @dfindex EOS
-(@dfn{EOS}) indication;
-or the application may have some other means of knowing
+(@dfn{EOS}) indication; or
+the application may have some other means of knowing
 that is has hit the EOI.
 
 If the EOI is the EOP, the following is typically the case:
@@ -2391,9 +2392,8 @@ if the application is exhaustion-loving,
 required,
 so that it is treated as an error if the parse is still active
 at the EOI.
-@item It is possible,
-if an application is exhaustion-hating in the extreme,
-it may wish to treat exhaustion,
+@item An application, if it is exhaustion-hating in the extreme,
+may wish to treat exhaustion,
 even exhaustion on success at the EOI,
 as an error.
 @end itemize
