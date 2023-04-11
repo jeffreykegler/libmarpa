@@ -2310,7 +2310,7 @@ Parse exhaustion can be triggered on method success
 by either the @code{marpa_r_earleme_complete()} or
 the @code{marpa_r_start_input} method.
 Parse exhaustion can be triggered on method failure
-by the @code{marpa_r_earleme_complete()}.
+by the @code{marpa_r_earleme_complete()} method.
 Parse exhaustion triggered on method success is called
 @dfindex parse exhaustion on success
 @dfn{parse exhaustion on success} or
@@ -2357,17 +2357,17 @@ In many applications the EOP is always the
 @dfindex EOI
 (@dfn{EOI}).
 That is, parsing ends at a known parse location.
-The length of the input may be ``known'' in advance,
+The length of the input may be ``known'' in advance;
 there may be an
 @dfindex end of file
 @dfn{end of file}
 @dfindex EOF
-(@dfn{EOF})
+(@dfn{EOF}) indication;
 or an
 @dfindex end of string
 @dfn{end of string}
 @dfindex EOS
-(@dfn{EOS}),
+(@dfn{EOS}) indication;
 or the application may have some other means of knowing
 that is has hit the EOI.
 
@@ -2382,19 +2382,19 @@ even on success, as a parse error.
 How parse exhaustion on success
 at the EOI is handled will
 depend on the application.
-Exhaustion on success at the end of input can be
-handled in any of the following ways:
+Here are a few of the many possible ways:
 @itemize
 @item Exhaustion might be ignored.
 Very often this will be what the application wants to do.
 @item Exhaustion might be,
 if the application is exhaustion-loving,
 required,
-so if the parse is not exhausted at the EOI,
-that is treated as an error.
+so that it is treated as an error if the parse is still active
+at the EOI.
 @item It is possible,
 if an application is exhaustion-hating in the extreme,
-it may wish to treat exhaustion, even on success at the EOI,
+it may wish to treat exhaustion,
+even exhaustion on success at the EOI,
 as an error.
 @end itemize
 
@@ -2429,11 +2429,15 @@ The @code{Marpa::R2} lexer looks for one of a set of ``lexemes'',
 seeking the longest one.
 It does this by declaring
 a @code{MARPA_EVENT_SYMBOL_COMPLETED} event
-for each lexeme, and recording the latest location at which one of these events occurs.
+for each lexeme, and recording the most recent location
+at which one of these completion events occurs.
 The @code{Marpa::R2} lexer stops looking for the longest lexeme on parse exhaustion,
 and at that point treats the parse location of the most recent
 @code{MARPA_EVENT_SYMBOL_COMPLETED} event
 as the EOP.
+If no @code{MARPA_EVENT_SYMBOL_COMPLETED} event occurred,
+the @code{Marpa::R2} lexer failed to find a lexeme,
+and reports a lexing error.
 
 @node Semantics
 @chapter Semantics
