@@ -12,6 +12,8 @@ Dominus
 earleme
 earlemes
 earley
+EOI
+EOP
 Grune
 Horspool
 init
@@ -20,6 +22,7 @@ lhs
 LHS
 Libmarpa
 Libmarpa's
+lim # in lim2Ex
 makeinfo
 marpa
 MERCHANTABILITY
@@ -36,6 +39,7 @@ precomputed
 rhs
 SPPFs
 sublicense
+subtrees
 texi
 traverser
 Ullman
