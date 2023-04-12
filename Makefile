@@ -24,7 +24,7 @@
 # gold releases
 MAJOR=11
 MINOR=0
-MICRO=7
+MICRO=8
 VERSION=$(MAJOR).$(MINOR).$(MICRO)
 
 .PHONY: ac_dist aspell asan clean cm_dist dist distcheck dummy \
