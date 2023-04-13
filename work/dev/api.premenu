@@ -1962,10 +1962,11 @@ are only ones that change the latest earleme.
 
 The latest earleme is different from the current earleme if and only if
 there is no Earley set at the current earleme.
-A different end of parsing can be specified,
+A different end of parse can be specified,
 but by default, parsing is of the input
 in the range
 from earleme 0 to the latest earleme.
+@xref{End of parse}.
 
 @node The current earleme
 @subsection The current earleme
@@ -2322,8 +2323,8 @@ Parse exhaustion triggered on method failure is called
 @dfindex exhaustion on failure
 @dfn{exhaustion on failure}.
 
-@node End of parsing
-@chapter End of parsing
+@node End of parse
+@chapter End of parse
 
 Users accustomed to certain applications
 may believe that the question of when to end parsing
@@ -5183,8 +5184,8 @@ parsing it is doing.
 
 It is often up to
 the logic immediately around this method
-to detect end of parsing.
-@xref{End of parsing}.
+to detect EOP.
+@xref{End of parse}.
 
 @strong{Return value}:  On success, the number of events
 in the event queue when the method call returns.
@@ -5792,21 +5793,6 @@ work of documenting it and providing the
 appropriate mathematical apparatus.
 @xref{Scott 2008}.
 
-The bocage contains the data for the parse trees whose root is
-an instance of the start symbol that begins at Earley set 0
-and ends at the
-@dfindex End of parse Earley set
-@dfindex Earley set, end of parse
-@dfn{end of parse Earley set}.
-Applications usually use the Earley set at the current earleme
-as the
-``end of parse Earley set'',
-so that the bocage is for parses of the entire input.
-But some applications may be interested in parsing prefixes of
-the input, and these applications can choose other
-end of parse Earley sets in their constructor.
-@xref{marpa_b_new,marpa_b_new()}.
-
 @node Bocage constructor
 @section Creating a new bocage
 
@@ -5818,15 +5804,20 @@ Marpa_Bocage marpa_b_new (Marpa_Recognizer @var{r}, @
 On success, the following is the case:
 @itemize
 @item If @code{earley_set_ID} is non-negative,
-creates a new bocage object, whose ``end of parse Earley set''
+creates a new bocage object, whose EOP
 is the Earley set with ID @code{earley_set_ID}.
 @item If @code{earley_set_ID} is @minus{}1,
-creates a new bocage object, whose ``end of parse Earley set''
+creates a new bocage object, whose EOP
 is the Earley set at the current earleme.
 @item The new bocage object has a reference count of 1.
 @item The reference count of its parent recognizer object, @var{r},
 is increased by 1.
 @end itemize
+
+The application will usually want EOP to be the Earley set
+at the current earleme,
+but there are exceptions.
+@xref{End of parse}.
 
 If @var{earley_set_ID} is @minus{}1
 and there is no Earley set at the current earleme;
