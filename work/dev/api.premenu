@@ -3274,30 +3274,6 @@ requires handling soft failures.
 In fact, a non-trivial Libmarpa application can hardly be designed
 except on that basis.
 
-@node Tracing and diagnosing parses
-@section Tracing and diagnosing parses
-
-Because Libmarpa is very low-level, it is assumed
-that it will come with a upper level which decides
-issues like naming conventions, ASCII-7 versus UTF-8, etc.
-Based on those decisions, it is also assumed that
-the upper layer offers facilities
-for tracking and displaying symbol names,
-displaying rules,
-tracking and displaying tokens,
-and displaying progress items.
-
-It is possible to trace and diagnose parses without
-an upper layer -- some programs in Libmarpa's test suite
-do this.
-But this is something the user should go to great pains to
-avoid.
-Every application of Libmarpa should have an upper layer
-with diagnostics.
-If a pre-existing diagnostics layer is not used,
-it should be one of the first things written ---
-it is very likely to be one of the first things needed.
-
 @node Error codes
 @section Error codes
 
@@ -8452,6 +8428,40 @@ for symbol @code{A} in @code{lim2Ex}.
 And a @code{MARPA_EVENT_SYMBOL_COMPLETED} event
 will no longer trigger at the end of @code{(R4)},
 which is the fix we were looking for.
+
+@node Tracing and diagnosing parses
+@chapter Tracing and diagnosing parses
+
+Libmarpa is very low-level,
+and does not use strings to identify its objects.
+Libmarpa is expected
+to come with a upper level which uses strings
+to name and/or identify the objects used in parsing,
+in the process deciding
+issues like naming conventions, ASCII-7 versus UTF-8, etc.
+Based on those decisions,
+the upper layer is expected to offer facilities
+for tracking and displaying symbol names,
+displaying rules,
+tracking and displaying tokens,
+and displaying progress items.
+
+It is possible to trace and diagnose parses without
+an upper layer -- a few programs in Libmarpa's test suite
+do this.
+Instead of using symbol names and expanding rules
+into their LHS and RHS,
+the user can keep track of symbol IDs and rule IDs.
+But most people who have tried this would agree
+that this is something that the user should go to great pains to
+avoid.
+
+As a rule,
+every application of Libmarpa should have an upper layer
+with diagnostics.
+If a pre-existing diagnostics layer is not used,
+it should be one of the first things written ---
+it is very likely to be one of the first things needed.
 
 @node Error methods macros and codes
 @chapter Error methods, macros and codes
