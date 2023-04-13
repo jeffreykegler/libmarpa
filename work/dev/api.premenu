@@ -3274,6 +3274,30 @@ requires handling soft failures.
 In fact, a non-trivial Libmarpa application can hardly be designed
 except on that basis.
 
+@node Tracing and diagnosing parses
+@section Tracing and diagnosing parses
+
+Because Libmarpa is very low-level, it is assumed
+that it will come with a upper level which decides
+issues like naming conventions, ASCII-7 versus UTF-8, etc.
+Based on those decisions, it is also assumed that
+the upper layer offers facilities
+for tracking and displaying symbol names,
+displaying rules,
+tracking and displaying tokens,
+and displaying progress items.
+
+It is possible to trace and diagnose parses without
+an upper layer -- some programs in Libmarpa's test suite
+do this.
+But this is something the user should go to great pains to
+avoid.
+Every application of Libmarpa should have an upper layer
+with diagnostics.
+If a pre-existing diagnostics layer is not used,
+it should be one of the first things written ---
+it is very likely to be one of the first things needed.
+
 @node Error codes
 @section Error codes
 
