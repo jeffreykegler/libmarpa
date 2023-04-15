@@ -8463,6 +8463,46 @@ If a pre-existing diagnostics layer is not used,
 it should be one of the first things written ---
 it is very likely to be one of the first things needed.
 
+The rest of this chapter describes facilities that should be
+offered in the layer handling grammar diagnostics.
+Implementation suggestions are made.
+Applications may want to allow these facilities at various
+levels of verbosity.
+The implementation suggestions focus on the what information
+the facilities should present at the highest verbosity level.
+
+@node Listing symbols
+@section Listing symbols
+
+The parse diagnostics should a facility for naming symbols,
+listing the symbols in a grammar, with their names.
+The symbols will have IDs from 0 to the highest symbol ID,
+which can be found using the
+@code{marpa_g_highest_symbol_id()} method
+(@pxref{marpa_g_highest_symbol_id}).
+At the highest verbosity level,
+in addition to the symbol name,
+the symbol listing facility should display
+@itemize
+@item the symbol ID;
+@item whether the symbol is accessible
+(@pxref{marpa_g_symbol_is_accessible});
+@item whether the symbol is nullable
+(@pxref{marpa_g_symbol_is_nullable});
+@item whether the symbol is nulling
+(@pxref{marpa_g_symbol_is_nulling});
+@item whether the symbol is productive
+(@pxref{marpa_g_symbol_is_productive});
+@item whether the symbol is start
+(@pxref{marpa_g_symbol_is_start});
+@item whether the symbol is terminal
+(@pxref{marpa_g_symbol_is_terminal});
+@item whether the symbol is a counted symbol
+(@pxref{marpa_g_symbol_is_counted}); and
+@item the rank of the symbol
+(@pxref{marpa_g_symbol_rank}).
+@end itemize
+
 @node Error methods macros and codes
 @chapter Error methods, macros and codes
 
