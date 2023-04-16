@@ -8465,11 +8465,11 @@ it is very likely to be one of the first things needed.
 
 The rest of this chapter describes facilities that should be
 offered in the layer handling grammar diagnostics.
-Implementation suggestions are made.
 Applications may want to allow these facilities at various
 levels of verbosity.
-The implementation suggestions focus on the what information
-the facilities should present at the highest verbosity level.
+Implementation suggestions are made,
+focusing on what information
+the facilities should display at the highest verbosity level.
 
 @node Listing symbols
 @section Listing symbols
@@ -8493,14 +8493,69 @@ the symbol listing facility should display
 (@pxref{marpa_g_symbol_is_nulling});
 @item whether the symbol is productive
 (@pxref{marpa_g_symbol_is_productive});
-@item whether the symbol is start
+@item whether the symbol is the start symbol
 (@pxref{marpa_g_symbol_is_start});
-@item whether the symbol is terminal
+@item whether the symbol is a terminal
 (@pxref{marpa_g_symbol_is_terminal});
 @item whether the symbol is a counted symbol
 (@pxref{marpa_g_symbol_is_counted}); and
 @item the rank of the symbol
 (@pxref{marpa_g_symbol_rank}).
+@end itemize
+
+@node Listing rules
+@section Listing rules
+
+The parse diagnostics should a facility for displaying
+the rules in a grammar.
+The rules will have IDs from 0 to the highest rule ID,
+which can be found using the
+@code{marpa_g_highest_rule_id()} method
+(@pxref{marpa_g_highest_rule_id}).
+
+It is up to the application whether to have names for rules.
+In some grammar generators, the LHS of a rule serves as its
+name,
+but this does not work in Libmarpa,
+since many rules may have the same LHS.
+An application that does want to name its rule must
+decide on the rule naming convention.
+Currently the most used upper layer for Libmarpa,
+@code{Marpa::R2}, does not have rule names.
+
+At the highest verbosity level,
+the rule listing facility should display
+@itemize
+@item the rule ID;
+@item the LHS of the rule
+(@pxref{marpa_g_rule_lhs});
+@item the RHS of the rule, that is,
+each RHS symbol
+(@pxref{marpa_g_rule_rhs})
+for the length of the rule
+(@pxref{marpa_g_rule_length});
+@item whether the rule is accessible
+(@pxref{marpa_g_rule_is_accessible});
+@item whether the rule is nullable
+(@pxref{marpa_g_rule_is_nullable});
+@item whether the rule is nulling
+(@pxref{marpa_g_rule_is_nulling});
+@item whether the rule is loop
+(@pxref{marpa_g_rule_is_loop});
+@item whether the rule is productive
+(@pxref{marpa_g_rule_is_productive});
+@item whether the rule is proper_separation
+(@pxref{marpa_g_rule_is_proper_separation});
+@item the rank of the rule
+(@pxref{marpa_g_rule_rank});
+@item whether the rule is a sequence rule
+(@pxref{marpa_g_sequence_min});
+@item if the rule is a sequence rule,
+the minimum count of the sequence
+(@pxref{marpa_g_sequence_min}); and
+@item if the rule is a sequence rule,
+the sequence separator, if any,
+(@pxref{marpa_g_sequence_separator})
 @end itemize
 
 @node Error methods macros and codes
