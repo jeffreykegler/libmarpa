@@ -8474,8 +8474,8 @@ the facilities should display at the highest verbosity level.
 @node Listing symbols
 @section Listing symbols
 
-The parse diagnostics should a facility for naming symbols,
-listing the symbols in a grammar, with their names.
+The parse diagnostics should include a facility for naming symbols,
+iand one for listing the symbols in a grammar, with their names.
 The symbols will have IDs from 0 to the highest symbol ID,
 which can be found using the
 @code{marpa_g_highest_symbol_id()} method
@@ -8506,7 +8506,7 @@ the symbol listing facility should display
 @node Listing rules
 @section Listing rules
 
-The parse diagnostics should a facility for displaying
+The parse diagnostics should include a facility for displaying
 the rules in a grammar.
 The rules will have IDs from 0 to the highest rule ID,
 which can be found using the
@@ -8514,14 +8514,14 @@ which can be found using the
 (@pxref{marpa_g_highest_rule_id}).
 
 It is up to the application whether to have names for rules.
-In some grammar generators, the LHS of a rule serves as its
-name,
-but this does not work in Libmarpa,
+In some grammar generators,
+the LHS of a rule serves as its name,
+but does not produce unique names for each rule in Libmarpa,
 since many rules may have the same LHS.
-An application that does want to name its rule must
-decide on the rule naming convention.
 Currently the most used upper layer for Libmarpa,
 @code{Marpa::R2}, does not have rule names.
+An application that does want to name its rules must
+decide on a rule naming convention.
 
 At the highest verbosity level,
 the rule listing facility should display
@@ -8540,12 +8540,8 @@ for the length of the rule
 (@pxref{marpa_g_rule_is_nullable});
 @item whether the rule is nulling
 (@pxref{marpa_g_rule_is_nulling});
-@item whether the rule is loop
-(@pxref{marpa_g_rule_is_loop});
 @item whether the rule is productive
 (@pxref{marpa_g_rule_is_productive});
-@item whether the rule is proper_separation
-(@pxref{marpa_g_rule_is_proper_separation});
 @item the rank of the rule
 (@pxref{marpa_g_rule_rank});
 @item whether the rule is a sequence rule
@@ -8556,7 +8552,43 @@ the minimum count of the sequence
 @item if the rule is a sequence rule,
 the sequence separator, if any,
 (@pxref{marpa_g_sequence_separator})
+@item if the rule is a sequence rule,
+whether the rule uses proper separation,
+(@pxref{marpa_g_rule_is_proper_separation});
 @end itemize
+
+@node Listing Earley sets
+@section Listing Earley sets
+
+The parse diagnostics should include a facility for displaying
+Earley sets by Earley set location.
+For each Earley item at a location,
+the facility should display
+@itemize
+@item the rule;
+@item the rule's dot position;
+@item the origin of the Earley item.
+@end itemize
+The ``progress reports'' methods of Libmarpa
+are available for this purpose.
+@xref{Progress reports}.
+
+It is up to the application how to display rule and
+dot position, but the most helpful way is usually to display
+the LHS and RHS,
+with a bullet or dot at the appropriate position in the RHS.
+This is what is done when showing dotted rules in this document,
+as for example in
+@display
+    [ Y ::= C @bullet{} X ].
+@end display
+
+The current location of each Earley item may be displayed with the Earley item but,
+since it is shared by the entire set of Earley items,
+it is also often put in a header, or left implicit.
+We observe that, in order to obtain a progress report,
+an application must know the Earley set ID of the Earley set of
+interest.
 
 @node Error methods macros and codes
 @chapter Error methods, macros and codes
