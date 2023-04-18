@@ -1890,8 +1890,8 @@ objects.
 @node Input
 @chapter Input
 
-@node Earlemes
-@section Earlemes
+@node Parse location
+@section Parse location
 
 @node The traditional input model
 @subsection The traditional input model
@@ -1910,41 +1910,66 @@ natural language processing requires ambiguous tokens,
 for example.
 Libmarpa allows a wide variety of alternative input models.
 
-In Libmarpa a location is called a
-@dfindex earleme
-@dfn{earleme}.
-The number of an Earley set is the
-@dfindex ID (of an Earley set)
-@dfn{ID of the Earley set},
-or its
-@dfindex ordinal (of an Earley set)
-@dfn{ordinal}.
-In the traditional model, the ordinal of an Earley set and
-its earleme are always exactly the same, but in Libmarpa's
-advanced input models
-the ordinal of an Earley set can be different from
-its location (earleme).
+@node Earlemes and Earley set IDs
+@section Earlemes and Earley set IDs
 
-The important earleme values are
-the latest earleme.
-the current earleme, and
-the furthest earleme.
+Libmarpa's idea of parse location,
+is the
+@dfindex earleme
+@dfn{earleme},
+but Libmarpa also tracks Earley sets by
+ordinal number.
+In Libmarpa's basic input models,
+the earleme of an Earley set
+is always equal to
+the ordinal of the Earley set,
+so the distinction between Earley set ordinal
+and earleme is pedantic.
+But Libmarpa's advanced input models allow
+sparse input and,
+when sparse input is in use,
+an Earley set's ordinal and its
+earleme may differ.
+@xref{The fully general input model}.
+
+The earlemes are
+assigned consecutive non-negative integers, starting at 0.
+The highest valued earleme is called the
+furthest earleme.
+@xref{The furthest earleme}.
+The other important earleme values are
+the latest earleme (@pxref{The latest earleme})
+and
+the current earleme (@pxref{The current earleme}).
 Latest, current and furthest earleme,
 when they have specified values,
 obey a lexical order in this sense:
 The latest earleme is always at or before the current earleme,
 and the current earleme is always at or before the furthest earleme.
 
-@node The latest earleme
-@subsection The latest earleme
-
+Earley set ordinals are
+also consecutive non-negative integers, starting at 0.
+The highest valued Earley set ordinal is that of the
+latest Earley set.
 The
 @dfindex Earley set, latest
+@dfindex latest Earley set
 @dfn{latest Earley set}
 is the Earley set completed most recently.
 This is initially the Earley set at location 0.
 The latest Earley set is always the Earley set with the highest ordinal,
 and the Earley set with the highest earleme location.
+
+The Earley set ordinal
+is also known as the
+@dfindex ID (of an Earley set)
+@dfn{ID of the Earley set}, or
+@dfindex Earley set ID
+@dfn{Earley set ID}.
+
+@node The latest earleme
+@subsection The latest earleme
+
 The
 @dfindex earleme, latest
 @dfn{latest earleme} is the earleme of the latest Earley set.
