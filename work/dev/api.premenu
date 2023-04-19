@@ -9967,6 +9967,41 @@ be
 @item undefined, otherwise.
 @end itemize
 
+The Libmarpa interface does not provide a method
+for earleme-to-ID conversion.
+The input model is not known at the Libmarpa level,
+so that an earleme-to-ID method would have to be
+fully general.
+A fully general earleme-to-ID method would be costly,
+an cost which usually would be unnecessary.
+For these reasons,
+it's up to the application to create its own
+earleme-to-conversion method,
+if one is needed.
+
+Here are the alternatives:
+@itemize
+@item Usually an
+earleme-to-ID conversion method is not needed.
+@item If
+an earleme-to-ID conversion method is needed,
+and the sparse input model is not in use,
+the Earley set ID and the earleme are always
+equal, and the
+earleme-to-ID conversion is trivial.
+@item If an earleme-to-ID conversion method is needed,
+and a sparse input model is in use,
+the application may be able to implement
+an efficient earleme-to-ID conversion targeted
+at that specific input model.
+@item If an earleme-to-ID conversion method is needed,
+a sparse input model is in use,
+and no efficient earleme-to-ID conversion targeted
+at that specific input model seems to be available,
+the general
+earleme-to-ID conversion technique
+described just above must be used.
+@end itemize
 
 @node Support
 @chapter Support
