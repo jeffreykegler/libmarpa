@@ -1971,13 +1971,13 @@ This is initially the Earley set at location 0.
 The latest Earley set is always the Earley set with the highest ID,
 and the Earley set with the highest earleme location.
 
-The latest Earley set is usually dealt with implicitly,
-via the @code{marpa_start_input()}
+The latest Earley set is set implicitly
+by the @code{marpa_start_input()}
 (@pxref{marpa_r_start_input}) and
 @code{marpa_r_earleme_complete()}
 (@pxref{marpa_r_earleme_complete}) methods.
-Applications which want to access its value directly
-may use the
+Applications can access its value via
+the
 @code{marpa_r_latest_earley_set()} method.
 @xref{marpa_r_latest_earley_set}.
 
@@ -1993,11 +1993,6 @@ is equal to the current earleme.
 There is never an Earley set after the current earleme,
 and therefore the latest Earley set is never after the
 current earleme.
-The @code{marpa_r_start input()} and
-@code{marpa_r_earleme_complete()} methods
-are only ones that change the latest earleme.
-@xref{marpa_r_start_input, marpa_r_start_input()}, and
-@ref{marpa_r_earleme_complete, marpa_r_earleme_complete()}.
 
 The latest earleme is different from the current earleme if and only if
 there is no Earley set at the current earleme.
@@ -2006,6 +2001,19 @@ but by default, parsing is of the input
 in the range
 from earleme 0 to the latest earleme.
 @xref{End of parse}.
+
+The latest earleme is set implicitly
+by the @code{marpa_start_input()}
+(@pxref{marpa_r_start_input}) and
+@code{marpa_r_earleme_complete()}
+(@pxref{marpa_r_earleme_complete}) methods.
+Applications can access the value of the latest earleme
+by first calling the
+@code{marpa_r_latest_earley_set()} method
+(@pxref{marpa_r_latest_earley_set}),
+then converting its return value with the
+@code{marpa_r_earleme()} method
+(@pxref{marpa_r_earleme} method).
 
 @node The current earleme
 @subsection The current earleme
@@ -2023,11 +2031,16 @@ and every call to
 @code{marpa_r_earleme_complete()}
 advances the
 current earleme by 1.
-The @code{marpa_r_start input()} and
-@code{marpa_r_earleme_complete()} methods
-are only ones that change the current earleme.
-@xref{marpa_r_start_input, marpa_r_start_input()}, and
-@ref{marpa_r_earleme_complete, marpa_r_earleme_complete()}.
+
+The current earleme is set implicitly
+by the @code{marpa_start_input()}
+(@pxref{marpa_r_start_input}) and
+@code{marpa_r_earleme_complete()}
+(@pxref{marpa_r_earleme_complete}) methods.
+Applications can access the value of the current earleme
+via the
+@code{marpa_r_current_earleme()} method
+(@pxref{marpa_r_current_earleme}).
 
 @node The furthest earleme
 @subsection The furthest earleme
@@ -2054,11 +2067,15 @@ a call to
 @code{marpa_r_alternative()},
 the furthest earleme after the call
 is @code{max(old_f, current+length)}.
-The @code{marpa_r_new()} and
-@code{marpa_r_alternative()} methods
-are only ones that change the furthest earleme.
-@xref{marpa_r_new, marpa_r_new()}, and
-@ref{marpa_r_alternative, marpa_r_alternative()}.
+
+The furthest earleme is set implicitly by
+the @code{marpa_r_new()} (@pxref{marpa_r_new}) and
+the @code{marpa_r_alternative()} (@pxref{marpa_r_alternative})
+methods.
+Applications can access the value of the furthest earleme
+via the
+@code{marpa_r_furthest_earleme()} method
+(@pxref{marpa_r_furthest_earleme}).
 
 In the basic input models,
 where every token has length 1,
