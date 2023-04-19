@@ -1911,7 +1911,7 @@ for example.
 Libmarpa allows a wide variety of alternative input models.
 
 @node Earlemes and Earley set IDs
-@section Earlemes and Earley set IDs
+@subsection Earlemes and Earley set IDs
 
 Libmarpa's idea of parse location,
 is the
@@ -1947,25 +1947,39 @@ obey a lexical order in this sense:
 The latest earleme is always at or before the current earleme,
 and the current earleme is always at or before the furthest earleme.
 
-Earley set ordinals are
-also consecutive non-negative integers, starting at 0.
-The highest valued Earley set ordinal is that of the
-latest Earley set.
-The
-@dfindex Earley set, latest
-@dfindex latest Earley set
-@dfn{latest Earley set}
-is the Earley set completed most recently.
-This is initially the Earley set at location 0.
-The latest Earley set is always the Earley set with the highest ordinal,
-and the Earley set with the highest earleme location.
-
 The Earley set ordinal
 is also known as the
 @dfindex ID (of an Earley set)
 @dfn{ID of the Earley set}, or
 @dfindex Earley set ID
 @dfn{Earley set ID}.
+Earley set IDs are
+consecutive non-negative integers, starting at 0.
+The highest valued Earley set ID is that of the
+latest Earley set.
+@xref{The latest Earley set}
+
+@node The latest Earley set
+@subsection The latest Earley set
+
+The
+@dfindex Earley set, latest
+@dfindex latest Earley set
+@dfn{latest Earley set}
+is the Earley set completed most recently.
+This is initially the Earley set at location 0.
+The latest Earley set is always the Earley set with the highest ID,
+and the Earley set with the highest earleme location.
+
+The latest Earley set is usually dealt with implicitly,
+via the @code{marpa_start_input()}
+(@pxref{marpa_r_start_input}) and
+@code{marpa_r_earleme_complete()}
+(@pxref{marpa_r_earleme_complete}) methods.
+Applications which want to access its value directly
+may use the
+@code{marpa_r_latest_earley_set()} method.
+@xref{marpa_r_latest_earley_set}.
 
 @node The latest earleme
 @subsection The latest earleme
@@ -5259,23 +5273,11 @@ of the latest Earley set,
 the error code of the hard failure is
 @code{MARPA_ERR_NO_EARLEY_SET_AT_LOCATION}.
 
-At this writing, there is no method for
+Techniques for performing
 the inverse operation (conversion of an earleme to an Earley set
-ID).
-One consideration in writing
-such a method is that not all earlemes correspond to Earley sets.
-Applications that want to map earlemes
-to Earley sets will have no trouble if they
-are using the standard input model ---
-the Earley set
-ID is always exactly equal to the earleme in that model.
-For other applications
-that want an earleme-to-ID mapping,
-the most general method is create an ID-to-earleme
-array using the
-@code{marpa_r_earleme()}
-method
-and invert it.
+ID)
+are described in the section on advanced input models.
+@xref{Converting earleme to Earley set ID}.
 
 @strong{Return value}:
 On success, the earleme corresponding to Earley
@@ -9937,6 +9939,34 @@ Their disadvantage is efficiency --- the requirement of one call
 of @code{marpa_r_alternative()} for each codepoint can make them
 substantially more expensive than input models which allow multiple
 codepoints per earleme.
+
+@node Converting earleme to Earley set ID
+@section Converting earleme to Earley set ID
+
+In the dense input models,
+the earleme of every Earley set is equal
+to the ID of that Earley set.
+But, because of the sparse input models,
+this is not true in the general case.
+
+For other applications
+that want an earleme-to-ID mapping,
+the most general method for converting earlemes to Earley set IDs
+is to create a ID-to-earleme
+array using the
+@code{marpa_r_earleme()} method
+(@pxref{marpa_r_earleme}),
+and invert it.
+The resulting earleme-to-ID array will be sparse.
+More precisely, where the function @code{earleme} maps IDs
+to earlemes,
+the value at index @code{ix} of the array should
+be
+@itemize
+@item @code{id}, if @code{earleme(id) = ix} for some @code{id}; and
+@item undefined, otherwise.
+@end itemize
+
 
 @node Support
 @chapter Support
