@@ -8630,9 +8630,55 @@ as for example in
 The current location of each Earley item may be displayed with the Earley item but,
 since it is shared by the entire set of Earley items,
 it is also often put in a header, or left implicit.
-We observe that, in order to obtain a progress report,
-an application must know the Earley set ID of the Earley set of
-interest.
+
+We recall (@pxref{Earlemes and Earley set IDs}) that
+the Earley IDs range from 0 to @code{latest}, inclusive,
+where @code{latest} is the latest Earley set.
+@xref{The latest Earley set}].
+
+The obvious way to display the Earley items is one at a time.
+We call this the ``raw'' method of displaying an Earley set.
+But we can also try to compact this listing by grouping together
+Earley items that share a dotted rule
+(and which therefore differ only in their origins).
+We call this the ``compact'' method of displaying an Earley set.
+@code{Marpa::R2} uses the compact method.
+
+To use the compact method,
+we must be able to show an arbitrarily large number of origins compactly.
+@code{Marpa::R2}'s progress reports
+use display lines like the following:
+@display
+    F11 x12 @@0...38-41 L1c1-L2c40 <plain assignment> -> 'x' '=' expression @bullet{}
+@end display
+@noindent In the above display line, the ``F2'' indicates
+indicates that the display line is for rule 11,
+which is a completion.
+(The ``F'' indicates that the dot is in the ``final'' position.)
+@code{L1c1-L2c40} describes the line and column in the input ---
+the rule runs from line 1, column 1 to line 2, column 2.
+@code{<plain assignment> -> 'x' '=' expression @bullet{}}
+indicates the dotted rule.
+@code{x12} indicates that the display line
+represents 12 distinct Earley items.
+
+The compaction is done in the parse location descriptor:
+@code{@@0...38-41}.
+This states that the Earley items represented by the display line
+have origins ranging from 0 to 38.
+The current location for 
+the Earley items represented by the display line
+is 41.
+For more details on @code{Marpa::R2}'s implementation of progress
+reports, see
+@url{https://metacpan.org/dist/Marpa-R2/view/pod/Progress.pod}.
+
+The disadvantage of the compact representation of Earley sets
+is that it is more complicated to read.
+The disadvantage of the raw representation is that,
+for ambiguous grammars, the number of Earley items can
+be very large,
+and therefore the Earley set display can be extremely long.
 
 @node Error methods macros and codes
 @chapter Error methods, macros and codes
