@@ -8689,6 +8689,52 @@ be very large,
 and therefore the listing of the Earley set
 can be unmanageably long.
 
+@node Tracing tokens
+@section Tracing tokens
+
+The parse diagnostics should include a facility for
+displaying the token processing.
+At the default verbosity level,
+the facility should describe the token
+passed to the
+@code{marpa_r_alternative}
+(@pxref{marpa_r_alternative})
+method call,
+and specify the outcome of
+the @code{marpa_r_alternative}
+method call as
+``accepted'', ``rejected'' or ``uncorrectable'',
+where
+@itemize
+@item ``accepted'' means
+that the @code{marpa_r_alternative()} call succeeded;
+@item ``rejected'' means
+that the @code{marpa_r_alternative()} call failed,
+but the failure is fully recoverable; and
+@item ``uncorrectable'' means
+that the @code{marpa_r_alternative()} call failed,
+but the failure is not fully recoverable.
+@end itemize
+@noindent The token tracing facility's reporting of rejected token
+can vary by application.
+For some applications, token rejection will not be
+allowed, so that distinguishing between rejected
+and uncorrectable tokens is pointless and unnecessary.
+For other applications, such as those that use
+the Ruby Slippers technique (@pxref{Ruby Slippers}),
+token rejection will be
+a common occurrence in normal processing.
+
+At some verbosity level above the default,
+after every
+@code{marpa_r_earleme_complete()} method call
+(@pxref{marpa_r_earleme_complete})
+the token tracing facility should list all the
+expected tokens.
+The @code{marpa_r_terminals_expected()}
+(@pxref{marpa_r_terminals_expected}) method call
+is available for this purpose.
+
 @node Error methods macros and codes
 @chapter Error methods, macros and codes
 
