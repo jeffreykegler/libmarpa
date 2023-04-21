@@ -8715,7 +8715,7 @@ but the failure is fully recoverable; and
 that the @code{marpa_r_alternative()} call failed,
 but the failure is not fully recoverable.
 @end itemize
-@noindent The token tracing facility's reporting of rejected token
+@noindent The token tracing facility's reporting of rejected tokens
 can vary by application.
 For some applications, token rejection will not be
 allowed, so that distinguishing between rejected
