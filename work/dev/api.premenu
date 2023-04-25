@@ -8735,6 +8735,50 @@ The @code{marpa_r_terminals_expected()}
 (@pxref{marpa_r_terminals_expected}) method call
 is available for this purpose.
 
+@node Parse diagnosis checklist
+@section Parse diagnosis checklist
+
+A checklist for diagnosing parse problems will depend,
+clearly,
+on the facilities offered by the diagnostics layer
+in the application.
+What follows is a ``bare bones'' checklist,
+based on the diagnostic facilities recommended
+in this chapter.
+
+@itemize
+@item Check the location of the failure, and any error message.
+This is an obvious step and, if you are reading this checklist,
+you most likely have already taken it.
+@item
+Use the token tracing facility.
+Even if the problem is not directly with the tokens,
+the token trace is a good way to see how far the parse
+got, and what it was doing.
+If you are lucky, looking at it may make it apparent
+where the problem is.
+@item
+List the rules and the symbols.
+Perhaps you'll see an issue.
+In any case, you will need these listings for the next
+step on this checklist.
+@item
+List the latest Earley set.
+Form a theory of what @strong{should} be happening
+in the parse
+and check it against what the listing
+of the latest Earley
+shows you @strong{is actually} happening.
+@item
+If the fix is still not apparent,
+list earlier Earley sets,
+until you see the fix,
+or you reach the first one with an error.
+Figure out a way to change the grammar
+to fix the first erroneous Earley set,
+then work forward.
+@end itemize
+
 @node Error methods macros and codes
 @chapter Error methods, macros and codes
 
