@@ -5571,12 +5571,6 @@ On hard failure, @minus{}2.
 @node Progress reports
 @chapter Progress reports
 
-It is an important property of the Marpa algorithm that the
-Earley sets are added one at a time,
-so that
-before we have started the construction of the Earley set at @code{n+1},
-we know the full state of the parse at and before
-location @code{n}.
 Libmarpa's progress reports allow access to the Earley items
 in an Earley set.
 
@@ -5592,16 +5586,37 @@ use the
 @code{marpa_r_progress_item()}
 method.
 
+@node Progress report traverser
+@section Progress report traverser
+
+A progress report traverser is
+@itemize
+@item a linked list of the Earley items in a Earley set, in which
+@item one node is distinguished as the
+@dfindex current node (of a progress report traverser)
+@dfindex node, current (of a progress report traverser)
+@dfn{current node} of the traverser.
+@end itemize
+
+The linked list has two sentinel nodes,
+one at the beginning and one at the end.
+The two sentinel nodes do not
+correspond to Earley items
+so that, where @code{n}
+is the size of the Earley set,
+the linked list of its traverser contains @code{n+2} nodes.
+
+@node Progress report methods
+@section Progress report methods
+
 @anchor{marpa_r_progress_report_reset}
 @deftypefn {Mutator function} @
 int marpa_r_progress_report_reset ( @
   Marpa_Recognizer @var{r})
 
-On success, sets the current vertex of the report traverser
-to the null vertex.
-For more about the report traverser,
-including details about the current and null vertices,
-@pxref{marpa_r_progress_report_start,marpa_r_progress_report_start()}.
+On success, sets the current node of the report traverser
+to the sentinel node at the beginning of the progress report.
+@xref{Progress report traverser}.
 
 This method is not usually needed.
 Its effect is to leave the traverser in the same state as it is
@@ -5625,75 +5640,22 @@ int marpa_r_progress_report_start ( @
 Creates a progress report traverser
 in recognizer @var{r}
 for the Earley set with ID @var{set_id}.
-A
-@dfindex progress report traverser
-@dfindex traverser, progress report
-@dfn{progress report traverser}
-is a non-empty directed cycle graph whose vertices consist
-of the following:
-@itemize
-@item For every Earley item,
-exactly one vertex that corresponds to
-that Earley item.
-This vertex is called the
-@dfindex progress report item
-@dfn{progress report item}
-or, when the meaning is clear, the
-@dfindex report item
-@dfn{report item}.
-In this method description,
-we will say that the number of report items is @code{n},
-and we will write @code{ritem[i]}
-for the @code{i}'th report item.
-@item A special vertex, called the
-@dfindex null vertex
-@dfindex vertex, null
-@dfn{null vertex},
-which does not correspond
-to any Earley item.
-In this method description, we will write @code{null} for
-the null vertex.
-@end itemize
-
-There may be no Earley items in an Earley set,
-and therefore a progress report traverser may contain no report items.
-A progress report traverser with no report items is called a
-``trivial traverser''.
-A trivial traverser has exactly one edge: @code{(null, null)}.
-
-The edges of a non-trivial traverser are
-@itemize
-@item @code{(null, ritem[0])},
-@item @code{(ritem[n-1], null)}, and
-@item for every @code{0 <= i < v-1}, @code{(ritem[i-1], ritem[i])}.
-@end itemize
-This implies that every vertex has exactly one direct successor.
-The report items are a subgraph,
-and this graph can be seen as inducing the sequence @code{ritem[0] ... ritem[n-1]}.
-
-When a progress report traverser is active, one vertex is distinguished as the
-@dfindex current vertex (of a progress report traverser)
-@dfindex vertex, current (of a progress report traverser)
-@dfn{current vertex},
-which we will write as @code{current}.
-We call the direct successor of the current vertex,
-the
-@dfindex next vertex (of a progress report traverser)
-@dfindex vertex, next (of a progress report traverser)
-@dfn{next vertex}.
 
 On success, does the following:
 @itemize
-@item If a progress report traverser was active in this recognizer before this method call,
-it is destroyed and its memory is freed..
+@item If a progress report traverser was active in recognizer @var{r}
+before this method call,
+it is destroyed and its memory is freed.
 @item Creates a new progress report traverser from the Earley items for the
 Earley set with ID @var{set_id}.
-@item Activates the newly created progress report traverser,
-setting the current vertex to the null vertex.
-Intuitively, in a non-trivial traverser,
+@item
+Sets the current node of the traverser
+to the sentinel node at the beginning
+of the linked list of Earley items.
+Intuitively, for a non-empty Earley set,
 this can be thought of as positioning the
-traverser before the first report item.
-@item Returns @code{n}, the number of report items.
+traverser before the first Earley item.
+@item Returns @code{n}, the number of Earley items.
     @code{n} may be zero.
 @end itemize
 
@@ -5705,7 +5667,7 @@ The error code is @code{MARPA_ERR_NO_EARLEY_SET_AT_LOCATION}
 if @var{set_id} is greater than the ID of
 the latest Earley set.
 
-@strong{Return value}: On success, the number of report items,
+@strong{Return value}: On success, the number of Earley items,
 which will always be non-negative.
 On hard failure, @minus{}2.
 @end deftypefn
@@ -5745,27 +5707,27 @@ Marpa_Rule_ID marpa_r_progress_item ( @
 This method allows access to the data
 for the next progress report item of a
 progress report.
-For details about progress reports,
-@pxref{marpa_r_progress_report_start,marpa_r_progress_report_start()}.
+@xref{Progress report traverser}.
+
+Let @code{oldCurrent} be the current node of
+the progress report traverser in @var{r}
+when this method was called.
+Let @code{oldNext} be the next link
+of @code{oldCurrent}.
+@code{oldNext} is not defined if
+@code{oldCurrent} is the sentinel node
+at the end of the linked list.
 
 In the event of success:
 @itemize
-@item Advances the current vertex to the next vertex.
-More precisely, let @code{c_before} be the vertex
-that was the current vertex when
-this method was called.
-The report item traverser has exactly one edge such that @code{c_before}
-is its first element.
-Let this edge be @code{(c_before,c_after)}.
-This method sets the current vertex to @code{c_after}.
-In this method description, we will write @code{current} as an alias for @code{c_after}.
-@item @code{current} will be a report item vertex and therefore there will
-be an Earley item corresponding to @code{current}.
-@item Writes the ``cooked dot position'' of the Earley item corresponding to @code{current}
+@item Sets the current node of the traverser to @code{oldNext}.
+We will call this new value of the current node,
+@code{newCurrent}.
+@item Writes the ``cooked dot position'' of the Earley item corresponding to @code{newCurrent}
 to the location pointed to by the @var{position} argument.
-@item Writes the origin of the Earley item corresponding to @code{current}
+@item Writes the origin of the Earley item corresponding to @code{newCurrent}
 to the location pointed to by the @var{origin} argument.
-@item Returns the rule ID of the Earley item corresponding to @code{current}.
+@item Returns the rule ID of the Earley item corresponding to @code{newCurrent}.
 @end itemize
 
 The ``cooked dot position'' is
