@@ -5599,12 +5599,30 @@ A progress report traverser is
 @end itemize
 
 The linked list has two sentinel nodes,
-one at the beginning and one at the end.
+one at the start of the linked list,
+and one at the end of the linked list.
 The two sentinel nodes do not
 correspond to Earley items
 so that, where @code{n}
 is the size of the Earley set,
 the linked list of its traverser contains @code{n+2} nodes.
+
+The sentinel node at the start of the linked list
+is called the
+@dfindex start sentinel node
+@dfindex start sentinel
+@dfn{start sentinel node} or
+@dfn{start sentinel}.
+In a traverser for a non-empty Earley set,
+the start sentinel comes before the first Earley item.
+The sentinel node at the end of the linked list
+is called the
+@dfindex end sentinel node
+@dfindex end sentinel
+@dfn{end sentinel node} or
+@dfn{end sentinel}.
+In a traverser for a non-empty Earley set,
+the end sentinel comes after the last Earley item.
 
 @node Progress report methods
 @section Progress report methods
@@ -5650,8 +5668,7 @@ it is destroyed and its memory is freed.
 Earley set with ID @var{set_id}.
 @item
 Sets the current node of the traverser
-to the sentinel node at the beginning
-of the linked list of Earley items.
+to the start sentinel.
 Intuitively, for a non-empty Earley set,
 this can be thought of as positioning the
 traverser before the first Earley item.
@@ -5715,8 +5732,7 @@ when this method was called.
 Let @code{oldNext} be the next link
 of @code{oldCurrent}.
 @code{oldNext} is not defined if
-@code{oldCurrent} is the sentinel node
-at the end of the linked list.
+@code{oldCurrent} is the end sentinel node.
 
 In the event of success:
 @itemize
@@ -5747,7 +5763,7 @@ a @minus{}1 to the rule length.
 
 In the event of soft failure:
 @itemize
-@item @code{current} is the null vertex.
+@item Sets the current node to the end sentinel.
 @item Sets the error code to @code{MARPA_ERR_PROGRESS_REPORT_EXHAUSTED}.
 @item Leaves unchanged the locations pointed to by
 the @var{position} and @var{origin} arguments.
