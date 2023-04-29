@@ -5633,7 +5633,7 @@ int marpa_r_progress_report_reset ( @
   Marpa_Recognizer @var{r})
 
 On success, sets the current node of the report traverser
-to the sentinel node at the beginning of the progress report.
+to the start sentinel.
 @xref{Progress report traverser}.
 
 This method is not usually needed.
@@ -5663,7 +5663,7 @@ On success, does the following:
 @itemize
 @item If a progress report traverser was active in recognizer @var{r}
 before this method call,
-it is destroyed and its memory is freed.
+destroys it and frees its memory.
 @item Creates a new progress report traverser from the Earley items for the
 Earley set with ID @var{set_id}.
 @item
@@ -5731,8 +5731,9 @@ the progress report traverser in @var{r}
 when this method was called.
 Let @code{oldNext} be the next link
 of @code{oldCurrent}.
-@code{oldNext} is not defined if
-@code{oldCurrent} is the end sentinel node.
+If @code{oldCurrent} is the end sentinel,
+@code{oldNext} is not defined,
+and this method soft fails.
 
 In the event of success:
 @itemize
