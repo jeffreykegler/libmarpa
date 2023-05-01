@@ -1543,6 +1543,13 @@ We say that a dotted rule is
 @dfindex completed dotted rule
 @dfn{completed}
 iff its dot position is after the last symbol.
+A completed dotted rule is also called a
+@dfindex completion (dotted rule)
+@dfn{completion}.
+A completion indicates that the rule
+of the dotted rule
+has been fully recognized.
+
 We say that an Earley item is
 @dfindex completed Earley item
 @dfn{completed}
@@ -1552,10 +1559,7 @@ For example, the Earley item
      [ [ A ::= X Y Z @bullet{} ], 7, 50],
 @end display
 @noindent is completed.
-A completed dotted rule is also called a
-@dfindex completion (dotted rule)
-@dfn{completion}.
-Similarly, a completed Earley item is also called a
+A completed Earley item is also called a
 @dfindex completion (Earley item)
 @dfn{completion}.
 
@@ -1563,6 +1567,13 @@ We say that a dotted rule is
 @dfindex predicted dotted rule
 @dfn{predicted}
 iff its dot position is before the first symbol.
+A predicted dotted rule is also called a
+@dfindex prediction (dotted rule)
+@dfn{prediction}.
+A prediction indicates that we have not yet recognized any symbols in the rule
+of the dotted rule.
+All that a prediction does is to predict that the rule will occur.
+
 We say that an Earley item is
 @dfindex predicted Earley item
 @dfn{predicted}
@@ -1572,10 +1583,7 @@ For example, the Earley item
      [ [ A ::= @bullet{} X Y Z ], 7, 7],
 @end display
 @noindent is predicted.
-A predicted dotted rule is also called a
-@dfindex prediction (dotted rule)
-@dfn{prediction}.
-Similarly, a predicted Earley item is also called a
+A predicted Earley item is also called a
 @dfindex prediction (Earley item)
 @dfn{prediction}.
 
