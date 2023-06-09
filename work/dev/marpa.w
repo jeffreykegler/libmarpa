@@ -3125,6 +3125,9 @@ Marpa_Rule_ID _marpa_g_source_xrl(
 The rank of the internal rule.
 |IRL_Rank_by_XRL| and |IRL_CHAF_Rank_by_XRL|
 assume that |t_source_xrl| is not |NULL|.
+The IRL rank is created by shifting the XRL rank
+to the high bits, and adding in the CHAF rank.
+CHAF rank is inverted for null-high.
 @d EXTERNAL_RANK_FACTOR 4
 @d MAXIMUM_CHAF_RANK 3
 @d IRL_CHAF_Rank_by_XRL( xrl, chaf_rank) (
@@ -4020,7 +4023,7 @@ in the length of rule of the original grammar.
 @ Marpa's CHAF (Chomsky-Horspool-Aycock Form) eliminates
 the problem of exponential explosion by first breaking rules
 up into pieces, each piece containing no more than two proper nullables.
-The number of rewritten rules in CHAF in linear in the length of
+The number of rewritten rules in CHAF is linear in the length of
 the original rule.
 
 @ The CHAF rewrite affects only rules with proper nullables.
@@ -4030,16 +4033,26 @@ Each piece of the original rule is rewritten into up to four
 When there are two proper nullables, the potential CHAF rules
 are
 \li The PP rule:  Both factors are replaced with non-nulling symbols.
+   Chaf rank is 3.
 \li The PN rule:  The first factor is replaced with a non-nulling symbol,
 and the second factor is replaced with a nulling symbol.
+   Chaf rank is 2.
 \li The NP rule: The first factor is replaced with a nulling symbol,
 and the second factor is replaced with a non-nulling symbol.
+   Chaf rank is 1.
 \li The NN rule: Both factors are replaced with nulling symbols.
+   Chaf rank is 0.
+
+The CHAF ranks are used in null-high and null-low sorting.
 
 @ Sometimes the CHAF piece will have only one factor.  A one-factor
 piece is rewritten into at most two factored pieces:
 \li The P rule:  The factor is replaced with a non-nulling symbol.
+   Chaf rank is 3.
 \li The N rule:  The factor is replaced with a nulling symbol.
+   Chaf rank is 0.
+
+The CHAF ranks are used in null-high and null-low sorting.
 
 @ In |CHAF_rewrite|, a |rule_count| is taken before the loop over
 the grammar's rules, even though rules are added in the loop.
