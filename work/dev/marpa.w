@@ -185,7 +185,7 @@ that is pretty incomprehensible.
 But is
 $$Aycock\_Horspool\_Item\_To\_Element\_of\_Earley\_Item\_by\_Internal\_Symbol\_ID$$
 really any better?
-My experience say no.
+My experience says no.
 @ I have a lot of practice coming back to pages of both, cold,
 and trying to figure them out.
 Both are daunting, but the abbreviations are more elegant, and look
@@ -11028,7 +11028,8 @@ and are not traversed when traversing or-nodes by ID.
     }
 }
 
-@ ``Safe'' because it does not require called to ensure the such
+@ This function is
+``safe'' because it does not require its caller to ensure that such
 an or-node exists.
 @<Function definitions@> =
 PRIVATE
@@ -12435,7 +12436,7 @@ nook to see if it is ``dirty'' before pushing it onto the worklist,
 but we must make the same tests when the nook is popped
 of the worklist, in order to process it.
 So it's a question of
-whether the cost of a push and pop.
+whether the cost of a push and pop
 outweighs the cost of duplicating the
 ``dirty'' bit tests.
 @ @<Finish tree if possible@> = {
@@ -12556,6 +12557,7 @@ it has a duplicate in the tree.
 in the tree,
 by definition there is no cycle for this or-node in
 that tree.
+QED.
 @<Lemma: Cycle implies duplicate@> =
 
 @*0 Lemma: Cycle implies non-zero.
@@ -12568,8 +12570,8 @@ that a zero-length or-node does
 not produce a cycle.
 To do this we show that a zero-length or-node is
 a ``dead-end` in terms of derivation.
-An or-node derives other or-nodes with through its
-predecessor or its cause.
+An or-node derives other or-nodes
+either through its predecessor or through its cause.
 A zero-length or-node has no predecessor.
 (In theory a predicted dotted rule can be seen as the
 predecessor, but predecessors are semantically inert,
