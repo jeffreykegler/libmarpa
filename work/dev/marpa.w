@@ -141,8 +141,12 @@
 \bigskip\noindent
 @i ../shared/copyright_page_license.w
 
+
 @** About this document.
-The original intent was that this document would evolve
+
+@ {\bf Timestamp}: \today\ at \hours.
+
+@ The original intent was that this document would evolve
 toward a book describing the code, in roughly the same form as those that
 Don Knuth produces using this system.
 But in fact this document has evolved into
