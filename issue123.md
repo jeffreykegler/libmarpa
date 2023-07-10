@@ -5,4 +5,7 @@
 - [Marpa::R2::Semantics::Order](https://metacpan.org/dist/Marpa-R2/view/pod/Semantics/Order.pod)
 - [Marpa::R2::Semantics::Rank](https://metacpan.org/dist/Marpa-R2/view/pod/Semantics/Rank.pod)
 
+- Add proof of assertions in Marpa::R2::Semantics::Rank?  I have a Proof.pod in
+the Marpa::R2 docs as a source for this.
+
 - Once done, rewrite prerequisites to reflect self-containment.
