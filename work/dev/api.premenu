@@ -3085,9 +3085,9 @@ and that it recovered from all the recoverable failures that were detected.
 @node Classifying failure
 @section Classifying failure
 
-A Libmarpa application programming failure,
-unless stated otherwise,
-is an irrecoverable failure.
+A Libmarpa application programming failure
+is irrecoverable,
+unless this document states otherwise.
 Once an irrecoverable failure has occurred,
 the further behavior of the program is undefined.
 Nonetheless, we specify,
@@ -3096,43 +3096,6 @@ diagnostics behaviors
 (@pxref{Application and diagnostic behavior})
 in an effort to handle irrecoverable failures as
 smoothly as possible.
-
-A Libmarpa application programming failure
-is not recoverable,
-unless this document states otherwise.
-
-@c So far all recoverable failures are trivially recoverable,
-@c Wait and set and determine what to do with the following
-@c
-@c Every recoverable failure has
-@c @dfindex recovery handling
-@c @dfn{recovery handling}
-@c associated with it.
-@c The recovery handling is the processing necessary
-@c for the application to recover from a recoverable failure.
-@c For more on handling recoverable failures,
-@c see below
-@c (@ref{Recoverable hard failure} and @ref{Soft failure}).
-@c
-@c The recovery handling is
-@c @dfindex recovery handling, trivial
-@c @dfindex trivial recovery handling
-@c @dfn{trivial}
-@c if
-@c the application does not have to do anything
-@c in order to recover from the recoverable failure.
-@c If the recovery handling of a recoverable failure is trivial,
-@c we say that the failure is
-@c trivially recoverable.
-@c A
-@c @dfindex trivially recoverable failure
-@c @dfindex failure, trivially recoverable
-@c @dfn{trivially recoverable failure}
-@c is recovered from
-@c immediately after it occurs.
-@c Put another way, the application programmer
-@c may consider a recoverable error as an advisory,
-@c and proceed immediately with normal processing.
 
 A failure is called a
 @dfindex hard failure
