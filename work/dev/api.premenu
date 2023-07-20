@@ -2873,6 +2873,107 @@ But, in the implementation, the context of a node is always
 available, and allowing for an ``instance number'' with each node
 would consume a considerable amount of space.
 
+@node Sorting a parse forest
+@chapter Sorting a parse forest
+
+As mentioned, a Libmarpa parse returns a parse forest,
+which may contain more than one parse tree.
+@xref{Ambiguity}.
+There are three ways to sort parses.
+@itemize
+@item Accept the default parse order,
+which is described below.
+@item Use the methods in the order time object.
+@xref{Ordering methods}.
+@item Let the application do it.
+@xref{Letting the application sort parses}.
+@end itemize
+
+@node Semantic duplicates
+@section Semantic duplicates
+
+Regardless of the parse order chosen,
+no two parse trees in a parse series will be
+semantic duplicates.
+Two parse trees are
+@dfindex semantic duplicates
+@dfindex duplicates, semantic
+@dfn{semantic duplicates}
+if and only if
+a recursive, top-down evaluation of each
+applies
+the same rules
+in the same order
+at the same parse locations.
+If the semantics are deterministic,
+parse trees that are semantic duplicates
+will always produce the same parse result.
+In other words,
+from the point of view of a deterministic semantics,
+parse trees that are semantic duplicates
+are indistinguishable.
+
+@node The default parse order
+@section The default parse order
+
+The default is for the parse results to be returned
+in
+@dfindex arbitrary parse order
+@dfindex parse order, arbitrary
+@dfn{arbitrary parse order}.
+Traversal of the parse trees in
+arbitrary parse order
+will be always be well-behaved
+in the sense
+that no two parse trees will be semantic duplicates,
+and no unique (semantic non-duplicate)
+parse tree will be omitted.
+No other property of arbitrary parse order is guaranteed.
+For example, the order may
+change each time
+the parse forest is traversed.
+
+@c Use of non-default values
+@c of the C<ranking_method> named argument is somewhat like PEG,
+@c in that it ranks rule alternatives at choice points.
+@c It has the advantage over PEG of being more powerful,
+@c because it can rank the parses of any grammar that C<Marpa::R2>
+@c can parse.
+@c It is also safer in the sense that in C<Marpa::R2>
+@c the BNF guides the grammar in the tradiional way.
+@c The PEG parse description,
+@c while it looks like BNF,
+@c is not interpreted as BNF,
+@c and often omits parses that
+@c a BNF-driven parser like C<Marpa::R2> recognizes.
+@c The lack of safety comes from inability to predict
+@c which parses will be omitted ---
+@c it is very hard to determine,
+@c in general, what grammar a PEG parser is actually parsing.
+@c There is much more about the use of
+@c L<C<Marpa::R2>'s C<ranking_method> named
+@c argument|Marpa::R2::Scanless::R/"ranking_method">
+@c in
+@c L<its own document|Marpa::R2::Scanless::Semantics::Rank>.
+
+@node Letting the application sort parses
+@section Letting the application sort parses
+
+The most general way to sort Marpa parses is for the application
+to take control.
+The application can set up the Marpa semantic actions
+so that the parse result of every parse tree is a
+@code{<rank, true_value>} duple.
+The duples can then be sorted by @code{rank}.
+Once the results are sorted,
+the @code{rank} element of the duple can be discarded.
+
+The user needs to be careful.
+In theory, ambiguity can cause an exponential explosion in the number of results.
+In practice, ambiguity tends to get out of hand very easily.
+Producing and sorting all the parses can take a very
+long time.
+
 @node Failure
 @chapter Failure
 
