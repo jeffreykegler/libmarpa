@@ -1590,7 +1590,20 @@ A predicted Earley item is also called a
 The
 @dfindex postdot symbol (of a dotted rule)
 @dfn{postdot symbol}
-of a dotted rule is the RHS symbol after the
+of a dotted rule is the RHS symbol
+immediately before the dot position.
+For example, in the dotted rule,
+@display
+     [ A ::= X Y @bullet{} Z ]
+@end display
+@noindent the predoct symbol is @code{Y}.
+If the dotted rule is the start rule or a prediction,
+its predot symbol is not defined.
+
+The
+@dfindex postdot symbol (of a dotted rule)
+@dfn{postdot symbol}
+of a dotted rule is the RHS symbol immediately after the
 dot position.
 For example, in the dotted rule,
 @display
@@ -1626,6 +1639,51 @@ item in the Earley set at @code{j},
 @code{marpa_r_alternative()} method
 at current location @code{j}.
 @xref{marpa_r_alternative}.
+
+We say that a dotted rule is
+@dfindex reduction (dotted rule)
+a @dfn{reduction}
+iff its predot symbol is a non-terminal.
+We say that an Earley item is
+@dfindex reduction (Earley item)
+@dfn{reduction}
+iff its dotted rule is a reduction.
+For example, the Earley item
+@display
+     [ [ A ::= X Y @bullet{} Z], 7, 50],
+@end display
+@noindent is a reduction is @code{Y}
+is a non-terminal.
+
+We say that a dotted rule is
+@dfindex scanned dotted rule
+a @dfn{scanned} dotted rule
+iff its predot symbol is a terminal.
+We say that an Earley item is
+@dfindex scanned Earley item
+a @dfn{scanned Earley item}
+iff its dotted rule is a reduction.
+For example, the Earley item
+@display
+     [ [ A ::= X Y @bullet{} Z], 7, 50],
+@end display
+@noindent is a reduction is @code{Y}
+is a terminal.
+
+Two noteworthy consequences
+follow from the way in which the origin and current location of
+an Earley item are defined.
+First,
+if the Earley item is a prediction,
+then origin and current location will always be the same.
+Second,
+the location where a rule ends is not tracked unless the
+Earley item is a completion.
+If its dotted rule is not a completion,
+an Earley item does not tell us
+if a rule will
+ever be completed,
+much less at which location.
 
 @node Application and diagnostic behavior
 @section Application and diagnostic behavior
