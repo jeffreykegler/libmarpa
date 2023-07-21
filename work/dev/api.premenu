@@ -1652,7 +1652,7 @@ For example, the Earley item
 @display
      [ [ A ::= X Y @bullet{} Z], 7, 50],
 @end display
-@noindent is a reduction is @code{Y}
+@noindent is a reduction if @code{Y}
 is a non-terminal.
 
 We say that a dotted rule is
@@ -1667,7 +1667,7 @@ For example, the Earley item
 @display
      [ [ A ::= X Y @bullet{} Z], 7, 50],
 @end display
-@noindent is a reduction is @code{Y}
+@noindent is a reduction if @code{Y}
 is a terminal.
 
 Two noteworthy consequences
