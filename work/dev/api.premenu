@@ -2933,29 +2933,6 @@ For example, the order may
 change each time
 the parse forest is traversed.
 
-@c Use of non-default values
-@c of the C<ranking_method> named argument is somewhat like PEG,
-@c in that it ranks rule alternatives at choice points.
-@c It has the advantage over PEG of being more powerful,
-@c because it can rank the parses of any grammar that C<Marpa::R2>
-@c can parse.
-@c It is also safer in the sense that in C<Marpa::R2>
-@c the BNF guides the grammar in the tradiional way.
-@c The PEG parse description,
-@c while it looks like BNF,
-@c is not interpreted as BNF,
-@c and often omits parses that
-@c a BNF-driven parser like C<Marpa::R2> recognizes.
-@c The lack of safety comes from inability to predict
-@c which parses will be omitted ---
-@c it is very hard to determine,
-@c in general, what grammar a PEG parser is actually parsing.
-@c There is much more about the use of
-@c L<C<Marpa::R2>'s C<ranking_method> named
-@c argument|Marpa::R2::Scanless::R/"ranking_method">
-@c in
-@c L<its own document|Marpa::R2::Scanless::Semantics::Rank>.
-
 @node Letting the application sort parses
 @section Letting the application sort parses
 
@@ -9756,10 +9733,50 @@ be kept for backward compatibility.
 @strong{Suggested message}: "The recognizer is inconsistent".
 @end deftypevr
 
-@node Technical notes
-@chapter Technical notes
+@node Notes on order object
+@chapter Notes on order object
 
-This section contains technical notes that are
+This chapter contains notes on the order time object
+that are not necessary for the main presentation.
+They present details may be helpful or interesting.
+
+@node Ordered parses and PEG
+@section Ordered parses and PEG
+
+Using ranks to order parses
+resembles PEG parsing,
+in that it ranks rule alternatives at choicepoints.
+Libmarpa's ranking has the advantage over PEG of being more powerful,
+because it can rank the parses of any BNF grammar.
+PEG's notation makes it seems that it can handle any BNF
+grammar, but in fact PEG is restricted to strong LL-regular
+grammars,
+PEG is only linear for strong LL(k) grammars,
+and the grammar PEG parses is only equivalent to
+its PEG notation if it is LL(1).
+@footnote{Mascarenhas, Fabio,
+S@`ergio Medeiros, and Roberto Ierusalimschy,
+"On the relation between context-free grammars and parsing expression grammars",
+@emph{Science of Computer Programming},
+volume 89, part C, 1 September 2014, pp. 235-250.
+@url{https://arxiv.org/abs/1304.3177}.}
+
+Libmarpa is also safer in the sense that Libmarpa
+the BNF guides the grammar in the tradiional way.
+The PEG parse description,
+while it looks like BNF,
+is not interpreted as BNF,
+and often omits parses that
+a BNF-driven parser like Libmarpa recognizes.
+The lack of safety comes from inability to predict
+which parses will be omitted ---
+it is very hard to determine,
+in general, what grammar a PEG parser is actually parsing.
+
+@node Notes on implementation
+@chapter Notes on implementation
+
+This chapter contains implementation notes that are
 not necessary for the main presentation,
 but which may be helpful or interesting.
 
