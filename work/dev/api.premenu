@@ -1685,6 +1685,108 @@ if a rule will
 ever be completed,
 much less at which location.
 
+@node Confluences
+@section Confluences
+
+In every parse,
+the Marpa algorithm starts
+with
+@itemize
+@item
+an
+@dfindex Earley table
+@dfn{Earley table}
+containing a
+@dfindex start Earley item
+@dfn{start Earley item},
+and
+@item
+a sequence of sets of tokens.
+@end itemize
+
+The Marpa algorithm then repeatedly performs operations
+from the following set,
+until every possible operation has been performed at least once,
+at which no more Earley items can be added to the Earley table:
+@itemize
+@item It adds scanned Earley items to the Earley table using
+the
+@dfindex scan operation
+@dfn{scan operation}.
+@item It adds reductions to the Earley table using
+the
+@dfindex reduction operation
+@dfn{reduction operation}.
+@item It adds predictions to the Earley table using
+the
+@dfindex prediction operation
+@dfn{prediction operation}.
+@end itemize
+
+Each operation is a reason for an Earley item to be in
+the Earley table.
+If we count addition of the start Earley item as an ``operation'',
+this means that every Earley item has at least one reason for
+being in the Earley table.
+
+Duplicate Earley items are not added to the table.
+Instead, in an ambiguous parse,
+an Earley item can have more than one reason
+for being in the table.
+
+For describing the reasons for the presence of Earley items
+in the Earley table, we use hydrological terminology.
+Intuitively, the tokens and/or Earley items are
+``upstream'' from the Earley items they cause.
+
+Every Earley item has one or more
+@dfindex confluences
+@dfn{confluences}
+which
+record the reason for
+that Earley item's presence in the Earley table.
+Each confluence has two
+@dfindex inflow
+@dfn{inflows},
+but both of the inflows may be
+@dfindex ill-defined
+@dfn{ill-defined}.
+
+The first inflow is the
+@dfindex mainstem
+@dfn{mainstem}.
+When well-defined, a mainstem is always an Earley item.
+The second inflow is the
+@dfindex tributary
+@dfn{tributary}.
+When well-defined, a tributary is an Earley item or a
+token.
+
+@itemize
+@item
+The start Earley item always has exactly one
+confluence.
+Both inflows of its confluence are ill-defined.
+@item
+A predicted Earley item may have many confluences.
+The mainstem of a predicted Earley item is always
+another Earley item.
+The tributary of a predicted Earley item is always
+ill-defined.
+@item
+A scanned Earley item may have multiple confluences.
+The mainstem of a scanned Earley item is always
+another Earley item.
+The tributary of a scanned Earley item is always
+a token.
+@item
+A reduction may have many confluences.
+The mainstem of a reduction is always
+another Earley item.
+The tributary of a reduction is always
+a completed Earley item.
+@end itemize
+
 @node Application and diagnostic behavior
 @section Application and diagnostic behavior
 
@@ -6031,6 +6133,13 @@ When an ordering is no longer in use, its memory can be freed
 using the
 @code{marpa_o_unref()}
 method.
+
+Most users will want the default ordering.
+so that the @code{marpa_o_new()} and
+@code{marpa_o_unref()} methods are the only methods
+they will need.
+For additional details on order objects,
+@pxref{Notes on order object}.
 
 @node Freezing the ordering
 @section Freezing the ordering
