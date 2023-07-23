@@ -10071,6 +10071,456 @@ which parses will be omitted ---
 it is very hard to determine,
 in general, what grammar a PEG parser is actually parsing.
 
+@node Ranked grammar examples
+@section Ranked grammar examples
+
+@node Longest highest version 1
+@subsection Longest highest, version 1
+
+The DSL in the synopsis ranks its items
+"longest highest".
+Here "items" are represented by the symbols,
+@code{<Item3>},
+@code{<Item2>} and
+@code{<Item1>}.
+The "longest" choice is considered to be the one
+with the most lexemes.
+Working this idea out for this grammar,
+we see that the items
+should rank,
+from highest to lowest:
+@code{<Item3>},
+@code{<Item2>} and
+@code{<Item1>}.
+
+@verbatim
+
+  Top ::= List
+  List ::= Item3 # rank => 3
+  List ::= Item2 # rank => 2
+  List ::= Item1 # rank => 1
+  List ::= List Item3 # rank => 3
+  List ::= List Item2 # rank => 2
+  List ::= List Item1 # rank => 1
+  Item3 ::= VAR '=' VAR
+  Item2 ::= VAR '='
+  Item1 ::= VAR
+
+@end verbatim
+
+To see how ranking works in this grammar,
+we note that, for a choicepoint to be non-trivial,
+it must have a predot symbol that is the LHS of more
+than one rule.
+Therefore, in the above grammar,
+a choicepoint must
+have one of these dotted rules:
+
+@verbatim
+
+     Top ::= List .
+     List ::= List . Item3
+     List ::= List . Item2
+     List ::= List . Item1
+
+@end verbatim
+
+The tributary of these choicepoints
+may be any one of
+
+@verbatim
+
+     List ::= Item3 .
+     List ::= Item2 .
+     List ::= Item1 .
+     List ::= List Item3 .
+     List ::= List Item2 .
+     List ::= List Item1 .
+
+@end verbatim
+
+A little effort shows that @code{<Item2>} never
+participates in an ambiguity,
+so that these are the possible tributaries
+in non-trivial choicepoints:
+
+@verbatim
+
+     List ::= Item1 .
+     List ::= List Item1 .
+     List ::= Item3 .
+     List ::= List Item3 .
+
+@end verbatim
+
+@node Shortest highest version 1
+@subsection Shortest highest, version 1
+
+Here we see the grammar of the synopsis,
+reworked for a "shortest highest"
+ranking.
+"Shortest highest" is the reverse of
+"longest highest".
+
+@verbatim
+
+  Top ::= List
+  List ::= Item3 rank => 1
+  List ::= Item2 rank => 2
+  List ::= Item1 rank => 3
+  List ::= List Item3 rank => 1
+  List ::= List Item2 rank => 2
+  List ::= List Item1 rank => 3
+  Item3 ::= VAR '=' VAR
+  Item2 ::= VAR '='
+  Item1 ::= VAR
+
+@end verbatim
+
+@node Longest highest version 2
+@subsection Longest highest, version 2
+
+The previous examples have shown the rule involved
+in parse ranking in "spelled out" form.
+In fact, a more compact form of the grammar can be used,
+as shown below for
+"longest highest" ranking.
+
+@verbatim
+
+  Top ::= List
+  List ::= Item # rank => 1
+  List ::= List Item # rank => 0
+  Item ::= VAR '=' VAR # rank => 3
+  Item ::= VAR '='     # rank => 2
+  Item ::= VAR         # rank => 1
+  VAR ~ [\w]+
+
+@end verbatim
+
+@node Shortest highest version 2
+@subsection Shortest highest, version 2
+
+This is the grammar for "shortest highest",
+in compact form:
+
+@verbatim
+
+  Top ::= List
+  List ::= Item # rank => 0
+  List ::= List Item # rank => 1
+  Item ::= VAR '=' VAR # rank => 1
+  Item ::= VAR '='     # rank => 2
+  Item ::= VAR         # rank => 3
+
+@end verbatim
+
+@node Reimplementing ranking as pure BNF
+@section Reimplementing ranking as pure BNF
+
+It is generally better
+to write a grammar as "pure BNF", instead of using ranking.
+The advantage of using pure BNF is that you can more readily determine
+exactly what language it is that you are parsing:
+Ranked grammars make look easier to analyze at first glance,
+but the more you look at them the more tricky you
+realize they are.
+
+The pure BNF reimplementations below rely on an observation:
+The parse string becomes easier to analyze
+when we think in terms of fenceposts,
+rather than in term of the location of the lexemes.
+Fenceposts are either initial, final or medial.
+The
+@dfindex initial fencepost
+@dfn{initial fencepost}
+is the position before the first lexeme.
+The
+@dfindex final fencepost
+@dfn{final fencepost}
+is the position after the last lexeme.
+A
+@dfindex medial fencepost
+@dfn{medial fencepost}
+is the position between two lexemes.
+We can call a fencepost a
+@dfindex VAR-bound
+@dfn{VAR-bound}
+if it is a either an initial fencepost,
+a final fencepost,
+or a medial fencepost
+that occurs between two @code{<VAR>} lexemes.
+We can then visualize the input string
+as a sequence of "VAR-bounded"
+substrings.
+
+@node Longest highest as pure BNF
+@subsection Longest highest as pure BNF
+
+Here is the "longest highest" example,
+reimplemented as BNF:
+
+@verbatim
+
+  Top            ::= Max_Boundeds
+  Top            ::= Max_Boundeds Unbounded
+  Top            ::= Unbounded
+  Max_Boundeds   ::= Max_Bounded+
+  Max_Bounded    ::= Eq_Finals Var_Final3
+  Max_Bounded    ::= Var_Final
+  Unbounded      ::= Eq_Finals
+  Eq_Finals      ::= Eq_Final+
+  Var_Final      ::= Var_Final3 | Var_Final1
+  Var_Final3     ::= VAR '=' VAR
+  Eq_Final       ::= VAR '='
+  Var_Final1     ::= VAR
+
+@end verbatim
+
+@node Shortest highest as pure BNF
+@subsection Shortest highest as pure BNF
+
+We can also reimplement the "shortest highest"
+example as BNF.
+One of the advantages of a BNF (re)implementation,
+is that it often clarifies the grammar.
+For example
+in this case, we note that
+the DSL rule
+
+@verbatim
+
+  Var_Final3     ::= VAR '=' VAR
+
+@end verbatim
+
+is, in fact, never used.
+We therefore omit it:
+
+@verbatim
+
+  Top            ::= Max_Boundeds
+  Top            ::= Max_Boundeds Unbounded
+  Top            ::= Unbounded
+  Max_Boundeds   ::= Max_Bounded+
+  Max_Bounded    ::= Eq_Finals Var_Final
+  Max_Bounded    ::= Var_Final
+  Unbounded      ::= Eq_Finals
+  Eq_Finals      ::= Eq_Final+
+  Eq_Final       ::= VAR '='
+  Var_Final      ::= VAR
+  VAR ~ [\w]+
+
+@end verbatim
+
+@node Bocages
+@section Bocages
+
+When ranking, the logic traverses each node
+of a parse forest, which we call a "bocage".
+Our parse forests closely
+resemble
+Elizabeth Scott's SPPF's.
+See L<Marpa::R2::Advanced::Bibliography/"Scott 2008">.
+
+@node Only confirmations are choicepoints
+@section Only confirmations are choicepoints
+
+An Earley item (and a choicepoint) is a confirmation
+if and only if its dot position is not zero.
+Confirmations are either scanned Earley items or reductions.
+Non-confirmations (predictions and the start Earley item)
+are redundant information
+from the point of of the bocage.
+No or-nodes are created for non-confirmations
+and they can never be choicepoints.
+
+Since choicepoints are always either scanned Earley items or
+reductions,
+all the choices of every choicepoint have a well-defined mainstem
+and a well-defined tributary.
+
+@node Choicepoint mainstem is unique
+@section Choicepoint mainstem is unique
+
+Since every choicepoint has exactly one dotted rule,
+exactly one current location,
+and exactly one origin,
+every choicepoint has exactly one mainstem.
+All the choices for that choicepoint share that mainstem.
+Because every choicepoint
+has exactly one mainstem,
+every choicepoint has exactly one predot symbol.
+
+@node Scanned choicepoints are always trivial
+@section Scanned choicepoints are always trivial
+
+The tributary of a scanned choicepoint is a token,
+which has a value and a token symbol.
+The token value plays no role in ranking.
+The token symbol is always the same as the predot symbol.
+
+The token symbol can be assigned a rank,
+but this is pointless:
+Since there is only one predot symbol
+in a choicepoint,
+all token symbols will be equal to the predot symbol,
+and therefore all token symbols of sibling choices will be the same.
+
+Because every symbol in a choice of a scanned choicepoint
+is the same, the symbolic subkeys of all the sibling choices
+of a scanned choicepoint must be identical to each other.
+Since there is no BNF rule for the tributary of a scanned choicepoint,
+the choices of a scanned choicepoint also have no null-variants.
+This means that the choice keys of the sibling choices in
+a scanned choicepoint are always identical to each other.
+Therefore all choices of scanned choicepoints rank the same,
+and all scanned choicepoints are trivial.
+
+While a scanned choicepoint is never non-trivial,
+a scanned choicepoint may be ambiguous if variable length tokens are in use.
+Usually variable length tokens are not in use,
+and all scanned choicepoint are both trivial and singletons.
+
+@node All non-trivial choicepoints are reductions
+@section All non-trivial choicepoints are reductions
+
+Since every scanned choicepoint must be trivial,
+every non-trivial choicepoint will be a reduction.
+If a choicepoint is a reduction,
+all of its tributaries will be other choicepoints,
+and each tributary will have a dotted rule associated with it.
+The dotted rules of these tributaries
+will always be completions.
+The LHS of the rule of these tributaries
+will always be the predot symbol of the choicepoint.
+This means that the rules of the tributaries of
+the sibling choices in a reduction choicepoint
+must share the same LHS.
+Rules of the tributaries of choices in a reduction choicepoint
+can have different RHS's, however,
+and therefore can differ in symbolic rank.
+
+@node Ambiguous choicepoints
+@section Ambiguous choicepoints
+
+All non-trival choicepoints are ambiguous,
+but some trivial choicepoints are also ambiguous.
+This is because choices at choicepoints may differ not just symbolically,
+but in the way in which the symbols divide up the input
+string -- the way in which they ``factor'' the input.
+Choices which have the same symbols,
+but which ``factor'' the input differently,
+will have the same rank.
+
+@node Iterating the parses
+@section Iterating the parses
+
+Every node of a parse tree corresponds to a choice
+from a choicepoint of the parse forest.
+An
+@dfindex initial parse subtree
+@dfn{initial parse subtree}
+is the subtree formed from
+an choicepoint-rooted subforest by taking all the first choices of its choicepoints.
+
+The
+@dfindex initial parse tree
+@dfn{initial parse tree}
+is the initial parse subtree formed
+from the subforest whose root in the root of the forest.
+In other words, the initial parse tree is the tree formed
+by taking the first choices of the entire forest.
+
+The first parse tree in the iterator of a parse forest
+is the initial parse tree.
+
+For the second and later parse trees, the next parse tree
+is found by traversing the current parse tree from the
+bottom up, left to right.
+Every node of the parse tree will correspond to a choicepoint
+of the parse forest, and a choice within that choicepoint.
+If the current choice of its choicepoint is the last choice
+of that choicepoint,
+we say that that node of the parse tree is
+@dfindex exhausted (node of parse tree)
+@dfn{exhausted}.
+If a parse tree node is not
+exhausted,
+we say that it is
+@dfindex active (node of parse tree)
+@dfn{active}.
+
+As the traversal of the parse tree encounters
+exhausted nodes, it prunes them from the tree.
+The traversal ends when it encounters an active parse
+tree node.
+We call that active parse tree the
+``iteration parse tree node''.
+
+Once the iteration parse tree node has been found,
+it is replaced with a new tree node
+which corresponds to the next choice of the choicepoint
+of the iteration parse tree node.
+
+The remaining tree will have missing subtrees,
+due to the replacement
+of the iteration parse tree node,
+and due to the pruning of exhausted nodes.
+These subtrees are replaced with initial parse subtrees.
+
+When the entire parse tree is traversed without finding
+an active parse tree node,
+there are no more parse trees.
+In that case,
+the parse forest iterator is said to be
+@dfindex exhausted
+@dfn{exhausted}.
+
+@node Motivation
+@subsection Motivation
+
+We note that ranking is only by
+tributaries.
+It might reasonably be asked,
+why not, at least in the case of a tie,
+look at tributaries of tributaries?
+Or why not resolve ties by looking at tributaries of
+mainstems?
+
+Marpa's built-in rule ranking
+was chosen as the most powerful system
+that could be implemented with effectively
+zero cost.
+Ranking by direct tributaries uses only information
+that is quickly and directly available,
+so that its runtime cost is probably
+not measurable.
+
+The complexity of the specification was also an issue.
+If indirect tributaries are taken into account,
+we would need to specify which tributaries,
+and under what circumstances they are used.
+Only tributaries of tributaries?
+Or tributaries of mainstems?
+Depth-first, or breadth-first?
+Only in case of ties, or using a more complex metric?
+To arbitrary depth, or using a traversal that is
+cut off at some point?
+
+If we do ranking by direct tributaries only,
+that makes the answers
+to the above questions as simple as it can be.
+When we try to analyze the behavior of grammars that use rankings,
+the importance of having a specification that is
+(relatively) simple becomes clear.
+
+There are apps
+whose requirements justify extra overhand and extra
+complexity.
+For these apps,
+L<Marpa's ASF's|Marpa::R2::ASF>
+allow full generality in ranking.
 @node Notes on implementation
 @chapter Notes on implementation
 
