@@ -10077,21 +10077,33 @@ in general, what grammar a PEG parser is actually parsing.
 @node Longest highest version 1
 @subsection Longest highest, version 1
 
-The DSL in the synopsis ranks its items
-"longest highest".
-Here "items" are represented by the symbols,
-@code{<Item3>},
-@code{<Item2>} and
-@code{<Item1>}.
-The "longest" choice is considered to be the one
-with the most lexemes.
-Working this idea out for this grammar,
-we see that the items
-should rank,
-from highest to lowest:
-@code{<Item3>},
-@code{<Item2>} and
-@code{<Item1>}.
+Our example grammar parses sequences of ``items''.
+Every ``item'' is one
+of the following:
+@itemize
+@item
+An item of length 1, symbol name @code{<Item1>},
+of the form ``@code{x}'',
+where @code{x} is a variable name.
+Our interest is entirely in the syntax,
+but ``@code{x}'' might be thought of as a
+command to print the variable @code{x}.
+@item
+An item of length 2, symbol name @code{<Item2>},
+of the form ``@code{x =}'',
+which might be thought of as a
+command to reinitialize the variable @code{x}.
+@item
+An item of length 3, symbol name @code{<Item3>},
+of the form ``@code{x = y}'',
+which might be thought of as a
+command to assign value of
+the variable @code{y}
+to the variable @code{x}.
+@end itemize
+
+To order our parses ``longest highest'',
+we use the following ranked grammar:
 
 @verbatim
 
@@ -10153,6 +10165,28 @@ in non-trivial choicepoints:
 
 @end verbatim
 
+The following display shows the results of this ranked
+grammar.  On each row, the input string is to the left
+of the comma.
+The string to
+the right of the comma shows how the
+highest ranked parse
+factors the input string into items,
+with parentheses surrounding each item.
+
+@verbatim
+
+     'a',                 '(a)'
+     'a = b',             '(a=b)'
+     'a = b = c',         '(a=)(b=c)'
+     'a = b = c = d',     '(a=)(b=)(c=d)'
+     'a = b c = d',       '(a=b)(c=d)'
+     'a = b c = d e =',   '(a=b)(c=d)(e=)'
+     'a = b c = d e',     '(a=b)(c=d)(e)'
+     'a = b c = d e = f', '(a=b)(c=d)(e=f)'
+
+@end verbatim
+
 @node Shortest highest version 1
 @subsection Shortest highest, version 1
 
@@ -10177,6 +10211,28 @@ ranking.
 
 @end verbatim
 
+The following display shows the results of this ranked
+grammar.  On each row, the input string is to the left
+of the comma.
+The string to
+the right of the comma shows how the
+highest ranked parse
+factors the input string into items,
+with parentheses surrounding each item.
+
+@verbatim
+
+    'a',                 '(a)'
+    'a = b',             '(a=)(b)'
+    'a = b = c',         '(a=)(b=)(c)'
+    'a = b = c = d',     '(a=)(b=)(c=)(d)'
+    'a = b c = d',       '(a=)(b)(c=)(d)'
+    'a = b c = d e =',   '(a=)(b)(c=)(d)(e=)'
+    'a = b c = d e',     '(a=)(b)(c=)(d)(e)'
+    'a = b c = d e = f', '(a=)(b)(c=)(d)(e=)(f)'
+
+@end verbatim
+
 @node Longest highest version 2
 @subsection Longest highest, version 2
 
@@ -10194,7 +10250,6 @@ as shown below for
   Item ::= VAR '=' VAR # rank => 3
   Item ::= VAR '='     # rank => 2
   Item ::= VAR         # rank => 1
-  VAR ~ [\w]+
 
 @end verbatim
 
@@ -10309,7 +10364,6 @@ We therefore omit it:
   Eq_Finals      ::= Eq_Final+
   Eq_Final       ::= VAR '='
   Var_Final      ::= VAR
-  VAR ~ [\w]+
 
 @end verbatim
 
