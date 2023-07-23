@@ -10515,12 +10515,14 @@ When we try to analyze the behavior of grammars that use rankings,
 the importance of having a specification that is
 (relatively) simple becomes clear.
 
-There are apps
-whose requirements justify extra overhand and extra
-complexity.
-For these apps,
-L<Marpa's ASF's|Marpa::R2::ASF>
-allow full generality in ranking.
+Solutions at the application level
+can allow full generality in ranking.
+For applications
+whose requirements justify extra overhead and extra
+complexity,
+these application level solutions may
+be appropriate.
+
 @node Notes on implementation
 @chapter Notes on implementation
 
