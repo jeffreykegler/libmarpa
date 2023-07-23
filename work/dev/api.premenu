@@ -10531,8 +10531,32 @@ the parse forest iterator is said to be
 @dfindex exhausted
 @dfn{exhausted}.
 
+@node Ranking and LHS terminals
+@section Ranking and LHS terminals
+
+If LHS terminals are in use,
+it is possible to have a
+mixed choicepoint ---
+one in which there are choices
+that result from reduction operations
+and choices which result from scanning
+operations.
+LHS terminals are deprecated.
+@xref{LHS terminals}.
+
+The symbolic subkey of a scanned choice is
+the rank of the token symbol.
+The token symbol is always the same as the
+predot symbol.
+The symbol rank can be set using the
+@code{marpa_g_symbol_rank_set()} method.
+@xref{marpa_g_symbol_rank_set,marpa_g_symbol_rank_set()}.
+If a scanned choice and a reduction choice have the
+same symbolic subkey,
+their relative order is arbitrary.
+
 @node Motivation
-@subsection Motivation
+@section Motivation
 
 We note that ranking is only by
 tributaries.
