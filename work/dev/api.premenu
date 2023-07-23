@@ -1901,7 +1901,7 @@ Within a non-trivial choicepoint,
 the mainstems and the LHS of the rules in tributaries
 must always be the same.
 (For the explanation of why this is the case,
-@pxref{Notes on order object}.)
+@pxref{Notes on order objects}.)
 Therefore, when the symbolic subkeys of two
 choices within the same non-trivial choicepoint differ,
 they will differ only in the RHS of the rules
@@ -1916,7 +1916,7 @@ choices is always the same as
 the predot symbol of that choicepoint.
 
 Iteration of the parse forest is depth-first, left-to-right.
-@xref{Notes on order object}.
+@xref{Notes on order objects}.
 
 @node Application and diagnostic behavior
 @section Application and diagnostic behavior
@@ -6270,7 +6270,7 @@ so that the @code{marpa_o_new()} and
 @code{marpa_o_unref()} methods are the only methods
 they will need.
 For additional details on order objects,
-@pxref{Notes on order object}.
+@pxref{Notes on order objects}.
 
 @node Freezing the ordering
 @section Freezing the ordering
@@ -10031,12 +10031,17 @@ be kept for backward compatibility.
 @strong{Suggested message}: "The recognizer is inconsistent".
 @end deftypevr
 
-@node Notes on order object
-@chapter Notes on order object
+@node Notes on order objects
+@chapter Notes on order objects
 
 This chapter contains notes on the order time object
 that are not necessary for the main presentation.
 They present details that may be helpful or interesting.
+
+Unless stated otherwise, the discussions in this
+chapter assume that LHS terminals are not in use.
+LHS terminals are deprecated.
+@xref{LHS terminals}.
 
 @node Ordered parses and PEG
 @section Ordered parses and PEG
