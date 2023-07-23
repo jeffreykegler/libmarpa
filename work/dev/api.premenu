@@ -109,26 +109,13 @@ chapters up and including
 in order.
 Otherwise, they should follow their interests.
 
-@node Prerequisites
-@section Prerequisites
-
-This document is very far from self-contained.
-It assumes the following:
-@itemize
-@item
-The reader knows the C programming language
+This document
+assumes that
+the reader knows the C programming language
 at least well
 enough to understand function prototypes and return values.
-@item
-The reader
-has read the documents for one of Libmarpa's upper layers.
-As of this writing, the only such layer is @code{Marpa::R2}
-or @code{Marpa::R3},
-in Perl.
-@item
-The reader knows some parsing theory.
+The reader should also know some parsing theory.
 @xref{Parsing theory preliminaries}.
-@end itemize
 
 @node Overview of Libmarpa
 @chapter Overview of Libmarpa
