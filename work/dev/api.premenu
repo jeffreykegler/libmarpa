@@ -10284,8 +10284,8 @@ realize they are.
 
 The pure BNF reimplementations below rely on an observation:
 The parse string becomes easier to analyze
-when we think in term of fenceposts,
-rather than in term of the location of the lexemes.
+when we think in terms of fenceposts,
+rather than in terms of the location of the lexemes.
 Fenceposts are either initial, final or medial.
 The
 @dfindex initial fencepost
