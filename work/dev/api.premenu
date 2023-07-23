@@ -10036,7 +10036,7 @@ be kept for backward compatibility.
 
 This chapter contains notes on the order time object
 that are not necessary for the main presentation.
-They present details may be helpful or interesting.
+They present details that may be helpful or interesting.
 
 @node Ordered parses and PEG
 @section Ordered parses and PEG
@@ -10060,7 +10060,7 @@ volume 89, part C, 1 September 2014, pp. 235-250.
 @url{https://arxiv.org/abs/1304.3177}.}
 
 Libmarpa is also safer in the sense that Libmarpa
-the BNF guides the grammar in the tradiional way.
+the BNF guides the grammar in the traditional way.
 The PEG parse description,
 while it looks like BNF,
 is not interpreted as BNF,
@@ -10236,8 +10236,9 @@ with parentheses surrounding each item.
 @node Longest highest version 2
 @subsection Longest highest, version 2
 
-The previous examples have shown the rule involved
-in parse ranking in "spelled out" form.
+The previous examples of ranking grammars
+have shown the rules involved
+in parse ranking in a "spelled out" form.
 In fact, a more compact form of the grammar can be used,
 as shown below for
 "longest highest" ranking.
@@ -10283,7 +10284,7 @@ realize they are.
 
 The pure BNF reimplementations below rely on an observation:
 The parse string becomes easier to analyze
-when we think in terms of fenceposts,
+when we think in term of fenceposts,
 rather than in term of the location of the lexemes.
 Fenceposts are either initial, final or medial.
 The
@@ -10375,7 +10376,7 @@ of a parse forest, which we call a "bocage".
 Our parse forests closely
 resemble
 Elizabeth Scott's SPPF's.
-See L<Marpa::R2::Advanced::Bibliography/"Scott 2008">.
+@xref{Scott 2008}.
 
 @node Only confirmations are choicepoints
 @section Only confirmations are choicepoints
@@ -10415,11 +10416,15 @@ The token value plays no role in ranking.
 The token symbol is always the same as the predot symbol.
 
 The token symbol can be assigned a rank,
-but this is pointless:
+but this is usually pointless:
 Since there is only one predot symbol
 in a choicepoint,
 all token symbols will be equal to the predot symbol,
 and therefore all token symbols of sibling choices will be the same.
+
+The special case in which assigning a rank to token symbols
+might not be pointless is when LHS terminals are in use.
+@xref{Ranking and LHS terminals}.
 
 Because every symbol in a choice of a scanned choicepoint
 is the same, the symbolic subkeys of all the sibling choices
