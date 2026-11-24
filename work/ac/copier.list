@@ -91,4 +91,5 @@ stage/tests/simple/depr_unvalued.c: test/tap/simple/depr_unvalued.c
 stage/tests/simple/issue92b.c: test/tap/simple/issue92b.c
 stage/tests/simple/marpa_m_test.c: test/tap/simple/marpa_m_test.c
 stage/tests/simple/nits.c: test/tap/simple/nits.c
+stage/tests/simple/ref_count.c: test/tap/simple/ref_count.c
 stage/tests/TESTS: test/tap/TESTS

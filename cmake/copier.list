@@ -85,6 +85,7 @@ cm_dist/tap_test/tests/simple/depr_unvalued.c: work/stage/tests/simple/depr_unva
 cm_dist/tap_test/tests/simple/issue92b.c: work/stage/tests/simple/issue92b.c
 cm_dist/tap_test/tests/simple/marpa_m_test.c: work/stage/tests/simple/marpa_m_test.c
 cm_dist/tap_test/tests/simple/nits.c: work/stage/tests/simple/nits.c
+cm_dist/tap_test/tests/simple/ref_count.c: work/stage/tests/simple/ref_count.c
 
 # Marpalua
 cm_dist/marpalua/CMakeLists.txt: marpalua/cmake/CMakeLists.txt

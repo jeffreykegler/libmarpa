@@ -50,7 +50,8 @@ check_PROGRAMS = tests/runtests \
   tests/simple/rule1 tests/simple/trivial \
   tests/simple/trivial1 tests/simple/depr_unvalued \
   tests/simple/nits tests/simple/issue92a \
-  tests/simple/issue92b tests/simple/issue92c
+  tests/simple/issue92b tests/simple/issue92c \
+  tests/simple/ref_count
 
 tests_runtests_CPPFLAGS = \
     -DC_TAP_SOURCE='"$(abs_top_srcdir)/tests"' \
@@ -74,6 +75,7 @@ tests_simple_nits_LDADD = tests/tap/libtap.a libmarpa.a
 tests_simple_issue92a_LDADD = tests/tap/libtap.a libmarpa.a
 tests_simple_issue92b_LDADD = tests/tap/libtap.a libmarpa.a
 tests_simple_issue92c_LDADD = tests/tap/libtap.a libmarpa.a
+tests_simple_ref_count_LDADD = tests/tap/libtap.a libmarpa.a
 
 tests_simple_rule1_CPPFLAGS = -I$(abs_top_srcdir)/tests/simple -I$(abs_top_srcdir)/tests
 tests_simple_trivial_CPPFLAGS = -I$(abs_top_srcdir)/tests/simple -I$(abs_top_srcdir)/tests
@@ -83,6 +85,7 @@ tests_simple_nits_CPPFLAGS = -I$(abs_top_srcdir)/tests/simple -I$(abs_top_srcdir
 tests_simple_issue92a_CPPFLAGS = -I$(abs_top_srcdir)/tests/simple -I$(abs_top_srcdir)/tests
 tests_simple_issue92b_CPPFLAGS = -I$(abs_top_srcdir)/tests/simple -I$(abs_top_srcdir)/tests
 tests_simple_issue92c_CPPFLAGS = -I$(abs_top_srcdir)/tests/simple -I$(abs_top_srcdir)/tests
+tests_simple_ref_count_CPPFLAGS = -I$(abs_top_srcdir)/tests/simple -I$(abs_top_srcdir)/tests
 
 tests_simple_rule1_SOURCES = tests/simple/rule1.c
 tests_simple_trivial_SOURCES = tests/simple/trivial.c
@@ -98,6 +101,7 @@ tests_simple_issue92b_SOURCES = tests/simple/issue92b.c \
   tests/simple/marpa_m_test.c tests/simple/marpa_m_test.h
 tests_simple_issue92c_SOURCES = tests/simple/issue92c.c \
   tests/simple/marpa_m_test.c tests/simple/marpa_m_test.h
+tests_simple_ref_count_SOURCES = tests/simple/ref_count.c
 
 EXTRA_DIST = README.INSTALL README.AIX libmarpa.pc GIT_LOG.txt \
   win32/marpa.def Makefile.win32 win32/do_config_h.pl \

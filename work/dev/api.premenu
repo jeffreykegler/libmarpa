@@ -2161,6 +2161,15 @@ These more complex situations
 are the only cases in which the ``ref'' methods
 will be needed.
 
+Reference counts are @code{int}s.
+If a reference count is already @code{INT_MAX},
+a ``ref'' method returns @code{NULL}
+with the error code @code{MARPA_ERR_REF_COUNT_OVERFLOW},
+and the reference count is not changed.
+A constructor that would add a reference to an object
+whose reference count is already @code{INT_MAX}
+fails in the same way.
+
 @node Numbered objects
 @section Numbered objects
 
@@ -9627,6 +9636,17 @@ and the application has attempted something that
 is inconsistent with that fact.
 @strong{Numeric value}: 62.
 @strong{Suggested message}: "The recognizer has been started".
+@end deftypevr
+
+@deftypevr {Accessor macro} int MARPA_ERR_REF_COUNT_OVERFLOW
+The reference count of a time object is already @code{INT_MAX},
+and the application has attempted to add another reference to it,
+either through a ``ref'' method
+or by creating a child object.
+The reference count is not changed.
+@xref{Reference counting}.
+@strong{Numeric value}: 100.
+@strong{Suggested message}: "Reference count would overflow".
 @end deftypevr
 
 @deftypevr {Accessor macro} int MARPA_ERR_RHS_IX_NEGATIVE
