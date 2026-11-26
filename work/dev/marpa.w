@@ -717,17 +717,40 @@ marpa_g_unref (Marpa_Grammar g)
 { grammar_unref(g); }
 
 @ Increment the grammar reference count.
+Reference counts are of type |int|,
+so incrementing one that is already |INT_MAX|
+would be undefined behavior,
+and can lead to an object being destroyed
+while references to it are still held.
+So the public ``ref'' methods of all the time objects
+fail with |MARPA_ERR_REF_COUNT_OVERFLOW|
+if the count is already |INT_MAX|,
+and leave the count unchanged.
+A constructor that takes a reference to a parent object
+checks the parent's count in the same way,
+before it changes anything.
+The private ``ref'' functions are only called
+after one of these checks.
+@d Ref_Count_Is_Full(object) ((object)->t_ref_count >= INT_MAX)
 @ @<Function definitions@> =
 PRIVATE GRAMMAR
 grammar_ref (GRAMMAR g)
 {
   MARPA_ASSERT(g->t_ref_count > 0)
+  MARPA_ASSERT(g->t_ref_count < INT_MAX)
   g->t_ref_count++;
   return g;
 }
 Marpa_Grammar
 marpa_g_ref (Marpa_Grammar g)
-{ return grammar_ref(g); }
+{
+  if (_MARPA_UNLIKELY (Ref_Count_Is_Full (g)))
+    {
+      MARPA_ERROR (MARPA_ERR_REF_COUNT_OVERFLOW);
+      return NULL;
+    }
+  return grammar_ref(g);
+}
 
 @ @<Function definitions@> =
 PRIVATE
@@ -6046,6 +6069,11 @@ Marpa_Recognizer marpa_r_new( Marpa_Grammar g )
     int irl_count;
     @<Return |NULL| on failure@>@;
     @<Fail if not precomputed@>@;
+    if (_MARPA_UNLIKELY (Ref_Count_Is_Full (g)))
+      {
+        MARPA_ERROR (MARPA_ERR_REF_COUNT_OVERFLOW);
+        return failure_indicator;
+      }
     nsy_count = NSY_Count_of_G(g);
     irl_count = IRL_Count_of_G(g);
     r = my_malloc(sizeof(struct marpa_r));
@@ -6085,13 +6113,20 @@ PRIVATE
 RECCE recce_ref (RECCE r)
 {
   MARPA_ASSERT(r->t_ref_count > 0)
+  MARPA_ASSERT(r->t_ref_count < INT_MAX)
   r->t_ref_count++;
   return r;
 }
 Marpa_Recognizer
 marpa_r_ref (Marpa_Recognizer r)
 {
-   return recce_ref(r);
+  const GRAMMAR g = G_of_R(r);
+  if (_MARPA_UNLIKELY (Ref_Count_Is_Full (r)))
+    {
+      MARPA_ERROR (MARPA_ERR_REF_COUNT_OVERFLOW);
+      return NULL;
+    }
+  return recce_ref(r);
 }
 
 @ @<Function definitions@> =
@@ -11201,6 +11236,11 @@ Marpa_Bocage marpa_b_new(Marpa_Recognizer r,
     }
 
     @<Fail if recognizer not started@>@;
+    if (_MARPA_UNLIKELY (Ref_Count_Is_Full (g)))
+      {
+        MARPA_ERROR (MARPA_ERR_REF_COUNT_OVERFLOW);
+        return failure_indicator;
+      }
     {
         struct marpa_obstack* const obstack = marpa_obs_init;
         b = marpa_obs_new (obstack, struct marpa_bocage, 1);
@@ -11445,13 +11485,20 @@ PRIVATE BOCAGE
 bocage_ref (BOCAGE b)
 {
   MARPA_ASSERT(b->t_ref_count > 0)
+  MARPA_ASSERT(b->t_ref_count < INT_MAX)
   b->t_ref_count++;
   return b;
 }
 Marpa_Bocage
 marpa_b_ref (Marpa_Bocage b)
 {
-   return bocage_ref(b);
+  const GRAMMAR g = G_of_B(b);
+  if (_MARPA_UNLIKELY (Ref_Count_Is_Full (b)))
+    {
+      MARPA_ERROR (MARPA_ERR_REF_COUNT_OVERFLOW);
+      return NULL;
+    }
+  return bocage_ref(b);
 }
 
 @*0 Bocage destruction.
@@ -11532,6 +11579,11 @@ Marpa_Order marpa_o_new(Marpa_Bocage b)
     @<Unpack bocage objects@>@;
     ORDER o;
     @<Fail if fatal error@>@;
+    if (_MARPA_UNLIKELY (Ref_Count_Is_Full (b)))
+      {
+        MARPA_ERROR (MARPA_ERR_REF_COUNT_OVERFLOW);
+        return failure_indicator;
+      }
     o = my_malloc(sizeof(*o));
     B_of_O(o) = b;
     bocage_ref(b);
@@ -11570,13 +11622,20 @@ PRIVATE ORDER
 order_ref (ORDER o)
 {
   MARPA_ASSERT(o->t_ref_count > 0)
+  MARPA_ASSERT(o->t_ref_count < INT_MAX)
   o->t_ref_count++;
   return o;
 }
 Marpa_Order
 marpa_o_ref (Marpa_Order o)
 {
-   return order_ref(o);
+  const GRAMMAR g = G_of_B(B_of_O(o));
+  if (_MARPA_UNLIKELY (Ref_Count_Is_Full (o)))
+    {
+      MARPA_ERROR (MARPA_ERR_REF_COUNT_OVERFLOW);
+      return NULL;
+    }
+  return order_ref(o);
 }
 
 @ @<Function definitions@> =
@@ -12131,6 +12190,11 @@ Marpa_Tree marpa_t_new(Marpa_Order o)
     TREE t;
     @<Unpack order objects@>@;
     @<Fail if fatal error@>@;
+    if (_MARPA_UNLIKELY (Ref_Count_Is_Full (o)))
+      {
+        MARPA_ERROR (MARPA_ERR_REF_COUNT_OVERFLOW);
+        return failure_indicator;
+      }
     t = my_malloc(sizeof(*t));
     O_of_T(t) = o;
     order_ref(o);
@@ -12191,13 +12255,20 @@ PRIVATE TREE
 tree_ref (TREE t)
 {
   MARPA_ASSERT(t->t_ref_count > 0)
+  MARPA_ASSERT(t->t_ref_count < INT_MAX)
   t->t_ref_count++;
   return t;
 }
 Marpa_Tree
 marpa_t_ref (Marpa_Tree t)
 {
-   return tree_ref(t);
+  const GRAMMAR g = G_of_B(B_of_O(O_of_T(t)));
+  if (_MARPA_UNLIKELY (Ref_Count_Is_Full (t)))
+    {
+      MARPA_ERROR (MARPA_ERR_REF_COUNT_OVERFLOW);
+      return NULL;
+    }
+  return tree_ref(t);
 }
 
 @ @<Function definitions@> =
@@ -12888,6 +12959,12 @@ Marpa_Value marpa_v_new(Marpa_Tree t)
       MARPA_ERROR(MARPA_ERR_BEFORE_FIRST_TREE);
       return NULL;
     }
+    /* An exhausted tree takes no reference, and keeps its own error */
+    if (_MARPA_UNLIKELY (!T_is_Exhausted (t) && Ref_Count_Is_Full (t)))
+      {
+        MARPA_ERROR (MARPA_ERR_REF_COUNT_OVERFLOW);
+        return failure_indicator;
+      }
     if (!T_is_Exhausted (t))
       {
         const XSYID xsy_count = XSY_Count_of_G (g);
@@ -12942,13 +13019,21 @@ PRIVATE VALUE
 value_ref (VALUE v)
 {
   MARPA_ASSERT(v->t_ref_count > 0)
+  MARPA_ASSERT(v->t_ref_count < INT_MAX)
   v->t_ref_count++;
   return v;
 }
 Marpa_Value
-marpa_v_ref (Marpa_Value v)
+marpa_v_ref (Marpa_Value public_v)
 {
-   return (Marpa_Value)value_ref((VALUE)v);
+  const VALUE v = (VALUE)public_v;
+  const GRAMMAR g = G_of_B(B_of_O(O_of_T(T_of_V(v))));
+  if (_MARPA_UNLIKELY (Ref_Count_Is_Full (v)))
+    {
+      MARPA_ERROR (MARPA_ERR_REF_COUNT_OVERFLOW);
+      return NULL;
+    }
+  return (Marpa_Value)value_ref(v);
 }
 
 @ @<Function definitions@> =

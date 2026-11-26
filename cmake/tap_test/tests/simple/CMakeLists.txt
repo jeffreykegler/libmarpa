@@ -70,4 +70,9 @@ target_link_libraries(depr_unvalued ${LIBMARPA_STATIC} libtap)
 target_compile_options(depr_unvalued PUBLIC ${LIBMARPA_COMPILE_OPTIONS})
 set_target_properties(depr_unvalued PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
 
+add_executable(ref_count ref_count.c)
+target_link_libraries(ref_count ${LIBMARPA_STATIC} libtap)
+target_compile_options(ref_count PUBLIC ${LIBMARPA_COMPILE_OPTIONS})
+set_target_properties(ref_count PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
+
 # vim: expandtab shiftwidth=4:
